@@ -441,6 +441,11 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 						.addAlwaysHideAnims("turret0", "turret1")
 						.build())
 				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "james_wooden_plane")
+				.setCustomAnims(VehicleAnimsBuilder.create()
+						.addMotorRotPixelAnim("Propeller", 0, -15, 0, RotationAxis.Z, 40)
+						.build())
+				.build());
 	}
 	
 	public VehicleClientPresetGenerator(DataGenerator output) {

@@ -65,36 +65,32 @@ public class SlotType {
 	
 	@Nullable
 	public static SlotType checkOldNames(String name) {
-		switch (name) {
-		case "wing" : return PYLON_LIGHT;
-		case "advanced_internal" : return TECH_INTERNAL;
-		case "frame" : return MOUNT_LIGHT;
-		case "heavy_frame" : return MOUNT_HEAVY;
-		case "advanced_frame" : return MOUNT_TECH;
-		case "light_turret" : return MOUNT_LIGHT;
-		case "med_turret" : return MOUNT_MED;
-		case "heavy_turret" : return MOUNT_HEAVY;
-		}
-		return INTERNAL;
-	}
+        return switch (name) {
+            case "wing" -> PYLON_LIGHT;
+            case "advanced_internal" -> TECH_INTERNAL;
+            case "frame", "light_turret" -> MOUNT_LIGHT;
+            case "heavy_frame", "heavy_turret" -> MOUNT_HEAVY;
+            case "advanced_frame" -> MOUNT_TECH;
+            case "med_turret" -> MOUNT_MED;
+            default -> INTERNAL;
+        };
+    }
 	
 	@Nullable
 	public static SlotType getByOldOrdinal(int o) {
-		switch (o) {
-		case 0: return SEAT;
-		case 1: return PYLON_HEAVY;
-		case 2: return MOUNT_LIGHT;
-		case 3: return INTERNAL;
-		case 4: return HIGH_TECH_INTERNAL;
-		case 5: return MOUNT_MED;
-		case 6: return MOUNT_HEAVY;
-		case 7: return SPIN_ENGINE;
-		case 8: return PUSH_ENGINE;
-		case 9: return MOUNT_HEAVY;
-		case 10: return RADIAL_ENGINE;
-		}
-		return null;
-	}
+        return switch (o) {
+            case 0 -> SEAT;
+            case 1 -> PYLON_HEAVY;
+            case 2 -> MOUNT_LIGHT;
+            case 4 -> HIGH_TECH_INTERNAL;
+            case 5 -> MOUNT_MED;
+            case 6, 9 -> MOUNT_HEAVY;
+            case 7 -> SPIN_ENGINE;
+            case 8 -> PUSH_ENGINE;
+            case 10 -> RADIAL_ENGINE;
+            default -> INTERNAL;
+        };
+    }
 	
 	public static void updateSlotTypeChildren() {
 		LOGGER.debug("UPDATE SLOT TYPE CHILDREN");

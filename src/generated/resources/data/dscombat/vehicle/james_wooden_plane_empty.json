@@ -1,10 +1,156 @@
 {
   "armor": 0.0,
   "displayName": "preset.dscombat.james_wooden_plane_empty",
-  "health": 40.0,
+  "health": 60.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "damage_root": true,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "base",
+      "rel_pos": {
+        "x": 0.0,
+        "y": -0.6,
+        "z": -0.7
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 1.4,
+        "y": 1.4,
+        "z": 3.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 0.0,
+      "max_health": 20.0,
+      "name": "tail",
+      "rel_pos": {
+        "x": 0.0,
+        "y": -0.3,
+        "z": -4.4
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.8,
+        "y": 1.0,
+        "z": 3.8
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 0.0,
+      "max_health": 15.0,
+      "name": "engine",
+      "rel_pos": {
+        "x": 0.0,
+        "y": -0.6,
+        "z": 1.6
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.1,
+        "y": 1.1,
+        "z": 1.1
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 0.0,
+      "max_health": 15.0,
+      "name": "left_wing_bottom",
+      "rel_pos": {
+        "x": 3.1,
+        "y": -1.0,
+        "z": -0.2
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 4.9,
+        "y": 0.3,
+        "z": 1.3
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 0.0,
+      "max_health": 15.0,
+      "name": "left_wing_top",
+      "rel_pos": {
+        "x": 3.0,
+        "y": 0.8,
+        "z": 0.4
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 6.0,
+        "y": 0.3,
+        "z": 1.3
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 0.0,
+      "max_health": 15.0,
+      "name": "right_wing_bottom",
+      "rel_pos": {
+        "x": -3.1,
+        "y": -1.0,
+        "z": -0.2
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 4.9,
+        "y": 0.3,
+        "z": 1.3
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 0.0,
+      "max_health": 15.0,
+      "name": "right_wing_top",
+      "rel_pos": {
+        "x": -3.0,
+        "y": 0.8,
+        "z": 0.4
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 6.0,
+        "y": 0.3,
+        "z": 1.3
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 0.0,
+      "max_health": 10.0,
+      "name": "tail_flaps",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.15,
+        "z": -6.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 2.5,
+        "y": 0.3,
+        "z": 1.7
+      }
+    }
+  ],
   "ingredients": [
     {
-      "num": 20,
+      "num": 60,
       "tag": "minecraft:planks"
     },
     {
@@ -17,7 +163,7 @@
     },
     {
       "item": "dscombat:wheel",
-      "num": 2
+      "num": 3
     }
   ],
   "is_craftable": false,
@@ -32,24 +178,44 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": -0.4,
-      "slot_posz": 0.0,
+      "slot_posy": -0.8,
+      "slot_posz": -0.25,
       "slot_type": "seat",
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "left_wing_bottom",
       "name": "left_wing_1",
-      "slot_posx": 1.5,
-      "slot_posy": 0.0,
+      "slot_posx": 3.0,
+      "slot_posy": -1.1,
       "slot_posz": 0.0,
       "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
+      "linkedHitbox": "left_wing_top",
+      "name": "left_wing_2",
+      "slot_posx": 3.0,
+      "slot_posy": 0.8,
+      "slot_posz": 0.6,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "right_wing_bottom",
       "name": "right_wing_1",
-      "slot_posx": -1.5,
-      "slot_posy": 0.0,
+      "slot_posx": -3.0,
+      "slot_posy": -1.1,
       "slot_posz": 0.0,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "right_wing_top",
+      "name": "right_wing_2",
+      "slot_posx": -3.0,
+      "slot_posy": 0.8,
+      "slot_posz": 0.6,
       "slot_type": "pylon_light",
       "zRot": 180.0
     },
@@ -76,6 +242,22 @@
       "slot_posz": 0.0,
       "slot_type": "internal",
       "zRot": 0.0
+    },
+    {
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_5",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
     }
   ],
   "sort_factor": 1,
@@ -89,35 +271,56 @@
     "armor_damage_threshold": 0.5,
     "assetId": "james_wooden_plane",
     "base_armor": 0.0,
-    "cameraDistance": 4.0,
-    "crashExplosionRadius": 3.0,
-    "cross_sec_area": 2.0,
-    "entity_size_xz": 1.7,
-    "entity_size_y": 1.7,
+    "cameraDistance": 8.0,
+    "crashExplosionRadius": 3.5,
+    "cross_sec_area": 4.0,
+    "entity_size_xz": 4.8,
+    "entity_size_y": 4.8,
+    "groundXTilt": 18.0,
+    "hitboxes_control_pitch": [
+      "tail_flaps"
+    ],
+    "hitboxes_control_roll": [
+      "left_wing_bottom",
+      "left_wing_top",
+      "right_wing_bottom",
+      "right_wing_top"
+    ],
+    "hitboxes_control_yaw": [
+      "tail_flaps",
+      "tail"
+    ],
     "idleheat": 1.0,
     "inertiapitch": 7.0,
     "inertiaroll": 4.0,
     "inertiayaw": 3.0,
-    "mass": 500.0,
-    "max_health": 40.0,
-    "max_speed": 0.7,
-    "maxpitch": 3.0,
-    "maxroll": 5.0,
-    "maxyaw": 2.0,
+    "mass": 1800.0,
+    "max_health": 60.0,
+    "max_speed": 0.75,
+    "maxpitch": 2.0,
+    "maxroll": 4.0,
+    "maxyaw": 1.5,
     "plane": {
       "canAimDown": false,
       "flapsAOABias": 8.0,
-      "fuselage_lift_area": 4.0,
+      "fuselage_lift_area": 10.0,
       "fuselage_lift_k_graph": "fuselage",
-      "wing_area": 8.0,
+      "wing_area": 18.0,
+      "wing_lift_hitbox_names": [
+        "left_wing_bottom",
+        "left_wing_top",
+        "right_wing_bottom",
+        "right_wing_top"
+      ],
       "wing_lift_k_graph": "wooden_plane"
     },
+    "rootHitboxNoCollide": true,
     "stealth": 1.0,
     "throttledown": 0.06,
     "throttleup": 0.02,
     "torquepitch": 2.5,
     "torqueroll": 1.5,
     "torqueyaw": 4.5,
-    "turn_radius": 16.0
+    "turn_radius": 20.0
   }
 }

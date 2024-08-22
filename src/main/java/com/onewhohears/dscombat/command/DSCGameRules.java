@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.command;
 
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.onewholibs.common.command.CustomGameRules;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -27,7 +28,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_PLANE_PER;
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_HELI_PER;
 	public static GameRules.Key<GameRules.BooleanValue> DISABLE_3RD_PERSON_VEHICLE;
-	// TODO 7.2 baby mode gamerule (arcade mode) for planes disabled by default
+	public static GameRules.Key<GameRules.BooleanValue> PLANE_ARCADE_MODE;
 	
 	public static void registerAll() {
 		CONSUME_FULE = CustomGameRules.registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
@@ -51,6 +52,12 @@ public class DSCGameRules {
 		BULLET_DAMAGE_PLANE_PER = CustomGameRules.registerInteger("bulletDamagePlanePercent", 100, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_HELI_PER = CustomGameRules.registerInteger("bulletDamageHeliPercent", 100, GameRules.Category.PLAYER);
 		DISABLE_3RD_PERSON_VEHICLE = CustomGameRules.registerSyncBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
+		PLANE_ARCADE_MODE = CustomGameRules.registerSyncBoolean("planeArcadeMode", false, GameRules.Category.PLAYER);
+	}
+
+	public static boolean isPlaneArcadeMode(Level level) {
+		if (level.isClientSide()) return DSCClientInputs.planeArcadePhysicsMode;
+		return level.getGameRules().getBoolean(PLANE_ARCADE_MODE);
 	}
 	
 	public static float getVehicleArmorStrengthFactor(Level level) {

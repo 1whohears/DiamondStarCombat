@@ -21,8 +21,9 @@ public class EntityPlane extends EntityVehicle {
 
 	private float aoa, liftK, airFoilSpeedSqr, fuselageAoa, fuselageLiftK;
 	private float centripetalForce, centrifugalForce; 
-	private double wingLiftMag, prevMaxSpeedMod = 1;
+	private double wingLiftMag, prevMaxSpeedMod = 1, arcadeIgnoreGravityFactor;
 	private Vec3 liftDir = Vec3.ZERO, liftForce = Vec3.ZERO;
+	private boolean isArcadeMode = false;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
@@ -44,16 +45,70 @@ public class EntityPlane extends EntityVehicle {
 			else addMomentZ(inputs.roll * getRollTorque(), true);
 		}
 	}
-	
+
+	@Override
+	public float getControlMaxDeltaPitch() {
+		if (isArcadeMode) return super.getControlMaxDeltaPitch() * 0.8f;
+		return super.getControlMaxDeltaPitch();
+	}
+
+	@Override
+	public float getControlMaxDeltaYaw() {
+		if (isArcadeMode) return super.getControlMaxDeltaYaw() * 0.8f;
+		return super.getControlMaxDeltaYaw();
+	}
+
+	@Override
+	public float getControlMaxDeltaRoll() {
+		if (isArcadeMode) return super.getControlMaxDeltaRoll() * 0.8f;
+		return super.getControlMaxDeltaRoll();
+	}
+
+	@Override
+	public void tick() {
+		if (tickCount % 10 == 0) isArcadeMode = DSCGameRules.isPlaneArcadeMode(getLevel());
+		super.tick();
+	}
+
 	@Override
 	public void tickAlways(Quaternion q) {
 		super.tickAlways(q);
-		setForces(getForces().add(getLiftForce(q)));
+		if (isArcadeMode) {
+			setForces(getForces().add(getWeightForce().scale(-getArcadeIgnoreGravityFactor())));
+			if (isOnGround() && isFlapsDown()) setForces(getForces().add(0, 200, 0));
+		} else setForces(getForces().add(getLiftForce(q)));
+	}
+
+	protected void calcIgnoreGravityFactor(Quaternion q) {
+		Vec3 u = getDeltaMovement();
+		Vec3 rollAxis = UtilAngles.getRollAxis(q);
+		double speed = UtilGeometry.vecCompByNormAxis(u, rollAxis).length();
+		double minTakeOffSpeed = getStats().max_speed * 0.5;
+		arcadeIgnoreGravityFactor = Math.min(speed / minTakeOffSpeed, 1);
+	}
+
+	public double getArcadeIgnoreGravityFactor() {
+		return arcadeIgnoreGravityFactor;
+	}
+
+	@Override
+	public void calcAcc() {
+		super.calcAcc();
+		if (isArcadeMode && !isOnGround() && getArcadeIgnoreGravityFactor() == 1) {
+			double speed = getDeltaMovement().length();
+			Vec3 look = getLookAngle();
+			setDeltaMovement(look.scale(speed));
+		}
 	}
 	
 	@Override
 	protected void calcMoveStatsPre(Quaternion q) {
 		super.calcMoveStatsPre(q);
+		if (isArcadeMode) {
+			aoa = 0;
+			calcIgnoreGravityFactor(q);
+			return;
+		}
 		calculateAOA(q);
 		calculateLift(q);
 		calculateCentripetalForce();

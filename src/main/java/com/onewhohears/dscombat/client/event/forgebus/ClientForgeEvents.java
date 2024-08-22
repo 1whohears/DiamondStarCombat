@@ -13,9 +13,10 @@ public class ClientForgeEvents {
 
     @SubscribeEvent
     public static void onSyncBoolGameRuleEvent(OnSyncBoolGameRuleEvent event) {
-        if (event.getId().equals(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE.getId())) {
+        if (event.getId().equals(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE.getId()))
             DSCClientInputs.disable3rdPersonVehicle = event.getBool();
-        }
+        else if (event.getId().equals(DSCGameRules.PLANE_ARCADE_MODE.getId()))
+            DSCClientInputs.planeArcadePhysicsMode = event.getBool();
     }
 
 }

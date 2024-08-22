@@ -9,7 +9,7 @@ public abstract class GraphType extends JsonPresetType {
 		public static final String ID = "floatfloat";
 		public static final FloatFloat INSTANCE = new FloatFloat();
 		public FloatFloat() {
-			super(ID, (key, data) -> new FloatFloatGraph(key, data));
+			super(ID, FloatFloatGraph::new);
 		}
 	}
 	public static final AoaLiftK AOALIFTK = AoaLiftK.INSTANCE;
@@ -17,7 +17,7 @@ public abstract class GraphType extends JsonPresetType {
 		public static final String ID = "aoaliftk";
 		public static final AoaLiftK INSTANCE = new AoaLiftK();
 		public AoaLiftK() {
-			super(ID, (key, data) -> new AoaLiftKGraph(key, data));
+			super(ID, AoaLiftKGraph::new);
 		}
 	}
 	public static final FloatFloatMulti FLOATFLOAT_MULTI = FloatFloatMulti.INSTANCE;
@@ -25,7 +25,7 @@ public abstract class GraphType extends JsonPresetType {
 		public static final String ID = "floatfloat_multi";
 		public static final FloatFloatMulti INSTANCE = new FloatFloatMulti();
 		public FloatFloatMulti() {
-			super(ID, (key, data) -> new FFMultiGraph(key, data));
+			super(ID, FFMultiGraph::new);
 		}
 	}
 	public static final TurnRatesBySpeed TURN_RATES_SPEED = TurnRatesBySpeed.INSTANCE;
@@ -33,7 +33,7 @@ public abstract class GraphType extends JsonPresetType {
 		public static final String ID = "turn_rates_speed";
 		public static final TurnRatesBySpeed INSTANCE = new TurnRatesBySpeed();
 		public TurnRatesBySpeed() {
-			super(ID, (key, data) -> new TurnRatesBySpeedGraph(key, data));
+			super(ID, TurnRatesBySpeedGraph::new);
 		}
 	}
 	public GraphType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {

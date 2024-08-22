@@ -48,7 +48,7 @@ public class FFMultiGraph extends MultiGraph<Float, Float> {
 
 	@Override
 	public boolean isFloatLessThan(float a, Float b) {
-		return a < b.floatValue();
+		return a < b;
 	}
 
 	@Override

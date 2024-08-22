@@ -35,7 +35,7 @@ public class FloatFloatGraph extends Graph<Float, Float> {
 
 	@Override
 	public boolean isFloatLessThan(float a, Float b) {
-		return a < b.floatValue();
+		return a < b;
 	}
 
 	@Override

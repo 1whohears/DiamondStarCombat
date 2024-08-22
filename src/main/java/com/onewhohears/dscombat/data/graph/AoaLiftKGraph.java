@@ -25,11 +25,11 @@ public class AoaLiftKGraph extends FloatFloatGraph {
 	
 	private float findCriticalAOA() {
 		for (int i = 1; i < getSize()-1; ++i) {
-			float aoaI = getKeys()[i].floatValue();
+			float aoaI = getKeys()[i];
 			if (aoaI < 0) continue;
-			float liftI = getValues()[i].floatValue();
-			float liftIB = getValues()[i-1].floatValue();
-			float liftIF = getValues()[i+1].floatValue();
+			float liftI = getValues()[i];
+			float liftIB = getValues()[i - 1];
+			float liftIF = getValues()[i + 1];
 			if (liftIB < liftI && liftIF < liftI)
 				return aoaI;
 		}

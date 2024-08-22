@@ -75,7 +75,7 @@ public class SlotType {
 		case "med_turret" : return MOUNT_MED;
 		case "heavy_turret" : return MOUNT_HEAVY;
 		}
-		return null;
+		return INTERNAL;
 	}
 	
 	@Nullable

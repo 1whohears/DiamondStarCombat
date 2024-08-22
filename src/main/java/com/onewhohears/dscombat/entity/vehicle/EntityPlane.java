@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
+import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
@@ -15,11 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityPlane extends EntityVehicle {
-	
+
+	private static final float AOA_CHANGE_RATE = 0.5f;
+
 	private float aoa, liftK, airFoilSpeedSqr, fuselageAoa, fuselageLiftK;
 	private float centripetalForce, centrifugalForce; 
-	private double wingLiftMag, fuselageLift, prevMaxSpeedMod = 1;
-	private Vec3 liftDir = Vec3.ZERO, airFoilAxes = Vec3.ZERO;
+	private double wingLiftMag, prevMaxSpeedMod = 1;
+	private Vec3 liftDir = Vec3.ZERO, liftForce = Vec3.ZERO;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
@@ -53,6 +56,7 @@ public class EntityPlane extends EntityVehicle {
 		super.calcMoveStatsPre(q);
 		calculateAOA(q);
 		calculateLift(q);
+		calculateCentripetalForce();
 	}
 	
 	@Override
@@ -99,30 +103,27 @@ public class EntityPlane extends EntityVehicle {
 	
 	protected void calculateAOA(Quaternion q) {
 		Vec3 u = getDeltaMovement();
-		//System.out.println("u = "+u);
 		Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
 		liftDir = u.cross(pitchAxis).normalize();
-		//debug("liftDir = "+liftDir);
-		airFoilAxes = UtilAngles.getRollAxis(q);
-		//System.out.println("airFoilAxes = "+airFoilAxes);
+        Vec3 airFoilAxes = UtilAngles.getRollAxis(q);
 		airFoilSpeedSqr = (float)UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr();
-		//System.out.println("airFoilSpeedSqr = "+airFoilSpeedSqr);
+		float goalAOA, goalFuselageAOA;
 		if (isOnGround() || UtilGeometry.isZero(u)) {
-			aoa = 0;
-			fuselageAoa = 0;
+			goalAOA = 0;
+			goalFuselageAOA = 0;
 		} else {
-			Vec3 planeNormal = UtilAngles.getYawAxis(q).scale(-1);
-			aoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, planeNormal);
-			Vec3 fuselageNormal = UtilAngles.rotationToVector(getYRot(), getXRot()+90);
-			//debug("fuselageNormal = "+fuselageNormal);
-			fuselageAoa = (float)UtilGeometry.angleBetweenVecPlaneDegrees(u, fuselageNormal);
+            Vec3 wingNormal = UtilAngles.getYawAxis(q).scale(-1);
+			goalAOA = (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
+			Vec3 fuselageNormal = UtilAngles.rotationToVector(getYRot(), getXRot() + 90);
+			goalFuselageAOA = (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, fuselageNormal);
 		}
-		if (isFlapsDown()) aoa += getStats().asPlane().flapsAOABias;
+		if (isFlapsDown()) goalAOA += getStats().asPlane().flapsAOABias;
+		// change in AOA shouldn't be instant
+		aoa = Mth.lerp(AOA_CHANGE_RATE, aoa, goalAOA);
+		fuselageAoa = Mth.lerp(AOA_CHANGE_RATE, fuselageAoa, goalFuselageAOA);
+		// find liftK
 		liftK = getWingLiftKGraph().getLerpFloat(aoa);
 		fuselageLiftK = getFuselageLiftKGraph().getLerpFloat(fuselageAoa);
-		//System.out.println("liftK = "+liftK);
-		//debug("aoa = "+aoa+" liftK = "+liftK);
-		//debug("aoa2 = "+fuselageAoa+" liftK2 = "+fuselageLiftK);
 	}
 	
 	public float getYawRate() {
@@ -132,23 +133,21 @@ public class EntityPlane extends EntityVehicle {
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		wingLiftMag = liftK * airPressure * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT * getWingLiftPercent();
-		fuselageLift = fuselageLiftK * airPressure * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
-		Vec3 lift = getLiftForce(q);
+        double fuselageLift = fuselageLiftK * airPressure * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
+		double cenScale = DSCPhyCons.CENTRIPETAL_SCALE;
+		liftForce = liftDir.scale(getLiftMag()).multiply(cenScale, 1, cenScale).add(0, fuselageLift, 0);
+	}
+
+	protected void calculateCentripetalForce() {
 		Vec3 cenAxis = UtilAngles.getRollAxis(0, (getYRot()+90)*Mth.DEG_TO_RAD);
-		centripetalForce = (float) UtilGeometry.vecCompMagDirByNormAxis(lift, cenAxis);
+		centripetalForce = (float) UtilGeometry.vecCompMagDirByNormAxis(liftForce, cenAxis);
 		if (Mth.abs(centripetalForce) < 0.01) centripetalForce = 0;
 		if (Mth.abs(centrifugalForce) < 0.01) centrifugalForce = 0;
 		// F = m * v * w
 		centrifugalForce = getTotalMass() * xzSpeed * getYawRate()*Mth.DEG_TO_RAD;
-		//debug("#####");
-		//debug("centripetalForce = "+centripetalForce);
-		//debug("centrifugalForce = "+centrifugalForce);
 	}
 	
 	public Vec3 getLiftForce(Quaternion q) {
-		double cenScale = DSCPhyCons.CENTRIPETAL_SCALE;
-		Vec3 liftForce = liftDir.scale(getLiftMag()).multiply(cenScale, 1, cenScale);
-		liftForce = liftForce.add(0, fuselageLift, 0);
 		return liftForce;
 	}
 	
@@ -158,9 +157,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
-		Vec3 direction = UtilAngles.getRollAxis(q);
-		Vec3 thrustForce = direction.scale(getPushThrustMag());
-		return thrustForce;
+		return UtilAngles.getRollAxis(q).scale(getPushThrustMag());
 	}
 	
 	@Override

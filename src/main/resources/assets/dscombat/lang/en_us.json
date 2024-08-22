@@ -98,6 +98,7 @@
 	"slotname.dscombat.internal_10": "Internal 10",
 	"slotname.dscombat.cargo_bed_1": "Cargo Bed 1",
 	"slotname.dscombat.nose_gun": "Nose Gun",
+	"slotname.dscombat.internal_gun": "Internal Gun",
 	
 	"entity.dscombat.test_plane": "Test Plane",
 	"entity.dscombat.javi_plane": "Javi Plane",
@@ -620,5 +621,6 @@
 	"gamerule.explosionDamageVehiclePercent": "DSC Explosion Damage Vehicle Percent Multiplier",
 	"gamerule.bulletDamagePlanePercent": "DSC Bullet Damage Plane Percent Multiplier",
 	"gamerule.bulletDamageHeliPercent": "DSC Bullet Damage Heli Percent Multiplier",
-	"gamerule.disable3rdPersonVehicle": "DSC Disable 3rd Person in Vehicles"
+	"gamerule.disable3rdPersonVehicle": "DSC Disable 3rd Person in Vehicles",
+	"gamerule.planeArcadeMode": "DSC Plane Arcade Physics Mode"
 }

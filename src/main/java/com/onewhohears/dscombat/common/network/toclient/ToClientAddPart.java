@@ -4,9 +4,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.parts.PartData;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,9 +17,9 @@ public class ToClientAddPart extends IPacket {
 	
 	public final int id;
 	public final String slotId;
-	public final PartData data;
+	public final PartInstance<?> data;
 	
-	public ToClientAddPart(int id, String slotId, PartData data) {
+	public ToClientAddPart(int id, String slotId, PartInstance<?> data) {
 		this.id = id;
 		this.slotId = slotId;
 		this.data = data;
@@ -44,7 +44,7 @@ public class ToClientAddPart extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.addPartPacket(id, slotId, data);
+				UtilClientPacket.addPartPacket(id, slotId, data);
 				success.set(true);
 			});
 		});

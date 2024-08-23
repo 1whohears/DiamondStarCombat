@@ -1,0 +1,17 @@
+{
+  "displayName": "item.dscombat.sam_launcher",
+  "externalEntity": "dscombat:sam_launcher",
+  "item": "dscombat:sam_launcher",
+  "maxAmmo": 4,
+  "maxHealth": 60.0,
+  "presetId": "sam_launcher",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 9
+    }
+  ],
+  "slotType": "mount_heavy",
+  "weight": 6000.0
+}

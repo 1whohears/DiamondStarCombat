@@ -6,10 +6,10 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;

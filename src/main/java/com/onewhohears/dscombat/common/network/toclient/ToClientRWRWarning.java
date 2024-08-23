@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,7 +39,7 @@ public class ToClientRWRWarning extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.rwrPacket(id, warning);
+				UtilClientPacket.rwrPacket(id, warning);
 				success.set(true);
 			});
 		});

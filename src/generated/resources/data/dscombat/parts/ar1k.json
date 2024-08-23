@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.ar1k",
+  "item": "dscombat:ar1k",
+  "presetId": "ar1k",
+  "presetType": "internal_radar",
+  "radar": "ar1k",
+  "slotType": "tech_internal",
+  "weight": 300.0
+}

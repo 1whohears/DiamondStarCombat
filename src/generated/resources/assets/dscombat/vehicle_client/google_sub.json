@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.google_sub",
+  "model_data": {
+    "hard_coded_model_anims": "google_sub"
+  },
+  "presetId": "google_sub",
+  "presetType": "standard"
+}

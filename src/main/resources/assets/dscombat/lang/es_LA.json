@@ -111,7 +111,7 @@
 	
 	"itemGroup.parts": "Piezas DSCombat",
 	"itemGroup.weapons": "Armas DSCombat",
-	"itemGroup.aircraft": "Aeronaves DSCombat",
+	"itemGroup.vehicle": "Aeronaves DSCombat",
 	
 	"item.dscombat.ti83": "TI83",
 	"item.dscombat.intel_pentium": "Intel Pentium",

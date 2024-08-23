@@ -1,8 +1,9 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleWeaponPart": "",
+  "compatibleWeaponPart": [
+    "heavy_tank_turret"
+  ],
   "craftNum": 1,
   "damage": 40.0,
   "destroyTerrain": true,
@@ -24,9 +25,10 @@
   "innacuracy": 0.4,
   "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
-  "maxAmmo": 16,
+  "modelId": "120mmhe",
   "presetId": "120mmhe",
+  "presetType": "bullet",
   "rackTypeKey": "",
-  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "shootSoundKey": "dscombat:cannon_shoot_2",
   "speed": 8.0
 }

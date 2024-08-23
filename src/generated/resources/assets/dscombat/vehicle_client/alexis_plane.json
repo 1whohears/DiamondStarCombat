@@ -1,0 +1,314 @@
+{
+  "displayName": "preset.dscombat.alexis_plane",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "internal_gun",
+      "slot_ui_x": 120,
+      "slot_ui_y": 2
+    },
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 120,
+      "slot_ui_y": 21
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 111,
+      "slot_ui_y": 40
+    },
+    {
+      "slot_name": "internal_5",
+      "slot_ui_x": 129,
+      "slot_ui_y": 40
+    },
+    {
+      "slot_name": "internal_6",
+      "slot_ui_x": 120,
+      "slot_ui_y": 58
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 129,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 111,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "left_wing_1",
+      "slot_ui_x": 93,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "left_wing_2",
+      "slot_ui_x": 75,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "left_wing_3",
+      "slot_ui_x": 57,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "left_wing_4",
+      "slot_ui_x": 39,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_1",
+      "slot_ui_x": 147,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_2",
+      "slot_ui_x": 165,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_3",
+      "slot_ui_x": 183,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_4",
+      "slot_ui_x": 201,
+      "slot_ui_y": 57
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "lg0",
+        "pivot": {
+          "x": 0.0,
+          "y": 1.12035,
+          "z": 2.8466563
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg1",
+        "pivot": {
+          "x": 0.65,
+          "y": 1.464475,
+          "z": -2.1602
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg2",
+        "pivot": {
+          "x": -0.65,
+          "y": 1.464475,
+          "z": -2.1602
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -50.0,
+        "model_part_key": "lg1",
+        "pivot": {
+          "x": 0.65,
+          "y": 1.464475,
+          "z": -2.1602
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 50.0,
+        "model_part_key": "lg2",
+        "pivot": {
+          "x": -0.65,
+          "y": 1.464475,
+          "z": -2.1602
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 15.0,
+        "input_axis": "YAW",
+        "model_part_key": "surface0",
+        "pivot": {
+          "x": 0.0,
+          "y": 5.0665126,
+          "z": -7.8688436
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -15.0,
+        "input_axis": "YAW",
+        "model_part_key": "surface0",
+        "pivot": {
+          "x": 0.0,
+          "y": 5.0665126,
+          "z": -7.8688436
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "plane_flap_rotation",
+        "bound": -22.0,
+        "input_axis": "ROLL",
+        "model_part_key": "surface1",
+        "pivot": {
+          "x": 3.114225,
+          "y": 2.389575,
+          "z": -3.6602938
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "plane_flap_rotation",
+        "bound": 22.0,
+        "input_axis": "ROLL",
+        "model_part_key": "surface2",
+        "pivot": {
+          "x": -3.114225,
+          "y": 2.389575,
+          "z": -3.6602938
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface3",
+        "pivot": {
+          "x": 1.3607563,
+          "y": 2.389575,
+          "z": -7.473381
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface4",
+        "pivot": {
+          "x": -1.3607563,
+          "y": 2.389575,
+          "z": -7.473381
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "wing2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "surface1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "wing1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "surface2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_elevator",
+        "model_part_key": "surface3"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_elevator",
+        "model_part_key": "surface4"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "surface0"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing0"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -25.0,
+        "input_axis": "PITCH",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": -0.4486125,
+          "y": 2.5458312,
+          "z": 4.9312186
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 25.0,
+        "input_axis": "ROLL",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": -0.4486125,
+          "y": 2.5458312,
+          "z": 4.9312186
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -0.0625
+        },
+        "input_axis": "YAW",
+        "model_part_key": "pedal0"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0625
+        },
+        "input_axis": "YAW",
+        "model_part_key": "pedal1"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.1875
+        },
+        "input_axis": "THROTTLE",
+        "model_part_key": "throttle"
+      }
+    ],
+    "model_id": "alexis_plane"
+  },
+  "presetId": "alexis_plane",
+  "presetType": "standard"
+}

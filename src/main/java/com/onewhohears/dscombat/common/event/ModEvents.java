@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCParticleDebugCommand;
-import com.onewhohears.dscombat.command.DebugScreenPosCommand;
+import com.onewhohears.dscombat.command.DebugHitboxPosCommand;
 import com.onewhohears.dscombat.command.DebugSlotPosCommand;
 import com.onewhohears.dscombat.command.MissileCommand;
 import com.onewhohears.dscombat.command.VehicleCommand;
@@ -22,9 +22,9 @@ public final class ModEvents {
 	public static void registerCommands(RegisterCommandsEvent event) {
 		new MissileCommand(event.getDispatcher());
 		new VehicleCommand(event.getDispatcher());
-		new DebugScreenPosCommand(event.getDispatcher());
 		new DSCParticleDebugCommand(event.getDispatcher());
 		new DebugSlotPosCommand(event.getDispatcher());
+		new DebugHitboxPosCommand(event.getDispatcher());
 		ConfigCommand.register(event.getDispatcher());
 		// IDEA 3.2 set position guided missile position with command
 	}

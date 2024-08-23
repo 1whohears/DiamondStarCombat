@@ -3,9 +3,9 @@ package com.onewhohears.dscombat.util;
 import java.util.Random;
 
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModParticles;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
@@ -113,9 +113,7 @@ public class UtilParticles {
 	
 	public static void engineFireSmoke(EntityVehicle vehicle) {
 		if (!vehicle.isEngineFire()) return;
-		Quaternion q = vehicle.getClientQ();
-		for (Vec3 relPos : vehicle.getAfterBurnerSmokePos()) {
-			Vec3 pos = UtilAngles.rotateVector(relPos, q).add(vehicle.position());
+		for (Vec3 pos : vehicle.getEngineFirePos()) {
 			for (int i = 0; i < 2; ++i) flame(vehicle.level, pos);
 			for (int i = 0; i < 10; ++i) smoke(vehicle.level, pos);
 			for (int i = 0; i < 2; ++i) bigSmoke(vehicle.level, pos);
@@ -186,9 +184,9 @@ public class UtilParticles {
 	}
 	
 	public static void bulletExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		radius *= 1.3;
+		radius *= 0.5;
 		for (double d = 1; d <= radius; d += 1) {
-			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
+			for (int i = 0; i < 360; i += 30) for (int j = -90; j <= 90; j += 30) {
 				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
 					true, pos.x, pos.y+0.2, pos.z, 
 					Math.cos(i)*d, Math.sin(j)*d, Math.sin(i)*d);
@@ -204,7 +202,7 @@ public class UtilParticles {
 	}
 	
 	public static void bombExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		radius *= 1.3;
+		radius *= 0.9;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
 				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 
@@ -222,7 +220,7 @@ public class UtilParticles {
 	}
 	
 	public static void missileExplode(Level level, Vec3 pos, double radius, boolean fire) {
-		radius *= 1.3;
+		radius *= 0.8;
 		for (double d = 1; d <= radius; d += 1) {
 			for (int i = 0; i < 360; i += 20) for (int j = -90; j <= 90; j += 30) {
 				level.addAlwaysVisibleParticle(ModParticles.LARGE_SMOKE_CLOUD.get(), 

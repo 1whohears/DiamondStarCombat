@@ -1,0 +1,12 @@
+{
+  "displayName": "item.dscombat.klimov_rd33",
+  "engineType": "PUSH",
+  "fuelRate": 0.006,
+  "heat": 6.5,
+  "item": "dscombat:klimov_rd33",
+  "presetId": "klimov_rd33",
+  "presetType": "internal_engine",
+  "slotType": "push_engine",
+  "thrust": 225.0,
+  "weight": 600.0
+}

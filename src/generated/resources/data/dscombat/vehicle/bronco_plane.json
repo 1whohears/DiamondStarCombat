@@ -1,0 +1,39 @@
+{
+  "copyId": "bronco_plane_unarmed",
+  "displayName": "preset.dscombat.bronco_plane",
+  "ingredients": [
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "bronco_plane",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65l",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_1"
+    }
+  ]
+}

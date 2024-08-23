@@ -4,30 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.weapon.IRMissileData;
-import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.stats.IRMissileStats;
+import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
-import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-public class IRMissile extends EntityMissile {
+public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 	
-	protected IRMissileData irMissileData;
-	
-	public IRMissile(EntityType<? extends IRMissile> type, Level level, String defaultWeaponId) {
+	public IRMissile(EntityType<? extends IRMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 	}
 	
 	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		irMissileData = (IRMissileData)weaponData;
+	public WeaponType getWeaponType() {
+		return WeaponType.IR_MISSILE;
 	}
 	
 	@Override
@@ -40,41 +37,31 @@ public class IRMissile extends EntityMissile {
 	
 	public static void updateIRTargetsList(Entity weapon, List<IrTarget> targets, float flareResistance, float fov) {
 		targets.clear();
-		// planes
-		List<EntityVehicle> planes = weapon.level.getEntitiesOfClass(
-				EntityVehicle.class, getIrBoundingBox(weapon));
-		for (int i = 0; i < planes.size(); ++i) {
-			if (!basicCheck(weapon, planes.get(i), true, fov)) continue;
-			float distSqr = (float)weapon.distanceToSqr(planes.get(i));
-			targets.add(new IrTarget(planes.get(i), planes.get(i).getHeat() / distSqr));
-		}	
-		// flares
-		List<EntityFlare> flares = weapon.level.getEntitiesOfClass(
-				EntityFlare.class, getIrBoundingBox(weapon));
-		for (int i = 0; i < flares.size(); ++i) {
-			if (!basicCheck(weapon, flares.get(i), false, fov)) continue;
-			float distSqr = (float)weapon.distanceToSqr(flares.get(i));
-			targets.add(new IrTarget(flares.get(i), 
-					flares.get(i).getHeat() / distSqr * flareResistance));
-		}
-		// other
-		for (int j = 0; j < RadarTargetTypes.get().getIrEntityClasses().size(); ++j) {
-			Class<? extends Entity> clazz = RadarTargetTypes.get().getIrEntityClasses().get(j);
-			float heat = RadarTargetTypes.get().getIrEntityHeats().get(j);
-			List<? extends Entity> entities = weapon.level.getEntitiesOfClass(
-					clazz, getIrBoundingBox(weapon));
-			for (int i = 0; i < entities.size(); ++i) {
-				if (entities.get(i).isPassenger()) continue;
-				if (!basicCheck(weapon, entities.get(i), true, fov)) continue;
-				float distSqr = (float)weapon.distanceToSqr(entities.get(i));
-				targets.add(new IrTarget(entities.get(i), 
-						getSpecificEntityHeat(entities.get(i), heat) / distSqr));
-			}
+		List<Entity> irEmitters = weapon.level.getEntities(weapon, getIrBoundingBox(weapon), 
+				(entity) -> entity.getType().is(ModTags.EntityTypes.IR_EMITTER));
+		for (int i = 0; i < irEmitters.size(); ++i) {
+			Entity emitter = irEmitters.get(i);
+			if (emitter.isPassenger()) continue;
+			if (!basicCheck(weapon, emitter, true, fov)) continue;
+			float distSqr = (float)weapon.distanceToSqr(emitter);
+			float heat = getEntityHeat(emitter, flareResistance);
+			targets.add(new IrTarget(emitter, heat / distSqr));
 		}
 	}
 	
+	public static float getEntityHeat(Entity entity, float flareResistance) {
+		float heat = 0;
+		if (entity instanceof IREmitter ir) heat = ir.getIRHeat();
+		else if (entity.getType().is(ModTags.EntityTypes.IR_EMITTER_EXTREME)) heat = 100;
+		else if (entity.getType().is(ModTags.EntityTypes.IR_EMITTER_HIGH)) heat = 20;
+		else if (entity.getType().is(ModTags.EntityTypes.IR_EMITTER_MED)) heat = 5;
+		else if (entity.getType().is(ModTags.EntityTypes.IR_EMITTER_LOW)) heat = 1;
+		if (entity.getType().is(ModTags.EntityTypes.FLARE)) heat *= flareResistance;
+		return heat;
+	}
+	
 	protected void findIrTarget() {
-		updateIRTargetsList(this, targets, irMissileData.getFlareResistance(), irMissileData.getFov());
+		updateIRTargetsList(this, targets, getWeaponStats().getFlareResistance(), getWeaponStats().getFov());
 		// pick target
 		if (targets.size() == 0) {
 			this.target = null;
@@ -121,10 +108,6 @@ public class IRMissile extends EntityMissile {
 		return true;
 	}
 	
-	protected static float getSpecificEntityHeat(Entity e, float instead) {
-		return RadarTargetTypes.get().getEntityHeat(EntityType.getKey(e.getType()).toString(), instead);
-	}
-	
 	public static final double IR_RANGE = 300d;
 	
 	public static AABB getIrBoundingBox(Entity e) {
@@ -155,11 +138,6 @@ public class IRMissile extends EntityMissile {
 	@Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.IR_MISSILE.getSource(getOwner(), this);
-	}
-	
-	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.IR_MISSILE;
 	}
 
 }

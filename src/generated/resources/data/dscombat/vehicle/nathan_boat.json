@@ -1,0 +1,59 @@
+{
+  "copyId": "nathan_boat_unarmed",
+  "displayName": "preset.dscombat.nathan_boat",
+  "ingredients": [
+    {
+      "item": "dscombat:minigun_turret",
+      "num": 1
+    },
+    {
+      "item": "dscombat:wr400",
+      "num": 1
+    },
+    {
+      "num": 64,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 24
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 60
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 2
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "nathan_boat",
+  "presetType": "boat",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "part": "minigun_turret"
+      },
+      "name": "seat1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "torpedo1",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "torpedo1",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_2"
+    }
+  ]
+}

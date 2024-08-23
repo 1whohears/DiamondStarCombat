@@ -2,13 +2,14 @@ package com.onewhohears.dscombat.entity.parts;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilParse;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,9 +33,14 @@ public abstract class EntityPart extends Entity {
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.FLOAT);
 	
 	private float z_rot;
+	protected double renderSqrDistance = 0;
 	
 	protected EntityPart(EntityType<?> entityType, Level level) {
 		super(entityType, level);
+		if (level.isClientSide && shouldRender()) {
+			double dist = getClientRenderDistance();
+			renderSqrDistance = dist * dist;
+		}
 	}
 
 	@Override
@@ -77,7 +83,11 @@ public abstract class EntityPart extends Entity {
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
-		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) discard();
+		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) onNoParent();
+	}
+	
+	protected void onNoParent() {
+		discard();
 	}
 	
 	public Vec3 getRelativePos() {
@@ -123,6 +133,15 @@ public abstract class EntityPart extends Entity {
 	}
 	
 	public abstract boolean shouldRender();
+	
+	protected double getClientRenderDistance() {
+		return Config.CLIENT.renderOtherExternalPartDistance.get();
+	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double dist) {
+		return shouldRender() && dist <= renderSqrDistance;
+	}
 	
 	public float getZRot() {
 		return z_rot;

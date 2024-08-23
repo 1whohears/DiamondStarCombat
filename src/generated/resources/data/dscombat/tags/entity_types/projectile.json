@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#minecraft:impact_projectiles",
+    "#dscombat:projectile/bullet",
+    "#dscombat:projectile/bomb",
+    "#dscombat:projectile/missile",
+    "#dscombat:projectile/anti_tank_shell"
+  ]
+}

@@ -6,36 +6,30 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.monster.RangedAttackMob;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.phys.Vec3;
 
 public class TurretShootGoal extends Goal {
 	
 	public static final Random RANDOM = new Random();
-	
 	/**
 	 * the mob will never shoot from the turret
 	 */
 	public static final ShootFunction CANT_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		return prevTargetPos;
 	};
-	
 	/**
 	 * the mob shoots in a %100 random direction every 1.5 seconds
 	 */
@@ -48,7 +42,6 @@ public class TurretShootGoal extends Goal {
 		turret.shoot(mob);
 		return prevTargetPos;
 	};
-	
 	/**
 	 * the mob shoots up to 25 degrees off the target location and updates once a second
 	 */
@@ -58,7 +51,6 @@ public class TurretShootGoal extends Goal {
 		if (shouldShootTurret(mob, turret, target, prevTargetPos, 360, false, false)) turret.shoot(mob);
 		return prevTargetPos;
 	};
-	
 	/**
 	 * the mob shoots up to 10 degrees off the target location and updates twice a second
 	 */
@@ -68,7 +60,6 @@ public class TurretShootGoal extends Goal {
 		if (shouldShootTurret(mob, turret, target, prevTargetPos, 20, true, false)) turret.shoot(mob);
 		return prevTargetPos;
 	};
-	
 	/**
 	 * the mob shoots up to 5 degrees off the target location and updates twice a second
 	 */
@@ -78,7 +69,6 @@ public class TurretShootGoal extends Goal {
 		if (shouldShootTurret(mob, turret, target, prevTargetPos, 10, true, true)) turret.shoot(mob);
 		return prevTargetPos;
 	};
-	
 	/**
 	 * the mob accounts for long distance shots by aiming up a little. 
 	 * the mob shoots up to 3 degrees off the target location and updates twice a second
@@ -95,9 +85,9 @@ public class TurretShootGoal extends Goal {
 		if (prevTargetPos == null || mob.tickCount % updateRate == 0) {
 			Vec3 origin = turret.getEyePosition();
 			Vec3 targetPos = target.getEyePosition();
-			WeaponData wd = turret.getWeaponData();
-			if (accountGravity && wd != null && wd.getType().isBullet()) {
-				double speed = ((BulletData)wd).getSpeed();
+			WeaponInstance<?> wd = turret.getWeaponData();
+			if (accountGravity && wd != null && wd.getStats().isBullet()) {
+				double speed = ((BulletStats)wd.getStats()).getSpeed();
 				if (speed <= 0) speed = 0.01;
 				double g = -DSCPhyCons.GRAVITY;
 				Vec3 diff = targetPos.subtract(origin);
@@ -118,15 +108,15 @@ public class TurretShootGoal extends Goal {
 	
 	public static boolean shouldShootTurret(Mob mob, EntityTurret turret, LivingEntity target, 
 			Vec3 targetPos, float aimError, boolean useIRMis, boolean useTrackMis) {
-		WeaponData wd = turret.getWeaponData();
+		WeaponInstance<?> wd = turret.getWeaponData();
 		if (wd == null) return false;
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
-		if (useIRMis && wd.getType().isIRMissile()) {
-			if (turret.tickCount-turret.getLastShootTime() < wd.getMaxAge()*0.5) return false;
-			if (UtilEntity.isOnGroundOrWater(target)) return false;
+		if (useIRMis && wd.getStats().isIRMissile()) {
+			if (turret.tickCount-turret.getLastShootTime() < wd.getStats().getMaxAge()*0.5) return false;
+			if (UtilVehicleEntity.isOnGroundOrWater(target)) return false;
 			aimError += 6;
-		} else if (useTrackMis && wd.requiresRadar()) {
-			if (turret.tickCount-turret.getLastShootTime() < wd.getMaxAge()*0.5) return false;
+		} else if (useTrackMis && wd.getStats().requiresRadar()) {
+			if (turret.tickCount-turret.getLastShootTime() < wd.getStats().getMaxAge()*0.5) return false;
 			EntityVehicle vehicle = turret.getParentVehicle();
 			if (vehicle == null) return false;
 			if (!vehicle.radarSystem.hasRadar()) return false;
@@ -142,16 +132,11 @@ public class TurretShootGoal extends Goal {
 	}
 	
 	public static ShootFunction getShootFunctionByMob(Mob mob) {
-		if (mob instanceof RangedAttackMob) return SMART_SHOOT;
-		else if (mob instanceof Enemy) {
-			if (mob instanceof Creeper) return RANDOM_SHOOT;
-			else if (mob instanceof Zombie) return STUPID_SHOOT;
-			else if (mob instanceof EnderMan) return SMART_SHOOT;
-			else return DUMBASS_SHOOT;
-		} else if (mob instanceof AbstractGolem) {
-			return NORMAL_SHOOT;
-		}
-		// TODO 7.1 make the shoot type by mob type configurable in common config
+		if (mob.getType().is(ModTags.EntityTypes.TURRET_SHOOT_SMART)) return SMART_SHOOT;
+		else if (mob.getType().is(ModTags.EntityTypes.TURRET_SHOOT_NORMAL)) return NORMAL_SHOOT;
+		else if (mob.getType().is(ModTags.EntityTypes.TURRET_SHOOT_STUPID)) return STUPID_SHOOT;
+		else if (mob.getType().is(ModTags.EntityTypes.TURRET_SHOOT_DUMBASS)) return DUMBASS_SHOOT;
+		else if (mob.getType().is(ModTags.EntityTypes.TURRET_SHOOT_RANDOM)) return RANDOM_SHOOT;
 		return CANT_SHOOT;
 	}
 	

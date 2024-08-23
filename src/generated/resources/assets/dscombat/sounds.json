@@ -113,6 +113,24 @@
     ],
     "subtitle": "sounds.dscombat.bullet_shoot_1"
   },
+  "cannon_shoot_1": {
+    "sounds": [
+      "dscombat:weapon/cannon_10_shot-001",
+      "dscombat:weapon/cannon_10_shot-002",
+      "dscombat:weapon/cannon_10_shot-003",
+      "dscombat:weapon/cannon_10_shot-004"
+    ],
+    "subtitle": "sounds.dscombat.cannon_shoot_1"
+  },
+  "cannon_shoot_2": {
+    "sounds": [
+      "dscombat:weapon/cannon_2-001",
+      "dscombat:weapon/cannon_2-002",
+      "dscombat:weapon/cannon_2-003",
+      "dscombat:weapon/cannon_2-004"
+    ],
+    "subtitle": "sounds.dscombat.cannon_shoot_2"
+  },
   "engine_fire_gm1": {
     "sounds": [
       "dscombat:cockpit/warnings/generic_male_1/engine_fire"
@@ -269,10 +287,16 @@
     ],
     "subtitle": "sounds.dscombat.tank_1"
   },
-  "vehicle_hit": {
+  "vehicle_hurt_collision_metal": {
     "sounds": [
-      "dscombat:vehicle/vehicle_hit"
+      "dscombat:vehicle/hurt/collision/metal_01"
     ],
     "subtitle": "sounds.dscombat.vehicle_hit"
+  },
+  "vehicle_hurt_projectile_metal": {
+    "sounds": [
+      "dscombat:vehicle/hurt/projectile/metal_01"
+    ],
+    "subtitle": "sounds.dscombat.vehicle.hurt.projectile_metal"
   }
 }

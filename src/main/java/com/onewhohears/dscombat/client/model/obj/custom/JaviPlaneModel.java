@@ -4,20 +4,21 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
-public class JaviPlaneModel extends ObjAircraftModel<EntityPlane> {
+@Deprecated
+public class JaviPlaneModel extends ObjVehicleModel<EntityVehicle> {
 
 	public JaviPlaneModel() {
 		super("javi_plane");
 	}
 	
 	@Override
-	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
+	protected Transforms getComponentTransforms(EntityVehicle entity, float partialTicks) {
 		// landing gear
 		float gearpos = entity.getLandingGearPos(partialTicks);
 		Matrix4f lg0_mat, lg1_mat, lg2_mat;
@@ -48,7 +49,6 @@ public class JaviPlaneModel extends ObjAircraftModel<EntityPlane> {
 		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
 		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
-			.put("gun", INVISIBLE)
 			.put("lg0", lg0_mat)
 			.put("lg1", lg1_mat)
 			.put("lg2", lg2_mat)

@@ -1,0 +1,155 @@
+{
+  "armor": 300.0,
+  "displayName": "preset.dscombat.mrbudger_tank_empty",
+  "health": 200.0,
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 4
+    },
+    {
+      "item": "dscombat:tank_track",
+      "num": 4
+    },
+    {
+      "num": 30,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 5
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:mrbudger_tank",
+  "landing_gear": true,
+  "presetId": "mrbudger_tank_empty",
+  "presetType": "car",
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "pilot_seat",
+      "slot_posx": 0.0,
+      "slot_posy": 1.4,
+      "slot_posz": 0.0,
+      "slot_type": "mount_heavy",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat1",
+      "slot_posx": 1.0,
+      "slot_posy": 1.4,
+      "slot_posz": 2.0,
+      "slot_type": "mount_med",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat2",
+      "slot_posx": -1.0,
+      "slot_posy": 1.4,
+      "slot_posz": 2.0,
+      "slot_type": "mount_med",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat3",
+      "slot_posx": 1.0,
+      "slot_posy": 1.4,
+      "slot_posz": -2.0,
+      "slot_type": "mount_med",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat4",
+      "slot_posx": -1.0,
+      "slot_posy": 1.4,
+      "slot_posz": -2.0,
+      "slot_type": "mount_med",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "spin_engine",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "spin_engine",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_3",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    }
+  ],
+  "sort_factor": 4,
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:tank_1",
+    "passengerEngine": "dscombat:tank_1"
+  },
+  "stats": {
+    "armor_damage_absorbtion": 0.55,
+    "armor_damage_threshold": 8.0,
+    "assetId": "mrbudger_tank",
+    "base_armor": 300.0,
+    "cameraDistance": 4.0,
+    "car": {
+      "isTank": true
+    },
+    "crashExplosionRadius": 3.0,
+    "cross_sec_area": 7.5,
+    "entity_size_xz": 3.0,
+    "entity_size_y": 2.5,
+    "idleheat": 10.0,
+    "inertiapitch": 12.0,
+    "inertiaroll": 8.0,
+    "inertiayaw": 8.0,
+    "mass": 15000.0,
+    "max_health": 200.0,
+    "max_speed": 0.3,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 2.0,
+    "negativeThrottle": true,
+    "stealth": 1.0,
+    "throttledown": 0.04,
+    "throttleup": 0.04,
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 8.0,
+    "turn_radius": 0.0
+  }
+}

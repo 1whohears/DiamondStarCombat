@@ -8,9 +8,12 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.data.weapon.instance.NoWeaponInstance;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * manages available weapons for {@link EntityVehicle}.
- * available weapons are found in a list of {@link WeaponData}.
+ * available weapons are found in a list of {@link WeaponStats}.
  * used to fire a vehicle's selected weapon.
  * will synch ammo numbers and other info with client.
  * will tell a pilot why a weapon launch failed.
@@ -29,39 +32,40 @@ public class WeaponSystem {
 	
 	private final EntityVehicle parent;
 	private boolean readData = false;
-	private List<WeaponData> weapons = new ArrayList<WeaponData>();
+	private List<WeaponInstance<?>> weapons = new ArrayList<>();
 	private int weaponIndex = 0;
 	
 	public WeaponSystem(EntityVehicle parent) {
 		this.parent = parent;
-		weapons.add(NoWeaponData.get());
+		weapons.add(NoWeaponInstance.get());
 	}
 	
-	public boolean addWeapon(WeaponData data) {
-		if (get(data.getId(), data.getSlotId()) != null) return false;
+	public boolean addWeapon(WeaponInstance<?> data) {
+		if (get(data.getStatsId(), data.getSlotId()) != null) return false;
 		weapons.add(data);
 		return true;
 	}
 	
 	public boolean removeWeapon(String id, String slotId) {
-		return weapons.remove(get(id, slotId));
+		WeaponInstance<?> w = get(id, slotId);
+		if (w == null) return false;
+		if (w.getStats().isNoWeapon()) return false;
+		return weapons.remove(w);
 	}
 	
 	@Nullable
-	public WeaponData get(String id, String slotId) {
-		for (WeaponData w : weapons) if (w.idMatch(id, slotId)) return w;
+	public WeaponInstance<?> get(String id, String slotId) {
+		for (WeaponInstance<?> w : weapons) if (w.idMatch(id, slotId)) return w;
 		return null;
 	}
 	
 	@Nullable
-	public WeaponData get(String slotId) {
-		for (WeaponData w : weapons) if (w.getSlotId().equals(slotId)) return w;
+	public WeaponInstance<?> get(String slotId) {
+		for (WeaponInstance<?> w : weapons) if (w.getSlotId().equals(slotId)) return w;
 		return null;
 	}
 	
-	@Nullable
-	public WeaponData getSelected() {
-		if (weapons.size() == 0) return null;
+	public WeaponInstance<?> getSelected() {
 		checkIndex();
 		return weapons.get(weaponIndex);
 	}
@@ -79,13 +83,13 @@ public class WeaponSystem {
 	}
 	
 	public boolean shootSelected(Entity controller, boolean consume) {
-		WeaponData data = getSelected();
+		WeaponInstance<?> data = getSelected();
 		if (data == null) return false;
-		String name = data.getId();
+		String name = data.getStatsId();
 		String reason = null;
 		data.shootFromVehicle(parent.level, controller, getShootDirection(data), parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
-		for (WeaponData wd : weapons) if (wd.getType().isBullet() && wd.getId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
+		for (WeaponInstance<?> wd : weapons) if (wd.getStats().isBullet() && wd.getStatsId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
 			wd.shootFromVehicle(parent.level, controller, getShootDirection(wd), parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
@@ -95,9 +99,9 @@ public class WeaponSystem {
 		return true;
 	}
 	
-	public Vec3 getShootDirection(WeaponData data) {
+	public Vec3 getShootDirection(WeaponInstance<?> data) {
 		Quaternion q = parent.getQ();
-		if (parent.isWeaponAngledDown() && data.canAngleDown()) {
+		if (parent.isWeaponAngledDown() && data.getStats().canAngleDown()) {
 			q.mul(Vector3f.XP.rotationDegrees(25f));
 		}
     	return UtilAngles.getRollAxis(q);
@@ -135,24 +139,32 @@ public class WeaponSystem {
 		return readData;
 	}
 	
-	public List<WeaponData> getWeapons() {
+	public List<WeaponInstance<?>> getWeapons() {
 		return weapons;
 	}
 	
 	@Override
 	public String toString() {
 		String s = "Weapons:";
-		for (WeaponData w : weapons) s += w;
+		for (WeaponInstance<?> w : weapons) s += w;
 		return s;
 	}
 	
 	public int addAmmo(String id, int ammo, boolean updateClient) {
-		for (WeaponData w : weapons) if (w.getId().equals(id)) {
+		for (WeaponInstance<?> w : weapons) if (w.getStatsId().equals(id)) {
 			ammo = w.addAmmo(ammo);
 			if (updateClient) w.updateClientAmmo(parent);
 			if (ammo == 0) return 0;
 		}
 		return ammo;
+	}
+	
+	public void refillAll() {
+		if (parent.level.isClientSide) return;
+		for (WeaponInstance<?> w : weapons) {
+			w.addAmmo(100000);
+			w.updateClientAmmo(parent);
+		}
 	}
 	
 }

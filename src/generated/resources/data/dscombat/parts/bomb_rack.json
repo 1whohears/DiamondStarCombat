@@ -1,0 +1,10 @@
+{
+  "changeLaunchPitch": 0.0,
+  "displayName": "item.dscombat.bomb_rack",
+  "item": "dscombat:bomb_rack",
+  "max": 16,
+  "presetId": "bomb_rack",
+  "presetType": "external_weapon",
+  "slotType": "pylon_heavy",
+  "weight": 2000.0
+}

@@ -1,19 +1,22 @@
 package com.onewhohears.dscombat.common.event;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDataPackSynch;
-import com.onewhohears.dscombat.common.network.toclient.ToClientSynchGameRules;
-import com.onewhohears.dscombat.data.aircraft.AircraftPresets;
+import com.onewhohears.onewholibs.common.event.GetJsonPresetListenersEvent;
+import com.onewhohears.dscombat.data.graph.StatGraphs;
+import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.radar.RadarPresets;
+import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
 
-import net.minecraft.world.level.GameRules;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -23,26 +26,29 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.PacketDistributor.PacketTarget;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE)
 public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void livingHurtEvent(LivingHurtEvent event) {
-		if (event.getSource().isBypassArmor() || event.getSource().isMagic()) return;
+		if (event.getSource().isMagic()) return;
 		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityVehicle plane)) return;
-		float a = event.getAmount();
-		//System.out.println("PLAYER HURT "+event.getEntity()+" "+a);
-		event.setAmount(Math.max(0, a-a*plane.getTotalArmor()*DSCGameRules.getVehicleArmorStrengthFactor(plane.level)));
+		event.setAmount(Math.max(0, plane.calcDamageToInside(event.getSource(), event.getAmount())));
 	}
+	
+	private static Set<Integer> explodeRepeatCheck = new HashSet<>();
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void explosionEvent(ExplosionEvent.Detonate event) {
+		explodeRepeatCheck.clear();
 		for (int i = 0; i < event.getAffectedEntities().size(); ++i) {
-			if (!(event.getAffectedEntities().get(i) instanceof EntityVehicle plane)) continue;
-			plane.customExplosionHandler(event.getExplosion());
+			Entity e = event.getAffectedEntities().get(i);
+			if (!e.ignoreExplosion()) continue;
+			if (explodeRepeatCheck.contains(e.getId())) continue;
+			if (!(e instanceof CustomExplosion entity)) continue;
+			entity.customExplosionHandler(event.getExplosion());
+			explodeRepeatCheck.add(e.getId());
 		}
 	}
 	
@@ -66,30 +72,22 @@ public final class CommonForgeEvents {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void onDatapackSync(OnDatapackSyncEvent event) {
-		PacketTarget target;
-		if (event.getPlayer() == null) target = PacketDistributor.ALL.noArg();
-		else {
-			target = PacketDistributor.PLAYER.with(() -> event.getPlayer());
-			GameRules gr = event.getPlayer().level.getGameRules();
-			PacketHandler.INSTANCE.send(target, 
-				new ToClientSynchGameRules(gr.getBoolean(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE)));
-		}
-		PacketHandler.INSTANCE.send(target, new ToClientDataPackSynch());
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void serverStoppingEvent(ServerStoppingEvent event) {
-		AircraftPresets.close();
+		VehiclePresets.close();
 		WeaponPresets.close();
 		RadarPresets.close();
+		PartPresets.close();
+		StatGraphs.close();
+		RotableHitboxes.onServerStop();
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public static void addReloadListener(AddReloadListenerEvent event) {
-		event.addListener(AircraftPresets.get());
+	public static void addJsonPresetListener(GetJsonPresetListenersEvent event) {
+		event.addListener(StatGraphs.get());
+		event.addListener(VehiclePresets.get());
 		event.addListener(WeaponPresets.get());
 		event.addListener(RadarPresets.get());
+		event.addListener(PartPresets.get());
 	}
 	
 	/*@SubscribeEvent(priority = EventPriority.NORMAL)

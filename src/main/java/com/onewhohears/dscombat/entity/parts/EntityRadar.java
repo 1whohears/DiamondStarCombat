@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.parts.PartType;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -17,8 +18,8 @@ public class EntityRadar extends EntityPart {
 	}
 	
 	@Override
-	public boolean shouldRenderAtSqrDistance(double dist) {
-		return dist < 65536;
+	protected double getClientRenderDistance() {
+		return Config.CLIENT.renderRadarDistance.get();
 	}
 
 	@Override

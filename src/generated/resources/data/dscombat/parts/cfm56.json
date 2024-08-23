@@ -1,0 +1,13 @@
+{
+  "displayName": "item.dscombat.cfm56",
+  "engineType": "PUSH",
+  "externalEntity": "dscombat:cfm56",
+  "fuelRate": 0.017,
+  "heat": 9.0,
+  "item": "dscombat:cfm56",
+  "presetId": "cfm56",
+  "presetType": "internal_engine",
+  "slotType": "pylon_heavy",
+  "thrust": 650.0,
+  "weight": 2000.0
+}

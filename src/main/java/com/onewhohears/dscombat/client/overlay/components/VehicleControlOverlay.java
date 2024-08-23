@@ -4,11 +4,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-
-import java.util.Objects;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
 
 // TODO: redo texture
 public class VehicleControlOverlay extends VehicleOverlayComponent {
@@ -23,19 +23,16 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
 
     public static final int STICK_BASE_SIZE = 60, STICK_KNOB_SIZE = STICK_BASE_SIZE / 6;
     protected static int PEDAL_HEIGHT = 25, PEDAL_WIDTH = 20;
-
-    private static VehicleControlOverlay INSTANCE;
-
-    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleControlOverlay();
-        INSTANCE.render(poseStack, screenWidth, screenHeight);
+    @Override
+    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        if (defaultRenderConditions()) return false;
+        return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
-    private VehicleControlOverlay() {}
-
     @Override
-    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
+    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
+        assert vehicle != null;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING;
         int yOrigin = screenHeight - PADDING;
@@ -88,5 +85,10 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
                 0, 0,
                 STICK_KNOB_SIZE, STICK_KNOB_SIZE,
                 STICK_KNOB_SIZE, STICK_KNOB_SIZE);
+    }
+
+    @Override
+    protected @NotNull String componentId() {
+        return "dscombat_controls";
     }
 }

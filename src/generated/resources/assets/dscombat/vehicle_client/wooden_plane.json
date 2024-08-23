@@ -1,0 +1,76 @@
+{
+  "displayName": "preset.dscombat.wooden_plane",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/wooden_plane.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 118,
+      "slot_ui_y": 43
+    },
+    {
+      "slot_name": "left_wing_1",
+      "slot_ui_x": 88,
+      "slot_ui_y": 43
+    },
+    {
+      "slot_name": "right_wing_1",
+      "slot_ui_x": 148,
+      "slot_ui_y": 43
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 118,
+      "slot_ui_y": 25
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 118,
+      "slot_ui_y": 61
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 118,
+      "slot_ui_y": 79
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "blade",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.25
+        },
+        "rot_axis": "Z",
+        "rot_rate": 30.0
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "gear_front",
+        "pivot": {
+          "x": 0.0,
+          "y": -0.40625,
+          "z": 0.28125
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "gear_back",
+        "pivot": {
+          "x": 0.0,
+          "y": -0.375,
+          "z": -1.65625
+        },
+        "rot_axis": "X"
+      }
+    ],
+    "model_id": "wooden_plane"
+  },
+  "presetId": "wooden_plane",
+  "presetType": "standard"
+}

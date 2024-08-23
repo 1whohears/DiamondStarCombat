@@ -1,0 +1,34 @@
+{
+  "copyId": "axcel_truck_unarmed",
+  "displayName": "preset.dscombat.axcel_truck",
+  "ingredients": [
+    {
+      "item": "dscombat:sam_launcher",
+      "num": 1
+    },
+    {
+      "item": "dscombat:air_scan_a",
+      "num": 1
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "axcel_truck",
+  "presetType": "car",
+  "slots": [
+    {
+      "data": {
+        "part": "axcel_truck_radar"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "pac3",
+        "part": "sam_launcher"
+      },
+      "name": "cargo_bed_1"
+    }
+  ]
+}

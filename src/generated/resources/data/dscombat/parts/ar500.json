@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.ar500",
+  "item": "dscombat:ar500",
+  "presetId": "ar500",
+  "presetType": "internal_radar",
+  "radar": "ar500",
+  "slotType": "tech_internal",
+  "weight": 200.0
+}

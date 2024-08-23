@@ -1,0 +1,50 @@
+{
+  "copyId": "eden_plane_empty",
+  "displayName": "preset.dscombat.eden_plane_unarmed",
+  "ingredients": [
+    {
+      "item": "dscombat:internal_gun",
+      "num": 1
+    },
+    {
+      "item": "dscombat:klimov_rd33",
+      "num": 2
+    },
+    {
+      "item": "dscombat:heavy_fuel_tank",
+      "num": 1
+    }
+  ],
+  "is_craftable": true,
+  "landing_gear": true,
+  "presetId": "eden_plane_unarmed",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "part": "klimov_rd33"
+      },
+      "name": "internal_1"
+    },
+    {
+      "data": {
+        "part": "klimov_rd33"
+      },
+      "name": "internal_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_3"
+    },
+    {
+      "data": {
+        "param": "20mm",
+        "part": "gsh_30_1"
+      },
+      "name": "internal_gun"
+    }
+  ]
+}

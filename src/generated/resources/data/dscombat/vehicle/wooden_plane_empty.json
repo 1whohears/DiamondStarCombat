@@ -1,0 +1,123 @@
+{
+  "armor": 0.0,
+  "displayName": "preset.dscombat.wooden_plane_empty",
+  "health": 40.0,
+  "ingredients": [
+    {
+      "num": 20,
+      "tag": "minecraft:planks"
+    },
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "item": "dscombat:propeller",
+      "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 2
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:wooden_plane",
+  "landing_gear": true,
+  "presetId": "wooden_plane_empty",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "pilot_seat",
+      "slot_posx": 0.0,
+      "slot_posy": -0.4,
+      "slot_posz": 0.0,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "name": "left_wing_1",
+      "slot_posx": 1.5,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
+    },
+    {
+      "name": "right_wing_1",
+      "slot_posx": -1.5,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
+    },
+    {
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "radial_engine",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_3",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    }
+  ],
+  "sort_factor": 0,
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:biplane_1",
+    "passengerEngine": "dscombat:biplane_1"
+  },
+  "stats": {
+    "armor_damage_absorbtion": 0.0,
+    "armor_damage_threshold": 0.5,
+    "assetId": "wooden_plane",
+    "base_armor": 0.0,
+    "cameraDistance": 4.0,
+    "crashExplosionRadius": 3.0,
+    "cross_sec_area": 2.0,
+    "entity_size_xz": 1.7,
+    "entity_size_y": 1.7,
+    "idleheat": 1.0,
+    "inertiapitch": 7.0,
+    "inertiaroll": 4.0,
+    "inertiayaw": 3.0,
+    "mass": 500.0,
+    "max_health": 40.0,
+    "max_speed": 0.7,
+    "maxpitch": 3.0,
+    "maxroll": 5.0,
+    "maxyaw": 2.0,
+    "plane": {
+      "canAimDown": false,
+      "flapsAOABias": 8.0,
+      "fuselage_lift_area": 4.0,
+      "fuselage_lift_k_graph": "fuselage",
+      "wing_area": 8.0,
+      "wing_lift_k_graph": "wooden_plane"
+    },
+    "stealth": 1.0,
+    "throttledown": 0.06,
+    "throttleup": 0.02,
+    "torquepitch": 2.5,
+    "torqueroll": 1.5,
+    "torqueyaw": 4.5,
+    "turn_radius": 16.0
+  }
+}

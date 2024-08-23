@@ -1,0 +1,65 @@
+{
+  "displayName": "preset.dscombat.krait_chopper",
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "blade0",
+        "pivot": {
+          "x": 6.25E-6,
+          "y": 4.0771813,
+          "z": 1.125E-4
+        },
+        "rot_axis": "Y",
+        "rot_rate": 50.0
+      },
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "blade1",
+        "pivot": {
+          "x": -0.330475,
+          "y": 3.16,
+          "z": -9.63
+        },
+        "rot_axis": "X",
+        "rot_rate": 31.0
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "blade1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing4"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing3"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "engine",
+        "model_part_key": "engine"
+      },
+      {
+        "anim_id": "always_hide",
+        "model_part_key": "turret0"
+      },
+      {
+        "anim_id": "always_hide",
+        "model_part_key": "turret1"
+      }
+    ],
+    "model_id": "krait_chopper"
+  },
+  "presetId": "krait_chopper",
+  "presetType": "standard"
+}

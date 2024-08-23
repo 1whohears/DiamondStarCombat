@@ -1,0 +1,10 @@
+{
+  "changeLaunchPitch": 0.0,
+  "displayName": "item.dscombat.xm12",
+  "item": "dscombat:xm12",
+  "max": 300,
+  "presetId": "xm12",
+  "presetType": "external_weapon",
+  "slotType": "pylon_light",
+  "weight": 500.0
+}

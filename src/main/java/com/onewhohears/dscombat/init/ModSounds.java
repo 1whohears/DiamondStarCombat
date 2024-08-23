@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.DSCSoundDefinitionGen;
+import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -24,11 +24,16 @@ public class ModSounds {
 	public static final SoundEvent MISSILE_ENGINE_1 = registerSoundEvent("rocket_engine_1", "weapon/rocket_engine_1", "sounds.dscombat.rocket_engine_1");
 	public static final SoundEvent BULLET_SHOOT_1 = registerSoundEvent("bullet_shoot_1", "weapon/bullet_shoot_1", "sounds.dscombat.bullet_shoot_1");
 	public static final SoundEvent BOMB_SHOOT_1 = registerSoundEvent("bomb_shoot_1", "weapon/bomb_shoot_1", "sounds.dscombat.bomb_shoot_1");
+	public static final SoundEvent CANNON_SHOOT_1 = registerSoundEvent("cannon_shoot_1", "sounds.dscombat.cannon_shoot_1", 1,
+			"weapon/cannon_10_shot-001", "weapon/cannon_10_shot-002", "weapon/cannon_10_shot-003", "weapon/cannon_10_shot-004");
+	public static final SoundEvent CANNON_SHOOT_2 = registerSoundEvent("cannon_shoot_2", "sounds.dscombat.cannon_shoot_2", 1,
+			"weapon/cannon_2-001", "weapon/cannon_2-002", "weapon/cannon_2-003", "weapon/cannon_2-004");
 	// TODO 8.9 brrrr sound for javi plane
 	public static final SoundEvent BIPLANE_1 = registerSoundEvent("biplane_1", "vehicle/engine/biplane_1", "sounds.dscombat.biplane_1");
 	public static final SoundEvent HELI_1 = registerSoundEvent("heli_1", "vehicle/engine/heli_1", "sounds.dscombat.heli_1");
 	public static final SoundEvent JET_1 = registerSoundEvent("jet_1", "vehicle/engine/jet_1", "sounds.dscombat.jet_1");
-	public static final SoundEvent VEHICLE_HIT_1 = registerSoundEvent("vehicle_hit", "vehicle/vehicle_hit", "sounds.dscombat.vehicle_hit");
+	public static final SoundEvent VEHICLE_HURT_COLLISION_METAL = registerSoundEvent("vehicle_hurt_collision_metal", "vehicle/hurt/collision/metal_01", "sounds.dscombat.vehicle_hit");
+	public static final SoundEvent VEHICLE_HURT_PROJECTILE_METAL = registerSoundEvent("vehicle_hurt_projectile_metal", "vehicle/hurt/projectile/metal_01", "sounds.dscombat.vehicle.hurt.projectile_metal");
 	public static final SoundEvent TANK_1 = registerSoundEvent("tank_1", "vehicle/engine/tank_1", "sounds.dscombat.tank_1");
 	public static final SoundEvent BOAT_1 = registerSoundEvent("boat_1", "vehicle/engine/boat_1", "sounds.dscombat.boat_1");
 	public static final SoundEvent SUB_1 = registerSoundEvent("sub_1", "vehicle/engine/sub_1", "sounds.dscombat.sub_1");
@@ -66,7 +71,15 @@ public class ModSounds {
 	public static void register(IEventBus eventBus) {
 		SOUND_EVENTS.register(eventBus);
 	}
-	
+
+	public static SoundEvent registerSoundEvent(String name, String subtitle, float volume, String... paths) {
+		SoundEvent soundEvent = new SoundEvent(new ResourceLocation(DSCombatMod.MODID, name));
+		SOUND_EVENTS.register(name, () -> soundEvent);
+		if (subtitle == null) subtitle = "";
+		DSCSoundDefinitionGen.registerSound(soundEvent, subtitle, volume, paths);
+		return soundEvent;
+	}
+
 	public static SoundEvent registerSoundEvent(String name, String path, String subtitle, boolean stream, float volume) {
 		SoundEvent soundEvent = new SoundEvent(new ResourceLocation(DSCombatMod.MODID, name));
 		SOUND_EVENTS.register(name, () -> soundEvent);

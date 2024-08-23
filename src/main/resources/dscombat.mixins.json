@@ -1,0 +1,22 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"refmap": "dscombat.refmap.json",
+	"package": "com.onewhohears.dscombat.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"EntityMixin",
+		"EntityTypeMixin",
+		"LevelMixin"
+	],
+	"client": [
+		"ObjModelAccess",
+		"CompositeRenderableMeshAccess",
+		"CompositeRenderableComponentAccess",
+		"CompositeRenderableAccess"
+	],
+	"server": [],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

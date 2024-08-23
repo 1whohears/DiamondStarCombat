@@ -5,11 +5,11 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager;
-import com.onewhohears.dscombat.data.aircraft.VehicleTextureManager.BlendMode;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager.BlendMode;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.CycleButton.OnValueChange;
 import net.minecraft.client.gui.components.EditBox;

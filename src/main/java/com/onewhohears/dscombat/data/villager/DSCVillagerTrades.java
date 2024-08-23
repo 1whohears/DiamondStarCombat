@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.villager;
 import java.util.List;
 
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.item.ItemPart;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.nbt.CompoundTag;
@@ -128,8 +127,8 @@ public class DSCVillagerTrades {
 		}
 		
 		public ItemStack getResult() {
-			ItemStack stack = new ItemStack(item, num);
-			if (item instanceof ItemPart part) stack.setTag(part.getNbt());
+			ItemStack stack = item.getDefaultInstance();
+			stack.setCount(num);
 			return stack;
 		}
 

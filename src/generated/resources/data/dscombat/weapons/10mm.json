@@ -1,8 +1,11 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:xm12",
+  "compatibleWeaponPart": [
+    "xm12",
+    "m2_browning",
+    "minigun_turret"
+  ],
   "craftNum": 64,
   "damage": 6.0,
   "destroyTerrain": false,
@@ -20,8 +23,9 @@
   "innacuracy": 2.2,
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
-  "maxAmmo": 1000,
+  "modelId": "12.7mm",
   "presetId": "10mm",
+  "presetType": "bullet",
   "rackTypeKey": "dscombat:xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 12.0

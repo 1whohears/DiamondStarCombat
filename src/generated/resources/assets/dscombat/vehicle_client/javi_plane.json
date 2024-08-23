@@ -1,0 +1,342 @@
+{
+  "displayName": "preset.dscombat.javi_plane",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/javi_plane.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "internal_gun",
+      "slot_ui_x": 142,
+      "slot_ui_y": 0
+    },
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 124,
+      "slot_ui_y": 9
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 124,
+      "slot_ui_y": 27
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 133,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "internal_5",
+      "slot_ui_x": 115,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "internal_6",
+      "slot_ui_x": 133,
+      "slot_ui_y": 106
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 115,
+      "slot_ui_y": 106
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 136,
+      "slot_ui_y": 88
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 112,
+      "slot_ui_y": 88
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 124,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "left_wing_1",
+      "slot_ui_x": 106,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "left_wing_2",
+      "slot_ui_x": 88,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "left_wing_3",
+      "slot_ui_x": 70,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "left_wing_4",
+      "slot_ui_x": 52,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "right_wing_1",
+      "slot_ui_x": 142,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "right_wing_2",
+      "slot_ui_x": 160,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "right_wing_3",
+      "slot_ui_x": 178,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "right_wing_4",
+      "slot_ui_x": 196,
+      "slot_ui_y": 50
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg0",
+        "pivot": {
+          "x": 0.0,
+          "y": 1.59375,
+          "z": 5.34375
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg1",
+        "pivot": {
+          "x": 2.90625,
+          "y": 1.625,
+          "z": -0.53125
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg2",
+        "pivot": {
+          "x": -2.96875,
+          "y": 1.625,
+          "z": -0.53125
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 15.0,
+        "input_axis": "YAW",
+        "model_part_key": "surface2",
+        "pivot": {
+          "x": 3.3906,
+          "y": 3.2867062,
+          "z": -8.116206
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 15.0,
+        "input_axis": "YAW",
+        "model_part_key": "surface3",
+        "pivot": {
+          "x": -3.3906,
+          "y": 3.2867062,
+          "z": -8.116206
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface4",
+        "pivot": {
+          "x": 0.0,
+          "y": 2.5857813,
+          "z": -8.156644
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface5",
+        "pivot": {
+          "x": 0.0,
+          "y": 2.5857813,
+          "z": -8.156644
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "plane_flap_rotation",
+        "bound": -22.0,
+        "input_axis": "ROLL",
+        "model_part_key": "surface0",
+        "pivot": {
+          "x": 7.2830124,
+          "y": 2.3365874,
+          "z": -0.93371874
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "plane_flap_rotation",
+        "bound": 22.0,
+        "input_axis": "ROLL",
+        "model_part_key": "surface1",
+        "pivot": {
+          "x": -7.2830124,
+          "y": 2.3365874,
+          "z": -0.93371874
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "wing0"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "surface0"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "lg1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "wing1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "surface1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "lg2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_engine",
+        "model_part_key": "engine0"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_engine",
+        "model_part_key": "engine1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "surface2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "surface3"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "surface4"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "surface5"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing3"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing4"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing5"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -25.0,
+        "input_axis": "PITCH",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 0.0,
+          "y": 2.6338625,
+          "z": 5.927206
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 25.0,
+        "input_axis": "ROLL",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 0.0,
+          "y": 2.6338625,
+          "z": 5.927206
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -0.0625
+        },
+        "input_axis": "YAW",
+        "model_part_key": "pedal0"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0625
+        },
+        "input_axis": "YAW",
+        "model_part_key": "pedal1"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.125
+        },
+        "input_axis": "THROTTLE",
+        "model_part_key": "throttle"
+      }
+    ],
+    "model_id": "javi_plane"
+  },
+  "presetId": "javi_plane",
+  "presetType": "standard"
+}

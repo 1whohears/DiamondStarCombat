@@ -27,12 +27,12 @@
 		},
 		"gui": {
 			"rotation": [30, 225, 0],
-			"translation": [-8, 0, 0],
-			"scale": [0.625, 0.625, 0.625]
+			"translation": [-7, -4, 0],
+			"scale": [0.5, 0.5, 0.5]
 		},
 		"fixed": {
 			"rotation": [270, 0, 0],
-			"translation": [2, 3, -3],
+			"translation": [2, 0, -3],
 			"scale": [0.25, 0.25, 0.25]
 		}
 	}

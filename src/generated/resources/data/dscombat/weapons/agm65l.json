@@ -1,15 +1,17 @@
 {
-  "type": "pos_missile",
   "acceleration": 0.025,
   "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
-  "compatibleWeaponPart": "dscombat:heavy_missile_rack",
+  "compatibleWeaponPart": [
+    "heavy_missile_rack",
+    "mls"
+  ],
   "craftNum": 1,
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm65l",
-  "entityTypeKey": "dscombat:agm65l",
+  "entityTypeKey": "dscombat:pos_missile",
   "explodeNum": 2,
   "explosionRadius": 5.5,
   "explosive": true,
@@ -19,8 +21,8 @@
   "fuseDist": 1.5,
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot",
-      "num": 5
+      "num": 5,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:tnt",
@@ -38,8 +40,8 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:agm65l",
   "maxAge": 300,
-  "maxAmmo": 4,
   "presetId": "agm65l",
+  "presetType": "pos_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.0,

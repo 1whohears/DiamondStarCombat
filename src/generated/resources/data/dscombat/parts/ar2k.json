@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.ar2k",
+  "item": "dscombat:ar2k",
+  "presetId": "ar2k",
+  "presetType": "internal_radar",
+  "radar": "ar2k",
+  "slotType": "tech_internal",
+  "weight": 400.0
+}

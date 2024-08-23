@@ -4,13 +4,14 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilEntity;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,12 +34,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 
-public abstract class EntityWeapon extends Projectile implements IEntityAdditionalSpawnData{
+public abstract class EntityWeapon<T extends WeaponStats> extends Projectile implements IEntityAdditionalSpawnData { 
 	
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
@@ -46,9 +46,9 @@ public abstract class EntityWeapon extends Projectile implements IEntityAddition
 	public static final EntityDataAccessor<Vec3> SHOOT_POS = SynchedEntityData.defineId(EntityWeapon.class, DataSerializers.VEC3);
 	
 	public String weaponId;
-	protected WeaponData weaponData;
+	protected T weaponStats;
 	
-	public EntityWeapon(EntityType<? extends EntityWeapon> type, Level level, String defaultWeaponId) {
+	public EntityWeapon(EntityType<? extends EntityWeapon<?>> type, Level level, String defaultWeaponId) {
 		super(type, level);
 		this.weaponId = defaultWeaponId;
 		updateWeaponData();
@@ -104,21 +104,21 @@ public abstract class EntityWeapon extends Projectile implements IEntityAddition
 		if (didWeaponIdChange()) updateWeaponData();
 	}
 	
-	public void setWeaponData(WeaponData data) {
+	public <W extends WeaponStats> void setWeaponData(W data) {
 		weaponId = data.getId();
-		weaponData = data;
-		castWeaponData();
+		weaponStats = (T) data;
 	}
 	
 	protected boolean didWeaponIdChange() {
-		return weaponData != null && !weaponData.getId().equals(weaponId);
+		return weaponStats != null && !weaponStats.getId().equals(weaponId);
 	}
 	
-	protected abstract void castWeaponData();
-	
 	protected void updateWeaponData() {
-		weaponData = WeaponPresets.get().getPreset(weaponId);
-		castWeaponData();
+		weaponStats = (T) WeaponPresets.get().get(weaponId);
+	}
+	
+	public T getWeaponStats() {
+		return weaponStats;
 	}
 	
 	public void init() {
@@ -127,7 +127,7 @@ public abstract class EntityWeapon extends Projectile implements IEntityAddition
 	@Override
 	public void tick() {
 		//System.out.println(this+" "+tickCount);
-		if (weaponData == null) {
+		if (weaponStats == null) {
 			discard();
 			return;
 		}
@@ -308,9 +308,6 @@ public abstract class EntityWeapon extends Projectile implements IEntityAddition
 		if (entity == null) return false;
     	Entity o = getOwner();
     	if (entity.equals(o)) return true;
-    	if (entity instanceof PartEntity<?> p) {
-    		return isAlliedTo(p.getParent());
-    	}
     	if (entity instanceof Projectile p) {
     		Entity po = p.getOwner();
     		if (po != null && po.equals(o)) return true;
@@ -358,7 +355,7 @@ public abstract class EntityWeapon extends Projectile implements IEntityAddition
 	}
 	
 	public int getMaxAge() {
-		return weaponData.getMaxAge();
+		return weaponStats.getMaxAge();
 	}
 	
 	public boolean isTestMode() {
@@ -377,9 +374,13 @@ public abstract class EntityWeapon extends Projectile implements IEntityAddition
     	entityData.set(SHOOT_POS, pos);
     }
     
+    public String getModelId() {
+    	return getWeaponStats().getModelId();
+    }
+    
+    public abstract WeaponType getWeaponType();
     protected abstract WeaponDamageSource getImpactDamageSource();
     protected abstract WeaponDamageSource getExplosionDamageSource();
-    public abstract WeaponData.WeaponType getWeaponType();
-    public abstract WeaponData.WeaponClientImpactType getClientImpactType();
+    public abstract WeaponStats.WeaponClientImpactType getClientImpactType();
 
 }

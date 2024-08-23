@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;

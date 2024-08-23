@@ -1,0 +1,12 @@
+{
+  "displayName": "item.dscombat.c6_engine",
+  "engineType": "SPIN",
+  "fuelRate": 0.005,
+  "heat": 4.0,
+  "item": "dscombat:c6_engine",
+  "presetId": "c6_engine",
+  "presetType": "internal_engine",
+  "slotType": "spin_engine",
+  "thrust": 60.0,
+  "weight": 300.0
+}

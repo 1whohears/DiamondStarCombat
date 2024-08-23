@@ -1,16 +1,18 @@
 {
-  "type": "track_missile",
   "acceleration": 0.07,
   "activeTrack": false,
   "bleed": 0.03,
   "canShootOnGround": false,
   "causesFire": true,
-  "compatibleWeaponPart": "dscombat:heavy_missile_rack",
+  "compatibleWeaponPart": [
+    "heavy_missile_rack",
+    "sam_launcher"
+  ],
   "craftNum": 1,
   "damage": 80.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim7f",
-  "entityTypeKey": "dscombat:aim7f",
+  "entityTypeKey": "dscombat:track_missile",
   "explosionRadius": 6.0,
   "explosive": true,
   "fireRate": 40,
@@ -19,8 +21,8 @@
   "fuseDist": 3.0,
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot",
-      "num": 12
+      "num": 12,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:tnt",
@@ -42,8 +44,8 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:aim7f",
   "maxAge": 200,
-  "maxAmmo": 3,
   "presetId": "aim7f",
+  "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.0,

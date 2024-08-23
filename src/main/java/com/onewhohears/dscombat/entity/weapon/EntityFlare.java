@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModParticles;
 
@@ -12,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-public class EntityFlare extends Entity {
+public class EntityFlare extends Entity implements IREmitter {
 	
 	private float heat;
 	private int age;
@@ -21,6 +22,10 @@ public class EntityFlare extends Entity {
 	
 	public EntityFlare(EntityType<? extends EntityFlare> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
+		this.heat = 20;
+		this.age = 120;
+		this.pow = 3;
+		calcDecay();
 	}
 	
 	public EntityFlare(Level level, float initHeat, int maxAge, float order) {
@@ -60,10 +65,6 @@ public class EntityFlare extends Entity {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
-	public float getHeat() {
-		return heat - (float) Math.pow(tickCount, pow) * decay;
-	}
-	
 	@Override
 	public void tick() {
 		super.tick();
@@ -86,6 +87,11 @@ public class EntityFlare extends Entity {
 				move.x + random.nextGaussian() * 0.0001D, 
 				move.y + random.nextGaussian() * 0.0001D, 
 				move.z + random.nextGaussian() * 0.0001D);
+	}
+
+	@Override
+	public float getIRHeat() {
+		return heat - (float) Math.pow(tickCount, pow) * decay;
 	}
 
 }

@@ -1,0 +1,168 @@
+{
+  "displayName": "preset.dscombat.mrbudger_tank",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/mrbudger_tank.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 120,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 140,
+      "slot_ui_y": 12
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 100,
+      "slot_ui_y": 12
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 140,
+      "slot_ui_y": 90
+    },
+    {
+      "slot_name": "seat4",
+      "slot_ui_x": 100,
+      "slot_ui_y": 90
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 111,
+      "slot_ui_y": 30
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 129,
+      "slot_ui_y": 30
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 111,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 129,
+      "slot_ui_y": 70
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": 1.875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl1",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": 0.9375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl2",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": 0.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl3",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": -0.9375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl4",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": -1.875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": 1.875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr1",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": 0.9375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr2",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": 0.0
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr3",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": -0.9375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr4",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.5,
+          "z": -1.875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      }
+    ],
+    "model_id": "mrbudger_tank"
+  },
+  "presetId": "mrbudger_tank",
+  "presetType": "standard"
+}

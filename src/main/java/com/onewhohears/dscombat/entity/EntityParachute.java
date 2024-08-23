@@ -16,7 +16,7 @@ import net.minecraftforge.network.NetworkHooks;
 public class EntityParachute extends Entity {
 	
 	public static final float DECELERATION_RATE = 0.15f;
-	public static final float FALL_SPEED = -0.10f;
+	public static final float FALL_SPEED = -0.2f;
 	
 	public EntityParachute(EntityType<?> type, Level level) {
 		super(type, level);

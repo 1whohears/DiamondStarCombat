@@ -112,7 +112,7 @@
 
   "itemGroup.parts": "Bahagi ng DSCombat",
   "itemGroup.weapons": "Armas ng DSCombat",
-  "itemGroup.aircraft": "Eroplano ng DSCombat",
+  "itemGroup.vehicle": "Eroplano ng DSCombat",
 
   "item.dscombat.ti83": "TI83",
   "item.dscombat.intel_pentium": "Intel Pentium",

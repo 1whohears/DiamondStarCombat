@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.EntityModelParachute;
 import com.onewhohears.dscombat.entity.EntityParachute;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
+@Deprecated
 public class RendererEntityParachute extends EntityRenderer<EntityParachute> {
 	
 	private EntityModelParachute model;

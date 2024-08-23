@@ -1,6 +1,54 @@
 {
-	"parent": "item/generated",
+	"credit": "Made with Blockbench",
+	"texture_size": [48, 48],
 	"textures": {
-		"layer0": "dscombat:item/armor_piece"
+		"0": "dscombat:item/armor_piece",
+		"particle": "dscombat:item/armor_piece"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 6],
+			"to": [16, 16, 10],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 5.33333, 5.33333], "texture": "#0"},
+				"east": {"uv": [5.33333, 0, 6.66667, 5.33333], "texture": "#0"},
+				"south": {"uv": [0, 0, 5.33333, 5.33333], "texture": "#0"},
+				"west": {"uv": [5.33333, 0, 6.66667, 5.33333], "texture": "#0"},
+				"up": {"uv": [6.66667, 5.33333, 5.33333, 0], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [5.33333, 5.33333, 6.66667, 0], "rotation": 90, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [-5, -6, -92],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-5, -6, -92],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"gui": {
+			"rotation": [-165, 30, 180],
+			"translation": [0, -0.25, 0],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
 	}
 }

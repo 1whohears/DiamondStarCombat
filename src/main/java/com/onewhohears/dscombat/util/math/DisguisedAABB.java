@@ -15,6 +15,7 @@ public class DisguisedAABB extends AABB {
 	}
 	@Override
 	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
+		//System.out.println("CLIP TEST");
 		Optional<Vec3> clip = hitbox.clip(from, to);
 		/*if (clip.isPresent()) System.out.println("CLIP DisguisedAABB:"+UtilParse.prettyVec3(clip.get())
 								+"FROM:"+UtilParse.prettyVec3(from)+"TO:"+UtilParse.prettyVec3(to));*/

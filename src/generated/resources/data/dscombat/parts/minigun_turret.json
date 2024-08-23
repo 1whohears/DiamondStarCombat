@@ -1,0 +1,17 @@
+{
+  "displayName": "item.dscombat.minigun_turret",
+  "externalEntity": "dscombat:minigun_turret",
+  "item": "dscombat:minigun_turret",
+  "maxAmmo": 1000,
+  "maxHealth": 40.0,
+  "presetId": "minigun_turret",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 4
+    }
+  ],
+  "slotType": "mount_light",
+  "weight": 1500.0
+}

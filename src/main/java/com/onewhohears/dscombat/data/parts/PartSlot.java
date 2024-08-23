@@ -4,15 +4,17 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
+import com.onewhohears.dscombat.common.network.toclient.ToClientDamagePart;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -26,28 +28,32 @@ public class PartSlot {
 	private final Vec3 pos;
 	private final float zRot;
 	private final boolean locked;
-	private PartData data;
+	private final String onlyCompatPart;
+	private final String linkedHitbox;
+	private PartInstance<?> data;
 	
 	public PartSlot(CompoundTag entityNbt, @Nullable CompoundTag presetNbt) {
 		slotId = entityNbt.getString("name");
 		locked = entityNbt.getBoolean("locked");
-		if (entityNbt.contains("data")) data = UtilParse.parsePartFromCompound(entityNbt.getCompound("data"));
+		if (entityNbt.contains("data")) data = UtilPresetParse.parsePartFromCompound(entityNbt.getCompound("data"));
 		if (presetNbt == null) presetNbt = entityNbt;
-		if (presetNbt.getTagType("slot_type") == CompoundTag.TAG_INT) {
-			type = SlotType.getByOldOrdinal(presetNbt.getInt("slot_type"));
-		} else type = SlotType.getByName(presetNbt.getString("slot_type"));
+		type = SlotType.getByName(presetNbt.getString("slot_type"));
 		pos = UtilParse.readVec3(presetNbt, "slot_pos");
 		zRot = presetNbt.getFloat("zRot");
+		onlyCompatPart = presetNbt.getString("onlyCompatPart");
+		linkedHitbox = presetNbt.getString("linkedHitbox");
 	}
 	
 	public CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
 		tag.putString("name", slotId);
-		tag.putString("slot_type",type.getSlotTypeName());
+		tag.putString("slot_type", type.getSlotTypeName());
 		UtilParse.writeVec3(tag, pos, "slot_pos");
 		tag.putFloat("zRot", zRot);
 		tag.putBoolean("locked", locked);
-		if (filled()) tag.put("data", data.write());
+		tag.putString("onlyCompatPart", onlyCompatPart);
+		tag.putString("linkedHitbox", linkedHitbox);
+		if (filled()) tag.put("data", data.writeNBT());
 		return tag;
 	}
 	
@@ -57,6 +63,8 @@ public class PartSlot {
 		pos = DataSerializers.VEC3.read(buffer);
 		zRot = buffer.readFloat();
 		locked = buffer.readBoolean();
+		onlyCompatPart = buffer.readUtf();
+		linkedHitbox = buffer.readUtf();
 		boolean notNull = buffer.readBoolean();
 		if (notNull) data = DataSerializers.PART_DATA.read(buffer);
 	}
@@ -67,8 +75,10 @@ public class PartSlot {
 		DataSerializers.VEC3.write(buffer, pos);
 		buffer.writeFloat(zRot);
 		buffer.writeBoolean(locked);
+		buffer.writeUtf(onlyCompatPart);
+		buffer.writeUtf(linkedHitbox);
 		buffer.writeBoolean(filled());
-		if (filled()) data.write(buffer);
+		if (filled()) DataSerializers.PART_DATA.write(buffer, data);
 	}
 	
 	public Vec3 getRelPos() {
@@ -84,22 +94,16 @@ public class PartSlot {
 	}
 	
 	@Nullable
-	public PartData getPartData() {
+	public PartInstance<?> getPartData() {
 		return data;
 	}
 	
 	public void serverSetup(EntityVehicle plane) {
-		if (filled()) {
-			data.setup(plane, slotId, pos);
-			data.serverSetup(plane, slotId, pos);
-		}
+		if (filled() && data.canSetup()) data.setup(plane, slotId, pos);
 	}
 	
 	public void clientSetup(EntityVehicle plane) {
-		if (filled()) {
-			data.setup(plane, slotId, pos);
-			data.clientSetup(plane, slotId, pos);
-		}
+		if (filled() && data.canSetup()) data.setup(plane, slotId, pos);
 	}
 	
 	protected void tick() {
@@ -110,15 +114,20 @@ public class PartSlot {
 		if (filled()) data.clientTick(slotId);
 	}
 	
-	public boolean addPartData(PartData data, EntityVehicle plane) {
+	public boolean dropPartItem(EntityVehicle parent) {
+		if (parent.level.isClientSide) return false;
+		if (!filled()) return false;
+		UtilEntity.dropItemStack(parent.level, getPartData().getNewItemStack(), parent.convertRelPos(getRelPos()));
+		return removePartData(parent);
+	}
+	
+	public boolean addPartData(PartInstance<?> data, EntityVehicle plane) {
 		if (filled()) return false;
 		if (!isCompatible(data)) return false;
 		this.data = data;
 		if (plane == null) return true;
-		data.setup(plane, slotId, pos);
-		if (plane.level.isClientSide) data.clientSetup(plane, slotId, pos);
-		else {
-			data.serverSetup(plane, slotId, pos);
+		if (data.canSetup()) data.setup(plane, slotId, pos);
+		if (!plane.level.isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 					new ToClientAddPart(plane.getId(), slotId, data));
 		}
@@ -127,10 +136,8 @@ public class PartSlot {
 	
 	public boolean removePartData(EntityVehicle plane) {
 		if (!filled()) return false;
-		data.remove(slotId);
-		if (plane.level.isClientSide) data.clientRemove(slotId);
-		else {
-			data.serverRemove(slotId);
+		data.remove(plane, slotId);
+		if (!plane.level.isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 					new ToClientRemovePart(plane.getId(), slotId));
 		}
@@ -138,23 +145,56 @@ public class PartSlot {
 		return true;
 	}
 	
+	public boolean setPartDamaged(EntityVehicle vehicle) {
+		if (!filled()) return false;
+		if (data.isDamaged()) return true;
+		data.onDamaged(vehicle, slotId);
+		if (!vehicle.level.isClientSide) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
+					new ToClientDamagePart(vehicle.getId(), slotId, true));
+		}
+		return true;
+	}
+	
+	public boolean canGetDamaged() {
+		return filled() && !isNormalSeat() && !getPartData().isDamaged();
+	}
+	
+	public boolean setPartRepaired(EntityVehicle vehicle) {
+		if (!filled()) return false;
+		if (!data.isDamaged()) return true;
+		data.onRepaired(vehicle, slotId, pos);
+		if (!vehicle.level.isClientSide) {
+			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
+					new ToClientDamagePart(vehicle.getId(), slotId, false));
+		}
+		return true;
+	}
+	
 	public boolean isSeat() {
-		if (data != null) return data.isSeat();
+		if (data != null) return data.getStats().isSeat();
 		return false;
 	}
 	
 	public boolean isNormalSeat() {
-		if (data != null) return data.getType() == PartType.SEAT;
+		if (data != null) return data.getStats().getType().is(PartType.SEAT);
 		return false;
 	}
 	
-	public boolean isCompatible(PartData data) {
+	public boolean isOnlyCompatWithOnePart() {
+		return !onlyCompatPart.isEmpty();
+	}
+	
+	public String getOnlyCompatPartId() {
+		return onlyCompatPart;
+	}
+	
+	public boolean isCompatible(PartInstance<?> data) {
 		//System.out.println("is "+data+" compatible with "+this);
 		if (data == null) return false;
+		if (isOnlyCompatWithOnePart()) return data.getStatsId().equals(getOnlyCompatPartId());
 		// HOW 3 check for duplicates
-		SlotType[] types = data.getCompatibleSlots();
-		for (int i = 0; i < types.length; ++i) if (types[i] == getSlotType()) return true;
-		return false;
+		return data.isCompatible(getSlotType());
 	}
 	
 	public static String getSlotId(String slotId) {
@@ -177,94 +217,9 @@ public class PartSlot {
 		return type;
 	}
 	
-	public static enum SlotType {
-		SEAT("seat"),
-		LIGHT_TURRET("light_turret"),
-		MED_TURRET("med_turret"),
-		HEAVY_TURRET("heavy_turret"),
-		
-		WING("wing"),
-		FRAME("frame"),
-		HEAVY_FRAME("heavy_frame"),
-		ADVANCED_FRAME("advanced_frame"),
-		
-		INTERNAL("internal"),
-		ADVANCED_INTERNAL("advanced_internal"),
-		
-		SPIN_ENGINE("spin_engine"),
-		PUSH_ENGINE("push_engine"),
-		RADIAL_ENGINE("radial_engine");
-		
-		public static final SlotType[] SEAT_ALL = {SEAT, LIGHT_TURRET, MED_TURRET, HEAVY_TURRET};
-		public static final SlotType[] TURRET_LIGHT = {LIGHT_TURRET, MED_TURRET, HEAVY_TURRET};
-		public static final SlotType[] TURRET_MED = {MED_TURRET, HEAVY_TURRET};
-		public static final SlotType[] TURRET_HEAVY = {HEAVY_TURRET};
-		
-		public static final SlotType[] INTERNAL_ALL = {INTERNAL, ADVANCED_INTERNAL, PUSH_ENGINE, SPIN_ENGINE};
-		public static final SlotType[] INTERNAL_ADVANCED = {ADVANCED_INTERNAL};
-		public static final SlotType[] INTERNAL_ENGINE_SPIN = {SPIN_ENGINE};
-		public static final SlotType[] INTERNAL_ENGINE_PUSH = {PUSH_ENGINE};
-		public static final SlotType[] INTERNAL_ENGINE_RADIAL = {RADIAL_ENGINE};
-		
-		public static final SlotType[] EXTERNAL_ALL = {WING, FRAME, HEAVY_FRAME, ADVANCED_FRAME};
-		public static final SlotType[] EXTERNAL_HEAVY = {HEAVY_FRAME, HEAVY_TURRET};
-		public static final SlotType[] EXTERNAL_ADVANCED = {ADVANCED_FRAME};
-		
-		@Nullable
-		public static SlotType getByName(String name) {
-			for (int i = 0; i < values().length; ++i)
-				if (values()[i].getSlotTypeName().equals(name)) 
-					return values()[i];
-			return null;
-		}
-		
-		@Nullable
-		public static SlotType getByOldOrdinal(int o) {
-			switch (o) {
-			case 0: return SEAT;
-			case 1: return WING;
-			case 2: return FRAME;
-			case 3: return INTERNAL;
-			case 4: return ADVANCED_INTERNAL;
-			case 5: return MED_TURRET;
-			case 6: return HEAVY_TURRET;
-			case 7: return SPIN_ENGINE;
-			case 8: return PUSH_ENGINE;
-			case 9: return HEAVY_FRAME;
-			case 10: return RADIAL_ENGINE;
-			}
-			return null;
-		}
-		
-		private final String slotTypeName;
-		private final ResourceLocation bg_texture;
-		
-		private SlotType(String slotTypeName) {
-			this.slotTypeName = slotTypeName;
-			this.bg_texture = new ResourceLocation("dscombat:textures/ui/slots/"+slotTypeName+".png");
-		}
-		
-		public String getSlotTypeName() {
-			return slotTypeName;
-		}
-		
-		@Override
-		public String toString() {
-			return getSlotTypeName();
-		}
-		
-		public ResourceLocation getBgTexture() {
-			return bg_texture;
-		}
-		
-		public String getTranslatableName() {
-			return "slottype.dscombat."+slotTypeName;
-		}
-	}
-	
 	@Override
 	public String toString() {
-		return "["+slotId+":"+getSlotType().toString()+":"+data.toString()+"]";
+		return "["+slotId+":"+getSlotType().toString()+":"+data+"]";
 	}
 	
 	public float getZRot() {
@@ -285,6 +240,18 @@ public class PartSlot {
 	
 	public static boolean isCoPilotSeat(String slotId) {
 		return slotId.equals(COPILOT_SLOT_NAME);
+	}
+	
+	public String getLinkedHitbox() {
+		return linkedHitbox;
+	}
+	
+	public boolean isLinkedWithVehicleRoot() {
+		return linkedHitbox.isEmpty();
+	}
+	
+	public boolean isLinkedToHitbox(String hitboxName) {
+		return linkedHitbox.equals(hitboxName);
 	}
 	
 }

@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.seat",
+  "externalEntity": "dscombat:seat",
+  "item": "dscombat:seat",
+  "presetId": "seat",
+  "presetType": "seat",
+  "slotType": "seat",
+  "weight": 30.0
+}

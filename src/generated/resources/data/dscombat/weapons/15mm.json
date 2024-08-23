@@ -1,8 +1,10 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:xm12",
+  "compatibleWeaponPart": [
+    "xm12",
+    "aa_turret"
+  ],
   "craftNum": 48,
   "damage": 9.0,
   "destroyTerrain": false,
@@ -20,8 +22,9 @@
   "innacuracy": 1.8,
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
-  "maxAmmo": 750,
+  "modelId": "20mm",
   "presetId": "15mm",
+  "presetType": "bullet",
   "rackTypeKey": "dscombat:xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 11.0

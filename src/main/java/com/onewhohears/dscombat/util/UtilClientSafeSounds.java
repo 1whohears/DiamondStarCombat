@@ -11,9 +11,10 @@ import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleWindSoundInstance;
-import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.aircraft.VehicleSoundManager.PassengerSoundPack;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -130,7 +131,7 @@ public class UtilClientSafeSounds {
 			playCockpitSound(passengerSoundPack.irLockTone, 
 	    		1f, Config.CLIENT.irTargetToneVol.get().floatValue());
 		}
-		if (vehicle.getAircraftType().isPlane()) {
+		if (vehicle.getStats().isPlane()) {
 			// STALL
 			if (vehicle.isStalling()) { if (vehicle.getStallTicks() % 24 == 1) {
 				playCockpitSound(passengerSoundPack.stallAlert, 1f, 
@@ -148,19 +149,19 @@ public class UtilClientSafeSounds {
 					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
 			}
 		}
-		if (vehicle.getAircraftType().isAircraft) {
+		if (vehicle.getStats().isAircraft()) {
 			// ENGINE FIRE
-			if (vehicle.getEngineFireTicks() % 70 == 1) 
-				playCockpitSound(passengerSoundPack.engineFire, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
+			if (vehicle.getEngineFireTicks() % 160 == 1) 
+				queueCockpitSound(passengerSoundPack.engineFire, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 30);
 			// FUEL LEAK
-			if (vehicle.getBingoTicks() % 150 <= 60 && vehicle.getFuelLeakTicks() % 30 == 1) 
-				playCockpitSound(passengerSoundPack.fuelLeak, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
+			if (vehicle.getFuelLeakTicks() % 200 <= 60 && vehicle.getFuelLeakTicks() % 30 == 1) 
+				queueCockpitSound(passengerSoundPack.fuelLeak, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 29);
 			// BINGO FUEL
-			if (vehicle.getBingoTicks() % 160 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
-				playCockpitSound(passengerSoundPack.bingoFuel, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
+			if (vehicle.getBingoTicks() % 240 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
+				queueCockpitSound(passengerSoundPack.bingoFuel, 1f, 
+					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 19);
 		}
 	}
 	
@@ -173,6 +174,21 @@ public class UtilClientSafeSounds {
 		if (sound == null) return;
 		Minecraft m = Minecraft.getInstance();
 		m.getSoundManager().play(forCockpit(sound, pitch, volume));
+	}
+	
+	private static long prevQueueTime = 0;
+	private static int waitTime = 0;
+	
+	public static void queueCockpitSound(SoundEvent sound, float pitch, float volume, int length) {
+		if (sound == null) return;
+		Minecraft m = Minecraft.getInstance();
+		long currentTime = m.level.getGameTime();
+		long timeDiff = currentTime - prevQueueTime;
+		waitTime -= timeDiff;
+		if (waitTime < 0) waitTime = 0;
+		m.getSoundManager().playDelayed(forCockpit(sound, pitch, volume), waitTime);
+		waitTime += length;
+		prevQueueTime = currentTime;
 	}
 	
 	public static SimpleSoundInstance forCockpit(SoundEvent sound, float pitch, float volume) {

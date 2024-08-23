@@ -1,0 +1,9 @@
+{
+  "buffType": "NIGHT_VISION_HUD",
+  "displayName": "item.dscombat.night_vision_hud",
+  "item": "dscombat:night_vision_hud",
+  "presetId": "night_vision_hud",
+  "presetType": "buff",
+  "slotType": "tech_internal",
+  "weight": 10.0
+}

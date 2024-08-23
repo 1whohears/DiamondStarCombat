@@ -1,8 +1,12 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:xm12",
+  "compatibleWeaponPart": [
+    "xm12",
+    "m61a1_vulcan",
+    "gsh_30_1",
+    "ciws"
+  ],
   "craftNum": 32,
   "damage": 12.0,
   "destroyTerrain": false,
@@ -20,8 +24,9 @@
   "innacuracy": 1.1,
   "itemKey": "dscombat:20mm",
   "maxAge": 40,
-  "maxAmmo": 500,
+  "modelId": "20mm",
   "presetId": "20mm",
+  "presetType": "bullet",
   "rackTypeKey": "dscombat:xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 10.0

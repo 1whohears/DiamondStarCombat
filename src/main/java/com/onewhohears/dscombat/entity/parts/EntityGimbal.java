@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
+import com.onewhohears.dscombat.data.parts.PartType;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

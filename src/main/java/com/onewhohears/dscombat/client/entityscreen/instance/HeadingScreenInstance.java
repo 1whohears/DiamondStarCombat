@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;

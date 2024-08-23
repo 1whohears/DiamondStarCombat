@@ -1,16 +1,18 @@
 {
-  "type": "track_missile",
   "acceleration": 0.035,
   "activeTrack": true,
   "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
-  "compatibleWeaponPart": "dscombat:heavy_missile_rack",
+  "compatibleWeaponPart": [
+    "heavy_missile_rack",
+    "mls"
+  ],
   "craftNum": 1,
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm84e",
-  "entityTypeKey": "dscombat:agm84e",
+  "entityTypeKey": "dscombat:track_missile",
   "explodeNum": 2,
   "explosionRadius": 4.5,
   "explosive": true,
@@ -20,8 +22,8 @@
   "fuseDist": 2.0,
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot",
-      "num": 6
+      "num": 6,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:tnt",
@@ -39,8 +41,8 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:agm84e",
   "maxAge": 300,
-  "maxAmmo": 3,
   "presetId": "agm84e",
+  "presetType": "track_missile",
   "rackTypeKey": "dscombat:heavy_missile_rack",
   "seeThroBlock": 8,
   "shootSoundKey": "dscombat:rocket_launch_1",

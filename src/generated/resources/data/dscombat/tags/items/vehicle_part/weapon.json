@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#dscombat:vehicle_part/weapon/turret",
+    "dscombat:xm12",
+    "dscombat:light_missile_rack",
+    "dscombat:heavy_missile_rack",
+    "dscombat:bomb_rack",
+    "dscombat:adl",
+    "dscombat:vls"
+  ]
+}

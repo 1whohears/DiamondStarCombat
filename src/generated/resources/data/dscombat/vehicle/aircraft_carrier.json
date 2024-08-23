@@ -1,0 +1,75 @@
+{
+  "copyId": "aircraft_carrier_unarmed",
+  "displayName": "preset.dscombat.aircraft_carrier",
+  "ingredients": [
+    {
+      "item": "dscombat:vls",
+      "num": 2
+    },
+    {
+      "item": "dscombat:mls",
+      "num": 1
+    },
+    {
+      "item": "dscombat:ciws",
+      "num": 1
+    },
+    {
+      "item": "dscombat:aa_turret",
+      "num": 2
+    },
+    {
+      "item": "dscombat:survey_all_b",
+      "num": 1
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "aircraft_carrier",
+  "presetType": "boat",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "rgm84",
+        "part": "mls"
+      },
+      "name": "seat9"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "bgm109",
+        "part": "vls"
+      },
+      "name": "seat10"
+    },
+    {
+      "data": {
+        "part": "survey_all_b"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "aa_turret"
+      },
+      "name": "frame_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "ciws"
+      },
+      "name": "frame_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "aa_turret"
+      },
+      "name": "frame_4"
+    }
+  ]
+}

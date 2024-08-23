@@ -1,0 +1,140 @@
+{
+  "copyId": "javi_plane_unarmed",
+  "displayName": "preset.dscombat.javi_plane_truck",
+  "ingredients": [
+    {
+      "item": "dscombat:ar2k",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 8
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 1
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "dscombat:aluminum_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "javi_plane_truck",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "aim7mh",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim7f",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120c",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120b",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim7mh",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim7f",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120c",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120b",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "30mmhe",
+        "part": "gau_avenger"
+      },
+      "name": "internal_gun"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9p5",
+        "part": "light_missile_rack"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "part": "ar2k"
+      },
+      "name": "internal_5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_4"
+    }
+  ],
+  "textures": {
+    "baseTexture": 1
+  }
+}

@@ -8,10 +8,10 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -78,6 +78,7 @@ public class ClientCameraEvents {
 			player.xRotO = xi;
 			player.yRotO = yi;
 			event.setPitch(xi);
+			if (mirrored) yi += 180;
 			event.setYaw(yi);
 		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
 			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)
@@ -94,16 +95,16 @@ public class ClientCameraEvents {
 			if (planeYRotDiff != 0) {
 				float dyi = Mth.wrapDegrees(planeYRotDiff) * ptDiff;
 				float y = player.getYRot() + dyi;
-				if (mirrored) y += 180;
 				player.setYRot(y);
 				player.yRotO = y;
+				if (mirrored) y += 180;
 				event.setYaw(y);
 			}
 		}
 		float zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
-		double camDist = plane.getVehicleStats().cameraDistance;
+		double camDist = plane.getStats().cameraDistance;
 		if (detached && isPilot && camDist > 4) {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
 			event.getCamera().move(vehicleCamDist, 0, 0);

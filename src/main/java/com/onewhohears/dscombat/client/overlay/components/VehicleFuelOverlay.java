@@ -5,10 +5,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Objects;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
@@ -19,22 +19,19 @@ public class VehicleFuelOverlay extends VehicleOverlayComponent {
             "textures/ui/fuel_guage.png");
     public static final ResourceLocation FUEL_GAUGE_ARROW = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/fuel_guage_arrow.png");
-
     public static final int FUEL_GAUGE_HEIGHT = 40, FUEL_GAUGE_WIDTH = 60;
     public static final int FUEL_ARROW_HEIGHT = 7, FUEL_ARROW_WIDTH = 24;
 
-    private static VehicleFuelOverlay INSTANCE;
-
-    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleFuelOverlay();
-        INSTANCE.render(poseStack, screenWidth, screenHeight);
+    @Override
+    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        if (defaultRenderConditions()) return false;
+        return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
-    private VehicleFuelOverlay() {}
-
     @Override
-    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
+    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
+        assert vehicle != null;
 
         int xOrigin = screenWidth - PADDING - FUEL_GAUGE_WIDTH;
         int yOrigin = screenHeight - STICK_BASE_SIZE - PADDING * 2 - FUEL_GAUGE_HEIGHT;
@@ -60,5 +57,10 @@ public class VehicleFuelOverlay extends VehicleOverlayComponent {
                 FUEL_ARROW_WIDTH, FUEL_ARROW_HEIGHT,
                 FUEL_ARROW_WIDTH, FUEL_ARROW_HEIGHT);
         poseStack.popPose();
+    }
+
+    @Override
+    protected @NotNull String componentId() {
+        return "dscombat_fuel";
     }
 }

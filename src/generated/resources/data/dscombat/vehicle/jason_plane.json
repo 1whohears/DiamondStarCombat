@@ -1,0 +1,26 @@
+{
+  "copyId": "jason_plane_unarmed",
+  "displayName": "preset.dscombat.jason_plane",
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "jason_plane",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "10mm",
+        "part": "m2_browning"
+      },
+      "name": "left_wing_gun"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "10mm",
+        "part": "m2_browning"
+      },
+      "name": "right_wing_gun"
+    }
+  ]
+}

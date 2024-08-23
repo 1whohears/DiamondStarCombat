@@ -1,16 +1,17 @@
 {
-  "type": "track_missile",
   "acceleration": 0.08,
   "activeTrack": true,
   "bleed": 0.07,
   "canShootOnGround": false,
   "causesFire": true,
-  "compatibleWeaponPart": "",
+  "compatibleWeaponPart": [
+    "sam_launcher"
+  ],
   "craftNum": 1,
   "damage": 90.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.pac3",
-  "entityTypeKey": "dscombat:pac3",
+  "entityTypeKey": "dscombat:track_missile",
   "explosionRadius": 7.0,
   "explosive": true,
   "fireRate": 40,
@@ -19,8 +20,8 @@
   "fuseDist": 3.0,
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot",
-      "num": 14
+      "num": 14,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:tnt",
@@ -42,8 +43,8 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:track_air_missile",
   "maxAge": 300,
-  "maxAmmo": 4,
   "presetId": "pac3",
+  "presetType": "track_missile",
   "rackTypeKey": "",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 4.0,

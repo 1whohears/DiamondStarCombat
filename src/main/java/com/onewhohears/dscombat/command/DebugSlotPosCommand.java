@@ -2,9 +2,9 @@ package com.onewhohears.dscombat.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -27,6 +27,10 @@ public class DebugSlotPosCommand {
 					return 0;
 				}
 				EntityPart part = vehicle.getPartBySlotId(slot_id);
+				if (part == null) {
+					context.getSource().sendFailure(UtilMCText.literal("Slot with id "+slot_id+" does not exist!"));
+					return 0;
+				}
 				part.setRelativePos(rel_pos);
 				context.getSource().sendSuccess(UtilMCText.literal("Changed slot position! (NOT permanent!)"), false);
 				return 1;

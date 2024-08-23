@@ -1,0 +1,32 @@
+{
+  "values": [
+    "#dscombat:vehicle_part/weapon",
+    "#dscombat:vehicle_part/engine",
+    "#dscombat:vehicle_part/fuel_tank",
+    "#dscombat:vehicle_part/flares",
+    "dscombat:data_link",
+    "dscombat:night_vision_hud",
+    "dscombat:radio",
+    "dscombat:armor_piece",
+    "dscombat:gimbal_camera",
+    "dscombat:small_storage_box",
+    "dscombat:medium_storage_box",
+    "dscombat:large_storage_box",
+    "dscombat:ar500",
+    "dscombat:ar1k",
+    "dscombat:ar2k",
+    "dscombat:gr200",
+    "dscombat:gr400",
+    "dscombat:wr400",
+    "dscombat:wr1k",
+    "dscombat:gpr20",
+    "dscombat:gpr100",
+    "dscombat:ar20k",
+    "dscombat:axcel_truck_radar",
+    "dscombat:air_scan_a",
+    "dscombat:air_scan_b",
+    "dscombat:survey_all_a",
+    "dscombat:survey_all_b",
+    "dscombat:seat"
+  ]
+}

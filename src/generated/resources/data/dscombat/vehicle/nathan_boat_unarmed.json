@@ -1,0 +1,39 @@
+{
+  "copyId": "nathan_boat_empty",
+  "displayName": "preset.dscombat.nathan_boat_unarmed",
+  "ingredients": [
+    {
+      "item": "dscombat:cm_manly_52",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_fuel_tank",
+      "num": 1
+    }
+  ],
+  "is_craftable": true,
+  "landing_gear": true,
+  "presetId": "nathan_boat_unarmed",
+  "presetType": "boat",
+  "slots": [
+    {
+      "data": {
+        "part": "cm_manly_52"
+      },
+      "name": "internal_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_2"
+    },
+    {
+      "data": {
+        "part": "wr400"
+      },
+      "name": "internal_4"
+    }
+  ]
+}

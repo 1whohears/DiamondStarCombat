@@ -1,8 +1,9 @@
 {
-  "type": "bomb",
   "canShootOnGround": false,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:bomb_rack",
+  "compatibleWeaponPart": [
+    "bomb_rack"
+  ],
   "craftNum": 1,
   "damage": 40.0,
   "destroyTerrain": true,
@@ -14,8 +15,8 @@
   "fireRate": 11,
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot",
-      "num": 4
+      "num": 4,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:tnt",
@@ -25,8 +26,8 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:bomb",
   "maxAge": 200,
-  "maxAmmo": 10,
   "presetId": "anm64",
+  "presetType": "bomb",
   "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
   "speed": 0.0

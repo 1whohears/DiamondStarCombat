@@ -4,20 +4,20 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
-public class BroncoPlaneModel extends ObjAircraftModel<EntityPlane> {
+public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 
 	public BroncoPlaneModel() {
 		super("bronco-plane");
 	}
 	
 	@Override
-	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
+	protected Transforms getComponentTransforms(EntityVehicle entity, float partialTicks) {
 		// landing gear and blades
 		float bladerot = entity.getMotorRotation(partialTicks, 30);
 		float gearpos = entity.getLandingGearPos(partialTicks);

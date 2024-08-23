@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#dscombat:turret_shoot/random",
+    "#dscombat:turret_shoot/dumbass",
+    "#dscombat:turret_shoot/stupid",
+    "#dscombat:turret_shoot/normal",
+    "#dscombat:turret_shoot/smart"
+  ]
+}

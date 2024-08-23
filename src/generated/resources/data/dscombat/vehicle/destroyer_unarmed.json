@@ -1,0 +1,46 @@
+{
+  "copyId": "destroyer_empty",
+  "displayName": "preset.dscombat.destroyer_unarmed",
+  "ingredients": [
+    {
+      "item": "dscombat:compound_turbine",
+      "num": 2
+    },
+    {
+      "item": "dscombat:heavy_fuel_tank",
+      "num": 2
+    }
+  ],
+  "is_craftable": true,
+  "landing_gear": true,
+  "presetId": "destroyer_unarmed",
+  "presetType": "boat",
+  "slots": [
+    {
+      "data": {
+        "part": "compound_turbine"
+      },
+      "name": "internal_1"
+    },
+    {
+      "data": {
+        "part": "compound_turbine"
+      },
+      "name": "internal_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_4"
+    }
+  ]
+}

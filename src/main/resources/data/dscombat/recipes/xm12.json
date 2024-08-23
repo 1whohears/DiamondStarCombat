@@ -1,18 +1,15 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"T": {
-			"item": "dscombat:ti83"
-		},
 		"D": {
 			"item": "minecraft:dispenser"
 		},
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"tag": "dscombat:aluminum_ingot"
 		}
 	},
 	"pattern": [
-		"TID",
+		"IID",
 		"I  "
 	],
 	"result": {

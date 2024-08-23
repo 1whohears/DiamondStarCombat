@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.gpr20",
+  "item": "dscombat:gpr20",
+  "presetId": "gpr20",
+  "presetType": "internal_radar",
+  "radar": "gpr20",
+  "slotType": "tech_internal",
+  "weight": 600.0
+}

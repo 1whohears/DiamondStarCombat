@@ -1,0 +1,92 @@
+{
+  "copyId": "noah_chopper_unarmed",
+  "displayName": "preset.dscombat.noah_chopper",
+  "ingredients": [
+    {
+      "item": "dscombat:gr400",
+      "num": 1
+    },
+    {
+      "item": "dscombat:minigun_turret",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 2
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 1
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "dscombat:aluminum_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "noah_chopper",
+  "presetType": "helicopter",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "part": "minigun_turret"
+      },
+      "name": "seat2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65l",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9l",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm84e",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_4"
+    },
+    {
+      "data": {
+        "part": "gr400"
+      },
+      "name": "internal_6"
+    }
+  ]
+}

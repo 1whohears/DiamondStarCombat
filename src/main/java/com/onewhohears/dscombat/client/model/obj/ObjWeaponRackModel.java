@@ -1,9 +1,11 @@
 package com.onewhohears.dscombat.client.model.obj;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModels.ModelOverrides;
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -12,7 +14,7 @@ import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms
 
 public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel<T> {
 	
-	public static final int maxRenderedRackWeaponNum = 40;
+	public static final int maxRenderedRackWeaponNum = 30;
 	public static int renderedRackWeaponNum = 0;
 	
 	protected final int maxAmmoNum;
@@ -31,10 +33,10 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 	@Override
 	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
-		if (renderedRackWeaponNum > maxRenderedRackWeaponNum) return;
+		if (renderedRackWeaponNum > Config.CLIENT.maxRenderRackMissileNum.get()) return;
 		// FIXME 0 rendering many missile rack models has performance issues
-		int ammo = entity.getAmmoNum();
 		String weaponModelId = entity.getWeaponModelId();
+		if (weaponModelId == null || weaponModelId.isEmpty()) return;
 		CompositeRenderable model;
 		ModelOverrides mo;
 		if (weaponModelId.equals(prevWeaponModelId)) {
@@ -44,6 +46,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 			model = getWeaponModel(weaponModelId);
 			mo = getWeaponModelOverride(weaponModelId);
 		}
+		int ammo = entity.getAmmoNum();
 		for (int i = 0; i < ammo && i < maxAmmoNum; ++i) {
 			float x = i % 2 == 0 ? dX : -dX;
 			float y = (i/2 + 1) * dY - dY*0.5f;
@@ -60,7 +63,8 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 		poseStack.pushPose();
 		poseStack.translate(x, y, z);
 		mo.apply(poseStack);
-		model.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture), 
+		// it has been tested that RenderType#entitySolid is faster than RenderType#entityTranslucentCull (+10fps on my machine)
+		model.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture),
 				lightmap, OverlayTexture.NO_OVERLAY, partialTicks, Transforms.EMPTY);
 		poseStack.popPose();
 		++renderedRackWeaponNum;

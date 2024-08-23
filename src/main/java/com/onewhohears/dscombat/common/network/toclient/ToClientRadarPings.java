@@ -6,8 +6,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
-import com.onewhohears.dscombat.util.UtilPacket;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
+import com.onewhohears.dscombat.util.UtilClientPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,7 +44,7 @@ public class ToClientRadarPings extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilPacket.pingsPacket(id, pings);
+				UtilClientPacket.pingsPacket(id, pings);
 				success.set(true);
 			});
 		});

@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import java.util.Iterator;
 
-import com.onewhohears.dscombat.data.weapon.BunkerBusterData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.stats.BunkerBusterStats;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,21 +18,20 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class EntityBunkerBuster extends EntityBomb {
+public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<T> {
 	
 	public static final EntityDataAccessor<Integer> BLOCK_STRENGTH = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.INT);
 	
-	protected BunkerBusterData bunkerData;
-	
-	public EntityBunkerBuster(EntityType<? extends EntityBunkerBuster> type, Level level, String defaultWeaponId) {
+	// FIXME 8 bunker buster block breaking not compatible with FTB
+	// is it better to not break blocks at all?
+	public EntityBunkerBuster(EntityType<? extends EntityBunkerBuster<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
-		if (bunkerData != null) setBlockStrength(bunkerData.getBlockStrength());
+		if (getWeaponStats() != null) setBlockStrength(getWeaponStats().getBlockStrength());
 	}
 	
 	@Override
-	protected void castWeaponData() {
-		super.castWeaponData();
-		bunkerData = (BunkerBusterData)weaponData;
+	public WeaponType getWeaponType() {
+		return WeaponType.BUNKER_BUSTER;
 	}
 	
 	@Override
@@ -87,11 +86,6 @@ public class EntityBunkerBuster extends EntityBomb {
 	
 	public void reduceBlockStrength(int num) {
 		setBlockStrength(Math.max(getBlockStrength()-num, 0));
-	}
-	
-	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.BUNKER_BUSTER;
 	}
 
 }

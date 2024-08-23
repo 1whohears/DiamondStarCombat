@@ -1,0 +1,207 @@
+{
+  "displayName": "preset.dscombat.e3sentry_plane",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/e3sentry_plane.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 102,
+      "slot_ui_y": 5
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 102,
+      "slot_ui_y": 23
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 102,
+      "slot_ui_y": 41
+    },
+    {
+      "slot_name": "seat4",
+      "slot_ui_x": 102,
+      "slot_ui_y": 59
+    },
+    {
+      "slot_name": "seat5",
+      "slot_ui_x": 102,
+      "slot_ui_y": 77
+    },
+    {
+      "slot_name": "seat6",
+      "slot_ui_x": 102,
+      "slot_ui_y": 95
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 138,
+      "slot_ui_y": 5
+    },
+    {
+      "slot_name": "seat7",
+      "slot_ui_x": 138,
+      "slot_ui_y": 23
+    },
+    {
+      "slot_name": "seat8",
+      "slot_ui_x": 138,
+      "slot_ui_y": 41
+    },
+    {
+      "slot_name": "seat9",
+      "slot_ui_x": 138,
+      "slot_ui_y": 59
+    },
+    {
+      "slot_name": "seat10",
+      "slot_ui_x": 138,
+      "slot_ui_y": 77
+    },
+    {
+      "slot_name": "seat11",
+      "slot_ui_x": 138,
+      "slot_ui_y": 95
+    },
+    {
+      "slot_name": "left_wing_1",
+      "slot_ui_x": 80,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "left_wing_2",
+      "slot_ui_x": 60,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "right_wing_1",
+      "slot_ui_x": 160,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "right_wing_2",
+      "slot_ui_x": 180,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 59
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 5
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 120,
+      "slot_ui_y": 23
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 120,
+      "slot_ui_y": 41
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 120,
+      "slot_ui_y": 77
+    },
+    {
+      "slot_name": "internal_5",
+      "slot_ui_x": 120,
+      "slot_ui_y": 95
+    },
+    {
+      "slot_name": "internal_6",
+      "slot_ui_x": 84,
+      "slot_ui_y": 95
+    },
+    {
+      "slot_name": "internal_7",
+      "slot_ui_x": 120,
+      "slot_ui_y": 113
+    },
+    {
+      "slot_name": "internal_8",
+      "slot_ui_x": 156,
+      "slot_ui_y": 95
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "gear_front",
+        "pivot": {
+          "x": 0.0,
+          "y": -1.3125,
+          "z": 3.5
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "gear_left",
+        "pivot": {
+          "x": 2.0,
+          "y": -0.625,
+          "z": 0.6875
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "gear_right",
+        "pivot": {
+          "x": -2.0,
+          "y": -0.625,
+          "z": 0.6875
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "spinning_radar",
+        "model_part_key": "radar",
+        "pivot": {
+          "x": 0.0,
+          "y": 1.3125,
+          "z": -1.5
+        },
+        "radar_id": "ar20k",
+        "rot_axis": "Y",
+        "rot_rate": 2.0
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 23.0,
+        "input_axis": "ROLL",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 0.5,
+          "y": -1.25,
+          "z": 5.21875
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -15.0,
+        "input_axis": "PITCH",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 0.5,
+          "y": -1.25,
+          "z": 5.21875
+        },
+        "rot_axis": "X"
+      }
+    ],
+    "model_id": "e3sentry_plane"
+  },
+  "presetId": "e3sentry_plane",
+  "presetType": "standard"
+}

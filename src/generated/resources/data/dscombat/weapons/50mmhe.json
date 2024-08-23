@@ -1,8 +1,9 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": false,
-  "compatibleWeaponPart": "dscombat:xm12",
+  "compatibleWeaponPart": [
+    "xm12"
+  ],
   "craftNum": 16,
   "damage": 20.0,
   "destroyTerrain": true,
@@ -10,7 +11,7 @@
   "entityTypeKey": "dscombat:bullet",
   "explosionRadius": 3.0,
   "explosive": true,
-  "fireRate": 4,
+  "fireRate": 5,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
@@ -24,8 +25,9 @@
   "innacuracy": 1.0,
   "itemKey": "dscombat:50mmhe",
   "maxAge": 40,
-  "maxAmmo": 250,
+  "modelId": "50mmhe",
   "presetId": "50mmhe",
+  "presetType": "bullet",
   "rackTypeKey": "dscombat:xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 9.0

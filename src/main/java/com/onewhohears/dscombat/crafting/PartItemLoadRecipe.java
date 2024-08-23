@@ -6,10 +6,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartData;
-import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.util.UtilParse;
+import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -18,7 +18,7 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 
-public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> extends CustomRecipe {
+public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> extends CustomRecipe {
 
 	protected PartItemLoadRecipe(ResourceLocation id) {
 		super(id);
@@ -28,6 +28,8 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> exten
 	public boolean matches(CraftingContainer container, Level level) {
 		if (hasOutlier(container)) return false;
 		ItemStack part = getPartItem(container);
+		if (part == null) return false;
+		if (part.getCount() > 1) return false;
 		List<ItemStack> ammo = getAmmoItems(container);
 		I lpd = getLoadablePartDataFromItem(part);
 		return canItemsCombine(lpd, ammo);
@@ -109,7 +111,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> exten
 		if (lpd.updateContinuityIfEmpty() && lpd.isContinuityEmpty()) {
 			lpd.setContinuity(ammoCont);
 			lpd.setCurrentAmmo(0);
-			lpd.setMaxAmmo(getContinuityMaxAmmo(ammoCont));
+			lpd.setMaxAmmo(getContinuityMaxAmmo(lpd, ammoCont));
 		}
 	}
 
@@ -161,7 +163,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> exten
 	@Nullable
 	protected I getLoadablePartDataFromItem(ItemStack part) {
 		if (part == null) return null;
-		PartData pd = UtilParse.parsePartFromItem(part);
+		PartInstance<?> pd = UtilPresetParse.parsePartFromItem(part);
 		if (pd == null) return null;
 		return (I) pd;
 	}
@@ -189,7 +191,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartData> exten
 	public abstract boolean checkAmmoContinuity();
 	public abstract String getItemAmmoContinuity(ItemStack stack);
 	public abstract boolean isContinuityValid(String continuity);
-	public abstract int getContinuityMaxAmmo(String continuity);
+	public abstract int getContinuityMaxAmmo(I lpd, String continuity);
 	
 	public boolean canItemsCombine(I lpd, List<ItemStack> ammo) {
 		if (lpd == null || ammo == null || ammo.size() < 1) return false;

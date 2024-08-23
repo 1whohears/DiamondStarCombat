@@ -1,0 +1,167 @@
+{
+  "displayName": "preset.dscombat.axcel_truck",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/axcel_truck.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 111,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 129,
+      "slot_ui_y": 20
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 40
+    },
+    {
+      "slot_name": "cargo_bed_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 111,
+      "slot_ui_y": 60
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 129,
+      "slot_ui_y": 60
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 111,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 129,
+      "slot_ui_y": 100
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "spinning_radar",
+        "model_part_key": "radar",
+        "pivot": {
+          "x": 0.0625,
+          "y": 2.875,
+          "z": 0.9375
+        },
+        "radar_id": "axcel_truck_radar",
+        "rot_axis": "Y",
+        "rot_rate": 4.8
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wheel",
+        "pivot": {
+          "x": 0.4375,
+          "y": 1.6875,
+          "z": 1.625
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 0.9921875,
+          "y": 0.3755125,
+          "z": 0.8740625
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": -0.9921875,
+          "y": 0.3755125,
+          "z": 0.8740625
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 0.9921875,
+          "y": 0.3755125,
+          "z": 0.8740625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": -0.9921875,
+          "y": 0.3755125,
+          "z": 0.8740625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl1",
+        "pivot": {
+          "x": 0.9921875,
+          "y": 0.3755125,
+          "z": -2.1884375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr1",
+        "pivot": {
+          "x": -0.9921875,
+          "y": 0.3755125,
+          "z": -2.1884375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl2",
+        "pivot": {
+          "x": 0.9921875,
+          "y": 0.3755125,
+          "z": -3.1259375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr2",
+        "pivot": {
+          "x": -0.9921875,
+          "y": 0.3755125,
+          "z": -3.1259375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      }
+    ],
+    "model_id": "axcel_truck"
+  },
+  "presetId": "axcel_truck",
+  "presetType": "standard"
+}

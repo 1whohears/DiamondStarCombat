@@ -1,0 +1,186 @@
+{
+  "armor": 20.0,
+  "displayName": "preset.dscombat.nathan_boat_empty",
+  "health": 80.0,
+  "ingredients": [
+    {
+      "num": 10,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "dscombat:seat",
+      "num": 7
+    },
+    {
+      "item": "dscombat:propeller",
+      "num": 1
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:nathan_boat",
+  "landing_gear": true,
+  "presetId": "nathan_boat_empty",
+  "presetType": "boat",
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "pilot_seat",
+      "slot_posx": 0.8,
+      "slot_posy": 1.2,
+      "slot_posz": -1.13,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat1",
+      "slot_posx": 0.65,
+      "slot_posy": 1.2,
+      "slot_posz": 2.44,
+      "slot_type": "mount_light",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat2",
+      "slot_posx": -0.65,
+      "slot_posy": 1.2,
+      "slot_posz": 2.44,
+      "slot_type": "mount_light",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat3",
+      "slot_posx": 0.65,
+      "slot_posy": 1.2,
+      "slot_posz": 1.25,
+      "slot_type": "mount_light",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat4",
+      "slot_posx": -0.65,
+      "slot_posy": 1.2,
+      "slot_posz": 1.25,
+      "slot_type": "mount_light",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat5",
+      "slot_posx": 0.65,
+      "slot_posy": 1.2,
+      "slot_posz": -0.06,
+      "slot_type": "mount_light",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat6",
+      "slot_posx": -0.65,
+      "slot_posy": 1.2,
+      "slot_posz": -0.06,
+      "slot_type": "mount_light",
+      "zRot": 0.0
+    },
+    {
+      "name": "frame_1",
+      "slot_posx": 1.5,
+      "slot_posy": 1.0,
+      "slot_posz": 0.0,
+      "slot_type": "pylon_light",
+      "zRot": -90.0
+    },
+    {
+      "name": "frame_2",
+      "slot_posx": -1.5,
+      "slot_posy": 1.0,
+      "slot_posz": 0.0,
+      "slot_type": "pylon_light",
+      "zRot": 90.0
+    },
+    {
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "radial_engine",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_3",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    }
+  ],
+  "sort_factor": 0,
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:boat_1",
+    "passengerEngine": "dscombat:boat_1"
+  },
+  "stats": {
+    "armor_damage_absorbtion": 0.05,
+    "armor_damage_threshold": 1.0,
+    "assetId": "nathan_boat",
+    "base_armor": 20.0,
+    "cameraDistance": 4.0,
+    "crashExplosionRadius": 2.0,
+    "cross_sec_area": 4.5,
+    "entity_size_xz": 3.0,
+    "entity_size_y": 1.5,
+    "idleheat": 2.0,
+    "inertiapitch": 10.0,
+    "inertiaroll": 6.0,
+    "inertiayaw": 4.0,
+    "mass": 1000.0,
+    "max_health": 80.0,
+    "max_speed": 0.85,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 3.5,
+    "negativeThrottle": true,
+    "stealth": 1.0,
+    "throttledown": 0.1,
+    "throttleup": 0.05,
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 2.0,
+    "turn_radius": 0.0
+  }
+}

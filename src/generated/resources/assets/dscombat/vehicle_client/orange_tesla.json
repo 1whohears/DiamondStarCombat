@@ -1,0 +1,123 @@
+{
+  "displayName": "preset.dscombat.orange_tesla",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/orange_tesla.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 102,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 138,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 102,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 138,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 25
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 120,
+      "slot_ui_y": 45
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wheel",
+        "pivot": {
+          "x": 0.5,
+          "y": 1.1875,
+          "z": 0.8125
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 1.0,
+          "y": 0.375,
+          "z": 1.3125
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": -1.0,
+          "y": 0.375,
+          "z": 1.3125
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 1.0,
+          "y": 0.375,
+          "z": 1.3125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl1",
+        "pivot": {
+          "x": 1.0,
+          "y": 0.375,
+          "z": -1.1875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": -1.0,
+          "y": 0.375,
+          "z": 1.3125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr1",
+        "pivot": {
+          "x": -1.0,
+          "y": 0.375,
+          "z": -1.1875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      }
+    ],
+    "model_id": "orange_tesla"
+  },
+  "presetId": "orange_tesla",
+  "presetType": "standard"
+}

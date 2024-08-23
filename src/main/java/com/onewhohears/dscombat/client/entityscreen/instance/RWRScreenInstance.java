@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.entityscreen;
 
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
+import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 
 import net.minecraft.world.phys.Vec3;
 
@@ -22,8 +22,8 @@ public class EntityScreenIds {
 	/**
 	 * @param xPos a <code>double</code> corresponding to the x offset of the screen.
 	 *             At present this number is largely arbitrary and needs to be found
-	 *             by trial & error. For aircraft whose pilot seat lines up with the
-	 *             origin of the aircraft, this value will be close to 0.
+	 *             by trial & error. For vehicle whose pilot seat lines up with the
+	 *             origin of the vehicle, this value will be close to 0.
 	 */
 	public static EntityScreenData getDefaultHUDData(double xPos, double seatY, double seatZ) {
 	    return new EntityScreenData(

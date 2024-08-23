@@ -116,7 +116,7 @@
 	
 	"itemGroup.parts": "DSCombat Детали",
 	"itemGroup.weapons": "DSCombat Оружие",
-	"itemGroup.aircraft": "DSCombat Воздушная техника",
+	"itemGroup.vehicle": "DSCombat Воздушная техника",
 	
 	"item.dscombat.ti83": "TI83",
 	"item.dscombat.intel_pentium": "Intel Pentium",

@@ -1,28 +1,18 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import com.onewhohears.dscombat.data.DSCIngredientBuilder;
-import com.onewhohears.dscombat.data.JsonPreset;
-import com.onewhohears.dscombat.data.JsonPreset.JsonPresetFactory;
-import com.onewhohears.dscombat.data.weapon.TrackMissileData.TargetType;
-import com.onewhohears.dscombat.data.weapon.WeaponData.WeaponType;
+import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
+import com.onewhohears.dscombat.init.ModEntities;
 
+import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
 
 public class AbstractWeaponBuilders {
 	
-	public static abstract class WeaponBuilder<C extends WeaponBuilder<C>> extends DSCIngredientBuilder<C> {
+	public static abstract class WeaponBuilder<C extends WeaponBuilder<C>> extends IngredientStackBuilder<C> {
 		
-		protected final WeaponType type;
-		
-		protected WeaponBuilder(String namespace, String name, JsonPresetFactory<? extends WeaponData> sup, WeaponType type) {
-			super(namespace, name, sup);
-			this.type = type;
-		}
-		
-		@Override
-		public <T extends JsonPreset> T build() {
-			getData().addProperty("type", type.getId());
-			return super.build();
+		protected WeaponBuilder(String namespace, String name, WeaponType type) {
+			super(namespace, name, type);
 		}
 
 		public C setCraftNum(int craftNum) {
@@ -31,10 +21,6 @@ public class AbstractWeaponBuilders {
 		
 		public C setMaxAge(int maxAge) {
 			return setInt("maxAge", maxAge);
-		}
-		
-		public C setMaxAmmo(int maxAmmo) {
-			return setInt("maxAmmo", maxAmmo);
 		}
 		
 		public C setFireRate(int fireRate) {
@@ -61,12 +47,13 @@ public class AbstractWeaponBuilders {
 			return setString("rackTypeKey", "");
 		}
 		
-		public C setCompatibleWeaponPart(ResourceLocation compatibleWeaponPart) {
-			return setString("compatibleWeaponPart", compatibleWeaponPart.toString());
+		public C setCompatibleWeaponPart(String... compatibleWeaponPart) {
+			getData().add("compatibleWeaponPart", UtilParse.stringArrayToJsonArray(compatibleWeaponPart));
+			return (C) this;
 		}
 		
-		public C setNoCompatible() {
-			return setString("compatibleWeaponPart", "");
+		public C setCompatibleWeaponPart(ResourceLocation compatibleWeaponPart) {
+			return setCompatibleWeaponPart(compatibleWeaponPart.getPath());
 		}
 		
 		public C setItem(ResourceLocation itemKey) {
@@ -77,12 +64,22 @@ public class AbstractWeaponBuilders {
 			return setString("icon", weaponIcon.toString());
 		}
 		
+		public C setModelId(String modelId) {
+			return setString("modelId", modelId);
+		}
+		
 	}
 	
 	public abstract static class BulletBuilder<C extends BulletBuilder<C>> extends WeaponBuilder<C> {
 		
-		protected BulletBuilder(String namespace, String name, JsonPresetFactory<? extends BulletData> sup, WeaponType type) {
-			super(namespace, name, sup, type);
+		protected BulletBuilder(String namespace, String name, WeaponType type) {
+			super(namespace, name, type);
+		}
+		
+		@Override
+		protected void setupJsonData() {
+			super.setupJsonData();
+			setEntityType(ModEntities.BULLET.getId());
 		}
 		
 		public C setDamage(float damage) {
@@ -121,28 +118,40 @@ public class AbstractWeaponBuilders {
 	
 	public abstract static class BombBuilder<C extends BombBuilder<C>> extends BulletBuilder<C> {
 		
-		protected BombBuilder(String namespace, String name, JsonPresetFactory<? extends BombData> sup, WeaponType type) {
-			super(namespace, name, sup, type);
+		protected BombBuilder(String namespace, String name, WeaponType type) {
+			super(namespace, name, type);
+		}
+		
+		@Override
+		protected void setupJsonData() {
+			super.setupJsonData();
+			setEntityType(ModEntities.BOMB.getId());
 		}
 		
 	}
 	
 	public abstract static class BunkerBusterBuilder<C extends BunkerBusterBuilder<C>> extends BombBuilder<C> {
 		
-		protected BunkerBusterBuilder(String namespace, String name, JsonPresetFactory<? extends BunkerBusterData> sup, WeaponType type) {
-			super(namespace, name, sup, type);
+		protected BunkerBusterBuilder(String namespace, String name, WeaponType type) {
+			super(namespace, name, type);
 		}
 		
 		public C setBlockStrength(float blockStrength) {
 			return setFloat("blockStrength", blockStrength);
 		}
 		
+		@Override
+		protected void setupJsonData() {
+			super.setupJsonData();
+			setEntityType(ModEntities.BUNKER_BUSTER.getId());
+		}
+		
 	}
 	
 	public abstract static class MissileBuilder<C extends MissileBuilder<C>> extends BulletBuilder<C> {
 		
-		protected MissileBuilder(String namespace, String name, JsonPresetFactory<? extends MissileData> sup, WeaponType type) {
-			super(namespace, name, sup, type);
+		protected MissileBuilder(String namespace, String name, WeaponType type) {
+			super(namespace, name, type);
 		}
 		
 		public C setTurnRadius(float turnRadius) {

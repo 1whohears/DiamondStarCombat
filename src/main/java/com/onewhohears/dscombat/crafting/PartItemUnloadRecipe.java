@@ -2,7 +2,9 @@ package com.onewhohears.dscombat.crafting;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartData;
+import javax.annotation.Nonnull;
+
+import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 
-public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartData> extends PartItemLoadRecipe<I> {
+public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartInstance> extends PartItemLoadRecipe<I> {
 	
 	protected PartItemUnloadRecipe(ResourceLocation id) {
 		super(id);
@@ -19,7 +21,10 @@ public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartData> ext
 	
 	@Override
 	public boolean matches(CraftingContainer container, Level level) {
-		return !hasOutlier(container);
+		if (hasOutlier(container)) return false;
+		ItemStack part = getPartItem(container);
+		if (part == null) return false;
+		return part.getCount() == 1;
 	}
 	
 	@Override
@@ -31,6 +36,7 @@ public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartData> ext
 		if (checkAmmoContinuity() && !lpd.isContinuityEmpty() && !isContinuityValid(continuity)) 
 			return ItemStack.EMPTY;
 		ItemStack ammo = getNewAmmoItem(continuity);
+		if (ammo.isEmpty()) return ammo;
 		ammo.setCount((int)lpd.getCurrentAmmo());
 		return ammo;
 	}
@@ -60,6 +66,6 @@ public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartData> ext
 		return !isLoadablePartItem(stack);
 	}
 	
-	public abstract ItemStack getNewAmmoItem(String continuity);
+	@Nonnull public abstract ItemStack getNewAmmoItem(String continuity);
 	
 }

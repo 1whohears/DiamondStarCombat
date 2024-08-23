@@ -4,20 +4,20 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.model.obj.ObjAircraftModel;
-import com.onewhohears.dscombat.entity.aircraft.EntityPlane;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
-public class JasonPlaneModel extends ObjAircraftModel<EntityPlane> {
+public class JasonPlaneModel extends ObjVehicleModel<EntityVehicle> {
 	
 	public JasonPlaneModel() {
 		super("jason_plane");
 	}
 	
 	@Override
-	protected Transforms getComponentTransforms(EntityPlane entity, float partialTicks) {
+	protected Transforms getComponentTransforms(EntityVehicle entity, float partialTicks) {
 		// blade
 		float bladerot = entity.getMotorRotation(partialTicks, 20);
 		Matrix4f blade0_mat = UtilAngles.pivotPixelsRotZ(-0.0426f, 42.0581f, 82.8989f, bladerot);

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.common.container.menu;
 
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;

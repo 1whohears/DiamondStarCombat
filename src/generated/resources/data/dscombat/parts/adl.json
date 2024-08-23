@@ -1,0 +1,10 @@
+{
+  "changeLaunchPitch": 20.0,
+  "displayName": "item.dscombat.adl",
+  "item": "dscombat:adl",
+  "max": 3,
+  "presetId": "adl",
+  "presetType": "external_weapon",
+  "slotType": "mount_heavy",
+  "weight": 6000.0
+}

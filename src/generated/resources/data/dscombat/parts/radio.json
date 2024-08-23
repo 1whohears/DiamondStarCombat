@@ -1,0 +1,9 @@
+{
+  "buffType": "RADIO",
+  "displayName": "item.dscombat.radio",
+  "item": "dscombat:radio",
+  "presetId": "radio",
+  "presetType": "buff",
+  "slotType": "internal",
+  "weight": 40.0
+}

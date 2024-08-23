@@ -17,7 +17,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class EntityModelGruetzBB extends EntityModel<EntityBunkerBuster> {
+public class EntityModelGruetzBB extends EntityModel<EntityBunkerBuster<?>> {
 	
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(DSCombatMod.MODID, "gruetz_bunker_buster"), "main");
 	private final ModelPart main;
@@ -29,7 +29,7 @@ public class EntityModelGruetzBB extends EntityModel<EntityBunkerBuster> {
 	}
 	
 	@Override
-	public void setupAnim(EntityBunkerBuster entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityBunkerBuster<?> entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		drill.yRot = ageInTicks * Mth.PI / 32;
 	}
 

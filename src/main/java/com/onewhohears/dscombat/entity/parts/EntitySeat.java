@@ -7,14 +7,12 @@ import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle.AircraftType;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -92,7 +90,7 @@ public class EntitySeat extends EntityPart {
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
 						80, 0, false, false));
 			}	
-			if (craft.getAircraftType() == AircraftType.SUBMARINE) {
+			if (craft.getStats().isSub()) {
 				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 
 						80, 0, false, false));
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
@@ -124,6 +122,15 @@ public class EntitySeat extends EntityPart {
     protected boolean canRide(Entity entityIn) {
 		return entityIn instanceof EntityVehicle;
     }
+	
+	@Override
+	protected void removePassenger(Entity passenger) {
+		super.removePassenger(passenger);
+		if (level.isClientSide) return;
+		EntityVehicle vehicle = getParentVehicle();
+		if (vehicle == null) return;
+		vehicle.onSeatDismount(passenger);
+	}
 	
 	@Override
     public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
@@ -176,15 +183,6 @@ public class EntitySeat extends EntityPart {
 	public boolean shouldRender() {
 		return false;
 	}
-	
-	@Override
-    public boolean hurt(DamageSource source, float amount) {
-		if (source.isExplosion() || source.isMagic()) return true;
-		Entity v = getVehicle();
-		if (v == null) return false;
-		v.hurt(source, amount);
-		return true;
-	}
 
 	@Override
 	public PartType getPartType() {
@@ -202,7 +200,7 @@ public class EntitySeat extends EntityPart {
 	}
 	
 	public float getCameraYOffset() {
-		// TODO 4.2 option to change turret camera position. so camera could be under the aircraft
+		// TODO 4.2 option to change turret camera position. so camera could be under the vehicle
 		return 0;
 	}
 	
@@ -210,5 +208,15 @@ public class EntitySeat extends EntityPart {
 	public boolean isSeat() {
 		return true;
 	}
-
+	// set to false so players can't melee attack the seats
+	@Override
+	public boolean isAttackable() {
+		return false;
+	}
+	// set to false so projectiles go through seat hitboxes
+	@Override
+	public boolean isAlive() {
+		return false;
+	}
+	
 }

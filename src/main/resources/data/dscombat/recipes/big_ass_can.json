@@ -1,17 +1,17 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"I": {
-			"item": "minecraft:cauldron"
-		},
 		"C": {
-			"item": "minecraft:coal_block"
+			"type": "forge:partial_nbt",
+			"item": "dscombat:big_gas_can",
+			"nbt": {
+				"Damage": 0
+			}
 		}
 	},
 	"pattern": [
-		"CCC",
-		"CCC",
-		"I I"
+		"CC",
+		"CC"
 	],
 	"result": {
 		"count": 1,

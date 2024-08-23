@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.ar500",
   "fov": 70.0,
   "presetId": "ar500",
+  "presetType": "standard",
   "range": 500.0,
   "scanAir": true,
   "scanAircraft": true,

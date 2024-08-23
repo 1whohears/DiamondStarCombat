@@ -1,27 +1,26 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.aircraft.DSCPhyCons;
-import com.onewhohears.dscombat.data.weapon.BulletData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityBullet extends EntityWeapon {
+public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 	
-	protected BulletData bulletData;
-	
-	public EntityBullet(EntityType<? extends EntityBullet> type, Level level, String defaultWeaponId) {
+	public EntityBullet(EntityType<? extends EntityBullet<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 	}
 	
 	@Override
-	protected void castWeaponData() {
-		bulletData = (BulletData)weaponData;
+	public WeaponType getWeaponType() {
+		return WeaponType.BULLET;
 	}
 	
 	@Override
@@ -56,31 +55,31 @@ public class EntityBullet extends EntityWeapon {
 	
 	@Override
 	public float getDamage() {
-		return bulletData.getDamage();
+		return getWeaponStats().getDamage();
 	}
 	
 	public boolean getExplosive() {
-		return bulletData.isExplosive();
+		return getWeaponStats().isExplosive();
 	}
 	
 	public boolean getTerrain() {
-		return bulletData.isDestroyTerrain();
+		return getWeaponStats().isDestroyTerrain();
 	}
 	
 	public boolean getFire() {
-		return bulletData.isCausesFire();
+		return getWeaponStats().isCausesFire();
 	}
 	
 	public float getRadius() {
-		return bulletData.getExplosionRadius();
+		return getWeaponStats().getExplosionRadius();
 	}
 	
 	public double getSpeed() {
-		return bulletData.getSpeed();
+		return getWeaponStats().getSpeed();
 	}
 	
 	public int getExplodeNum() {
-		return bulletData.getExplodeNum();
+		return getWeaponStats().getExplodeNum();
 	}
 	
 	@Override
@@ -101,14 +100,9 @@ public class EntityBullet extends EntityWeapon {
 	}
 
 	@Override
-	public WeaponData.WeaponType getWeaponType() {
-		return WeaponData.WeaponType.BULLET;
-	}
-
-	@Override
-	public WeaponData.WeaponClientImpactType getClientImpactType() {
-		if (getExplosive()) return WeaponData.WeaponClientImpactType.SMALL_BULLET_EXPLODE;
-		return WeaponData.WeaponClientImpactType.SMALL_BULLET_IMPACT;
+	public WeaponStats.WeaponClientImpactType getClientImpactType() {
+		if (getExplosive()) return WeaponStats.WeaponClientImpactType.SMALL_BULLET_EXPLODE;
+		return WeaponStats.WeaponClientImpactType.SMALL_BULLET_IMPACT;
 	}
 
 }

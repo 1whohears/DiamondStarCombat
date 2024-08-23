@@ -5,8 +5,8 @@ import java.util.Collection;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.onewhohears.dscombat.command.argument.VehiclePresetArgument;
-import com.onewhohears.dscombat.data.aircraft.AircraftPreset;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -26,7 +26,7 @@ public class VehicleCommand {
 			)));
 	}
 	
-	private int giveVehicle(CommandContext<CommandSourceStack> context, AircraftPreset preset, Collection<ServerPlayer> players) {
+	private int giveVehicle(CommandContext<CommandSourceStack> context, VehicleStats preset, Collection<ServerPlayer> players) {
 		ItemStack item = preset.getItem();
 		if (players == null) {
 			ServerPlayer player = context.getSource().getPlayer();

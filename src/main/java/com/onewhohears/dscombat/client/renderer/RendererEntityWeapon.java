@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererEntityWeapon<T extends EntityWeapon> extends EntityRenderer<T> {
+public class RendererEntityWeapon<T extends EntityWeapon<?>> extends EntityRenderer<T> {
 	
 	protected final EntityModel<?> model;
 	protected final ResourceLocation texture;

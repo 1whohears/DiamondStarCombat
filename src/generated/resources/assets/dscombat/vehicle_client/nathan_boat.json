@@ -1,0 +1,101 @@
+{
+  "displayName": "preset.dscombat.nathan_boat",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/nathan_boat.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 102,
+      "slot_ui_y": 96
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 102,
+      "slot_ui_y": 42
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 138,
+      "slot_ui_y": 42
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 102,
+      "slot_ui_y": 60
+    },
+    {
+      "slot_name": "seat4",
+      "slot_ui_x": 138,
+      "slot_ui_y": 60
+    },
+    {
+      "slot_name": "seat5",
+      "slot_ui_x": 102,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "seat6",
+      "slot_ui_x": 138,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 66,
+      "slot_ui_y": 60
+    },
+    {
+      "slot_name": "frame_2",
+      "slot_ui_x": 174,
+      "slot_ui_y": 60
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 96
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 120,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 120,
+      "slot_ui_y": 60
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 120,
+      "slot_ui_y": 42
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "rudder/blade",
+        "pivot": {
+          "x": 0.0,
+          "y": -0.25,
+          "z": -2.25
+        },
+        "rot_axis": "Z",
+        "rot_rate": 43.0
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 15.0,
+        "input_axis": "YAW",
+        "model_part_key": "rudder",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.6875,
+          "z": -1.25
+        },
+        "rot_axis": "Y"
+      }
+    ],
+    "model_id": "nathan_boat"
+  },
+  "presetId": "nathan_boat",
+  "presetType": "standard"
+}

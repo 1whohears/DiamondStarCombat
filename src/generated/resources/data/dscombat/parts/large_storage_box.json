@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.large_storage_box",
+  "item": "dscombat:large_storage_box",
+  "presetId": "large_storage_box",
+  "presetType": "internal_storage",
+  "size": 27,
+  "slotType": "internal",
+  "weight": 3000.0
+}

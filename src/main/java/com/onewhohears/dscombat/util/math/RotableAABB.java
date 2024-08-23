@@ -1,28 +1,29 @@
 package com.onewhohears.dscombat.util.math;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import com.mojang.math.Quaternion;
 
-import net.minecraft.util.Mth;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RotableAABB {
 	
 	public static final double SUBSIZE = 0.5;
 	public static final double SUBSIZEHALF = SUBSIZE*0.5;
-	//public static final double SUB_COL_SKIN = 1E-7;
 	public static final double SUB_COL_SKIN = 0;
+	public static final double COLLIDE_CHECK_SKIN = 0;
+	public static final double PUSH_OUT_SKIN = 0;
+	public static final double INSIDE_PUSH_OUT_SKIN = 0;
+	public static final double IS_INSIDE_CHECK_SKIN = -0.01;
+	public static final double PROBLEM_Y_ADJUST = 0;
 	
 	private Vec3 center, extents;
+	private double maxRadius;
 	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
-	private final List<VoxelShape> subColliders = new ArrayList<>();
 	
 	public RotableAABB(AABB bb) {
 		this(bb.getCenter(), extentsFromBB(bb));
@@ -39,6 +40,7 @@ public class RotableAABB {
 	public RotableAABB(Vec3 center, Vec3 extents) {
 		this.center = center;
 		this.extents = extents;
+		this.maxRadius = extents.length();
 	}
 	
 	public RotableAABB copy() {
@@ -50,51 +52,27 @@ public class RotableAABB {
 		setRot(q);
 	}
 	
-	public boolean updateColliders(List<VoxelShape> colliders, Vec3 pos, AABB aabb, Vec3 entityMoveByParent) {
-		//System.out.println("ADDING SUB COLLIDERS "+getSubColliders().size());
-		subColliders.clear();
-		boolean stuck = addSubColliders(pos, aabb);
-		//if (!UtilGeometry.isZero(entityMoveByParent)) 
-		//	stuck = addSubColliders(pos.add(entityMoveByParent), aabb.move(entityMoveByParent));
-		colliders.addAll(subColliders);
-		return stuck;
-	}
-	
-	public boolean addSubColliders(Vec3 pos, AABB aabb) {
-		boolean stuck = false;
-		Vec3 clip = getPushOutPos(pos, aabb, SUB_COL_SKIN);
-		Vec3 clipPosDiff = clip.subtract(pos);
-		//System.out.println("clip pos diff = "+clipPosDiff);
-		if (clipPosDiff.y < 1E-6 && clipPosDiff.y > 0) {
-			clip = clip.subtract(0, clipPosDiff.y, 0);
-			stuck = true;
-		}
-		//System.out.println("push clip = "+clip);
-		Vec3 clipRelRot = toRelRotPos(clip);
-		for (int i = 1; i <= 4; ++i) {
-			double radius = SUBSIZEHALF * i;
-			Vec3 shapeRelRot = new Vec3(
-					shapePosComponent(clipRelRot.x, extents.x+SUB_COL_SKIN, radius), 
-					shapePosComponent(clipRelRot.y, extents.y+SUB_COL_SKIN, radius), 
-					shapePosComponent(clipRelRot.z, extents.z+SUB_COL_SKIN, radius));
-			Vec3 shape = toWorldPos(shapeRelRot);
-			//System.out.println("shape = "+shape);
-			addShape(shape, radius);
-		}
-		return stuck;
-	}
-	
-	private double shapePosComponent(double clipRelRot, double ext, double radius) {
-		double max = ext - radius;
-		return Math.signum(clipRelRot) * Math.min(Math.abs(clipRelRot), max);
-	}
-	
-	private void addShape(Vec3 pos, double radius) {
-		//System.out.println("shape pos = "+pos);
-		VoxelShape shape = Shapes.create(
-			pos.x-radius, pos.y-radius, pos.z-radius, 
-			pos.x+radius, pos.y+radius, pos.z+radius);
-		subColliders.add(shape);
+	public Vec3 collide(Vec3 pos, AABB aabb, Vec3 move) {
+		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
+		//System.out.println("clip = "+clip);
+		/*if (move.x > 0 && clip.x < getCenter().x && pos.x + move.x > clip.x) 
+			move = new Vec3(clip.x - pos.x, move.y, move.z);
+		else if (move.x < 0 && clip.x > getCenter().x && pos.x + move.x < clip.x) 
+			move = new Vec3(clip.x - pos.x, move.y, move.z);*/
+		
+		if (move.y > 0 && clip.y < getCenter().y && pos.y + move.y > clip.y) 
+			move = new Vec3(move.x, clip.y - pos.y, move.z);
+		else if (move.y < 0 && clip.y > getCenter().y && pos.y + move.y < clip.y) 
+			move = new Vec3(move.x, clip.y - pos.y, move.z);
+		// HOW 2.2 if the boat rotates too much, the player starts to vibrate up and down. this fixes it...
+		// but the player gets stuck briefly when landing. 
+		if (move.y > -0.08 && move.y < 0) move = move.multiply(1, 0, 1);
+		
+		/*if (move.z > 0 && clip.z < getCenter().z && pos.z + move.z > clip.z) 
+			move = new Vec3(move.x, move.y, clip.z - pos.z);
+		else if (move.z < 0 && clip.z > getCenter().z && pos.z + move.z < clip.z) 
+			move = new Vec3(move.x, move.y, clip.z - pos.z);*/
+		return move;
 	}
 	
 	public boolean contains(AABB aabb) {
@@ -117,7 +95,9 @@ public class RotableAABB {
 	}
 	
 	public boolean isInside(AABB aabb) {
-		return isInside(aabb, 0);
+		boolean inside = isInside(aabb, 0);
+		//System.out.println("INTERSECT CHECK "+inside+" "+aabb+" "+this);
+		return inside;
 	}
 	
 	public boolean isInside(Vec3 pos, double skin) {
@@ -158,7 +138,7 @@ public class RotableAABB {
 	public Optional<Vec3> clip(Vec3 from, Vec3 to, boolean push) {
 		Vec3 fromRelRot = toRelRotPos(from);
 		if (isInsideRelPos(fromRelRot)) {
-			if (push) return Optional.of(getPushOutPos(from, SUB_COL_SKIN));
+			if (push) return Optional.of(getPushOutPos(from, PUSH_OUT_SKIN));
 			else return Optional.of(from);
 		}
 		Vec3 toRelRot = toRelRotPos(to);
@@ -331,6 +311,10 @@ public class RotableAABB {
 		return extents;
 	}
 	
+	public void setExtents(Vec3 extents) {
+		this.extents = extents;
+	}
+	
 	public Quaternion getRot() {
 		return rot.copy();
 	}
@@ -345,23 +329,36 @@ public class RotableAABB {
 		roti.conj();
 	}
 	
+	public double getMaxRadius() {
+		return maxRadius;
+	}
+	
 	public EntityDimensions getMaxDimensions() {
-		float x = (float) extents.x(), y = (float) extents.y(), z = (float) extents.z();
-		float max = Mth.sqrt(x*x+y*y+z*z);
+		float max = (float) getMaxRadius();
 		return EntityDimensions.scalable(max*2, max*2);
 	}
 	
 	public DisguisedAABB getDisguisedAABB(Vec3 pos) {
+		//return new DisguisedAABB(this, pos, getMaxRadius());
 		return new DisguisedAABB(this, pos, 0.5);
 	}
 	
-	public AABB getMaxDimBox() {
+	public AABB makeMaxDimBox() {
 		EntityDimensions d = getMaxDimensions();
     	double pX = center.x, pY = center.y, pZ = center.z;
     	double f = d.width / 2.0F;
         double f1 = d.height / 2.0F;
         return new AABB(pX-f, pY-f1, pZ-f, 
         		pX+f, pY+f1, pZ+f);
+	}
+	
+	@Override
+	public String toString() {
+		return "RotableAABB:"+getCenter()+":"+getExtents();
+	}
+	
+	public double getMaxY() {
+		return UtilAngles.rotateVector(getExtents(), rot).y + getCenter().y;
 	}
 	
 }

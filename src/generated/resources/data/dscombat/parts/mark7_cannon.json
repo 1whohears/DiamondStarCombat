@@ -1,0 +1,17 @@
+{
+  "displayName": "item.dscombat.mark7_cannon",
+  "externalEntity": "dscombat:mark7_cannon",
+  "item": "dscombat:mark7_cannon",
+  "maxAmmo": 36,
+  "maxHealth": 200.0,
+  "presetId": "mark7_cannon",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 12
+    }
+  ],
+  "slotType": "mount_heavy",
+  "weight": 4500.0
+}

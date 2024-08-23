@@ -1,0 +1,12 @@
+{
+  "displayName": "item.dscombat.allison_v_1710",
+  "engineType": "PUSH",
+  "fuelRate": 0.009,
+  "heat": 2.5,
+  "item": "dscombat:allison_v_1710",
+  "presetId": "allison_v_1710",
+  "presetType": "internal_engine",
+  "slotType": "radial_engine",
+  "thrust": 80.0,
+  "weight": 300.0
+}

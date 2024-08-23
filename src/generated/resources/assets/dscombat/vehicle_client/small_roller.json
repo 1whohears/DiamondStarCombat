@@ -1,0 +1,72 @@
+{
+  "displayName": "preset.dscombat.small_roller",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/small_roller.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 120,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 111,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 129,
+      "slot_ui_y": 70
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl0",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.40625,
+          "z": 0.40625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wl1",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.40625,
+          "z": -0.40625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr0",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.40625,
+          "z": 0.40625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wr1",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.40625,
+          "z": -0.40625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      }
+    ],
+    "model_id": "small_roller"
+  },
+  "presetId": "small_roller",
+  "presetType": "standard"
+}

@@ -11,7 +11,7 @@
 			"item": "minecraft:tinted_glass"
 		},
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"tag": "dscombat:aluminum_ingot"
 		}
 	},
 	"pattern": [

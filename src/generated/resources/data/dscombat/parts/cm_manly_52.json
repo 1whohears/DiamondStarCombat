@@ -1,0 +1,12 @@
+{
+  "displayName": "item.dscombat.cm_manly_52",
+  "engineType": "PUSH",
+  "fuelRate": 0.004,
+  "heat": 2.0,
+  "item": "dscombat:cm_manly_52",
+  "presetId": "cm_manly_52",
+  "presetType": "internal_engine",
+  "slotType": "radial_engine",
+  "thrust": 40.0,
+  "weight": 200.0
+}

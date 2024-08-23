@@ -1,0 +1,118 @@
+{
+  "copyId": "cruiser_unarmed",
+  "displayName": "preset.dscombat.cruiser",
+  "ingredients": [
+    {
+      "item": "dscombat:vls",
+      "num": 2
+    },
+    {
+      "item": "dscombat:mls",
+      "num": 1
+    },
+    {
+      "item": "dscombat:ciws",
+      "num": 1
+    },
+    {
+      "item": "dscombat:aa_turret",
+      "num": 3
+    },
+    {
+      "item": "dscombat:torpedo_tubes",
+      "num": 2
+    },
+    {
+      "item": "dscombat:air_scan_b",
+      "num": 1
+    },
+    {
+      "item": "dscombat:wr1k",
+      "num": 1
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "cruiser",
+  "presetType": "boat",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "bgm109",
+        "part": "vls"
+      },
+      "name": "seat5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "rgm84",
+        "part": "mls"
+      },
+      "name": "seat6"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "bgm109",
+        "part": "vls"
+      },
+      "name": "seat7"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "aa_turret"
+      },
+      "name": "seat8"
+    },
+    {
+      "data": {
+        "part": "air_scan_b"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "ciws"
+      },
+      "name": "frame_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "aa_turret"
+      },
+      "name": "frame_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "aa_turret"
+      },
+      "name": "frame_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "torpedo_tubes"
+      },
+      "name": "frame_5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "torpedo_tubes"
+      },
+      "name": "frame_6"
+    },
+    {
+      "data": {
+        "part": "wr1k"
+      },
+      "name": "internal_7"
+    }
+  ]
+}

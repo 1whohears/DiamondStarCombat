@@ -4,10 +4,11 @@ import java.util.function.Predicate;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.util.UtilEntity;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,25 +21,29 @@ import net.minecraft.world.phys.AABB;
 public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
 	
 	public static TurretTargetGoal<Player> targetPlayers(Mob mob, EntityTurret turret) {
-		return new TurretTargetGoal<>(mob, turret, Player.class, turret.getAIHorizontalRange(), 
-				checkCanTarget(mob, turret, false));
+		double range = turret.getAIHorizontalRange();
+		return new TurretTargetGoal<>(mob, turret, Player.class, range, 
+				checkCanTarget(mob, turret, false, range));
 	}
 	
 	public static TurretTargetGoal<LivingEntity> targetEnemy(Mob mob, EntityTurret turret) {
-		return new TurretTargetGoal<>(mob, turret, LivingEntity.class, turret.getAIHorizontalRange(), 
-				checkCanTarget(mob, turret, true));
+		double range = turret.getAIHorizontalRange();
+		return new TurretTargetGoal<>(mob, turret, LivingEntity.class, range, 
+				checkCanTarget(mob, turret, true, range));
 	}
 	
-	public static Predicate<LivingEntity> checkCanTarget(Mob mob, EntityTurret turret, boolean enemyCheck) {
+	public static Predicate<LivingEntity> checkCanTarget(Mob mob, EntityTurret turret, boolean enemyCheck, double range) {
 		return (entity) -> {
-			WeaponData wd = turret.getWeaponData();
+			WeaponInstance<?> wd = turret.getWeaponData();
 			if (wd == null) return false;
 			if (entity == null) return false;
 			if (entity.isRemoved()) return false;
 			if (entity.isDeadOrDying()) return false;
 			if (!entity.isAttackable()) return false;
 			if (entity.isSpectator()) return false;
-			if (mob.isAlliedTo(entity)) return false;
+			if (entity.position().subtract(turret.position()).horizontalDistance() > range) return false;
+			if (entity.isAlliedTo(mob)) return false;
+			if (mob.isPassengerOfSameVehicle(entity)) return false;
 			boolean isPlayer = false;
 			if (entity instanceof Player player) {
 				isPlayer = true;
@@ -48,9 +53,9 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 				if (mob.getTeam() == null && isPlayer) return false;
 				if (!(entity instanceof Enemy)) return false;
 			}
-			if (wd.getType().isIRMissile()) {
-				if (UtilEntity.isOnGroundOrWater(entity)) return false;
-			} else if (wd.requiresRadar()) {
+			if (wd.getStats().isIRMissile()) {
+				if (UtilVehicleEntity.isOnGroundOrWater(entity)) return false;
+			} else if (wd.getStats().requiresRadar()) {
 				EntityVehicle vehicle = turret.getParentVehicle();
 				if (vehicle == null) return false;
 				if (!vehicle.radarSystem.hasTarget(entity)) return false;
@@ -66,10 +71,10 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	@Override
 	protected void findTarget() {
 		//System.out.println("find target");
-		WeaponData wd = turret.getWeaponData();
+		WeaponInstance<?> wd = turret.getWeaponData();
 		EntityVehicle vehicle = turret.getParentVehicle();
 		if (wd == null || vehicle == null) return;
-		if (wd.requiresRadar()) {
+		if (wd.getStats().requiresRadar()) {
 			if (targetType != Player.class && targetType != ServerPlayer.class) 
 				target = vehicle.radarSystem.getLivingTargetByWeapon(wd);
 			else target = vehicle.radarSystem.getPlayerTargetByWeapon(wd);
@@ -117,7 +122,6 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 		this.turret = turret;
 		this.range = range;
 		this.targetConditions.ignoreLineOfSight(); // vanilla line of sight has a limit of 128 blocks
-		//this.setFlags(EnumSet.noneOf(Goal.Flag.class));
 	}
 	
 	@Override
@@ -132,6 +136,11 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	@Override
 	protected double getFollowDistance() {
 		return range;
+	}
+	
+	@Override
+	public void start() {
+		super.start();
 	}
 
 }

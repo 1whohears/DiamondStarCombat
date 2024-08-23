@@ -3,9 +3,10 @@ package com.onewhohears.dscombat.client.model.obj;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 

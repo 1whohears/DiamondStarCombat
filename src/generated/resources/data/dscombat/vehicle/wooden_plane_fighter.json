@@ -1,0 +1,36 @@
+{
+  "copyId": "wooden_plane",
+  "displayName": "preset.dscombat.wooden_plane_fighter",
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "dscombat:xm12",
+      "num": 2
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "wooden_plane_fighter",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "20mm",
+        "part": "xm12"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "20mm",
+        "part": "xm12"
+      },
+      "name": "right_wing_1"
+    }
+  ]
+}

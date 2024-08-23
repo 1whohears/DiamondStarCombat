@@ -10,13 +10,16 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSetRadarMode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
-import com.onewhohears.dscombat.data.radar.RadarData.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
+import net.minecraft.Util;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -24,6 +27,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -38,7 +42,7 @@ public final class ClientInputEvents {
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.END) return;
+		if (event.phase != Phase.START) return;
 
 		Minecraft mc = Minecraft.getInstance();
 		final var player = mc.player;
@@ -49,7 +53,6 @@ public final class ClientInputEvents {
 		
 		boolean openMenu = DSCKeys.vehicleMenuKey.consumeClick();
 		boolean toggleGear = DSCKeys.landingGear.consumeClick();
-		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
 		if (DSCKeys.mouseModeKey.consumeClick()) DSCClientInputs.cycleMouseMode();
 		if (DSCKeys.resetMouseKey.isDown()) DSCClientInputs.centerMousePos();
 		else if (mc.screen != null) DSCClientInputs.centerMousePos();
@@ -75,7 +78,7 @@ public final class ClientInputEvents {
 			rollRight = DSCKeys.rollRightKey.isDown();
 		}
 		// should pitch/throttle flip
-		boolean type_flip = plane.getAircraftType().flipPitchThrottle;
+		boolean type_flip = plane.getStats().flipPitchThrottle();
 		boolean mode = DSCClientInputs.isCameraLockedForward();
 		if ((!type_flip && (flip ^ mode)) || (type_flip && !flip)) {
 			pitchUp = DSCKeys.throttleUpKey.isDown();
@@ -90,7 +93,7 @@ public final class ClientInputEvents {
 		}
 		// should invert
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
-		if (plane.getAircraftType().ignoreInvertY) invertY = -1;
+		if (plane.getStats().ignoreInvertY()) invertY = -1;
 		if (DSCClientInputs.isCameraLockedForward()) {
 			// FIXME 2.1 fix mouse control mode
 			double ya = Math.abs(mouseY);
@@ -131,26 +134,27 @@ public final class ClientInputEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		plane.inputs.clientUpdateServerControls(plane, 
+		plane.inputs.clientPilotControlsToServer(plane, 
 				throttle, pitch, roll, yaw, 
 				flare, openMenu, special, special2, 
-				rollLeft && rollRight, 
-				cycleRadarMode, toggleGear,
+				rollLeft && rollRight, toggleGear,
 				DSCClientInputs.isCameraLockedForward());
 		if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
 	}
 	
 	private static int leftTicks = 0;
+	private static long radarModeUpdateTime = 0;
 	
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void clientTickPassengerControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.END) return;
+		if (event.phase != Phase.START) return;
 		Minecraft m = Minecraft.getInstance();
 		if (m.mouseHandler.isLeftPressed()) ++leftTicks;
 		else leftTicks = 0;
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
+		boolean isRadarController = player.equals(plane.getControllingPlayerOrBot());
 		if (DSCClientInputs.disable3rdPersonVehicle) m.options.setCameraType(CameraType.FIRST_PERSON);
 		/**
 		 * THIS TELLS SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
@@ -189,6 +193,16 @@ public final class ClientInputEvents {
 		// DISMOUNT 
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerDismount());
+		}
+		// CYCLE RADAR MODE
+		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
+		if (cycleRadarMode) {
+			DSCClientInputs.cyclePreferredRadarMode();
+			if (!isRadarController) player.displayClientMessage(UtilMCText.translatable("info.dscombat.not_radar_controller"), true);
+		}
+		if (isRadarController && DSCClientInputs.getPreferredRadarMode() != plane.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
+			PacketHandler.INSTANCE.sendToServer(new ToServerSetRadarMode(DSCClientInputs.getPreferredRadarMode()));
+			radarModeUpdateTime = Util.getMillis();
 		}
 		// RADAR DISPLAY RANGE
 		if (DSCKeys.radarDisplayRangeKey.consumeClick()) {
@@ -233,6 +247,11 @@ public final class ClientInputEvents {
 		Entity mounted = event.getEntityBeingMounted();
 		if (!(mounted instanceof EntitySeat)) return;
 		DSCClientInputs.setClientMountTime(System.currentTimeMillis());
+	}
+	
+	@SubscribeEvent
+	public static void clientLogin(ClientPlayerNetworkEvent.LoggingIn event) {
+		DSCClientInputs.setPreferredRadarMode(Config.CLIENT.defaultRadarMode.get());
 	}
 	
 }

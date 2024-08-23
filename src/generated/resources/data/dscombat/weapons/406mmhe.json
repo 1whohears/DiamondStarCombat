@@ -1,8 +1,9 @@
 {
-  "type": "bullet",
   "canShootOnGround": true,
   "causesFire": true,
-  "compatibleWeaponPart": "",
+  "compatibleWeaponPart": [
+    "mark7_cannon"
+  ],
   "craftNum": 1,
   "damage": 70.0,
   "destroyTerrain": true,
@@ -24,9 +25,10 @@
   "innacuracy": 1.1,
   "itemKey": "dscombat:120mmhe",
   "maxAge": 40,
-  "maxAmmo": 36,
+  "modelId": "406mmhe",
   "presetId": "406mmhe",
+  "presetType": "bullet",
   "rackTypeKey": "",
-  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "shootSoundKey": "dscombat:cannon_shoot_1",
   "speed": 5.0
 }

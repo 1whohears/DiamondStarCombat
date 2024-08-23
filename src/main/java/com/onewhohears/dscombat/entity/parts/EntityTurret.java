@@ -3,19 +3,21 @@ package com.onewhohears.dscombat.entity.parts;
 import javax.annotation.Nullable;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.parts.PartData.PartType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.TurretData;
-import com.onewhohears.dscombat.data.parts.TurretData.RotBounds;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
+import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
+import com.onewhohears.dscombat.data.parts.stats.TurretStats.RotBounds;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
 import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
-import com.onewhohears.dscombat.util.math.UtilAngles;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.dscombat.util.UtilPresetParse;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,14 +25,11 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -39,6 +38,7 @@ public class EntityTurret extends EntitySeat {
 	
 	public static final EntityDataAccessor<String> WEAPON_ID = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Integer> AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> MAX_AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	
@@ -46,7 +46,7 @@ public class EntityTurret extends EntitySeat {
 	public final ShootType shootType;
 	public final RotBounds rotBounds;
 	
-	private WeaponData data;
+	private WeaponInstance<?> data;
 	
 	public float xRotRelO, yRotRelO;
 	/**
@@ -72,6 +72,7 @@ public class EntityTurret extends EntitySeat {
 		super.defineSynchedData();
 		entityData.define(WEAPON_ID, "10mm");
 		entityData.define(AMMO, 0);
+		entityData.define(MAX_AMMO, 0);
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
 	}
@@ -80,10 +81,12 @@ public class EntityTurret extends EntitySeat {
 	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
 		super.onSyncedDataUpdated(key);
 		if (!level.isClientSide) return;
-		if (key.equals(WEAPON_ID)) {
-			data = WeaponPresets.get().getPreset(getWeaponId());
+		if (key.equals(WEAPON_ID) && WeaponPresets.get().has(getWeaponId())) {
+			data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
+		} else if (key.equals(MAX_AMMO)) {
+			if (data != null) data.setMaxAmmo(getMaxAmmo());
 		} else if (key.equals(AMMO)) {
-			if (data != null) data.setCurrentAmmo(getAmmo());
+			if (data != null) data.forceSetCurrentAmmo(getAmmo());
 		}
 	}
 	
@@ -91,8 +94,8 @@ public class EntityTurret extends EntitySeat {
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		String wid = tag.getString("weaponId");
-		data = UtilParse.parseWeaponFromCompound(tag.getCompound("weapondata"));
-		if (wid.isEmpty() && data != null) wid = data.getId();
+		data = UtilPresetParse.parseWeaponFromCompound(tag.getCompound("weapondata"));
+		if (wid.isEmpty() && data != null) wid = data.getStatsId();
 		setWeaponId(wid);
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
@@ -104,7 +107,7 @@ public class EntityTurret extends EntitySeat {
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putString("weaponId", getWeaponId());
-		if (data != null) tag.put("weapondata", data.writeNbt());
+		if (data != null) tag.put("weapondata", data.writeNBT());
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());
 		tag.putFloat("relrotx", getRelRotX());
@@ -114,8 +117,12 @@ public class EntityTurret extends EntitySeat {
 	public void init() {
 		super.init();
 		if (!level.isClientSide) {
-			if (data == null) data = WeaponPresets.get().getPreset(getWeaponId());
-			if (data != null) data.setCurrentAmmo(getAmmo());
+			if (data == null && WeaponPresets.get().has(getWeaponId())) 
+				data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
+			if (data != null) {
+				data.setMaxAmmo(getMaxAmmo());
+				data.setCurrentAmmo(getAmmo());
+			}
 		}
 	}
 	
@@ -189,10 +196,10 @@ public class EntityTurret extends EntitySeat {
 	protected void addTurretAI(Mob mob) {
 		shootGoal = makeShootGoal(mob);
 		mob.goalSelector.addGoal(0, shootGoal);
-		if (mob instanceof Enemy) {
+		if (mob.getType().is(ModTags.EntityTypes.TURRET_TARGET_PLAYERS)) {
 			targetGoal = makeTargetPlayerGoal(mob);
 			mob.targetSelector.addGoal(0, targetGoal);
-		} else if (mob instanceof AbstractGolem) {
+		} else if (mob.getType().is(ModTags.EntityTypes.TURRET_TARGET_MONSTERS)) {
 			targetGoal = makeTargetEnemyGoal(mob);
 			mob.targetSelector.addGoal(0, targetGoal);
 		}
@@ -228,15 +235,15 @@ public class EntityTurret extends EntitySeat {
 	
 	public boolean isBotUsingRadar() {
 		if (!hasAIUsingTurret()) return false;
-		WeaponData wd = getWeaponData();
+		WeaponInstance<?> wd = getWeaponData();
 		if (wd == null) return false;
-		return wd.requiresRadar();
+		return wd.getStats().requiresRadar();
 	}
 	
 	public double getAIHorizontalRange() {
-		WeaponData wd = getWeaponData();
+		WeaponInstance<?> wd = getWeaponData();
 		if (wd == null) return 300;
-		return wd.getMobTurretRange();
+		return wd.getStats().getMobTurretRange();
 	}
 	
 	public double getAIVerticalRange() {
@@ -262,19 +269,23 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-	public boolean shouldRenderAtSqrDistance(double dist) {
-		return dist < 65536;
+	protected double getClientRenderDistance() {
+		return Config.CLIENT.renderTurretDistance.get();
 	}
 	
 	public void setAmmo(int ammo) {
 		entityData.set(AMMO, ammo);
 	}
 	
+	public void setMaxAmmo(int max) {
+		entityData.set(MAX_AMMO, max);
+	}
+	
 	public void updateDataAmmo() {
 		if (getRootVehicle() instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(getSlotId());
-			if (slot != null && slot.filled() && slot.getPartData().getType() == PartType.TURRENT) { 
-				TurretData td = (TurretData) slot.getPartData();
+			if (slot != null && slot.filled() && slot.getPartData().getStats().getType().is(PartType.TURRENT)) { 
+				TurretInstance<?> td = (TurretInstance<?>) slot.getPartData();
 				td.setAmmo(getAmmo());
 			}
 		}
@@ -284,16 +295,21 @@ public class EntityTurret extends EntitySeat {
 		return entityData.get(AMMO);
 	}
 	
+	public int getMaxAmmo() {
+		return entityData.get(MAX_AMMO);
+	}
+	
 	public String getWeaponId() {
 		return entityData.get(WEAPON_ID);
 	}
 	
-	public void setWeaponId(String weapon) {
+	public void setWeaponId(@Nullable String weapon) {
+		if (weapon == null) weapon = "";
 		entityData.set(WEAPON_ID, weapon);
 	}
 	
 	@Nullable
-	public WeaponData getWeaponData() {
+	public WeaponInstance<?> getWeaponData() {
 		return data;
 	}
 	
@@ -393,14 +409,17 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	@Override
-    public boolean hurt(DamageSource source, float amount) {
-		addHealth(-amount);
-		if (getHealth() <= 0) kill();
+	public boolean isTurret() {
 		return true;
 	}
 	
 	@Override
-	public boolean isTurret() {
+	public boolean isAttackable() {
+		return true;
+	}
+
+	@Override
+	public boolean isAlive() {
 		return true;
 	}
 

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "dscombat:plane",
+    {
+      "id": "simpleplanes:plane",
+      "required": false
+    },
+    {
+      "id": "simpleplanes:large_plane",
+      "required": false
+    }
+  ]
+}

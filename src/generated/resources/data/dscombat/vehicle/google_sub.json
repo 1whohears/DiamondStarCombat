@@ -1,0 +1,108 @@
+{
+  "copyId": "google_sub_unarmed",
+  "displayName": "preset.dscombat.google_sub",
+  "ingredients": [
+    {
+      "item": "dscombat:wr1k",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 63
+    },
+    {
+      "item": "dscombat:aluminum_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 4
+    },
+    {
+      "item": "dscombat:vls",
+      "num": 3
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "google_sub",
+  "presetType": "submarine",
+  "slots": [
+    {
+      "data": {
+        "part": "wr1k"
+      },
+      "name": "internal_4"
+    },
+    {
+      "data": {
+        "part": "ar1k"
+      },
+      "name": "internal_5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "mk13",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "mk13",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "mk13",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "mk13",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "bgm109",
+        "part": "vls"
+      },
+      "name": "frame_5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "bgm109",
+        "part": "vls"
+      },
+      "name": "frame_6"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "bgm109",
+        "part": "vls"
+      },
+      "name": "frame_7"
+    }
+  ]
+}

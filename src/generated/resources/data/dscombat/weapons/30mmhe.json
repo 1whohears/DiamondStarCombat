@@ -1,0 +1,33 @@
+{
+  "canShootOnGround": true,
+  "causesFire": false,
+  "compatibleWeaponPart": [
+    "gau_avenger"
+  ],
+  "craftNum": 20,
+  "damage": 16.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.30mmhe",
+  "entityTypeKey": "dscombat:bullet",
+  "explosionRadius": 2.0,
+  "explosive": true,
+  "fireRate": 2,
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 6
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 8
+    }
+  ],
+  "innacuracy": 1.1,
+  "itemKey": "dscombat:20mm",
+  "maxAge": 40,
+  "modelId": "20mm",
+  "presetId": "30mmhe",
+  "presetType": "bullet",
+  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "speed": 10.0
+}

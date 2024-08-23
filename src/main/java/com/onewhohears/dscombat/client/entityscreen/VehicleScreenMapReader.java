@@ -10,14 +10,13 @@ import org.slf4j.Logger;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.client.model.obj.ObjEntityModels;
-import com.onewhohears.dscombat.data.aircraft.EntityScreenData;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.mixin.CompositeRenderableAccess;
 import com.onewhohears.dscombat.mixin.CompositeRenderableComponentAccess;
 import com.onewhohears.dscombat.mixin.CompositeRenderableMeshAccess;
-import com.onewhohears.dscombat.util.math.UtilAngles;
-import com.onewhohears.dscombat.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -33,14 +32,14 @@ public class VehicleScreenMapReader {
 	/**
 	 * CLIENT ONLY! ONLY WORKS FOR OBJ MODELS!
 	 */
-	public static List<EntityScreenData> generateScreens(EntityVehicle entity, String modelId, Vec3 modelOffset) {
-		List<VehicleScreenUV> vehicleScreenUVs = readVehicleScreenUVs(entity.textureManager.getScreenMap());
+	public static List<EntityScreenData> generateScreens(ResourceLocation screenMap, String modelId, Vec3 modelOffset) {
+		List<VehicleScreenUV> vehicleScreenUVs = readVehicleScreenUVs(screenMap);
 		return getVehicleScreenPos(modelId, vehicleScreenUVs, modelOffset);
 	}
 	
 	private static List<VehicleScreenUV> readVehicleScreenUVs(ResourceLocation screenMap) {
 		Minecraft m = Minecraft.getInstance();
-		List<VehicleScreenUV> list = new ArrayList<VehicleScreenUV>();
+		List<VehicleScreenUV> list = new ArrayList<>();
 		NativeImage image;
 		try {
 			InputStream stream = m.getResourceManager().getResource(screenMap).get().open();

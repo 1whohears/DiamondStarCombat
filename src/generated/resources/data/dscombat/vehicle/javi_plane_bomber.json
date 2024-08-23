@@ -1,0 +1,142 @@
+{
+  "copyId": "javi_plane_unarmed",
+  "displayName": "preset.dscombat.javi_plane_bomber",
+  "ingredients": [
+    {
+      "item": "dscombat:gpr20",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 4
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 2
+    },
+    {
+      "item": "dscombat:bomb_rack",
+      "num": 2
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "dscombat:aluminum_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "javi_plane_bomber",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "anm30",
+        "part": "bomb_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm84e",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9l",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "anm64",
+        "part": "bomb_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_3"
+    },
+    {
+      "data": {
+        "part": "gimbal_camera"
+      },
+      "name": "right_wing_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "30mmhe",
+        "part": "gau_avenger"
+      },
+      "name": "internal_gun"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm88g",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "part": "gpr20"
+      },
+      "name": "internal_5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_4"
+    }
+  ],
+  "textures": {
+    "baseTexture": 1
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "copyId": "krait_chopper_unarmed",
+  "displayName": "preset.dscombat.krait_chopper",
+  "ingredients": [
+    {
+      "item": "dscombat:ar500",
+      "num": 1
+    },
+    {
+      "item": "dscombat:gr400",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 2
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 2
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "dscombat:aluminum_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "krait_chopper",
+  "presetType": "helicopter",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "20mmhe",
+        "part": "xm12"
+      },
+      "name": "nose_gun"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm84e",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9l",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_2"
+    },
+    {
+      "data": {
+        "part": "ar500"
+      },
+      "name": "internal_5"
+    },
+    {
+      "data": {
+        "part": "gr400"
+      },
+      "name": "internal_6"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_4"
+    }
+  ]
+}

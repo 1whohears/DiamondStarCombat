@@ -1,0 +1,119 @@
+{
+  "displayName": "preset.dscombat.andolf_sub",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/andolf_sub.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 108,
+      "slot_ui_y": 25
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 126,
+      "slot_ui_y": 25
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 108,
+      "slot_ui_y": 43
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 126,
+      "slot_ui_y": 43
+    },
+    {
+      "slot_name": "seat4",
+      "slot_ui_x": 108,
+      "slot_ui_y": 61
+    },
+    {
+      "slot_name": "seat5",
+      "slot_ui_x": 126,
+      "slot_ui_y": 61
+    },
+    {
+      "slot_name": "nose_1",
+      "slot_ui_x": 117,
+      "slot_ui_y": 7
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 75,
+      "slot_ui_y": 35
+    },
+    {
+      "slot_name": "frame_2",
+      "slot_ui_x": 75,
+      "slot_ui_y": 53
+    },
+    {
+      "slot_name": "frame_3",
+      "slot_ui_x": 75,
+      "slot_ui_y": 71
+    },
+    {
+      "slot_name": "frame_4",
+      "slot_ui_x": 159,
+      "slot_ui_y": 35
+    },
+    {
+      "slot_name": "frame_5",
+      "slot_ui_x": 159,
+      "slot_ui_y": 53
+    },
+    {
+      "slot_name": "frame_6",
+      "slot_ui_x": 159,
+      "slot_ui_y": 71
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 99,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 117,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 135,
+      "slot_ui_y": 80
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 99,
+      "slot_ui_y": 98
+    },
+    {
+      "slot_name": "internal_5",
+      "slot_ui_x": 117,
+      "slot_ui_y": 98
+    },
+    {
+      "slot_name": "internal_6",
+      "slot_ui_x": 135,
+      "slot_ui_y": 98
+    }
+  ],
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "propellor",
+        "pivot": {
+          "x": 0.0,
+          "y": -0.0625,
+          "z": -3.625
+        },
+        "rot_axis": "Z",
+        "rot_rate": 19.0
+      }
+    ],
+    "model_id": "andolf_sub"
+  },
+  "presetId": "andolf_sub",
+  "presetType": "standard"
+}

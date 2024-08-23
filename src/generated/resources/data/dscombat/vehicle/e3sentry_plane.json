@@ -1,0 +1,66 @@
+{
+  "copyId": "e3sentry_plane_empty",
+  "displayName": "preset.dscombat.e3sentry_plane",
+  "ingredients": [
+    {
+      "item": "dscombat:cfm56",
+      "num": 2
+    },
+    {
+      "item": "dscombat:heavy_fuel_tank",
+      "num": 2
+    },
+    {
+      "item": "dscombat:ar20k",
+      "num": 1
+    },
+    {
+      "item": "dscombat:data_link",
+      "num": 1
+    }
+  ],
+  "is_craftable": true,
+  "landing_gear": true,
+  "presetId": "e3sentry_plane",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "part": "cfm56"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "part": "cfm56"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "part": "ar20k"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_2"
+    },
+    {
+      "data": {
+        "part": "data_link"
+      },
+      "name": "internal_5"
+    }
+  ]
+}

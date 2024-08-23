@@ -1,0 +1,140 @@
+{
+  "copyId": "alexis_plane_unarmed",
+  "displayName": "preset.dscombat.alexis_plane_support",
+  "ingredients": [
+    {
+      "item": "dscombat:ar2k",
+      "num": 1
+    },
+    {
+      "item": "dscombat:gr400",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 5
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 2
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "dscombat:aluminum_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "alexis_plane_support",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "agm84e",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "part": "gimbal_camera"
+      },
+      "name": "left_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm88g",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120b",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9x",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "20mmhe",
+        "part": "m61a1_vulcan"
+      },
+      "name": "internal_gun"
+    },
+    {
+      "data": {
+        "part": "ar2k"
+      },
+      "name": "internal_4"
+    },
+    {
+      "data": {
+        "part": "gr400"
+      },
+      "name": "internal_5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_3"
+    }
+  ],
+  "textures": {
+    "baseTexture": 1
+  }
+}

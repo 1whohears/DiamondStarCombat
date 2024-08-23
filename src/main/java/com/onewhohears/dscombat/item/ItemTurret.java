@@ -1,41 +1,39 @@
 package com.onewhohears.dscombat.item;
 
-import com.onewhohears.dscombat.data.parts.PartData;
-import com.onewhohears.dscombat.data.parts.PartSlot.SlotType;
-import com.onewhohears.dscombat.data.parts.TurretData;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.util.UtilItem;
-import com.onewhohears.dscombat.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParse;
+import java.util.List;
 
+import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
+import com.onewhohears.dscombat.data.parts.stats.PartStats;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.onewholibs.util.UtilMCText;
+
+import com.onewhohears.dscombat.util.UtilPresetParse;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemTurret extends ItemPart {
 	
-	public final String weaponId;
-	public final String turrentEntityKey;
-	public final float health;
-	
-	public ItemTurret(float weight, SlotType[] compatibleSlots, String turrentEntityKey, String weaponId, float health) {
-		super(1, weight, compatibleSlots);
-		this.weaponId = weaponId;
-		this.turrentEntityKey = turrentEntityKey;
-		this.health = health;
+	public ItemTurret(int stackSize) {
+		super(stackSize);
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
-		TurretData data = (TurretData) UtilParse.parsePartFromItem(stack);
+	public @NotNull Component getName(@NotNull ItemStack stack) {
+		TurretInstance<?> data = (TurretInstance<?>) UtilPresetParse.parsePartFromItem(stack);
+		if (data == null) return super.getName(stack);
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
-		WeaponData wd = WeaponPresets.get().getPreset(weaponId);
+		WeaponStats wd = WeaponPresets.get().get(data.getWeaponId());
 		if (wd != null) {
 			name.append(wd.getDisplayNameComponent()).append(" ")
 				.append(UtilMCText.literal(wd.getWeaponTypeCode()));
 		}
-		else name.append(weaponId+"?");
+		else name.append(data.getWeaponId()+"?");
 		int ammo = (int)data.getCurrentAmmo();
 		int max = (int)data.getMaxAmmo();
 		if (max != 0) name.append(" "+ammo+"/"+max);
@@ -43,15 +41,20 @@ public class ItemTurret extends ItemPart {
 	}
 	
 	@Override
-	public PartData getFilledPartData(String param) {
-		return new TurretData(weight, UtilItem.getItemKey(this), 
-				compatibleSlots, turrentEntityKey, weaponId, true, health);
+	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
+		List<String> list = WeaponPresets.get().getCompatibleWeapons(stats.getId());
+        for (String s : list) addTurret(s, items);
+	}
+	
+	private void addTurret(String preset, NonNullList<ItemStack> items) {
+		ItemStack turret = new ItemStack(this);
+		turret.setTag(getDefaultPartStats().createFilledPartInstance(preset).writeNBT());
+		items.add(turret);
 	}
 	
 	@Override
-	public PartData getPartData() {
-		return new TurretData(weight, UtilItem.getItemKey(this), 
-				compatibleSlots, turrentEntityKey, weaponId, false, health);
+	public CreativeModeTab getCreativeTab() {
+		return ModItems.WEAPON_PARTS;
 	}
 
 }

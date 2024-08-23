@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.axcel_truck_radar",
   "fov": -1.0,
   "presetId": "axcel_truck_radar",
+  "presetType": "standard",
   "range": 1000.0,
   "scanAir": true,
   "scanAircraft": true,

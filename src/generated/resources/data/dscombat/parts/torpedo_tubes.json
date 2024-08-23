@@ -1,0 +1,17 @@
+{
+  "displayName": "item.dscombat.torpedo_tubes",
+  "externalEntity": "dscombat:torpedo_tubes",
+  "item": "dscombat:torpedo_tubes",
+  "maxAmmo": 3,
+  "maxHealth": 60.0,
+  "presetId": "torpedo_tubes",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 8
+    }
+  ],
+  "slotType": "mount_med",
+  "weight": 5500.0
+}

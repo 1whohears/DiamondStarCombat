@@ -1,19 +1,14 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"T": {
-			"item": "dscombat:ti83"
-		},
-		"D": {
-			"item": "minecraft:dropper"
-		},
 		"I": {
-			"item": "minecraft:iron_ingot"
+			"tag": "dscombat:aluminum_ingot"
 		}
 	},
 	"pattern": [
-		"ITI",
-		" D "
+		"III",
+		" I ",
+		" I "
 	],
 	"result": {
 		"count": 1,

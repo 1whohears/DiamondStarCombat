@@ -1,0 +1,43 @@
+{
+  "copyId": "mrbudger_tank_empty",
+  "displayName": "preset.dscombat.mrbudger_tank_unarmed",
+  "ingredients": [
+    {
+      "item": "dscombat:heavy_tank_turret",
+      "num": 1
+    },
+    {
+      "item": "dscombat:c12_engine",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_fuel_tank",
+      "num": 1
+    }
+  ],
+  "is_craftable": true,
+  "landing_gear": true,
+  "presetId": "mrbudger_tank_unarmed",
+  "presetType": "car",
+  "slots": [
+    {
+      "data": {
+        "part": "c12_engine"
+      },
+      "name": "internal_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_3"
+    },
+    {
+      "data": {
+        "part": "heavy_tank_turret"
+      },
+      "name": "pilot_seat"
+    }
+  ]
+}

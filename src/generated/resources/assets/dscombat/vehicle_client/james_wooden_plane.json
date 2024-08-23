@@ -1,0 +1,21 @@
+{
+  "displayName": "preset.dscombat.james_wooden_plane",
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "Propeller",
+        "pivot": {
+          "x": 0.0,
+          "y": -0.9375,
+          "z": 0.0
+        },
+        "rot_axis": "Z",
+        "rot_rate": 40.0
+      }
+    ],
+    "model_id": "james_wooden_plane"
+  },
+  "presetId": "james_wooden_plane",
+  "presetType": "standard"
+}

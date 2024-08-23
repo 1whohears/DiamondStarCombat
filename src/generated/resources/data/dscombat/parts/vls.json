@@ -1,0 +1,10 @@
+{
+  "changeLaunchPitch": 90.0,
+  "displayName": "item.dscombat.vls",
+  "item": "dscombat:vls",
+  "max": 16,
+  "presetId": "vls",
+  "presetType": "external_weapon",
+  "slotType": "mount_heavy",
+  "weight": 6000.0
+}

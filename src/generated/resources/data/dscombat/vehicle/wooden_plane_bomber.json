@@ -1,0 +1,40 @@
+{
+  "copyId": "wooden_plane",
+  "displayName": "preset.dscombat.wooden_plane_bomber",
+  "ingredients": [
+    {
+      "item": "minecraft:tnt",
+      "num": 12
+    },
+    {
+      "item": "dscombat:aluminum_ingot",
+      "num": 36
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 2
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "wooden_plane_bomber",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_1"
+    }
+  ]
+}

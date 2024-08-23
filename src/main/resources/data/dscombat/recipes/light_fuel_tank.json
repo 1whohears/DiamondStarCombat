@@ -1,20 +1,16 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"T": {
-			"item": "minecraft:stick"
-		},
 		"S": {
-			"item": "minecraft:smooth_stone"
+			"tag": "dscombat:aluminum_ingot"
 		},
-		"B": {
-			"item": "minecraft:bucket"
+		"C": {
+			"item": "dscombat:aluminum_block"
 		}
 	},
 	"pattern": [
-		"T",
 		"S",
-		"B"
+		"C"
 	],
 	"result": {
 		"count": 1,

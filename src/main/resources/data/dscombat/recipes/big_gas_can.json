@@ -1,17 +1,16 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"key": {
-		"I": {
-			"item": "minecraft:iron_ingot"
-		},
 		"C": {
-			"item": "minecraft:coal_block"
+			"type": "forge:partial_nbt",
+			"item": "dscombat:gas_can",
+			"nbt": {
+				"Damage": 0
+			}
 		}
 	},
 	"pattern": [
-		"ICI",
-		"ICI",
-		" I "
+		"CCC"
 	],
 	"result": {
 		"count": 1,

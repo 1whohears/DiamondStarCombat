@@ -3,11 +3,10 @@ package com.onewhohears.dscombat.common.container.menu;
 import java.util.List;
 
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPreset.UIPos;
-import com.onewhohears.dscombat.data.aircraft.AircraftClientPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats.UIPos;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModContainers;
 
 import net.minecraft.world.Container;
@@ -21,34 +20,29 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private Container planeInv;
-	private AircraftClientPreset clientData;
+	private VehicleClientStats clientData;
 	
 	public VehicleContainerMenu(int id, Inventory playerInv) {
 		super(ModContainers.PLANE_MENU.get(), id);
-		//System.out.println("AircraftMenuContainer client side "+playerInv.player.level.isClientSide);
+		//System.out.println("VehicleContainerMenu client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
 		// display plane parts
 		if (playerInv.player.getRootVehicle() instanceof EntityVehicle plane) {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
-			//System.out.println("client preset = "+plane.clientPreset);
-			clientData = AircraftClientPresets.get().getPreset(plane.clientPresetId);
-			//System.out.println("acp not null = "+(acp != null));
+			clientData = plane.getClientStats();
+			//System.out.println("client preset = "+clientData);
 			// create plane menu container
 			int x_start = 48, y_start = 15;
 			int x = x_start, y = y_start;
 			for (int i = 0; i < planeInv.getContainerSize(); ++i) {
 				if (clientData != null) {
-					UIPos uip = clientData.getSlotPos(slots.get(i).getSlotId());
+					UIPos uip = clientData.getSlotPos(slots.get(i).getSlotId(), i, x_start, y_start);
 					x = uip.getX();
 					y = uip.getY();
-				} else {
-					if (i != 0 && i % 9 == 0) {
-						y += 18;
-						x = x_start;
-					} else if (i != 0) x += 18;
-				}
+				} else x = y = 0;
 				//System.out.println("partsInv i = "+i+" x = "+x+" y = "+y);
+				//System.out.println("slot "+i+" "+slots.get(i));
 				this.addSlot(new PartItemSlot(this, i, slots.get(i), x, y));
 			}
 		}
@@ -103,7 +97,7 @@ public class VehicleContainerMenu extends AbstractContainerMenu {
 		return this.planeInv;
 	}
 	
-	public AircraftClientPreset getClientData() {
+	public VehicleClientStats getClientData() {
 		return clientData;
 	}
 

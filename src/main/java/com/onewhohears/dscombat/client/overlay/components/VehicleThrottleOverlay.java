@@ -4,10 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.aircraft.EntityVehicle;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Objects;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
 
@@ -20,18 +20,16 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
 
     public static final int THROTTLE_RAIL_LENGTH = 70, THROTTLE_WIDTH = 10, THROTTLE_KNOB_HEIGHT = 10;
 
-    private static VehicleThrottleOverlay INSTANCE;
-
-    public static void renderIfAllowed(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (Objects.isNull(INSTANCE)) INSTANCE = new VehicleThrottleOverlay();
-        INSTANCE.render(poseStack, screenWidth, screenHeight);
+    @Override
+    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        if (defaultRenderConditions()) return false;
+        return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
-    private VehicleThrottleOverlay() {}
-
     @Override
-    protected void render(PoseStack poseStack, int screenWidth, int screenHeight) {
-        if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
+    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
+        assert vehicle != null;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;
         int yOrigin = screenHeight - THROTTLE_RAIL_LENGTH - PADDING;
@@ -45,12 +43,17 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
         int throttleYPos = yOrigin+ THROTTLE_RAIL_LENGTH - THROTTLE_KNOB_HEIGHT;
         int throttleLength = THROTTLE_RAIL_LENGTH - THROTTLE_KNOB_HEIGHT;
         float throttle = vehicle.getCurrentThrottle();
-        if (vehicle.getVehicleStats().negativeThrottle) throttleYPos = throttleYPos-throttleLength/2-(int)(throttle*throttleLength/2);
+        if (vehicle.getStats().negativeThrottle) throttleYPos = throttleYPos-throttleLength/2-(int)(throttle*throttleLength/2);
         else throttleYPos = throttleYPos-(int)(throttle*throttleLength);
         blit(poseStack,
                 xOrigin, throttleYPos,
                 0, 0,
                 THROTTLE_WIDTH, THROTTLE_KNOB_HEIGHT,
                 THROTTLE_WIDTH, THROTTLE_KNOB_HEIGHT);
+    }
+
+    @Override
+    protected @NotNull String componentId() {
+        return "dscombat_throttle";
     }
 }

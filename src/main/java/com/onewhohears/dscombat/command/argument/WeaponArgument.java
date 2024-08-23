@@ -9,9 +9,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.onewhohears.dscombat.data.weapon.WeaponData;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.util.UtilMCText;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -26,9 +26,9 @@ public class WeaponArgument implements ArgumentType<String> {
 		return new WeaponArgument();
 	}
 	
-	public static WeaponData getWeapon(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+	public static WeaponStats getWeapon(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
 		String w = context.getArgument(name, String.class);
-		WeaponData data = WeaponPresets.get().getPreset(w);
+		WeaponStats data = WeaponPresets.get().get(w);
 		if (data == null) throw ERROR_WEAPON_NOT_FOUND.create(w);
 		return data;
 	}
@@ -41,7 +41,7 @@ public class WeaponArgument implements ArgumentType<String> {
 	@Override
 	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
 		return context.getSource() instanceof SharedSuggestionProvider ? 
-				SharedSuggestionProvider.suggest(WeaponPresets.get().getPresetIds(), builder) : 
+				SharedSuggestionProvider.suggest(WeaponPresets.get().getAllIds(), builder) : 
 				Suggestions.empty();
 	}
 

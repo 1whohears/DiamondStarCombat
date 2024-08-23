@@ -1,0 +1,10 @@
+{
+  "displayName": "item.dscombat.air_scan_a",
+  "externalEntity": "dscombat:air_scan_a",
+  "item": "dscombat:air_scan_a",
+  "presetId": "air_scan_a",
+  "presetType": "external_radar",
+  "radar": "air_scan_a",
+  "slotType": "mount_tech",
+  "weight": 1500.0
+}

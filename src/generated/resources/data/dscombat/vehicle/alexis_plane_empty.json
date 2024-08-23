@@ -1,0 +1,401 @@
+{
+  "after_burner_smoke": [
+    {
+      "pos": {
+        "x": 0.0,
+        "y": 0.3,
+        "z": -6.5
+      }
+    }
+  ],
+  "armor": 40.0,
+  "displayName": "preset.dscombat.alexis_plane_empty",
+  "health": 100.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "damage_root": true,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "fuselage",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.5,
+        "z": 2.0
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 1.7,
+        "y": 2.0,
+        "z": 11.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "left_wing",
+      "rel_pos": {
+        "x": 3.5,
+        "y": 0.35,
+        "z": -0.7
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 4.9,
+        "y": 0.3,
+        "z": 3.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "right_wing",
+      "rel_pos": {
+        "x": -3.5,
+        "y": 0.35,
+        "z": -0.7
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 4.9,
+        "y": 0.3,
+        "z": 3.5
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "tail",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 2.7,
+        "z": -5.3
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.3,
+        "y": 3.0,
+        "z": 2.0
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "left_elevator",
+      "rel_pos": {
+        "x": 2.0,
+        "y": 0.35,
+        "z": -6.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 2.5,
+        "y": 0.3,
+        "z": 1.7
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "right_elevator",
+      "rel_pos": {
+        "x": -2.0,
+        "y": 0.35,
+        "z": -6.0
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 2.5,
+        "y": 0.3,
+        "z": 1.7
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "engine",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.3,
+        "z": -4.9
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.4,
+        "y": 1.4,
+        "z": 2.9
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "nose",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.3,
+        "z": 8.6
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.2,
+        "y": 1.0,
+        "z": 2.1
+      }
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "dscombat:fuselage",
+      "num": 1
+    },
+    {
+      "item": "dscombat:wing",
+      "num": 3
+    },
+    {
+      "item": "dscombat:advanced_cockpit",
+      "num": 1
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 3
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 24
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:alexis_plane",
+  "landing_gear": true,
+  "presetId": "alexis_plane_empty",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "pilot_seat",
+      "slot_posx": 0.0,
+      "slot_posy": 0.1,
+      "slot_posz": 6.5,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "left_wing",
+      "name": "left_wing_1",
+      "slot_posx": 2.3,
+      "slot_posy": -0.08,
+      "slot_posz": -0.1,
+      "slot_type": "pylon_med",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "left_wing",
+      "name": "left_wing_2",
+      "slot_posx": 3.6,
+      "slot_posy": -0.08,
+      "slot_posz": -0.7,
+      "slot_type": "pylon_med",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "left_wing",
+      "name": "left_wing_3",
+      "slot_posx": 4.95,
+      "slot_posy": -0.08,
+      "slot_posz": -1.1,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "left_wing",
+      "name": "left_wing_4",
+      "slot_posx": 6.05,
+      "slot_posy": 0.4,
+      "slot_posz": -1.5,
+      "slot_type": "pylon_light",
+      "zRot": -90.0
+    },
+    {
+      "linkedHitbox": "right_wing",
+      "name": "right_wing_1",
+      "slot_posx": -2.3,
+      "slot_posy": -0.08,
+      "slot_posz": -0.1,
+      "slot_type": "pylon_med",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "right_wing",
+      "name": "right_wing_2",
+      "slot_posx": -3.6,
+      "slot_posy": -0.08,
+      "slot_posz": -0.7,
+      "slot_type": "pylon_med",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "right_wing",
+      "name": "right_wing_3",
+      "slot_posx": -4.95,
+      "slot_posy": -0.08,
+      "slot_posz": -1.1,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "right_wing",
+      "name": "right_wing_4",
+      "slot_posx": -6.05,
+      "slot_posy": 0.4,
+      "slot_posz": -1.5,
+      "slot_type": "pylon_light",
+      "zRot": 90.0
+    },
+    {
+      "linkedHitbox": "nose",
+      "name": "internal_gun",
+      "onlyCompatPart": "m61a1_vulcan",
+      "slot_posx": 0.0,
+      "slot_posy": -0.15,
+      "slot_posz": 8.0,
+      "slot_type": "internal_gun",
+      "zRot": 180.0
+    },
+    {
+      "linkedHitbox": "engine",
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "push_engine",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_3",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "high_tech_internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_5",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_6",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    }
+  ],
+  "sort_factor": 10,
+  "sounds": {
+    "cockpitAfterBurner": "dscombat:alexis_cp_afterburner",
+    "cockpitRPM": "dscombat:alexis_cp_rpm",
+    "cockpitWindFast": "dscombat:alexis_cp_wind_fast",
+    "cockpitWindSlow": "dscombat:alexis_cp_wind_slow",
+    "externalAfterBurnerClose": "dscombat:alexis_ext_afterburner_close",
+    "externalAfterBurnerFar": "dscombat:alexis_ext_afterburner_far",
+    "externalRPM": "dscombat:alexis_ext_rpm",
+    "externalWindClose": "dscombat:alexis_ext_wind_close",
+    "externalWindFar": "dscombat:alexis_ext_wind_far",
+    "loopSoundType": "fighter_jet",
+    "passengerSoundPack": "eng_non_binary_goober"
+  },
+  "stats": {
+    "armor_damage_absorbtion": 0.135,
+    "armor_damage_threshold": 2.0,
+    "assetId": "alexis_plane",
+    "base_armor": 40.0,
+    "cameraDistance": 17.0,
+    "crashExplosionRadius": 5.0,
+    "cross_sec_area": 4.0,
+    "entity_size_xz": 4.0,
+    "entity_size_y": 4.0,
+    "hitboxes_control_pitch": [
+      "left_elevator",
+      "right_elevator"
+    ],
+    "hitboxes_control_roll": [
+      "left_wing",
+      "right_wing"
+    ],
+    "hitboxes_control_yaw": [
+      "tail"
+    ],
+    "idleheat": 4.0,
+    "inertiapitch": 8.0,
+    "inertiaroll": 4.0,
+    "inertiayaw": 2.0,
+    "mass": 8500.0,
+    "max_health": 100.0,
+    "max_speed": 1.4,
+    "maxpitch": 2.5,
+    "maxroll": 6.0,
+    "maxyaw": 1.5,
+    "plane": {
+      "canAimDown": false,
+      "flapsAOABias": 8.0,
+      "fuselage_lift_area": 18.0,
+      "fuselage_lift_k_graph": "fuselage",
+      "wing_area": 28.0,
+      "wing_lift_hitbox_names": [
+        "left_wing",
+        "right_wing"
+      ],
+      "wing_lift_k_graph": "alexis_plane"
+    },
+    "rootHitboxNoCollide": true,
+    "stealth": 0.9,
+    "throttledown": 0.08,
+    "throttleup": 0.04,
+    "torquepitch": 2.0,
+    "torqueroll": 1.5,
+    "torqueyaw": 4.0,
+    "turn_radius": 10.0
+  },
+  "textures": {
+    "baseTextureVariants": 2,
+    "textureLayers": 2
+  }
+}

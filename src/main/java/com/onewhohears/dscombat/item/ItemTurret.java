@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemTurret extends ItemPart {
 	
@@ -23,8 +24,9 @@ public class ItemTurret extends ItemPart {
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
+	public @NotNull Component getName(@NotNull ItemStack stack) {
 		TurretInstance<?> data = (TurretInstance<?>) UtilPresetParse.parsePartFromItem(stack);
+		if (data == null) return super.getName(stack);
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
 		WeaponStats wd = WeaponPresets.get().get(data.getWeaponId());
 		if (wd != null) {
@@ -41,7 +43,7 @@ public class ItemTurret extends ItemPart {
 	@Override
 	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
 		List<String> list = WeaponPresets.get().getCompatibleWeapons(stats.getId());
-		for (int i = 0; i < list.size(); ++i) addTurret(list.get(i), items);
+        for (String s : list) addTurret(s, items);
 	}
 	
 	private void addTurret(String preset, NonNullList<ItemStack> items) {

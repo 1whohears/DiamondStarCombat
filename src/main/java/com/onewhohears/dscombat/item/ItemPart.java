@@ -18,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemPart extends Item {
 	
@@ -38,7 +39,7 @@ public class ItemPart extends Item {
 	}
 	
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+	public void fillItemCategory(CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
 		if (group.getId() != getCreativeTab().getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
 		String itemId = UtilItem.getItemKeyString(this);
 		for (int i = 0; i < PartPresets.get().getNum(); ++i) {
@@ -65,23 +66,27 @@ public class ItemPart extends Item {
 	}
 	
 	@Override
-	public ItemStack getDefaultInstance() {
+	public @NotNull ItemStack getDefaultInstance() {
 		ItemStack stack = new ItemStack(this);
 		stack.setTag(getDefaultPartStats().createPartInstance().writeNBT());
 		return stack;
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
-		return getPartInstance(stack).getItemName();
+	public @NotNull Component getName(@NotNull ItemStack stack) {
+		PartInstance<?> instance = getPartInstance(stack);
+		if (instance != null) return instance.getItemName();
+		return super.getName(stack);
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips, @NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
-		getPartInstance(stack).addToolTips(tips, isAdvanced);
+		PartInstance<?> instance = getPartInstance(stack);
+		if (instance != null) instance.addToolTips(tips, isAdvanced);
 	}
-	
+
+	@Nullable
 	public PartInstance<?> getPartInstance(ItemStack stack) {
 		return UtilPresetParse.parsePartFromItem(stack, getDefaultPartPresetId());
 	}

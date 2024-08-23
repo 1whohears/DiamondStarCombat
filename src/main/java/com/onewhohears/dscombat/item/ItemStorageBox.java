@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemStorageBox extends ItemPart {
 	
@@ -25,7 +26,7 @@ public class ItemStorageBox extends ItemPart {
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips, @NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		int items = 0;
 		if (stack.getTag() != null && stack.getTag().contains("items")) 

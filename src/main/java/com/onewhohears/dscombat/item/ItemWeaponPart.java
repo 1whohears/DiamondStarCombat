@@ -21,6 +21,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemWeaponPart extends ItemPart {
 	
@@ -29,7 +30,7 @@ public class ItemWeaponPart extends ItemPart {
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
+	public @NotNull Component getName(@NotNull ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
 		String weapon = tag.getString("weapon");
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
@@ -47,20 +48,22 @@ public class ItemWeaponPart extends ItemPart {
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips, @NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		WeaponPartInstance<?> data = (WeaponPartInstance<?>) UtilPresetParse.parsePartFromItem(stack);
+		if (data == null) return;
 		String id = data.getWeaponId();
 		if (id.isEmpty()) return;
 		tips.add(UtilMCText.literal("Ammo: "+(int)data.getCurrentAmmo()+"/"+data.getStats().getMaxAmmo()).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		WeaponStats wd = WeaponPresets.get().get(id);
+		if (wd == null) return;
 		wd.addToolTips(tips, isAdvanced.isAdvanced());
 	}
 	
 	@Override
 	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
 		List<String> list = WeaponPresets.get().getCompatibleWeapons(stats.getId());
-		for (int i = 0; i < list.size(); ++i) addWeaponRack(list.get(i), items);
+        for (String s : list) addWeaponRack(s, items);
 	}
 	
 	private void addWeaponRack(String preset, NonNullList<ItemStack> items) {

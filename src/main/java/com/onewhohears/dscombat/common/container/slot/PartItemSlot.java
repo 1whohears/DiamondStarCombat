@@ -41,9 +41,8 @@ public class PartItemSlot extends Slot {
 		//System.out.println("is "+stack+" compatible with tag "+stack.getOrCreateTag());
 		PartInstance<?> part = UtilPresetParse.parsePartFromItem(stack);
 		if (part == null) return false;
-		if (data.isCompatible(part)) return true;
-		return false;
-	}
+        return data.isCompatible(part);
+    }
 	
 	@Override
 	public boolean mayPickup(Player player) {

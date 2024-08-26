@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
+import com.onewhohears.dscombat.data.graph.TurnRatesBySpeedGraph;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -19,9 +20,9 @@ public class EntityPlane extends EntityVehicle {
 
 	private static final float AOA_CHANGE_RATE = 0.5f;
 
-	private float aoa, liftK, airFoilSpeedSqr, fuselageAoa, fuselageLiftK;
+	private float aoa, liftK, airFoilSpeedSqr, airSpeed, fuselageAoa, fuselageLiftK;
 	private float centripetalForce, centrifugalForce; 
-	private double wingLiftMag, prevMaxSpeedMod = 1, arcadeIgnoreGravityFactor;
+	private double wingLiftMag, maxSpeedMod = 1, arcadeIgnoreGravityFactor;
 	private Vec3 liftDir = Vec3.ZERO, liftForce = Vec3.ZERO;
 	private boolean isArcadeMode = false;
 	
@@ -44,24 +45,6 @@ public class EntityPlane extends EntityVehicle {
 			if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
 			else addMomentZ(inputs.roll * getRollTorque(), true);
 		}
-	}
-
-	@Override
-	public float getControlMaxDeltaPitch() {
-		if (isArcadeMode) return super.getControlMaxDeltaPitch() * 0.8f;
-		return super.getControlMaxDeltaPitch();
-	}
-
-	@Override
-	public float getControlMaxDeltaYaw() {
-		if (isArcadeMode) return super.getControlMaxDeltaYaw() * 0.8f;
-		return super.getControlMaxDeltaYaw();
-	}
-
-	@Override
-	public float getControlMaxDeltaRoll() {
-		if (isArcadeMode) return super.getControlMaxDeltaRoll() * 0.8f;
-		return super.getControlMaxDeltaRoll();
 	}
 
 	@Override
@@ -130,15 +113,15 @@ public class EntityPlane extends EntityVehicle {
 	
 	public double getMaxSpeedFromThrottleMod() {
 		if (isOnGround()) {
-			prevMaxSpeedMod = 1;
-			return prevMaxSpeedMod;
+			maxSpeedMod = 1;
+			return maxSpeedMod;
 		}
 		float th = getCurrentThrottle();
 		double goal;
 		if (th < 0.5) goal = 0.7;
 		else goal = 0.7 + 0.6 * (th - 0.5);
-		prevMaxSpeedMod = Mth.lerp(0.015, prevMaxSpeedMod, goal);
-		return prevMaxSpeedMod;
+		maxSpeedMod = Mth.lerp(0.015, maxSpeedMod, goal);
+		return maxSpeedMod;
 	}
 	
 	@Override
@@ -162,6 +145,7 @@ public class EntityPlane extends EntityVehicle {
 		liftDir = u.cross(pitchAxis).normalize();
         Vec3 airFoilAxes = UtilAngles.getRollAxis(q);
 		airFoilSpeedSqr = (float)UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr();
+		airSpeed = Mth.sqrt(airFoilSpeedSqr);
 		float goalAOA, goalFuselageAOA;
 		if (isOnGround() || UtilGeometry.isZero(u)) {
 			goalAOA = 0;
@@ -310,6 +294,28 @@ public class EntityPlane extends EntityVehicle {
 		if (total == 0) return 1;
 		float num = getNumberOfAliveHitboxes(getStats().asPlane().wingLiftHitboxNames);
 		return num / total;
+	}
+
+	@Override
+	public float getControlMaxDeltaPitch() {
+		if (isArcadeMode) return super.getControlMaxDeltaPitch();
+		return getTurnRateGraph().getMaxPitchRate(airSpeed);
+	}
+
+	@Override
+	public float getControlMaxDeltaYaw() {
+		if (isArcadeMode) return super.getControlMaxDeltaYaw();
+		return getTurnRateGraph().getMaxYawRate(airSpeed);
+	}
+
+	@Override
+	public float getControlMaxDeltaRoll() {
+		if (isArcadeMode) return super.getControlMaxDeltaRoll();
+		return getTurnRateGraph().getMaxRollRate(airSpeed);
+	}
+
+	public TurnRatesBySpeedGraph getTurnRateGraph() {
+		return getStats().asPlane().getTurnRatesGraph();
 	}
 
 }

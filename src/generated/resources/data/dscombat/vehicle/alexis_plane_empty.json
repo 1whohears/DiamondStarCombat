@@ -378,6 +378,7 @@
       "flapsAOABias": 8.0,
       "fuselage_lift_area": 18.0,
       "fuselage_lift_k_graph": "fuselage",
+      "turn_rates_graph": "alexis_plane_turn_rates",
       "wing_area": 28.0,
       "wing_lift_hitbox_names": [
         "left_wing",

@@ -38,6 +38,7 @@ public class EdenPresets {
 			.setCrashExplosionRadius(5.5f)
 			.set3rdPersonCamDist(19)
 			.setPlaneLiftAOAGraph("alexis_plane")
+			.setTurnRateGraph("eden_plane_turn_rates")
 			.setPlaneFlapDownAOABias(9)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(8)

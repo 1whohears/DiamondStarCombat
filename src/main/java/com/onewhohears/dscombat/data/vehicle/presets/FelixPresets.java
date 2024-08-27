@@ -24,6 +24,7 @@ public class FelixPresets {
 			.setCrossSecArea(4f)
 			.setIdleHeat(6f)
 			.setTurnRadius(12f)
+			.setTurnRateGraph("felix_plane_turn_rates")
 			.setMaxTurnRates(5f, 2.15f, 1.15f)
 			.setTurnTorques(1f, 2f, 4f)
 			.setThrottleRate(0.04f, 0.08f)

@@ -27,6 +27,7 @@ public abstract class LevelMixin {
 		List<RotableHitbox> hitboxes = RotableHitboxes.getHitboxes(level.dimension());
 		for (int i = 0; i < hitboxes.size(); ++i) {
 			RotableHitbox hitbox = hitboxes.get(i);
+			if (hitbox == null) continue;
 			if (containsEntity(entities, hitbox)) continue;
 			if (!pPredicate.test(hitbox)) continue;
 			if (!hitbox.getBoundingBox().intersects(pBoundingBox)) continue;

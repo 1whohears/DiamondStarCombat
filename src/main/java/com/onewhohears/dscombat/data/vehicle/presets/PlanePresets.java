@@ -92,6 +92,7 @@ public class PlanePresets {
 			.setCrossSecArea(16f)
 			.setIdleHeat(20f)
 			.setTurnRadius(30f)
+			.setTurnRateGraph("e3sentry_turn_rates")
 			.setMaxTurnRates(3f, 2.0f, 2.0f)
 			.setTurnTorques(2.0f, 2.0f, 2.0f)
 			.setThrottleRate(0.01f, 0.04f)

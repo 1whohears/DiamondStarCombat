@@ -24,6 +24,7 @@ public class JaviPresets {
 			.setCrossSecArea(7f)
 			.setIdleHeat(5f)
 			.setTurnRadius(12f)
+			.setTurnRateGraph("javi_plane_turn_rates")
 			.setMaxTurnRates(4f, 2.1f, 1.1f)
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.04f, 0.08f)

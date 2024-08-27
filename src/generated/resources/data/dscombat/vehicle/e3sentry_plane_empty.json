@@ -354,6 +354,7 @@
       "flapsAOABias": 10.0,
       "fuselage_lift_area": 80.0,
       "fuselage_lift_k_graph": "fuselage",
+      "turn_rates_graph": "e3sentry_turn_rates",
       "wing_area": 283.0,
       "wing_lift_k_graph": "e3sentry_plane"
     },

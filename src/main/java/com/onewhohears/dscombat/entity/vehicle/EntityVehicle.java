@@ -3048,5 +3048,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public boolean canControlRoll() {
 		return !areAllHitboxesDead(vehicleStats.controllRollHitboxNames);
 	}
+
+	public float getYawRate() {
+		return getYRot() - yRotO;
+	}
+
+	public float getActualTurnRadius() {
+		return xzSpeed / (getYawRate() * Mth.DEG_TO_RAD);
+	}
     
 }

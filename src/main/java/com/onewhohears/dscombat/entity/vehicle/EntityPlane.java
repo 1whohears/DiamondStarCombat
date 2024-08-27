@@ -165,10 +165,6 @@ public class EntityPlane extends EntityVehicle {
 		fuselageLiftK = getFuselageLiftKGraph().getLerpFloat(fuselageAoa);
 	}
 	
-	public float getYawRate() {
-		return getYRot() - yRotO;
-	}
-	
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		wingLiftMag = liftK * airPressure * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT * getWingLiftPercent();

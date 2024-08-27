@@ -428,6 +428,7 @@
       "flapsAOABias": 9.0,
       "fuselage_lift_area": 22.0,
       "fuselage_lift_k_graph": "fuselage",
+      "turn_rates_graph": "eden_plane_turn_rates",
       "wing_area": 38.0,
       "wing_lift_hitbox_names": [
         "left_wing",

@@ -35,6 +35,7 @@ public class PlanePresets {
 			.setCrashExplosionRadius(3)
 			.set3rdPersonCamDist(4)
 			.setPlaneLiftAOAGraph("wooden_plane")
+			.setTurnRateGraph("wooden_plane_turn_rates")
 			.setPlaneFlapDownAOABias(8)
 			.setPlaneNoseCanAimDown(false)
 			.addIngredientTag("minecraft:planks", 20)

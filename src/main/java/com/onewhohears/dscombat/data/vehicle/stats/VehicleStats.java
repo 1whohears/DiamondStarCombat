@@ -1008,6 +1008,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * used by planes
 		 */
+		public Builder setTurnRateGraph(String turn_rates_graph) {
+			return setTypedStatString("turn_rates_graph", turn_rates_graph, "plane");
+		}
+		/**
+		 * used by planes
+		 */
 		public Builder setWingLiftHitboxNames(String... wing_lift_hitbox_names) {
 			getStatsByType("plane").add("wing_lift_hitbox_names", UtilParse.stringArrayToJsonArray(wing_lift_hitbox_names));
 			return this;

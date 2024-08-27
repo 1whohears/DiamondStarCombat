@@ -109,6 +109,7 @@
       "flapsAOABias": 8.0,
       "fuselage_lift_area": 4.0,
       "fuselage_lift_k_graph": "fuselage",
+      "turn_rates_graph": "wooden_plane_turn_rates",
       "wing_area": 8.0,
       "wing_lift_k_graph": "wooden_plane"
     },

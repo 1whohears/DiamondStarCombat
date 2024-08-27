@@ -37,6 +37,7 @@ public class AlexisPresets {
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(17)
 			.setPlaneLiftAOAGraph("alexis_plane")
+			.setTurnRateGraph("alexis_plane_turn_rates")
 			.setPlaneFlapDownAOABias(8)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(2)

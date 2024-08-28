@@ -989,6 +989,18 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * used by planes
 		 */
+		public Builder setAOADragFactor(float aoa_drag_factor) {
+			return setTypedStatFloat("aoa_drag_factor", aoa_drag_factor, "plane");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setCentripetalScale(float centripetal_scale) {
+			return setTypedStatFloat("centripetal_scale", centripetal_scale, "plane");
+		}
+		/**
+		 * used by planes
+		 */
 		public Builder setPlaneNoseCanAimDown(boolean canAimDown) {
 			return setTypedStatBoolean("canAimDown", canAimDown, "plane");
 		}

@@ -861,7 +861,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		currentFuel = partsManager.getCurrentFuel();
 		maxFuel = partsManager.getMaxFuel();
 		hasFlares = partsManager.getFlares().size() > 0;
-		airPressure = UtilEntity.getAirPressure(this);
+		airPressure = UtilVehicleEntity.getAirPressure(this);
 		if (isOnGround()) ++groundTicks;
 		else groundTicks = 0;
 	}

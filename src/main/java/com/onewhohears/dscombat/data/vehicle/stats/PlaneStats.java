@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PlaneStats extends VehicleStats {
 	
-	public final float wing_area, flapsAOABias, fuselage_lift_area;
+	public final float wing_area, flapsAOABias, fuselage_lift_area, aoa_drag_factor, centripetal_scale;
 	public final boolean canAimDown;
 	public final String[] wingLiftHitboxNames;
 	private final String wing_lift_k_graph_key, fuselage_lift_k_graph_key, turn_rates_graph_key;
@@ -30,6 +30,8 @@ public class PlaneStats extends VehicleStats {
 		fuselage_lift_k_graph_key = UtilParse.getStringSafe(plane, "fuselage_lift_k_graph", "fuselage");
 		turn_rates_graph_key = UtilParse.getStringSafe(plane, "turn_rates_graph", "wooden_plane_turn_rates");
 		wingLiftHitboxNames = UtilParse.getStringArraySafe(plane, "wing_lift_hitbox_names");
+		aoa_drag_factor = UtilParse.getFloatSafe(plane, "aoa_drag_factor", 1);
+		centripetal_scale = UtilParse.getFloatSafe(plane, "centripetal_scale", 0.4f);
 	}
 
 	@Override

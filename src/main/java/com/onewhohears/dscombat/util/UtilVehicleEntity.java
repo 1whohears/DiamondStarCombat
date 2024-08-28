@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.dimension.DimensionType;
 
 public class UtilVehicleEntity {
 
@@ -26,6 +27,30 @@ public class UtilVehicleEntity {
         if (!entity.isInWater() && entity.isSprinting() && entity.fallDistance < 1.15) return true;
         if (entity.isOnGround() || UtilEntity.isHeadAboveWater(entity)) return true;
         return false;
+    }
+
+    public static double getAirPressure(Entity entity) {
+        DimensionType dt = entity.level.dimensionType();
+        double space;
+        double surface;
+        if (dt.natural()) {
+            space = 2500.0;
+            surface = 64.0;
+        } else {
+            space = 2000.0;
+            surface = 0.0;
+        }
+        double scale = 1.0;
+        double exp = 2.0;
+        double posY = entity.getY();
+        if (posY <= surface) {
+            return scale;
+        } else if (posY > space) {
+            return 0.0;
+        } else {
+            posY -= surface;
+            return Math.pow(Math.abs(posY - space), exp) * Math.pow(space, -exp);
+        }
     }
 
 }

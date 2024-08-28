@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.graph.TurnRatesBySpeedGraph;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
-import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.dscombat.data.vehicle.stats.PlaneStats;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
@@ -157,7 +157,7 @@ public class EntityPlane extends EntityVehicle {
 			Vec3 fuselageNormal = UtilAngles.rotationToVector(getYRot(), getXRot() + 90);
 			goalFuselageAOA = (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, fuselageNormal);
 		}
-		if (isFlapsDown()) goalAOA += getStats().asPlane().flapsAOABias;
+		if (isFlapsDown()) goalAOA += getPlaneStats().flapsAOABias;
 		// change in AOA shouldn't be instant
 		aoa = Mth.lerp(AOA_CHANGE_RATE, aoa, goalAOA);
 		fuselageAoa = Mth.lerp(AOA_CHANGE_RATE, fuselageAoa, goalFuselageAOA);
@@ -170,7 +170,7 @@ public class EntityPlane extends EntityVehicle {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		wingLiftMag = liftK * airPressure * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT * getWingLiftPercent();
         double fuselageLift = fuselageLiftK * airPressure * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
-		double cenScale = DSCPhyCons.CENTRIPETAL_SCALE;
+		double cenScale = getCentripetalScale();
 		liftForce = liftDir.scale(getLiftMag()).multiply(cenScale, 1, cenScale).add(0, fuselageLift, 0);
 	}
 
@@ -198,11 +198,13 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public double getCrossSectionArea() {
-		double a = super.getCrossSectionArea();
-		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa)) * DSCPhyCons.AOA_AREA_SCALE;
-		if (isLandingGear()) a += 10.0 * Math.cos(Math.toRadians(aoa));
-		if (isFlapsDown()) a += getWingSurfaceArea() / 4 * Math.cos(Math.toRadians(aoa));
-		return a;
+		double area = super.getCrossSectionArea();
+		double aoaSin = Math.sin(Math.toRadians(aoa));
+		area += getWingSurfaceArea() * aoaSin * getAOADragFactor();
+		double aoaCos = Math.cos(Math.toRadians(aoa));
+		if (isLandingGear()) area += 10.0 * aoaCos;
+		if (isFlapsDown()) area += getWingSurfaceArea() / 4 * aoaCos;
+		return area;
 	}
 
 	public float getAOA() {
@@ -218,29 +220,29 @@ public class EntityPlane extends EntityVehicle {
 	 * @return the surface area of the plane wings
 	 */
 	public final float getWingSurfaceArea() {
-		return getStats().asPlane().wing_area;
+		return getPlaneStats().wing_area;
 	}
 	
 	public float getFuselageLiftArea() {
-		return getStats().asPlane().fuselage_lift_area;
+		return getPlaneStats().fuselage_lift_area;
 	}
 	
 	@Override
 	public boolean isWeaponAngledDown() {
-		return getStats().asPlane().canAimDown && !onGround && inputs.special2;
+		return getPlaneStats().canAimDown && !onGround && inputs.special2;
 	}
 	
 	@Override
 	public boolean canAngleWeaponDown() {
-    	return getStats().asPlane().canAimDown;
+    	return getPlaneStats().canAimDown;
     }
 	
 	public AoaLiftKGraph getWingLiftKGraph() {
-		return getStats().asPlane().getWingLiftKGraph();
+		return getPlaneStats().getWingLiftKGraph();
 	}
 	
 	public AoaLiftKGraph getFuselageLiftKGraph() {
-		return getStats().asPlane().getFuselageLiftKGraph();
+		return getPlaneStats().getFuselageLiftKGraph();
 	}
 
 	@Override
@@ -287,9 +289,9 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	public float getWingLiftPercent() {
-		float total = getStats().asPlane().wingLiftHitboxNames.length;
+		float total = getPlaneStats().wingLiftHitboxNames.length;
 		if (total == 0) return 1;
-		float num = getNumberOfAliveHitboxes(getStats().asPlane().wingLiftHitboxNames);
+		float num = getNumberOfAliveHitboxes(getPlaneStats().wingLiftHitboxNames);
 		return num / total;
 	}
 
@@ -312,7 +314,19 @@ public class EntityPlane extends EntityVehicle {
 	}
 
 	public TurnRatesBySpeedGraph getTurnRateGraph() {
-		return getStats().asPlane().getTurnRatesGraph();
+		return getPlaneStats().getTurnRatesGraph();
+	}
+
+	public double getAOADragFactor() {
+		return getPlaneStats().aoa_drag_factor;
+	}
+
+	public PlaneStats getPlaneStats() {
+		return getStats().asPlane();
+	}
+
+	public double getCentripetalScale() {
+		return getPlaneStats().centripetal_scale;
 	}
 
 }

@@ -87,6 +87,7 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	protected void calcMoveStatsPre(Quaternion q) {
 		super.calcMoveStatsPre(q);
+		calcMaxSpeedMod();
 		if (isArcadeMode) {
 			aoa = 0;
 			calcIgnoreGravityFactor(q);
@@ -112,16 +113,16 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	public double getMaxSpeedFromThrottleMod() {
-		if (isOnGround()) {
-			maxSpeedMod = 1;
-			return maxSpeedMod;
-		}
+		return maxSpeedMod;
+	}
+
+	protected void calcMaxSpeedMod() {
+		if (isOnGround()) maxSpeedMod = 1;
 		float th = getCurrentThrottle();
 		double goal;
 		if (th < 0.5) goal = 0.7;
 		else goal = 0.7 + 0.6 * (th - 0.5);
 		maxSpeedMod = Mth.lerp(0.015, maxSpeedMod, goal);
-		return maxSpeedMod;
 	}
 	
 	@Override
@@ -198,7 +199,7 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	public double getCrossSectionArea() {
 		double a = super.getCrossSectionArea();
-		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa));
+		a += getWingSurfaceArea() * Math.sin(Math.toRadians(aoa)) * DSCPhyCons.AOA_AREA_SCALE;
 		if (isLandingGear()) a += 10.0 * Math.cos(Math.toRadians(aoa));
 		if (isFlapsDown()) a += getWingSurfaceArea() / 4 * Math.cos(Math.toRadians(aoa));
 		return a;

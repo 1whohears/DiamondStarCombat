@@ -9,6 +9,8 @@ public class DSCPhyCons {
 	public static final float LIFT = 70f;
 	public static final float CENTRIPETAL_SCALE = 0.4f;
 	public static final float FLOAT = 150f;
+
+	public static final double AOA_AREA_SCALE = 2;
 	
 	public static final float STATIC_FRICTION = 1f;
 	public static final float KINETIC_FRICTION = 0.4f;

@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -152,8 +153,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	/**
 	 * CLIENT ONLY
 	 */
-	private VehicleClientStats vehicleClientStats;
-	private VehicleStats vehicleStats;
+	private PresetStatsHolder<VehicleClientStats> vehicleClientStats;
+	private PresetStatsHolder<VehicleStats> vehicleStats;
 	
 	/**
 	 * this vehicle's original preset. 
@@ -205,9 +206,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		super(entityType, level);
 		this.defaultPreset = defaultPreset;
 		preset = defaultPreset;
-		vehicleStats = VehiclePresets.get().get(defaultPreset);
-		assetId = vehicleStats.getAssetId();
-		if (level.isClientSide) vehicleClientStats = VehicleClientPresets.get().get(assetId);
+		vehicleStats = VehiclePresets.get().getHolder(defaultPreset);
+		assetId = getStats().getAssetId();
+		if (level.isClientSide) vehicleClientStats = VehicleClientPresets.get().getHolder(assetId);
 		else vehicleClientStats = null;
 		blocksBuilding = true;
 		inputs = new VehicleInputManager();
@@ -252,7 +253,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
 	
 	/**
-	 * if this is a brand new entity and has no nbt custom data then the fresh entity nbt will
+	 * if this is a brand-new entity and has no nbt custom data then the fresh entity nbt will
 	 * merge with this vehicle's preset nbt. see {@link VehiclePresets}.
 	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link EntityVehicle#defaultPreset}
  	 */
@@ -271,9 +272,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
 		}
 		// get the preset data
-		vehicleStats = VehiclePresets.get().get(preset);
-		assetId = vehicleStats.getAssetId();
-		CompoundTag presetNbt = vehicleStats.getDataAsNBT();
+		vehicleStats = VehiclePresets.get().getHolder(preset);
+		assetId = getStats().getAssetId();
+		CompoundTag presetNbt = getStats().getDataAsNBT();
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
 		partsManager.read(nbt, presetNbt);
@@ -336,9 +337,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		// ORDER MATTERS
 		// PRESET STUFF
 		if (VehiclePresets.get().has(preset)) {
-			vehicleStats = VehiclePresets.get().get(preset);
-			assetId = vehicleStats.getAssetId();
-			vehicleClientStats = VehicleClientPresets.get().get(assetId);
+			vehicleStats = VehiclePresets.get().getHolder(preset);
+			assetId = getStats().getAssetId();
+			vehicleClientStats = VehicleClientPresets.get().getHolder(assetId);
 		}
 		textureManager.read(buffer);
 		soundManager.write(buffer);
@@ -375,7 +376,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public VehicleStats getStats() {
-		return vehicleStats;
+		if (vehicleStats == null) return null;
+		return vehicleStats.get();
 	}
 	
 	public abstract VehicleType getVehicleType();
@@ -387,7 +389,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		refreshDimensions();
 		if (!level.isClientSide) serverSetup();
 		else clientSetup();
-		soundManager.loadSounds(vehicleStats);
+		soundManager.loadSounds(getStats());
 	}
 	
 	/**
@@ -693,7 +695,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		else directionAir(q);
 		Vec3 m = getMoment().add(addMomentBetweenTicks), av = getAngularVel();
 		if (!UtilGeometry.isZero(m)) {
-			av = av.add(m.x/vehicleStats.Ix, m.y/vehicleStats.Iy, m.z/vehicleStats.Iz);
+			av = av.add(m.x/getStats().Ix, m.y/getStats().Iy, m.z/getStats().Iz);
 			setAngularVel(av);
 		}
 		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
@@ -713,9 +715,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (inputs.roll != 0) dz = 0;
 		}
 		setAngularVel(new Vec3(
-				getADComponent(av.x, dx, vehicleStats.Ix),
-				getADComponent(av.y, dy, vehicleStats.Iy),
-				getADComponent(av.z, dz, vehicleStats.Iz)));
+				getADComponent(av.x, dx, getStats().Ix),
+				getADComponent(av.y, dy, getStats().Iy),
+				getADComponent(av.z, dz, getStats().Iz)));
 	}
 	
 	private double getADComponent(double v, float d, float I) {
@@ -792,7 +794,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		if (dPitch != 0) {
 			float goalPitch = 0;
-			if (isOnGround()) goalPitch = -vehicleStats.groundXTilt;
+			if (isOnGround()) goalPitch = -getStats().groundXTilt;
 			float diff = (float)angles.pitch - goalPitch;
 			if (Math.abs(diff) < dPitch) pitch = diff;
 			else pitch = Math.signum(diff) * dPitch;
@@ -806,9 +808,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		double x = moment.x, y = moment.y, z = moment.z;
 		if (control) {
 			Vec3 av = getAngularVel();
-			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), vehicleStats.Ix);
-			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), vehicleStats.Iy);
-			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), vehicleStats.Iz);
+			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), getStats().Ix);
+			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), getStats().Iy);
+			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), getStats().Iz);
 		}
 		setMoment(m.add(x, y, z));
 	}
@@ -1161,7 +1163,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return the mass of the vehicle. not including parts.
 	 */
 	public final float getEmptyVehicleMass() {
-		return vehicleStats.mass;
+		return getStats().mass;
 	}
 	
 	/**
@@ -1802,8 +1804,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public float calcDamageToArmor(float amount) {
 		return Math.max(0, reduceByPercent(amount, 
-				vehicleStats.armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level)) 
-				- vehicleStats.armor_damage_threshold);
+				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level))
+				- getStats().armor_damage_threshold);
 	}
 	
 	public float calcDamageToInside(DamageSource source, float amount) {
@@ -1884,7 +1886,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (level.isClientSide) return;
 		level.explode(this, source,
 			null, getX(), getY(), getZ(), 
-			vehicleStats.crashExplosionRadius, true, 
+			getStats().crashExplosionRadius, true,
 			Explosion.BlockInteraction.BREAK);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientVehicleExplode(this));
@@ -1958,7 +1960,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return the max speed of the craft along the x and z axis
 	 */
     public final float getMaxSpeed() {
-    	return vehicleStats.max_speed;
+    	return getStats().max_speed;
     }
     
     /**
@@ -1973,8 +1975,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
     public final void setCurrentThrottle(float throttle) {
     	if (throttle > 1) throttle = 1;
-    	else if (vehicleStats.negativeThrottle && throttle < -1) throttle = -1;
-    	else if (!vehicleStats.negativeThrottle && throttle < 0) throttle = 0;
+    	else if (getStats().negativeThrottle && throttle < -1) throttle = -1;
+    	else if (!getStats().negativeThrottle && throttle < 0) throttle = 0;
     	this.throttle = throttle;
     }
     
@@ -1995,35 +1997,35 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getThrottleIncreaseRate() {
-    	return vehicleStats.throttleup;
+    	return getStats().throttleup;
     }
     
     public final float getThrottleDecreaseRate() {
-    	return vehicleStats.throttledown;
+    	return getStats().throttledown;
     }
     
     public final float getMaxDeltaPitch() {
-    	return vehicleStats.maxpitch;
+    	return getStats().maxpitch;
     }
     
     public final float getMaxDeltaYaw() {
-    	return vehicleStats.maxyaw;
+    	return getStats().maxyaw;
     }
     
     public final float getMaxDeltaRoll() {
-    	return vehicleStats.maxroll;
+    	return getStats().maxroll;
     }
     
     public final float getPitchTorque() {
-    	return vehicleStats.torquepitch;
+    	return getStats().torquepitch;
     }
     
     public final float getYawTorque() {
-    	return vehicleStats.torqueyaw;
+    	return getStats().torqueyaw;
     }
     
     public final float getRollTorque() {
-    	return vehicleStats.torqueroll;
+    	return getStats().torqueroll;
     }
     
     public void increaseThrottle() {
@@ -2091,7 +2093,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getBaseCrossSecArea() {
-    	return vehicleStats.cross_sec_area;
+    	return getStats().cross_sec_area;
     }
     
     public final Vec3 getMoment() {
@@ -2126,14 +2128,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @return value to be multiplied to the cross sectional area
      */
     public final float getStealth() {
-    	return vehicleStats.stealth;
+    	return getStats().stealth;
     }
     
     /**
      * @return the item stack with all of this plane's data 
      */
     public ItemStack getItem() {
-    	ItemStack stack = vehicleStats.getItem();
+    	ItemStack stack = getStats().getItem();
     	CompoundTag tag = new CompoundTag();
     	addAdditionalSaveData(tag);
     	CompoundTag eTag = new CompoundTag();
@@ -2193,7 +2195,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getMaxHealth() {
-    	return vehicleStats.max_health;
+    	return getStats().max_health;
     }
     
     public final void addHealth(float h) {
@@ -2277,7 +2279,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @return the heat value this vehicle always emits
      */
     public final float getIdleHeat() {
-    	return vehicleStats.idleheat;
+    	return getStats().idleheat;
     }
     
     /**
@@ -2288,7 +2290,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getBaseArmor() {
-    	return vehicleStats.base_armor;
+    	return getStats().base_armor;
     }
     
     public float getMaxTotalArmor() {
@@ -2392,8 +2394,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-    	if (vehicleStats == null) return super.getDimensions(pose);
-    	return vehicleStats.dimensions;
+    	if (getStats() == null) return super.getDimensions(pose);
+    	return getStats().dimensions;
     }
     
     @Override
@@ -2426,7 +2428,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     @Override
     public AABB getBoundingBoxForCulling() {
-    	return getBoundingBox().inflate(vehicleStats.cameraDistance);
+    	return getBoundingBox().inflate(getStats().cameraDistance);
     }
     
     @Override
@@ -2559,7 +2561,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final float getTurnRadius() {
-    	return vehicleStats.turn_radius;
+    	return getStats().turn_radius;
     }
     
     @Override
@@ -2706,7 +2708,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected void createRotableHitboxes(CompoundTag nbt) {
 		CompoundTag hitbox_data = nbt.getCompound("hitbox_data");
 		hitboxes.clear();
-		hitboxes.addAll(vehicleStats.createRotableHitboxes(this));
+		hitboxes.addAll(getStats().createRotableHitboxes(this));
 		for (int i = 0; i < hitboxes.size(); ++i) {
 			RotableHitbox hitbox = hitboxes.get(i); 
 			hitbox.setPos(position());
@@ -2745,8 +2747,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void tickHitboxes() {
-		if (level.isClientSide && hitboxes.size() < vehicleStats.getHitboxNum() && tickCount % 200 == 20) {
-			LOGGER.debug("Vehicle "+getId()+" on client side has "+hitboxes.size()+"/"+vehicleStats.getHitboxNum()
+		if (level.isClientSide && hitboxes.size() < getStats().getHitboxNum() && tickCount % 200 == 20) {
+			LOGGER.debug("Vehicle "+getId()+" on client side has "+hitboxes.size()+"/"+getStats().getHitboxNum()
 					+" hitboxes. Sending hitbox refresh packet. Attempt "+(++hitboxRefreshAttempts));
 			PacketHandler.INSTANCE.sendToServer(new ToServerFixHitboxes(this));
 		}
@@ -2874,7 +2876,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public MastType getMastType() {
-		return vehicleStats.mastType;
+		return getStats().mastType;
 	}
 	
 	public boolean isFuelLeak() {
@@ -2916,7 +2918,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @return relative positions where smoke should appear
      */
     public Vec3[] getAfterBurnerSmokePos() {
-    	return vehicleStats.afterBurnerSmokePos;
+    	return getStats().afterBurnerSmokePos;
     }
     
     public List<Vec3> getEngineFirePos() {
@@ -3022,7 +3024,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      */
     @Nullable
     public VehicleClientStats getClientStats() {
-    	return vehicleClientStats;
+		if (vehicleClientStats == null) return null;
+    	return vehicleClientStats.get();
     }
     
     public String getClientStatsId() {
@@ -3034,19 +3037,19 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public boolean rootHitboxEntityInteract() {
-    	return !vehicleStats.rootHitboxNoCollide;
+    	return !getStats().rootHitboxNoCollide;
     }
     
     public boolean canControlPitch() {
-		return !areAllHitboxesDead(vehicleStats.controllPitchHitboxNames);
+		return !areAllHitboxesDead(getStats().controllPitchHitboxNames);
 	}
 	
 	public boolean canControlYaw() {
-		return !areAllHitboxesDead(vehicleStats.controllYawHitboxNames);
+		return !areAllHitboxesDead(getStats().controllYawHitboxNames);
 	}
 	
 	public boolean canControlRoll() {
-		return !areAllHitboxesDead(vehicleStats.controllRollHitboxNames);
+		return !areAllHitboxesDead(getStats().controllRollHitboxNames);
 	}
 
 	public float getYawRate() {

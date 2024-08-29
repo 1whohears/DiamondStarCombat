@@ -18,20 +18,12 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 	public static void close() {
 		instance = null;
 	}
-	
-	private Graph<?,?>[] allPresets;
+
 	private List<AoaLiftKGraph> aoaLiftKGraphs;
 	private List<TurnRatesBySpeedGraph> turnRateGraphs;
 	
 	public StatGraphs() {
 		super("stat_graph");
-	}
-
-	@Override
-	public Graph<?,?>[] getAll() {
-		if (allPresets == null) 
-			allPresets = presetMap.values().toArray(new Graph[presetMap.size()]);
-		return allPresets;
 	}
 	
 	public List<AoaLiftKGraph> getAoaLiftKGraphs() {
@@ -62,8 +54,12 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 	}
 
 	@Override
+	public Graph<?, ?>[] getNewArray(int i) {
+		return new Graph[i];
+	}
+
+	@Override
 	protected void resetCache() {
-		allPresets = null;
 		aoaLiftKGraphs = null;
 	}
 

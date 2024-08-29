@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 
 public class PartPresets extends JsonPresetReloadListener<PartStats> {
 	
@@ -17,8 +18,6 @@ public class PartPresets extends JsonPresetReloadListener<PartStats> {
 	public static void close() {
 		instance = null;
 	}
-	
-	private PartStats[] allPresets;
 	
 	@Override
 	public void registerDefaultPresetTypes() {
@@ -46,22 +45,17 @@ public class PartPresets extends JsonPresetReloadListener<PartStats> {
 	}
 
 	@Override
-	public PartStats[] getAll() {
-		if (allPresets == null) {
-			allPresets = presetMap.values().toArray(new PartStats[presetMap.size()]);
-			sort(allPresets);
-		}
-		return allPresets;
+	public PartStats[] getNewArray(int i) {
+		return new PartStats[i];
 	}
 
 	@Override
 	protected void resetCache() {
-		allPresets = null;
 		SlotType.updateSlotTypeChildren();
 	}
 	
 	public void sort(PartStats[] recipes) {
-		Arrays.sort(recipes, (a, b) -> a.compare(b));
+		Arrays.sort(recipes, JsonPresetStats::compare);
 	}
 
 }

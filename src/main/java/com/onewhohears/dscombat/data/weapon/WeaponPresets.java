@@ -28,8 +28,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 		instance = null;
 	}
 	
-	private Map<String, List<String>> compatiblePartMap = new HashMap<>();
-	private WeaponStats[] weaponList;
+	private final Map<String, List<String>> compatiblePartMap = new HashMap<>();
 	private WeaponRecipe[] weaponRecipes;
 	
 	public WeaponPresets() {
@@ -54,10 +53,9 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 	public WeaponStats get(String id) {
 		String updatedId = getUpdatedId(id);
 		if (updatedId == null) return null;
-		WeaponStats data = presetMap.get(updatedId);
-		if (data != null) return data;
-		return null;
-	}
+		if (!has(updatedId)) return null;
+        return presetMap.get(updatedId);
+    }
 	
 	public String getUpdatedId(String id) {
 		if (id == null) return null;
@@ -81,21 +79,16 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 	public boolean has(String id) {
 		return getUpdatedId(id) != null;
 	}
-	
+
 	@Override
-	public WeaponStats[] getAll() {
-		if (weaponList == null) {
-			weaponList = presetMap.values().toArray(new WeaponStats[presetMap.size()]);
-			sort(weaponList);
-		}
-		return weaponList;
+	public WeaponStats[] getNewArray(int i) {
+		return new WeaponStats[i];
 	}
-	
+
 	public WeaponRecipe[] getWeaponRecipes(RecipeManager recipeManager) {
 		if (weaponRecipes == null) {
-			List<WeaponRecipe> list = new ArrayList<>();
-			List<WeaponRecipe> wRecipes = recipeManager.getAllRecipesFor(WeaponRecipe.Type.INSTANCE);
-			for (WeaponRecipe recipe : wRecipes) list.add(recipe);
+            List<WeaponRecipe> wRecipes = recipeManager.getAllRecipesFor(WeaponRecipe.Type.INSTANCE);
+            List<WeaponRecipe> list = new ArrayList<>(wRecipes);
 			weaponRecipes = list.toArray(new WeaponRecipe[list.size()]);
 			sort(weaponRecipes);
 		}
@@ -103,7 +96,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 	}
 	
 	public void sort(WeaponRecipe[] recipes) {
-		Arrays.sort(recipes, (a, b) -> a.compare(b));
+		Arrays.sort(recipes, WeaponRecipe::compare);
 	}
 	
 	public int getWeaponRecipeNum() {
@@ -119,7 +112,6 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 	
 	@Override
 	protected void resetCache() {
-		weaponList = null;
 		weaponRecipes = null;
 		refreshCompatibility();
 	}
@@ -128,17 +120,12 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 		compatiblePartMap.clear();
 		for (int i = 0; i < getAll().length; ++i) {
 			String[] partIds = getAll()[i].getCompatibleWeaponParts();
-			if (partIds.length == 0) continue;
-			for (int j = 0; j < partIds.length; ++j) {
-				List<String> list = compatiblePartMap.get(partIds[j]);
-				if (list == null) {
-					list = new ArrayList<String>();
-					compatiblePartMap.put(partIds[j], list);
-				}
-				list.add(getAll()[i].getId());
-			}
+            for (String partId : partIds) {
+                List<String> list = compatiblePartMap.computeIfAbsent(partId, k -> new ArrayList<>());
+                list.add(getAll()[i].getId());
+            }
 		}
-		LOGGER.debug("WEAPON CAPATIBILITY: "+compatiblePartMap.toString());
+        LOGGER.debug("WEAPON CAPATIBILITY: {}", compatiblePartMap.toString());
 	}
 	
 }

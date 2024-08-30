@@ -344,6 +344,7 @@
     "inertiaroll": 10.0,
     "inertiayaw": 8.0,
     "mass": 83900.0,
+    "max_altitude": 600.0,
     "max_health": 200.0,
     "max_speed": 1.0,
     "maxpitch": 2.0,

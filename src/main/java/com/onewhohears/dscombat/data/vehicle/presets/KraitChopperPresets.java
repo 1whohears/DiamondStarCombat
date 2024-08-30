@@ -23,6 +23,7 @@ public class KraitChopperPresets {
 			.setStealth(1.2f)
 			.setCrossSecArea(8f)
 			.setIdleHeat(8f)
+			.setMaxAltitude(430)
 			.setTurnRadius(0f)
 			.setMaxTurnRates(4f, 2f, 4f)
 			.setTurnTorques(1f, 1f, 2.5f)

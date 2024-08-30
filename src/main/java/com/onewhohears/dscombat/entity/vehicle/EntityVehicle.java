@@ -632,7 +632,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (my > getMaxClimbSpeed()) my = getMaxClimbSpeed();
 		else if (my < -getMaxFallSpeed()) my = -getMaxFallSpeed();
 		else if (Math.abs(my) < 0.001) my = 0;
-		
+
+		double decreaseSpeedPos = 100;
+		double altitude = getAltitude();
+		double nextY = altitude + my;
+		if (nextY > getMaxAltitude()) my = getMaxAltitude() - altitude;
+		else if (altitude > getMaxAltitude() - decreaseSpeedPos) {
+			double maxY = 1 - (altitude - getMaxAltitude() + decreaseSpeedPos) / decreaseSpeedPos;
+			if (my > maxY) my = maxY;
+		}
+
 		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
 		setDeltaMovement(motionXZ.x, my, motionXZ.z);
 	}
@@ -2780,7 +2789,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public boolean isStuckInHitbox(Entity entity) {
 		EntityCollideInfo info = entityCollideInfo.get(entity.getId());
-		if (info == null || info.collides.size() == 0) return false;
+		if (info == null || info.collides.isEmpty()) return false;
 		//System.out.println("entity collide info: "+info);
 		CollideInfo currentPush = info.collides.get(0);
 		if (currentPush.time != tickCount) return false;
@@ -2839,7 +2848,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	private void syncHitboxCollidePositions() {
-		if (!level.isClientSide || collidedEntityIds.size() == 0 || !isControlledByLocalInstance()) return;
+		if (!level.isClientSide || collidedEntityIds.isEmpty() || !isControlledByLocalInstance()) return;
 		int[] ids = new int[collidedEntityIds.size()];
 		Vec3[] pos = new Vec3[collidedEntityIds.size()];
 		int i = 0;
@@ -2867,11 +2876,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public int getNumberOfAliveHitboxes(String... hitbox_names) {
 		int num = 0;
-		for (int i = 0; i < hitbox_names.length; ++i) {
-			RotableHitbox box = getHitboxByName(hitbox_names[i]);
-			if (box == null) continue;
-			if (!box.isDestroyed()) ++num;
-		}
+        for (String hitboxName : hitbox_names) {
+            RotableHitbox box = getHitboxByName(hitboxName);
+            if (box == null) continue;
+            if (!box.isDestroyed()) ++num;
+        }
 		return num;
 	}
 	
@@ -2994,8 +3003,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     @Override
-    public void setXRot(float yRot) {
-        super.setXRot(yRot);
+    public void setXRot(float xRot) {
+        super.setXRot(xRot);
         Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
         setQBySide(q);
     }
@@ -3010,8 +3019,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         super.setYRot(yRot);
     }
     
-    public void setXRotNoQ(float yRot) {
-        super.setXRot(yRot);
+    public void setXRotNoQ(float xRot) {
+        super.setXRot(xRot);
     }
     
     public boolean isAircraft() {
@@ -3058,6 +3067,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 
 	public float getActualTurnRadius() {
 		return xzSpeed / (getYawRate() * Mth.DEG_TO_RAD);
+	}
+
+	public double getMaxAltitude() {
+		return getStats().max_altitude;
+	}
+
+	public double getAltitude() {
+		return UtilEntity.getDistFromSeaLevel(this);
 	}
     
 }

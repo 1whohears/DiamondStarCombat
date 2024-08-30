@@ -56,7 +56,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
                 xOrigin, yOrigin,
                 0x00ff00);
         drawString(poseStack, FONT,
-                "A: "+ UtilEntity.getDistFromSeaLevel(vehicle),
+                "A: "+ vehicle.getAltitude(),
                 xOrigin, yOrigin-10,
                 0x00ff00);
 

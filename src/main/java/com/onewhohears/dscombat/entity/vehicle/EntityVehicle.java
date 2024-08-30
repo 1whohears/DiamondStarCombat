@@ -588,7 +588,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void tickNoHealth() {
 		++deadTicks;
-		if (isFullyLooted()) {
+		if (isFullyLooted()) kill();
+		int removeTicks = getLevel().getGameRules().getInt(DSCGameRules.REMOVE_DEAD_VEHICLES_TIME) * 20;
+		if (removeTicks >= 0 && deadTicks >= removeTicks) {
+			if (getLevel().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) dropAllItems();
 			kill();
 		}
 	}
@@ -1356,7 +1359,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (xzSpeed > 0.2) return InteractionResult.PASS;
 		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
-		if (player.getRootVehicle() != null && player.getRootVehicle().equals(this)) return InteractionResult.PASS;
+		if (player.getRootVehicle().equals(this)) return InteractionResult.PASS;
 		ItemStack stack = player.getInventory().getSelected();
 		if (!stack.isEmpty()) {
 			InteractionResult result = onItemInteract(player, hand, stack);
@@ -1480,8 +1483,23 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void playTheftSound() {
-		level.playSound(null, this, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 
+		getLevel().playSound(null, this, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR,
 				getSoundSource(), 0.5f, 1.0f);
+	}
+
+	public void dropAllItems() {
+		dropAllParts();
+		dropAllIngredients();
+	}
+
+	public void dropAllParts() {
+		if (getLevel().isClientSide) return;
+		partsManager.dropAllItems();
+	}
+
+	public void dropAllIngredients() {
+		if (getLevel().isClientSide) return;
+		while (true) if (!dropIngredient()) break;
 	}
 	
 	@Nullable
@@ -1875,12 +1893,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			return true;
 		}
 		return false;
-	}
-	
-	public void dropInventory() {
-		if (level.isClientSide) return;
-		if (!level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) return;
-		partsManager.dropAllItems();
 	}
 	
 	public void addForceMomentToClient(Vec3 force, Vec3 moment) {

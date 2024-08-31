@@ -89,6 +89,7 @@ public class ClientCameraEvents {
 				float x = player.getXRot() + dxi;
 				player.setXRot(x);
 				player.xRotO = x;
+				if (mirrored) x *= -1;
 				event.setPitch(x);
 			}
 			float planeYRotDiff = plane.getYRot()-plane.yRotO;

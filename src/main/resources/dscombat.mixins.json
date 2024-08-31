@@ -13,7 +13,8 @@
 		"ObjModelAccess",
 		"CompositeRenderableMeshAccess",
 		"CompositeRenderableComponentAccess",
-		"CompositeRenderableAccess"
+		"CompositeRenderableAccess",
+		"CameraAccess"
 	],
 	"server": [],
 	"injectors": {

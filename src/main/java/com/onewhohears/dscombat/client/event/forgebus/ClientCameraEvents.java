@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
+import com.onewhohears.dscombat.mixin.CameraAccess;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
@@ -111,6 +112,7 @@ public class ClientCameraEvents {
 		double camDist = plane.getStats().cameraDistance;
 		if (detached && isPilot && camDist > 4) {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
+			((CameraAccess)event.getCamera()).invokeSetRotation(event.getYaw(), event.getPitch());
 			event.getCamera().move(vehicleCamDist, 0, 0);
 		}
 		// TODO 4.4 allow player to lean left or right in first person to see behind more easily

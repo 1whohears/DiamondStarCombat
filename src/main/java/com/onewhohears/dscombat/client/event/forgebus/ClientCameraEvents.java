@@ -77,8 +77,11 @@ public class ClientCameraEvents {
 			player.setYRot(yi);
 			player.xRotO = xi;
 			player.yRotO = yi;
+			if (mirrored) {
+				xi *= -1;
+				yi += 180;
+			}
 			event.setPitch(xi);
-			if (mirrored) yi += 180;
 			event.setYaw(yi);
 		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
 			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)

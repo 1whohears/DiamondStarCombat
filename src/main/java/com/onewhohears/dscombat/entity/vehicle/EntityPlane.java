@@ -120,8 +120,8 @@ public class EntityPlane extends EntityVehicle {
 		if (isOnGround()) maxSpeedMod = 1;
 		float th = getCurrentThrottle();
 		double goal;
-		if (th < 0.5) goal = 0.7;
-		else goal = 0.7 + 0.6 * (th - 0.5);
+		if (th < 0.5) goal = 0.6;
+		else goal = 0.6 + 0.8 * (th - 0.5);
 		maxSpeedMod = Mth.lerp(0.015, maxSpeedMod, goal);
 	}
 	

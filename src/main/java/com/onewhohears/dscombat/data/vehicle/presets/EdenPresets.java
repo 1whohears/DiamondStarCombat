@@ -137,7 +137,7 @@ public class EdenPresets {
 			.setSlotItem("left_wing_3", ModItems.GIMBAL_CAMERA.getId())
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
-			.setSlotItem("right_wing_3", ModItems.HEAVY_MISSILE_RACK.getId(), "aim9x", true)
+			.setSlotItem("right_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
 			.setSlotItem("internal_gun", "gsh_30_1", "20mmhe", true)
 			.setSlotItem("internal_5", ModItems.AR1K.getId())
 			.setSlotItem("internal_6", ModItems.GR400.getId())

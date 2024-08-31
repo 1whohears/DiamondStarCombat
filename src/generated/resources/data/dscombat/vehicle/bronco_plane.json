@@ -5,6 +5,10 @@
     {
       "item": "dscombat:basic_flare_dispenser",
       "num": 1
+    },
+    {
+      "item": "dscombat:gr200",
+      "num": 1
     }
   ],
   "is_craftable": false,
@@ -18,6 +22,12 @@
         "part": "basic_flare_dispenser"
       },
       "name": "internal_4"
+    },
+    {
+      "data": {
+        "part": "gr200"
+      },
+      "name": "internal_5"
     },
     {
       "data": {

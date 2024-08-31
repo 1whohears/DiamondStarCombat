@@ -72,7 +72,7 @@ public class NoahChopperPresets {
 	public static final VehicleStats DEFAULT_NOAH_CHOPPER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "noah_chopper", UNARMED_NOAH_CHOPPER)
 			.setSlotItem("seat2", ModItems.MINIGUN_TURRET.getId(), true)
-			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm65l", true)
+			.setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
 			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9l", true)
 			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)

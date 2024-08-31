@@ -165,13 +165,14 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 			if (entityhitresult != null) hitresult = entityhitresult;
 			if (owner != null && hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
 				Entity hit = ((EntityHitResult)hitresult).getEntity();
-				/*System.out.println("BULLET "+this);
-				System.out.println("HIT "+hit);
-				System.out.println("OWNER "+owner);*/
-				if (hit.isAlliedTo(owner)) {
+				if (shouldSkipCollide(hit, owner)) {
 					hitresult = null;
 					entityhitresult = null;
-				}
+				} /*else {
+					System.out.println("BULLET "+this);
+					System.out.println("HIT "+hit);
+					System.out.println("OWNER "+owner);
+				}*/
 			}
 			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
 					&& !ForgeEventFactory.onProjectileImpact(this, hitresult)) {
@@ -182,6 +183,10 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 			if (entityhitresult == null) break;
 			hitresult = null;
 		}
+	}
+
+	private boolean shouldSkipCollide(Entity hit, Entity owner) {
+		return getLevel().isClientSide() != hit.getLevel().isClientSide() || hit.isAlliedTo(owner);
 	}
 	
 	protected BlockHitResult checkBlockCollide() {

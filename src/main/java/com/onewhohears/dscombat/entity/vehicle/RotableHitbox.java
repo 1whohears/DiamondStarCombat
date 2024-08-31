@@ -28,8 +28,8 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData, CustomExplosion {
 	
-	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(RotableHitbox.class, EntityDataSerializers.FLOAT);
+	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(RotableHitbox.class, EntityDataSerializers.FLOAT);
 	
 	private EntityVehicle parent;
 	private RotableHitboxData data;

@@ -2769,8 +2769,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public void tickHitboxes() {
 		if (level.isClientSide && hitboxes.size() < getStats().getHitboxNum() && tickCount % 200 == 20) {
-			LOGGER.debug("Vehicle "+getId()+" on client side has "+hitboxes.size()+"/"+getStats().getHitboxNum()
-					+" hitboxes. Sending hitbox refresh packet. Attempt "+(++hitboxRefreshAttempts));
+            LOGGER.debug("Vehicle {} on client side has {}/{} hitboxes. Sending hitbox refresh packet. Attempt {}",
+					getId(), hitboxes.size(), getStats().getHitboxNum(), ++hitboxRefreshAttempts);
 			PacketHandler.INSTANCE.sendToServer(new ToServerFixHitboxes(this));
 		}
 		for (RotableHitbox box : hitboxes) box.tick();

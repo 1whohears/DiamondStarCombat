@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
 
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -27,12 +28,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
@@ -217,6 +221,14 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//System.out.println("BULLET HIT "+result.getBlockPos());
+		if (canBreakFragileBlocks()) {
+			BlockState state = getLevel().getBlockState(result.getBlockPos());
+			if (state.is(ModTags.Blocks.FRAGILE)) {
+				//ForgeHooks.onBlockBreakEvent(getLevel(), )
+				getLevel().destroyBlock(result.getBlockPos(), true, this);
+				return;
+			}
+        }
 		kill();
 	}
 	
@@ -387,5 +399,9 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
     protected abstract WeaponDamageSource getImpactDamageSource();
     protected abstract WeaponDamageSource getExplosionDamageSource();
     public abstract WeaponStats.WeaponClientImpactType getClientImpactType();
+
+	public boolean canBreakFragileBlocks() {
+		return true;
+	}
 
 }

@@ -722,9 +722,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		float d = getAngularDrag();
 		float dx = d, dy = d, dz = d;
 		if (!onGround) {
-			if (inputs.pitch != 0) dx = 0;
-			if (inputs.yaw != 0) dy = 0;
-			if (inputs.roll != 0) dz = 0;
+			if (inputs.pitch != 0 && Math.abs(av.x) <= getControlMaxDeltaPitch()) dx = 0;
+			if (inputs.yaw != 0 && Math.abs(av.y) <= getControlMaxDeltaYaw()) dy = 0;
+			if (inputs.roll != 0 && Math.abs(av.z) <= getControlMaxDeltaRoll()) dz = 0;
 		}
 		setAngularVel(new Vec3(
 				getADComponent(av.x, dx, getStats().Ix),

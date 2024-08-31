@@ -1738,7 +1738,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 
 	@Override
 	public boolean isAlive() {
-		return rootHitboxEntityInteract();
+		return super.isAlive();
 	}
 
     @Override

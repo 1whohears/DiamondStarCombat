@@ -29,6 +29,7 @@ public class AlexisPresets {
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(28f)
 			.setFuselageLiftArea(18)
+			.setMaxAltitude(630)
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
@@ -37,6 +38,7 @@ public class AlexisPresets {
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(17)
 			.setPlaneLiftAOAGraph("alexis_plane")
+			.setTurnRateGraph("alexis_plane_turn_rates")
 			.setPlaneFlapDownAOABias(8)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(2)

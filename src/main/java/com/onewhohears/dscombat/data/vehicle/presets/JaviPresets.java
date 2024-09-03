@@ -24,11 +24,13 @@ public class JaviPresets {
 			.setCrossSecArea(7f)
 			.setIdleHeat(5f)
 			.setTurnRadius(12f)
+			.setTurnRateGraph("javi_plane_turn_rates")
 			.setMaxTurnRates(4f, 2.1f, 1.1f)
 			.setTurnTorques(1.5f, 2.5f, 4.5f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(50)
 			.setFuselageLiftArea(30)
+			.setMaxAltitude(480)
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 

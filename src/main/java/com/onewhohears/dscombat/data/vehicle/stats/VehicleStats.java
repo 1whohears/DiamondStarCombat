@@ -54,7 +54,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final boolean negativeThrottle;
 	// other 
 	public final float crashExplosionRadius;
-	public final double cameraDistance;
+	public final double cameraDistance, max_altitude;
 	public final int baseTextureVariants, textureLayers;
 	public final Vec3[] afterBurnerSmokePos;
 	public final MastType mastType;
@@ -105,6 +105,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		else mastType = MastType.NONE;
 		float entity_size_xz = UtilParse.getFloatSafe(stats, "entity_size_xz", 4);
 		float entity_size_y = UtilParse.getFloatSafe(stats, "entity_size_y", 4);
+		max_altitude = UtilParse.getFloatSafe(stats, "max_altitude", 330);
 		assetId = UtilParse.getStringSafe(stats, "assetId", key.getPath());
 		dimensions = EntityDimensions.fixed(entity_size_xz, entity_size_y);
 		groundXTilt = UtilParse.getIntSafe(stats, "groundXTilt", 0);
@@ -837,6 +838,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 			return setStatFloat("crashExplosionRadius", crashExplosionRadius);
 		}
 		/**
+		 * all vehicles
+		 */
+		public Builder setMaxAltitude(float max_altitude) {
+			return setStatFloat("max_altitude", max_altitude);
+		}
+		/**
 		 * all vehicles 
 		 */
 		public Builder set3rdPersonCamDist(float cameraDistance) {
@@ -989,6 +996,18 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * used by planes
 		 */
+		public Builder setAOADragFactor(float aoa_drag_factor) {
+			return setTypedStatFloat("aoa_drag_factor", aoa_drag_factor, "plane");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setCentripetalScale(float centripetal_scale) {
+			return setTypedStatFloat("centripetal_scale", centripetal_scale, "plane");
+		}
+		/**
+		 * used by planes
+		 */
 		public Builder setPlaneNoseCanAimDown(boolean canAimDown) {
 			return setTypedStatBoolean("canAimDown", canAimDown, "plane");
 		}
@@ -1004,6 +1023,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder setPlaneLiftAOAGraph(String wing_lift_k_graph) {
 			return setPlaneLiftAOAGraph(wing_lift_k_graph, "fuselage");
+		}
+		/**
+		 * used by planes
+		 */
+		public Builder setTurnRateGraph(String turn_rates_graph) {
+			return setTypedStatString("turn_rates_graph", turn_rates_graph, "plane");
 		}
 		/**
 		 * used by planes

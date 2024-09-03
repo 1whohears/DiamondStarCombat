@@ -69,7 +69,7 @@ public class HudOverlay extends VehicleOverlayComponent {
                 0x00ff00);
 
         drawString(poseStack, FONT,
-                "A: " + UtilEntity.getDistFromSeaLevel(plane),
+                "A: " + plane.getAltitude(),
                 0, 10,
                 0x00ff00);
 

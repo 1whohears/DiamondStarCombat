@@ -37,6 +37,9 @@ public class DebugOverlay extends VehicleOverlayComponent {
         drawString(stack, FONT,
                 "Q"+UtilParse.prettyQ(vehicle.getClientQ(), 2),
                 screenWidth - space, 40, color);
+        drawString(stack, FONT,
+                "YR: "+String.format("%3.2f", vehicle.getYawRate())+" TR: "+String.format("%3.2f", vehicle.getActualTurnRadius()),
+                screenWidth - space, 50, color);
     }
 
     @Override

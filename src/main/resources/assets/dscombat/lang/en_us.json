@@ -622,5 +622,6 @@
 	"gamerule.bulletDamagePlanePercent": "DSC Bullet Damage Plane Percent Multiplier",
 	"gamerule.bulletDamageHeliPercent": "DSC Bullet Damage Heli Percent Multiplier",
 	"gamerule.disable3rdPersonVehicle": "DSC Disable 3rd Person in Vehicles",
-	"gamerule.planeArcadeMode": "DSC Plane Arcade Physics Mode"
+	"gamerule.planeArcadeMode": "DSC Plane Arcade Physics Mode",
+	"gamerule.removeDeadVehiclesTime": "DSC Remove Dead Vehicles Seconds"
 }

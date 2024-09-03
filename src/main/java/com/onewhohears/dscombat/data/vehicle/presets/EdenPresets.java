@@ -30,6 +30,7 @@ public class EdenPresets {
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(38f)
 			.setFuselageLiftArea(22)
+			.setMaxAltitude(730)
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
@@ -38,6 +39,7 @@ public class EdenPresets {
 			.setCrashExplosionRadius(5.5f)
 			.set3rdPersonCamDist(19)
 			.setPlaneLiftAOAGraph("alexis_plane")
+			.setTurnRateGraph("eden_plane_turn_rates")
 			.setPlaneFlapDownAOABias(9)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(8)
@@ -135,7 +137,7 @@ public class EdenPresets {
 			.setSlotItem("left_wing_3", ModItems.GIMBAL_CAMERA.getId())
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
 			.setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65g", true)
-			.setSlotItem("right_wing_3", ModItems.HEAVY_MISSILE_RACK.getId(), "aim9x", true)
+			.setSlotItem("right_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
 			.setSlotItem("internal_gun", "gsh_30_1", "20mmhe", true)
 			.setSlotItem("internal_5", ModItems.AR1K.getId())
 			.setSlotItem("internal_6", ModItems.GR400.getId())

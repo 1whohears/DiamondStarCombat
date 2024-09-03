@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.client;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
+import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
 
 public class VehicleClientPresets extends JsonPresetAssetReader<VehicleClientStats> {
 	
@@ -16,13 +17,17 @@ public class VehicleClientPresets extends JsonPresetAssetReader<VehicleClientSta
 		instance = null;
 	}
 	
-	private VehicleClientStats[] presets;
-	
 	@Override
 	public VehicleClientStats get(String id) {
 		VehicleClientStats stats = super.get(id);
 		if (stats != null) return stats;
 		return addNew(id);
+	}
+
+	@Override
+	public PresetStatsHolder<VehicleClientStats> getHolder(String id) {
+		if (!has(id)) addNew(id);
+		return super.getHolder(id);
 	}
 	
 	protected VehicleClientStats addNew(String id) {
@@ -41,16 +46,13 @@ public class VehicleClientPresets extends JsonPresetAssetReader<VehicleClientSta
 	}
 
 	@Override
-	public VehicleClientStats[] getAll() {
-		if (presets == null) {
-			presets = presetMap.values().toArray(new VehicleClientStats[presetMap.size()]);
-		}
-		return presets;
+	public VehicleClientStats[] getNewArray(int i) {
+		return new VehicleClientStats[i];
 	}
 
 	@Override
 	protected void resetCache() {
-		presets = null;
+
 	}
 
 }

@@ -7,7 +7,6 @@ public class DSCPhyCons {
 	public static final float DRAG = 10f;
 	public static final float DRAG_WATER = 25f;
 	public static final float LIFT = 70f;
-	public static final float CENTRIPETAL_SCALE = 0.4f;
 	public static final float FLOAT = 150f;
 	
 	public static final float STATIC_FRICTION = 1f;

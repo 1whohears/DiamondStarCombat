@@ -22,8 +22,7 @@ public class VehiclePresets extends JsonPresetReloadListener<VehicleStats> {
 	public static void close() {
 		instance = null;
 	}
-	
-	private VehicleStats[] allPresets;
+
 	private VehicleRecipe[] tanks, helis, planes, boats;
 	
 	public VehiclePresets() {
@@ -37,12 +36,6 @@ public class VehiclePresets extends JsonPresetReloadListener<VehicleStats> {
 		addPresetType(VehicleType.CAR);
 		addPresetType(VehicleType.BOAT);
 		addPresetType(VehicleType.SUBMARINE);
-	}
-	
-	public VehicleStats[] getAll() {
-		if (allPresets == null) 
-			allPresets = presetMap.values().toArray(new VehicleStats[presetMap.size()]);
-		return allPresets;
 	}
 	
 	public VehicleRecipe[] getTankRecipes(RecipeManager recipeManager) {
@@ -90,12 +83,16 @@ public class VehiclePresets extends JsonPresetReloadListener<VehicleStats> {
 	}
 	
 	public void sort(VehicleRecipe[] recipes) {
-		Arrays.sort(recipes, (a, b) -> a.compare(b));
+		Arrays.sort(recipes, VehicleRecipe::compare);
+	}
+
+	@Override
+	public VehicleStats[] getNewArray(int i) {
+		return new VehicleStats[i];
 	}
 
 	@Override
 	protected void resetCache() {
-		allPresets = null;
 		tanks = null;
 		helis = null;
 		planes = null;

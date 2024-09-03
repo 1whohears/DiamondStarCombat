@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
+import com.onewhohears.dscombat.mixin.CameraAccess;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
@@ -77,8 +78,11 @@ public class ClientCameraEvents {
 			player.setYRot(yi);
 			player.xRotO = xi;
 			player.yRotO = yi;
+			if (mirrored) {
+				xi *= -1;
+				yi += 180;
+			}
 			event.setPitch(xi);
-			if (mirrored) yi += 180;
 			event.setYaw(yi);
 		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
 			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)
@@ -89,6 +93,7 @@ public class ClientCameraEvents {
 				float x = player.getXRot() + dxi;
 				player.setXRot(x);
 				player.xRotO = x;
+				if (mirrored) x *= -1;
 				event.setPitch(x);
 			}
 			float planeYRotDiff = plane.getYRot()-plane.yRotO;
@@ -107,6 +112,7 @@ public class ClientCameraEvents {
 		double camDist = plane.getStats().cameraDistance;
 		if (detached && isPilot && camDist > 4) {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
+			((CameraAccess)event.getCamera()).invokeSetRotation(event.getYaw(), event.getPitch());
 			event.getCamera().move(vehicleCamDist, 0, 0);
 		}
 		// TODO 4.4 allow player to lean left or right in first person to see behind more easily

@@ -29,6 +29,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_HELI_PER;
 	public static GameRules.Key<GameRules.BooleanValue> DISABLE_3RD_PERSON_VEHICLE;
 	public static GameRules.Key<GameRules.BooleanValue> PLANE_ARCADE_MODE;
+	public static GameRules.Key<GameRules.IntegerValue> REMOVE_DEAD_VEHICLES_TIME;
 	
 	public static void registerAll() {
 		CONSUME_FULE = CustomGameRules.registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
@@ -53,6 +54,7 @@ public class DSCGameRules {
 		BULLET_DAMAGE_HELI_PER = CustomGameRules.registerInteger("bulletDamageHeliPercent", 100, GameRules.Category.PLAYER);
 		DISABLE_3RD_PERSON_VEHICLE = CustomGameRules.registerSyncBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
 		PLANE_ARCADE_MODE = CustomGameRules.registerSyncBoolean("planeArcadeMode", false, GameRules.Category.PLAYER);
+		REMOVE_DEAD_VEHICLES_TIME = CustomGameRules.registerInteger("removeDeadVehiclesTime", -1, GameRules.Category.PLAYER);
 	}
 
 	public static boolean isPlaneArcadeMode(Level level) {

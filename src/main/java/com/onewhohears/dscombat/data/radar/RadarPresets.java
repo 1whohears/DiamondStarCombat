@@ -17,8 +17,6 @@ public class RadarPresets extends JsonPresetReloadListener<RadarStats> {
 		instance = null;
 	}
 	
-	private RadarStats[] radarList;
-	
 	public RadarPresets() {
 		super("radars");
 	}
@@ -39,16 +37,13 @@ public class RadarPresets extends JsonPresetReloadListener<RadarStats> {
 	}
 
 	@Override
-	public RadarStats[] getAll() {
-		if (radarList == null) {
-			radarList = presetMap.values().toArray(new RadarStats[presetMap.size()]);
-		}
-		return radarList;
+	public RadarStats[] getNewArray(int i) {
+		return new RadarStats[i];
 	}
 
 	@Override
 	protected void resetCache() {
-		radarList = null;
+
 	}
 	
 }

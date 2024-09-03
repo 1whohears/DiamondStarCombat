@@ -25,6 +25,7 @@ public class BroncoPresets {
 			.setCrossSecArea(5f)
 			.setIdleHeat(3f)
 			.setTurnRadius(8f)
+			.setTurnRateGraph("bronco_plane_turn_rates")
 			.setMaxTurnRates(2.5f, 1.2f, 0.9f)
 			.setTurnTorques(1.5f, 2f, 3f)
 			.setThrottleRate(0.03f, 0.07f)
@@ -60,7 +61,7 @@ public class BroncoPresets {
 			.addEmptySlot("internal_2", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
-			.addEmptySlot("internal_5", SlotType.MOUNT_TECH)
+			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
 			.setEntityMainHitboxSize(4, 4)
 			.build();
 	
@@ -77,9 +78,11 @@ public class BroncoPresets {
 	public static final VehicleStats DEFAULT_BRONCO_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "bronco_plane", UNARMED_BRONCO_PLANE)
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
+			.setSlotItem("internal_5", ModItems.GR200.getId())
 			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm65l", true)
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
+			.addIngredient(ModItems.GR200.getId())
 			.build();
 	
 }

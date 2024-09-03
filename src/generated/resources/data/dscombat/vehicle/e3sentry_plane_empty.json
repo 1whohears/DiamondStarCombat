@@ -344,6 +344,7 @@
     "inertiaroll": 10.0,
     "inertiayaw": 8.0,
     "mass": 83900.0,
+    "max_altitude": 600.0,
     "max_health": 200.0,
     "max_speed": 1.0,
     "maxpitch": 2.0,
@@ -354,6 +355,7 @@
       "flapsAOABias": 10.0,
       "fuselage_lift_area": 80.0,
       "fuselage_lift_k_graph": "fuselage",
+      "turn_rates_graph": "e3sentry_turn_rates",
       "wing_area": 283.0,
       "wing_lift_k_graph": "e3sentry_plane"
     },

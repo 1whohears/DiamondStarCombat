@@ -23,7 +23,6 @@ public final class ModEvents {
 		new DebugHitboxPosCommand(event.getDispatcher());
 		new TargetModeCommand(event.getDispatcher());
 		ConfigCommand.register(event.getDispatcher());
-		// IDEA 3.2 set position guided missile position with command
 	}
 	
 	@SubscribeEvent

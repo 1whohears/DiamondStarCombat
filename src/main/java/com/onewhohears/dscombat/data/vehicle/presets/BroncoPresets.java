@@ -61,7 +61,7 @@ public class BroncoPresets {
 			.addEmptySlot("internal_2", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
-			.addEmptySlot("internal_5", SlotType.MOUNT_TECH)
+			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
 			.setEntityMainHitboxSize(4, 4)
 			.build();
 	
@@ -78,9 +78,11 @@ public class BroncoPresets {
 	public static final VehicleStats DEFAULT_BRONCO_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "bronco_plane", UNARMED_BRONCO_PLANE)
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
+			.setSlotItem("internal_5", ModItems.GR200.getId())
 			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm65l", true)
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
+			.addIngredient(ModItems.GR200.getId())
 			.build();
 	
 }

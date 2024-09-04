@@ -54,7 +54,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final boolean negativeThrottle;
 	// other 
 	public final float crashExplosionRadius;
-	public final double cameraDistance;
+	public final double cameraDistance, max_altitude;
 	public final int baseTextureVariants, textureLayers;
 	public final Vec3[] afterBurnerSmokePos;
 	public final MastType mastType;
@@ -105,6 +105,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		else mastType = MastType.NONE;
 		float entity_size_xz = UtilParse.getFloatSafe(stats, "entity_size_xz", 4);
 		float entity_size_y = UtilParse.getFloatSafe(stats, "entity_size_y", 4);
+		max_altitude = UtilParse.getFloatSafe(stats, "max_altitude", 330);
 		assetId = UtilParse.getStringSafe(stats, "assetId", key.getPath());
 		dimensions = EntityDimensions.fixed(entity_size_xz, entity_size_y);
 		groundXTilt = UtilParse.getIntSafe(stats, "groundXTilt", 0);
@@ -835,6 +836,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder setCrashExplosionRadius(float crashExplosionRadius) {
 			return setStatFloat("crashExplosionRadius", crashExplosionRadius);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setMaxAltitude(float max_altitude) {
+			return setStatFloat("max_altitude", max_altitude);
 		}
 		/**
 		 * all vehicles 

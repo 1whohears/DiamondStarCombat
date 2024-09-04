@@ -20,12 +20,12 @@ import net.minecraft.world.phys.AABB;
 @Mixin(Level.class)
 public abstract class LevelMixin {
 	
-	@Inject(method = "getEntities", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "getEntities", at = @At("RETURN"))
 	private void dscombat_GetEntities(@Nullable Entity pEntity, AABB pBoundingBox, Predicate<? super Entity> pPredicate, CallbackInfoReturnable<List<Entity>> cir) {
 		Level level = (Level)(Object)this;
 		List<Entity> entities = cir.getReturnValue();
 		List<RotableHitbox> hitboxes = RotableHitboxes.getHitboxes(level.dimension());
-		for (int i = 0; i < hitboxes.size(); ++i) {
+		for (int i = 0; i < hitboxes.size(); ++i) { // MUST USE INDEX LOOP TO AVOID ARRAY MODIFICATION ERRORS
 			RotableHitbox hitbox = hitboxes.get(i);
 			if (hitbox == null) continue;
 			if (containsEntity(entities, hitbox)) continue;
@@ -33,7 +33,6 @@ public abstract class LevelMixin {
 			if (!hitbox.getBoundingBox().intersects(pBoundingBox)) continue;
 			entities.add(hitbox);
 		}
-		//cir.setReturnValue(entities);
 	}
 	
 	private static boolean containsEntity(List<Entity> entities, Entity entity) {

@@ -40,8 +40,9 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 		while (it.hasNext()) {
 			VoxelShape voxel = it.next();
 			BlockPos pos = new BlockPos(voxel.bounds().getCenter());
-			int hit_block_strength = getBlockStrength(pos);
-			if (getBlockStrength() >= hit_block_strength) {
+			BlockState state = getLevel().getBlockState(pos);
+			int hit_block_strength = getBlockStrength(pos, state);
+			if (getBlockStrength() >= hit_block_strength && hasPermissionToBreakBlock(pos, state)) {
 				level.destroyBlock(pos, true, this);
 				reduceBlockStrength(hit_block_strength);
 			} else {
@@ -52,10 +53,9 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 		return BlockHitResult.miss(p, getDirection(), new BlockPos(p));
 	}
 	
-	protected int getBlockStrength(BlockPos pos) {
-		BlockState bs = level.getBlockState(pos);
-		if (bs.is(Blocks.BEDROCK)) return Integer.MAX_VALUE;
-		return (int) bs.getExplosionResistance(level, pos, null);
+	protected int getBlockStrength(BlockPos pos, BlockState state) {
+		if (state.is(Blocks.BEDROCK)) return Integer.MAX_VALUE;
+		return (int) state.getExplosionResistance(level, pos, null);
 	}
 	
 	@Override

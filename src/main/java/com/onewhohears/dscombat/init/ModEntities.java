@@ -70,8 +70,7 @@ public class ModEntities {
 					SubPresets.DEFAULT_ANDOLF_SUB.getId())));
 	
 	public static final RegistryObject<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox", 
-			() -> createEntityTypeFar((type, level) -> new RotableHitbox(type, level), 
-					EntityDimensions.scalable(0.1f, 0.1f)));
+			() -> createEntityTypeFar(RotableHitbox::new, EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	/* 
 	 * IDEA 5 more vehicles

@@ -34,6 +34,7 @@ public class ToServerFixHitboxes extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
+			if (player == null) return;
 			Level level = player.level;
 			if (!(level.getEntity(id) instanceof EntityVehicle vehicle)) return;
 			vehicle.refreshHitboxes();

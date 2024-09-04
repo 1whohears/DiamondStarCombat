@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
@@ -35,7 +36,15 @@ public class TargetModeCommand {
             return 0;
         }
         vehicle.weaponSystem.setTargetMode(targetMode);
-        if (targetMode == WeaponSystem.TargetMode.COORDS) vehicle.weaponSystem.setTargetPos(pos);
+        if (targetMode == WeaponSystem.TargetMode.COORDS) {
+            vehicle.weaponSystem.setTargetPos(pos);
+            context.getSource().sendSuccess(UtilMCText.translatable(
+                    "success.dscombat.target_mode_coords",
+                    UtilParse.prettyVec3(pos, 0)), false);
+        } else if (targetMode == WeaponSystem.TargetMode.LOOK) {
+            context.getSource().sendSuccess(UtilMCText.translatable(
+                    "success.dscombat.target_mode_look"), false);
+        }
         return 1;
     }
 

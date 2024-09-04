@@ -11,9 +11,9 @@ import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 
-public class TargetMode {
+public class TargetModeCommand {
 
-    public TargetMode(CommandDispatcher<CommandSourceStack> d) {
+    public TargetModeCommand(CommandDispatcher<CommandSourceStack> d) {
         d.register(Commands.literal("targetmode").requires((stack) -> { return stack.hasPermission(0);})
                 .then(Commands.literal("look")
                         .executes((context) -> setTargetMode(context, WeaponSystem.TargetMode.LOOK, null)))

@@ -27,8 +27,12 @@ public class DebugHitboxPosCommand {
 				Vec3 rel_pos = Vec3Argument.getVec3(context, "rel_pos");
 				Vec3 size = Vec3Argument.getVec3(context, "size");
 				ServerPlayer player = context.getSource().getPlayer();
+				if (player == null) {
+					context.getSource().sendFailure(UtilMCText.translatable("error.dscombat.command_players_only"));
+					return 0;
+				}
 				if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) {
-					context.getSource().sendFailure(UtilMCText.literal("You must ride a vehicle to use this command!"));
+					context.getSource().sendFailure(UtilMCText.translatable("error.dscombat.command_must_ride_vehicle"));
 					return 0;
 				}
 				RotableHitbox hitbox = vehicle.getHitboxByName(hitbox_name);

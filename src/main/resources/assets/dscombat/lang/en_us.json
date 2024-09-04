@@ -24,6 +24,8 @@
 	"error.dscombat.unknown_preset": "Unknown Preset!",
 	"error.dscombat.cant_item_yet": "Can't become an item yet! Wait for cooldown.",
 	"error.dscombat.no_storage_boxes": "This Vehicle has No Storage Boxes",
+	"error.dscombat.command_players_only": "Only Players can use this command!",
+	"error.dscombat.command_must_ride_vehicle": "You must ride a vehicle to use this command!",
 	
 	"weapon_code.dscombat.gun": "GUN",
 	"weapon_code.dscombat.fox1": "FOX1",

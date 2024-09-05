@@ -7,5 +7,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(Camera.class)
 public interface CameraAccess {
     @Invoker(value = "setRotation")
-    public void invokeSetRotation(float pYRot, float pXRot);
+    void invokeSetRotation(float pYRot, float pXRot);
 }

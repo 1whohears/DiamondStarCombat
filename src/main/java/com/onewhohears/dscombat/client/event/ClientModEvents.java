@@ -40,6 +40,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
 import com.onewhohears.onewholibs.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.client.renderer.RendererObjVehicle;
 import com.onewhohears.dscombat.client.renderer.RendererObjWeapon;
@@ -50,6 +51,7 @@ import com.onewhohears.dscombat.init.ModParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -150,7 +152,13 @@ public final class ClientModEvents {
                         new AATurretModel()));
 		event.registerEntityRenderer(ModEntities.CIWS.get(), 
 				(context) -> new RendererObjEntity<>(context,
-                        new CIWSModel()));
+                        //new CIWSModel()));
+						new KeyframeAnimsEntityModel<>("ciws", "turret_test_anim") {
+							@Override
+							public boolean globalRotateX() {
+								return false;
+							}
+						}));
 		event.registerEntityRenderer(ModEntities.MARK7_CANNON.get(), 
 				(context) -> new RendererObjEntity<>(context,
                         new Mark7GunModel()));

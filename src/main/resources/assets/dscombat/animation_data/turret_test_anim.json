@@ -1,0 +1,6 @@
+{
+	"presetId": "turret_test_anim",
+	"presetType": "block_bench",
+	"animation_id": "cwis_turret_test.animation",
+	"animation_player": "always"
+}

@@ -112,11 +112,11 @@ public class TurretShootGoal extends Goal {
 		if (wd == null) return false;
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
 		if (useIRMis && wd.getStats().isIRMissile()) {
-			if (turret.tickCount-turret.getLastShootTime() < wd.getStats().getMaxAge()*0.5) return false;
+			if (turret.tickCount-turret.getLastShootTick() < wd.getStats().getMaxAge()*0.5) return false;
 			if (UtilVehicleEntity.isOnGroundOrWater(target)) return false;
 			aimError += 6;
 		} else if (useTrackMis && wd.getStats().requiresRadar()) {
-			if (turret.tickCount-turret.getLastShootTime() < wd.getStats().getMaxAge()*0.5) return false;
+			if (turret.tickCount-turret.getLastShootTick() < wd.getStats().getMaxAge()*0.5) return false;
 			EntityVehicle vehicle = turret.getParentVehicle();
 			if (vehicle == null) return false;
 			if (!vehicle.radarSystem.hasRadar()) return false;

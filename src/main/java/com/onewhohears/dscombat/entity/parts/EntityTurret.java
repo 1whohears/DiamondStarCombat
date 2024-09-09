@@ -41,7 +41,8 @@ public class EntityTurret extends EntitySeat {
 	public static final EntityDataAccessor<Integer> MAX_AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
-	
+	public static final EntityDataAccessor<Integer> LAST_SHOOT_TICK = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
+
 	public final double weaponOffset;
 	public final ShootType shootType;
 	public final RotBounds rotBounds;
@@ -52,7 +53,7 @@ public class EntityTurret extends EntitySeat {
 	/**
 	 * only used on server side
 	 */
-	private int newRiderCoolDown, lastShootTime;
+	private int newRiderCoolDown;
 	
 	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, 
 			double weaponOffset, RotBounds rotBounds) {
@@ -75,6 +76,7 @@ public class EntityTurret extends EntitySeat {
 		entityData.define(MAX_AMMO, 0);
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
+	entityData.define(LAST_SHOOT_TICK, 0);
 	}
 	
 	@Override
@@ -338,7 +340,7 @@ public class EntityTurret extends EntitySeat {
 					UtilMCText.translatable(data.getFailedLaunchReason()), 
 					true);
 		} else {
-			lastShootTime = tickCount;
+			setLastShootTick(tickCount);
 			setAmmo(data.getCurrentAmmo());
 			updateDataAmmo();
 		}
@@ -357,8 +359,12 @@ public class EntityTurret extends EntitySeat {
 		}
 	}
 	
-	public int getLastShootTime() {
-		return lastShootTime;
+	public int getLastShootTick() {
+		return entityData.get(LAST_SHOOT_TICK);
+	}
+
+	public void setLastShootTick(int tick) {
+		entityData.set(LAST_SHOOT_TICK, tick);
 	}
 	
 	@Override

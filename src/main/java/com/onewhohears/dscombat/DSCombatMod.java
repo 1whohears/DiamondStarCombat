@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat;
 
+import com.onewhohears.dscombat.client.model.obj.customanims.KFAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
@@ -33,6 +34,8 @@ import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.init.ModVillagers;
 
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.ControllableAnimPlayer;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KFAnimPlayers;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -115,6 +118,10 @@ public class DSCombatMod {
 		CustomAnims.addAnim("landing_gear", VehicleModelTransforms.LandingGear::new);
 		CustomAnims.addAnim("hitbox_destroy_part", VehicleModelTransforms.HitboxDestroyPart::new);
 		CustomAnims.addAnim("plane_flap_rotation", VehicleModelTransforms.PlaneFlapRotation::new);
+		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot", (data) -> new ControllableAnimPlayer<>(data,
+				KFAnimControl.TURRET_SHOOT_TRIGGER, KFAnimControl.TURRET_SHOOT_CONTROL));
+		KFAnimPlayers.addAnimationPlayerFactory("vehicle_landing_gear", (data) -> new ControllableAnimPlayer<>(data,
+				KFAnimControl.LANDING_GEAR_TRIGGER, KFAnimControl.LANDING_GEAR_CONTROL));
     }
     
     private void onGatherData(GatherDataEvent event) {

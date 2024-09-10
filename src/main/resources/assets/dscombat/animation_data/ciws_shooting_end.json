@@ -1,0 +1,6 @@
+{
+	"presetId": "ciws_shooting_end",
+	"presetType": "block_bench",
+	"animation_id": "ciws_turret.shoot_end",
+	"animation_player": "turret_shoot_loop_end"
+}

@@ -1,0 +1,32 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"shooting": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"barrel": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"1.0": [0, 0, 900]
+					}
+				}
+			}
+		},
+		"shoot_end": {
+			"animation_length": 2,
+			"bones": {
+				"barrel": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"1.0": [0, 0, 900],
+						"1.25": [0, 0, 1069],
+						"1.5": [0, 0, 1182],
+						"1.75": [0, 0, 1238],
+						"2.0": [0, 0, 1260]
+					}
+				}
+			}
+		}
+	}
+}

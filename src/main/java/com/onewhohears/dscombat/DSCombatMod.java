@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat;
 
-import com.onewhohears.dscombat.client.model.obj.customanims.KFAnimControl;
+import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
@@ -119,9 +119,13 @@ public class DSCombatMod {
 		CustomAnims.addAnim("hitbox_destroy_part", VehicleModelTransforms.HitboxDestroyPart::new);
 		CustomAnims.addAnim("plane_flap_rotation", VehicleModelTransforms.PlaneFlapRotation::new);
 		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot", (data) -> new ControllableAnimPlayer<>(data,
-				KFAnimControl.TURRET_SHOOT_TRIGGER, KFAnimControl.TURRET_SHOOT_CONTROL));
+				DSCAnimControl.TURRET_SHOOT_TRIGGER, DSCAnimControl.TURRET_SHOOT_CONTROL));
+		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot_loop", (data) -> new ControllableAnimPlayer<>(data,
+				DSCAnimControl.TURRET_SHOOT_LOOP_TRIGGER, DSCAnimControl.TURRET_SHOOT_LOOP_CONTROL));
+		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot_loop_end", (data) -> new ControllableAnimPlayer<>(data,
+				DSCAnimControl.TURRET_SHOOT_LOOP_END_TRIGGER, DSCAnimControl.TURRET_SHOOT_LOOP_END_CONTROL));
 		KFAnimPlayers.addAnimationPlayerFactory("vehicle_landing_gear", (data) -> new ControllableAnimPlayer<>(data,
-				KFAnimControl.LANDING_GEAR_TRIGGER, KFAnimControl.LANDING_GEAR_CONTROL));
+				DSCAnimControl.LANDING_GEAR_TRIGGER, DSCAnimControl.LANDING_GEAR_CONTROL));
     }
     
     private void onGatherData(GatherDataEvent event) {

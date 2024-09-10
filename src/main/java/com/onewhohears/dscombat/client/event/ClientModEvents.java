@@ -153,13 +153,7 @@ public final class ClientModEvents {
                         new AATurretModel()));
 		event.registerEntityRenderer(ModEntities.CIWS.get(), 
 				(context) -> new RendererObjEntity<>(context,
-                        //new CIWSModel()));
-						new ObjTurretModel<>("ciws", true, "turret_test_anim") {
-							@Override
-							public boolean globalRotateX() {
-								return false;
-							}
-						}));
+                        new CIWSModel()));
 		event.registerEntityRenderer(ModEntities.MARK7_CANNON.get(), 
 				(context) -> new RendererObjEntity<>(context,
                         new Mark7GunModel()));

@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.EntityModelParachute;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
+import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
@@ -153,7 +154,7 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.CIWS.get(), 
 				(context) -> new RendererObjEntity<>(context,
                         //new CIWSModel()));
-						new KeyframeAnimsEntityModel<>("ciws", "turret_test_anim") {
+						new ObjTurretModel<>("ciws", true, "turret_test_anim") {
 							@Override
 							public boolean globalRotateX() {
 								return false;

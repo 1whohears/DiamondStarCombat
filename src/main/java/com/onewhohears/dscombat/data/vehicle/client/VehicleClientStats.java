@@ -16,6 +16,7 @@ import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.onewholibs.data.jsonpreset.PresetBuilder;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
@@ -44,9 +45,10 @@ public class VehicleClientStats extends JsonPresetStats {
 		}
 		String model_id = getId();
 		if (model_data.has("model_id")) model_id = model_data.get("model_id").getAsString();
+		String[] animDataIds = UtilParse.getStringArraySafe(model_data, "anim_data");
 		if (model_data.has("custom_anims")) 
-			model = new ObjVehicleModel<>(model_id, model_data.get("custom_anims").getAsJsonArray());
-		else model = new ObjVehicleModel<>(model_id);
+			model = new ObjVehicleModel<>(model_id, model_data.get("custom_anims").getAsJsonArray(), animDataIds);
+		else model = new ObjVehicleModel<>(model_id, animDataIds);
 		return model;
 	}
 	
@@ -97,6 +99,14 @@ public class VehicleClientStats extends JsonPresetStats {
 				getData().add("model_data", new JsonObject());
 			}
 			return getData().get("model_data").getAsJsonObject();
+		}
+		public Builder setKFAnimDataIds(String model_id, String... animDataIds) {
+			setKFAnimsDataIds(animDataIds);
+			return setSimpleModelId(model_id);
+		}
+		public Builder setKFAnimsDataIds(String... animDataIds) {
+			getModelData().add("anim_data", UtilParse.stringArrayToJsonArray(animDataIds));
+			return this;
 		}
 		public Builder setCustomAnims(String model_id, JsonArray anims) {
 			getModelData().add("custom_anims", anims);

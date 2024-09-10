@@ -22,9 +22,9 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 	public ObjRadarModel(String modelId) {
 		this(modelId, null);
 	}
-	
-	public ObjRadarModel(String modelId, String largeModelId) {
-		super(modelId);
+
+	public ObjRadarModel(String modelId, String largeModelId, String... animDataIds) {
+		super(modelId, animDataIds);
 		this.largeModelId = largeModelId;
 	}
 	

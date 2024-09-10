@@ -6,17 +6,17 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.renderer.RendererEntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
-import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnimsEntityModel;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimationPlayer;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 
-import javax.json.Json;
+import java.util.List;
 
-public class ObjVehicleModel<T extends EntityVehicle> extends CustomAnimsEntityModel<T> {
+public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntityModel<T> {
 	
 	public ObjVehicleModel(String modelId) {
 		this(modelId, new JsonArray());
@@ -25,7 +25,15 @@ public class ObjVehicleModel<T extends EntityVehicle> extends CustomAnimsEntityM
 	public ObjVehicleModel(String modelId, JsonArray anims) {
 		super(modelId, anims);
 	}
-	
+
+	public ObjVehicleModel(String modelId, JsonArray anims, String... animDataIds) {
+		super(modelId, anims, animDataIds);
+	}
+
+	public ObjVehicleModel(String modelId, String[] animDataIds) {
+		this(modelId, new JsonArray(), animDataIds);
+	}
+
 	@Override
 	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
 		return (texture) -> RendererEntityVehicle.getCullBaseRenderType(entity.textureManager.getDynamicTexture());

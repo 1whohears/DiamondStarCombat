@@ -17,7 +17,7 @@ import net.minecraft.world.item.TooltipFlag;
 
 public class EngineStats extends PartStats {
 	
-	public static enum EngineType {
+	public enum EngineType {
 		SPIN,
 		PUSH
 	}
@@ -69,6 +69,7 @@ public class EngineStats extends PartStats {
 	@Override
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
 		super.addToolTips(tips, isAdvanced);
+		tips.add(UtilMCText.translatable("info.dscombat.vehicle_engine_stats_override"));
 		tips.add(UtilMCText.literal("Thrust: "+thrust).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		tips.add(UtilMCText.literal("Fuel L/M: "+String.format("%.1f", fuelRate*1200)).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}

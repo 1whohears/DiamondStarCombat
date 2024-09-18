@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.vehicle.presets.*;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.item.ItemAmmo;
 import com.onewhohears.dscombat.item.ItemCreativeWand;
 import com.onewhohears.dscombat.item.ItemGasCan;
@@ -24,6 +25,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 public class ModItems {
 	
@@ -35,35 +37,35 @@ public class ModItems {
 	
 	public static final CreativeModeTab DSC_ITEMS = new CreativeModeTab("items") {
 		@Override
-		public ItemStack makeIcon() {
+		public @NotNull ItemStack makeIcon() {
 			return new ItemStack(ModItems.WRENCH.get());
 		}
 	};
 	
 	public static final CreativeModeTab PARTS = new CreativeModeTab("parts") {
 		@Override
-		public ItemStack makeIcon() {
+		public @NotNull ItemStack makeIcon() {
 			return new ItemStack(ModItems.C12_ENGINE.get());
 		}
 	};
 	
 	public static final CreativeModeTab WEAPONS = new CreativeModeTab("weapons") {
 		@Override
-		public ItemStack makeIcon() {
+		public @NotNull ItemStack makeIcon() {
 			return new ItemStack(ModItems.AIM9X.get());
 		}
 	};
 	
 	public static final CreativeModeTab WEAPON_PARTS = new CreativeModeTab("weapon_parts") {
 		@Override
-		public ItemStack makeIcon() {
+		public @NotNull ItemStack makeIcon() {
 			return new ItemStack(ModItems.CIWS.get());
 		}
 	};
 	
 	public static final CreativeModeTab VEHICLES = new CreativeModeTab("vehicle") {
 		@Override
-		public ItemStack makeIcon() {
+		public @NotNull ItemStack makeIcon() {
 			return new ItemStack(ModItems.JAVI_PLANE.get());
 		}
 	};
@@ -124,8 +126,8 @@ public class ModItems {
 			() -> new ItemRepairTool(20, 5));
 	public static final RegistryObject<Item> THICK_WRENCH = ITEMS.register("thick_wrench", 
 			() -> new ItemRepairTool(200, 5));
-	public static final RegistryObject<Item> PARACHUTE = ITEMS.register("parachute", 
-			() -> new ItemParachute());
+	public static final RegistryObject<Item> PARACHUTE = ITEMS.register("parachute",
+            ItemParachute::new);
 	public static final RegistryObject<Item> SPRAYCAN = ITEMS.register("spraycan", 
 			() -> new Item(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1)));
 	
@@ -134,16 +136,16 @@ public class ModItems {
 			() -> new ItemCreativeWand(vehicle -> vehicle.setNoConsume(true), 
 					"info.dscombat.no_consume_wand_1"));
 	public static final RegistryObject<Item> INSTANT_REPAIR_WAND = ITEMS.register("instant_repair_wand", 
-			() -> new ItemCreativeWand(vehicle -> vehicle.repairAll(), 
+			() -> new ItemCreativeWand(EntityVehicle::repairAll,
 					"info.dscombat.instant_repair_wand_1"));
 	public static final RegistryObject<Item> REFILL_WEAPONS_WAND = ITEMS.register("refill_weapons_wand", 
-			() -> new ItemCreativeWand(vehicle -> vehicle.refillAllWeapons(), 
+			() -> new ItemCreativeWand(EntityVehicle::refillAllWeapons,
 					"info.dscombat.refill_weapons_wand_1"));
 	public static final RegistryObject<Item> REFILL_FUEL_WAND = ITEMS.register("refill_fuel_wand", 
-			() -> new ItemCreativeWand(vehicle -> vehicle.refillFuel(), 
+			() -> new ItemCreativeWand(EntityVehicle::refillFuel,
 					"info.dscombat.refill_fuel_wand_1"));
 	public static final RegistryObject<Item> REFILL_ALL_WAND = ITEMS.register("refill_all_wand", 
-			() -> new ItemCreativeWand(vehicle -> vehicle.refillAll(), 
+			() -> new ItemCreativeWand(EntityVehicle::refillAll,
 					"info.dscombat.refill_all_wand_1"));
 	
 	// GAS CANS

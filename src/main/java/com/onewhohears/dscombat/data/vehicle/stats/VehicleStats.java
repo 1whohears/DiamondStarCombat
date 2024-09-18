@@ -52,12 +52,18 @@ public abstract class VehicleStats extends JsonPresetStats {
 	// control
 	public final float throttleup, throttledown;
 	public final boolean negativeThrottle;
-	// other 
-	public final float crashExplosionRadius;
 	public final double cameraDistance, max_altitude;
+	// physics
+	public final float crashExplosionRadius;
+	public final float max_push_thrust_per_engine;
+	public final float max_spin_thrust_per_engine;
+	public final float heat_per_engine;
+	public final float fuel_consume_per_engine;
+	// appearance
 	public final int baseTextureVariants, textureLayers;
 	public final Vec3[] afterBurnerSmokePos;
 	public final MastType mastType;
+	// hitbox
 	public final EntityDimensions dimensions;
 	public final boolean rootHitboxNoCollide;
 	public final String[] controllPitchHitboxNames, controllYawHitboxNames, controllRollHitboxNames;
@@ -109,6 +115,10 @@ public abstract class VehicleStats extends JsonPresetStats {
 		assetId = UtilParse.getStringSafe(stats, "assetId", key.getPath());
 		dimensions = EntityDimensions.fixed(entity_size_xz, entity_size_y);
 		groundXTilt = UtilParse.getIntSafe(stats, "groundXTilt", 0);
+		max_push_thrust_per_engine = UtilParse.getFloatSafe(stats, "max_push_thrust_per_engine", -1);
+		max_spin_thrust_per_engine = UtilParse.getFloatSafe(stats, "max_spin_thrust_per_engine", -1);
+		heat_per_engine = UtilParse.getFloatSafe(stats, "heat_per_engine", -1);
+		fuel_consume_per_engine = UtilParse.getFloatSafe(stats, "fuel_consume_per_engine", -1);
 		if (json.has("textures")) {
 			JsonObject textures = json.get("textures").getAsJsonObject();
 			baseTextureVariants = UtilParse.getIntSafe(textures, "baseTextureVariants", 1);
@@ -875,6 +885,24 @@ public abstract class VehicleStats extends JsonPresetStats {
 		public Builder setHitboxesControlRoll(String... hitboxes_control_roll) {
 			getStats().add("hitboxes_control_roll", UtilParse.stringArrayToJsonArray(hitboxes_control_roll));
 			return this;
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setPushEngineOverrideStats(float max_push_thrust_per_engine,
+												  float heat_per_engine, float fuel_consume_per_engine) {
+			setStatFloat("max_push_thrust_per_engine", max_push_thrust_per_engine);
+			setStatFloat("heat_per_engine", heat_per_engine);
+			return setStatFloat("fuel_consume_per_engine", fuel_consume_per_engine);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setSpinEngineOverrideStats(float max_spin_thrust_per_engine,
+												  float heat_per_engine, float fuel_consume_per_engine) {
+			setStatFloat("max_spin_thrust_per_engine", max_spin_thrust_per_engine);
+			setStatFloat("heat_per_engine", heat_per_engine);
+			return setStatFloat("fuel_consume_per_engine", fuel_consume_per_engine);
 		}
 		
 		public JsonObject getTextures() {

@@ -259,42 +259,42 @@ public class PartsManager {
 	
 	public float getTotalPushThrust() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled()) 
-			total += p.getPartData().getPushThrust();
+		for (PartSlot p : slots) if (p.filled())
+			total += p.getPartData().getPushThrust(parent.getStats());
 		return total;
 	}
 	
 	public float getTotalSpinThrust() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled()) 
-			total += p.getPartData().getSpinThrust();
+		for (PartSlot p : slots) if (p.filled())
+			total += p.getPartData().getSpinThrust(parent.getStats());
 		return total;
 	}
 	
 	public float getTotalEngineHeat() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled()) 
-			total += p.getPartData().getEngineHeat();
+		for (PartSlot p : slots) if (p.filled())
+			total += p.getPartData().getEngineHeat(parent.getStats());
 		return total;
 	}
 	
 	public float getTotalEngineFuelConsume() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled()) 
-			total += p.getPartData().getFuelPerTick();
+		for (PartSlot p : slots) if (p.filled())
+			total += p.getPartData().getFuelPerTick(parent.getStats());
 		return total;
 	}
 	
 	public float getCurrentFuel() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled()) 
+		for (PartSlot p : slots) if (p.filled())
 			total += p.getPartData().getCurrentFuel();
 		return total;
 	}
 	
 	public float getMaxFuel() {
 		float total = 0;
-		for (PartSlot p : slots) if (p.filled()) 
+		for (PartSlot p : slots) if (p.filled())
 			total += p.getPartData().getMaxFuel();
 		return total;
 	}

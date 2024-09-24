@@ -46,6 +46,8 @@ public class BlockTagGen extends BlockTagsProvider {
 			.add(Blocks.POINTED_DRIPSTONE);
 		tag(ModTags.Blocks.ABSORBENT)
 			.add(Blocks.HAY_BLOCK, Blocks.SLIME_BLOCK, Blocks.HONEY_BLOCK);
+		tag(ModTags.Blocks.VEHICLE_TRAMPLE)
+				.addTag(BlockTags.LEAVES).addTag(BlockTags.CROPS).addTag(BlockTags.FLOWERS);
 	}
 
 }

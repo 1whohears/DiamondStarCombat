@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -10,6 +11,7 @@ import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -228,21 +230,13 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 		//System.out.println("BULLET HIT "+result.getBlockPos());
 		if (canBreakFragileBlocks()) {
 			BlockState state = getLevel().getBlockState(result.getBlockPos());
-			if (state.is(ModTags.Blocks.FRAGILE) && hasPermissionToBreakBlock(result.getBlockPos(), state)) {
+			if (state.is(ModTags.Blocks.FRAGILE) && getLevel().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
+					&& UtilVehicleEntity.hasPermissionToBreakBlock(result.getBlockPos(), state, getLevel(), getOwner())) {
 				getLevel().destroyBlock(result.getBlockPos(), true, this);
 				return;
 			}
         }
 		kill();
-	}
-
-	protected boolean hasPermissionToBreakBlock(BlockPos pos, BlockState state) {
-		if (getOwner() instanceof Player player) {
-			BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(getLevel(), pos, state, player);
-			MinecraftForge.EVENT_BUS.post(event);
-			return !event.isCanceled();
-		}
-		return getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
 	}
 	
 	@Override

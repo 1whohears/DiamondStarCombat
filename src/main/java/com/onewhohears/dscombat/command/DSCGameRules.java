@@ -30,6 +30,8 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> DISABLE_3RD_PERSON_VEHICLE;
 	public static GameRules.Key<GameRules.BooleanValue> PLANE_ARCADE_MODE;
 	public static GameRules.Key<GameRules.IntegerValue> REMOVE_DEAD_VEHICLES_TIME;
+	public static GameRules.Key<GameRules.BooleanValue> WEAPONS_BREAK_BLOCKS;
+	public static GameRules.Key<GameRules.BooleanValue> VEHICLE_TRAMPLE;
 	
 	public static void registerAll() {
 		CONSUME_FULE = CustomGameRules.registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
@@ -55,6 +57,8 @@ public class DSCGameRules {
 		DISABLE_3RD_PERSON_VEHICLE = CustomGameRules.registerSyncBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
 		PLANE_ARCADE_MODE = CustomGameRules.registerSyncBoolean("planeArcadeMode", false, GameRules.Category.PLAYER);
 		REMOVE_DEAD_VEHICLES_TIME = CustomGameRules.registerInteger("removeDeadVehiclesTime", -1, GameRules.Category.PLAYER);
+		WEAPONS_BREAK_BLOCKS = CustomGameRules.registerSyncBoolean("weaponsBreakBlocks", false, GameRules.Category.PLAYER);
+		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("vehicleTrample", false, GameRules.Category.PLAYER);
 	}
 
 	public static boolean isPlaneArcadeMode(Level level) {

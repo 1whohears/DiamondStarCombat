@@ -3,9 +3,17 @@ package com.onewhohears.dscombat.util;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.level.BlockEvent;
+
+import javax.annotation.Nullable;
 
 public class UtilVehicleEntity {
 
@@ -51,6 +59,15 @@ public class UtilVehicleEntity {
             posY -= surface;
             return Math.pow(Math.abs(posY - space), exp) * Math.pow(space, -exp);
         }
+    }
+
+    public static boolean hasPermissionToBreakBlock(BlockPos pos, BlockState state, Level level, @Nullable Entity entity) {
+        if (entity instanceof Player player) {
+            BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, pos, state, player);
+            MinecraftForge.EVENT_BUS.post(event);
+            return !event.isCanceled();
+        }
+        return level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
     }
 
 }

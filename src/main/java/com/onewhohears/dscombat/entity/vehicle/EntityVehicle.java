@@ -8,11 +8,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
+import net.minecraft.tags.BlockTags;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -477,9 +479,26 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 					getKnockbackPredicate()));
 			tickDismountSafety();
 			if (!hasControllingPassenger()) wallCollisions();
+			if (canTrample()) tickTrample();
 		} else {
 			if (isControlledByLocalInstance()) wallCollisions();
 		}
+	}
+
+	public boolean canTrample() {
+		return tickCount % 5 == 0 && isOnGround() && xzSpeed > 0 && getLevel().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
+	}
+
+	protected void tickTrample() {
+		Stream<BlockState> blockStream = getLevel().getBlockStatesIfLoaded(getBoundingBox().deflate(1.0E-6D))
+				.filter(state -> state.is(ModTags.Blocks.VEHICLE_TRAMPLE));
+		Entity controller = getControllingPassenger();
+		blockStream.forEach(state -> {
+			BlockPos pos;
+			if (UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), controller))
+				getLevel().destroyBlock(pos, true, this);
+		});
+		blockStream.close();
 	}
 	
 	protected void wallCollisions() {

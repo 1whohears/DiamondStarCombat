@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#minecraft:leaves",
+    "#minecraft:crops",
+    "#minecraft:flowers",
+    "#minecraft:candles",
+    "#minecraft:saplings",
+    "#minecraft:ice"
+  ]
+}

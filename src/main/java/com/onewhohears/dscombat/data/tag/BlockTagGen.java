@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.tag;
 
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
@@ -47,7 +48,8 @@ public class BlockTagGen extends BlockTagsProvider {
 		tag(ModTags.Blocks.ABSORBENT)
 			.add(Blocks.HAY_BLOCK, Blocks.SLIME_BLOCK, Blocks.HONEY_BLOCK);
 		tag(ModTags.Blocks.VEHICLE_TRAMPLE)
-				.addTag(BlockTags.LEAVES).addTag(BlockTags.CROPS).addTag(BlockTags.FLOWERS);
+				.addTag(BlockTags.LEAVES).addTag(BlockTags.CROPS).addTag(BlockTags.FLOWERS)
+				.addTag(BlockTags.CANDLES).addTag(BlockTags.SAPLINGS).addTag(BlockTags.ICE);
 	}
 
 }

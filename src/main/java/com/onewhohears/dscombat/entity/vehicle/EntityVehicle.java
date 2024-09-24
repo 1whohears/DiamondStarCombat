@@ -426,6 +426,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			tickMovement(q);
 			calcAcc();
 			motionClamp();
+			if (!getLevel().isClientSide() && canTrample()) tickTrample();
 			move(MoverType.SELF, getDeltaMovement());
 			calcMoveStatsPost(q);
 			tickCollisions();
@@ -479,26 +480,29 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 					getKnockbackPredicate()));
 			tickDismountSafety();
 			if (!hasControllingPassenger()) wallCollisions();
-			if (canTrample()) tickTrample();
 		} else {
 			if (isControlledByLocalInstance()) wallCollisions();
 		}
 	}
 
 	public boolean canTrample() {
-		return tickCount % 5 == 0 && isOnGround() && xzSpeed > 0 && getLevel().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
+		return tickCount % 2 == 0 && isOnGround() && xzSpeed > 0 && getLevel().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
 	}
 
 	protected void tickTrample() {
-		Stream<BlockState> blockStream = getLevel().getBlockStatesIfLoaded(getBoundingBox().deflate(1.0E-6D))
-				.filter(state -> state.is(ModTags.Blocks.VEHICLE_TRAMPLE));
+		AABB box = getBoundingBox().move(getDeltaMovement());
 		Entity controller = getControllingPassenger();
-		blockStream.forEach(state -> {
-			BlockPos pos;
-			if (UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), controller))
-				getLevel().destroyBlock(pos, true, this);
-		});
-		blockStream.close();
+		for (int x = (int)box.minX; x < (int)box.maxX; ++x) {
+			for (int z = (int) box.minZ; z < (int) box.maxZ; ++z) {
+				for (int y = (int) box.minY; y < (int) box.maxY; ++y) {
+					BlockPos pos = new BlockPos(x, y, z);
+					BlockState state = getLevel().getBlockState(pos);
+					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;
+					if (UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), controller))
+						getLevel().destroyBlock(pos, true, this);
+				}
+			}
+		}
 	}
 	
 	protected void wallCollisions() {

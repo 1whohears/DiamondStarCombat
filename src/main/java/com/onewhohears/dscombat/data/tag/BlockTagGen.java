@@ -49,7 +49,10 @@ public class BlockTagGen extends BlockTagsProvider {
 			.add(Blocks.HAY_BLOCK, Blocks.SLIME_BLOCK, Blocks.HONEY_BLOCK);
 		tag(ModTags.Blocks.VEHICLE_TRAMPLE)
 				.addTag(BlockTags.LEAVES).addTag(BlockTags.CROPS).addTag(BlockTags.FLOWERS)
-				.addTag(BlockTags.CANDLES).addTag(BlockTags.SAPLINGS).addTag(BlockTags.ICE);
+				.addTag(BlockTags.CANDLES).addTag(BlockTags.SAPLINGS).addTag(BlockTags.ICE)
+				.add(Blocks.GRASS).add(Blocks.TALL_GRASS).add(Blocks.TALL_SEAGRASS)
+				.add(Blocks.FERN).add(Blocks.DEAD_BUSH).add(Blocks.COBWEB)
+				.add(Blocks.SEAGRASS).add(Blocks.SEA_PICKLE).add(Blocks.SEA_LANTERN);
 	}
 
 }

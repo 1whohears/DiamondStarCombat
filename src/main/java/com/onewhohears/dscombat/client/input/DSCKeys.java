@@ -22,12 +22,11 @@ public final class DSCKeys {
 	public static KeyMapping rollLeftKey, rollRightKey;
 	public static KeyMapping yawLeftKey, yawRightKey;
 	public static KeyMapping weaponSelectKey, weaponSelect2Key;
-	public static KeyMapping flareKey;
 	public static KeyMapping mouseModeKey, resetMouseKey, gimbalKey;
-	public static KeyMapping shootKey, landingGear;
+	public static KeyMapping shootKey, landingGear, flareKey;
 	public static KeyMapping vehicleMenuKey, vehicleStorageKey;
 	public static KeyMapping pingCycleKey, radarModeKey, radarDisplayRangeKey;
-	public static KeyMapping changeSeat, dismount;
+	public static KeyMapping changeSeat, dismount, eject;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
 	// IDEA 4.2 temp burner boost key
@@ -58,6 +57,7 @@ public final class DSCKeys {
 		gimbalKey = registerKey("gimbal_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_SEMICOLON);
 		specialKey = registerKey("special_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_SPACE);
 		special2Key = registerKey("special_2_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_LALT);
+		eject = registerKey("eject", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_RBRACKET);
 		// COMBAT CONTROL
 		shootKey = registerMouse("shoot_key", VEHICLE_COMBAT_CONTROL, InputConstants.MOUSE_BUTTON_RIGHT);
 		weaponSelectKey = registerKey("weapon_select_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_G);

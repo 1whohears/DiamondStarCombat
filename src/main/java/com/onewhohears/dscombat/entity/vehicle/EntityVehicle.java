@@ -684,7 +684,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return the max speed {@link EntityVehicle#motionClamp} tests for.
 	 */
 	public double getMaxSpeedForMotion() {
-		return getMaxSpeed();
+		return getMaxSpeed() * getMaxSpeedFactor();
+	}
+
+	public double getMaxSpeedFactor() {
+		return Config.COMMON.vehicleSpeedFactor.get();
 	}
 	
 	/**

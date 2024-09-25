@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.graph.TurnRatesBySpeedGraph;
@@ -105,11 +106,12 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public double getMaxSpeedForMotion() {
-		return super.getMaxSpeedForMotion() * getPlaneSpeedPercent() * getMaxSpeedFromThrottleMod();
+		return super.getMaxSpeedForMotion()  * getMaxSpeedFromThrottleMod();
 	}
-	
-	public double getPlaneSpeedPercent() {
-		return level.getGameRules().getInt(DSCGameRules.PLANE_SPEED_PERCENT) * 0.01;
+
+	@Override
+	public double getMaxSpeedFactor() {
+		return super.getMaxSpeedFactor() * Config.COMMON.planeSpeedFactor.get();
 	}
 	
 	public double getMaxSpeedFromThrottleMod() {

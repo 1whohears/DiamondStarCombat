@@ -21,7 +21,6 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.IntegerValue> MOB_TURRET_VERTICAL_RANGE;
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_TICK_RADAR;
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_RIDE_VEHICLES;
-	public static GameRules.Key<GameRules.IntegerValue> PLANE_SPEED_PERCENT;
 	public static GameRules.Key<GameRules.IntegerValue> VEHICLE_ARMOR_PERCENT;
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_VEHICLE_PER;
 	public static GameRules.Key<GameRules.IntegerValue> EXPLO_DAMAGE_VEHICLE_PER;
@@ -48,7 +47,6 @@ public class DSCGameRules {
 		MOB_TURRET_VERTICAL_RANGE = CustomGameRules.registerInteger("mobTurretVerticalRange", 500, GameRules.Category.MOBS);
 		MOBS_TICK_RADAR = CustomGameRules.registerBoolean("mobsTickRadar", true, GameRules.Category.MOBS);
 		MOBS_RIDE_VEHICLES = CustomGameRules.registerBoolean("mobsRideVehicles", true, GameRules.Category.MOBS);
-		PLANE_SPEED_PERCENT = CustomGameRules.registerInteger("planeSpeedPercent", 100, GameRules.Category.PLAYER);
 		VEHICLE_ARMOR_PERCENT = CustomGameRules.registerInteger("vehicleArmorStrengthPercent", 100, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("bulletDamageVehiclePercent", 100, GameRules.Category.PLAYER);
 		EXPLO_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("explosionDamageVehiclePercent", 300, GameRules.Category.PLAYER);

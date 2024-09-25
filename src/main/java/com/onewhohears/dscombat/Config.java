@@ -112,16 +112,21 @@ public class Config {
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
 		public final ForgeConfigSpec.DoubleValue gasCanXpRepairRate;
 		public final ForgeConfigSpec.DoubleValue recoverPartWeight;
-		/**
-		 * classname
-		 */
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> dimensionSeaLevels;
+		public final ForgeConfigSpec.DoubleValue vehicleSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue planeSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue heliSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue carSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue boatSpeedFactor;
 		
 		public Common(ForgeConfigSpec.Builder builder) {
+			builder.push("performance");
 			maxBlockCheckDepth = builder
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
 					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
+			builder.pop();
+			builder.push("gameplay");
 			gasCanXpRepairRate = builder
 					.comment("The average durability repaired by mending per xp point.")
 					.defineInRange("gasCanXpRepairRate", 2.0, 2.0, 1000.0);
@@ -136,6 +141,14 @@ public class Config {
 							"minecraft:the_nether!128!512",
 							"minecraft:the_end!0!500"),
 					entry -> ((String)entry).split("!").length == 3);
+			builder.push("speed_factors");
+			vehicleSpeedFactor = builder.defineInRange("vehicleSpeedFactor", 1.0, 0, 10);
+			planeSpeedFactor = builder.defineInRange("planeSpeedFactor", 1.0, 0, 10);
+			heliSpeedFactor = builder.defineInRange("heliSpeedFactor", 1.0, 0, 10);
+			carSpeedFactor = builder.defineInRange("carSpeedFactor", 1.0, 0, 10);
+			boatSpeedFactor = builder.defineInRange("boatSpeedFactor", 1.0, 0, 10);
+			builder.pop();
+			builder.pop();
 		}
 		
 	}

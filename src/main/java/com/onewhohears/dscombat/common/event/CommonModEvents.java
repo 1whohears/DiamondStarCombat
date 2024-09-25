@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.common.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.vehicle.SeaLevels;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,12 +15,18 @@ public final class CommonModEvents {
 	
 	@SubscribeEvent
 	public static void loadModConfigEvent(ModConfigEvent.Loading event) {
-		if (event.getConfig().getType() == Type.COMMON) RadarTargetTypes.get().readConfig();
+		if (event.getConfig().getType() == Type.COMMON) {
+			RadarTargetTypes.get().readConfig();
+			SeaLevels.readConfig();
+		}
 	}
 	
 	@SubscribeEvent
 	public static void reloadModConfigEvent(ModConfigEvent.Reloading event) {
-		if (event.getConfig().getType() == Type.COMMON) RadarTargetTypes.get().readConfig();
+		if (event.getConfig().getType() == Type.COMMON) {
+			RadarTargetTypes.get().readConfig();
+			SeaLevels.readConfig();
+		}
 	}
 	
 }

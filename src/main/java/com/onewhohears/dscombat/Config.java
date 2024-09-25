@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
@@ -116,6 +116,7 @@ public class Config {
 		 * classname
 		 */
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> dimensionSeaLevels;
 		
 		public Common(ForgeConfigSpec.Builder builder) {
 			maxBlockCheckDepth = builder
@@ -127,10 +128,14 @@ public class Config {
 			recoverPartWeight = builder
 					.comment("Roughly the randomly weighted percentage of vehicle recipe items recovered from crash site.")
 					.defineInRange("recoverPartWeight", 0.7, 0.0, 1.0);
-			radarMobs = builder.defineList("radarMobs", 
-					Arrays.asList(
-							"net.minecraft.world.entity.Mob"), 
-					entry -> true);
+			radarMobs = builder.defineList("radarMobs",
+                    List.of("net.minecraft.world.entity.Mob"),
+					entry -> UtilEntity.getEntityClass((String)entry) != null);
+			dimensionSeaLevels = builder.defineList("dimensionSeaLevels",
+					List.of("minecraft:overworld!70!2500",
+							"minecraft:the_nether!128!512",
+							"minecraft:the_end!0!500"),
+					entry -> ((String)entry).split("!").length == 3);
 		}
 		
 	}

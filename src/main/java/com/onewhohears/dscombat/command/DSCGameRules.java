@@ -57,8 +57,8 @@ public class DSCGameRules {
 		DISABLE_3RD_PERSON_VEHICLE = CustomGameRules.registerSyncBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
 		PLANE_ARCADE_MODE = CustomGameRules.registerSyncBoolean("planeArcadeMode", false, GameRules.Category.PLAYER);
 		REMOVE_DEAD_VEHICLES_TIME = CustomGameRules.registerInteger("removeDeadVehiclesTime", -1, GameRules.Category.PLAYER);
-		WEAPONS_BREAK_BLOCKS = CustomGameRules.registerSyncBoolean("weaponsBreakBlocks", false, GameRules.Category.PLAYER);
-		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("vehicleTrample", false, GameRules.Category.PLAYER);
+		WEAPONS_BREAK_BLOCKS = CustomGameRules.registerSyncBoolean("weaponsBreakBlocks", true, GameRules.Category.PLAYER);
+		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("vehicleTrample", true, GameRules.Category.PLAYER);
 	}
 
 	public static boolean isPlaneArcadeMode(Level level) {

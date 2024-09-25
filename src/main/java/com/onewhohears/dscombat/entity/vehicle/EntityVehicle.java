@@ -486,15 +486,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 
 	public boolean canTrample() {
-		return tickCount % 2 == 0 && isOnGround() && xzSpeed > 0 && getLevel().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
+		return (isOnGround() || isInWater()) && xzSpeed > 0 && getLevel().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
 	}
 
 	protected void tickTrample() {
 		AABB box = getBoundingBox().move(getDeltaMovement());
 		Entity controller = getControllingPassenger();
-		for (int x = (int)box.minX; x < (int)box.maxX; ++x) {
-			for (int z = (int) box.minZ; z < (int) box.maxZ; ++z) {
-				for (int y = (int) box.minY; y < (int) box.maxY; ++y) {
+		for (double x = box.minX; x < box.maxX+1; ++x) {
+			for (double z = box.minZ; z < box.maxZ+1; ++z) {
+				for (double y = box.minY; y < box.maxY+1; ++y) {
 					BlockPos pos = new BlockPos(x, y, z);
 					BlockState state = getLevel().getBlockState(pos);
 					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;

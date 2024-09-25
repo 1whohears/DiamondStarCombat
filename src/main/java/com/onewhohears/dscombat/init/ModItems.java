@@ -287,8 +287,7 @@ public class ModItems {
 	public static final RegistryObject<ItemPart> ADL = ITEMS.register("adl", 
 			() -> new ItemWeaponPart(16)); 
 	public static final RegistryObject<ItemPart> VLS = ITEMS.register("vls", 
-			() -> new ItemWeaponPart(16)); 
-	// TODO 2.4 avenger gun for javi
+			() -> new ItemWeaponPart(16));
 	/**
 	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise

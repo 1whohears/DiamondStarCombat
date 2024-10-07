@@ -490,7 +490,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 
 	protected void tickTrample() {
-		AABB box = getBoundingBox().move(getDeltaMovement());
+		AABB box = getBoundingBox().move(getDeltaMovement()).inflate(0.01);
 		Entity controller = getControllingPassenger();
 		for (double x = box.minX; x < box.maxX+1; ++x) {
 			for (double z = box.minZ; z < box.maxZ+1; ++z) {

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.parts.stats;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
@@ -36,4 +37,8 @@ public class SeatStats extends PartStats {
 		return ModEntities.SEAT.get();
 	}
 
+	@Override
+	public PartInstance<?> createFilledPartInstance(String param) {
+		return super.createFilledPartInstance(param);
+	}
 }

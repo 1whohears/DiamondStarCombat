@@ -3,16 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.item.ItemAmmo;
-import com.onewhohears.dscombat.item.ItemCreativeWand;
-import com.onewhohears.dscombat.item.ItemGasCan;
-import com.onewhohears.dscombat.item.ItemParachute;
-import com.onewhohears.dscombat.item.ItemPart;
-import com.onewhohears.dscombat.item.ItemRepairTool;
-import com.onewhohears.dscombat.item.ItemStorageBox;
-import com.onewhohears.dscombat.item.ItemTurret;
-import com.onewhohears.dscombat.item.ItemVehicle;
-import com.onewhohears.dscombat.item.ItemWeaponPart;
+import com.onewhohears.dscombat.item.*;
 
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -245,7 +236,7 @@ public class ModItems {
 	
 	// SEATS
 	public static final RegistryObject<ItemPart> SEAT = ITEMS.register("seat", 
-			() -> new ItemPart(64));
+			() -> new ItemSeat(64));
 	
 	// TURRENTS
 	public static final RegistryObject<ItemPart> AA_TURRET = ITEMS.register("aa_turret", 

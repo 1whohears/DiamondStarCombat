@@ -592,12 +592,33 @@ public abstract class VehicleStats extends JsonPresetStats {
 		}
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
+		 * @param name a translatable string
+		 * @param x the x position of the part relative to the vehicle at 0 rotation
+		 * @param y the y position of the part relative to the vehicle at 0 rotation
+		 * @param z the z position of the part relative to the vehicle at 0 rotation
+		 * @param eject if true, players can eject from this seat
+		 */
+		public Builder addSeatSlot(String name, double x, double y, double z, boolean eject) {
+			return addItemSlot(name, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), eject?"eject":null, false);
+		}
+		/**
+		 * used by all vehicles to add a slot that has a seat by default
 		 * @param x the x position of the part relative to the vehicle at 0 rotation
 		 * @param y the y position of the part relative to the vehicle at 0 rotation
 		 * @param z the z position of the part relative to the vehicle at 0 rotation
 		 */
 		public Builder addPilotSeatSlot(double x, double y, double z) {
 			return addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), null, false);
+		}
+		/**
+		 * used by all vehicles to add a slot that has a seat by default
+		 * @param x the x position of the part relative to the vehicle at 0 rotation
+		 * @param y the y position of the part relative to the vehicle at 0 rotation
+		 * @param z the z position of the part relative to the vehicle at 0 rotation
+		 * @param eject if true, players can eject from this seat
+		 */
+		public Builder addPilotSeatSlot(double x, double y, double z, boolean eject) {
+			return addItemSlot(PartSlot.PILOT_SLOT_NAME, SlotType.SEAT, x, y, z, 0, ModItems.SEAT.getId(), eject?"eject":null, false);
 		}
 		/**
 		 * used by all vehicles to add a slot that has a seat by default
@@ -609,6 +630,18 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z) {
 			return addItemSlot(name, type, x, y, z, 0, ModItems.SEAT.getId(), null, false);
+		}
+		/**
+		 * used by all vehicles to add a slot that has a seat by default
+		 * @param name a translatable string
+		 * @param type the type of slot
+		 * @param x the x position of the part relative to the vehicle at 0 rotation
+		 * @param y the y position of the part relative to the vehicle at 0 rotation
+		 * @param z the z position of the part relative to the vehicle at 0 rotation
+		 * @param eject if true, players can eject from this seat
+		 */
+		public Builder addSeatSlot(String name, SlotType type, double x, double y, double z, boolean eject) {
+			return addItemSlot(name, type, x, y, z, 0, ModItems.SEAT.getId(), eject?"eject":null, false);
 		}
 		/**
 		 * all vehicles

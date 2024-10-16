@@ -48,7 +48,7 @@ public class FelixPresets {
 			.addIngredient(ModItems.WING.getId(), 2)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.WHEEL.getId(), 3)
-			.addPilotSeatSlot(0, -0.3, 4.7)
+			.addPilotSeatSlot(0, -0.3, 4.7, true)
 			.addEmptySlot("left_wing_1", SlotType.PYLON_LIGHT, 2.4, -0.64, -0.05, 180, "left_wing")
 			.addEmptySlot("left_wing_2", SlotType.PYLON_LIGHT, 3.4, -0.64, -1.3, 180, "left_wing")
 			.addEmptySlot("right_wing_1", SlotType.PYLON_LIGHT, -2.4, -0.64, -0.05, 180, "right_wing")

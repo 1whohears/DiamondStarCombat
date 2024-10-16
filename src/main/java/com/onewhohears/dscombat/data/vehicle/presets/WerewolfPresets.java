@@ -37,7 +37,7 @@ public class WerewolfPresets {
 			.setHeliLiftFactor(10)
 			.setLayerTextureNum(1)
 			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
-			.addPilotSeatSlot(0.4, -0.65, 1.5)
+			.addPilotSeatSlot(0.4, -0.65, 1.5, true)
 			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 0.75, -0.5, 1.8, -90)
 			.addEmptySlot("left_wing_2", SlotType.PYLON_MED, 0.75, -0.5, 0.9, -90)
 			.addEmptySlot("left_wing_3", SlotType.PYLON_LIGHT, 0.75, -0.5, 0, -90)

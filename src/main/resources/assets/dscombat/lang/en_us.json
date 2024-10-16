@@ -5,6 +5,8 @@
 	"info.dscombat.only_compatible": "Only Compatible With: ",
 	"info.dscombat.damaged": "Damaged!",
 	"info.dscombat.vehicle_engine_stats_override": "Vehicle engine stats likely override item stats!",
+	"info.dscombat.can_eject": "Can Eject!",
+	"info.dscombat.cant_eject": "Can't Eject!",
 	
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",
@@ -503,6 +505,7 @@
 	"key.dscombat.radar_display_range_key": "Cycle Radar Display Range",
 	"key.dscombat.gimbal_key": "Gimbal Mode",
 	"key.dscombat.vehicle_storage_key": "Vehicle Storage",
+	"key.dscombat.eject_key": "Eject",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",

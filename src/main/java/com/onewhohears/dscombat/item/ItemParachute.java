@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
+import javax.annotation.Nullable;
+
 public class ItemParachute extends Item {
 
 	public ItemParachute() {
@@ -25,18 +27,21 @@ public class ItemParachute extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (player.isOnGround()) return InteractionResultHolder.fail(itemstack);
-		if (!level.isClientSide) {
-			Entity entity = ModEntities.PARACHUTE.get().spawn((ServerLevel)level, itemstack, player, player.blockPosition(), 
-					MobSpawnType.SPAWN_EGG, false, false);
-			if (entity != null) {
-				itemstack.shrink(1);
-				player.startRiding(entity);
-				entity.setDeltaMovement(player.getDeltaMovement());
-				level.gameEvent(player, GameEvent.ENTITY_PLACE, player.position());
-			}
-		} else return InteractionResultHolder.pass(itemstack);
+		if (!level.isClientSide) createParachute((ServerLevel)level, player, itemstack);
+		else return InteractionResultHolder.pass(itemstack);
 		player.awardStat(Stats.ITEM_USED.get(this));
 		return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+	}
+
+	public static void createParachute(ServerLevel level, Player player, @Nullable ItemStack itemstack) {
+		Entity entity = ModEntities.PARACHUTE.get().spawn(level, itemstack, player, player.blockPosition(),
+				MobSpawnType.SPAWN_EGG, false, false);
+		if (entity != null) {
+			if (itemstack != null) itemstack.shrink(1);
+			player.startRiding(entity);
+			entity.setDeltaMovement(player.getDeltaMovement());
+			level.gameEvent(player, GameEvent.ENTITY_PLACE, player.position());
+		}
 	}
 
 }

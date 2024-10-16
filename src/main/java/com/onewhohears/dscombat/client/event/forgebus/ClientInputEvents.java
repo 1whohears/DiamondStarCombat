@@ -153,8 +153,10 @@ public final class ClientInputEvents {
 		else leftTicks = 0;
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
-		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
-		boolean isRadarController = player.equals(plane.getControllingPlayerOrBot());
+		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
+		EntityVehicle vehicle = seat.getParentVehicle();
+		if (vehicle == null) return;
+		boolean isRadarController = player.equals(vehicle.getControllingPlayerOrBot());
 		if (DSCClientInputs.disable3rdPersonVehicle) m.options.setCameraType(CameraType.FIRST_PERSON);
 		/**
 		 * THIS TELLS SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
@@ -168,15 +170,15 @@ public final class ClientInputEvents {
 		}
 		// SWITCH SEAT
 		if (DSCKeys.changeSeat.consumeClick()) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(plane.getId()));
+			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(vehicle.getId()));
 		}
 		// CYCLE WEAPON
 		int selectNextWeapon = 0;
 		if (DSCKeys.weaponSelect2Key.consumeClick()) selectNextWeapon = -1;
 		else if (DSCKeys.weaponSelectKey.consumeClick()) selectNextWeapon = 1;
-		plane.weaponSystem.selectNextWeapon(selectNextWeapon);
+		vehicle.weaponSystem.selectNextWeapon(selectNextWeapon);
 		// SELECT RADAR PING
-		RadarSystem radar = plane.radarSystem;
+		RadarSystem radar = vehicle.radarSystem;
 		if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {
 			List<RadarPing> pings = radar.getClientRadarPings();
 			if (DSCClientInputs.getRadarHoverIndex() < pings.size()) 
@@ -187,12 +189,21 @@ public final class ClientInputEvents {
 		// SHOOT PILOT WEAPON OR TURRET
 		if (DSCKeys.shootKey.isDown() && playerCanShoot(player)) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleShoot(
-				plane.weaponSystem.getSelectedIndex(), 
+				vehicle.weaponSystem.getSelectedIndex(),
 				radar.getClientSelectedPing()));
 		}
 		// DISMOUNT 
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerDismount());
+		}
+		// EJECT
+		if (DSCKeys.eject.consumeClick()) {
+			if (seat.canEject()) {
+				seat.useEject();
+				PacketHandler.INSTANCE.sendToServer(new ToServerDismount(true));
+			} else {
+				PacketHandler.INSTANCE.sendToServer(new ToServerDismount(false));
+			}
 		}
 		// CYCLE RADAR MODE
 		boolean cycleRadarMode = DSCKeys.radarModeKey.consumeClick();
@@ -200,7 +211,7 @@ public final class ClientInputEvents {
 			DSCClientInputs.cyclePreferredRadarMode();
 			if (!isRadarController) player.displayClientMessage(UtilMCText.translatable("info.dscombat.not_radar_controller"), true);
 		}
-		if (isRadarController && DSCClientInputs.getPreferredRadarMode() != plane.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
+		if (isRadarController && DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSetRadarMode(DSCClientInputs.getPreferredRadarMode()));
 			radarModeUpdateTime = Util.getMillis();
 		}

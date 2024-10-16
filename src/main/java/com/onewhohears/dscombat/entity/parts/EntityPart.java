@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 
@@ -70,12 +71,10 @@ public abstract class EntityPart extends Entity {
 	}
 	
 	public void init() {
-		if (getVehicle() instanceof EntityVehicle plane) {
-			PartSlot ps = plane.partsManager.getSlot(getSlotId());
-			if (ps != null) {
-				z_rot = ps.getZRot();
-				setRelativePos(ps.getRelPos());
-			}
+		PartSlot ps = getSlot();
+		if (ps != null) {
+			z_rot = ps.getZRot();
+			setRelativePos(ps.getRelPos());
 		}
 	}
 	
@@ -240,5 +239,19 @@ public abstract class EntityPart extends Entity {
     	if (vehicle == null) return MastType.NONE;
     	return vehicle.getMastType();
     }
+
+	@Nullable
+	public PartSlot getSlot() {
+		EntityVehicle vehicle = getParentVehicle();
+		if (vehicle == null) return null;
+		return vehicle.partsManager.getSlot(getSlotId());
+	}
+
+	@Nullable
+	public PartInstance<?> getPartInstance() {
+		PartSlot slot = getSlot();
+		if (slot == null) return null;
+		return slot.getPartData();
+	}
 
 }

@@ -94,6 +94,8 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (vehicle.partsManager.hasStorageBoxes()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleStorageKey);
 		// DISMOUNT
 		if (Config.CLIENT.customDismount.get()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.dismount);
+		// EJECT
+		if (seat.canEject()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.eject);
 		// CHANGE SEAT
 		displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.changeSeat);
 		// LANDING GEAR

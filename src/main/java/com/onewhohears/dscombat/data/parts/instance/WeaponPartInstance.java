@@ -26,7 +26,7 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 		super.setFilled(param);
 		if (param.isEmpty()) {
 			List<String> list = WeaponPresets.get().getCompatibleWeapons(getStatsId());
-			if (list.size() > 0) param = list.get(0);
+			if (!list.isEmpty()) param = list.get(0);
 		}
 		weapon = param;
 		ammo = getStats().getMaxAmmo();

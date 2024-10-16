@@ -201,7 +201,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
 		if (isDamaged()) {
 			tips.add(UtilMCText.translatable("info.dscombat.damaged").setStyle(Style.EMPTY.withColor(0xCC0000)));
-			if (getStats().getRepairCost().size() > 0) {
+			if (!getStats().getRepairCost().isEmpty()) {
 				Style repairStyle = Style.EMPTY.withColor(0xE88888);
 				MutableComponent repairCost = UtilMCText.literal("Repair Cost: ").setStyle(repairStyle);
 				for (Ingredient cost: getStats().getRepairCost()) {

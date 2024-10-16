@@ -29,6 +29,7 @@ public class UtilPresetParse {
         if (tag.isEmpty()) return null;
         String presetId = "";
         if (tag.contains("part")) presetId = tag.getString("part");
+        else if (tag.contains("presetId")) presetId = tag.getString("presetId");
         else if (tag.contains("itemid")) {
             presetId = tag.getString("itemid");
             presetId = presetId.split(":")[1];

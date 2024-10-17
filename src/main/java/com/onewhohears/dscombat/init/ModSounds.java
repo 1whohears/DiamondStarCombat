@@ -67,7 +67,9 @@ public class ModSounds {
 	public static final SoundEvent LOCK_NBG = registerSoundEvent("lock_nbg", "cockpit/warnings/non_binary_goober/lock", "sounds.dscombat.lock");
 	public static final SoundEvent FLARE_NBG = registerSoundEvent("flare_nbg", "cockpit/warnings/non_binary_goober/flare", "sounds.dscombat.flare");
 	public static final SoundEvent ALTITUDE_NBG = registerSoundEvent("altitude_nbg", "cockpit/warnings/non_binary_goober/altitude", "sounds.dscombat.altitude");
-	
+	public static final SoundEvent EJECT = registerSoundEvent("eject", "cockpit/eject/eject", "sounds.dscombat.eject");
+	public static final SoundEvent EJECT_WIND = registerSoundEvent("eject_wind", "cockpit/eject/eject_wind", "sounds.dscombat.eject_wind");
+
 	public static void register(IEventBus eventBus) {
 		SOUND_EVENTS.register(eventBus);
 	}

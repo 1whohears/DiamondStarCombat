@@ -17,11 +17,13 @@ import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.Util;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -201,6 +203,8 @@ public final class ClientInputEvents {
 			if (seat.canEject()) {
 				seat.useEject();
 				PacketHandler.INSTANCE.sendToServer(new ToServerDismount(true));
+				player.getLevel().playLocalSound(player.getX(), player.getY(), player.getZ(),
+						ModSounds.EJECT_WIND, SoundSource.PLAYERS, 1, 1, false);
 			} else {
 				PacketHandler.INSTANCE.sendToServer(new ToServerDismount(false));
 			}

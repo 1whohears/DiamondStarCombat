@@ -87,9 +87,9 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 			if (e instanceof EntityVehicle vehicle) ev = vehicle;
 			boolean isPlayer = false, isPlayerOrBot = false;
 			if (ev == null) { 
-				isPlayer = e.getControllingPassenger() instanceof Player;
+				isPlayer = e.getControllingPassenger() instanceof Player || e.getFirstPassenger() instanceof Player;
 				if (!isPlayer && (playersOnly || isPlayersOrBots)) continue;
-			} else if (ev != null) {
+			} else {
 				isPlayer = ev.isPlayerRiding();
 				if (!isPlayer && playersOnly) continue;
 				isPlayerOrBot = ev.isPlayerOrBotRiding();

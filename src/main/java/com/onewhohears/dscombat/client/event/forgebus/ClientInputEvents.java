@@ -128,8 +128,8 @@ public final class ClientInputEvents {
 					Config.CLIENT.mouseXReturnRate.get().floatValue()));
 			}
 		}
-		if (pitchUp && !pitchDown) pitch = -1 * invertY;
-		if (pitchDown && !pitchUp) pitch = 1 * invertY;
+		if (pitchUp && !pitchDown) pitch = -invertY;
+		if (pitchDown && !pitchUp) pitch = invertY;
 		if (yawLeft && !yawRight) yaw = -1;
 		if (yawRight && !yawLeft) yaw = 1;
 		if (rollLeft) roll -= 1;
@@ -160,7 +160,7 @@ public final class ClientInputEvents {
 		if (vehicle == null) return;
 		boolean isRadarController = player.equals(vehicle.getControllingPlayerOrBot());
 		if (DSCClientInputs.disable3rdPersonVehicle) m.options.setCameraType(CameraType.FIRST_PERSON);
-		/**
+		/*
 		 * THIS TELLS SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
 		 * HOW 4 the culprit of the seat desync issue is net.minecraft.server.level.ChunkMap.TrackedEntity.updatePlayer
 		 * sometimes when the server lags the seat position on the server side doesn't get updated with the plane and the player
@@ -204,7 +204,7 @@ public final class ClientInputEvents {
 				seat.useEject();
 				PacketHandler.INSTANCE.sendToServer(new ToServerDismount(true));
 				player.getLevel().playLocalSound(player.getX(), player.getY(), player.getZ(),
-						ModSounds.EJECT_WIND, SoundSource.PLAYERS, 1, 1, false);
+						ModSounds.EJECT_WIND, SoundSource.PLAYERS, 0.5f, 1, false);
 			} else {
 				PacketHandler.INSTANCE.sendToServer(new ToServerDismount(false));
 			}

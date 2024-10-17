@@ -107,7 +107,12 @@
 	"slotname.dscombat.cargo_bed_1": "Cargo Bed 1",
 	"slotname.dscombat.nose_gun": "Nose Gun",
 	"slotname.dscombat.internal_gun": "Internal Gun",
-	
+
+	"entity.dscombat.plane": "Plane",
+	"entity.dscombat.helicopter": "Helicopter",
+	"entity.dscombat.car": "Car",
+	"entity.dscombat.boat": "Boat",
+	"entity.dscombat.submarine": "Submarine",
 	"entity.dscombat.test_plane": "Test Plane",
 	"entity.dscombat.javi_plane": "Javi Plane",
 	"entity.dscombat.alexis_plane": "Alexis Plane",

@@ -9,8 +9,11 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.function.Supplier;
 
 public class DebugSlotPosCommand {
 	
@@ -36,7 +39,7 @@ public class DebugSlotPosCommand {
 					return 0;
 				}
 				part.setRelativePos(rel_pos);
-				context.getSource().sendSuccess(UtilMCText.literal("Changed slot position! (NOT permanent!)"), false);
+				context.getSource().sendSuccess((Supplier<Component>) UtilMCText.literal("Changed slot position! (NOT permanent!)"), false);
 				return 1;
 			})
 		)));

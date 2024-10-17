@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -15,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class EntityScreenInstance implements AutoCloseable{
@@ -36,18 +36,20 @@ public abstract class EntityScreenInstance implements AutoCloseable{
 			float worldWidth, float worldHeight) {
 		if (baseRenderType != null) drawTextureCentered(baseRenderType, matrix4f, buffer, packedLight, 0);
 	}
-	
+
 	protected void drawText(Component text, float xPos, float yPos, float maxWidth, PoseStack poseStack, MultiBufferSource buffer, int color, int packedLight) {
 		Font font = Minecraft.getInstance().font;
 		float width = font.width(text);
-		float scale = maxWidth/width;
+		float scale = maxWidth / width;
 		poseStack.pushPose();
-		poseStack.translate(xPos, yPos, -0.005f);
+		poseStack.translate(xPos, yPos, 0);
 		poseStack.scale(scale, scale, 1);
-		font.draw(poseStack, text, 0, 0, color);
+
+		// Use the drawInBatch method instead of draw
+		font.drawInBatch(text, 0, 0, color, false, poseStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, packedLight);
 		poseStack.popPose();
 	}
-	
+
 	protected void drawTextureTopLeft(RenderType type, Matrix4f matrix4f, MultiBufferSource buffer, int packedLight, float z) {
 		VertexConsumer vertexconsumer = buffer.getBuffer(type);
         vertexconsumer.vertex(matrix4f, 0, 1, z)

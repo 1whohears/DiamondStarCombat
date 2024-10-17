@@ -36,7 +36,7 @@ public class ToServerVehicleControl extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
-			ServerLevel level = player.getLevel();
+			ServerLevel level = (ServerLevel) player.level();
 			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.inputs.updateInputsFromPacket(inputs, plane);
 				plane.syncControlsToClient();

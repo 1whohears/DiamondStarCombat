@@ -30,7 +30,7 @@ public class ToServerCraftPlane extends IPacket {
 		double x = buffer.readDouble();
 		double y = buffer.readDouble();
 		double z = buffer.readDouble();
-		pos = new BlockPos(x, y, z);
+		pos = new BlockPos((int) x, (int) y, (int) z);
 	}
 	
 	@Override
@@ -47,8 +47,8 @@ public class ToServerCraftPlane extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
-			Optional<Pair<ResourceLocation, VehicleRecipe>> option = player.level.getRecipeManager().getRecipeFor(
-					VehicleRecipe.Type.INSTANCE, player.getInventory(), player.level,
+			Optional<Pair<ResourceLocation, VehicleRecipe>> option = player.level().getRecipeManager().getRecipeFor(
+					VehicleRecipe.Type.INSTANCE, player.getInventory(), player.level(),
 					new ResourceLocation(recipeId));
 			if (option.isEmpty()) return;
 			VehicleRecipe recipe = option.get().getSecond();

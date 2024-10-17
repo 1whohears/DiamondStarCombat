@@ -30,7 +30,7 @@ public class ToServerCraftWeapon extends IPacket {
 		double x = buffer.readDouble();
 		double y = buffer.readDouble();
 		double z = buffer.readDouble();
-		pos = new BlockPos(x, y, z);
+		pos = new BlockPos((int) x, (int) y, (int) z);
 	}
 	
 	@Override
@@ -47,8 +47,8 @@ public class ToServerCraftWeapon extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
-			Optional<Pair<ResourceLocation, WeaponRecipe>> option = player.level.getRecipeManager().getRecipeFor(
-					WeaponRecipe.Type.INSTANCE, player.getInventory(), player.level, 
+			Optional<Pair<ResourceLocation, WeaponRecipe>> option = player.level().getRecipeManager().getRecipeFor(
+					WeaponRecipe.Type.INSTANCE, player.getInventory(), player.level(),
 					new ResourceLocation(recipeId));
 			if (option.isEmpty()) return;
 			WeaponRecipe recipe = option.get().getSecond();

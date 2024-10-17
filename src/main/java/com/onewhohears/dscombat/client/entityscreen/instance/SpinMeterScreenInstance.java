@@ -1,13 +1,15 @@
 package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public abstract class SpinMeterScreenInstance extends EntityScreenInstance {
 	
@@ -23,7 +25,7 @@ public abstract class SpinMeterScreenInstance extends EntityScreenInstance {
 			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		poseStack.pushPose();
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(getAngleDegrees(entity)));
+		poseStack.mulPose(new Quaternionf().rotateZ((float) Math.toRadians(getAngleDegrees(entity))));
 		Matrix4f matrix4f = poseStack.last().pose();
 		drawTextureCentered(spinRenderType, matrix4f, buffer, packedLight, -0.001f);
 		poseStack.popPose();

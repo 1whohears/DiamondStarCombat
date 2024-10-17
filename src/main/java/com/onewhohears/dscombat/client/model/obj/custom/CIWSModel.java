@@ -1,11 +1,12 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.VectorUtils;
+import org.joml.Matrix4f;
 
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class CIWSModel extends ObjTurretModel<EntityTurret> {
 	@Override
 	protected void rotate(EntityTurret entity, float partialTicks, PoseStack poseStack) {
 		super.rotate(entity, partialTicks, poseStack);
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+		poseStack.mulPose(VectorUtils.rotationQuaternion(VectorUtils.POSITIVE_Y, 180f));
 	}
 
 	@Override

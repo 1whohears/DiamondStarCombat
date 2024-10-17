@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public class EntityBoat extends EntityVehicle {
 	
@@ -29,27 +29,27 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void directionGround(Quaternion q) {
+	public void directionGround(Quaternionf q) {
 		flatten(q, 4f, 4f, true);
 		if (!isOperational()) return;
 		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque() * 0.1f, true);
 	}
 	
 	@Override
-	public void directionWater(Quaternion q) {
+	public void directionWater(Quaternionf q) {
 		if (!isOperational()) return;
 		flatten(q, 2f, 2f, true);
 		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
 	}
 	
 	@Override
-	public void tickMovement(Quaternion q) {
+	public void tickMovement(Quaternionf q) {
 		if (inputs.special) throttleToZero();
 		super.tickMovement(q);
 	}
 	
 	@Override
-	public void tickGround(Quaternion q) {
+	public void tickGround(Quaternionf q) {
 		addFrictionForce(kineticFric);
 	}
 	
@@ -59,7 +59,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void tickWater(Quaternion q) {
+	public void tickWater(Quaternionf q) {
 		super.tickWater(q);
 		if (!checkInWater()) return;
 		if (canBrake() && isBraking()) addFrictionForce(2000);
@@ -119,7 +119,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void tickGroundWater(Quaternion q) {
+	public void tickGroundWater(Quaternionf q) {
 		tickWater(q);
 		Vec3 motion = getDeltaMovement();
 		if (motion.y < 0) motion = motion.multiply(1, 0, 1);
@@ -140,9 +140,9 @@ public class EntityBoat extends EntityVehicle {
 		BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
 		for(int k1=i;k1<j;++k1){for(int l1=k;l1<l;++l1){for(int i2=i1;i2<j1;++i2){
 			mbp.set(k1, l1, i2);
-			FluidState fluidstate = level.getFluidState(mbp);
+			FluidState fluidstate = level().getFluidState(mbp);
 			if (fluidstate.is(FluidTags.WATER)) {
-				float f = (float)l1 + fluidstate.getHeight(level, mbp);
+				float f = (float)l1 + fluidstate.getHeight(level(), mbp);
 				waterLevel = Math.max((double)f, waterLevel);
 				flag = aabb.minY < (double)f;
 			}
@@ -169,7 +169,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 
 	@Override
-	public Vec3 getThrustForce(Quaternion q) {
+	public Vec3 getThrustForce(Quaternionf q) {
 		if (!isInWater()) return Vec3.ZERO;
 		Vec3 direction = UtilAngles.getRollAxis(q);
 		Vec3 thrustForce = direction.scale(getPushThrustMag());

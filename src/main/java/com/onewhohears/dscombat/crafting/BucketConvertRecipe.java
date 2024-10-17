@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.crafting;
 
+import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonArray;
@@ -40,7 +41,9 @@ public class BucketConvertRecipe extends CustomRecipe {
 	public boolean matches(CraftingContainer container, Level level) {
 		return UtilItem.testRecipe(getIngredients(), container);
 	}
-	
+
+
+
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		return allIngredients;
@@ -67,7 +70,7 @@ public class BucketConvertRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+	public ItemStack assemble(CraftingContainer craftingContainer, RegistryAccess registryAccess) {
 		return getOutput();
 	}
 
@@ -87,7 +90,7 @@ public class BucketConvertRecipe extends CustomRecipe {
 	}
 	
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess registryAccess) {
 		return getOutput();
 	}
 	

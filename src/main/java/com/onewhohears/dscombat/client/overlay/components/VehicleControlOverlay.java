@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
@@ -24,13 +25,13 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
     public static final int STICK_BASE_SIZE = 60, STICK_KNOB_SIZE = STICK_BASE_SIZE / 6;
     protected static int PEDAL_HEIGHT = 25, PEDAL_WIDTH = 20;
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
         assert vehicle != null;
 
@@ -40,52 +41,44 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
         // rudder (yaw input)
         if (vehicle.isAircraft()) {
             yOrigin -= PEDAL_HEIGHT;
-            if (vehicle.inputs.yaw < 0) RenderSystem.setShaderTexture(0, RUDDER_PEDAL_PUSHED);
-            else RenderSystem.setShaderTexture(0, RUDDER_PEDAL);
-            blit(poseStack,
-                    xOrigin, yOrigin,
-                    0, 0,
-                    PEDAL_WIDTH, PEDAL_HEIGHT,
-                    PEDAL_WIDTH, PEDAL_HEIGHT);
-            if (vehicle.inputs.yaw > 0) RenderSystem.setShaderTexture(0, RUDDER_PEDAL_PUSHED);
-            else RenderSystem.setShaderTexture(0, RUDDER_PEDAL);
-            blit(poseStack,
-                    xOrigin + STICK_BASE_SIZE - PEDAL_WIDTH, yOrigin,
-                    0, 0,
-                    PEDAL_WIDTH, PEDAL_HEIGHT,
-                    PEDAL_WIDTH, PEDAL_HEIGHT);
+
+            // Render left rudder pedal
+            if (vehicle.inputs.yaw < 0) graphics.blit(RUDDER_PEDAL_PUSHED, xOrigin, yOrigin, 0, 0, PEDAL_WIDTH, PEDAL_HEIGHT, PEDAL_WIDTH, PEDAL_HEIGHT);
+            else graphics.blit(RUDDER_PEDAL, xOrigin, yOrigin, 0, 0, PEDAL_WIDTH, PEDAL_HEIGHT, PEDAL_WIDTH, PEDAL_HEIGHT);
+
+            // Render right rudder pedal
+            if (vehicle.inputs.yaw > 0) graphics.blit(RUDDER_PEDAL_PUSHED, xOrigin + STICK_BASE_SIZE - PEDAL_WIDTH, yOrigin, 0, 0, PEDAL_WIDTH, PEDAL_HEIGHT, PEDAL_WIDTH, PEDAL_HEIGHT);
+            else graphics.blit(RUDDER_PEDAL, xOrigin + STICK_BASE_SIZE - PEDAL_WIDTH, yOrigin, 0, 0, PEDAL_WIDTH, PEDAL_HEIGHT, PEDAL_WIDTH, PEDAL_HEIGHT);
         }
 
-        // stick (pitch roll input)
-        RenderSystem.setShaderTexture(0, STICK_BASE);
-        yOrigin -= STICK_BASE_SIZE;
-        blit(poseStack,
-                xOrigin, yOrigin,
-                0, 0,
-                STICK_BASE_SIZE, STICK_BASE_SIZE,
-                STICK_BASE_SIZE, STICK_BASE_SIZE);
-        RenderSystem.setShaderTexture(0, STICK_KNOB);
+        // stick (pitch/roll input)
+        graphics.blit(STICK_BASE, xOrigin, yOrigin - STICK_BASE_SIZE, 0, 0, STICK_BASE_SIZE, STICK_BASE_SIZE, STICK_BASE_SIZE, STICK_BASE_SIZE);
 
-        int baseSizeHalf = STICK_BASE_SIZE / 2, knobSizeHalf = STICK_KNOB_SIZE / 2;
+        int baseSizeHalf = STICK_BASE_SIZE / 2;
+        int knobSizeHalf = STICK_KNOB_SIZE / 2;
         float xinput, yinput = vehicle.inputs.pitch;
 
-        if (vehicle.isAircraft()) xinput = vehicle.inputs.roll;
-        else xinput = vehicle.inputs.yaw;
+        if (vehicle.isAircraft()) {
+            xinput = vehicle.inputs.roll;
+        } else {
+            xinput = vehicle.inputs.yaw;
+        }
 
-        // PIE HAT GORE-US
+        // Normalize input to avoid exceeding joystick boundaries
         float inputLength = Mth.sqrt(xinput * xinput + yinput * yinput);
         if (inputLength > 1) {
             xinput = xinput / inputLength;
             yinput = yinput / inputLength;
         }
 
-        blit(poseStack,
+        // Render stick knob
+        graphics.blit(STICK_KNOB,
                 xOrigin + baseSizeHalf - knobSizeHalf + (int) (xinput * baseSizeHalf),
-                yOrigin + baseSizeHalf - knobSizeHalf + (int) (yinput * baseSizeHalf),
+                yOrigin - STICK_BASE_SIZE + baseSizeHalf - knobSizeHalf + (int) (yinput * baseSizeHalf),
                 0, 0,
-                STICK_KNOB_SIZE, STICK_KNOB_SIZE,
-                STICK_KNOB_SIZE, STICK_KNOB_SIZE);
+                STICK_KNOB_SIZE, STICK_KNOB_SIZE, STICK_KNOB_SIZE, STICK_KNOB_SIZE);
     }
+
 
     @Override
     protected @NotNull String componentId() {

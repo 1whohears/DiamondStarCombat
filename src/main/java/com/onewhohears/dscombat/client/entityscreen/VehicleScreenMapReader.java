@@ -51,32 +51,40 @@ public class VehicleScreenMapReader {
 			LOGGER.debug(screenMap.toString()+" not loaded. This vehicle won't have any screens.");
 			return list;
 		}
-		for (int y = 0; y < image.getHeight(); ++y) for (int x = 0; x < image.getWidth(); ++x) {
-			int color = image.getPixelRGBA(x, y);
-			if (NativeImage.getA(color) == 0) continue;
-			int screenType = EntityScreenTypes.getScreenTypeIdByColor(color);
-			if (screenType == -1) continue;
-			if (x != 0 && image.getPixelRGBA(x-1, y) == color) continue;
-			if (y != 0 && image.getPixelRGBA(x, y-1) == color) continue;
- 			int u0 = x, u1 = x, v0 = y, v1 = y;
-			for (int u = u0+1; u < image.getWidth(); ++u) {
-				int c = image.getPixelRGBA(u, v0);
-				if (c != color) break;
-				u1 = u;
+		for (int y = 0; y < image.getHeight(); ++y) {
+			for (int x = 0; x < image.getWidth(); ++x) {
+				int color = image.getPixelRGBA(x, y);
+				int alpha = (color >> 24) & 0xFF; // Extract alpha value
+				if (alpha == 0) continue;
+
+				int screenType = EntityScreenTypes.getScreenTypeIdByColor(color);
+				if (screenType == -1) continue;
+				if (x != 0 && image.getPixelRGBA(x-1, y) == color) continue;
+				if (y != 0 && image.getPixelRGBA(x, y-1) == color) continue;
+
+				int u0 = x, u1 = x, v0 = y, v1 = y;
+				for (int u = u0 + 1; u < image.getWidth(); ++u) {
+					int c = image.getPixelRGBA(u, v0);
+					if (c != color) break;
+					u1 = u;
+				}
+				for (int v = v0 + 1; v < image.getHeight(); ++v) {
+					int c = image.getPixelRGBA(u0, v);
+					if (c != color) break;
+					v1 = v;
+				}
+
+				++u1;
+				++v1;
+				VehicleScreenUV vsuv = new VehicleScreenUV(screenType,
+						(float) u0 / (float) image.getWidth(), (float) u1 / (float) image.getWidth(),
+						(float) v0 / (float) image.getHeight(), (float) v1 / (float) image.getHeight());
+				list.add(vsuv);
+				x = u1;
+				LOGGER.debug("Found screen " + vsuv.toString() + " in " + screenMap.toString());
 			}
-			for (int v = v0+1; v < image.getHeight(); ++v) {
-				int c = image.getPixelRGBA(u0, v);
-				if (c != color) break;
-				v1 = v;
-			}
-			++u1; ++v1;
-			VehicleScreenUV vsuv = new VehicleScreenUV(screenType, 
-					(float)u0 / (float)image.getWidth(), (float)u1 / (float)image.getWidth(), 
-					(float)v0 / (float)image.getHeight(), (float)v1 / (float)image.getHeight());
-			list.add(vsuv);
-			x = u1;
-			LOGGER.debug("Found screen "+vsuv.toString()+" in "+screenMap.toString());
 		}
+
 		return list;
 	}
 	

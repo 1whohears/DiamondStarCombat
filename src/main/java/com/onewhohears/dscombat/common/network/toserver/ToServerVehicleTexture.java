@@ -43,7 +43,7 @@ public class ToServerVehicleTexture extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
-			ServerLevel level = player.getLevel();
+			ServerLevel level = player.serverLevel();
 			if (level.getEntity(id) instanceof EntityVehicle vehicle) {
 				vehicle.textureManager.read(buffer);
 				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 

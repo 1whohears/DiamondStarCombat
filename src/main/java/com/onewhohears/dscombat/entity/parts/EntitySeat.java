@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
@@ -24,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
+import org.joml.Quaternionf;
 
 public class EntitySeat extends EntityPart {
 	
@@ -36,7 +36,7 @@ public class EntitySeat extends EntityPart {
 	
 	public void tick() {
 		super.tick();
-		if (!level.isClientSide && level.getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES)) 
+		if (!level().isClientSide && level().getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES))
 			tickRideCollision();
 	}
 	
@@ -45,7 +45,7 @@ public class EntitySeat extends EntityPart {
 		if (getPassenger() != null) return;
 		if (!(getVehicle() instanceof EntityVehicle vehicle)) return;
 		if (vehicle.getXZSpeed() > 0.1) return;
-		List<Entity> entities = level.getEntities(this, 
+		List<Entity> entities = level().getEntities(this,
 			getBoundingBox().inflate(0.1), 
 			getRidePredicate());
 		for (Entity entity : entities) 
@@ -66,7 +66,7 @@ public class EntitySeat extends EntityPart {
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
-		} else if (!level.isClientSide) {
+		} else if (!level().isClientSide) {
 			if (player.isPassenger()) return InteractionResult.PASS;
 			if (player.startRiding(this)) return InteractionResult.CONSUME;
 			if (getVehicle() != null && player.startRiding(getVehicle())) return InteractionResult.CONSUME;
@@ -81,7 +81,7 @@ public class EntitySeat extends EntityPart {
 	}
 	
 	@Override
-    public void positionRider(Entity passenger) {
+	protected void positionRider(Entity passenger, MoveFunction pCallback) {
 		if (!(getVehicle() instanceof EntityVehicle craft)) {
 			super.positionRider(passenger);
 			return;
@@ -102,7 +102,7 @@ public class EntitySeat extends EntityPart {
 	}
 	
 	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
-		Quaternion q = craft.getQBySide();
+		Quaternionf q = craft.getQBySide();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
 		return UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
 				.subtract(0, passenger.getEyeHeight(), 0);
@@ -127,7 +127,7 @@ public class EntitySeat extends EntityPart {
 	@Override
 	protected void removePassenger(Entity passenger) {
 		super.removePassenger(passenger);
-		if (level.isClientSide) return;
+		if (level().isClientSide) return;
 		EntityVehicle vehicle = getParentVehicle();
 		if (vehicle == null) return;
 		vehicle.onSeatDismount(passenger);
@@ -154,7 +154,7 @@ public class EntitySeat extends EntityPart {
 	
 	@Nullable
 	@Override
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
 		Player p = getPlayer();
 		if (p == null) return super.getControllingPassenger();
 		return p;

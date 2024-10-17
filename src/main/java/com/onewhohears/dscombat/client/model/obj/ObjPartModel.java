@@ -1,14 +1,15 @@
 package com.onewhohears.dscombat.client.model.obj;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
+import com.onewhohears.onewholibs.util.math.VectorUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class ObjPartModel<T extends EntityPart> extends KeyframeAnimsEntityModel<T> {
 	
@@ -28,10 +29,10 @@ public class ObjPartModel<T extends EntityPart> extends KeyframeAnimsEntityModel
 	@Override
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
 		if (entity.getVehicle() instanceof EntityVehicle plane) {
-			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
+			Quaternionf q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
 			poseStack.mulPose(q);
 		}
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
+		poseStack.mulPose(VectorUtils.rotationQuaternion(VectorUtils.POSITIVE_Z, entity.getZRot()));
 	}
 	
 	@Override

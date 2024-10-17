@@ -37,7 +37,7 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 	
 	public static void updateIRTargetsList(Entity weapon, List<IrTarget> targets, float flareResistance, float fov) {
 		targets.clear();
-		List<Entity> irEmitters = weapon.level.getEntities(weapon, getIrBoundingBox(weapon), 
+		List<Entity> irEmitters = weapon.level().getEntities(weapon, getIrBoundingBox(weapon),
 				(entity) -> entity.getType().is(ModTags.EntityTypes.IR_EMITTER));
 		for (int i = 0; i < irEmitters.size(); ++i) {
 			Entity emitter = irEmitters.get(i);
@@ -84,7 +84,7 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 			//System.out.println("same");
 			return false;
 		}
-		if (checkGround && ping.isOnGround()) {
+		if (checkGround && ping.onGround()) {
 			//System.out.println("on ground");
 			return false;
 		}

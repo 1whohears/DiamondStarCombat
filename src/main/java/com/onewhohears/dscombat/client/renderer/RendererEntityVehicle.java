@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.client.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -13,6 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Quaternionf;
 
 public class RendererEntityVehicle<T extends EntityVehicle> extends EntityRenderer<T> implements RotableHitboxRenderer, VehicleScreenRenderer<T> {
 	
@@ -47,7 +47,7 @@ public class RendererEntityVehicle<T extends EntityVehicle> extends EntityRender
 			red = green = blue = grey;
 		}
 		
-		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
+		Quaternionf q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
 		poseStack.pushPose();
         poseStack.mulPose(q);
         

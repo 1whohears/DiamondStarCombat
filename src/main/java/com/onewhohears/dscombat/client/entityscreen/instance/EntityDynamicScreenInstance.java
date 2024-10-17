@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,6 +12,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import org.joml.Matrix4f;
 
 public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 	
@@ -152,8 +152,8 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 	}
 	
 	@Override
-	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, 
-			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
+	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer,
+					 float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, matrix4f, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		if (shouldUpdateTexture(entity)) {
 			updateTexture(entity);

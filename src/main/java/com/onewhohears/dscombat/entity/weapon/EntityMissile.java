@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import java.util.List;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
@@ -35,6 +34,7 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> {
 	
@@ -82,11 +82,11 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			kill();
 			return;
 		}
-		if (level.isClientSide) clientTickParticles();
+		if (level().isClientSide) clientTickParticles();
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
-		if (!level.isClientSide && !isRemoved()) {
+		if (!level().isClientSide && !isRemoved()) {
 			tickGuide();
 			if (targetPos != null) setTargetPos(targetPos);
 			else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
@@ -94,7 +94,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			else setTargetId(-1);
 			if (target != null && distanceTo(target) <= getWeaponStats().getFuseDist()) kill();
 		}
-		if (level.isClientSide && !isRemoved()) {
+		if (level().isClientSide && !isRemoved()) {
 			tickClientGuide();
 			if (firstTick) engineSound();
 		}
@@ -103,8 +103,8 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 	
 	protected void clientTickParticles() {
-		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(level, position(), getLookAngle().scale(-1));
-		UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
+		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(level(), position(), getLookAngle().scale(-1));
+		UtilParticles.missileTrail(level(), position(), getLookAngle(), getRadius(), isInWater());
 	}
 	
 	public abstract void tickGuide();
@@ -114,7 +114,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		if (tpos.y == -1000) tpos = null;
 		int tid = getTargetId();
 		if (tid != -1) {
-			Entity t = level.getEntity(tid);
+			Entity t = level().getEntity(tid);
 			if (t != null) targetPos = t.position();
 			else targetPos = tpos;
 		} else targetPos = tpos;
@@ -242,12 +242,12 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			setYRot(UtilAngles.getYaw(goal_dir));
 		} else {
 			Vec3 P = cur_dir.cross(goal_dir).normalize();
-			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, new Quaternion(
-					UtilGeometry.convertVector(P), 
-					rot, true));
+			Quaternionf quaternion = new Quaternionf().fromAxisAngleDeg(UtilGeometry.convertVector(P), rot);
+			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, quaternion);
 			setXRot(UtilAngles.getPitch(new_dir));
 			setYRot(UtilAngles.getYaw(new_dir));
 		}
+
 	}
 	
 	public float getTurnDegrees() {
@@ -312,7 +312,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		super.kill();
 		discardedButTicking = false;
 	}
-	
+
 	@Override
 	public void revive() {
 		super.revive();
@@ -363,7 +363,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
     }
 	
 	private void tickLerp() {
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			syncPacketPositionCodec(getX(), getY(), getZ());
 			lerpSteps = 0;
 			return;
@@ -389,8 +389,8 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	@Override
 	public void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (level.isClientSide) return;
-		if (level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT)) {
+		if (level().isClientSide) return;
+		if (level().getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT)) {
 			Entity entity = result.getEntity();
 			if (entity == null) return;
 			ServerPlayer targetPlayer = null;
@@ -401,8 +401,8 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			if (!(owner instanceof ServerPlayer ownerPlayer)) return;
 			MutableComponent message = UtilMCText.literal("Missile from ").append(ownerPlayer.getDisplayName())
 					.append(" impacted ").append(targetPlayer.getDisplayName());
-			boolean teamOnly = level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY);
-			List<ServerPlayer> players = level.getServer().getPlayerList().getPlayers();
+			boolean teamOnly = level().getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY);
+			List<ServerPlayer> players = level().getServer().getPlayerList().getPlayers();
 			for (ServerPlayer player : players) {
 				if (teamOnly && (ownerPlayer.getTeam() == null || player.getTeam() == null || 
 						!ownerPlayer.getTeam().getName().equals(player.getTeam().getName()))) continue;

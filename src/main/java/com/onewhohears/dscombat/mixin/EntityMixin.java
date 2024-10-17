@@ -31,7 +31,7 @@ public abstract class EntityMixin {
 		Vec3 move = vec3.get();
 		AABB entityBox = entity.getBoundingBox().expandTowards(move);
 		AABB searchBox = entity.getBoundingBox().inflate(64);
-		List<RotableHitbox> hitboxes = entity.level.getEntitiesOfClass(RotableHitbox.class, searchBox);
+		List<RotableHitbox> hitboxes = entity.level().getEntitiesOfClass(RotableHitbox.class, searchBox);
 		for (RotableHitbox hitbox: hitboxes) {
 			if (entity.equals(hitbox.getParent())) continue;
 			move = hitbox.collide(entity, entityBox, move);

@@ -104,13 +104,13 @@ public class PartsManager {
 			@Override
 			public void setItem(int i, ItemStack stack) {
 				//System.out.println("SET ITEM "+i+" "+stack);
-				if (readData && !parent.level.isClientSide) inventorySetItem(i, stack);
+				if (readData && !parent.level().isClientSide) inventorySetItem(i, stack);
 				super.setItem(i, stack);
 			}
 			@Override
 			public ItemStack removeItem(int i, int count) {
 				//System.out.println("REMOVE ITEM "+i);
-				if (readData && !parent.level.isClientSide) inventoryRemoveItem(i, count);
+				if (readData && !parent.level().isClientSide) inventoryRemoveItem(i, count);
 				return super.removeItem(i, count);
 			}			
 		};
@@ -237,7 +237,7 @@ public class PartsManager {
 	public String toString() {
 		String s = "Parts:";
 		for (int i = 0; i < slots.size(); ++i) s += slots.get(i).toString();
-		return s + " client?"+parent.level.isClientSide;
+		return s + " client?"+parent.level().isClientSide;
 	}
 	
 	public boolean isReadData() {
@@ -381,7 +381,7 @@ public class PartsManager {
 	}
 	
 	public boolean dropPartItem() {
-		if (parent.level.isClientSide) return false;
+		if (parent.level().isClientSide) return false;
 		if (slots.size() == 0) return false;
 		for (int i = 0; i < slots.size(); ++i) 
 			if (slots.get(i).dropPartItem(parent)) 
@@ -390,13 +390,13 @@ public class PartsManager {
 	}
 	
 	public void dropAllItems() {
-		if (parent.level.isClientSide) return;
-		Containers.dropContents(parent.level, parent.blockPosition().above(1), getInventory());
+		if (parent.level().isClientSide) return;
+		Containers.dropContents(parent.level(), parent.blockPosition().above(1), getInventory());
 		removeAllParts();
 	}
 	
 	public void removeAllParts() {
-		if (parent.level.isClientSide) return;
+		if (parent.level().isClientSide) return;
 		for (int i = 0; i < slots.size(); ++i) 
 			if (!slots.get(i).isSeat()) 
 				slots.get(i).removePartData(parent);

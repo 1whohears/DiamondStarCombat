@@ -40,7 +40,7 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 		// IDEA 7 make anti radar missile target entity type configurable so entities other mod entities can be targeted
 		targets.clear();
 		// planes
-		List<EntityVehicle> vehicles = level.getEntitiesOfClass(
+		List<EntityVehicle> vehicles = level().getEntitiesOfClass(
 				EntityVehicle.class, getARBoundingBox());
 		for (int i = 0; i < vehicles.size(); ++i) {
 			EntityVehicle vehicle = vehicles.get(i);
@@ -69,7 +69,7 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 	
 	protected boolean basicCheck(Entity ping) {
 		//System.out.println("target? "+ping);
-		if (!ping.isOnGround()) {
+		if (!ping.onGround()) {
 			return false;
 		}
 		if (isAlliedTo(ping)) {

@@ -2,8 +2,7 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.client.renderer.RendererEntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimationPlayer;
@@ -13,6 +12,8 @@ import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntit
 	
 	@Override
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
-		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
+		Quaternionf q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
         Vector3f pivot = getGlobalPivot();
 		if (!UtilGeometry.isZero(pivot)) poseStack.mulPoseMatrix(UtilAngles.pivotInvRot(pivot, q));
 		else poseStack.mulPose(q);

@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -37,35 +38,37 @@ public class VehicleScreen extends AbstractContainerScreen<VehicleContainerMenu>
 		this.imageWidth = 256;
 		this.imageHeight = 256;
 	}
-	
+
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(poseStack);
-		super.render(poseStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(poseStack, mouseX, mouseY);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
-	
+
 	@Override
-	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+	protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (!menu.getCarried().isEmpty() || hoveredSlot == null) return;
+
 		if (hoveredSlot.hasItem()) {
 			ItemStack stack = hoveredSlot.getItem();
-			renderTooltip(poseStack, getTooltipFromItem(stack), 
-					stack.getTooltipImage(), mouseX, mouseY);
+			guiGraphics.renderTooltip(font, getTooltipFromItem(stack), stack.getTooltipImage(), mouseX, mouseY);
 		} else {
-			renderTooltip(poseStack, getSlotTooltip(), 
-					Optional.empty(), mouseX, mouseY);
+			guiGraphics.renderTooltip(font, getSlotTooltip(), Optional.empty(), mouseX, mouseY);
 		}
 	}
-	
-	@Override
+
+
 	public List<Component> getTooltipFromItem(ItemStack itemStack) {
-		List<Component> c = itemStack.getTooltipLines(this.minecraft.player, 
+		List<Component> c = itemStack.getTooltipLines(this.minecraft.player,
 				minecraft.options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
 		List<Component> slots = getSlotTooltip();
-		for (int i = 0; i < slots.size(); ++i) c.add(i, slots.get(i));
+		for (int i = 0; i < slots.size(); ++i) {
+			c.add(i, slots.get(i));
+		}
 		return c;
 	}
+
 	
 	public List<Component> getSlotTooltip() {
 		List<Component> c = new ArrayList<Component>();
@@ -80,43 +83,46 @@ public class VehicleScreen extends AbstractContainerScreen<VehicleContainerMenu>
 		}
 		return c;
 	}
-	
+
 	@Override
-	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
+	protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.setShaderTexture(0, BG_TEXTURE);
-		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(BG_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+
 		if (menu.getClientData() != null && menu.getClientData().getBackground() != null) {
-			RenderSystem.setShaderTexture(0, menu.getClientData().getBackground());
-			blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+			guiGraphics.blit(menu.getClientData().getBackground(), leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		}
-		for (int i = 0; i < menu.slots.size(); ++i) {
-			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
-			RenderSystem.setShaderTexture(0, slot.data.getSlotType().getBgTexture());
-			blit(stack, leftPos+slot.x, topPos+slot.y, 
-					0, 0, 
-					16, 16, 
-					16, 16);
+
+		for (int slotIndex = 0; slotIndex < menu.slots.size(); ++slotIndex) {
+			if (!(menu.slots.get(slotIndex) instanceof PartItemSlot slot)) continue;
+			guiGraphics.blit(slot.data.getSlotType().getBgTexture(), leftPos + slot.x, topPos + slot.y, 0, 0, 16, 16, 16, 16);
 		}
 	}
 
+
+
 	@Override
-	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
-		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		guiGraphics.drawString(font, title, titleLabelX + 38, titleLabelY, 0x404040, false);
+		guiGraphics.drawString(font, playerInventoryTitle, inventoryLabelX + 38, inventoryLabelY + 56, 0x404040, false);
 	}
-	
+
+
 	@Override
 	protected void init() {
 		super.init();
-		Button getItemButton = new Button(0, 0, 60, 20, 
-				UtilMCText.translatable("ui.dscombat.shrink_plane_button"), 
-				onPress -> { onPlaneItemButton(); });
-		getItemButton.x = this.getGuiLeft() + titleLabelX+144;
-		getItemButton.y = this.getGuiTop() + titleLabelY+110;
+		Button getItemButton = Button.builder(UtilMCText.translatable("ui.dscombat.shrink_plane_button"),
+						onPress -> { onPlaneItemButton(); })
+				.bounds(0, 0, 60, 20)
+				.build();
+
+		getItemButton.setX(this.getGuiLeft() + titleLabelX + 144);
+		getItemButton.setY(this.getGuiTop() + titleLabelY + 110);
+
 		this.addRenderableWidget(getItemButton);
 	}
-	
+
+
 	@Override
 	public void containerTick() {
 		super.containerTick();

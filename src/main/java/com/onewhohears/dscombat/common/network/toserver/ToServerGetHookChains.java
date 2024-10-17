@@ -31,7 +31,7 @@ public class ToServerGetHookChains extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
-			if (ctx.get().getSender().level.getEntity(hookId) instanceof EntityChainHook hook) {
+			if (ctx.get().getSender().level().getEntity(hookId) instanceof EntityChainHook hook) {
 				hook.sendAllVehicleChainsToClient(ctx.get().getSender());
 			}
 		});

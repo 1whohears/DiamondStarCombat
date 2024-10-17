@@ -84,7 +84,7 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 		if (isDamaged()) return false;
 		if (getParent() == null) return false;
 		if (getFlares() <= 0) return false;
-		Level level = getParent().level;
+		Level level = getParent().level();
 		EntityFlare flare = new EntityFlare(level, getStats().getInitHeat(), getStats().getMaxAge(), 3);
 		flare.setPos(getParent().position().add(getRelPos()));
 		flare.setDeltaMovement(getParent().getDeltaMovement());

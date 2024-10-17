@@ -17,7 +17,7 @@ public class DSCSoundDefinitionGen extends SoundDefinitionsProvider {
 	private static final Map<String, SoundDefinition> soundsFromRegistry = new LinkedHashMap<>();
 	
 	public DSCSoundDefinitionGen(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, DSCombatMod.MODID, helper);
+		super(generator.getPackOutput(), DSCombatMod.MODID, helper);
 	}
 
 	@Override

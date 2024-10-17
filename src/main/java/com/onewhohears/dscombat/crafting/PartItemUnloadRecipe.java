@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -28,7 +29,7 @@ public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartInstance>
 	}
 	
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+		public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
 		ItemStack part = getPartItem(container);
 		I lpd = getLoadablePartDataFromItem(part);
 		if (lpd == null) return ItemStack.EMPTY;

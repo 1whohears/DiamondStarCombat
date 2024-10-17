@@ -39,7 +39,7 @@ public class ToServerVehicleCollide extends IPacket {
 	public boolean handle(Supplier<Context> ctx) {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
-			Level level = ctx.get().getSender().level;
+			Level level = ctx.get().getSender().level();
 			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.collideHurt(amount, isFall);
 			}

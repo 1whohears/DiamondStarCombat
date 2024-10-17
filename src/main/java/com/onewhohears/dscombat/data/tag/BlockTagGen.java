@@ -1,13 +1,14 @@
 package com.onewhohears.dscombat.data.tag;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.init.ModTags;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
@@ -20,7 +21,7 @@ public class BlockTagGen extends BlockTagsProvider {
 	}
 	
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		tag(ModTags.Blocks.FRAGILE)
 			.addTag(Tags.Blocks.GLASS_PANES)
 			.addTag(Tags.Blocks.GLASS)

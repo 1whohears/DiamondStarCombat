@@ -46,7 +46,7 @@ public class ToServerSyncRotBoxPassengerPos extends IPacket {
 	public boolean handle(Supplier<Context> ctx) {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
-			Level level = ctx.get().getSender().level;
+			Level level = ctx.get().getSender().level();
 			for (int i = 0; i < ids.length; ++i) {
 				if (pos[i].y == -1000) continue;
 				Entity entity = level.getEntity(ids[i]);

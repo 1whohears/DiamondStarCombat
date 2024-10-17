@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,6 +22,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -66,7 +68,7 @@ public abstract class EntityPart extends Entity {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
@@ -82,7 +84,7 @@ public abstract class EntityPart extends Entity {
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
-		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) onNoParent();
+		if (!level().isClientSide && tickCount > 10 && getVehicle() == null) onNoParent();
 	}
 	
 	protected void onNoParent() {
@@ -203,7 +205,7 @@ public abstract class EntityPart extends Entity {
     
     @Nullable
 	@Override
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
     	Entity v = getVehicle();
     	if (v == null) return null;
 		return v.getControllingPassenger();

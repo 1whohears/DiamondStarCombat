@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.common.network.toserver;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -13,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent.Context;
+import org.joml.Quaternionf;
 
 /**
  * this packet synchronizes the vehicle's speed and rotation from the pilot client's perspective with the server.
@@ -24,7 +24,7 @@ public class ToServerVehicleMoveRot extends IPacket {
 	
 	public final int id;
 	public final Vec3 motion;
-	public final Quaternion q;
+	public final Quaternionf q;
 	public final Vec3 av;
 	
 	public ToServerVehicleMoveRot(EntityVehicle e) {
@@ -55,7 +55,7 @@ public class ToServerVehicleMoveRot extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
-			ServerLevel level = player.getLevel();
+			ServerLevel level = (ServerLevel) player.level();
 			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.setDeltaMovement(motion);
 				plane.setPrevQ(plane.getQ());

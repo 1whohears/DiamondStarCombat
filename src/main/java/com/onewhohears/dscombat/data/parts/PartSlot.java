@@ -115,9 +115,9 @@ public class PartSlot {
 	}
 	
 	public boolean dropPartItem(EntityVehicle parent) {
-		if (parent.level.isClientSide) return false;
+		if (parent.level().isClientSide) return false;
 		if (!filled()) return false;
-		UtilEntity.dropItemStack(parent.level, getPartData().getNewItemStack(), parent.convertRelPos(getRelPos()));
+		UtilEntity.dropItemStack(parent.level(), getPartData().getNewItemStack(), parent.convertRelPos(getRelPos()));
 		return removePartData(parent);
 	}
 	
@@ -127,7 +127,7 @@ public class PartSlot {
 		this.data = data;
 		if (plane == null) return true;
 		if (data.canSetup()) data.setup(plane, slotId, pos);
-		if (!plane.level.isClientSide) {
+		if (!plane.level().isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 					new ToClientAddPart(plane.getId(), slotId, data));
 		}
@@ -137,7 +137,7 @@ public class PartSlot {
 	public boolean removePartData(EntityVehicle plane) {
 		if (!filled()) return false;
 		data.remove(plane, slotId);
-		if (!plane.level.isClientSide) {
+		if (!plane.level().isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
 					new ToClientRemovePart(plane.getId(), slotId));
 		}
@@ -149,7 +149,7 @@ public class PartSlot {
 		if (!filled()) return false;
 		if (data.isDamaged()) return true;
 		data.onDamaged(vehicle, slotId);
-		if (!vehicle.level.isClientSide) {
+		if (!vehicle.level().isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 					new ToClientDamagePart(vehicle.getId(), slotId, true));
 		}
@@ -164,7 +164,7 @@ public class PartSlot {
 		if (!filled()) return false;
 		if (!data.isDamaged()) return true;
 		data.onRepaired(vehicle, slotId, pos);
-		if (!vehicle.level.isClientSide) {
+		if (!vehicle.level().isClientSide) {
 			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 					new ToClientDamagePart(vehicle.getId(), slotId, false));
 		}

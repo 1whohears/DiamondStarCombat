@@ -1,14 +1,15 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 @Deprecated
 public class FelixPlaneModel extends ObjVehicleModel<EntityVehicle> {
@@ -30,16 +31,16 @@ public class FelixPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			lg2_mat = UtilAngles.pivotPixelsRotZ(-27.9838f, 26.168f, -47.1885f, degrees);
 		}
 		// flaps
-		Quaternion rudderRot = Vector3f.YP.rotationDegrees(entity.inputs.yaw*15);
-		rudderRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.yaw*-15));
+		Quaternionf rudderRot = new Quaternionf().rotateY((float) Math.toRadians(entity.inputs.yaw * 15));
+		rudderRot.mul(new Quaternionf().rotateZ((float) Math.toRadians(entity.inputs.yaw * -15)));
 		Matrix4f rudder = UtilAngles.pivotPixelsRot(0, 59.4055f, -145.1443f, rudderRot);
-		Quaternion leftEleRot = Vector3f.XP.rotationDegrees(entity.inputs.pitch*22);
-		leftEleRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.pitch*-16));
-		leftEleRot.mul(Vector3f.YP.rotationDegrees(entity.inputs.pitch*-2.5f));
+		Quaternionf leftEleRot = new Quaternionf().rotateX((float) Math.toRadians(entity.inputs.pitch * 22));
+		leftEleRot.mul(new Quaternionf().rotateZ((float) Math.toRadians(entity.inputs.pitch * -16)));
+		leftEleRot.mul(new Quaternionf().rotateY((float) Math.toRadians(entity.inputs.pitch * -2.5f)));
 		Matrix4f left_elevator = UtilAngles.pivotPixelsRot(21.9134f, 31.5469f, -151.6768f, leftEleRot);
-		Quaternion rightEleRot = Vector3f.XP.rotationDegrees(entity.inputs.pitch*22);
-		rightEleRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.pitch*16));
-		rightEleRot.mul(Vector3f.YP.rotationDegrees(entity.inputs.pitch*2.5f));
+		Quaternionf rightEleRot = new Quaternionf().rotateX((float) Math.toRadians(entity.inputs.pitch * 22));
+		rightEleRot.mul(new Quaternionf().rotateZ((float) Math.toRadians(entity.inputs.pitch * 16)));
+		rightEleRot.mul(new Quaternionf().rotateY((float) Math.toRadians(entity.inputs.pitch * 2.5f)));
 		Matrix4f right_elevator = UtilAngles.pivotPixelsRot(-21.9134f, 31.5469f, -151.6768f, rightEleRot);
 		Matrix4f left_flap, right_flap;
 		if (entity.isFlapsDown()) {
@@ -50,12 +51,13 @@ public class FelixPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			right_flap = UtilAngles.pivotPixelsRotX(-53.4288f, 27.5388f, -77.9424f, entity.inputs.roll*22);
 		}
 		// controls
-		Quaternion stickRot = Vector3f.XP.rotationDegrees(entity.inputs.pitch*-25);
-		stickRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.roll*25));
+		Quaternionf stickRot = new Quaternionf().rotateX((float) Math.toRadians(entity.inputs.pitch * -25));
+		stickRot.mul(new Quaternionf().rotateZ((float) Math.toRadians(entity.inputs.roll * 25)));
 		Matrix4f stick = UtilAngles.pivotPixelsRot(0, 24.1638f, 35.2462f, stickRot);
-		Matrix4f left_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
-		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
-		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.1875f);
+
+		Matrix4f left_pedal = new Matrix4f().identity().translate(0, 0, entity.inputs.yaw * -0.0625f);
+		Matrix4f right_pedal = new Matrix4f().identity().translate(0, 0, entity.inputs.yaw * 0.0625f);
+		Matrix4f throttle = new Matrix4f().identity().translate(0, 0, entity.getCurrentThrottle() * 0.1875f);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
 			.put("gun", INVISIBLE)
 			.put("lg0", lg0_mat)

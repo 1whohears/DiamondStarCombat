@@ -1,12 +1,13 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 public class VLSModel extends ObjPartModel<EntityWeaponRack> {
 

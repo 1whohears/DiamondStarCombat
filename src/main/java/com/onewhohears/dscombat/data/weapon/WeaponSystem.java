@@ -5,8 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.instance.NoWeaponInstance;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -15,10 +14,12 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
+import com.onewhohears.onewholibs.util.math.VectorUtils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 /**
  * manages available weapons for {@link EntityVehicle}.
@@ -81,7 +82,7 @@ public class WeaponSystem {
 		boolean consume = true;
 		if (parent.isNoConsume()) consume = false;
 		else if (controller instanceof Player p && p.isCreative()) consume = false;
-		boolean consumeAmmo = parent.level.getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
+		boolean consumeAmmo = parent.level().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		return shootSelected(controller, consume && consumeAmmo);
 	}
 	
@@ -90,10 +91,10 @@ public class WeaponSystem {
 		if (data == null) return false;
 		String name = data.getStatsId();
 		String reason = null;
-		data.shootFromVehicle(parent.level, controller, getShootDirection(data), parent, consume);
+		data.shootFromVehicle(parent.level(), controller, getShootDirection(data), parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponInstance<?> wd : weapons) if (wd.getStats().isBullet() && wd.getStatsId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shootFromVehicle(parent.level, controller, getShootDirection(wd), parent, consume);
+			wd.shootFromVehicle(parent.level(), controller, getShootDirection(wd), parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
@@ -103,9 +104,9 @@ public class WeaponSystem {
 	}
 	
 	public Vec3 getShootDirection(WeaponInstance<?> data) {
-		Quaternion q = parent.getQ();
+		Quaternionf q = parent.getQ();
 		if (parent.isWeaponAngledDown() && data.getStats().canAngleDown()) {
-			q.mul(Vector3f.XP.rotationDegrees(25f));
+			q.mul(VectorUtils.rotationQuaternion(VectorUtils.POSITIVE_X, 25f));
 		}
     	return UtilAngles.getRollAxis(q);
     }
@@ -163,7 +164,7 @@ public class WeaponSystem {
 	}
 	
 	public void refillAll() {
-		if (parent.level.isClientSide) return;
+		if (parent.level().isClientSide) return;
 		for (WeaponInstance<?> w : weapons) {
 			w.addAmmo(100000);
 			w.updateClientAmmo(parent);

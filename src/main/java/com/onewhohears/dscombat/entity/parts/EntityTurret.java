@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.entity.parts;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartSlot;
@@ -33,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public class EntityTurret extends EntitySeat {
 	
@@ -82,7 +82,7 @@ public class EntityTurret extends EntitySeat {
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
 		super.onSyncedDataUpdated(key);
-		if (!level.isClientSide) return;
+		if (!level().isClientSide) return;
 		if (key.equals(WEAPON_ID) && WeaponPresets.get().has(getWeaponId())) {
 			data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
 		} else if (key.equals(MAX_AMMO)) {
@@ -118,7 +118,7 @@ public class EntityTurret extends EntitySeat {
 	
 	public void init() {
 		super.init();
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			if (data == null && WeaponPresets.get().has(getWeaponId())) 
 				data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
 			if (data != null) {
@@ -135,8 +135,8 @@ public class EntityTurret extends EntitySeat {
 		yRotRelO = getRelRotY();
 		LivingEntity gunner = getPassenger();
 		if (gunner == null) return;
-		Quaternion ra = Quaternion.ONE;
-		if (!level.isClientSide) {
+		Quaternionf ra = new Quaternionf().identity();
+		if (!level().isClientSide) {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
 			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
@@ -183,8 +183,8 @@ public class EntityTurret extends EntitySeat {
 	
 	@Override
 	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
-		Quaternion q;
-		if (level.isClientSide) q = craft.getClientQ();
+		Quaternionf q;
+		if (level().isClientSide) q = craft.getClientQ();
 		else q = craft.getQ();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
 		float cos = Mth.cos(getRelRotY()*Mth.DEG_TO_RAD), sin = Mth.sin(getRelRotY()*Mth.DEG_TO_RAD);
@@ -249,7 +249,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public double getAIVerticalRange() {
-		return level.getGameRules().getInt(DSCGameRules.MOB_TURRET_VERTICAL_RANGE);
+		return level().getGameRules().getInt(DSCGameRules.MOB_TURRET_VERTICAL_RANGE);
 	}
 	
 	@Override
@@ -316,7 +316,7 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public void shoot(Entity shooter) {
-		if (level.isClientSide || data == null || newRiderCoolDown > 0) return;
+		if (level().isClientSide || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
 		Vec3 pos = position();
 		EntityVehicle parent = null;
@@ -331,9 +331,9 @@ public class EntityTurret extends EntitySeat {
 			if (player.isCreative()) consume = false;
 			p = player;
 		}
-		boolean consumeAmmo = parent.level.getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
+		boolean consumeAmmo = parent.level().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		boolean couldShoot = data.checkRecoil();
-		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume && consumeAmmo);
+		data.shootFromTurret(level(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo);
 		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
@@ -354,8 +354,8 @@ public class EntityTurret extends EntitySeat {
 			float yRad = getYRot() * Mth.DEG_TO_RAD;
 			Vec3 posL = pos.add(new Vec3(-d*Mth.cos(yRad), 0, -d*Mth.sign(yRad))); 
 			Vec3 posR = pos.add(new Vec3(d*Mth.cos(yRad), 0, d*Mth.sign(yRad)));
-			data.shootFromTurret(level, shooter, getLookAngle(), posL, parent, consume, true);
-			data.shootFromTurret(level, shooter, getLookAngle(), posR, parent, consume, true);
+			data.shootFromTurret(level(), shooter, getLookAngle(), posL, parent, consume, true);
+			data.shootFromTurret(level(), shooter, getLookAngle(), posR, parent, consume, true);
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.command;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -17,6 +18,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -51,7 +53,7 @@ public class MissileCommand {
 		int i = 0;
 		for (Entity e : targets) {
 			Vec3 dp = e.position().subtract(pos).normalize();
-			EntityWeapon<?> ew = weapon.getEntity(e.level);
+			EntityWeapon<?> ew = weapon.getEntity(e.level());
 			ew.setOwner(owner);
 			ew.setPos(pos);
 			weapon.setDirection(ew, dp);
@@ -61,12 +63,12 @@ public class MissileCommand {
 				missile.target = e;
 				missile.targetPos = e.position();
 			}
-			e.level.addFreshEntity(ew);
+			e.level().addFreshEntity(ew);
 			//ew.tick();
 			++i;
 		}
 		if (i == 0) context.getSource().sendFailure(UtilMCText.literal("No targets found!"));
-		else if (i > 0) context.getSource().sendSuccess(UtilMCText.literal("Launched "+i+" missiles!"), true);
+		else if (i > 0) context.getSource().sendSuccess((Supplier<Component>) UtilMCText.literal("Launched "+i+" missiles!"), true);
 		return 1;
 	}
 	

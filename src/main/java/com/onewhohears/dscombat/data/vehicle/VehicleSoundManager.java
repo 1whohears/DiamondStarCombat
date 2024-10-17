@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 
 public class VehicleSoundManager {
 	private static final RandomSource RANDOM_SRC = RandomSource.create();
@@ -57,7 +58,7 @@ public class VehicleSoundManager {
 	}
 	
 	public void onTick() {
-		if (parent.level.isClientSide) onClientTick();
+		if (parent.level().isClientSide) onClientTick();
 		else onServerTick();
 	}
 	
@@ -87,7 +88,7 @@ public class VehicleSoundManager {
 	}
 	
 	public void onHurt(DamageSource source, float amount) {
-		if (this.parent.level.isClientSide || !this.parent.isOperational()) return;
+		if (this.parent.level().isClientSide || !this.parent.isOperational()) return;
 
 		float volume = Mth.clamp(amount * 0.5F, 0.12F,1.88F);
 		// keep this clamped close to 1.0F since audio duration noticeably changes for larger values
@@ -97,12 +98,12 @@ public class VehicleSoundManager {
 
 		UtilSound.sendDelayedSound(
 				forBroadcast,
-				parent.position(), 160, parent.level.dimension(), volume, pitch
+				parent.position(), 160, parent.level().dimension(), volume, pitch
 		);
 	}
 	
 	public void onRadioSongUpdate(String song) {
-		if (!parent.level.isClientSide) return;
+		if (!parent.level().isClientSide) return;
 		if (song.isEmpty()) return;
 		UtilClientSafeSounds.aircraftRadio(parent, song);
 	}
@@ -124,7 +125,7 @@ public class VehicleSoundManager {
 	public static SoundEvent soundForHurt(DamageSource source) {
 		final SoundEvent toReturn;
 
-		if (source.isProjectile() || source.msgId.equals("bullet")) {
+		if (source.is(DamageTypes.MOB_PROJECTILE)|| "bullet".equals(source.getMsgId())) {
 			toReturn = ModSounds.VEHICLE_HURT_PROJECTILE_METAL;
 		} else {
 			// TODO: continue this and also create more SoundEvents (for fire, explosions, etc)

@@ -253,7 +253,7 @@ public final class ClientInputEvents {
 	public static void playerMountSeat(EntityMountEvent event) {
 		if (!event.isMounting()) return;
 		Entity mounting = event.getEntityMounting();
-		if (!mounting.level.isClientSide) return;
+		if (!mounting.level().isClientSide) return;
 		if (!(mounting instanceof Player)) return;
 		Entity mounted = event.getEntityBeingMounted();
 		if (!(mounted instanceof EntitySeat)) return;

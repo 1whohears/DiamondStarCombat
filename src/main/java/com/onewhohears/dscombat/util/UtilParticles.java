@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.util;
 
 import java.util.Random;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModParticles;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -10,6 +9,7 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public class UtilParticles {
 	
@@ -73,7 +73,7 @@ public class UtilParticles {
 	}
 	
 	public static void vehicleAfterBurner(EntityVehicle vehicle) {
-		Quaternion q = vehicle.getClientQ();
+		Quaternionf q = vehicle.getClientQ();
 		Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
 		for (Vec3 relPos : vehicle.getAfterBurnerSmokePos()) {
 			Vec3 pos = UtilAngles.rotateVector(relPos, q).add(vehicle.position());
@@ -83,17 +83,17 @@ public class UtilParticles {
 	
 	public static void afterBurner(EntityVehicle vehicle, Vec3 pos, Vec3 dir) {
 		if (vehicle.showContrailParticles()) {
-			vehicle.level.addParticle(ModParticles.CONTRAIL.get(), 
+			vehicle.level().addParticle(ModParticles.CONTRAIL.get(),
 				pos.x, pos.y, pos.z, 
 				dir.x, dir.y, dir.z);
 		}
 		if (vehicle.showAfterBurnerParticles()) {
-			vehicle.level.addParticle(ModParticles.AFTER_BURNER.get(), 
+			vehicle.level().addParticle(ModParticles.AFTER_BURNER.get(),
 				pos.x, pos.y, pos.z, 
 				dir.x, dir.y, dir.z);
 			dir = dir.scale(0.5);
 			if (vehicle.showMoreAfterBurnerParticles()) {
-				vehicle.level.addParticle(ModParticles.AFTER_BURNER.get(), 
+				vehicle.level().addParticle(ModParticles.AFTER_BURNER.get(),
 					pos.x, pos.y, pos.z, 
 					dir.x, dir.y, dir.z);
 			}
@@ -103,7 +103,7 @@ public class UtilParticles {
 	public static void fuelLeakSmoke(EntityVehicle vehicle) {
 		if (!vehicle.isFuelLeak() || vehicle.getCurrentFuel() <= 0) return;
 		Vec3 pos = vehicle.position();
-		for (int i = 0; i < 4; ++i) vehicle.level.addParticle(
+		for (int i = 0; i < 4; ++i) vehicle.level().addParticle(
 			ParticleTypes.FALLING_NECTAR, 
 			pos.x, pos.y, pos.z, 
 			random.nextGaussian()*0.02, 
@@ -114,22 +114,22 @@ public class UtilParticles {
 	public static void engineFireSmoke(EntityVehicle vehicle) {
 		if (!vehicle.isEngineFire()) return;
 		for (Vec3 pos : vehicle.getEngineFirePos()) {
-			for (int i = 0; i < 2; ++i) flame(vehicle.level, pos);
-			for (int i = 0; i < 10; ++i) smoke(vehicle.level, pos);
-			for (int i = 0; i < 2; ++i) bigSmoke(vehicle.level, pos);
+			for (int i = 0; i < 2; ++i) flame(vehicle.level(), pos);
+			for (int i = 0; i < 10; ++i) smoke(vehicle.level(), pos);
+			for (int i = 0; i < 2; ++i) bigSmoke(vehicle.level(), pos);
 		}
 	}
 	
 	public static void vehicleDamageSmoke(EntityVehicle vehicle) {
 		float r = vehicle.getHealth() / vehicle.getMaxHealth();
-		if (r < 0.5f) smoke(vehicle.level, vehicle.position());
+		if (r < 0.5f) smoke(vehicle.level(), vehicle.position());
 		if (r < 0.3f) {
-			for (int i = 0; i < 2; ++i) smoke(vehicle.level, vehicle.position());
-			bigSmoke(vehicle.level, vehicle.position());
+			for (int i = 0; i < 2; ++i) smoke(vehicle.level(), vehicle.position());
+			bigSmoke(vehicle.level(), vehicle.position());
 		}
 		if (r < 0.1f) {
-			for (int i = 0; i < 4; ++i) smoke(vehicle.level, vehicle.position());
-			for (int i = 0; i < 3; ++i) bigSmoke(vehicle.level, vehicle.position());
+			for (int i = 0; i < 4; ++i) smoke(vehicle.level(), vehicle.position());
+			for (int i = 0; i < 3; ++i) bigSmoke(vehicle.level(), vehicle.position());
 		}
 	}
 	

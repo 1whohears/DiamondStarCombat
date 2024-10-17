@@ -8,19 +8,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
-import net.minecraft.tags.BlockTags;
+import com.onewhohears.onewholibs.util.math.VectorUtils;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.world.damagesource.DamageTypes;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
@@ -127,7 +127,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.QUATERNION);
+	public static final EntityDataAccessor<Quaternionf> Q = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
@@ -170,9 +170,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * SERVER ONLY
 	 */
 	public int lastShootTime = -1, ingredientDropIndex = -1;
-	
-	public Quaternion prevQ = Quaternion.ONE.copy();
-	public Quaternion clientQ = Quaternion.ONE.copy();
+
+	public Quaternionf prevQ = new Quaternionf().identity();
+	public Quaternionf clientQ = new Quaternionf().identity();
 	public Vec3 clientAV = Vec3.ZERO;
 	
 	public float zRot, zRotO; 
@@ -225,7 +225,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected void defineSynchedData() {
         entityData.define(HEALTH, 100f);
         entityData.define(ARMOR, 100f);
-		entityData.define(Q, Quaternion.ONE);
+		entityData.define(Q, new Quaternionf().identity());
 		entityData.define(AV, Vec3.ZERO);
 		entityData.define(TEST_MODE, false);
 		entityData.define(NO_CONSUME, false);
@@ -239,7 +239,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
-        if (!level.isClientSide()) return;
+        if (!level().isClientSide()) return;
         if (Q.equals(key)) {
     		if (!isControlledByLocalInstance()) {
     			setPrevQ(getClientQ());
@@ -289,7 +289,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setXRotNoQ(nbt.getFloat("xRot"));
 		setYRotNoQ(nbt.getFloat("yRot"));
 		zRot = nbt.getFloat("zRot");
-		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
+		Quaternionf q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
@@ -389,7 +389,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void init() {
 		refreshDimensions();
-		if (!level.isClientSide) serverSetup();
+		if (!level().isClientSide) serverSetup();
 		else clientSetup();
 		soundManager.loadSounds(getStats());
 	}
@@ -410,7 +410,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setMoment(Vec3.ZERO);
 		// SET DIRECTION
 		zRotO = zRot;
-		Quaternion q = getQBySide();
+		Quaternionf q = getQBySide();
 		setPrevQ(q);
 		controlDirection(q);
 		//q.normalize(); // this was causing horrendous precision errors in the hitbox colliders
@@ -426,7 +426,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			tickMovement(q);
 			calcAcc();
 			motionClamp();
-			if (!getLevel().isClientSide() && canTrample()) tickTrample();
+			if (!level().isClientSide() && canTrample()) tickTrample();
 			move(MoverType.SELF, getDeltaMovement());
 			calcMoveStatsPost(q);
 			tickCollisions();
@@ -440,7 +440,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         tickWarnings();
 		soundManager.onTick();
 		textureManager.onTick();
-		if (level.isClientSide) clientTick();
+		if (level().isClientSide) clientTick();
 		else serverTick();
 	}
 	
@@ -462,7 +462,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * could also be used by a server side AI to sync a vehicle's inputs with all client's.
 	 */
 	public void syncControlsToClient() {
-		if (level.isClientSide) return;
+		if (level().isClientSide) return;
 		PacketHandler.INSTANCE.send(
 			PacketDistributor.TRACKING_ENTITY.with(() -> this),
 			new ToClientVehicleControl(this));
@@ -474,8 +474,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void tickCollisions() {
 		// TODO 9.1 break grass and leaves or just weak blocks when driving through them
-		if (!level.isClientSide) {
-			knockBack(level.getEntities(this, 
+		if (!level().isClientSide) {
+			knockBack(level().getEntities(this,
 					getBoundingBox(), 
 					getKnockbackPredicate()));
 			tickDismountSafety();
@@ -486,7 +486,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 
 	public boolean canTrample() {
-		return (isOnGround() || isInWater()) && xzSpeed > 0 && getLevel().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
+		return (onGround() || isInWater()) && xzSpeed > 0 && level().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
 	}
 
 	protected void tickTrample() {
@@ -495,11 +495,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		for (double x = box.minX; x < box.maxX+1; ++x) {
 			for (double z = box.minZ; z < box.maxZ+1; ++z) {
 				for (double y = box.minY; y < box.maxY+1; ++y) {
-					BlockPos pos = new BlockPos(x, y, z);
-					BlockState state = getLevel().getBlockState(pos);
+					BlockPos pos = new BlockPos((int) x, (int) y, (int) z);
+					BlockState state = level().getBlockState(pos);
 					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;
-					if (UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), controller))
-						getLevel().destroyBlock(pos, true, this);
+					if (UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, level(), controller))
+						level().destroyBlock(pos, true, this);
 				}
 			}
 		}
@@ -531,7 +531,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			float amount = (float)((my-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
 			collideHurt(amount, true);
 		}
-		if (isOperational() && isOnGround() && !isLandingGear() && getXZSpeed() > DSCPhyCons.COLLIDE_SPEED) {
+		if (isOperational() && onGround() && !isLandingGear() && getXZSpeed() > DSCPhyCons.COLLIDE_SPEED) {
 			collideHurt(1, false);
 		}
 	}
@@ -548,13 +548,17 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param isFall true if vertical collision, false if horizontal
 	 */
 	public void collideHurt(float amount, boolean isFall) {
-		if (!level.isClientSide && tickCount > 200) {
-			if (isFall) hurt(DamageSource.FALL, amount);
-			else hurt(DamageSource.FLY_INTO_WALL, amount);
-		} else if (level.isClientSide && isControlledByLocalInstance()) {
+		if (!level().isClientSide && tickCount > 200) {
+			if (isFall) {
+				hurt(level().damageSources().fall(), amount);
+			} else {
+				hurt(level().damageSources().flyIntoWall(), amount);
+			}
+		} else if (level().isClientSide && isControlledByLocalInstance()) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleCollide(getId(), amount, isFall));
 		}
 	}
+
 	
 	protected Predicate<? super Entity> getKnockbackPredicate() {
 		return ((entity) -> {
@@ -577,7 +581,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void onSeatDismount(Entity entity) {
-		if (!level.isClientSide) formerPassengersServer.put(entity.getId(), DSCPhyCons.EJECT_SAFETY_COOLDOWN);
+		if (!level().isClientSide) formerPassengersServer.put(entity.getId(), DSCPhyCons.EJECT_SAFETY_COOLDOWN);
 	}
 	
 	protected void knockBack(List<Entity> entities) {
@@ -603,7 +607,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void waterDamage() {
 		if (tickCount % 20 == 0 && isInWater() && isOperational()) 
-			hurt(DamageSource.DROWN, 5);
+			hurt(level().damageSources().drown(), 5);
 	}
 	
 	/**
@@ -612,9 +616,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void tickNoHealth() {
 		++deadTicks;
 		if (isFullyLooted()) kill();
-		int removeTicks = getLevel().getGameRules().getInt(DSCGameRules.REMOVE_DEAD_VEHICLES_TIME) * 20;
+		int removeTicks = level().getGameRules().getInt(DSCGameRules.REMOVE_DEAD_VEHICLES_TIME) * 20;
 		if (removeTicks >= 0 && deadTicks >= removeTicks) {
-			if (getLevel().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) dropAllItems();
+			if (level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) dropAllItems();
 			kill();
 		}
 	}
@@ -668,7 +672,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (my > maxY) my = maxY;
 		}
 
-		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
+		if (onGround() && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
 		setDeltaMovement(motionXZ.x, my, motionXZ.z);
 	}
 	
@@ -728,8 +732,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * and {@link EntityVehicle#directionAir(Quaternion)} to change direction based on the named conditions.
 	 * @param q the current direction of the vehicle
 	 */
-	public void controlDirection(Quaternion q) {
-		if (onGround) directionGround(q);
+	public void controlDirection(Quaternionf q) {
+		if (onGround()) directionGround(q);
 		else if (isInWater()) directionWater(q);
 		else directionAir(q);
 		Vec3 m = getMoment().add(addMomentBetweenTicks), av = getAngularVel();
@@ -737,9 +741,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			av = av.add(m.x/getStats().Ix, m.y/getStats().Iy, m.z/getStats().Iz);
 			setAngularVel(av);
 		}
-		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
-		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
-		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
+		q.mul(VectorUtils.rotationQuaternion(VectorUtils.POSITIVE_X, (float) av.x));
+		q.mul(VectorUtils.rotationQuaternion(VectorUtils.NEGATIVE_Y, (float) av.y));
+		q.mul(VectorUtils.rotationQuaternion(VectorUtils.POSITIVE_Z, (float) av.z));
+
 		applyAngularDrag();
 		addMomentBetweenTicks = Vec3.ZERO;
 	}
@@ -748,7 +753,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		Vec3 av = getAngularVel();
 		float d = getAngularDrag();
 		float dx = d, dy = d, dz = d;
-		if (!onGround) {
+		if (!onGround()) {
 			if (inputs.pitch != 0 && Math.abs(av.x) <= getControlMaxDeltaPitch()) dx = 0;
 			if (inputs.yaw != 0 && Math.abs(av.y) <= getControlMaxDeltaYaw()) dy = 0;
 			if (inputs.roll != 0 && Math.abs(av.z) <= getControlMaxDeltaRoll()) dz = 0;
@@ -766,7 +771,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	protected float getAngularDrag() {
-		if (onGround) return 2.5f;
+		if (onGround()) return 2.5f;
 		else if (isInWater()) return 1.5f;
 		else return 1.0f;
  	}
@@ -775,7 +780,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * called every tick to change the vehicle direction if on the ground. 
 	 * @param q the current direction of the vehicle
 	 */
-	public void directionGround(Quaternion q) {
+	public void directionGround(Quaternionf q) {
 		if (!isOperational()) return;
 		flatten(q, 4f, 4f, true);
 		float max_tr = getTurnRadius();
@@ -798,7 +803,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * called every tick to change the vehicle direction if in the air.
 	 * @param q the current direction of the vehicle
 	 */
-	public void directionAir(Quaternion q) {
+	public void directionAir(Quaternionf q) {
 		
 	}
 	
@@ -806,7 +811,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * called every tick to change the vehicle direction if in the water.
 	 * @param q the current direction of the vehicle
 	 */
-	public void directionWater(Quaternion q) {
+	public void directionWater(Quaternionf q) {
 		directionAir(q);
 	}
 	
@@ -817,7 +822,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param dRoll
 	 * @param forced
 	 */
-	public void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {
+	public void flatten(Quaternionf q, float dPitch, float dRoll, boolean forced) {
 		Vec3 av = getAngularVel();
 		float x = (float)av.x, z = (float)av.z;
 		if (!forced) {
@@ -833,7 +838,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		if (dPitch != 0) {
 			float goalPitch = 0;
-			if (isOnGround()) goalPitch = -getStats().groundXTilt;
+			if (onGround()) goalPitch = -getStats().groundXTilt;
 			float diff = (float)angles.pitch - goalPitch;
 			if (Math.abs(diff) < dPitch) pitch = diff;
 			else pitch = Math.signum(diff) * dPitch;
@@ -893,7 +898,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * instead of calculating values multiple times per tick.
 	 * @param q the current direction of the vehicle
 	 */
-	protected void calcMoveStatsPre(Quaternion q) {
+	protected void calcMoveStatsPre(Quaternionf q) {
 		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
 		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION;
 		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION;
@@ -903,7 +908,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		maxFuel = partsManager.getMaxFuel();
 		hasFlares = partsManager.getFlares().size() > 0;
 		airPressure = UtilVehicleEntity.getAirPressure(this);
-		if (isOnGround()) ++groundTicks;
+		if (onGround()) ++groundTicks;
 		else groundTicks = 0;
 	}
 	
@@ -912,7 +917,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * instead of calculating values multiple times per tick.
 	 * @param q the current direction of the vehicle
 	 */
-	protected void calcMoveStatsPost(Quaternion q) {
+	protected void calcMoveStatsPost(Quaternionf q) {
 		Vec3 m = getDeltaMovement();
 		float y = getYRot();
 		xzSpeed = (float) Math.sqrt(m.x*m.x + m.z*m.z);
@@ -938,7 +943,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * called every tick on server and client side.
-	 * after forces are calculated. see {@link EntityVehicle#tickMovement(Quaternion)}.
+	 * after forces are calculated. see {@link EntityVehicle#tickMovement(Quaternionf)}.
 	 * F=M*A -> A=F/M then A is added to current velocity
 	 */
 	public void calcAcc() {
@@ -952,7 +957,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Override
 	public void move(MoverType type, Vec3 move) {
 		super.move(type, move);
-		if (!noPhysics && isOnGround() && getDeltaMovement().y == 0) stepDown(move);
+		if (!noPhysics && onGround() && getDeltaMovement().y == 0) stepDown(move);
 	}
 	
 	/**
@@ -964,8 +969,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected void stepDown(Vec3 move) {
 		AABB aabb = getBoundingBox();
 		Vec3 down = new Vec3(0,-getStepHeight()-0.1, 0); // this -0.1 is needed trust me
-		List<VoxelShape> list = level.getEntityCollisions(this, aabb.expandTowards(down));
-		Vec3 collide = collideBoundingBox(this, down, aabb, level, list);
+		List<VoxelShape> list = level().getEntityCollisions(this, aabb.expandTowards(down));
+		Vec3 collide = collideBoundingBox(this, down, aabb, level(), list);
 		if (collide.y < 0 && collide.y >= -getStepHeight()) {
 			setPos(getX(), getY()+collide.y, getZ());
 		}
@@ -974,27 +979,27 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces this tick.
 	 * calls the following based on entity's current state: 
-	 * {@link EntityVehicle#tickAlways(Quaternion)},
-	 * {@link EntityVehicle#tickGround(Quaternion)},
-	 * {@link EntityVehicle#tickGroundWater(Quaternion)},
-	 * {@link EntityVehicle#tickWater(Quaternion)},
-	 * {@link EntityVehicle#tickAir(Quaternion)}.
+	 * {@link EntityVehicle#tickAlways(Quaternionf)},
+	 * {@link EntityVehicle#tickGround(Quaternionf)},
+	 * {@link EntityVehicle#tickGroundWater(Quaternionf)},
+	 * {@link EntityVehicle#tickWater(Quaternionf)},
+	 * {@link EntityVehicle#tickAir(Quaternionf)}.
 	 * @param q the plane's current rotation
 	 */
-	public void tickMovement(Quaternion q) {
+	public void tickMovement(Quaternionf q) {
 		tickAlways(q);
-		if (onGround && isInWater()) tickGroundWater(q);
-		else if (onGround) tickGround(q);
+		if (onGround() && isInWater()) tickGroundWater(q);
+		else if (onGround()) tickGround(q);
 		else if (isInWater()) tickWater(q);
 		else tickAir(q);
 	}
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces in any context.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternionf)}.
 	 * @param q the plane's current rotation
 	 */
-	public void tickAlways(Quaternion q) {
+	public void tickAlways(Quaternionf q) {
 		Vec3 f = getForces();
 		f = f.add(getWeightForce());
 		f = f.add(getThrustForce(q));
@@ -1003,10 +1008,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces when on the ground.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternionf)}.
 	 * @param q the plane's current rotation
 	 */
-	public void tickGround(Quaternion q) {
+	public void tickGround(Quaternionf q) {
 		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
 		if (isSliding() || willSlideFromTurn()) {
 			setDeltaMovement(getDeltaMovement().add(n.scale(getDriveAcc() * slideAngleCos)));
@@ -1078,29 +1083,29 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces when in air.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternionf)}.
 	 * @param q the plane's current rotation
 	 */
-	public void tickAir(Quaternion q) {
+	public void tickAir(Quaternionf q) {
 		setForces(getForces().add(getDragForce(q)));
 		resetFallDistance();
 	}
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces in when floating in water.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternionf)}.
 	 * @param q the plane's current rotation
 	 */
-	public void tickWater(Quaternion q) {
+	public void tickWater(Quaternionf q) {
 		setForces(getForces().add(getDragForce(q)));
 	}
 	
 	/**
 	 * called on both client and server side every tick to calculate the vehicle's forces when at the bottom of water.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
+	 * called by {@link EntityVehicle#tickMovement(Quaternionf)}.
 	 * @param q the plane's current rotation
 	 */
-	public void tickGroundWater(Quaternion q) {
+	public void tickGroundWater(Quaternionf q) {
 		tickGround(q);
 		tickWater(q);
 	}
@@ -1109,7 +1114,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param q the plane's current rotation
 	 * @return a force vector as the plane's thrust force this tick
 	 */
-	public abstract Vec3 getThrustForce(Quaternion q);
+	public abstract Vec3 getThrustForce(Quaternionf q);
 	
 	/**
 	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
@@ -1146,7 +1151,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @param q the plane's current rotation
 	 * @return a force vector as the plane's drag this tick
 	 */
-	public Vec3 getDragForce(Quaternion q) {
+	public Vec3 getDragForce(Quaternionf q) {
 		Vec3 direction = getDeltaMovement().normalize().scale(-1);
 		Vec3 dragForce = direction.scale(getDragMag());
 		return dragForce;
@@ -1212,7 +1217,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (!isOperational()) return;
 		radarSystem.tick();
 		Entity controller = getControllingPassenger();
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			weaponSystem.serverTick();
 			if (controller == null) return;
 			boolean consume = !isNoConsume();
@@ -1220,11 +1225,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				if (inputs.openMenu) openMenu(player);
 				if (player.isCreative()) consume = false;
 			}
-			boolean consumeFuel = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
+			boolean consumeFuel = level().getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
 			if (consume && consumeFuel) tickFuel();
 			setFlareNum(partsManager.getNumFlares());
 			if (inputs.flare && tickCount - flareTicks >= 10) {
-				boolean consumeFlares = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
+				boolean consumeFlares = level().getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
 				flare(controller, consume && consumeFlares);
 			}
 		}
@@ -1258,11 +1263,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public boolean canOpenMenu() {
-		return (isOnGround() && xzSpeed < 0.1) || isTestMode();
+		return (onGround() && xzSpeed < 0.1) || isTestMode();
 	}
 	
 	public String getOpenMenuError() {
-		if (!isOnGround()) return "error.dscombat.no_menu_in_air";
+		if (!onGround()) return "error.dscombat.no_menu_in_air";
 		return "error.dscombat.no_menu_moving";
 	}
 	
@@ -1276,7 +1281,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public void tickParts() {
 		findGimbalForPilotCamera();
-		if (level.isClientSide) partsManager.clientTickParts();
+		if (level().isClientSide) partsManager.clientTickParts();
 		else partsManager.tickParts();
 	}
 	
@@ -1315,7 +1320,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	private void syncMoveRot() {
-		if (!level.isClientSide || tickCount % 10 != 0 || firstTick) return;
+		if (!level().isClientSide || tickCount % 10 != 0 || firstTick) return;
 		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleMoveRot(this));
 	}
 	
@@ -1378,7 +1383,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
@@ -1393,7 +1398,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (result != InteractionResult.FAIL) return result;
 		}
 		if (!isOperational()) return onDestroyedInteract(player, hand);
-		if (!level.isClientSide) return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
+		if (!level().isClientSide) return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		else {
 			Minecraft m = Minecraft.getInstance();
 			if (m.player.equals(player)) DSCClientInputs.centerMousePos();
@@ -1403,7 +1408,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	protected InteractionResult onItemInteract(Player player, InteractionHand hand, ItemStack stack) {
 		if (stack.is(ModTags.Items.SPRAY_CAN)) return onSprayCanInteract(player, hand, stack);
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			Item item = stack.getItem();
 			// INTERACT ITEMS
 			if (item instanceof VehicleInteractItem vii) 
@@ -1443,24 +1448,24 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		int d = stack.getDamageValue();
 		int r = (int)addFuel(md-d);
 		stack.setDamageValue(md-r);
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.sidedSuccess(level().isClientSide);
 	}
 	
 	protected InteractionResult onOilBucketInteract(Player player, InteractionHand hand, ItemStack stack) {
-		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(level);
+		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(level());
 		if (addFuel(fuelPerBucket) == fuelPerBucket) return InteractionResult.PASS;
 		ItemStack remain = stack.getCraftingRemainingItem();
 		player.getInventory().setItem(player.getInventory().selected, remain);
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.sidedSuccess(level().isClientSide);
 	}
 	
 	protected InteractionResult onSprayCanInteract(Player player, InteractionHand hand, ItemStack stack) {
-		if (level.isClientSide) UtilClientPacket.openVehicleTextureScreen(textureManager);
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		if (level().isClientSide) UtilClientPacket.openVehicleTextureScreen(textureManager);
+		return InteractionResult.sidedSuccess(level().isClientSide);
 	}
 	
 	protected InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
-		List<EntityChainHook> hooks = level.getEntitiesOfClass(EntityChainHook.class, 
+		List<EntityChainHook> hooks = level().getEntitiesOfClass(EntityChainHook.class,
 				getBoundingBox().inflate(EntityChainHook.CHAIN_LENGTH), hook -> hook.isPlayerConnected(player));
 		/*if (hooks.size() == 0) {
 			chainToPlayer(player);
@@ -1473,23 +1478,23 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				break;
 			}
 		}
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.sidedSuccess(level().isClientSide);
 	}
 	
 	protected InteractionResult onDestroyedInteract(Player player, InteractionHand hand) {
 		if (partsManager.dropPartItem()) {
 			playTheftSound();
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(level().isClientSide);
 		}
 		if (dropIngredient()) {
 			playTheftSound();
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(level().isClientSide);
 		}
 		return InteractionResult.PASS;
 	}
 	
 	public boolean dropIngredient() {
-		if (level.isClientSide) return false;
+		if (level().isClientSide) return false;
 		while (canDropIngredients()) {
 			++ingredientDropIndex;
 			Ingredient ing = getStats().getIngredients().get(ingredientDropIndex);
@@ -1510,7 +1515,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void playTheftSound() {
-		getLevel().playSound(null, this, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR,
+		level().playSound(null, this, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR,
 				getSoundSource(), 0.5f, 1.0f);
 	}
 
@@ -1520,12 +1525,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 
 	public void dropAllParts() {
-		if (getLevel().isClientSide) return;
+		if (level().isClientSide) return;
 		partsManager.dropAllItems();
 	}
 
 	public void dropAllIngredients() {
-		if (getLevel().isClientSide) return;
+		if (level().isClientSide) return;
 		while (true) if (!dropIngredient()) break;
 	}
 	
@@ -1549,7 +1554,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public boolean chainToPlayer(Player player) {
 		chainHolderPlayer = player;
 		chainHolderHook = null;
-		if (!level.isClientSide) UtilServerPacket.sendVehicleAddPlayer(this, player);
+		if (!level().isClientSide) UtilServerPacket.sendVehicleAddPlayer(this, player);
 		return true;
 	}
 	/**
@@ -1568,7 +1573,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		SoundEvent sound;
 		if (isMaxHealth()) sound = SoundEvents.ANVIL_USE;
 		else sound = SoundEvents.ANVIL_PLACE;
-		level.playSound(null, this, sound, 
+		level().playSound(null, this, sound,
 				getSoundSource(), 0.5f, 1.0f);
 	}
 	
@@ -1626,7 +1631,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * the part's position is set based on the vehicle's rotation.
 	 */
 	@Override
-    public void positionRider(Entity passenger) {
+	protected void positionRider(Entity passenger, MoveFunction pCallback) {
 		if (passenger instanceof EntityPart part) {
 			passenger.setPos(convertRelPos(part.getRelativePos()));
 			return;
@@ -1639,7 +1644,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	@Nullable
 	@Override
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         for (EntitySeat seat : getSeats()) 
         	if (seat.isPilotSeat()) 
         		return seat.getPlayer();
@@ -1789,13 +1794,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public boolean hurtHitbox(DamageSource source, float amount, RotableHitbox hitbox) {
 		return hurtLogic(source, amount, hitbox, hitbox.getHitboxData().isDamageRoot());
 	}
-	
+
 	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		if (isInvulnerableTo(source)) return false;
-		if (source.isFire()) hurtByFireTime = tickCount;
+		if (source.is(DamageTypes.ON_FIRE)) hurtByFireTime = tickCount;
 		soundManager.onHurt(source, amount);
 		damage(source, amount, hitbox, hurtRoot);
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			if (!isOperational()) {
 				partsManager.damageAllParts();
 				checkExplodeWhenKilled(source);
@@ -1805,7 +1810,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 		return true;
 	}
-	
+
 	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox) {
 		return hurtLogic(source, amount, hitbox, true);
 	}
@@ -1848,17 +1853,18 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (hitbox != null) System.out.println("hitbox health: "+hitbox.getHealth()+" armor "+hitbox.getArmor());
 		}*/
 	}
-	
+
 	public static float getHealthDamageWithArmorPercent(DamageSource source) {
-		if (source.isExplosion()) return 0.2f;
-		else if (source.isBypassArmor()) return 0.8f;
-		else if (source.isFire()) return 0.7f;
-		return 0; 
+		if (source.is(DamageTypes.EXPLOSION)) return 0.2f;
+		else if (source.is(DamageTypes.PLAYER_ATTACK)) return 0.8f;  //TODO FIND REPLACEMENT FOR BYPASSES_ARMOR
+		else if (source.is(DamageTypes.ON_FIRE)) return 0.7f;
+
+		return 0;
 	}
-	
+
 	public float calcDamageToArmor(float amount) {
 		return Math.max(0, reduceByPercent(amount, 
-				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level))
+				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level()))
 				- getStats().armor_damage_threshold);
 	}
 	
@@ -1868,11 +1874,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	private boolean shouldDebug(DamageSource source) {
 		//return source.getMsgId().equals("flyIntoWall");
-		return !source.isFire();
+		return !source.is(DamageTypes.ON_FIRE);
+
 	}
 	
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
-		return amount * DSCGameRules.getBulletDamageVehicleFactor(level);
+		return amount * DSCGameRules.getBulletDamageVehicleFactor(level());
 	}
 	
 	private static float reduceByPercent(float amount, float percent) {
@@ -1883,7 +1890,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public boolean isInvulnerableTo(DamageSource source) {
 		if (isTestMode()) return true;
 		if (super.isInvulnerableTo(source)) return true;
-		if (source.isFire() && (tickCount-hurtByFireTime) < 10) return true;
+		if (source.is(DamageTypes.ON_FIRE) && (tickCount-hurtByFireTime) < 10) return true;
 		if (isVehicleOf(source.getEntity())) return true;
 		return false;
 	}
@@ -1910,36 +1917,39 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	private boolean shouldDamageRoot(@Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		return hurtRoot && (hitbox == null || hitbox.isDestroyed());
 	}
-	
+
 	protected boolean checkExplodeWhenKilled(DamageSource source) {
-		if (source.getMsgId().equals(DamageSource.FALL.getMsgId())) {
+		if (source.is(DamageTypes.FALL)) {
 			explode(VehicleDamageSource.fall(this));
 			return true;
-		} else if (source.getMsgId().equals(DamageSource.FLY_INTO_WALL.getMsgId())) {
+		}
+		else if (source.is(DamageTypes.FLY_INTO_WALL)) {
 			explode(VehicleDamageSource.collide(this));
 			return true;
 		}
 		return false;
 	}
+
 	
 	public void addForceMomentToClient(Vec3 force, Vec3 moment) {
-		if (level.isClientSide) return;
+		if (level().isClientSide) return;
 		addForceBetweenTicks = addForceBetweenTicks.add(force);
 		addMomentBetweenTicks = addMomentBetweenTicks.add(moment);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientAddForceMoment(this, force, moment));
 	}
-	
+
 	public void explode(DamageSource source) {
-		if (level.isClientSide) return;
-		level.explode(this, source,
-			null, getX(), getY(), getZ(), 
-			getStats().crashExplosionRadius, true,
-			Explosion.BlockInteraction.BREAK);
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
+		if (level().isClientSide) return;
+		level().explode(this, source,
+				null, getX(), getY(), getZ(),
+				getStats().crashExplosionRadius, true,
+				Level.ExplosionInteraction.BLOCK); //TODO 1.20.1 PORT MIGHT BE BROKEN
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this),
 				new ToClientVehicleExplode(this));
 	}
-	
+
+
 	/**
 	 * ignoring vanilla explosion effects.
 	 * see {@link EntityVehicle#customExplosionHandler(Explosion)}
@@ -1977,7 +1987,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
         float amount = (float)((int)((exp_factor*exp_factor+exp_factor)*3.5d*(double)diameter+1d));
-        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(level);
+        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(level());
         
         if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
         else hurtLogic(exp.getDamageSource(), amount, null);
@@ -2084,59 +2094,59 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	setCurrentThrottle(getCurrentThrottle() - getThrottleDecreaseRate());
     }
     
-    public final Quaternion getQBySide() {
-    	if (level.isClientSide) return getClientQ();
+    public final Quaternionf getQBySide() {
+    	if (level().isClientSide) return getClientQ();
     	else return getQ();
     }
     
-    public final void setQBySide(Quaternion q) {
-    	if (level.isClientSide) setClientQ(q);
+    public final void setQBySide(Quaternionf q) {
+    	if (level().isClientSide) setClientQ(q);
     	else setQ(q);
     }
+
+	/**
+	 * @return server side Quaternionf
+	 */
+	public final Quaternionf getQ() {
+		return new Quaternionf(entityData.get(Q)); // Create a new Quaternionf based on the original
+	}
+
+	/**
+	 * @param q set server side Quaternionf
+	 */
+	public final void setQ(Quaternionf q) {
+		entityData.set(Q, new Quaternionf(q)); // Create a new Quaternionf to set
+	}
+
+	/**
+	 * @return the client side rotation
+	 */
+	public final Quaternionf getClientQ() {
+		return new Quaternionf(clientQ); // Create a new Quaternionf for clientQ
+	}
+
+	/**
+	 * @param q set client side rotation
+	 */
+	public final void setClientQ(Quaternionf q) {
+		clientQ = new Quaternionf(q); // Assign a new Quaternionf to clientQ
+	}
+
+	/**
+	 * @return the rotation on the previous tick for both client and server side
+	 */
+	public final Quaternionf getPrevQ() {
+		return new Quaternionf(prevQ); // Create a new Quaternionf for prevQ
+	}
+
+	/**
+	 * @param q the rotation for both client and server side
+	 */
+	public final void setPrevQ(Quaternionf q) {
+		prevQ = new Quaternionf(q); // Assign a new Quaternionf to prevQ
+	}
     
-    /**
-     * @return server side quaternion
-     */
-    public final Quaternion getQ() {
-        return entityData.get(Q).copy();
-    }
-    
-    /**
-     * @param q set server side quaternion
-     */
-    public final void setQ(Quaternion q) {
-        entityData.set(Q, q.copy());
-    }
-    
-    /**
-     * @return the client side rotation
-     */
-    public final Quaternion getClientQ() {
-        return clientQ.copy();
-    }
-    
-    /**
-     * @param q set client side rotation
-     */
-    public final void setClientQ(Quaternion q) {
-        clientQ = q.copy();
-    }
-    
-    /**
-     * @return the rotation on the previous tick for both client and server side
-     */
-    public final Quaternion getPrevQ() {
-        return prevQ.copy();
-    }
-    
-    /**
-     * @param q the rotation for both client and server side
-     */
-    public final void setPrevQ(Quaternion q) {
-        prevQ = q.copy();
-    }
-    
-    public Quaternion getClientQ(float partialTicks) {
+    public Quaternionf getClientQ(float partialTicks) {
     	return UtilAngles.lerpQ(partialTicks, getPrevQ(), getClientQ());
     }
     
@@ -2153,7 +2163,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final Vec3 getAngularVel() {
-    	if (level.isClientSide) return clientAV;
+    	if (level().isClientSide) return clientAV;
     	return entityData.get(AV);
     }
     
@@ -2166,7 +2176,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public final void setAngularVel(Vec3 av) {
-    	if (level.isClientSide) clientAV = av;
+    	if (level().isClientSide) clientAV = av;
     	else entityData.set(AV, av);
     }
     
@@ -2193,8 +2203,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public boolean canBecomeItem() {
-    	int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
-    	int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
+    	int fresh = level().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
+    	int shoot = level().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
     	return tickCount/20 > fresh && (lastShootTime == -1 || (tickCount-lastShootTime)/20 > shoot);
     }
     
@@ -2202,10 +2212,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * SERVER SIDE ONLY
      */
     public void becomeItem(Vec3 pos) {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	ItemStack stack = getItem();
-		ItemEntity e = new ItemEntity(level, pos.x, pos.y, pos.z, stack);
-		level.addFreshEntity(e);
+		ItemEntity e = new ItemEntity(level(), pos.x, pos.y, pos.z, stack);
+		level().addFreshEntity(e);
 		discard();
     }
     
@@ -2213,7 +2223,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * SERVER SIDE ONLY
      */
     public void becomeItem() {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	becomeItem(position());
     }
     
@@ -2270,7 +2280,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public void repairAll() {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	addHealth(100000);
 		addArmor(100000);
 		repairAllHitboxes();
@@ -2279,7 +2289,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public int onRepairTool(float repair) {
-    	if (level.isClientSide) return 0;
+    	if (level().isClientSide) return 0;
     	int damage = 0;
     	if (getHealth() < getMaxHealth()) {
     		addHealth(repair);
@@ -2296,12 +2306,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public void repairAllParts() {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	partsManager.repairAllParts();
     }
     
     public void repairAllHitboxes() {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	for (RotableHitbox h : hitboxes) h.fullyRepair();
     }
     
@@ -2495,7 +2505,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * consume fuel every server tick
      */
     public void tickFuel() {
-    	partsManager.tickFuel(!level.isClientSide);
+    	partsManager.tickFuel(!level().isClientSide);
     }
     
     /**
@@ -2514,25 +2524,25 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
     
     public void refillAll() {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	refillFuel();
 		refillAllWeapons();
     }
     
     public void refillFlares() {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	partsManager.addFlares(100000);
     }
     
     public void refillFuel() {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	addFuel(100000);
-    	level.playSound(null, this, SoundEvents.BREWING_STAND_BREW, 
+		level().playSound(null, this, SoundEvents.BREWING_STAND_BREW,
     			SoundSource.PLAYERS, 1f, 1f);
     }
     
     public void refillAllWeapons() {
-    	if (level.isClientSide) return;
+    	if (level().isClientSide) return;
     	refillFlares();
     	weaponSystem.refillAll();
 		for (EntityTurret t : getTurrets()) {
@@ -2542,7 +2552,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			t.setAmmo(wd.getCurrentAmmo());
 			t.updateDataAmmo();
 		}
-		level.playSound(null, this, SoundEvents.VILLAGER_WORK_TOOLSMITH, 
+		level().playSound(null, this, SoundEvents.VILLAGER_WORK_TOOLSMITH,
     			SoundSource.PLAYERS, 1f, 1f);
     }
     
@@ -2663,15 +2673,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     protected void debugTick() {
 		String side = "SERVER";
-		if (level.isClientSide) side = "CLIENT";
+		if (level().isClientSide) side = "CLIENT";
 		System.out.println(side+" TICK "+tickCount+" "+this);
 	}
     
     public void toClientPassengers(IPacket packet) {
-    	if (level.isClientSide()) return;
+    	if (level().isClientSide()) return;
 		// somehow class cast exception happened here while playing single player on a modded v0.10 client?
 		// LocalPlayer cannot be cast to ServerPlayer
-    	for (Player p : getRidingPlayers()) if (!p.level.isClientSide()) // this additional client side check should fix?
+    	for (Player p : getRidingPlayers()) if (!p.level().isClientSide()) // this additional client side check should fix?
     		PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)p), packet);
     }
     
@@ -2762,7 +2772,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			hitbox.setPos(position());
 			hitbox.readNbt(hitbox_data);
 			hitbox.setId(ENTITY_COUNTER.incrementAndGet());
-			level.addFreshEntity(hitbox);
+			level().addFreshEntity(hitbox);
 		}
 	}
 	
@@ -2774,7 +2784,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void refreshHitboxes() {
-		if (level.isClientSide) return;
+		if (level().isClientSide) return;
 		CompoundTag nbt = new CompoundTag();
 		saveRotableHitboxes(nbt);
 		for (int i = 0; i < hitboxes.size(); ++i) 
@@ -2783,7 +2793,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void addRotableHitboxForClient(RotableHitbox hitbox) {
-		if (!level.isClientSide) return;
+		if (!level().isClientSide) return;
 		String name = hitbox.getHitboxName();
 		for (int i = 0; i < hitboxes.size(); ++i) {
 			if (hitboxes.get(i).getHitboxName().equals(name)) {
@@ -2795,7 +2805,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public void tickHitboxes() {
-		if (level.isClientSide && hitboxes.size() < getStats().getHitboxNum() && tickCount % 200 == 20) {
+		if (level().isClientSide && hitboxes.size() < getStats().getHitboxNum() && tickCount % 200 == 20) {
             LOGGER.debug("Vehicle {} on client side has {}/{} hitboxes. Sending hitbox refresh packet. Attempt {}",
 					getId(), hitboxes.size(), getStats().getHitboxNum(), ++hitboxRefreshAttempts);
 			PacketHandler.INSTANCE.sendToServer(new ToServerFixHitboxes(this));
@@ -2887,13 +2897,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	private void syncHitboxCollidePositions() {
-		if (!level.isClientSide || collidedEntityIds.isEmpty() || !isControlledByLocalInstance()) return;
+		if (!level().isClientSide || collidedEntityIds.isEmpty() || !isControlledByLocalInstance()) return;
 		int[] ids = new int[collidedEntityIds.size()];
 		Vec3[] pos = new Vec3[collidedEntityIds.size()];
 		int i = 0;
 		for (Integer id : collidedEntityIds) {
 			ids[i] = id;
-			Entity entity = level.getEntity(id);
+			Entity entity = level().getEntity(id);
 			if (entity != null) pos[i] = entity.position();
 			else pos[i] = new Vec3(0, -1000, 0);
 			++i;
@@ -3037,14 +3047,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     @Override
     public void setYRot(float yRot) {
         super.setYRot(yRot);
-        Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
+        Quaternionf q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
         setQBySide(q);
     }
     
     @Override
     public void setXRot(float xRot) {
         super.setXRot(xRot);
-        Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
+        Quaternionf q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
         setQBySide(q);
     }
     

@@ -16,6 +16,7 @@ import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -92,14 +93,14 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 	}
 
 	@Override
-	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
+	protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
-		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 	
 	@Override
-	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
 		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
 		font.draw(stack, UtilMCText.translatable("ui.dscombat.ingredients"), titleLabelX+123, titleLabelY+32, 0x00aa00);

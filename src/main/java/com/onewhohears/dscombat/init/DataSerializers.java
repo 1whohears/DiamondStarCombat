@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.init;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
@@ -14,6 +13,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.joml.Quaternionf;
 
 public class DataSerializers {
 	
@@ -23,21 +23,21 @@ public class DataSerializers {
         DATA_SERIALIZERS.register(eventBus);
     }
 
-    public static final EntityDataSerializer<Quaternion> QUATERNION = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<Quaternionf> QUATERNION = new EntityDataSerializer<>() {
 		@Override
-		public void write(FriendlyByteBuf buffer, Quaternion q) {
-			buffer.writeFloat(q.i());
-			buffer.writeFloat(q.j());
-			buffer.writeFloat(q.k());
-			buffer.writeFloat(q.r());
+		public void write(FriendlyByteBuf buffer, Quaternionf q) {
+			buffer.writeFloat(q.x());
+			buffer.writeFloat(q.y());
+			buffer.writeFloat(q.z());
+			buffer.writeFloat(q.w());
 		}
 		@Override
-		public Quaternion read(FriendlyByteBuf buffer) {
-			return new Quaternion(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+		public Quaternionf read(FriendlyByteBuf buffer) {
+			return new Quaternionf(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
 		}
 		@Override
-		public Quaternion copy(Quaternion q) {
-			return new Quaternion(q);
+		public Quaternionf copy(Quaternionf q) {
+			return new Quaternionf(q);
 		}
     };
     

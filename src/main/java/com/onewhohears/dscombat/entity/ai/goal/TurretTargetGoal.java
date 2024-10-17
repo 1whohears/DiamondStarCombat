@@ -82,17 +82,17 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 			return;
 		}
 		if (targetType != Player.class && targetType != ServerPlayer.class) 
-			target = mob.level.getNearestEntity(mob.level.getEntitiesOfClass(targetType, 
+			target = mob.level().getNearestEntity(mob.level().getEntitiesOfClass(targetType,
 					getTargetSearchArea(getFollowDistance()), (entity) -> true), targetConditions, 
 					mob, mob.getX(), mob.getEyeY(), mob.getZ());
-		else target = mob.level.getNearestPlayer(targetConditions, 
+		else target = mob.level().getNearestPlayer(targetConditions,
 					mob, mob.getX(), mob.getEyeY(), mob.getZ());
 	}
 	
 	@Override
 	public boolean canUse() {
 		//System.out.println("canUse?");
-		if (!mob.level.getGameRules().getBoolean(DSCGameRules.MOBS_USE_TURRETS)) return false;
+		if (!mob.level().getGameRules().getBoolean(DSCGameRules.MOBS_USE_TURRETS)) return false;
 		if (mob.getVehicle() == null || !mob.getVehicle().equals(turret)) return false;
 		return super.canUse();
 	}

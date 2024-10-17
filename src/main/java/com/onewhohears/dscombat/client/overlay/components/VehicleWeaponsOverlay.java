@@ -4,6 +4,9 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.sounds.SoundEvent;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -13,7 +16,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -27,6 +29,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.joml.Matrix4f;
 
 // TODO: finish this lol
 /**
@@ -52,23 +55,24 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     protected int superFrame;
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         return getPlayerVehicle() instanceof EntitySeat;
     }
 
-    @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntitySeat seat = (EntitySeat) getPlayerVehicle();
         assert seat != null;
 
         double yPlacement = screenHeight - TAB_HEIGHT - 13;
         int blitPosition = 1;
+
         if (seat.isTurret()) {
-            drawFinishedTab(poseStack, ((EntityTurret)seat).getWeaponData(), yPlacement, blitPosition);
+            drawFinishedTab(graphics, ((EntityTurret) seat).getWeaponData(), yPlacement, blitPosition);
             return;
         }
         if (!seat.canPassengerShootParentWeapon()) return;
+
         EntityVehicle vehicle = seat.getParentVehicle();
         if (vehicle == null) return;
 
@@ -85,7 +89,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         if (this.weaponChangeCountdown <= 0) this.weaponChangeState = false;
 
         if (!this.weaponChangeState) {
-            drawFinishedTab(poseStack, selectedWeapon, yPlacement, blitPosition);
+            drawFinishedTab(graphics, selectedWeapon, yPlacement, blitPosition);
         } else {
             int weaponTabsToRender = Math.min(weapons.size(), 5);
 
@@ -96,23 +100,31 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
                 WeaponInstance<?> weaponAt = weapons.get(shiftedIndex);
 
-                drawTab(poseStack, 13, newYPos, blitPosition, 0, false);
-                drawWeapon(poseStack, weaponAt, 13, newYPos, blitPosition + 1, 0, false, false, false);
-                poseStack.pushPose();
-                poseStack.translate(0, 0, blitPosition + 3);
+                drawTab(graphics, 13, newYPos, blitPosition, 0, false);
+                drawWeapon(graphics, weaponAt, 13, newYPos, blitPosition + 1, 0, false, false, false);
+
+                graphics.pose().pushPose();
+                graphics.pose().translate(0, 0, blitPosition + 3);
+
                 if (!weaponAt.getStats().isNoWeapon()) {
-                    drawString(poseStack, FONT, weaponAt.getCurrentAmmo() + "/" + weaponAt.getMaxAmmo(), 16, newYPos + 14, 0xe6e600);
+                    graphics.drawString(Minecraft.getInstance().font, weaponAt.getCurrentAmmo() + "/" + weaponAt.getMaxAmmo(), 16, newYPos + 14, 0xe6e600, false);
                 } else {
-                    drawString(poseStack, FONT, SAFETY, 16, newYPos + 14, 0xff5555);
+                    graphics.drawString(Minecraft.getInstance().font, SAFETY, 16, newYPos + 14, 0xff5555, false);
                 }
-                drawString(poseStack, FONT, weaponAt.getStats().getDisplayNameComponent(), 16, newYPos + 4, 0xffffff);
-                poseStack.popPose();
+                graphics.drawString(Minecraft.getInstance().font, weaponAt.getStats().getDisplayNameComponent(), 16, newYPos + 4, 0xffffff, false);
+
+                graphics.pose().popPose();
             }
 
-            renderSelectionBox(poseStack, 13, yPlacement, blitPosition + 2);
+            renderSelectionBox(graphics, 13, yPlacement, blitPosition + 2);
             this.weaponChangeCountdown--;
         }
     }
+
+
+
+
+
 
     @Override
     protected @NotNull String componentId() {
@@ -129,20 +141,22 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
         // (the context in which this is called necessarily has a LocalPlayer existing on client)
         //noinspection DataFlowIssue
-        getPlayer().playSound(SoundEvents.UI_BUTTON_CLICK);
+        getPlayer().playSound(SoundEvents.UI_BUTTON_CLICK.get());
     }
-    
-    protected static void drawFinishedTab(PoseStack poseStack, WeaponInstance<?> selectedWeapon, double yPlacement, int blitPosition) {
-    	if (selectedWeapon == null) return;
-    	drawWeaponName(poseStack, selectedWeapon.getStats().getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
-        drawTab(poseStack, 13, yPlacement, blitPosition, 0, false);
-        drawWeapon(poseStack, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
 
-        poseStack.pushPose();
-        poseStack.translate(0, 0, blitPosition + 2);
-        if (!selectedWeapon.getStats().isNoWeapon()) drawString(poseStack, FONT, selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600);
-        drawString(poseStack, FONT, selectedWeapon.getStats().getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600);
-        poseStack.popPose();
+    protected static void drawFinishedTab(GuiGraphics guiGraphics, WeaponInstance<?> selectedWeapon, double yPlacement, int blitPosition) {
+        if (selectedWeapon == null) return;
+
+        drawWeaponName(guiGraphics.pose(), selectedWeapon.getStats().getDisplayNameComponent(), 13, yPlacement, blitPosition - 2);
+        drawTab(guiGraphics, 13, yPlacement, blitPosition, 0, false);
+        drawWeapon(guiGraphics, selectedWeapon, 13, yPlacement, blitPosition + 1, 0, false, false, false);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(0, 0, blitPosition + 2);
+        if (!selectedWeapon.getStats().isNoWeapon()) {
+            guiGraphics.drawString(Minecraft.getInstance().font, selectedWeapon.getCurrentAmmo() + "/" + selectedWeapon.getMaxAmmo(), 16, (int) (yPlacement + 14), 0xe6e600, false);
+        }
+        guiGraphics.drawString(Minecraft.getInstance().font, selectedWeapon.getStats().getWeaponTypeCode(), 16, (int) yPlacement + 4, 0xe6e600, false);
+        guiGraphics.pose().popPose();
     }
 
 
@@ -152,24 +166,27 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
      *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
      *              Value must be between 0 and the highest frame inclusive.
      */
-    protected static void drawTab(PoseStack stack, double x, double y, int blitOffset, int frame, boolean scrollsUpward) {
-        if (frame < 0 || frame > getMaxFrames() - 1) throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
+    protected static void drawTab(GuiGraphics guiGraphics, double x, double y, int blitOffset, int frame, boolean scrollsUpward) {
+        if (frame < 0 || frame > getMaxFrames() - 1)
+            throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
+
         float sign = scrollsUpward ? -1.0F : 1.0F;
 
-        stack.pushPose();
-        stack.translate(x, y, blitOffset);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, blitOffset);
 
         RenderSystem.setShaderTexture(0, WEAPON_TABS);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 
-        blit(stack, 0, 0, 0, sign * FRAMES[frame], TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
+        guiGraphics.blit(WEAPON_TABS, 0, 0, 0, sign * FRAMES[frame], TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
 
         RenderSystem.disableBlend();
         RenderSystem.disableDepthTest();
 
-        stack.popPose();
+        guiGraphics.pose().popPose();
     }
+
 
     /**
      * Renders an icon defined by the <code>ResourceLocation</code> from the return of <code>{@link WeaponData#getWeaponIcon()}</code>.
@@ -182,10 +199,13 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
      *                         that scrolls from blank and a scroll that doesn't must be the same to
      *                         maintain visual continuity.
      */
-    protected static void drawWeapon(PoseStack stack, WeaponInstance<?> weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank, boolean scrollsFromBlank) {
-        if (frame < 0 || frame > getMaxFrames() - 1) throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
-        if (scrollsToBlank && scrollsFromBlank) throw new IllegalArgumentException("Tabs may not scroll to and from blank!");
-        if (weapon == null) throw new NullPointerException("Passed weapon is null!");
+    protected static void drawWeapon(GuiGraphics guiGraphics, WeaponInstance<?> weapon, double x, double y, int blitOffset, int frame, boolean scrollsUpward, boolean scrollsToBlank, boolean scrollsFromBlank) {
+        if (frame < 0 || frame > getMaxFrames() - 1)
+            throw new IllegalArgumentException("There are only " + getMaxFrames() + " frames!");
+        if (scrollsToBlank && scrollsFromBlank)
+            throw new IllegalArgumentException("Tabs may not scroll to and from blank!");
+        if (weapon == null)
+            throw new NullPointerException("Passed weapon is null!");
 
         int frameValue = (int) FRAMES[frame];
 
@@ -193,27 +213,38 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 
-        stack.pushPose();
+        guiGraphics.pose().pushPose();
 
         if (scrollsUpward) {
-            stack.translate(x, y + frameValue, blitOffset);
+            guiGraphics.pose().translate(x, y + frameValue, blitOffset);
 
-            if (scrollsFromBlank) blitWithoutTop(stack, TAB_HEIGHT - frameValue);
-            if (scrollsToBlank) blitWithoutBottom(stack, frameValue);
+            if (scrollsFromBlank) {
+                blitWithoutTop(guiGraphics, TAB_HEIGHT - frameValue);
+            }
+            if (scrollsToBlank) {
+                blitWithoutBottom(guiGraphics, frameValue);
+            }
         } else {
-            stack.translate(x, y - frameValue, blitOffset);
+            guiGraphics.pose().translate(x, y - frameValue, blitOffset);
 
-            if (scrollsFromBlank) blitWithoutBottom(stack, TAB_HEIGHT - frameValue);
-            if (scrollsToBlank) blitWithoutTop(stack, frameValue);
+            if (scrollsFromBlank) {
+                blitWithoutBottom(guiGraphics, TAB_HEIGHT - frameValue);
+            }
+            if (scrollsToBlank) {
+                blitWithoutTop(guiGraphics, frameValue);
+            }
         }
 
-        if (!scrollsFromBlank && !scrollsToBlank) blitNormal(stack);
+        if (!scrollsFromBlank && !scrollsToBlank) {
+            blitNormal(guiGraphics);
+        }
 
-        stack.popPose();
+        guiGraphics.pose().popPose();
 
         RenderSystem.disableBlend();
         RenderSystem.disableDepthTest();
     }
+
 
     /**
      * 0x10 is the default value Minecraft uses for tooltip alpha. Pass the same coordinates as the tab this name
@@ -277,37 +308,40 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         stack.popPose();
     }
 
-    protected static void renderSelectionBox(PoseStack stack, double x, double y, int blitOffset) {
+    protected static void renderSelectionBox(GuiGraphics guiGraphics, double x, double y, int blitOffset) {
         RenderSystem.setShaderTexture(0, SELECTOR);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 
-        stack.pushPose();
-        stack.translate(x, y, blitOffset);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, blitOffset);
 
-        blit(stack, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
+        // Draw the selection box with the specified texture and dimensions
+        guiGraphics.blit(SELECTOR, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
 
-        stack.popPose();
+        guiGraphics.pose().popPose();
 
         RenderSystem.disableDepthTest();
         RenderSystem.disableBlend();
     }
 
+
     /*
         HELPER METHODS BELOW
      */
 
-    protected static void blitNormal(PoseStack stack) {
-        blit(stack, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
+    protected static void blitNormal(GuiGraphics guiGraphics) {
+        guiGraphics.blit(SELECTOR, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT, TAB_WIDTH, TAB_HEIGHT);
     }
 
-    protected static void blitWithoutTop(PoseStack stack, int trimPixels) {
-        blit(stack, 0, trimPixels, 0, trimPixels, TAB_WIDTH, TAB_HEIGHT - trimPixels, TAB_WIDTH, TAB_HEIGHT);
+    protected static void blitWithoutTop(GuiGraphics guiGraphics, int trimPixels) {
+        guiGraphics.blit(SELECTOR, 0, trimPixels, 0, trimPixels, TAB_WIDTH, TAB_HEIGHT - trimPixels, TAB_WIDTH, TAB_HEIGHT);
     }
 
-    protected static void blitWithoutBottom(PoseStack stack, int trimPixels) {
-        blit(stack, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT - trimPixels, TAB_WIDTH, TAB_HEIGHT);
+    protected static void blitWithoutBottom(GuiGraphics guiGraphics, int trimPixels) {
+        guiGraphics.blit(SELECTOR, 0, 0, 0, 0, TAB_WIDTH, TAB_HEIGHT - trimPixels, TAB_WIDTH, TAB_HEIGHT);
     }
+
 
     protected static int getMaxFrames() {
         return FRAMES.length;

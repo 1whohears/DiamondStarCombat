@@ -83,7 +83,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			return null;
 		}
 		if (params.vehicle != null) {
-			if (!overrideGroundCheck && !getStats().canShootOnGround() && params.vehicle.isOnGround()) {
+			if (!overrideGroundCheck && !getStats().canShootOnGround() && params.vehicle.onGround()) {
 				setLaunchFail("error.dscombat.cant_shoot_on_ground");
 				return null;
 			}
@@ -139,7 +139,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	
 	public void updateClientAmmo(EntityVehicle vehicle) {
 		if (vehicle == null) return;
-		if (vehicle.level.isClientSide) return;
+		if (vehicle.level().isClientSide) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 				new ToClientWeaponAmmo(vehicle.getId(), getStatsId(), slotId, getCurrentAmmo()));
 	}
@@ -278,7 +278,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			pos = pos.add(move);
 			if (pos.y < -64) pos = new Vec3(pos.x, -64, pos.z);
 			move = move.add(acc);
-			Vec3 raycast = UtilEntity.raycastBlock(vehicle.level, prevPos, pos);
+			Vec3 raycast = UtilEntity.raycastBlock(vehicle.level(), prevPos, pos);
 			if (raycast == null) continue;
 			return raycast;
 		}

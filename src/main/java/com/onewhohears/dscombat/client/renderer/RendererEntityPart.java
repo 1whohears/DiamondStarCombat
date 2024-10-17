@@ -2,8 +2,7 @@ package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.client.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -14,6 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Quaternionf;
 
 public class RendererEntityPart<T extends EntityPart> extends EntityRenderer<T> {
 	
@@ -36,10 +36,11 @@ public class RendererEntityPart<T extends EntityPart> extends EntityRenderer<T> 
 		if (!entity.shouldRender()) return;
 		poseStack.pushPose();
 		if (entity.getVehicle() instanceof EntityVehicle plane) {
-			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
+			Quaternionf q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
 			poseStack.mulPose(q);
 		}
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
+		Quaternionf rotation = new Quaternionf().rotateZ((float) Math.toRadians(entity.getZRot()));
+		poseStack.mulPose(rotation);
 		VertexConsumer vertexconsumer = multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity)));
 		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		poseStack.popPose();

@@ -2,10 +2,6 @@ package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -15,39 +11,44 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public interface RotableHitboxRenderer {
-	
+
 	public default boolean shouldDrawRotableHitboxes(EntityVehicle entity) {
 		if (entity.isInvisible() || entity.getHitboxes().size() == 0) return false;
 		Minecraft m = Minecraft.getInstance();
 		return !m.showOnlyReducedInfo() && m.getEntityRenderDispatcher().shouldRenderHitBoxes();
 	}
-	
+
 	public default void drawRotableHitboxeOutlines(EntityVehicle entity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource) {
 		VertexConsumer buff = bufferSource.getBuffer(RenderType.lines());
-		Quaternion q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
+		Quaternionf q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
 		for (RotableHitbox hitbox : entity.getHitboxes()) drawRotableHitboxOutline(hitbox, poseStack, buff, q);
 	}
-	
+
 	static final int[] DEFAULT_COLOR = new int[] {188, 85, 41, 255};
 	static final int[] DESTROYED_COLOR = new int[] {120, 0, 0, 255};
-	
-	private void drawRotableHitboxOutline(RotableHitbox hitbox, PoseStack poseStack, VertexConsumer buff, Quaternion q) {
+
+	private void drawRotableHitboxOutline(RotableHitbox hitbox, PoseStack poseStack, VertexConsumer buff, Quaternionf q) {
 		poseStack.pushPose();
 		Vec3 trans = UtilAngles.rotateVector(hitbox.getRelPos(), q);
 		poseStack.translate(trans.x, trans.y, trans.z);
 		Matrix4f m4 = poseStack.last().pose();
 		Matrix3f m3 = poseStack.last().normal();
 		Vector3f ext = UtilGeometry.convertVector(hitbox.getHitbox().getExtents());
-		Vector3f c0 = ext.copy(); c0.transform(q);
-		Vector3f c1 = ext.copy(); c1.mul(-1,1,1); c1.transform(q);
-		Vector3f c2 = ext.copy(); c2.mul(1,-1,1); c2.transform(q);
-		Vector3f c3 = ext.copy(); c3.mul(1,1,-1); c3.transform(q);
-		Vector3f c4 = c3.copy(); c4.mul(-1);
-		Vector3f c5 = c2.copy(); c5.mul(-1);
-		Vector3f c6 = c1.copy(); c6.mul(-1);
-		Vector3f c7 = c0.copy(); c7.mul(-1);
+		Vector3f c0 = new Vector3f(ext).rotate(q);
+		Vector3f c1 = new Vector3f(ext).mul(-1, 1, 1).rotate(q);
+		Vector3f c2 = new Vector3f(ext).mul(1, -1, 1).rotate(q);
+		Vector3f c3 = new Vector3f(ext).mul(1, 1, -1).rotate(q);
+		Vector3f c4 = new Vector3f(c3).negate();
+		Vector3f c5 = new Vector3f(c2).negate();
+		Vector3f c6 = new Vector3f(c1).negate();
+		Vector3f c7 = new Vector3f(c0).negate();
+
 		int[] color;
 		if (hitbox.isDestroyed()) color = DESTROYED_COLOR;
 		else color = DEFAULT_COLOR;
@@ -65,9 +66,9 @@ public interface RotableHitboxRenderer {
 		addLine(c6, c7, buff, m4, m3, color);
 		poseStack.popPose();
 	}
-	
+
 	private void addLine(Vector3f start, Vector3f end, VertexConsumer buff, Matrix4f m4, Matrix3f m3, int[] color) {
-		Vector3f n = end.copy();
+		Vector3f n = new Vector3f(end);
 		n.sub(start);
 		n.normalize();
 		buff.vertex(m4,start.x(),start.y(),start.z())
@@ -79,5 +80,5 @@ public interface RotableHitboxRenderer {
 			.normal(m3,n.x(),n.y(),n.z())
 			.endVertex();
 	}
-	
+
 }

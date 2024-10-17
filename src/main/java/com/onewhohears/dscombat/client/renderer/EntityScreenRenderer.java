@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.client.entityscreen.instance.EntityScreenInstance;
 
@@ -11,6 +10,7 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public interface EntityScreenRenderer<T extends Entity> {
 	
@@ -55,9 +55,12 @@ public interface EntityScreenRenderer<T extends Entity> {
 		poseStack.pushPose();
 		
 		poseStack.translate(pos.x, pos.y, pos.z);
-		poseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(yRot));
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(zRot+180));
+		Quaternionf rotationX = new Quaternionf().rotateXYZ((float) Math.toRadians(xRot), 0, 0);
+		Quaternionf rotationY = new Quaternionf().rotateXYZ(0, (float) Math.toRadians(yRot), 0);
+		Quaternionf rotationZ = new Quaternionf().rotateXYZ(0, 0, (float) Math.toRadians(zRot + 180));
+
+		Quaternionf combinedRotation = rotationX.mul(rotationY).mul(rotationZ);
+		poseStack.mulPose(combinedRotation);
 		poseStack.scale(width, height, 1);
 		
 		getOrCreateEntityScreenById(screenId, screenType).draw(entity, poseStack, buffer, partialTicks, packedLight, 

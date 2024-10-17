@@ -16,10 +16,10 @@ import com.onewhohears.onewholibs.util.UtilEntity;
 
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -28,12 +28,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -41,11 +38,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -75,7 +69,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	
 	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-		if (level.isClientSide) {
+		if (level().isClientSide) {
 			if (key.equals(AGE)) {
 				tickCount = entityData.get(AGE);
 			}
@@ -144,7 +138,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 		}
 		if (isTestMode()) return;
 		if (firstTick) init();
-		if (!level.isClientSide && firstTick) setShootPos(position());
+		if (!level().isClientSide && firstTick) setShootPos(position());
 		super.tick();
 		tickCheckCollide();
 		tickSetMove();
@@ -154,7 +148,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 	
 	protected void tickAge() {
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			setAge(tickCount);
 			if (tickCount > getMaxAge()) kill();
 		}
@@ -197,17 +191,17 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 
 	private boolean shouldSkipCollide(Entity hit, Entity owner) {
-		return getLevel().isClientSide() != hit.getLevel().isClientSide() || hit.isAlliedTo(owner);
+		return level().isClientSide() != hit.level().isClientSide() || hit.isAlliedTo(owner);
 	}
 	
 	protected BlockHitResult checkBlockCollide() {
-		return level.clip(new ClipContext(position(), position().add(getDeltaMovement()), 
+		return level().clip(new ClipContext(position(), position().add(getDeltaMovement()),
 				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
 	}
 	
 	@Nullable
 	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
-		return UtilEntity.getEntityHitResultAtClip(level, this, start, end, 
+		return UtilEntity.getEntityHitResultAtClip(level(), this, start, end,
 				getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), 
 				this::canHitEntity, 0.3f);
 	}
@@ -229,10 +223,10 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 		super.onHitBlock(result);
 		//System.out.println("BULLET HIT "+result.getBlockPos());
 		if (canBreakFragileBlocks()) {
-			BlockState state = getLevel().getBlockState(result.getBlockPos());
-			if (state.is(ModTags.Blocks.FRAGILE) && getLevel().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
-					&& UtilVehicleEntity.hasPermissionToBreakBlock(result.getBlockPos(), state, getLevel(), getOwner())) {
-				getLevel().destroyBlock(result.getBlockPos(), true, this);
+			BlockState state = level().getBlockState(result.getBlockPos());
+			if (state.is(ModTags.Blocks.FRAGILE) && level().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
+					&& UtilVehicleEntity.hasPermissionToBreakBlock(result.getBlockPos(), state, level(), getOwner())) {
+				level().destroyBlock(result.getBlockPos(), true, this);
 				return;
 			}
         }
@@ -249,7 +243,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	
 	@Override
 	public void kill() {
-		if (!level.isClientSide) PacketHandler.INSTANCE.send(
+		if (!level().isClientSide) PacketHandler.INSTANCE.send(
 				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientWeaponImpact(this, position()));
 		super.kill();
@@ -272,7 +266,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 	
 	public int getAge() {
-		if (!level.isClientSide) return tickCount;
+		if (!level().isClientSide) return tickCount;
 		return entityData.get(AGE);
 	}
 	
@@ -292,7 +286,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 	
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
@@ -313,7 +307,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	@Override
 	public Entity getOwner() {
 		Entity o = super.getOwner();
-		if (o == null && level.isClientSide) {
+		if (o == null && level().isClientSide) {
 			Minecraft m = Minecraft.getInstance();
 			o = m.level.getEntity(getOwnerId());
 		}
@@ -362,7 +356,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	public void checkDespawn() {
 		if (isTestMode()) return;
 		//System.out.println("CHECK DESPAWN");
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			if (!inEntityTickingRange()) {
 				//System.out.println("REMOVED OUT OF TICK RANGE");
 				discard();
@@ -372,8 +366,8 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 	
 	public boolean inEntityTickingRange() {
-		if (level.isClientSide) return true;
-		ServerLevel sl = (ServerLevel) level;
+		if (level().isClientSide) return true;
+		ServerLevel sl = (ServerLevel) level();
 		ServerChunkCache scc = sl.getChunkSource();
 		return scc.chunkMap.getDistanceManager().inEntityTickingRange(chunkPosition().toLong());
 	}

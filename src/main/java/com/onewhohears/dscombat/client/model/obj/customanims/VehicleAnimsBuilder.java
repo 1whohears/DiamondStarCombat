@@ -1,11 +1,11 @@
 package com.onewhohears.dscombat.client.model.obj.customanims;
 
 import com.google.gson.JsonObject;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms.InputAxis;
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnimsBuilder;
 import com.onewhohears.onewholibs.client.model.obj.customanims.EntityModelTransform.RotationAxis;
 import com.onewhohears.onewholibs.util.UtilParse;
+import org.joml.Vector3f;
 
 public class VehicleAnimsBuilder extends CustomAnimsBuilder {
 	

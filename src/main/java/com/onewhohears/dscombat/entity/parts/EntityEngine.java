@@ -19,7 +19,7 @@ public class EntityEngine extends EntityPart {
 	public void tick() {
 		super.tick();
 		EntityVehicle vehicle = getParentVehicle();
-		if (level.isClientSide && vehicle != null) {
+		if (level().isClientSide && vehicle != null) {
 			Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
 			UtilParticles.afterBurner(vehicle, getBoundingBox().getCenter(), dir);
 		}

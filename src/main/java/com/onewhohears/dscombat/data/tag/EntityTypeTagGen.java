@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.tag;
 
+import net.minecraft.core.HolderLookup;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
@@ -20,7 +21,7 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 	}
 	
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		// WEAPONS
 		tag(ModTags.EntityTypes.PROJECTILE)
 			.addTag(EntityTypeTags.IMPACT_PROJECTILES)

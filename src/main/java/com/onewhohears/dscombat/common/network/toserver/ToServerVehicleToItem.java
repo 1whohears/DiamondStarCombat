@@ -36,7 +36,7 @@ public class ToServerVehicleToItem extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
-			Level level = player.level;
+			Level level = player.level();
 			if (!(level.getEntity(id) instanceof EntityVehicle plane)) return;
 			if (!plane.canBecomeItem()) {
 		    	player.displayClientMessage(

@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager.BlendMode;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import com.onewhohears.onewholibs.util.UtilParse;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.CycleButton.OnValueChange;
 import net.minecraft.client.gui.components.EditBox;
@@ -92,17 +93,19 @@ public class VehiclePaintScreen extends Screen {
 	}
 	
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+	public void render(GuiGraphics poseStack, int mouseX, int mouseY, float partialTick) {
 		renderBackground(poseStack);
 		super.render(poseStack, mouseX, mouseY, partialTick);
 	}
-	
+
 	@Override
-	public void renderBackground(PoseStack poseStack, int vOffset) {
+	public void renderBackground(GuiGraphics graphics) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
-		blit(poseStack, guiX, guiY, 0, 0, 
-			imageWidth, imageHeight, textureSize, textureSize);
+		graphics.blit(BG_TEXTURE, guiX, guiY, 0, 0,
+				imageWidth, imageHeight, textureSize, textureSize);
 	}
+
+
 
 }

@@ -21,9 +21,9 @@ public class TrackEntityMissile<T extends TrackMissileStats> extends EntityMissi
 
 	@Override
 	public void tickGuide() {
-		if (!getWeaponStats().isActiveTrack() && !level.isClientSide) notActiveCheckTarget();
+		if (!getWeaponStats().isActiveTrack() && !level().isClientSide) notActiveCheckTarget();
 		guideToTarget();
-		if (!level.isClientSide && tickCount % 10 == 0 && target instanceof EntityVehicle plane) {
+		if (!level().isClientSide && tickCount % 10 == 0 && target instanceof EntityVehicle plane) {
 			plane.trackedByMissile(this);
 		}
 	}

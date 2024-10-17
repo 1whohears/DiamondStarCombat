@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
@@ -10,6 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public class EntityHelicopter extends EntityVehicle {
 	
@@ -23,7 +23,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 	
 	@Override
-	public void tickGround(Quaternion q) {
+	public void tickGround(Quaternionf q) {
 		addFrictionForce(kineticFric);
 	}
 	
@@ -33,7 +33,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 	
 	@Override
-	public void tickAir(Quaternion q) {
+	public void tickAir(Quaternionf q) {
 		if (inputs.special && isOperational()) {
 			float max_th = (float)UtilAngles.getYawAxis(q).y * getMaxPushThrust();
 			float yForceNoLift = (float)-(getWeightForce().y + addForceBetweenTicks.y);
@@ -44,13 +44,13 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 	
 	@Override
-	public void directionGround(Quaternion q) {
+	public void directionGround(Quaternionf q) {
 		if (!isOperational()) return;
 		flatten(q, 4f, 4f, true);
 	}
 	
 	@Override
-	public void directionAir(Quaternion q) {
+	public void directionAir(Quaternionf q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
 		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
@@ -62,7 +62,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 
 	@Override
-	public Vec3 getThrustForce(Quaternion q) {
+	public Vec3 getThrustForce(Quaternionf q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
 		Vec3 thrustForce = direction.scale(getPushThrustMag());
 		return thrustForce;
@@ -114,7 +114,7 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	@Override
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
-		return amount * DSCGameRules.getBulletDamageHeliFactor(level);
+		return amount * DSCGameRules.getBulletDamageHeliFactor(level());
 	}
 
 	@Override

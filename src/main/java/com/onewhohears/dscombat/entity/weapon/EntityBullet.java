@@ -34,21 +34,21 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 	protected void tickSetMove() {
 		setDeltaMovement(getDeltaMovement().add(0, -DSCPhyCons.GRAVITY, 0));
 	}
-	
+
 	protected void checkExplode() {
 		if (getAge() < minExplodeAge()) return;
-		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
-		if (!level.isClientSide && getExplosive()) {
-			Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
-			if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
+		if (!level().hasChunk(chunkPosition().x, chunkPosition().z)) return;
+		if (!level().isClientSide && getExplosive()) {
+			Explosion.BlockInteraction interact = Explosion.BlockInteraction.KEEP;
+			if (getTerrain()) interact = Explosion.BlockInteraction.DESTROY;
 			for (int i = 0; i < getExplodeNum(); ++i) {
-				level.explode(this, getExplosionDamageSource(),
-					null, getX(), getY(), getZ(), 
+				level().explode(this, getExplosionDamageSource(),
+					null, getX(), getY(), getZ(),
 					getRadius(), getFire(), interact);
 			}
 		}
 	}
-	
+
 	public int minExplodeAge() {
 		return 1;
 	}

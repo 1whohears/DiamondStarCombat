@@ -218,15 +218,15 @@ public final class ClientModEvents {
 		HardCodedModelAnims.reload();
 		event.registerReloadListener(VehicleClientPresets.get());
 	}
-	
+
 	@SubscribeEvent
 	public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
-		event.register(ModParticles.LARGE_SMOKE_CLOUD.get(), LargeSmokeCloudParticle.Provider::new);
-		event.register(ModParticles.SHRAPNEL.get(), ShrapnelParticle.Provider::new);
-		event.register(ModParticles.BIG_FLAME.get(), BigFlameParticle.Provider::new);
-		event.register(ModParticles.CONTRAIL.get(), ContrailParticle.Provider::new);
-		event.register(ModParticles.AFTER_BURNER.get(), AfterBurnerParticle.Provider::new);
-		event.register(ModParticles.FLARE.get(), FlareParticle.Provider::new);
+		event.registerSpriteSet(ModParticles.LARGE_SMOKE_CLOUD.get(), LargeSmokeCloudParticle.Provider::new);
+		event.registerSpriteSet(ModParticles.SHRAPNEL.get(), ShrapnelParticle.Provider::new);
+		event.registerSpriteSet(ModParticles.BIG_FLAME.get(), BigFlameParticle.Provider::new);
+		event.registerSpriteSet(ModParticles.CONTRAIL.get(), ContrailParticle.Provider::new);
+		event.registerSpriteSet(ModParticles.AFTER_BURNER.get(), AfterBurnerParticle.Provider::new);
+		event.registerSpriteSet(ModParticles.FLARE.get(), FlareParticle.Provider::new);
 	}
 	
 }

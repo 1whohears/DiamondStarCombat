@@ -57,33 +57,39 @@ public class VehicleDynamicTextures {
 				continue;
 			}
 			float blend = calcBlend(layers[i]);
-			for (int x = 0; x < layerImage.getWidth(); ++x) for (int y = 0; y < layerImage.getHeight(); ++y) {
-				int textureColor = layerImage.getPixelRGBA(x, y);
-				if (NativeImage.getA(textureColor) == 0) continue;
-				dynText.getPixels().setPixelRGBA(x, y, 
-					blendColors(textureColor, layers[i], blend));
+			for (int x = 0; x < layerImage.getWidth(); ++x) {
+				for (int y = 0; y < layerImage.getHeight(); ++y) {
+					int textureColor = layerImage.getPixelRGBA(x, y);
+					int alpha = (textureColor >> 24) & 0xFF;
+					if (alpha == 0) continue;
+					dynText.getPixels().setPixelRGBA(x, y, blendColors(textureColor, layers[i], blend));
+				}
 			}
+
 		}
 		dynText.upload();
 		ResourceLocation textLoc = new ResourceLocation(DSCombatMod.MODID, "vehicle_layers_"+vehicle.getId());
 		m.getTextureManager().register(textLoc, dynText);
 		return textLoc;
 	}
-	
+
 	private static int blendColors(int textureColor, TextureLayer layer, float blend) {
-		int red = NativeImage.getR(textureColor);
-		int green = NativeImage.getG(textureColor);
-		int blue = NativeImage.getB(textureColor);
-		if (blend == 0 || (layer.getBlendMode() == BlendMode.ON_WHITE && red == 255 && green == 255 && blue == 255)) 
-			return NativeImage.combine(255, layer.getColor().getBlue(), 
-					layer.getColor().getGreen(), layer.getColor().getRed());
-		else if (blend == 1) 
+		int red = (textureColor >> 16) & 0xFF;
+		int green = (textureColor >> 8) & 0xFF;
+		int blue = textureColor & 0xFF;
+
+		if (blend == 0 || (layer.getBlendMode() == BlendMode.ON_WHITE && red == 255 && green == 255 && blue == 255)) {
+			return (255 << 24) | (layer.getColor().getRed() << 16) | (layer.getColor().getGreen() << 8) | layer.getColor().getBlue();
+		} else if (blend == 1) {
 			return textureColor;
-		return NativeImage.combine(255, 
-				blendColorChannel(blue, layer.getColor().getBlue(), blend), 
-				blendColorChannel(green, layer.getColor().getGreen(), blend), 
-				blendColorChannel(red, layer.getColor().getRed(), blend));
+		}
+
+		return (255 << 24) |
+				(blendColorChannel(red, layer.getColor().getRed(), blend) << 16) |
+				(blendColorChannel(green, layer.getColor().getGreen(), blend) << 8) |
+				blendColorChannel(blue, layer.getColor().getBlue(), blend);
 	}
+
 	
 	private static int blendColorChannel(int c1, int c2, float blend) {
 		return (int)Math.round(c1 * blend + (1f - blend) * c2);

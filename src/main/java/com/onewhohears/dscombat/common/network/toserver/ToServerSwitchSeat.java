@@ -39,7 +39,7 @@ public class ToServerSwitchSeat extends IPacket {
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
-			ServerLevel level = player.getLevel();
+			ServerLevel level = player.serverLevel();
 			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				if (!plane.switchSeat(player)) player.displayClientMessage(
 						UtilMCText.translatable("error.dscombat.no_open_seats"), 

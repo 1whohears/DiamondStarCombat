@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.tag;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
@@ -7,7 +9,6 @@ import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModTags;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -20,7 +21,8 @@ public class ItemTagGen extends ItemTagsProvider {
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
+
 		tag(ModTags.Items.ALUMINUM_INGOT)
 			.addTag(ModTags.Items.FORGE_ALUMINUM_INGOT);
 		tag(ModTags.Items.FORGE_ALUMINUM_INGOT)
@@ -97,5 +99,6 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.COCKPIT.get(), ModItems.ADVANCED_COCKPIT.get())
 			.addTag(ModTags.Items.FORGE_ALUMINUM_INGOT);
 	}
-	
+
+
 }

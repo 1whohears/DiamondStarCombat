@@ -9,8 +9,11 @@ import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.function.Supplier;
 
 public class TargetModeCommand {
 
@@ -38,11 +41,11 @@ public class TargetModeCommand {
         vehicle.weaponSystem.setTargetMode(targetMode);
         if (targetMode == WeaponSystem.TargetMode.COORDS) {
             vehicle.weaponSystem.setTargetPos(pos);
-            context.getSource().sendSuccess(UtilMCText.translatable(
+            context.getSource().sendSuccess((Supplier<Component>) UtilMCText.translatable(
                     "success.dscombat.target_mode_coords",
                     UtilParse.prettyVec3(pos, 0)), false);
         } else if (targetMode == WeaponSystem.TargetMode.LOOK) {
-            context.getSource().sendSuccess(UtilMCText.translatable(
+            context.getSource().sendSuccess((Supplier<Component>) UtilMCText.translatable(
                     "success.dscombat.target_mode_look"), false);
         }
         return 1;

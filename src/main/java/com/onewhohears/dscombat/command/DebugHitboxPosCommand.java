@@ -11,9 +11,12 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
+
+import java.util.function.Supplier;
 
 public class DebugHitboxPosCommand {
 	
@@ -44,7 +47,7 @@ public class DebugHitboxPosCommand {
 				hitbox.setTestSize(size);
 				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 						new ToClientDebugHitboxPos(vehicle, hitbox_name, rel_pos, size));
-				context.getSource().sendSuccess(UtilMCText.literal("Changed hitbox position and size! (NOT permanent!)"), false);
+				context.getSource().sendSuccess((Supplier<Component>) UtilMCText.literal("Changed hitbox position and size! (NOT permanent!)"), false);
 				return 1;
 			})
 		))));

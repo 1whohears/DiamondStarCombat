@@ -26,7 +26,7 @@ public class ItemParachute extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		if (player.isOnGround()) return InteractionResultHolder.fail(itemstack);
+		if (player.onGround()) return InteractionResultHolder.fail(itemstack);
 		if (!level.isClientSide) createParachute((ServerLevel)level, player, itemstack);
 		else return InteractionResultHolder.pass(itemstack);
 		player.awardStat(Stats.ITEM_USED.get(this));

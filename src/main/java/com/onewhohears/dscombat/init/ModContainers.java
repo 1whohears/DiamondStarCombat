@@ -27,12 +27,12 @@ public class ModContainers {
 			register("plane_menu", VehicleContainerMenu::new);
 	public static final RegistryObject<MenuType<WeaponsBlockContainerMenu>> WEAPONS_BLOCK_MENU = 
 			register("weapons_block_menu", (IContainerFactory<WeaponsBlockContainerMenu>) (windowId, playerInv, data) -> {
-				WeaponsBlockEntity weaponsBlock = (WeaponsBlockEntity)playerInv.player.level.getBlockEntity(data.readBlockPos());
+				WeaponsBlockEntity weaponsBlock = (WeaponsBlockEntity)playerInv.player.level().getBlockEntity(data.readBlockPos());
 				return new WeaponsBlockContainerMenu(windowId, playerInv, weaponsBlock);
 			});
 	public static final RegistryObject<MenuType<VehicleBlockContainerMenu>> AIRCRAFT_BLOCK_MENU =
 			register("aircraft_block_menu", (IContainerFactory<VehicleBlockContainerMenu>) (windowId, playerInv, data) -> {
-				VehicleBlock aircraftBlock = (VehicleBlock)playerInv.player.level.getBlockEntity(data.readBlockPos());
+				VehicleBlock aircraftBlock = (VehicleBlock)playerInv.player.level().getBlockEntity(data.readBlockPos());
 				return new VehicleBlockContainerMenu(windowId, playerInv, aircraftBlock);
 			});
 	

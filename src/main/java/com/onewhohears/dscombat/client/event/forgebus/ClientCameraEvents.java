@@ -1,11 +1,12 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
 import com.onewhohears.dscombat.mixin.CameraAccess;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
@@ -117,7 +118,7 @@ public class ClientCameraEvents {
 		}
 		// TODO 4.4 allow player to lean left or right in first person to see behind more easily
 		if (camYOffset != 0) {
-			Quaternion q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
+			Quaternionf q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
 			Vec3 yawAxis = UtilAngles.getYawAxis(q);
 			event.getCamera().setPosition(event.getCamera().getPosition().add(yawAxis.scale(camYOffset)));
 		}
@@ -129,21 +130,27 @@ public class ClientCameraEvents {
 		else if (pt > ptOld) return pt - ptOld;
 		return pt+1f - ptOld;
 	}
-	
+
 	public static double getMaxDist(Camera cam, Player player, double dist) {
 		Vec3 from = cam.getPosition();
-		Vector3f d = cam.getLookVector().copy();
-		d.mul((float)-dist);
+
+		// Instead of using copy(), create a new Vector3f
+		Vector3f d = new Vector3f(cam.getLookVector());
+		d.mul((float) -dist);
+
 		Vec3 to = from.add(d.x(), d.y(), d.z());
-		HitResult hitresult = player.level.clip(new ClipContext(from, to, 
+		HitResult hitresult = player.level().clip(new ClipContext(from, to,
 				ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, player));
+
 		if (hitresult.getType() != HitResult.Type.MISS) {
 			double d0 = hitresult.getLocation().distanceTo(from);
 			if (d0 < dist) dist = d0;
 		}
+
 		return dist;
 	}
-	
+
+
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientTickSetMouseCallback(TickEvent.ClientTickEvent event) {
 		Minecraft m = Minecraft.getInstance();

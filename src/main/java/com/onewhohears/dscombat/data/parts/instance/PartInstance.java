@@ -110,7 +110,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
 		setParent(craft);
 		setRelPos(pos);
-		if (craft.level.isClientSide) clientSetup(craft, slotId, pos);
+		if (craft.level().isClientSide) clientSetup(craft, slotId, pos);
 		else serverSetup(craft, slotId, pos);
 	}
 	
@@ -123,7 +123,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	}
 	
 	public void remove(EntityVehicle parent, String slotId) {
-		if (parent.level.isClientSide) clientRemove(slotId);
+		if (parent.level().isClientSide) clientRemove(slotId);
 		else serverRemove(slotId);
 	}
 	
@@ -160,12 +160,12 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		EntityPart part = createEntity(craft, slotId);
 		if (part == null) return;
 		setUpPartEntity(part, craft, slotId, pos, getStats().getExternalEntityDefaultHealth());
-		craft.level.addFreshEntity(part);
+		craft.level().addFreshEntity(part);
 	}
 	
 	@Nullable
 	protected EntityPart createEntity(EntityVehicle vehicle, String slotId) {
-		return (EntityPart) getStats().getExernalEntityType().create(vehicle.level);
+		return (EntityPart) getStats().getExernalEntityType().create(vehicle.level());
 	}
 	
 	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {

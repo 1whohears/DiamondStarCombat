@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
@@ -38,39 +39,55 @@ public class VehicleCompassOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         // HEADING
         int y = 10, color = 0xe6e600;
         assert Minecraft.getInstance().player != null;
-        float heading = (Mth.wrapDegrees(Minecraft.getInstance().player.getYRot()));
+
+        // Get player's yaw (heading) and wrap it to [0, 360] degrees
+        float heading = Mth.wrapDegrees(Minecraft.getInstance().player.getYRot());
         if (heading < 0) heading += 360f;
+
+        // Get textual representation of the heading or default to the angle
         String stringHeading = !Objects.equals(textByHeading((int) heading), "")
                 ? textByHeading((int) heading)
                 : String.valueOf((int) heading);
 
-        drawCenteredString(poseStack, FONT, stringHeading,
-                screenWidth / 2, y + 40, color);
+        // Draw the heading text in the center of the screen
+        graphics.drawCenteredString(FONT, stringHeading, screenWidth / 2, y + 40, color);
 
+        // Enable blending for transparency
         RenderSystem.enableBlend();
-        RenderSystem.setShaderTexture(0, COMPASS);
 
-        poseStack.pushPose();
-        poseStack.translate(((double) (screenWidth - COMPASS_U_WIDTH) / 2) - 1, 30, 0);
+        // Bind the compass texture
+        graphics.blit(COMPASS, 0, 0, 0, 0, COMPASS_U_WIDTH, COMPASS_TEXTURE_HEIGHT);
 
-        blit(poseStack,
+        // Push the current pose (for transformation)
+        graphics.pose().pushPose();
+
+        // Translate to the correct position for compass rendering
+        graphics.pose().translate((screenWidth - COMPASS_U_WIDTH) / 2.0 - 1, 30, 0);
+
+        // Draw the compass using the player's yaw and correcting its offset
+        graphics.blit(COMPASS,
                 0, 0,
                 (Minecraft.getInstance().player.getYRot() * 2) - COMPASS_CORRECTIONAL_OFFSET, 0,
                 COMPASS_U_WIDTH, COMPASS_TEXTURE_HEIGHT,
                 COMPASS_TEXTURE_WIDTH, COMPASS_TEXTURE_HEIGHT);
 
-        poseStack.popPose();
+        // Pop the pose to revert to previous state
+        graphics.pose().popPose();
     }
+
+
+
+
 
     @Override
     protected @NotNull String componentId() {

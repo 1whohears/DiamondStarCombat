@@ -19,19 +19,7 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.init.ModArgumentTypes;
-import com.onewhohears.dscombat.init.ModBlockEntities;
-import com.onewhohears.dscombat.init.ModBlocks;
-import com.onewhohears.dscombat.init.ModContainers;
-import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.dscombat.init.ModFluids;
-import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.init.ModParticles;
-import com.onewhohears.dscombat.init.ModRecipes;
-import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.dscombat.init.ModVillagers;
+import com.onewhohears.dscombat.init.*;
 
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.ControllableAnimPlayer;
@@ -73,10 +61,8 @@ public class DSCombatMod {
     public DSCombatMod() {
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
-    	
-    	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    	
-        ModBlocks.register(eventBus);
+		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		ModBlocks.register(eventBus);
         ModFluids.register(eventBus);
         ModContainers.register(eventBus);
         ModEntities.register(eventBus);

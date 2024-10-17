@@ -29,16 +29,16 @@ public class UtilVehicleEntity {
         if (entity.isPassenger()) {
             Entity rv = entity.getRootVehicle();
             if (rv.getType().is(ModTags.EntityTypes.ALWAYS_GROUNDED)) return true;
-            if (rv.isOnGround() || UtilEntity.isHeadAboveWater(rv)) return true;
+            if (rv.onGround() || UtilEntity.isHeadAboveWater(rv)) return true;
         }
         if (entity instanceof Player p && p.isFallFlying()) return false;
         if (!entity.isInWater() && entity.isSprinting() && entity.fallDistance < 1.15) return true;
-        if (entity.isOnGround() || UtilEntity.isHeadAboveWater(entity)) return true;
+        if (entity.onGround() || UtilEntity.isHeadAboveWater(entity)) return true;
         return false;
     }
 
     public static double getAirPressure(Entity entity) {
-        return SeaLevels.getAirPressure(entity.getLevel().dimension(), entity.getY());
+        return SeaLevels.getAirPressure(entity.level().dimension(), entity.getY());
     }
 
     public static boolean hasPermissionToBreakBlock(BlockPos pos, BlockState state, Level level, @Nullable Entity entity) {

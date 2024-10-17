@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.tag;
 
+import net.minecraft.core.HolderLookup;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
@@ -18,7 +19,7 @@ public class FluidTagGen extends FluidTagsProvider {
 	}
 	
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		tag(ModTags.Fluids.OIL)
 			.add(ModFluids.OIL_FLUID_FLOWING.get(), ModFluids.OIL_FLUID_SOURCE.get())
 			.addOptional(new ResourceLocation("createindustry:crude_oil_fluid"));

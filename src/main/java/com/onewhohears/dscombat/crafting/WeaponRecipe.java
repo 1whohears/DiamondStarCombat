@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.crafting;
 
+import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
@@ -36,7 +37,7 @@ public class WeaponRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack assemble(Inventory container) {
+	public ItemStack assemble(Inventory inventory, RegistryAccess registryAccess) {
 		return getOutput();
 	}
 	
@@ -50,8 +51,9 @@ public class WeaponRecipe implements Recipe<Inventory> {
 		return true;
 	}
 
+
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess registryAccess) {
 		return getOutput().copy();
 	}
 

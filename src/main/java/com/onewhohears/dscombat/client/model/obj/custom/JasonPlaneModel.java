@@ -1,14 +1,15 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class JasonPlaneModel extends ObjVehicleModel<EntityVehicle> {
 	
@@ -44,12 +45,13 @@ public class JasonPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			right_flap = UtilAngles.pivotPixelsRotX(-94.4596f, 36.7061f, -0.8385f, entity.inputs.roll*22);
 		}
 		// controls
-		Quaternion stickRot = Vector3f.XP.rotationDegrees(entity.inputs.pitch*-25);
-		stickRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.roll*25));
+		Quaternionf stickRot = new Quaternionf()
+				.rotateX((float) Math.toRadians(entity.inputs.pitch * -25))
+				.rotateZ((float) Math.toRadians(entity.inputs.roll * 25));
 		Matrix4f stick = UtilAngles.pivotPixelsRot(0, 33.8882f, 4.717f, stickRot);
-		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
-		Matrix4f left_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
-		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
+		Matrix4f throttle = new Matrix4f().translation(0, 0, entity.getCurrentThrottle() * 0.125f);
+		Matrix4f left_pedal = new Matrix4f().translation(0, 0, entity.inputs.yaw * -0.0625f);
+		Matrix4f right_pedal = new Matrix4f().translation(0, 0, entity.inputs.yaw * 0.0625f);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
 			.put("lg0", lg0_mat)
 			.put("lg1", lg1_mat)

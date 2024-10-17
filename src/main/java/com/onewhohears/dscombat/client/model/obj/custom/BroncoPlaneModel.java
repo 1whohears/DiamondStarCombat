@@ -1,14 +1,15 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 
@@ -32,8 +33,9 @@ public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			lg2_mat = UtilAngles.pivotPixelsRotX(-42.5f, 24f, -24.5f, degrees);
 		}
 		// flaps
-		Quaternion rudderRot = Vector3f.YP.rotationDegrees(entity.inputs.yaw*15);
-		rudderRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.yaw*-10));
+
+		Quaternionf rudderRot = new Quaternionf().rotateY((float) Math.toRadians(entity.inputs.yaw * 15));
+		rudderRot.mul(new Quaternionf().rotateZ((float) Math.toRadians(entity.inputs.yaw * -10)));
 		Matrix4f left_rudder = UtilAngles.pivotPixelsRot(44.7787f, 52.3335f, -127.6889f, rudderRot);
 		Matrix4f right_rudder = UtilAngles.pivotPixelsRot(-44.7787f, 52.3335f, -127.6889f, rudderRot);
 		Matrix4f elevator = UtilAngles.pivotPixelsRotX(0, 73.6614f, -140.7049f, entity.inputs.pitch*22);
@@ -46,12 +48,13 @@ public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			right_flap = UtilAngles.pivotPixelsRotX(-98.9282f, 43.4165f, -34.7215f, entity.inputs.roll*22);
 		}
 		// controls
-		Quaternion stickRot = Vector3f.XP.rotationDegrees(entity.inputs.pitch*-25);
-		stickRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.roll*25));
+		Quaternionf stickRot = new Quaternionf().rotateX((float) Math.toRadians(entity.inputs.pitch * -25));
+		stickRot.mul(new Quaternionf().rotateZ((float) Math.toRadians(entity.inputs.roll * 25)));
 		Matrix4f stick = UtilAngles.pivotPixelsRot(0, 26.1123f, 47f, stickRot);
-		Matrix4f left_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
-		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
-		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
+
+		Matrix4f left_pedal = new Matrix4f().identity().translate(0, 0, entity.inputs.yaw * -0.0625f);
+		Matrix4f right_pedal = new Matrix4f().identity().translate(0, 0, entity.inputs.yaw * 0.0625f);
+		Matrix4f throttle = new Matrix4f().identity().translate(0, 0, entity.getCurrentThrottle() * 0.125f);
 		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
 			.put("blade0", blade0rot_mat)
 			.put("blade1", blade1rot_mat)

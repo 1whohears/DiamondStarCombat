@@ -70,16 +70,16 @@ public class RadarSystem {
 	}
 	
 	public boolean hasDataLink() {
-		return dataLink || parent.level.getGameRules().getBoolean(DSCGameRules.DATA_LINK_ALWAYS_ON);
+		return dataLink || parent.level().getGameRules().getBoolean(DSCGameRules.DATA_LINK_ALWAYS_ON);
 	}
 	
 	public void tick() {
-		if (parent.level.isClientSide) clientTick();
+		if (parent.level().isClientSide) clientTick();
 		else if (canServerTick()) serverTick();
 	}
 	
 	public boolean canServerTick() {
-		return parent.isPlayerRiding() || (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar());
+		return parent.isPlayerRiding() || (parent.level().getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar());
 	}
 	
 	public void tickUpdateTargets() {
@@ -111,11 +111,11 @@ public class RadarSystem {
 		if (!hasDataLink()) return;
 		Entity controller = parent.getControllingPlayerOrBot();
 		if (controller == null) return;
-		List<? extends Player> players = parent.level.players();
+		List<? extends Player> players = parent.level().players();
 		for (Player p : players) {
 			if (controller.equals(p)) continue;
 			if (!controller.isAlliedTo(p)) continue;
-			if (!controller.level.dimension().equals(p.level.dimension())) continue;
+			if (!controller.level().dimension().equals(p.level().dimension())) continue;
 			if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;
 			if (!plane.radarSystem.hasDataLink()) continue;
 			if (plane.equals(parent)) continue;
@@ -210,14 +210,14 @@ public class RadarSystem {
 	public Entity getSelectedTarget() {
 		if (selectedIndex == -1) return null;
 		int id = targets.get(selectedIndex).id;
-		return parent.level.getEntity(id);
+		return parent.level().getEntity(id);
 	}
 	
 	@Nullable
 	public LivingEntity getLivingTargetByWeapon(WeaponInstance<?> wd) {
 		for (RadarPing ping : targets) {
 			if (ping.isFriendly) continue;
-			Entity entity = parent.level.getEntity(ping.id);
+			Entity entity = parent.level().getEntity(ping.id);
 			if (entity instanceof LivingEntity target 
 					&& wd.couldRadarWeaponTargetEntity(entity, parent)) 
 				return target;
@@ -229,7 +229,7 @@ public class RadarSystem {
 	public Player getPlayerTargetByWeapon(WeaponInstance<?> wd) {
 		for (RadarPing ping : targets) {
 			if (ping.isFriendly) continue;
-			Entity entity = parent.level.getEntity(ping.id);
+			Entity entity = parent.level().getEntity(ping.id);
 			if (entity == null) continue;
 			if (entity instanceof Player target 
 					&& !target.isCreative()
@@ -360,7 +360,7 @@ public class RadarSystem {
 	}
 	
 	public void addRWRWarning(int fromId, Vec3 pos, boolean isMissile, boolean fromGround) {
-		if (parent == null || parent.level.isClientSide || !hasRadar()) return;
+		if (parent == null || parent.level().isClientSide || !hasRadar()) return;
 		RWRWarning warning = new RWRWarning(fromId, pos, fromGround, isMissile);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
 				new ToClientRWRWarning(parent.getId(), warning));
@@ -412,7 +412,7 @@ public class RadarSystem {
 	}
 	
 	private void updateClientPingPos() {
-		for (RadarPing ping : clientTargets) ping.setClientPos(parent.level);
+		for (RadarPing ping : clientTargets) ping.setClientPos(parent.level());
 	}
 	
 	public boolean clientHasRWRWarnings() {

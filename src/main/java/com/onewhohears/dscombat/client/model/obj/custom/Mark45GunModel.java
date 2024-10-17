@@ -2,13 +2,15 @@ package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+
 import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class Mark45GunModel extends ObjTurretModel<EntityTurret> {
 
@@ -30,7 +32,7 @@ public class Mark45GunModel extends ObjTurretModel<EntityTurret> {
 	protected void rotate(EntityTurret entity, float partialTicks, PoseStack poseStack) {
 		super.rotate(entity, partialTicks, poseStack);
 		poseStack.translate(0, 0.5, 0);
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+		poseStack.mulPose(new Quaternionf().rotateY((float) Math.toRadians(180f)));
 	}
 
 }

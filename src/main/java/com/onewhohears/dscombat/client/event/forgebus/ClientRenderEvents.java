@@ -1,8 +1,6 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjWeaponRackModel;
@@ -19,6 +17,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import java.util.Objects;
 
@@ -34,7 +34,7 @@ public class ClientRenderEvents {
 		Player player = event.getEntity();
 		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
-		Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
+		Quaternionf q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 		Vec3 eye = new Vec3(0, player.getEyeHeight(), 0);
 		Vec3 t = eye.subtract(UtilAngles.rotateVector(eye, q));
 		event.getPoseStack().translate(t.x, t.y, t.z);

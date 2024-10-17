@@ -45,7 +45,7 @@ public class VehicleTextureManager {
 	 * CLIENT ONLY
 	 */
 	private void setupDynamicTexture() {
-		if (!parent.level.isClientSide) return;
+		if (!parent.level().isClientSide) return;
 		dynamicTexture = VehicleDynamicTextures.createVehicleDynamicTexture(parent);
 	}
 	/**
@@ -57,7 +57,7 @@ public class VehicleTextureManager {
 	}
 	
 	public void onTick() {
-		if (parent.level.isClientSide) clientTick();
+		if (parent.level().isClientSide) clientTick();
 		else serverTick();
 	}
 	

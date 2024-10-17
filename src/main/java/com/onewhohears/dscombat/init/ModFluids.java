@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.init;
 
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.fluid.CustomFluidType;
 
@@ -15,6 +14,7 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.joml.Vector3f;
 
 public class ModFluids {
 	

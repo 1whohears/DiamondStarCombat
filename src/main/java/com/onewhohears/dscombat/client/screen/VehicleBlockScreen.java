@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -20,11 +20,13 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -54,171 +56,186 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		this.inventoryLabelX = 96;
 		this.inventoryLabelY = 146;
 	}
-	
+
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(poseStack);
-		super.render(poseStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(poseStack, mouseX, mouseY);
-        this.renderBookmark(poseStack, mouseX, mouseY, partialTicks);
-        this.renderIngredients(poseStack, mouseX, mouseY, partialTicks);
-        this.renderVehicle(poseStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
+		this.renderBookmark(guiGraphics, mouseX, mouseY, partialTicks);
+		this.renderIngredients(guiGraphics, mouseX, mouseY, partialTicks);
+		this.renderVehicle(guiGraphics, mouseX, mouseY, partialTicks);
 	}
-	
+
 	@Override
-	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
+	protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
-		blit(stack, leftPos, topPos, 0, 0, 
-				imageWidth, imageHeight, 
+		guiGraphics.blit(BG_TEXTURE, leftPos, topPos, 0, 0,
+				imageWidth, imageHeight,
 				bg_tex_size, bg_tex_size);
 	}
-	
-	protected void renderBookmark(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+
+	protected void renderBookmark(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
-		blit(poseStack, leftPos+tab.getBookmarkXPos(), topPos, 
-				352, 0, 7, 11, 
+		guiGraphics.blit(BG_TEXTURE, leftPos + tab.getBookmarkXPos(), topPos,
+				352, 0, 7, 11,
 				bg_tex_size, bg_tex_size);
 	}
-	
-	protected void renderVehicle(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+
+	protected void renderVehicle(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		VehicleRecipe ap = tab.getSelectedRecipe();
 		if (ap == null) return;
-		ItemStack stack = ap.getResultItem();
-		int posX = leftPos+170, posY = topPos+52;
+		RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess(); // Get RegistryAccess
+		ItemStack stack = ap.getResultItem(registryAccess);
+		int posX = leftPos + 170, posY = topPos + 52;
 		PoseStack modelViewStack = RenderSystem.getModelViewStack();
 		modelViewStack.pushPose();
 		float scale = 2f, scaleInv = 1f / scale;
 		modelViewStack.scale(scale, scale, scale);
-		float blitOffset = 100 + minecraft.getItemRenderer().blitOffset + 50;
-		modelViewStack.translate((posX+8)*scaleInv, 0, blitOffset);
+		float zOffset = 200f;  // Adjust this value if you need different rendering depth
+		modelViewStack.translate((posX + 8) * scaleInv, (posY + 8) * scaleInv, zOffset);
+
 		long time = Util.getMillis();
 		float spinRate = 0.1f;
-		modelViewStack.mulPose(Vector3f.YP.rotationDegrees(time * spinRate));
-		modelViewStack.translate(-(posX+8)*scaleInv, 0, -blitOffset);
-		modelViewStack.translate((posX+8f)*(scaleInv-1f), (posY+8f)*(scaleInv-1f), 0);
-		minecraft.getItemRenderer().renderAndDecorateItem(stack, posX, posY);
+		modelViewStack.mulPose(Axis.YP.rotationDegrees(time * spinRate));
+		modelViewStack.translate(-(posX + 8) * scaleInv, -(posY + 8) * scaleInv, -zOffset);
+		guiGraphics.renderItem(stack, posX, posY);
+
 		modelViewStack.popPose();
 	}
-	
-	protected void renderIngredients(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+
+
+	protected void renderIngredients(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		VehicleRecipe ap = tab.getSelectedRecipe();
-        if (ap == null) return;
-        Minecraft m = Minecraft.getInstance();
-        NonNullList<Ingredient> ingredients = ap.getIngredients();
-        for (int i = 0; i < getMenu().recipeSlots.getContainerSize(); ++i) {
-        	if (i < ingredients.size()) {
-        		ItemStack[] items = ingredients.get(i).getItems();
-    			ItemStack stack = items[(m.player.tickCount/20)%items.length];
-        		getMenu().recipeSlots.setItem(i, stack);
-        		if (fails.contains(i)) {
-        			Slot slot = getMenu().getSlot(i);
-        			int left = leftPos + slot.x;
-        			int top = topPos + slot.y;
-        			fill(poseStack, left, top, left+17, top+17, 0x77ff0000);
-        		}
-        	} else getMenu().recipeSlots.setItem(i, ItemStack.EMPTY);
-        }
+		if (ap == null) return;
+		Minecraft m = Minecraft.getInstance();
+		NonNullList<Ingredient> ingredients = ap.getIngredients();
+
+		for (int i = 0; i < getMenu().recipeSlots.getContainerSize(); ++i) {
+			if (i < ingredients.size()) {
+				ItemStack[] items = ingredients.get(i).getItems();
+				ItemStack stack = items[(m.player.tickCount / 20) % items.length];
+				getMenu().recipeSlots.setItem(i, stack);
+
+				if (fails.contains(i)) {
+					Slot slot = getMenu().getSlot(i);
+					int left = leftPos + slot.x;
+					int top = topPos + slot.y;
+					guiGraphics.fill(left, top, left + 17, top + 17, 0x77ff0000); // Highlight failed ingredients in red
+				}
+			} else {
+				getMenu().recipeSlots.setItem(i, ItemStack.EMPTY);
+			}
+		}
 	}
-	
+
+
 	@Override
-	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		font.draw(stack, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0x404040);
-		// plane stats
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		guiGraphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0x404040);
+
 		VehicleRecipe ar = tab.getSelectedRecipe();
 		if (ar == null) return;
 		VehicleStats ap = ar.getVehicleStats();
 		if (ap == null) return;
+
 		Component name = ap.getDisplayNameComponent();
 		int nameWidth = font.width(name);
-		font.draw(stack, name, titleLabelX-nameWidth/2+54, titleLabelY, 0x000000);
+
+		// Drawing the vehicle name
+		guiGraphics.drawString(font, name, titleLabelX - nameWidth / 2 + 54, titleLabelY, 0x000000);
+
 		CompoundTag data = ap.getDataAsNBT().getCompound("stats");
 		float scale = 1f;
-		stack.scale(scale, scale, scale);
+
+		guiGraphics.pose().scale(scale, scale, scale);
+
 		float invScale = 1f / scale;
-		int startX = (int)(293f * invScale);
-		int startY = (int)(34f * invScale);
+		int startX = (int) (293f * invScale);
+		int startY = (int) (34f * invScale);
 		int pColor = 0x4CFF00;
-		font.draw(stack, UtilMCText.literal("Health: "+data.getDouble("max_health")), startX, startY, pColor);
+
+		guiGraphics.drawString(font, UtilMCText.literal("Health: " + data.getDouble("max_health")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, pColor);
+		guiGraphics.drawString(font, UtilMCText.literal("Speed: " + (int)(data.getDouble("max_speed") * 20) + " m/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Mass: "+data.getDouble("mass")), startX, startY, pColor);
+		guiGraphics.drawString(font, UtilMCText.literal("Mass: " + data.getDouble("mass")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Area: "+data.getDouble("cross_sec_area")), startX, startY, pColor);
+		guiGraphics.drawString(font, UtilMCText.literal("Area: " + data.getDouble("cross_sec_area")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Stealth: "+data.getDouble("stealth")), startX, startY, pColor);
+		guiGraphics.drawString(font, UtilMCText.literal("Stealth: " + data.getDouble("stealth")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Heat: "+data.getDouble("idleheat")), startX, startY, pColor);
+		guiGraphics.drawString(font, UtilMCText.literal("Heat: " + data.getDouble("idleheat")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Armor: "+data.getFloat("base_armor")), startX, startY, pColor);
+		guiGraphics.drawString(font, UtilMCText.literal("Armor: " + data.getFloat("base_armor")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" d/s"), startX, startY, pColor);
+		guiGraphics.drawString(font, UtilMCText.literal("Yaw: " + (int)(data.getDouble("maxyaw") * 20) + " d/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" d/s"), startX, startY, pColor);
+		guiGraphics.drawString(font, UtilMCText.literal("Pitch: " + (int)(data.getDouble("maxpitch") * 20) + " d/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" d/s"), startX, startY, pColor);
-		stack.scale(1/scale, 1/scale, 1/scale);
+		guiGraphics.drawString(font, UtilMCText.literal("Roll: " + (int)(data.getDouble("maxroll") * 20) + " d/s"), startX, startY, pColor);
+		guiGraphics.pose().scale(1 / scale, 1 / scale, 1 / scale);
 	}
-	
+
+
 	@Override
 	protected void init() {
 		super.init();
 		// tabs
-		Button tankButton = new ImageButton(0, 0, 45, 20, 
-				83, 0, 300, 
+		ImageButton tankButton = new ImageButton(0, 0, 45, 20,
+				83, 0, 300,
 				BG_TEXTURE, 512, 512,
 				onPress -> { tabButton(AircraftTab.TANKS); });
-		tankButton.x = leftPos+83;
-		tankButton.y = topPos;
+		tankButton.setX(leftPos + 83);
+		tankButton.setY(topPos);
 		addRenderableWidget(tankButton);
-		Button heliButton = new ImageButton(0, 0, 45, 20, 
-				130, 0, 300, 
+		ImageButton heliButton = new ImageButton(0, 0, 45, 20,
+				130, 0, 300,
 				BG_TEXTURE, 512, 512,
 				onPress -> { tabButton(AircraftTab.HELIS); });
-		heliButton.x = leftPos+130;
-		heliButton.y = topPos;
+		heliButton.setX(leftPos + 130);
+		heliButton.setY(topPos);
 		addRenderableWidget(heliButton);
-		Button planeButton = new ImageButton(0, 0, 45, 20, 
-				177, 0, 300, 
+		ImageButton planeButton = new ImageButton(0, 0, 45, 20,
+				177, 0, 300,
 				BG_TEXTURE, 512, 512,
 				onPress -> { tabButton(AircraftTab.PLANES); });
-		planeButton.x = leftPos+177;
-		planeButton.y = topPos;
+		planeButton.setX(leftPos + 177);
+		planeButton.setY(topPos);
 		addRenderableWidget(planeButton);
-		Button boatButton = new ImageButton(0, 0, 45, 20, 
-				224, 0, 300, 
+		Button boatButton = new ImageButton(0, 0, 45, 20,
+				224, 0, 300,
 				BG_TEXTURE, 512, 512,
 				onPress -> { tabButton(AircraftTab.BOATS); });
-		boatButton.x = leftPos+224;
-		boatButton.y = topPos;
+		boatButton.setX(leftPos + 224);
+		boatButton.setY(topPos);
 		addRenderableWidget(boatButton);
 		// prev
-		Button prevButton = new ImageButton(0, 0, 41, 10, 
-				78, 52, 230, 
+		Button prevButton = new ImageButton(0, 0, 41, 10,
+				78, 52, 230,
 				BG_TEXTURE, 512, 512,
 				onPress -> { prevButton(); });
-		prevButton.x = leftPos+78;
-		prevButton.y = topPos+52;
+		prevButton.setX(leftPos+78);
+		prevButton.setY(topPos+52);
 		addRenderableWidget(prevButton);
 		// next
-		Button nextButton = new ImageButton(0, 0, 41, 10, 
-				233, 52, 230, 
+		Button nextButton = new ImageButton(0, 0, 41, 10,
+				233, 52, 230,
 				BG_TEXTURE, 512, 512,
 				onPress -> { nextButton(); });
-		nextButton.x = leftPos+233;
-		nextButton.y = topPos+52;
+		nextButton.setX(leftPos+233);
+		nextButton.setY(topPos+52);
 		addRenderableWidget(nextButton);
 		// craft
-		Button craftButton = new Button(0, 0, 80, 20, 
-				UtilMCText.translatable("ui.dscombat.craft_button"), 
-				onPress -> { craftButton(); });
-		craftButton.x = leftPos+140;
-		craftButton.y = topPos+86;
+		Button craftButton = Button.builder(UtilMCText.translatable("ui.dscombat.craft_button"),
+				onPress -> { craftButton(); }).build();
+		craftButton.setX(leftPos+140);
+		craftButton.setX(topPos+86);
 		addRenderableWidget(craftButton);
 	}
-	
+
 	private void tabButton(AircraftTab tab) {
 		this.tab = tab;
 		resetFails();

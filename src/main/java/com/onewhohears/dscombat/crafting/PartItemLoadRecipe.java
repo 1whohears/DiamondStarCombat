@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 
 import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +37,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+	public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
 		ItemStack part = getPartItem(container);
 		List<ItemStack> ammo = getAmmoItems(container);
 		I lpd = getLoadablePartDataFromItem(part);

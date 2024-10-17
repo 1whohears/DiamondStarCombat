@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.client.renderer;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -14,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.world.entity.Entity;
+import org.joml.Quaternionf;
 
 public class RendererObjVehicle extends RendererObjEntity<EntityVehicle> implements RotableHitboxRenderer, VehicleScreenRenderer<EntityVehicle> {
 	
@@ -38,7 +38,7 @@ public class RendererObjVehicle extends RendererObjEntity<EntityVehicle> impleme
 			MultiBufferSource buffer, int packedLight, float partialTicks) {
 		poseStack.pushPose();
 		
-		Quaternion q = UtilAngles.lerpQ(partialTicks, vehicle.getPrevQ(), vehicle.getClientQ());
+		Quaternionf q = UtilAngles.lerpQ(partialTicks, vehicle.getPrevQ(), vehicle.getClientQ());
         poseStack.mulPose(q);
         
         for (EntityScreenData screen : getScreens(vehicle)) {

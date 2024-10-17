@@ -79,7 +79,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private void scanAircraft(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea, 
 			boolean playersOnly, boolean isPlayersOrBots) {
 		//System.out.println("SCANNING VEHICLES");
-		List<Entity> list = radar.level.getEntities(radar, radarArea, 
+		List<Entity> list = radar.level().getEntities(radar, radarArea,
 				(entity) -> entity.getType().is(ModTags.EntityTypes.VEHICLE));
 		for (int i = 0; i < list.size(); ++i) {
 			Entity e = list.get(i);
@@ -111,7 +111,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	
 	private void scanPlayers(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea) {
 		//System.out.println("SCANNING PLAYERS");
-		List<Player> list = radar.level.getEntitiesOfClass(Player.class, radarArea);
+		List<Player> list = radar.level().getEntitiesOfClass(Player.class, radarArea);
 		for (int i = 0; i < list.size(); ++i) {
 			Player target = list.get(i);
 			if (target.isPassenger() && target.getRootVehicle().getType().is(ModTags.EntityTypes.VEHICLE)) continue;
@@ -128,7 +128,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		//System.out.println("SCANNING MOBS");
 		for (int j = 0; j < RadarTargetTypes.get().getRadarMobClasses().size(); ++j) {
 			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarMobClasses().get(j);
-			List<? extends Entity> list = radar.level.getEntitiesOfClass(clazz, radarArea);
+			List<? extends Entity> list = radar.level().getEntitiesOfClass(clazz, radarArea);
 			for (int i = 0; i < list.size(); ++i) {
 				if (list.get(i).isPassenger()) continue;
 				if (!basicCheck(radar, list.get(i), 1)) continue;

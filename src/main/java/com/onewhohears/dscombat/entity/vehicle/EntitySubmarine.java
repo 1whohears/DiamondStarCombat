@@ -1,11 +1,11 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public class EntitySubmarine extends EntityBoat {
 	
@@ -19,7 +19,7 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public void directionWater(Quaternion q) {
+	public void directionWater(Quaternionf q) {
 		if (!isOperational()) return;
 		if (!isDriverCameraLocked()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		else {
@@ -35,7 +35,7 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public void tickWater(Quaternion q) {
+	public void tickWater(Quaternionf q) {
 		super.tickWater(q);
 		Vec3 move = getDeltaMovement();
 		if (!isDriverCameraLocked() && isOperational()) {

@@ -178,7 +178,7 @@ public class TurretShootGoal extends Goal {
 	
 	@Override
 	public boolean canUse() {
-		if (!mob.level.getGameRules().getBoolean(DSCGameRules.MOBS_USE_TURRETS)) return false;
+		if (!mob.level().getGameRules().getBoolean(DSCGameRules.MOBS_USE_TURRETS)) return false;
 		if (mob.getVehicle() == null || !mob.getVehicle().equals(turret)) return false;
 		LivingEntity target_entity = mob.getTarget();
 		return target_entity != null && target_entity.isAlive();

@@ -1,12 +1,12 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public class EntityGroundVehicle extends EntityVehicle {
 	
@@ -20,7 +20,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 	
 	@Override
-	public void directionGround(Quaternion q) {
+	public void directionGround(Quaternionf q) {
 		if (getStats().asCar().isTank && isOperational()) {
 			flatten(q, 4f, 4f, true);
 			addMomentY(inputs.yaw * getYawTorque(), true);
@@ -39,7 +39,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 	
 	@Override
-	public Vec3 getThrustForce(Quaternion q) {
+	public Vec3 getThrustForce(Quaternionf q) {
 		return Vec3.ZERO;
 	}
 	

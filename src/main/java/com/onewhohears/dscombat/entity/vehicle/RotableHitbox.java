@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.RotableAABB;
@@ -9,6 +8,7 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
+import org.joml.Quaternionf;
 
 public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData, CustomExplosion {
 	
@@ -38,7 +39,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	private Vec3 test_pos, test_size;
 	
 	public RotableHitbox(EntityVehicle parent, RotableHitboxData data) {
-		this(ModEntities.ROTABLE_HITBOX.get(), parent.level);
+		this(ModEntities.ROTABLE_HITBOX.get(), parent.level());
 		this.parent = parent;
 		this.data = data;
 		this.noPhysics = true;
@@ -74,7 +75,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	@Override
 	public void readSpawnData(FriendlyByteBuf buffer) {
 		int parentId = buffer.readInt();
-		parent = (EntityVehicle) level.getEntity(parentId);
+		parent = (EntityVehicle) level().getEntity(parentId);
 		String name = buffer.readUtf();
 		data = parent.getStats().getHitboxDataByName(name);
 		initStats();
@@ -97,7 +98,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 			discard();
 			return;
 		}
-		if (!level.isClientSide && tickCount > 20 && data.isRemoveOnDestroy() && isDestroyed()) {
+		if (!level().isClientSide && tickCount > 20 && data.isRemoveOnDestroy() && isDestroyed()) {
 			kill();
 			return;
 		}
@@ -107,7 +108,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	
 	protected void positionSelf() {
 		setOldPosAndRot();
-		Quaternion q = getParent().getQBySide();
+		Quaternionf q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		hitbox.setCenterAndRot(pos, q);
 		setPos(pos);
@@ -168,9 +169,9 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 		Vec3 parent_pos = getParent().position();
 		Vec3 parent_move = getParent().getDeltaMovement();
 		Vec3 parent_rot_rate = getParent().getAngularVel();
-		Quaternion q = getParent().getQBySide();
-		Quaternion qi = q.copy();
-		qi.conj();
+		Quaternionf q = getParent().getQBySide();
+		Quaternionf qi = new Quaternionf(q);
+		qi.conjugate();
 		Vec3 rel_pos = UtilAngles.rotateVector(entity.position().subtract(parent_pos), qi);
 		Vec3 rel_tan_vel = parent_rot_rate.scale(Math.toRadians(1d))
 				.multiply(-1d,-1d,1d).cross(rel_pos);
@@ -257,7 +258,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
     }
 	
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
@@ -355,9 +356,9 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	}
 	
 	public void repair(float repair) {
-		if (!level.isClientSide && isRemoved()) {
+		if (!level().isClientSide && isRemoved()) {
 			revive();
-			level.addFreshEntity(this);
+			level().addFreshEntity(this);
 		}
 		if (getHealth() < getMaxHealth()) addHealth(repair);
 		else if (getArmor() < getMaxArmor()) addArmor(repair);

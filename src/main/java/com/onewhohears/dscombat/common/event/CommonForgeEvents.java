@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
 
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -32,7 +33,7 @@ public final class CommonForgeEvents {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void livingHurtEvent(LivingHurtEvent event) {
-		if (event.getSource().isMagic()) return;
+		if (event.getSource().is(DamageTypes.MAGIC)) return;
 		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityVehicle plane)) return;
 		event.setAmount(Math.max(0, plane.calcDamageToInside(event.getSource(), event.getAmount())));
 	}
@@ -55,7 +56,7 @@ public final class CommonForgeEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void playerTick(TickEvent.PlayerTickEvent event) {
 		// CANCEL ELYTRA
-		if (event.player.isFallFlying() && event.player.level.getGameRules().getBoolean(DSCGameRules.DISABLE_ELYTRA_FLYING)) {
+		if (event.player.isFallFlying() && event.player.level().getGameRules().getBoolean(DSCGameRules.DISABLE_ELYTRA_FLYING)) {
 			event.player.stopFallFlying();
 		}
 		// CHANGE HITBOX

@@ -2,14 +2,15 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
 
 import java.awt.*;
 
@@ -48,6 +49,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     /**
      * It's important to call this first as weird visual fuckshit happens otherwise
      */
+
     private static void drawStrings(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
         poseStack.pushPose();
         poseStack.translate((((double) screenWidth) / 2.0) + 30.0, ((((double) screenHeight) + ((double) VERTICAL_BOUNDS_WIDTH)) / 2.0) - 28.0, 0);
@@ -90,7 +92,7 @@ public class HudOverlay extends VehicleOverlayComponent {
         double yOrigin = ((((double) screenHeight) - ((double) HORIZONTAL_BOUNDS_V_HEIGHT)) / 2.0) + 1.0;
 
         poseStack.translate(xOrigin + (((double) HORIZONTAL_BOUNDS_U_WIDTH) - 1.0) / 2.0, yOrigin + ((double) HORIZONTAL_BOUNDS_V_HEIGHT) / 2.0, HORIZONTAL_BOUNDS_BLIT_OFFSET);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-plane.zRot));
+        poseStack.mulPose(new Quaternionf().rotationAxis((float) Math.toRadians(-plane.zRot), 0.0f, 0.0f, 1.0f));
 
         // TODO: make this look less jarring
         poseStack.translate(-(plane.getYawRate() * 5.6), 0, 0);
@@ -128,18 +130,17 @@ public class HudOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityPlane)) return false;
         return !DSCClientInputs.isCameraFree();
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntityPlane plane = (EntityPlane) getPlayerRootVehicle();
         assert plane != null;
 
-        drawStrings(poseStack, screenWidth, screenHeight, plane);
 
         RenderSystem.setShaderTexture(0, HUD);
         RenderSystem.enableDepthTest();
@@ -178,6 +179,8 @@ public class HudOverlay extends VehicleOverlayComponent {
         RenderSystem.disableBlend();
         RenderSystem.disableDepthTest();
     }
+
+
 
     @Override
     protected @NotNull String componentId() {

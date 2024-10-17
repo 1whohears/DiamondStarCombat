@@ -81,7 +81,7 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 		data.setMaxAmmo(getStats().getMaxAmmo());
 		data.setCurrentAmmo(ammo);
 		data.setLaunchPos(pos);
-		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
+		if (!craft.level().isClientSide) data.updateClientAmmo(craft);
 		super.setup(craft, slotId, pos);
 	}
 	

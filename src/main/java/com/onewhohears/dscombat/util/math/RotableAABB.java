@@ -2,13 +2,13 @@ package com.onewhohears.dscombat.util.math;
 
 import java.util.Optional;
 
-import com.mojang.math.Quaternion;
 
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public class RotableAABB {
 	
@@ -23,8 +23,9 @@ public class RotableAABB {
 	
 	private Vec3 center, extents;
 	private double maxRadius;
-	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
-	
+	private Quaternionf rot = new Quaternionf().identity();
+	private Quaternionf roti = new Quaternionf().identity();
+
 	public RotableAABB(AABB bb) {
 		this(bb.getCenter(), extentsFromBB(bb));
 	}
@@ -47,7 +48,7 @@ public class RotableAABB {
 		return new RotableAABB(getCenter(), getExtents());
 	}
 	
-	public void setCenterAndRot(Vec3 center, Quaternion q) {
+	public void setCenterAndRot(Vec3 center, Quaternionf q) {
 		setCenter(center);
 		setRot(q);
 	}
@@ -314,19 +315,21 @@ public class RotableAABB {
 	public void setExtents(Vec3 extents) {
 		this.extents = extents;
 	}
-	
-	public Quaternion getRot() {
-		return rot.copy();
+
+	public Quaternionf getRot() {
+		// Return a new Quaternionf object as a copy
+		return new Quaternionf(rot);
 	}
-	
-	public Quaternion getIRot() {
-		return roti.copy();
+
+	public Quaternionf getIRot() {
+		// Return a new Quaternionf object as a copy
+		return new Quaternionf(roti);
 	}
-	
-	public void setRot(Quaternion rot) {
-		this.rot = rot;
-		this.roti = rot.copy();
-		roti.conj();
+
+	public void setRot(Quaternionf rot) {
+		this.rot = new Quaternionf(rot); // Copy the input quaternion
+		this.roti = new Quaternionf(rot); // Copy the input quaternion again
+		roti.conjugate();  // Conjugate to get the inverse rotation
 	}
 	
 	public double getMaxRadius() {

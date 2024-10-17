@@ -1,11 +1,10 @@
 package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.overlay.components.*;
 import net.minecraft.client.Minecraft;
+
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
@@ -29,11 +28,14 @@ import java.lang.ref.WeakReference;
  * when information about the client state is needed (extrinsic "object" being the static fields).
  * @author kawaiicakes
  */
+import net.minecraft.client.gui.GuiGraphics; // New import for 1.20.1
+
+
 @OnlyIn(Dist.CLIENT)
-public abstract class VehicleOverlayComponent extends GuiComponent {
+public abstract class VehicleOverlayComponent {
+
     protected static boolean HIDE_GUI = Minecraft.getInstance().options.hideGui;
     protected static Font FONT = Minecraft.getInstance().font;
-    // caching entities is generally a bad idea
     @Nullable
     protected static WeakReference<Entity> ROOT_VEHICLE;
     @Nullable
@@ -44,20 +46,24 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
     protected static LocalPlayer getPlayer() {
         return Minecraft.getInstance().player;
     }
+
     @Nullable
     protected static Entity getPlayerRootVehicle() {
         if (ROOT_VEHICLE != null) return ROOT_VEHICLE.get();
         return null;
     }
+
     @Nullable
     protected static Entity getPlayerVehicle() {
         if (VEHICLE != null) return VEHICLE.get();
         return null;
     }
+
     protected static boolean isInSpectator() {
         if (Minecraft.getInstance().gameMode == null) return true;
         return Minecraft.getInstance().gameMode.getPlayerMode() == GameType.SPECTATOR;
     }
+
     protected static boolean defaultRenderConditions() {
         if (HIDE_GUI) return true;
         return isInSpectator();
@@ -87,44 +93,34 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
         }
     }
 
-    final void register(ForgeGui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
-        // TODO: vehicles declare what overlays they render and is taken into account independent of #shouldRender
-        if (!this.shouldRender(gui, stack, partialTick, screenWidth, screenHeight)) return;
+    final void register(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
+        if (!this.shouldRender(gui, graphics, partialTick, screenWidth, screenHeight)) return;
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        this.render(gui, stack, partialTick, screenWidth, screenHeight);
+        this.render(gui, graphics, partialTick, screenWidth, screenHeight);
     }
 
-    /*
-        This should only govern the most general conditions needed for this overlay to work; vehicle-specific requirements
-        will be handled by whatever is checking for vehicle matches (L55). Make this a proper javadoc when that system
-        is implemented
-     */
-    protected abstract boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight);
-    protected abstract void render(ForgeGui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight);
-    /**
-     * @return A short <code>String</code> uniquely identifying this overlay.
-     */
+    protected abstract boolean shouldRender(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight);
+
+    protected abstract void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight);
+
     @NotNull
     protected abstract String componentId();
 
-    /**
-     * This is a lazy way of letting the superclass gather data lol
-     */
     static class ManagerTicker extends VehicleOverlayComponent {
         static VehicleOverlayComponent INSTANCE = new ManagerTicker();
 
         @Override
-        protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        protected boolean shouldRender(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
             ROOT_VEHICLE = getPlayer() != null ? new WeakReference<>(getPlayer().getRootVehicle()) : null;
             VEHICLE = getPlayer() != null ? new WeakReference<>(getPlayer().getVehicle()) : null;
             return false;
         }
 
         @Override
-        protected void render(ForgeGui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {}
+        protected void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {}
 
         @Override
         protected @NotNull String componentId() {

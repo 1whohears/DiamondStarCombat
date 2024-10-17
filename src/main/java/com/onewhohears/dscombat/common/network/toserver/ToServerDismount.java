@@ -55,7 +55,7 @@ public class ToServerDismount extends IPacket {
 					player.setDeltaMovement(vehicle.getDeltaMovement().add(dir.scale(EJECT_MOVE)));
 				} else dir = new Vec3(0, 1, 0);
 				player.setPos(player.position().add(dir.scale(EJECT_PUSH)));
-				ItemParachute.createParachute(player.getLevel(), player, null);
+				ItemParachute.createParachute(player.serverLevel(), player, null);
 			} else player.stopRiding();
 		});
 		ctx.get().setPacketHandled(true);

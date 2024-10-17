@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
@@ -16,6 +15,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 
 public class EntityPlane extends EntityVehicle {
 
@@ -37,7 +37,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public void directionAir(Quaternion q) {
+	public void directionAir(Quaternionf q) {
 		super.directionAir(q);
 		if (!isOperational()) return;
 		if (canControlPitch()) addMomentX(inputs.pitch * getPitchTorque(), true);
@@ -50,20 +50,20 @@ public class EntityPlane extends EntityVehicle {
 
 	@Override
 	public void tick() {
-		if (tickCount % 10 == 0) isArcadeMode = DSCGameRules.isPlaneArcadeMode(getLevel());
+		if (tickCount % 10 == 0) isArcadeMode = DSCGameRules.isPlaneArcadeMode(level());
 		super.tick();
 	}
 
 	@Override
-	public void tickAlways(Quaternion q) {
+	public void tickAlways(Quaternionf q) {
 		super.tickAlways(q);
 		if (isArcadeMode) {
 			setForces(getForces().add(getWeightForce().scale(-getArcadeIgnoreGravityFactor())));
-			if (isOnGround() && isFlapsDown()) setForces(getForces().add(0, 200, 0));
+			if (onGround() && isFlapsDown()) setForces(getForces().add(0, 200, 0));
 		} else setForces(getForces().add(getLiftForce(q)));
 	}
 
-	protected void calcIgnoreGravityFactor(Quaternion q) {
+	protected void calcIgnoreGravityFactor(Quaternionf q) {
 		Vec3 u = getDeltaMovement();
 		Vec3 rollAxis = UtilAngles.getRollAxis(q);
 		double speed = UtilGeometry.vecCompByNormAxis(u, rollAxis).length();
@@ -78,7 +78,7 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	public void calcAcc() {
 		super.calcAcc();
-		if (isArcadeMode && !isOnGround() && getArcadeIgnoreGravityFactor() == 1) {
+		if (isArcadeMode && !onGround() && getArcadeIgnoreGravityFactor() == 1) {
 			double speed = getDeltaMovement().length();
 			Vec3 look = getLookAngle();
 			setDeltaMovement(look.scale(speed));
@@ -86,7 +86,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	protected void calcMoveStatsPre(Quaternion q) {
+	protected void calcMoveStatsPre(Quaternionf q) {
 		super.calcMoveStatsPre(q);
 		calcMaxSpeedMod();
 		if (isArcadeMode) {
@@ -119,7 +119,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 
 	protected void calcMaxSpeedMod() {
-		if (isOnGround()) maxSpeedMod = 1;
+		if (onGround()) maxSpeedMod = 1;
 		float th = getCurrentThrottle();
 		double goal;
 		if (th < 0.5) goal = 0.6;
@@ -129,7 +129,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isBraking() {
-		return inputs.special2 && isOnGround();
+		return inputs.special2 && onGround();
 	}
 	
 	@Override
@@ -138,11 +138,11 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public void tickAir(Quaternion q) {
+	public void tickAir(Quaternionf q) {
 		super.tickAir(q);
 	}
 	
-	protected void calculateAOA(Quaternion q) {
+	protected void calculateAOA(Quaternionf q) {
 		Vec3 u = getDeltaMovement();
 		Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
 		liftDir = u.cross(pitchAxis).normalize();
@@ -150,7 +150,7 @@ public class EntityPlane extends EntityVehicle {
 		airFoilSpeedSqr = (float)UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr();
 		airSpeed = Mth.sqrt(airFoilSpeedSqr);
 		float goalAOA, goalFuselageAOA;
-		if (isOnGround() || UtilGeometry.isZero(u)) {
+		if (onGround() || UtilGeometry.isZero(u)) {
 			goalAOA = 0;
 			goalFuselageAOA = 0;
 		} else {
@@ -168,7 +168,7 @@ public class EntityPlane extends EntityVehicle {
 		fuselageLiftK = getFuselageLiftKGraph().getLerpFloat(fuselageAoa);
 	}
 	
-	protected void calculateLift(Quaternion q) {
+	protected void calculateLift(Quaternionf q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		wingLiftMag = liftK * airPressure * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT * getWingLiftPercent();
         double fuselageLift = fuselageLiftK * airPressure * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
@@ -185,7 +185,7 @@ public class EntityPlane extends EntityVehicle {
 		centrifugalForce = getTotalMass() * xzSpeed * getYawRate()*Mth.DEG_TO_RAD;
 	}
 	
-	public Vec3 getLiftForce(Quaternion q) {
+	public Vec3 getLiftForce(Quaternionf q) {
 		return liftForce;
 	}
 	
@@ -194,7 +194,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public Vec3 getThrustForce(Quaternion q) {
+	public Vec3 getThrustForce(Quaternionf q) {
 		return UtilAngles.getRollAxis(q).scale(getPushThrustMag());
 	}
 	
@@ -231,7 +231,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isWeaponAngledDown() {
-		return getPlaneStats().canAimDown && !onGround && inputs.special2;
+		return getPlaneStats().canAimDown && !onGround() && inputs.special2;
 	}
 	
 	@Override
@@ -249,7 +249,7 @@ public class EntityPlane extends EntityVehicle {
 
 	@Override
 	public boolean canBrake() {
-		return onGround;
+		return onGround();
 	}
 
 	@Override
@@ -282,12 +282,12 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean liftLost() {
-		return !isOnGround() && getForces().y < -10 && getDeltaMovement().y < -0.1 && Math.abs(zRot) > 15;
+		return !onGround() && getForces().y < -10 && getDeltaMovement().y < -0.1 && Math.abs(zRot) > 15;
 	}
 	
 	@Override
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
-		return amount * DSCGameRules.getBulletDamagePlaneFactor(level);
+		return amount * DSCGameRules.getBulletDamagePlaneFactor(level());
 	}
 	
 	public float getWingLiftPercent() {

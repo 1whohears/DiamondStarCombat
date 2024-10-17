@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.crafting;
 
+import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
@@ -35,8 +36,9 @@ public class VehicleRecipe implements Recipe<Inventory> {
 		return UtilItem.testRecipe(getIngredients(), inventory);
 	}
 
+
 	@Override
-	public ItemStack assemble(Inventory container) {
+	public ItemStack assemble(Inventory inventory, RegistryAccess registryAccess) {
 		return getOutput();
 	}
 	
@@ -50,8 +52,10 @@ public class VehicleRecipe implements Recipe<Inventory> {
 		return true;
 	}
 
+
+
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess registryAccess) {
 		return getOutput().copy();
 	}
 	

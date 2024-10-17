@@ -9,6 +9,7 @@ import com.onewhohears.onewholibs.util.UtilItem;
 
 import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +36,7 @@ public class VehiclePartRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+	public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
 		ItemStack partItem = getVehiclePart(container).copy();
 		partItem.getOrCreateTag().putBoolean("damaged", false);
 		return partItem;

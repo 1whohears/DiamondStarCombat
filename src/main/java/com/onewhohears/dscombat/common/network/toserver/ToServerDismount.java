@@ -5,33 +5,60 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 
+import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.item.ItemParachute;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 public class ToServerDismount extends IPacket {
-	
+
+	private final boolean eject;
+
 	public ToServerDismount() {
-		//System.out.println("CREATED PACKET");
+		eject = false;
+	}
+
+	public ToServerDismount(boolean eject) {
+		this.eject = eject;
 	}
 	
 	public ToServerDismount(FriendlyByteBuf buffer) {
-		//System.out.println("DECODING PACKET");
+		eject = buffer.readBoolean();
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
-		//System.out.println("ENCODING PACKET");
+		buffer.writeBoolean(eject);
 	}
 
 	@Override
 	public boolean handle(Supplier<Context> ctx) {
-		//System.out.println("HANDELING PACKET");
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
-			ServerPlayer player = ctx.get().getSender();
-			player.stopRiding();
 			success.set(true);
+			ServerPlayer player = ctx.get().getSender();
+			if (player == null) return;
+			if (eject && player.getVehicle() instanceof EntitySeat seat && seat.canEject()) {
+				seat.useEject();
+				player.stopRiding();
+				double EJECT_PUSH = 4, EJECT_MOVE = 1;
+				EntityVehicle vehicle = seat.getParentVehicle();
+				Vec3 dir;
+				if (vehicle != null) {
+					dir = UtilAngles.getYawAxis(vehicle.getQ());
+					player.setDeltaMovement(vehicle.getDeltaMovement().add(dir.scale(EJECT_MOVE)));
+				} else dir = new Vec3(0, 1, 0);
+				player.setPos(player.position().add(dir.scale(EJECT_PUSH)));
+				ItemParachute.createParachute(player.getLevel(), player, null);
+				player.getLevel().playSound(null, player.blockPosition(),
+						ModSounds.EJECT, SoundSource.PLAYERS, 1, 1);
+			} else player.stopRiding();
 		});
 		ctx.get().setPacketHandled(true);
 		return success.get();

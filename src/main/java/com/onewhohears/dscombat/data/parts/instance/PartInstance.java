@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.onewholibs.data.crafting.IngredientStack;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.parts.SlotType;
@@ -200,7 +201,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
 		if (isDamaged()) {
 			tips.add(UtilMCText.translatable("info.dscombat.damaged").setStyle(Style.EMPTY.withColor(0xCC0000)));
-			if (getStats().getRepairCost().size() > 0) {
+			if (!getStats().getRepairCost().isEmpty()) {
 				Style repairStyle = Style.EMPTY.withColor(0xE88888);
 				MutableComponent repairCost = UtilMCText.literal("Repair Cost: ").setStyle(repairStyle);
 				for (Ingredient cost: getStats().getRepairCost()) {
@@ -222,19 +223,19 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		return getStats().hasExternalEntity();
 	}
 	
-	public float getPushThrust() {
+	public float getPushThrust(VehicleStats vehicleStats) {
 		return 0;
 	}
 	
-	public float getSpinThrust() {
+	public float getSpinThrust(VehicleStats vehicleStats) {
 		return 0;
 	}
 	
-	public float getEngineHeat() {
+	public float getEngineHeat(VehicleStats vehicleStats) {
 		return 0;
 	}
 	
-	public float getFuelPerTick() {
+	public float getFuelPerTick(VehicleStats vehicleStats) {
 		return 0;
 	}
 	

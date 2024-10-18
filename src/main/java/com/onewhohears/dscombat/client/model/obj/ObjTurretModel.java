@@ -9,8 +9,8 @@ public class ObjTurretModel<T extends EntityTurret> extends ObjPartModel<T> {
 	
 	protected final boolean rotYawAll;
 	
-	public ObjTurretModel(String modelId, boolean rotYawAll) {
-		super(modelId);
+	public ObjTurretModel(String modelId, boolean rotYawAll, String... animDataIds) {
+		super(modelId, animDataIds);
 		this.rotYawAll = rotYawAll;
 	}
 	

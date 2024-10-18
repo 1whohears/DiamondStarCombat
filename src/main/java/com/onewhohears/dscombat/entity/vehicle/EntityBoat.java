@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -152,10 +153,15 @@ public class EntityBoat extends EntityVehicle {
 	@Override
 	public double getMaxSpeedForMotion() {
 		float th = getCurrentThrottle();
-		double max = getMaxSpeed();
+		double max = super.getMaxSpeedForMotion();
 		if (th < 0) return max * 0.25;
     	return max;
     }
+
+	@Override
+	public double getMaxSpeedFactor() {
+		return super.getMaxSpeedFactor() * Config.COMMON.boatSpeedFactor.get();
+	}
 	
 	@Override
 	public double getPushThrustMag() {

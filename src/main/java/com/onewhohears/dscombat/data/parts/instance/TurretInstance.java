@@ -29,10 +29,20 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 		super.setFilled(param);
 		if (param.isEmpty()) {
 			List<String> list = WeaponPresets.get().getCompatibleWeapons(getStatsId());
-			if (list.size() > 0) param = list.get(0);
+			if (!list.isEmpty()) param = list.get(0);
 		}
 		weapon = param;
 		ammo = getStats().getMaxAmmo();
+	}
+
+	@Override
+	public void setParamNotFilled(String param) {
+		super.setParamNotFilled(param);
+		if (param.isEmpty()) {
+			List<String> list = WeaponPresets.get().getCompatibleWeapons(getStatsId());
+			if (!list.isEmpty()) param = list.get(0);
+		}
+		weapon = param;
 	}
 	
 	@Override

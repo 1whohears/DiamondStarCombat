@@ -89,7 +89,7 @@ public class PartSlot {
 		return locked;
 	}
 	
-	public boolean filled() {
+	public final boolean filled() {
 		return data != null;
 	}
 	

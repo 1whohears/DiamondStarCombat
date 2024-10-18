@@ -8,11 +8,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
+import net.minecraft.tags.BlockTags;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -424,6 +426,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			tickMovement(q);
 			calcAcc();
 			motionClamp();
+			if (!getLevel().isClientSide() && canTrample()) tickTrample();
 			move(MoverType.SELF, getDeltaMovement());
 			calcMoveStatsPost(q);
 			tickCollisions();
@@ -479,6 +482,26 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (!hasControllingPassenger()) wallCollisions();
 		} else {
 			if (isControlledByLocalInstance()) wallCollisions();
+		}
+	}
+
+	public boolean canTrample() {
+		return (isOnGround() || isInWater()) && xzSpeed > 0 && getLevel().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
+	}
+
+	protected void tickTrample() {
+		AABB box = getBoundingBox().move(getDeltaMovement()).inflate(0.01);
+		Entity controller = getControllingPassenger();
+		for (double x = box.minX; x < box.maxX+1; ++x) {
+			for (double z = box.minZ; z < box.maxZ+1; ++z) {
+				for (double y = box.minY; y < box.maxY+1; ++y) {
+					BlockPos pos = new BlockPos(x, y, z);
+					BlockState state = getLevel().getBlockState(pos);
+					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;
+					if (UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), controller))
+						getLevel().destroyBlock(pos, true, this);
+				}
+			}
 		}
 	}
 	
@@ -661,7 +684,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * @return the max speed {@link EntityVehicle#motionClamp} tests for.
 	 */
 	public double getMaxSpeedForMotion() {
-		return getMaxSpeed();
+		return getMaxSpeed() * getMaxSpeedFactor();
+	}
+
+	public double getMaxSpeedFactor() {
+		return Config.COMMON.vehicleSpeedFactor.get();
 	}
 	
 	/**

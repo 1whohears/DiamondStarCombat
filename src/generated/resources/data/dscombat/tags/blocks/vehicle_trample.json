@@ -1,0 +1,19 @@
+{
+  "values": [
+    "#minecraft:leaves",
+    "#minecraft:crops",
+    "#minecraft:flowers",
+    "#minecraft:candles",
+    "#minecraft:saplings",
+    "#minecraft:ice",
+    "minecraft:grass",
+    "minecraft:tall_grass",
+    "minecraft:tall_seagrass",
+    "minecraft:fern",
+    "minecraft:dead_bush",
+    "minecraft:cobweb",
+    "minecraft:seagrass",
+    "minecraft:sea_pickle",
+    "minecraft:sea_lantern"
+  ]
+}

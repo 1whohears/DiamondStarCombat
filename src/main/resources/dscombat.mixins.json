@@ -10,7 +10,6 @@
 		"LevelMixin"
 	],
 	"client": [
-		"ObjModelAccess",
 		"CompositeRenderableMeshAccess",
 		"CompositeRenderableComponentAccess",
 		"CompositeRenderableAccess",

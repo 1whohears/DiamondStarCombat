@@ -5,6 +5,8 @@ import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class MissileInstance<T extends MissileStats> extends BulletInstance<T> {
@@ -26,6 +28,20 @@ public abstract class MissileInstance<T extends MissileStats> extends BulletInst
 			missile.setDeltaMovement(params.direction.scale(0.5));
 		}
 		return missile;
+	}
+
+	protected void setTargetPosByLooker(WeaponShootParameters params, EntityMissile<?> missile) {
+		Entity looker = params.owner;
+		if (params.vehicle != null && params.vehicle.getGimbalForPilotCamera() != null) {
+			looker = params.vehicle.getGimbalForPilotCamera();
+			looker.setXRot(params.owner.getXRot());
+			looker.setYRot(params.owner.getYRot());
+		}
+		missile.targetPos = UtilEntity.getLookingAtBlockPos(looker, 300);
+	}
+
+	protected void setTargetPosByCoordsCommand(WeaponShootParameters params, EntityMissile<?> missile) {
+		if (params.vehicle != null) missile.targetPos = params.vehicle.weaponSystem.getTargetPos();
 	}
 
 }

@@ -5,11 +5,14 @@ import java.util.Iterator;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BunkerBusterStats;
 
+import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -20,10 +23,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<T> {
 	
-	public static final EntityDataAccessor<Integer> BLOCK_STRENGTH = SynchedEntityData.defineId(EntityBullet.class, EntityDataSerializers.INT);
-	
-	// FIXME 8 bunker buster block breaking not compatible with FTB
-	// is it better to not break blocks at all?
+	public static final EntityDataAccessor<Integer> BLOCK_STRENGTH = SynchedEntityData.defineId(EntityBunkerBuster.class, EntityDataSerializers.INT);
+
 	public EntityBunkerBuster(EntityType<? extends EntityBunkerBuster<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 		if (getWeaponStats() != null) setBlockStrength(getWeaponStats().getBlockStrength());
@@ -37,12 +38,14 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 	@Override
 	protected BlockHitResult checkBlockCollide() {
 		Iterator<VoxelShape> it = level.getBlockCollisions(this, getBoundingBox().expandTowards(getDeltaMovement())).iterator();
+		Entity owner = getOwner();
 		while (it.hasNext()) {
 			VoxelShape voxel = it.next();
 			BlockPos pos = new BlockPos(voxel.bounds().getCenter());
 			BlockState state = getLevel().getBlockState(pos);
 			int hit_block_strength = getBlockStrength(pos, state);
-			if (getBlockStrength() >= hit_block_strength && hasPermissionToBreakBlock(pos, state)) {
+			if (getBlockStrength() >= hit_block_strength &&
+					UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), owner)) {
 				level.destroyBlock(pos, true, this);
 				reduceBlockStrength(hit_block_strength);
 			} else {
@@ -55,6 +58,7 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 	
 	protected int getBlockStrength(BlockPos pos, BlockState state) {
 		if (state.is(Blocks.BEDROCK)) return Integer.MAX_VALUE;
+		if (state.is(ModTags.Blocks.ABSORBENT)) return 50;
 		return (int) state.getExplosionResistance(level, pos, null);
 	}
 	

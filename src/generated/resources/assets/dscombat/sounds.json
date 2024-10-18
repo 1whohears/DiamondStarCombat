@@ -131,6 +131,18 @@
     ],
     "subtitle": "sounds.dscombat.cannon_shoot_2"
   },
+  "eject": {
+    "sounds": [
+      "dscombat:cockpit/eject/eject"
+    ],
+    "subtitle": "sounds.dscombat.eject"
+  },
+  "eject_wind": {
+    "sounds": [
+      "dscombat:cockpit/eject/eject_wind"
+    ],
+    "subtitle": "sounds.dscombat.eject_wind"
+  },
   "engine_fire_gm1": {
     "sounds": [
       "dscombat:cockpit/warnings/generic_male_1/engine_fire"

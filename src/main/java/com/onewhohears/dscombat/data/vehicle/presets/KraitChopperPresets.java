@@ -38,7 +38,7 @@ public class KraitChopperPresets {
 			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.setBaseTextureNum(4)
 			.setLayerTextureNum(4)
-			.addPilotSeatSlot(0, -0.05, 2)
+			.addPilotSeatSlot(0, -0.05, 2, true)
 			.addSeatSlot("copilot_seat", 0, -0.4, 3.5)
 			.addEmptySlot("nose_gun", SlotType.PYLON_LIGHT, 0, -0.5, 3.75, 180)
 			.addEmptySlot("left_wing_1", SlotType.PYLON_HEAVY, 1.15, -0.15, 0, 180)

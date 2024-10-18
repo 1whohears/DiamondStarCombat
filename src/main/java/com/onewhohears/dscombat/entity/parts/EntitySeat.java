@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
@@ -218,5 +219,17 @@ public class EntitySeat extends EntityPart {
 	public boolean isAlive() {
 		return false;
 	}
-	
+
+	public boolean canEject() {
+		SeatInstance<?> data = (SeatInstance<?>)getPartInstance();
+		if (data == null) return false;
+		return data.canEject();
+	}
+
+	public void useEject() {
+		SeatInstance<?> data = (SeatInstance<?>)getPartInstance();
+		if (data == null) return;
+		data.setCanEject(false);
+	}
+
 }

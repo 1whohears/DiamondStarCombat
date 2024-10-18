@@ -4,6 +4,9 @@
 	"info.dscombat.not_radar_controller": "Another Player Controls the Vehicle's Radar Mode",
 	"info.dscombat.only_compatible": "Only Compatible With: ",
 	"info.dscombat.damaged": "Damaged!",
+	"info.dscombat.vehicle_engine_stats_override": "Vehicle engine stats likely override item stats!",
+	"info.dscombat.can_eject": "Can Eject!",
+	"info.dscombat.cant_eject": "Can't Eject!",
 	
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",
@@ -24,6 +27,11 @@
 	"error.dscombat.unknown_preset": "Unknown Preset!",
 	"error.dscombat.cant_item_yet": "Can't become an item yet! Wait for cooldown.",
 	"error.dscombat.no_storage_boxes": "This Vehicle has No Storage Boxes",
+	"error.dscombat.command_players_only": "Only Players can use this command!",
+	"error.dscombat.command_must_ride_vehicle": "You must ride a vehicle to use this command!",
+
+	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
+	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",
 	
 	"weapon_code.dscombat.gun": "GUN",
 	"weapon_code.dscombat.fox1": "FOX1",
@@ -99,7 +107,12 @@
 	"slotname.dscombat.cargo_bed_1": "Cargo Bed 1",
 	"slotname.dscombat.nose_gun": "Nose Gun",
 	"slotname.dscombat.internal_gun": "Internal Gun",
-	
+
+	"entity.dscombat.plane": "Plane",
+	"entity.dscombat.helicopter": "Helicopter",
+	"entity.dscombat.car": "Car",
+	"entity.dscombat.boat": "Boat",
+	"entity.dscombat.submarine": "Submarine",
 	"entity.dscombat.test_plane": "Test Plane",
 	"entity.dscombat.javi_plane": "Javi Plane",
 	"entity.dscombat.alexis_plane": "Alexis Plane",
@@ -497,6 +510,7 @@
 	"key.dscombat.radar_display_range_key": "Cycle Radar Display Range",
 	"key.dscombat.gimbal_key": "Gimbal Mode",
 	"key.dscombat.vehicle_storage_key": "Vehicle Storage",
+	"key.dscombat.eject_key": "Eject",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",
@@ -623,5 +637,6 @@
 	"gamerule.bulletDamageHeliPercent": "DSC Bullet Damage Heli Percent Multiplier",
 	"gamerule.disable3rdPersonVehicle": "DSC Disable 3rd Person in Vehicles",
 	"gamerule.planeArcadeMode": "DSC Plane Arcade Physics Mode",
-	"gamerule.removeDeadVehiclesTime": "DSC Remove Dead Vehicles Seconds"
+	"gamerule.removeDeadVehiclesTime": "DSC Remove Dead Vehicles Seconds",
+	"gamerule.fuelPerOilBlock": "DSC Fuel per Oil Block"
 }

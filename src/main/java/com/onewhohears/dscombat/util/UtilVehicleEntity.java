@@ -1,11 +1,19 @@
 package com.onewhohears.dscombat.util;
 
+import com.onewhohears.dscombat.data.vehicle.SeaLevels;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.level.BlockEvent;
+
+import javax.annotation.Nullable;
 
 public class UtilVehicleEntity {
 
@@ -30,27 +38,16 @@ public class UtilVehicleEntity {
     }
 
     public static double getAirPressure(Entity entity) {
-        DimensionType dt = entity.level.dimensionType();
-        double space;
-        double surface;
-        if (dt.natural()) {
-            space = 2500.0;
-            surface = 64.0;
-        } else {
-            space = 2000.0;
-            surface = 0.0;
+        return SeaLevels.getAirPressure(entity.getLevel().dimension(), entity.getY());
+    }
+
+    public static boolean hasPermissionToBreakBlock(BlockPos pos, BlockState state, Level level, @Nullable Entity entity) {
+        if (entity instanceof Player player) {
+            BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, pos, state, player);
+            MinecraftForge.EVENT_BUS.post(event);
+            return !event.isCanceled();
         }
-        double scale = 1.0;
-        double exp = 2.0;
-        double posY = entity.getY();
-        if (posY <= surface) {
-            return scale;
-        } else if (posY > space) {
-            return 0.0;
-        } else {
-            posY -= surface;
-            return Math.pow(Math.abs(posY - space), exp) * Math.pow(space, -exp);
-        }
+        return level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
     }
 
 }

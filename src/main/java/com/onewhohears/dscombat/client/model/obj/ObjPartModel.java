@@ -5,15 +5,19 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
-import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 
-public class ObjPartModel<T extends EntityPart> extends ObjEntityModel<T> {
+public class ObjPartModel<T extends EntityPart> extends KeyframeAnimsEntityModel<T> {
 	
 	public ObjPartModel(String modelId) {
 		super(modelId);
+	}
+
+	public ObjPartModel(String modelId, String... animDataIds) {
+		super(modelId, animDataIds);
 	}
 	
 	@Override

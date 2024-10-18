@@ -21,7 +21,6 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.IntegerValue> MOB_TURRET_VERTICAL_RANGE;
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_TICK_RADAR;
 	public static GameRules.Key<GameRules.BooleanValue> MOBS_RIDE_VEHICLES;
-	public static GameRules.Key<GameRules.IntegerValue> PLANE_SPEED_PERCENT;
 	public static GameRules.Key<GameRules.IntegerValue> VEHICLE_ARMOR_PERCENT;
 	public static GameRules.Key<GameRules.IntegerValue> BULLET_DAMAGE_VEHICLE_PER;
 	public static GameRules.Key<GameRules.IntegerValue> EXPLO_DAMAGE_VEHICLE_PER;
@@ -30,6 +29,8 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> DISABLE_3RD_PERSON_VEHICLE;
 	public static GameRules.Key<GameRules.BooleanValue> PLANE_ARCADE_MODE;
 	public static GameRules.Key<GameRules.IntegerValue> REMOVE_DEAD_VEHICLES_TIME;
+	public static GameRules.Key<GameRules.BooleanValue> WEAPONS_BREAK_BLOCKS;
+	public static GameRules.Key<GameRules.BooleanValue> VEHICLE_TRAMPLE;
 	
 	public static void registerAll() {
 		CONSUME_FULE = CustomGameRules.registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
@@ -46,7 +47,6 @@ public class DSCGameRules {
 		MOB_TURRET_VERTICAL_RANGE = CustomGameRules.registerInteger("mobTurretVerticalRange", 500, GameRules.Category.MOBS);
 		MOBS_TICK_RADAR = CustomGameRules.registerBoolean("mobsTickRadar", true, GameRules.Category.MOBS);
 		MOBS_RIDE_VEHICLES = CustomGameRules.registerBoolean("mobsRideVehicles", true, GameRules.Category.MOBS);
-		PLANE_SPEED_PERCENT = CustomGameRules.registerInteger("planeSpeedPercent", 100, GameRules.Category.PLAYER);
 		VEHICLE_ARMOR_PERCENT = CustomGameRules.registerInteger("vehicleArmorStrengthPercent", 100, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("bulletDamageVehiclePercent", 100, GameRules.Category.PLAYER);
 		EXPLO_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("explosionDamageVehiclePercent", 300, GameRules.Category.PLAYER);
@@ -55,6 +55,8 @@ public class DSCGameRules {
 		DISABLE_3RD_PERSON_VEHICLE = CustomGameRules.registerSyncBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
 		PLANE_ARCADE_MODE = CustomGameRules.registerSyncBoolean("planeArcadeMode", false, GameRules.Category.PLAYER);
 		REMOVE_DEAD_VEHICLES_TIME = CustomGameRules.registerInteger("removeDeadVehiclesTime", -1, GameRules.Category.PLAYER);
+		WEAPONS_BREAK_BLOCKS = CustomGameRules.registerSyncBoolean("weaponsBreakBlocks", true, GameRules.Category.PLAYER);
+		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("vehicleTrample", true, GameRules.Category.PLAYER);
 	}
 
 	public static boolean isPlaneArcadeMode(Level level) {

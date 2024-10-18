@@ -24,6 +24,7 @@ public class ModTags {
 	public static class Blocks {
 		public static final TagKey<Block> FRAGILE = tag("fragile");
 		public static final TagKey<Block> ABSORBENT = tag("absorbent");
+		public static final TagKey<Block> VEHICLE_TRAMPLE = tag("vehicle_trample");
 		private static void init() {}
         public static TagKey<Block> tag(String name) {
         	return BlockTags.create(new ResourceLocation(DSCombatMod.MODID, name));

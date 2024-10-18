@@ -40,7 +40,8 @@
   "slots": [
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "itemid": "dscombat:seat",
+        "param": "eject"
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
@@ -51,7 +52,8 @@
     },
     {
       "data": {
-        "itemid": "dscombat:seat"
+        "itemid": "dscombat:seat",
+        "param": "eject"
       },
       "name": "copilot_seat",
       "slot_posx": 0.0,

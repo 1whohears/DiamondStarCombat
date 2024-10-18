@@ -22,8 +22,12 @@ public class DebugSlotPosCommand {
 				String slot_id = StringArgumentType.getString(context, "slot_id");
 				Vec3 rel_pos = Vec3Argument.getVec3(context, "rel_pos");
 				ServerPlayer player = context.getSource().getPlayer();
+				if (player == null) {
+					context.getSource().sendFailure(UtilMCText.translatable("error.dscombat.command_players_only"));
+					return 0;
+				}
 				if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) {
-					context.getSource().sendFailure(UtilMCText.literal("You must ride a vehicle to use this command!"));
+					context.getSource().sendFailure(UtilMCText.translatable("error.dscombat.command_must_ride_vehicle"));
 					return 0;
 				}
 				EntityPart part = vehicle.getPartBySlotId(slot_id);

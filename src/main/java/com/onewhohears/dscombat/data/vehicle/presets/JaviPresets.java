@@ -49,7 +49,7 @@ public class JaviPresets {
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId(), 1)
 			.addIngredient(ModItems.WHEEL.getId(), 3)
 			.addIngredient("minecraft:gold_ingot", 10)
-			.addPilotSeatSlot(0, 0.5, 6.34375)
+			.addPilotSeatSlot(0, 0.5, 6.34375, true)
 			.addEmptySlot("left_wing_1", SlotType.PYLON_HEAVY, 1.96875, -0.28125, 1, 180, "left_wing")
 			.addEmptySlot("left_wing_2", SlotType.PYLON_HEAVY, 4.25, -0.28125, 1, 180, "left_wing")
 			.addEmptySlot("left_wing_3", SlotType.PYLON_MED, 5.625, -0.28125, 1, 180, "left_wing") 

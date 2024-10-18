@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 
 import net.minecraft.world.entity.EntityType;
@@ -65,6 +66,11 @@ public class EntityGroundVehicle extends EntityVehicle {
 	@Override
 	public boolean canToggleLandingGear() {
 		return false;
+	}
+
+	@Override
+	public double getMaxSpeedFactor() {
+		return super.getMaxSpeedFactor() * Config.COMMON.carSpeedFactor.get();
 	}
 
 }

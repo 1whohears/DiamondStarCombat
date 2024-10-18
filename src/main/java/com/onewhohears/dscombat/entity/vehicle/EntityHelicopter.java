@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -114,6 +115,11 @@ public class EntityHelicopter extends EntityVehicle {
 	@Override
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
 		return amount * DSCGameRules.getBulletDamageHeliFactor(level);
+	}
+
+	@Override
+	public double getMaxSpeedFactor() {
+		return super.getMaxSpeedFactor() * Config.COMMON.heliSpeedFactor.get();
 	}
 
 }

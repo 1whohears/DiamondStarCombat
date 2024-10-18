@@ -14,8 +14,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
 public class EntityParachute extends Entity {
-	
-	public static final float DECELERATION_RATE = 0.15f;
+
+	public static final float UP_DECELERATION_RATE = 0.02f;
+	public static final float DOWN_DECELERATION_RATE = 0.15f;
 	public static final float FALL_SPEED = -0.2f;
 	
 	public EntityParachute(EntityType<?> type, Level level) {
@@ -35,7 +36,8 @@ public class EntityParachute extends Entity {
 	public void tickMovement() {
 		Vec3 move = getDeltaMovement();
 		float mx = Mth.approach((float)move.x, 0, 0.005f);
-		float my = Mth.approach((float)move.y, FALL_SPEED, DECELERATION_RATE);
+		float my = Mth.approach((float)move.y, FALL_SPEED,
+				move.y > 0 ? UP_DECELERATION_RATE : DOWN_DECELERATION_RATE);
 		float mz = Mth.approach((float)move.z, 0, 0.005f);
 		setDeltaMovement(new Vec3(mx, my, mz));
 	}
@@ -49,7 +51,6 @@ public class EntityParachute extends Entity {
 	private void tickLerp() {
 		if (isControlledByLocalInstance()) {
 			syncPacketPositionCodec(getX(), getY(), getZ());
-			return;
 		}
 	}
 	

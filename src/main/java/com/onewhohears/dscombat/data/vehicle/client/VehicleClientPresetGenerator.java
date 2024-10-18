@@ -248,7 +248,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int wood_middle_x = 118;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "wooden_plane")
-				.setCustomAnims(VehicleAnimsBuilder.create()
+				.setCustomAnims("wooden_plane", VehicleAnimsBuilder.create()
 						.addMotorRotPixelAnim("blade", 0, 0, 20, RotationAxis.Z, 30)
 						.addLandingGearPixelAnim("gear_front", 0, -6.5f, 4.5f, RotationAxis.X, 90)
 						.addLandingGearPixelAnim("gear_back", 0, -6f, -26.5f, RotationAxis.X, -90)

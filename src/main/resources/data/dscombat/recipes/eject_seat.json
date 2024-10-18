@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:gunpowder"
+        },
+        {
+            "item": "dscombat:seat"
+        },
+        {
+            "item": "dscombat:parachute"
+        }
+    ],
+    "result": {
+        "item": "dscombat:seat",
+        "nbt": "{parse_version:3,eject:1b,part:seat,presetId:seat,readnbt:1b}",
+        "count": 1
+    }
+}

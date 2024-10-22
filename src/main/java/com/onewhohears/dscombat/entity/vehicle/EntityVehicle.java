@@ -8,13 +8,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
-import net.minecraft.tags.BlockTags;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 

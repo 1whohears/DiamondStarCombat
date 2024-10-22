@@ -1,4 +1,6 @@
 {
-  "id": "scout",
-  "kitItems": []
+  "displayName": "preset.dscombat.scout",
+  "kitItems": [],
+  "presetId": "scout",
+  "presetType": "gamekit"
 }

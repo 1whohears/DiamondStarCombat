@@ -1,4 +1,6 @@
 {
-  "id": "heavy",
-  "kitItems": []
+  "displayName": "preset.dscombat.heavy",
+  "kitItems": [],
+  "presetId": "heavy",
+  "presetType": "gamekit"
 }

@@ -16,23 +16,23 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 	protected DSCKitGenerator(DataGenerator generator) {
 		super(generator);
 	}
-	
+
 	@Override
-	protected void registerKits() {
-		registerKit(GameKit.Builder.create(DSCombatMod.MODID, "scout")
-				
+	protected void registerPresets() {
+		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "scout")
+
 				.build());
-		registerKit(GameKit.Builder.create(DSCombatMod.MODID, "soldier")
-				
+		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "soldier")
+
 				.build());
-		registerKit(GameKit.Builder.create(DSCombatMod.MODID, "demoman")
-				
+		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "demoman")
+
 				.build());
-		registerKit(GameKit.Builder.create(DSCombatMod.MODID, "heavy")
-				
+		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "heavy")
+
 				.build());
-		registerKit(GameKit.Builder.create(DSCombatMod.MODID, "sniper")
-				
+		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "sniper")
+
 				.build());
 	}
 	

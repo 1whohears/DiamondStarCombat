@@ -1,4 +1,6 @@
 {
-  "id": "sniper",
-  "kitItems": []
+  "displayName": "preset.dscombat.sniper",
+  "kitItems": [],
+  "presetId": "sniper",
+  "presetType": "gamekit"
 }

@@ -17,16 +17,16 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 	protected DSCShopGenerator(DataGenerator generator) {
 		super(generator);
 	}
-	
+
 	@Override
-	protected void registerShops() {
+	protected void registerPresets() {
 		JsonObject felix_plane_support = new JsonObject();
 		felix_plane_support.addProperty("preset", "felix_plane_support");
 		JsonObject javi_plane_bomber = new JsonObject();
 		javi_plane_bomber.addProperty("preset", "javi_plane_bomber");
 		JsonObject alexis_plane_support = new JsonObject();
 		alexis_plane_support.addProperty("preset", "alexis_plane_support");
-		registerShop(GameShop.Builder.create(DSCombatMod.MODID, "attacker")
+		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "attacker")
 				.addProduct("dscombat:bronco_plane", "minigames:money", 8)
 				.addProduct("dscombat:noah_chopper", "minigames:money", 13)
 				.addProduct("dscombat:felix_plane", "minigames:money", 10)
@@ -40,7 +40,7 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 		javi_plane_truck.addProperty("preset", "javi_plane_truck");
 		JsonObject alexis_plane_sniper = new JsonObject();
 		alexis_plane_sniper.addProperty("preset", "alexis_plane_sniper");
-		registerShop(GameShop.Builder.create(DSCombatMod.MODID, "defender")
+		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "defender")
 				.addProduct("dscombat:small_roller", "minigames:money", 8)
 				.addProduct("dscombat:mrbudger_tank", "minigames:money", 11)
 				.addProduct("dscombat:axcel_truck", "minigames:money", 15)

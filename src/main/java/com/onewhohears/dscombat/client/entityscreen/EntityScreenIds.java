@@ -6,7 +6,7 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * must exist for safety between client and server side
- * @author 1whoh
+ * @author 1whohears
  */
 public class EntityScreenIds {
 	

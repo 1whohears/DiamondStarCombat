@@ -1,10 +1,5 @@
 package com.onewhohears.dscombat;
 
-import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
-import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
-import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
-import com.onewhohears.dscombat.client.screen.VehicleScreen;
-import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
@@ -33,12 +28,6 @@ import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.init.ModVillagers;
 
-import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
-import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.ControllableAnimPlayer;
-import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KFAnimPlayers;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -46,7 +35,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -93,7 +81,6 @@ public class DSCombatMod {
     	minigamesLoaded = ModList.get().isLoaded("minigames");
     	
     	eventBus.addListener(this::commonSetup);
-    	eventBus.addListener(this::clientSetup);
     	eventBus.addListener(this::onGatherData);
     }
     
@@ -103,30 +90,6 @@ public class DSCombatMod {
 		DependencySafety.fmlCommonSetup();
 		event.enqueueWork(ModVillagers::registerPOIs);
 	}
-    
-    private void clientSetup(FMLClientSetupEvent event) {
-    	MenuScreens.register(ModContainers.PLANE_MENU.get(), VehicleScreen::new);
-    	MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
-    	MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), VehicleBlockScreen::new);
-    	ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_SOURCE.get(), RenderType.translucent());
-    	ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_FLOWING.get(), RenderType.translucent());
-		CustomAnims.addAnim("input_bound_translation", VehicleModelTransforms.InputBoundTranslation::new);
-		CustomAnims.addAnim("motor_rotation", VehicleModelTransforms.MotorRotation::new);
-		CustomAnims.addAnim("wheel_rotation", VehicleModelTransforms.WheelRotation::new);
-		CustomAnims.addAnim("input_bound_rotation", VehicleModelTransforms.InputBoundRotation::new);
-		CustomAnims.addAnim("spinning_radar", VehicleModelTransforms.SpinningRadar::new);
-		CustomAnims.addAnim("landing_gear", VehicleModelTransforms.LandingGear::new);
-		CustomAnims.addAnim("hitbox_destroy_part", VehicleModelTransforms.HitboxDestroyPart::new);
-		CustomAnims.addAnim("plane_flap_rotation", VehicleModelTransforms.PlaneFlapRotation::new);
-		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot", (data) -> new ControllableAnimPlayer<>(data,
-				DSCAnimControl.TURRET_SHOOT_TRIGGER, DSCAnimControl.TURRET_SHOOT_CONTROL));
-		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot_loop", (data) -> new ControllableAnimPlayer<>(data,
-				DSCAnimControl.TURRET_SHOOT_LOOP_TRIGGER, DSCAnimControl.TURRET_SHOOT_LOOP_CONTROL));
-		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot_loop_end", (data) -> new ControllableAnimPlayer<>(data,
-				DSCAnimControl.TURRET_SHOOT_LOOP_END_TRIGGER, DSCAnimControl.TURRET_SHOOT_LOOP_END_CONTROL));
-		KFAnimPlayers.addAnimationPlayerFactory("vehicle_landing_gear", (data) -> new ControllableAnimPlayer<>(data,
-				DSCAnimControl.LANDING_GEAR_TRIGGER, DSCAnimControl.LANDING_GEAR_CONTROL));
-    }
     
     private void onGatherData(GatherDataEvent event) {
     	DataGenerator generator = event.getGenerator();

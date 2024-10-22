@@ -1,11 +1,12 @@
 package com.onewhohears.dscombat.client.event;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
+import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
+import com.onewhohears.dscombat.client.entityscreen.instance.*;
 import com.onewhohears.dscombat.client.input.DSCKeys;
-import com.onewhohears.dscombat.client.model.EntityModelParachute;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
-import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.client.model.obj.custom.AATurretModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BallRadarModel;
 import com.onewhohears.dscombat.client.model.obj.custom.BombRackModel;
@@ -23,6 +24,8 @@ import com.onewhohears.dscombat.client.model.obj.custom.SamLauncherModel;
 import com.onewhohears.dscombat.client.model.obj.custom.StickRadarModel;
 import com.onewhohears.dscombat.client.model.obj.custom.TorpedoTubesModel;
 import com.onewhohears.dscombat.client.model.obj.custom.VLSModel;
+import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
+import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBullet1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelGruetzBB;
@@ -40,8 +43,15 @@ import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
 import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
+import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
+import com.onewhohears.dscombat.client.screen.VehicleScreen;
+import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
+import com.onewhohears.dscombat.init.ModContainers;
+import com.onewhohears.dscombat.init.ModFluids;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
-import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
+import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.ControllableAnimPlayer;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KFAnimPlayers;
 import com.onewhohears.onewholibs.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.client.renderer.RendererObjVehicle;
 import com.onewhohears.dscombat.client.renderer.RendererObjWeapon;
@@ -50,9 +60,11 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModParticles;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -62,6 +74,7 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public final class ClientModEvents {
@@ -227,6 +240,61 @@ public final class ClientModEvents {
 		event.register(ModParticles.CONTRAIL.get(), ContrailParticle.Provider::new);
 		event.register(ModParticles.AFTER_BURNER.get(), AfterBurnerParticle.Provider::new);
 		event.register(ModParticles.FLARE.get(), FlareParticle.Provider::new);
+	}
+
+	@SubscribeEvent
+	public static void registerItemMenuScreens(FMLClientSetupEvent event) {
+		MenuScreens.register(ModContainers.PLANE_MENU.get(), VehicleScreen::new);
+		MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
+		MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), VehicleBlockScreen::new);
+	}
+
+	@SubscribeEvent
+	public static void registerCustomAnims(FMLClientSetupEvent event) {
+		CustomAnims.addAnim("input_bound_translation", VehicleModelTransforms.InputBoundTranslation::new);
+		CustomAnims.addAnim("motor_rotation", VehicleModelTransforms.MotorRotation::new);
+		CustomAnims.addAnim("wheel_rotation", VehicleModelTransforms.WheelRotation::new);
+		CustomAnims.addAnim("input_bound_rotation", VehicleModelTransforms.InputBoundRotation::new);
+		CustomAnims.addAnim("spinning_radar", VehicleModelTransforms.SpinningRadar::new);
+		CustomAnims.addAnim("landing_gear", VehicleModelTransforms.LandingGear::new);
+		CustomAnims.addAnim("hitbox_destroy_part", VehicleModelTransforms.HitboxDestroyPart::new);
+		CustomAnims.addAnim("plane_flap_rotation", VehicleModelTransforms.PlaneFlapRotation::new);
+	}
+
+	@SubscribeEvent
+	public static void registerKeyframeAnimationPlayers(FMLClientSetupEvent event) {
+		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot", (data) -> new ControllableAnimPlayer<>(data,
+				DSCAnimControl.TURRET_SHOOT_TRIGGER, DSCAnimControl.TURRET_SHOOT_CONTROL));
+		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot_loop", (data) -> new ControllableAnimPlayer<>(data,
+				DSCAnimControl.TURRET_SHOOT_LOOP_TRIGGER, DSCAnimControl.TURRET_SHOOT_LOOP_CONTROL));
+		KFAnimPlayers.addAnimationPlayerFactory("turret_shoot_loop_end", (data) -> new ControllableAnimPlayer<>(data,
+				DSCAnimControl.TURRET_SHOOT_LOOP_END_TRIGGER, DSCAnimControl.TURRET_SHOOT_LOOP_END_CONTROL));
+		KFAnimPlayers.addAnimationPlayerFactory("vehicle_landing_gear", (data) -> new ControllableAnimPlayer<>(data,
+				DSCAnimControl.LANDING_GEAR_TRIGGER, DSCAnimControl.LANDING_GEAR_CONTROL));
+	}
+
+	@SubscribeEvent
+	public static void setFluidRenderLayer(FMLClientSetupEvent event) {
+		ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_SOURCE.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_FLOWING.get(), RenderType.translucent());
+	}
+
+	@SubscribeEvent
+	public static void registerEntityScreens(FMLClientSetupEvent event) {
+		// TODO 1.0 make a big radar screen for boats, ground vehicles (axcel truck), and stationary radars
+		EntityScreenTypes.addScreenType(EntityScreenIds.AIR_RADAR_SCREEN, AirRadarScreenInstance::new, "00FFFF");
+		EntityScreenTypes.addScreenType(EntityScreenIds.GROUND_RADAR_SCREEN, GroundRadarScreenInstance::new, "4CFF00");
+		EntityScreenTypes.addScreenType(EntityScreenIds.FUEL_SCREEN, FuelScreenInstance::new, "7F0000");
+		// TODO 1.2 what to do with hud screen?
+		EntityScreenTypes.addScreenType(EntityScreenIds.HUD_SCREEN, HudScreenInstance::new, "");
+		EntityScreenTypes.addScreenType(EntityScreenIds.RWR_SCREEN, RWRScreenInstance::new, "FF00DC");
+		EntityScreenTypes.addScreenType(EntityScreenIds.HEADING_SCREEN, HeadingScreenInstance::new, "0026FF");
+		// TODO 1.6.1 create turn coordinator screen
+		// TODO 1.6.2 create attitude indicator screen
+		// TODO 1.6.3 create aoa meter screen
+		// TODO 1.7 create altitude screen
+		EntityScreenTypes.addScreenType(EntityScreenIds.AIR_SPEED_SCREEN, SpeedScreenInstance::new, "FFD800");
+		// TODO 1.9 create vertical speed screen
 	}
 	
 }

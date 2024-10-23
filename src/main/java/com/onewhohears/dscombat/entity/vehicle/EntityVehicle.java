@@ -23,7 +23,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
+import com.onewhohears.dscombat.common.container.menu.VehiclePartsMenu;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
@@ -1215,7 +1215,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (controller == null) return;
 			boolean consume = !isNoConsume();
 			if (controller instanceof ServerPlayer player) {
-				if (inputs.openMenu) openMenu(player);
+				if (inputs.openMenu) openPartsMenu(player);
 				if (player.isCreative()) consume = false;
 			}
 			boolean consumeFuel = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
@@ -1228,19 +1228,19 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		}
 	}
 	
-	public void openMenu(ServerPlayer player) {
-		if (!canOpenMenu()) {
+	public void openPartsMenu(ServerPlayer player) {
+		if (!canOpenPartsMenu()) {
 			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
 			return;
 		}
 		NetworkHooks.openScreen(player, 
 			new SimpleMenuProvider((windowId, playerInv, p) -> 
-				new VehicleContainerMenu(windowId, playerInv), 
+				new VehiclePartsMenu(windowId, playerInv),
 				UtilMCText.translatable("container.dscombat.plane_menu")));
 	}
 	
 	public void openStorage(ServerPlayer player) {
-		if (!canOpenMenu()) {
+		if (!canOpenPartsMenu()) {
 			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
 			return;
 		}
@@ -1255,7 +1255,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				UtilMCText.translatable("container.dscombat.vehicle_storage")));
 	}
 	
-	public boolean canOpenMenu() {
+	public boolean canOpenPartsMenu() {
 		return (isOnGround() && xzSpeed < 0.1) || isTestMode();
 	}
 	

@@ -4,7 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.block.entity.VehicleBlock;
 import com.onewhohears.dscombat.block.entity.WeaponsBlockEntity;
 import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
-import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
+import com.onewhohears.dscombat.common.container.menu.VehiclePartsMenu;
 import com.onewhohears.dscombat.common.container.menu.WeaponsBlockContainerMenu;
 
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -23,8 +23,8 @@ public class ModContainers {
 		CONTAINERS.register(eventBus);
     }
 	
-	public static final RegistryObject<MenuType<VehicleContainerMenu>> PLANE_MENU = 
-			register("plane_menu", VehicleContainerMenu::new);
+	public static final RegistryObject<MenuType<VehiclePartsMenu>> VEHICLE_PARTS_MENU =
+			register("vehicle_parts_menu", VehiclePartsMenu::new);
 	public static final RegistryObject<MenuType<WeaponsBlockContainerMenu>> WEAPONS_BLOCK_MENU = 
 			register("weapons_block_menu", (IContainerFactory<WeaponsBlockContainerMenu>) (windowId, playerInv, data) -> {
 				WeaponsBlockEntity weaponsBlock = (WeaponsBlockEntity)playerInv.player.level.getBlockEntity(data.readBlockPos());

@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager.BlendMode;
+import com.onewhohears.onewholibs.client.screen.BackgroundScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -15,8 +16,9 @@ import net.minecraft.client.gui.components.CycleButton.OnValueChange;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
-public class VehiclePaintScreen extends Screen {
+public class VehiclePaintScreen extends BackgroundScreen {
 	
 	public static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/paintjob_screen.png");
@@ -25,18 +27,16 @@ public class VehiclePaintScreen extends Screen {
 	private static final int textureSize = 256;
 	
 	public final VehicleTextureManager textures;
-	protected int guiX, guiY;
 	
 	public VehiclePaintScreen(VehicleTextureManager textures) {
-		super(UtilMCText.literal("Vehicle Paint Job"));
+		super("screen.dscombat.vehicle_paint_screen", BG_TEXTURE,
+				imageWidth, imageHeight, textureSize, textureSize);
 		this.textures = textures;
 	}
 	
 	@Override
 	protected void init() {
 		super.init();
-		guiX = width/2-imageWidth/2;
-		guiY = height/2-imageHeight/2;
 		int widgetX = guiX + 4, widgetY = guiY + 4;
 		addRenderableWidget(CycleButton.<Integer>builder((base) -> UtilMCText.literal(base+""))
 				.withValues(count(textures.getBaseTextureNum()))
@@ -92,13 +92,13 @@ public class VehiclePaintScreen extends Screen {
 	}
 	
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+	public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
 		renderBackground(poseStack);
 		super.render(poseStack, mouseX, mouseY, partialTick);
 	}
 	
 	@Override
-	public void renderBackground(PoseStack poseStack, int vOffset) {
+	public void renderBackground(@NotNull PoseStack poseStack, int vOffset) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
 		blit(poseStack, guiX, guiY, 0, 0, 

@@ -13,6 +13,9 @@
 	"ui.dscombat.ingredients": "Materials",
 	"ui.dscombat.no_weapon": "SAFETY",
 	
+	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
+	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",
+	
 	"error.dscombat.no_menu_in_air": "Can't open vehicle menu while flying!",
 	"error.dscombat.no_menu_moving": "Can't open vehicle menu while moving!",
 	"error.dscombat.no_open_seats": "No Open Seats",
@@ -185,7 +188,7 @@
 	"block.dscombat.aircraft_block": "Vehicle Workbench",
 	"block.dscombat.aluminum_block": "Aluminum Block",
 	
-	"container.dscombat.plane_menu": "Vehicle Menu",
+	"container.dscombat.vehicle_parts_menu": "Vehicle Parts",
 	"container.dscombat.vehicle_storage": "Vehicle Storage",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",
 	"container.dscombat.aircraft_block_menu": "Vehicle Workbench",

@@ -7,7 +7,7 @@ import java.util.Optional;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
+import com.onewhohears.dscombat.common.container.menu.VehiclePartsMenu;
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleToItem;
@@ -25,12 +25,12 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
-public class VehicleScreen extends AbstractContainerScreen<VehicleContainerMenu> {
+public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu> {
 	
 	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/aircraft_screen.png");
 	
-	public VehicleScreen(VehicleContainerMenu pMenu, Inventory pPlayerInventory, Component title) {
+	public VehiclePartsScreen(VehiclePartsMenu pMenu, Inventory pPlayerInventory, Component title) {
 		super(pMenu, pPlayerInventory, title);
 		this.leftPos = 0;
 		this.topPos = 0;
@@ -116,7 +116,7 @@ public class VehicleScreen extends AbstractContainerScreen<VehicleContainerMenu>
 		getItemButton.y = this.getGuiTop() + titleLabelY+110;
 		this.addRenderableWidget(getItemButton);
 	}
-	
+
 	@Override
 	public void containerTick() {
 		super.containerTick();
@@ -136,22 +136,7 @@ public class VehicleScreen extends AbstractContainerScreen<VehicleContainerMenu>
 			return;
 		}
 	}
-	
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-		return super.mouseScrolled(mouseX, mouseY, scroll);
-	}
-	
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		return super.mouseClicked(mouseX, mouseY, button);
-	}
-	
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		return super.mouseReleased(mouseX, mouseY, button);
-	}
-	
+
 	private void onPlaneItemButton() {
 		Minecraft m = Minecraft.getInstance();
 		Entity rv = m.player.getRootVehicle();

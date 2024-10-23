@@ -16,14 +16,14 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class VehicleContainerMenu extends AbstractContainerMenu {
+public class VehiclePartsMenu extends AbstractContainerMenu {
 	
 	private Container playerInv;
 	private Container planeInv;
 	private VehicleClientStats clientData;
 	
-	public VehicleContainerMenu(int id, Inventory playerInv) {
-		super(ModContainers.PLANE_MENU.get(), id);
+	public VehiclePartsMenu(int id, Inventory playerInv) {
+		super(ModContainers.VEHICLE_PARTS_MENU.get(), id);
 		//System.out.println("VehicleContainerMenu client side "+playerInv.player.level.isClientSide);
 		this.playerInv = playerInv;
 		// display plane parts

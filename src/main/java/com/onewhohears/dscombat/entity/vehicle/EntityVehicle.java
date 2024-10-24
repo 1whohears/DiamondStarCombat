@@ -1226,32 +1226,31 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			}
 		}
 	}
-	
+
 	public void openPartsMenu(ServerPlayer player) {
 		if (!canOpenPartsMenu()) {
 			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
 			return;
 		}
-		NetworkHooks.openScreen(player, 
-			new SimpleMenuProvider((windowId, playerInv, p) -> 
+		NetworkHooks.openScreen(player, new SimpleMenuProvider((windowId, playerInv, p) ->
 				new VehiclePartsMenu(windowId, playerInv),
-				UtilMCText.translatable("container.dscombat.plane_menu")));
+				UtilMCText.translatable("screen.dscombat.vehicle_parts_screen")));
 	}
-	
-	public void openStorage(ServerPlayer player) {
+
+	public void openStorage(ServerPlayer player, int index) {
 		if (!canOpenPartsMenu()) {
 			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
 			return;
 		}
-		StorageInstance<?> box = partsManager.cycleStorageData();
+		StorageInstance<?> box = partsManager.getStorageData(index);
 		if (box == null) {
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.no_storage_boxes"), true);
 			return;
 		}
-		NetworkHooks.openScreen(player, 
-			new SimpleMenuProvider((windowId, playerInventory, p) -> 
-				box.createMenu(windowId, playerInventory), 
-				UtilMCText.translatable("container.dscombat.vehicle_storage")));
+		NetworkHooks.openScreen(player, new SimpleMenuProvider((windowId, playerInventory, p) ->
+						box.createMenu(windowId, playerInventory),
+						UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen")),
+				(buff) -> buff.writeInt(partsManager.getStorageIndex()));
 	}
 	
 	public boolean canOpenPartsMenu() {

@@ -16,23 +16,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleFuel;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
-import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
-import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
-import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
-import com.onewhohears.dscombat.common.network.toserver.ToServerFixHitboxes;
-import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
-import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
-import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSetRadarMode;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSyncRotBoxPassengerPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleToItem;
+import com.onewhohears.dscombat.common.network.toserver.*;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -217,6 +201,11 @@ public final class PacketHandler {
 			.decoder(ToServerFixHitboxes::new)
 			.consumerMainThread(ToServerFixHitboxes::handle)
 			.add();
+		net.messageBuilder(ToServerOpenParts.class, index++, NetworkDirection.PLAY_TO_SERVER)
+				.encoder(ToServerOpenParts::encode)
+				.decoder(ToServerOpenParts::new)
+				.consumerMainThread(ToServerOpenParts::handle)
+				.add();
 	}
 	
 }

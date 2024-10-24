@@ -454,11 +454,19 @@ public class PartsManager {
 				return true;
 		return false;
 	}
-	
-	public boolean hasStorageBoxes() {
-		return getStorageBoxes().size() > 0;
+
+	public int getStorageIndex() {
+		return storageIndex;
 	}
-	
+
+	public boolean hasStorageBoxes() {
+		return !getStorageBoxes().isEmpty();
+	}
+
+	public int getStorageBoxesNum() {
+		return getStorageBoxes().size();
+	}
+
 	public List<StorageInstance<?>> getStorageBoxes() {
 		List<StorageInstance<?>> list = new ArrayList<>();
 		for (PartSlot p : slots) 
@@ -466,11 +474,26 @@ public class PartsManager {
 				list.add((StorageInstance<?>) p.getPartData());
 		return list;
 	}
+
+	@Nullable
+	public StorageInstance<?> getStorageData(int index) {
+		List<StorageInstance<?>> boxes = getStorageBoxes();
+		if (boxes.isEmpty()) {
+			storageIndex = -1;
+			return null;
+		}
+		storageIndex = index;
+		if (storageIndex <= -1)
+			storageIndex = boxes.size()-1;
+		else if (storageIndex >= boxes.size())
+			storageIndex = 0;
+		return boxes.get(storageIndex);
+	}
 	
 	@Nullable
 	public StorageInstance<?> cycleStorageData() {
 		List<StorageInstance<?>> boxes = getStorageBoxes();
-		if (boxes.size() == 0) {
+		if (boxes.isEmpty()) {
 			storageIndex = -1;
 			return null;
 		} else if (storageIndex == -1 || storageIndex >= boxes.size()-1) {

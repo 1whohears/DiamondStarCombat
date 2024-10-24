@@ -109,12 +109,12 @@ public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu
 	@Override
 	protected void init() {
 		super.init();
-		Button getItemButton = new Button(0, 0, 60, 20, 
-				UtilMCText.translatable("ui.dscombat.shrink_plane_button"), 
-				onPress -> { onPlaneItemButton(); });
-		getItemButton.x = this.getGuiLeft() + titleLabelX+144;
-		getItemButton.y = this.getGuiTop() + titleLabelY+110;
-		this.addRenderableWidget(getItemButton);
+		Button backButton = new Button(0, 0, 60, 20,
+				UtilMCText.translatable("ui.dscombat.back"),
+				onPress -> { getMinecraft().setScreen(new VehicleMainScreen()); });
+		backButton.x = getGuiLeft() + titleLabelX+144;
+		backButton.y = getGuiTop() + titleLabelY+110;
+		addRenderableWidget(backButton);
 	}
 
 	@Override
@@ -135,12 +135,6 @@ public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu
 			m.setScreen(null);
 			return;
 		}
-	}
-
-	private void onPlaneItemButton() {
-		Minecraft m = Minecraft.getInstance();
-		Entity rv = m.player.getRootVehicle();
-		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleToItem(rv.getId()));
 	}
 
 }

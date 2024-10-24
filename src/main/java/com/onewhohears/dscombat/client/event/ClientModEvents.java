@@ -45,6 +45,7 @@ import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
 import com.onewhohears.dscombat.client.screen.VehiclePartsScreen;
+import com.onewhohears.dscombat.client.screen.VehicleStorageScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModFluids;
@@ -247,6 +248,13 @@ public final class ClientModEvents {
 		MenuScreens.register(ModContainers.VEHICLE_PARTS_MENU.get(), VehiclePartsScreen::new);
 		MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
 		MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), VehicleBlockScreen::new);
+		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x0.get(), VehicleStorageScreen::new);
+		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x1.get(), VehicleStorageScreen::new);
+		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x2.get(), VehicleStorageScreen::new);
+		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x3.get(), VehicleStorageScreen::new);
+		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x4.get(), VehicleStorageScreen::new);
+		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x5.get(), VehicleStorageScreen::new);
+		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x6.get(), VehicleStorageScreen::new);
 	}
 
 	@SubscribeEvent

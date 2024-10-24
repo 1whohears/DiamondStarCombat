@@ -6,9 +6,9 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
-import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSetRadarMode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
@@ -52,8 +52,7 @@ public final class ClientInputEvents {
 		if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle plane)) return;
 		Entity controller = plane.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
-		
-		boolean openMenu = DSCKeys.vehicleMenuKey.consumeClick();
+
 		boolean toggleGear = DSCKeys.landingGear.consumeClick();
 		if (DSCKeys.mouseModeKey.consumeClick()) DSCClientInputs.cycleMouseMode();
 		if (DSCKeys.resetMouseKey.isDown()) DSCClientInputs.centerMousePos();
@@ -138,7 +137,7 @@ public final class ClientInputEvents {
 		if (throttleDown) throttle -= 1;
 		plane.inputs.clientPilotControlsToServer(plane, 
 				throttle, pitch, roll, yaw, 
-				flare, openMenu, special, special2, 
+				flare, false, special, special2,
 				rollLeft && rollRight, toggleGear,
 				DSCClientInputs.isCameraLockedForward());
 		if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
@@ -233,9 +232,9 @@ public final class ClientInputEvents {
 		if (DSCKeys.gimbalKey.consumeClick()) {
 			DSCClientInputs.toggleGimbalMode();
 		}
-		// OPEN STORAGE
-		if (DSCKeys.vehicleStorageKey.consumeClick()) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerOpenStorage());
+		// OPEN VEHICLE MENU
+		if (DSCKeys.vehicleMenuKey.consumeClick()) {
+			m.setScreen(new VehicleMainScreen());
 		}
 	}
 	

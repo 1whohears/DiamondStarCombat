@@ -14,7 +14,7 @@ import net.minecraft.network.FriendlyByteBuf;
  */
 public class VehicleInputManager {
 	
-	public boolean flare, openMenu;
+	public boolean flare, chaff;
 	public boolean special, special2, bothRoll;
 	public float throttle, pitch, roll, yaw;
 	
@@ -32,7 +32,7 @@ public class VehicleInputManager {
 	
 	public void clientPilotControlsToServer(EntityVehicle parent, 
 			float throttle, float pitch, float roll, float yaw,
-			boolean flare, boolean openMenu, 
+			boolean flare, boolean chaff,
 			boolean special, boolean special2, boolean bothRoll,
 			boolean toggleGear, boolean isDriverCameraLocked) {
 		this.throttle = throttle;
@@ -40,7 +40,7 @@ public class VehicleInputManager {
 		this.roll = roll;
 		this.yaw = yaw;
 		this.flare = flare;
-		this.openMenu = openMenu;
+		this.chaff = chaff;
 		this.special = special;
 		this.special2 = special2;
 		this.bothRoll = bothRoll;
@@ -56,7 +56,7 @@ public class VehicleInputManager {
 	public void updateInputsFromPacket(VehicleInputManager other, EntityVehicle parent) {
 		// raw inputs
 		this.flare = other.flare;
-		this.openMenu = other.openMenu;
+		this.chaff = other.chaff;
 		this.special = other.special;
 		this.special2 = other.special2;
 		this.throttle = other.throttle;
@@ -81,7 +81,7 @@ public class VehicleInputManager {
 		this.roll = 0;
 		this.yaw = 0;
 		this.flare = false;
-		this.openMenu = false;
+		this.chaff = false;
 		this.special = false;
 		this.special2 = false;
 		this.bothRoll = false;
@@ -95,7 +95,7 @@ public class VehicleInputManager {
 		buffer.writeFloat(roll);
 		buffer.writeFloat(yaw);
 		buffer.writeBoolean(flare);
-		buffer.writeBoolean(openMenu);
+		buffer.writeBoolean(chaff);
 		buffer.writeBoolean(special);
 		buffer.writeBoolean(special2);
 		buffer.writeBoolean(bothRoll);
@@ -113,7 +113,7 @@ public class VehicleInputManager {
 		roll = buffer.readFloat();
 		yaw = buffer.readFloat();
 		flare = buffer.readBoolean();
-		openMenu = buffer.readBoolean();
+		chaff = buffer.readBoolean();
 		special = buffer.readBoolean();
 		special2 = buffer.readBoolean();
 		bothRoll = buffer.readBoolean();

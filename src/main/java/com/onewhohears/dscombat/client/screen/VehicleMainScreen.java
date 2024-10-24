@@ -1,10 +1,13 @@
 package com.onewhohears.dscombat.client.screen;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.onewholibs.client.screen.BackgroundScreen;
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.resources.ResourceLocation;
 
-public class VehicleMainScreen extends BackgroundScreen {
+public class VehicleMainScreen extends VehicleScreen {
 
     public static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/vehicle_main_screen.png");
@@ -20,6 +23,41 @@ public class VehicleMainScreen extends BackgroundScreen {
     @Override
     protected void init() {
         super.init();
+        int index = 0;
+        // Vehicle Name
+
+        // Open Storage Inventory
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen"),
+                        onPress -> { PacketHandler.INSTANCE.sendToServer(new ToServerOpenStorage()); }),
+                ROWS, COLUMNS, index++, 2);
+        // Open Parts Screen
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_parts_screen"),
+                        onPress -> { getMinecraft().setScreen(new VehicleHealthScreen()); }),
+                ROWS, COLUMNS, index++, 2);
+        // Open Parts/Weapons Reload Screen
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_reload_screen"),
+                        onPress -> { getMinecraft().setScreen(new VehicleHealthScreen()); }),
+                ROWS, COLUMNS, index++, 2);
+        // Open Jetesin Parts Screen
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_jetesin_screen"),
+                        onPress -> { getMinecraft().setScreen(new VehicleHealthScreen()); }),
+                ROWS, COLUMNS, index++, 2);
+        // Open Vehicle Health Screen
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_health_screen"),
+                        onPress -> { getMinecraft().setScreen(new VehicleHealthScreen()); }),
+                ROWS, COLUMNS, index++, 2);
+        // Open Weapon Settings Screen (Weapon Select, Radar Settings)
+
+        // Open Keybinds screen (include option to display reminder on top left)
+
+        // Landing Gear Toggle
+
+        // Cycle Vehicle Permission Mode
 
     }
 

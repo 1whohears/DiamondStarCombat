@@ -89,9 +89,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.mouseModeKey,
 				!DSCClientInputs.getMouseMode().isLockedForward(), DSCClientInputs.getMouseMode().name());
 		// OPEN PLANE MENU
-		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleMenuKey);
-		// OPEN PLANE STORAGE
-		if (vehicle.partsManager.hasStorageBoxes()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleStorageKey);
+		displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleMenuKey);
 		// DISMOUNT
 		if (Config.CLIENT.customDismount.get()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.dismount);
 		// EJECT

@@ -1215,7 +1215,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (controller == null) return;
 			boolean consume = !isNoConsume();
 			if (controller instanceof ServerPlayer player) {
-				if (inputs.openMenu) openPartsMenu(player);
 				if (player.isCreative()) consume = false;
 			}
 			boolean consumeFuel = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);

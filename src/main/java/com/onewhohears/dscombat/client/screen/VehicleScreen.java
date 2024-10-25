@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.client.screen.BackgroundScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -55,5 +56,8 @@ public abstract class VehicleScreen extends BackgroundScreen {
         super.renderBackground(poseStack);
         if (!infoText.isEmpty()) getMinecraft().font.draw(poseStack,
                 UtilMCText.translatable(infoText), guiX+left_padding, guiY+top_padding, infoColor);
+    }
+    public static void sendSyncAction(VehicleSyncAction action) {
+        VehicleSyncAction.sendSyncAction(action);
     }
 }

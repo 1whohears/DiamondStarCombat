@@ -2,14 +2,12 @@ package com.onewhohears.dscombat.client.screen;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerOpenParts;
-import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
+import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleToItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 
 public class VehicleMainScreen extends VehicleScreen {
 
@@ -33,34 +31,44 @@ public class VehicleMainScreen extends VehicleScreen {
         // Open Storage Inventory
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen"),
-                        onPress -> { PacketHandler.INSTANCE.sendToServer(new ToServerOpenStorage(0)); }),
+                        onPress -> sendSyncAction(new VehicleSyncAction.OpenStorageAction(0))),
                 ROWS, COLUMNS, index++, 2);
         // Open Parts Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_parts_screen"),
-                        onPress -> { PacketHandler.INSTANCE.sendToServer(new ToServerOpenParts()); }),
+                        onPress -> sendSyncAction(new VehicleSyncAction.OpenPartsAction())),
                 ROWS, COLUMNS, index++, 2);
         // Open Parts/Weapons Reload Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_reload_screen"),
-                        onPress -> { getMinecraft().setScreen(new VehicleHealthScreen()); }),
+                        onPress -> getMinecraft().setScreen(new VehicleReloadScreen())),
                 ROWS, COLUMNS, index++, 2);
         // Open Jetesin Parts Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_jetesin_screen"),
-                        onPress -> { getMinecraft().setScreen(new VehicleHealthScreen()); }),
+                        onPress -> getMinecraft().setScreen(new VehicleJetesinScreen())),
                 ROWS, COLUMNS, index++, 2);
         // Open Vehicle Health Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_health_screen"),
-                        onPress -> { getMinecraft().setScreen(new VehicleHealthScreen()); }),
+                        onPress -> getMinecraft().setScreen(new VehicleHealthScreen())),
                 ROWS, COLUMNS, index++, 2);
         // Open Weapon Settings Screen (Weapon Select, Radar Settings)
-
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_weapon_screen"),
+                        onPress -> getMinecraft().setScreen(new VehicleWeaponScreen())),
+                ROWS, COLUMNS, index++, 2);
         // Open Keybinds screen (include option to display reminder on top left)
-
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_keybinds_screen"),
+                        onPress -> getMinecraft().setScreen(new VehicleKeybindScreen())),
+                ROWS, COLUMNS, index++, 2);
         // Landing Gear Toggle
-
+        positionWidgetGrid(CycleButton.onOffBuilder(getVehicle().isLandingGear())
+                        .create(0, 0, 20, 20,
+                                UtilMCText.translatable("ui.dscombat.landing_gear"),
+                                (button, value) -> sendSyncAction(new VehicleSyncAction.LandingGearAction(value))),
+                ROWS, COLUMNS, index++, 2);
         // Cycle Vehicle Permission Mode
 
         // Turn Vehicle to Item

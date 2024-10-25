@@ -79,17 +79,9 @@ public class DSCombatMod {
     	ModTags.init();
     	
     	minigamesLoaded = ModList.get().isLoaded("minigames");
-    	
-    	eventBus.addListener(this::commonSetup);
+
     	eventBus.addListener(this::onGatherData);
     }
-    
-    private void commonSetup(FMLCommonSetupEvent event) {
-		PacketHandler.register();
-		DSCGameRules.registerAll();
-		DependencySafety.fmlCommonSetup();
-		event.enqueueWork(ModVillagers::registerPOIs);
-	}
     
     private void onGatherData(GatherDataEvent event) {
     	DataGenerator generator = event.getGenerator();

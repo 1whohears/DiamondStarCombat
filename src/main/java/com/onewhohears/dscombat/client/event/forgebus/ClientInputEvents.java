@@ -7,6 +7,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
+import com.onewhohears.dscombat.client.screen.VehicleScreen;
+import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
@@ -49,11 +51,10 @@ public final class ClientInputEvents {
 		Minecraft mc = Minecraft.getInstance();
 		final var player = mc.player;
 		if (player == null) return;
-		if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle plane)) return;
-		Entity controller = plane.getControllingPassenger();
+		if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+		Entity controller = vehicle.getControllingPassenger();
 		if (controller == null || !controller.equals(player)) return;
 
-		boolean toggleGear = DSCKeys.landingGear.consumeClick();
 		if (DSCKeys.mouseModeKey.consumeClick()) DSCClientInputs.cycleMouseMode();
 		if (DSCKeys.resetMouseKey.isDown()) DSCClientInputs.centerMousePos();
 		else if (mc.screen != null) DSCClientInputs.centerMousePos();
@@ -79,7 +80,7 @@ public final class ClientInputEvents {
 			rollRight = DSCKeys.rollRightKey.isDown();
 		}
 		// should pitch/throttle flip
-		boolean type_flip = plane.getStats().flipPitchThrottle();
+		boolean type_flip = vehicle.getStats().flipPitchThrottle();
 		boolean mode = DSCClientInputs.isCameraLockedForward();
 		if ((!type_flip && (flip ^ mode)) || (type_flip && !flip)) {
 			pitchUp = DSCKeys.throttleUpKey.isDown();
@@ -94,7 +95,7 @@ public final class ClientInputEvents {
 		}
 		// should invert
 		int invertY = Config.CLIENT.invertY.get() ? -1 : 1;
-		if (plane.getStats().ignoreInvertY()) invertY = -1;
+		if (vehicle.getStats().ignoreInvertY()) invertY = -1;
 		if (DSCClientInputs.isCameraLockedForward()) {
 			// FIXME 2.1 fix mouse control mode
 			double ya = Math.abs(mouseY);
@@ -135,12 +136,15 @@ public final class ClientInputEvents {
 		if (rollRight) roll += 1;
 		if (throttleUp) throttle += 1;
 		if (throttleDown) throttle -= 1;
-		plane.inputs.clientPilotControlsToServer(plane, 
+		vehicle.inputs.clientPilotControlsToServer(vehicle,
 				throttle, pitch, roll, yaw, 
 				flare, false, special, special2,
-				rollLeft && rollRight, toggleGear,
+				rollLeft && rollRight,
 				DSCClientInputs.isCameraLockedForward());
 		if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
+		if (DSCKeys.landingGear.consumeClick()) {
+			VehicleScreen.sendSyncAction(new VehicleSyncAction.LandingGearAction(vehicle.toggleLandingGear()));
+		}
 	}
 	
 	private static int leftTicks = 0;

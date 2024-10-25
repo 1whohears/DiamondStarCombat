@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.client.screen;
 
-import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
+import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.Minecraft;
@@ -36,7 +35,7 @@ public class VehicleStorageScreen extends ContainerScreen {
                 UtilMCText.literal("<-"), onPress -> {
                     --index;
                     fixIndex();
-                    PacketHandler.INSTANCE.sendToServer(new ToServerOpenStorage(index));
+                    VehicleScreen.sendSyncAction(new VehicleSyncAction.OpenStorageAction(index));
                 });
         leftButton.x = leftPos + 133;
         leftButton.y = topPos - 20;
@@ -46,7 +45,7 @@ public class VehicleStorageScreen extends ContainerScreen {
                 UtilMCText.literal("->"), onPress -> {
                     ++index;
                     fixIndex();
-                    PacketHandler.INSTANCE.sendToServer(new ToServerOpenStorage(index));
+                    VehicleScreen.sendSyncAction(new VehicleSyncAction.OpenStorageAction(index));
                 });
         rightButton.x = leftPos + 153;
         rightButton.y = topPos - 20;

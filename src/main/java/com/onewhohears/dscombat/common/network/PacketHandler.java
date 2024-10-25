@@ -161,11 +161,6 @@ public final class PacketHandler {
 			.decoder(ToClientDelayedSound::new)
 			.consumerMainThread(ToClientDelayedSound::handle)
 			.add();
-		net.messageBuilder(ToServerOpenStorage.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerOpenStorage::encode)
-			.decoder(ToServerOpenStorage::new)
-			.consumerMainThread(ToServerOpenStorage::handle)
-			.add();
 		net.messageBuilder(ToClientVehicleChainUpdate.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientVehicleChainUpdate::encode)
 			.decoder(ToClientVehicleChainUpdate::new)
@@ -201,10 +196,10 @@ public final class PacketHandler {
 			.decoder(ToServerFixHitboxes::new)
 			.consumerMainThread(ToServerFixHitboxes::handle)
 			.add();
-		net.messageBuilder(ToServerOpenParts.class, index++, NetworkDirection.PLAY_TO_SERVER)
-				.encoder(ToServerOpenParts::encode)
-				.decoder(ToServerOpenParts::new)
-				.consumerMainThread(ToServerOpenParts::handle)
+		net.messageBuilder(ToServerVehicleSyncAction.class, index++, NetworkDirection.PLAY_TO_SERVER)
+				.encoder(ToServerVehicleSyncAction::encode)
+				.decoder(ToServerVehicleSyncAction::new)
+				.consumerMainThread(ToServerVehicleSyncAction::handle)
 				.add();
 	}
 	

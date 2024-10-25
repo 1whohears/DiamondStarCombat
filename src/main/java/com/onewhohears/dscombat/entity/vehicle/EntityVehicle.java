@@ -133,6 +133,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
+	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final int HITBOX_PUSH_COOLDOWN = 4;
 	
@@ -189,7 +190,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
 	
-	protected boolean isLandingGear, isDriverCameraLocked = false;
+	protected boolean isDriverCameraLocked = false;
 	protected float throttle;
 	
 	@Nullable protected EntityGimbal pilotGimbal;
@@ -231,6 +232,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(RADIO_SONG, "");
 		entityData.define(PLAY_IR_TONE, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL);
+		entityData.define(LANDING_GEAR, true);
 	}
 	
 	@Override
@@ -2548,14 +2550,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @return true if landing gear is out false if folded
      */
     public boolean isLandingGear() {
-    	return isLandingGear;
+    	return entityData.get(LANDING_GEAR);
     }
     
     /**
      * @param gear true if landing gear is out false if folded
      */
     public void setLandingGear(boolean gear) {
-    	this.isLandingGear = gear;
+		entityData.set(LANDING_GEAR, gear);
     }
     
     /**
@@ -2572,9 +2574,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	entityData.set(TEST_MODE, testMode);
     }
     
-    public void toggleLandingGear() {
-    	if (!canToggleLandingGear()) return;
+    public boolean toggleLandingGear() {
+    	if (!canToggleLandingGear()) return isLandingGear();
     	setLandingGear(!isLandingGear());
+		return isLandingGear();
     }
     
     /**

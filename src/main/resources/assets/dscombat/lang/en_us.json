@@ -13,6 +13,7 @@
 	"ui.dscombat.ingredients": "Materials",
 	"ui.dscombat.no_weapon": "SAFETY",
 	"ui.dscombat.back": "Back",
+	"ui.dscombat.landing_gear": "Landing Gear",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",
@@ -21,6 +22,8 @@
 	"screen.dscombat.vehicle_reload_screen": "Reload",
 	"screen.dscombat.vehicle_jetesin_screen": "Jetesin",
 	"screen.dscombat.vehicle_health_screen": "Health",
+	"screen.dscombat.vehicle_weapon_screen": "Weapon System",
+	"screen.dscombat.vehicle_keybinds_screen": "Keybinds",
 	
 	"error.dscombat.no_menu_in_air": "Can't open vehicle menu while flying!",
 	"error.dscombat.no_menu_moving": "Can't open vehicle menu while moving!",

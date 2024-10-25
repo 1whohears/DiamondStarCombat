@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
+import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.network.FriendlyByteBuf;
@@ -9,19 +10,23 @@ import net.minecraftforge.network.NetworkEvent.Context;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-public class ToServerOpenParts extends IPacket {
+public class ToServerVehicleSyncAction extends IPacket {
 
-	public ToServerOpenParts() {
+	private final VehicleSyncAction action;
 
-	}
+	public ToServerVehicleSyncAction(VehicleSyncAction action) {
+		this.action = action;
+    }
 
-	public ToServerOpenParts(FriendlyByteBuf buffer) {
-
-	}
+	public ToServerVehicleSyncAction(FriendlyByteBuf buffer) {
+		action = VehicleSyncAction.getAction(buffer.readInt());
+		if (action != null) action.readData(buffer);
+    }
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
-
+		buffer.writeInt(action.getId());
+		action.writeData(buffer);
 	}
 
 	@Override
@@ -29,10 +34,13 @@ public class ToServerOpenParts extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
+			if (action == null) return;
 			ServerPlayer player = ctx.get().getSender();
 			if (player == null) return;
-			if (player.getRootVehicle() instanceof EntityVehicle vehicle)
-				vehicle.openPartsMenu(player);
+			if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+			if (action.hasPermission(player, vehicle)) {
+				action.runServerAction(player, vehicle);
+			}
 		});
 		ctx.get().setPacketHandled(true);
 		return success.get();

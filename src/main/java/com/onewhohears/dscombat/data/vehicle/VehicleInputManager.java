@@ -18,7 +18,7 @@ public class VehicleInputManager {
 	public boolean special, special2, bothRoll;
 	public float throttle, pitch, roll, yaw;
 	
-	protected boolean isLandingGear, isDriverCameraLocked;
+	protected boolean isDriverCameraLocked;
 	protected int weaponIndex;
 	protected float currentThrottle;
 	
@@ -34,7 +34,7 @@ public class VehicleInputManager {
 			float throttle, float pitch, float roll, float yaw,
 			boolean flare, boolean chaff,
 			boolean special, boolean special2, boolean bothRoll,
-			boolean toggleGear, boolean isDriverCameraLocked) {
+			boolean isDriverCameraLocked) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
@@ -47,8 +47,6 @@ public class VehicleInputManager {
 		this.isDriverCameraLocked = isDriverCameraLocked;
 		parent.setDriverCameraLocked(isDriverCameraLocked);
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
-		if (toggleGear) parent.toggleLandingGear();
-		isLandingGear = parent.isLandingGear();
 		currentThrottle = parent.getCurrentThrottle();
 		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleControl(parent));
 	}
@@ -64,12 +62,10 @@ public class VehicleInputManager {
 		this.roll = other.roll;
 		this.yaw = other.yaw;
 		this.bothRoll = other.bothRoll;
-		this.isLandingGear = other.isLandingGear;
 		this.weaponIndex = other.weaponIndex;
 		this.currentThrottle = other.currentThrottle;
 		this.isDriverCameraLocked = other.isDriverCameraLocked;
 		// special inputs
-		parent.setLandingGear(isLandingGear);
 		parent.setCurrentThrottle(currentThrottle);
 		parent.weaponSystem.setSelected(weaponIndex);
 		parent.setDriverCameraLocked(isDriverCameraLocked);
@@ -100,7 +96,6 @@ public class VehicleInputManager {
 		buffer.writeBoolean(special2);
 		buffer.writeBoolean(bothRoll);
 		// special vehicle system inputs
-		buffer.writeBoolean(isLandingGear);
 		buffer.writeShort(weaponIndex);
 		buffer.writeFloat(currentThrottle);
 		buffer.writeBoolean(isDriverCameraLocked);
@@ -118,7 +113,6 @@ public class VehicleInputManager {
 		special2 = buffer.readBoolean();
 		bothRoll = buffer.readBoolean();
 		// special vehicle system inputs
-		isLandingGear = buffer.readBoolean();
 		weaponIndex = buffer.readShort();
 		currentThrottle = buffer.readFloat();
 		isDriverCameraLocked = buffer.readBoolean();

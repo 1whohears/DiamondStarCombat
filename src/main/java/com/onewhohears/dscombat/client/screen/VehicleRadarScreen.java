@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 public class VehicleRadarScreen extends VehicleSubScreen {
 
     public static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/background/vehicle_weapons_screen.png");
+            "textures/ui/background/vehicle_radar_screen.png");
 
     private static final int imageWidth = 240, imageHeight = 180;
     private static final int textureSize = 256;

@@ -14,9 +14,9 @@ import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public abstract class VehicleScreen extends BackgroundScreen {
-    public static int ROWS = 6, COLUMNS = 2;
-    protected String infoText = "";
-    protected int infoColor = 0x111111;
+    public static int ROWS = 7, COLUMNS = 2;
+    protected String titleText = "", infoText = "";
+    protected int infoColor = 0x111111, infoTextYOffset = 166;
     protected VehicleScreen(Component title, ResourceLocation backgroundTexture,
                             int imageWidth, int imageHeight, int textureWidth, int textureHeight) {
         super(title, backgroundTexture, imageWidth, imageHeight, textureWidth, textureHeight);
@@ -26,7 +26,7 @@ public abstract class VehicleScreen extends BackgroundScreen {
                             int imageWidth, int imageHeight, int textureWidth, int textureHeight) {
         super(translatableScreenName, backgroundTexture, imageWidth, imageHeight, textureWidth, textureHeight);
         vertical_widget_shift = 10;
-        infoText = translatableScreenName;
+        titleText = translatableScreenName;
     }
     @Override
     public void tick() {
@@ -54,8 +54,10 @@ public abstract class VehicleScreen extends BackgroundScreen {
     @Override
     public void renderBackground(@NotNull PoseStack poseStack) {
         super.renderBackground(poseStack);
+        if (!titleText.isEmpty()) getMinecraft().font.draw(poseStack,
+                UtilMCText.translatable(titleText), guiX+left_padding, guiY+top_padding, infoColor);
         if (!infoText.isEmpty()) getMinecraft().font.draw(poseStack,
-                UtilMCText.translatable(infoText), guiX+left_padding, guiY+top_padding, infoColor);
+                UtilMCText.translatable(infoText), guiX+left_padding, guiY+top_padding+infoTextYOffset, infoColor);
     }
     public static void sendSyncAction(VehicleSyncAction action) {
         VehicleSyncAction.sendSyncAction(action);

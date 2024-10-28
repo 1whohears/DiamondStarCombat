@@ -7,14 +7,11 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
-import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSetRadarMode;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -143,7 +140,7 @@ public final class ClientInputEvents {
 				DSCClientInputs.isCameraLockedForward());
 		if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
 		if (DSCKeys.landingGear.consumeClick()) {
-			VehicleScreen.sendSyncAction(new VehicleSyncAction.LandingGearAction(vehicle.toggleLandingGear()));
+			sendSyncAction(new VehicleSyncAction.LandingGearAction(vehicle.toggleLandingGear()));
 		}
 	}
 	
@@ -193,9 +190,11 @@ public final class ClientInputEvents {
 		if (DSCKeys.pingCycleKey.consumeClick()) radar.clientSelectNextTarget();
 		// SHOOT PILOT WEAPON OR TURRET
 		if (DSCKeys.shootKey.isDown() && playerCanShoot(player)) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleShoot(
-				vehicle.weaponSystem.getSelectedIndex(),
-				radar.getClientSelectedPing()));
+			sendSyncAction(new VehicleSyncAction.ShootAction(
+					vehicle.weaponSystem.getSelectedIndex(),
+					radar.getClientSelectedPing(),
+					vehicle.weaponSystem.getTargetPos(),
+					vehicle.weaponSystem.getTargetMode()));
 		}
 		// DISMOUNT 
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
@@ -219,7 +218,7 @@ public final class ClientInputEvents {
 			if (!isRadarController) player.displayClientMessage(UtilMCText.translatable("info.dscombat.not_radar_controller"), true);
 		}
 		if (isRadarController && DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerSetRadarMode(DSCClientInputs.getPreferredRadarMode()));
+			sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getPreferredRadarMode()));
 			radarModeUpdateTime = Util.getMillis();
 		}
 		// RADAR DISPLAY RANGE
@@ -270,6 +269,10 @@ public final class ClientInputEvents {
 	@SubscribeEvent
 	public static void clientLogin(ClientPlayerNetworkEvent.LoggingIn event) {
 		DSCClientInputs.setPreferredRadarMode(Config.CLIENT.defaultRadarMode.get());
+	}
+
+	public static void sendSyncAction(VehicleSyncAction action) {
+		VehicleSyncAction.sendSyncAction(action);
 	}
 	
 }

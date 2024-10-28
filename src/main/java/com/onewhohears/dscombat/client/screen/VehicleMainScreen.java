@@ -12,9 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 public class VehicleMainScreen extends VehicleScreen {
 
     public static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/vehicle_main_screen.png");
+            "textures/ui/background/vehicle_main_screen.png");
 
-    private static final int imageWidth = 176, imageHeight = 136;
+    private static final int imageWidth = 240, imageHeight = 180;
     private static final int textureSize = 256;
 
     public VehicleMainScreen() {
@@ -53,10 +53,15 @@ public class VehicleMainScreen extends VehicleScreen {
                         UtilMCText.translatable("screen.dscombat.vehicle_health_screen"),
                         onPress -> getMinecraft().setScreen(new VehicleHealthScreen())),
                 ROWS, COLUMNS, index++, 2);
-        // Open Weapon Settings Screen (Weapon Select, Radar Settings)
+        // Open Weapon Settings Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_weapon_screen"),
                         onPress -> getMinecraft().setScreen(new VehicleWeaponScreen())),
+                ROWS, COLUMNS, index++, 2);
+        // Open Radar Settings Screen
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_radar_screen"),
+                        onPress -> getMinecraft().setScreen(new VehicleRadarScreen())),
                 ROWS, COLUMNS, index++, 2);
         // Open Keybinds screen (include option to display reminder on top left)
         positionWidgetGrid(new Button(0, 0, 20, 20,

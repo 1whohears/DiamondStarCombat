@@ -130,11 +130,6 @@ public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu
 			m.setScreen(null);
 			return;
 		}
-		Entity c = plane.getControllingPassenger();
-		if (c == null || !c.equals(m.player)) {
-			m.setScreen(null);
-			return;
-		}
 	}
 
 }

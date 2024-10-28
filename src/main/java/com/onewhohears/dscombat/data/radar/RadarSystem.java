@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
-import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -263,8 +263,7 @@ public class RadarSystem {
 		if (parent.tickCount-clientSelectedTime < 2) return;
 		clientSelectedIndex = pingIndex;
 		parent.soundManager.playRadarLockSound();
-		PacketHandler.INSTANCE.sendToServer(new ToServerPingSelect(
-				parent.getId(), clientTargets.get(pingIndex)));
+		VehicleSyncAction.sendSyncAction(new VehicleSyncAction.PingSelectAction(clientTargets.get(pingIndex)));
 		clientSelectedTime = parent.tickCount;
 	}
 	

@@ -12,6 +12,7 @@ import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 
+@Deprecated
 public class TargetModeCommand {
 
     public TargetModeCommand(CommandDispatcher<CommandSourceStack> d) {

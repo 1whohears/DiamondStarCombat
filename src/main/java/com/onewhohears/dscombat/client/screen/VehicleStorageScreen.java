@@ -66,11 +66,6 @@ public class VehicleStorageScreen extends ContainerScreen {
             return;
         }
         maxIndex = plane.partsManager.getStorageBoxesNum() - 1;
-        Entity c = plane.getControllingPassenger();
-        if (c == null || !c.equals(m.player)) {
-            m.setScreen(null);
-            return;
-        }
     }
 
     private void fixIndex() {

@@ -1,7 +1,9 @@
 package com.onewhohears.dscombat.client.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class VehicleHealthScreen extends VehicleSubScreen {
 
@@ -19,5 +21,15 @@ public class VehicleHealthScreen extends VehicleSubScreen {
     @Override
     protected void init() {
         super.init();
+    }
+
+    @Override
+    public void renderBackground(@NotNull PoseStack poseStack) {
+        super.renderBackground(poseStack);
+        // VEHICLE BASE HEALTH / ARMOR
+
+        // VEHICLE HITBOX HEALTH / ARMOR
+
+        // FUEL
     }
 }

@@ -7,13 +7,16 @@
 	"info.dscombat.vehicle_engine_stats_override": "Vehicle engine stats likely override item stats!",
 	"info.dscombat.can_eject": "Can Eject!",
 	"info.dscombat.cant_eject": "Can't Eject!",
+	"info.dscombat.target_mode_pos": "XYZ Position for Target Mode COORD",
 	
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",
 	"ui.dscombat.ingredients": "Materials",
 	"ui.dscombat.no_weapon": "SAFETY",
 	"ui.dscombat.back": "Back",
-	"ui.dscombat.landing_gear": "Landing Gear",
+	"ui.dscombat.landing_gear": "Land Gear",
+	"ui.dscombat.radar_mode": "Radar Mode",
+	"ui.dscombat.target_mode": "Target Mode",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",
@@ -23,6 +26,7 @@
 	"screen.dscombat.vehicle_jetesin_screen": "Jetesin",
 	"screen.dscombat.vehicle_health_screen": "Health",
 	"screen.dscombat.vehicle_weapon_screen": "Weapon System",
+	"screen.dscombat.vehicle_radar_screen": "Radar System",
 	"screen.dscombat.vehicle_keybinds_screen": "Keybinds",
 	
 	"error.dscombat.no_menu_in_air": "Can't open vehicle menu while flying!",

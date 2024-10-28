@@ -21,7 +21,7 @@ public final class ModEvents {
 		new DSCParticleDebugCommand(event.getDispatcher());
 		new DebugSlotPosCommand(event.getDispatcher());
 		new DebugHitboxPosCommand(event.getDispatcher());
-		new TargetModeCommand(event.getDispatcher());
+		//new TargetModeCommand(event.getDispatcher());
 		ConfigCommand.register(event.getDispatcher());
 	}
 	

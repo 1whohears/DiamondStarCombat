@@ -170,7 +170,7 @@ public class WeaponSystem {
 		}
 	}
 
-	public static enum TargetMode {
+	public enum TargetMode {
 		LOOK,
 		COORDS,
 		INDICATOR

@@ -56,11 +56,6 @@ public final class PacketHandler {
 			.decoder(ToClientRadarPings::new)
 			.consumerMainThread(ToClientRadarPings::handle)
 			.add();
-		net.messageBuilder(ToServerPingSelect.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerPingSelect::encode)
-			.decoder(ToServerPingSelect::new)
-			.consumerMainThread(ToServerPingSelect::handle)
-			.add();
 		net.messageBuilder(ToClientWeaponAmmo.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientWeaponAmmo::encode)
 			.decoder(ToClientWeaponAmmo::new)
@@ -100,11 +95,6 @@ public final class PacketHandler {
 			.encoder(ToServerCraftPlane::encode)
 			.decoder(ToServerCraftPlane::new)
 			.consumerMainThread(ToServerCraftPlane::handle)
-			.add();
-		net.messageBuilder(ToServerVehicleShoot.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerVehicleShoot::encode)
-			.decoder(ToServerVehicleShoot::new)
-			.consumerMainThread(ToServerVehicleShoot::handle)
 			.add();
 		net.messageBuilder(ToClientRWRWarning.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientRWRWarning::encode)
@@ -170,11 +160,6 @@ public final class PacketHandler {
 			.encoder(ToServerGetHookChains::encode)
 			.decoder(ToServerGetHookChains::new)
 			.consumerMainThread(ToServerGetHookChains::handle)
-			.add();
-		net.messageBuilder(ToServerSetRadarMode.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerSetRadarMode::encode)
-			.decoder(ToServerSetRadarMode::new)
-			.consumerMainThread(ToServerSetRadarMode::handle)
 			.add();
 		net.messageBuilder(ToClientDamagePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientDamagePart::encode)

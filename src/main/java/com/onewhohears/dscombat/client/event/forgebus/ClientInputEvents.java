@@ -9,9 +9,7 @@ import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -172,7 +170,7 @@ public final class ClientInputEvents {
 		}
 		// SWITCH SEAT
 		if (DSCKeys.changeSeat.consumeClick()) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerSwitchSeat(vehicle.getId()));
+			sendSyncAction(new VehicleSyncAction.SwitchSeatAction());
 		}
 		// CYCLE WEAPON
 		int selectNextWeapon = 0;
@@ -198,17 +196,17 @@ public final class ClientInputEvents {
 		}
 		// DISMOUNT 
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerDismount());
+			sendSyncAction(new VehicleSyncAction.DismountAction());
 		}
 		// EJECT
 		if (DSCKeys.eject.consumeClick()) {
 			if (seat.canEject()) {
 				seat.useEject();
-				PacketHandler.INSTANCE.sendToServer(new ToServerDismount(true));
+				sendSyncAction(new VehicleSyncAction.DismountAction(true));
 				player.getLevel().playLocalSound(player.getX(), player.getY(), player.getZ(),
 						ModSounds.EJECT_WIND, SoundSource.PLAYERS, 0.5f, 1, false);
 			} else {
-				PacketHandler.INSTANCE.sendToServer(new ToServerDismount(false));
+				sendSyncAction(new VehicleSyncAction.DismountAction(false));
 			}
 		}
 		// CYCLE RADAR MODE

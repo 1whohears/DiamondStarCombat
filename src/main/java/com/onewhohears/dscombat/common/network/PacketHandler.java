@@ -71,21 +71,11 @@ public final class PacketHandler {
 			.decoder(ToClientAddPart::new)
 			.consumerMainThread(ToClientAddPart::handle)
 			.add();
-		net.messageBuilder(ToServerSwitchSeat.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerSwitchSeat::encode)
-			.decoder(ToServerSwitchSeat::new)
-			.consumerMainThread(ToServerSwitchSeat::handle)
-			.add();
 		net.messageBuilder(ToClientVehicleFuel.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientVehicleFuel::encode)
 			.decoder(ToClientVehicleFuel::new)
 			.consumerMainThread(ToClientVehicleFuel::handle)
 			.add();
-		net.messageBuilder(ToServerVehicleToItem.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerVehicleToItem::encode)
-			.decoder(ToServerVehicleToItem::new)
-			.consumerMainThread(ToServerVehicleToItem::handle)
-			.add();	
 		net.messageBuilder(ToServerCraftWeapon.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerCraftWeapon::encode)
 			.decoder(ToServerCraftWeapon::new)
@@ -105,11 +95,6 @@ public final class PacketHandler {
 			.encoder(ToClientAddForceMoment::encode)
 			.decoder(ToClientAddForceMoment::new)
 			.consumerMainThread(ToClientAddForceMoment::handle)
-			.add();
-		net.messageBuilder(ToServerDismount.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerDismount::encode)
-			.decoder(ToServerDismount::new)
-			.consumerMainThread(ToServerDismount::handle)
 			.add();
 		net.messageBuilder(ToServerSeatPos.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerSeatPos::encode)

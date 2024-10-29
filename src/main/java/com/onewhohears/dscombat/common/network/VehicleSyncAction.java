@@ -7,11 +7,17 @@ import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.item.ItemParachute;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -28,6 +34,9 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new SetRadarModeAction(RadarStats.RadarMode.ALL));
         addVehicleSyncAction(new PingSelectAction(null));
         addVehicleSyncAction(new ShootAction(-1, null, null, WeaponSystem.TargetMode.LOOK));
+        addVehicleSyncAction(new ToItemAction());
+        addVehicleSyncAction(new DismountAction());
+        addVehicleSyncAction(new SwitchSeatAction());
     }
 
     public static void sendSyncAction(VehicleSyncAction action) {
@@ -260,6 +269,111 @@ public abstract class VehicleSyncAction {
                 else targetPos = null;
                 targetMode = buffer.readEnum(WeaponSystem.TargetMode.class);
             };
+        }
+    }
+
+    public static class ToItemAction extends VehicleSyncAction {
+        public ToItemAction() {
+            super(6);
+        }
+        @Override
+        protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
+            return (player, vehicle) -> {
+                if (!vehicle.canBecomeItem()) {
+                    player.displayClientMessage(
+                            UtilMCText.translatable("error.dscombat.cant_item_yet"),
+                            true);
+                    return false;
+                }
+                return true;
+            };
+        }
+        @Override
+        protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
+            return (player, vehicle) -> {
+                ItemStack item = vehicle.getItem();
+                if (player.getInventory().getFreeSlot() != -1 && player.addItem(item)) {
+                    vehicle.discard();
+                    return;
+                }
+                vehicle.becomeItem(player.position());
+            };
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getWriteData() {
+            return (buffer) -> {};
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getReadData() {
+            return (buffer) -> {};
+        }
+    }
+
+    public static class DismountAction extends VehicleSyncAction {
+        private boolean eject = false;
+        public DismountAction() {
+            super(7);
+        }
+        public DismountAction(boolean eject) {
+            this();
+            this.eject = eject;
+        }
+        @Override
+        protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
+            return (player, vehicle) -> true;
+        }
+        @Override
+        protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
+            return (player, vehicle) -> {
+                if (eject && player.getVehicle() instanceof EntitySeat seat && seat.canEject()) {
+                    seat.useEject();
+                    player.stopRiding();
+                    double EJECT_PUSH = 4, EJECT_MOVE = 1;
+                    Vec3 dir;
+                    if (vehicle != null) {
+                        dir = UtilAngles.getYawAxis(vehicle.getQ());
+                        player.setDeltaMovement(vehicle.getDeltaMovement().add(dir.scale(EJECT_MOVE)));
+                    } else dir = new Vec3(0, 1, 0);
+                    player.setPos(player.position().add(dir.scale(EJECT_PUSH)));
+                    ItemParachute.createParachute(player.getLevel(), player, null);
+                    player.getLevel().playSound(null, player.blockPosition(),
+                            ModSounds.EJECT, SoundSource.PLAYERS, 1, 1);
+                } else player.stopRiding();
+            };
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getWriteData() {
+            return (buffer) -> buffer.writeBoolean(eject);
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getReadData() {
+            return (buffer) -> eject = buffer.readBoolean();
+        }
+    }
+
+    public static class SwitchSeatAction extends VehicleSyncAction {
+        public SwitchSeatAction() {
+            super(8);
+        }
+        @Override
+        protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
+            return (player, vehicle) -> true;
+        }
+        @Override
+        protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
+            return (player, vehicle) -> {
+                if (!vehicle.switchSeat(player)) player.displayClientMessage(
+                        UtilMCText.translatable("error.dscombat.no_open_seats"),
+                        true);
+            };
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getWriteData() {
+            return (buffer) -> {};
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getReadData() {
+            return (buffer) -> {};
         }
     }
 }

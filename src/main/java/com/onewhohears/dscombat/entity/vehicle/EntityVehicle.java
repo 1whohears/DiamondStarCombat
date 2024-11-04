@@ -1230,20 +1230,12 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 
 	public void openPartsMenu(ServerPlayer player) {
-		if (!canOpenPartsMenu()) {
-			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
-			return;
-		}
 		NetworkHooks.openScreen(player, new SimpleMenuProvider((windowId, playerInv, p) ->
 				new VehiclePartsMenu(windowId, playerInv),
 				UtilMCText.translatable("screen.dscombat.vehicle_parts_screen")));
 	}
 
 	public void openStorage(ServerPlayer player, int index) {
-		if (!canOpenPartsMenu()) {
-			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
-			return;
-		}
 		StorageInstance<?> box = partsManager.getStorageData(index);
 		if (box == null) {
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.no_storage_boxes"), true);
@@ -2195,6 +2187,17 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
     	return tickCount/20 > fresh && (lastShootTime == -1 || (tickCount-lastShootTime)/20 > shoot);
     }
+
+	public Component getCantBecomeItemReason() {
+		int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
+		int fresh_diff = fresh - tickCount/20;
+		if (fresh_diff > 0) return UtilMCText.translatable("error.dscombat.cant_item_yet_fresh", fresh_diff);
+		if (lastShootTime == -1) return null;
+		int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
+		int shoot_diff = shoot - (tickCount-lastShootTime)/20;
+		if (shoot_diff > 0) return UtilMCText.translatable("error.dscombat.cant_item_yet_shoot", shoot_diff);
+		return null;
+	}
     
     /**
      * SERVER SIDE ONLY

@@ -7,7 +7,7 @@
 	"info.dscombat.vehicle_engine_stats_override": "Vehicle engine stats likely override item stats!",
 	"info.dscombat.can_eject": "Can Eject!",
 	"info.dscombat.cant_eject": "Can't Eject!",
-	"info.dscombat.target_mode_pos": "XYZ Position for Target Mode COORD",
+	"info.dscombat.target_mode_pos": "XYZ Position for Target Mode COORDS",
 	
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",
@@ -45,6 +45,8 @@
 	"error.dscombat.no_storage_boxes": "This Vehicle has No Storage Boxes",
 	"error.dscombat.command_players_only": "Only Players can use this command!",
 	"error.dscombat.command_must_ride_vehicle": "You must ride a vehicle to use this command!",
+	"error.dscombat.cant_item_yet_fresh": "Vehicle must exist for %1$s seconds!",
+	"error.dscombat.cant_item_yet_shoot": "Wait for %1$s more seconds after shooting!",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",

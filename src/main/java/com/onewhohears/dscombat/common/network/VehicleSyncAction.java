@@ -14,6 +14,7 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
@@ -122,7 +123,19 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
-            return (player, vehicle) -> true;
+            return (player, vehicle) -> {
+                if (!vehicle.canOpenPartsMenu()) {
+                    player.displayClientMessage(UtilMCText.translatable(
+                            vehicle.getOpenMenuError()), true);
+                    return false;
+                }
+                if (!vehicle.partsManager.hasStorageBoxes()) {
+                    player.displayClientMessage(UtilMCText.translatable(
+                            "error.dscombat.no_storage_boxes"), true);
+                    return false;
+                }
+                return true;
+            };
         }
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
@@ -144,7 +157,14 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
-            return (player, vehicle) -> true;
+            return (player, vehicle) -> {
+                if (!vehicle.canOpenPartsMenu()) {
+                    player.displayClientMessage(UtilMCText.translatable(
+                            vehicle.getOpenMenuError()), true);
+                    return false;
+                }
+                return true;
+            };
         }
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
@@ -279,10 +299,9 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
             return (player, vehicle) -> {
-                if (!vehicle.canBecomeItem()) {
-                    player.displayClientMessage(
-                            UtilMCText.translatable("error.dscombat.cant_item_yet"),
-                            true);
+                Component reason = vehicle.getCantBecomeItemReason();
+                if (reason != null) {
+                    player.displayClientMessage(reason, true);
                     return false;
                 }
                 return true;

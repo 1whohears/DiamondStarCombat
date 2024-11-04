@@ -15,8 +15,9 @@ import java.util.Objects;
 
 public abstract class VehicleScreen extends BackgroundScreen {
     public static int ROWS = 7, COLUMNS = 2;
-    protected String titleText = "", infoText = "";
-    protected int infoColor = 0x111111, infoTextYOffset = 166;
+    protected String titleText = "";
+    protected Component info = null;
+    protected int infoColor = 0x0000AA, infoTextYOffset = 164, infoTicks = -1;
     protected VehicleScreen(Component title, ResourceLocation backgroundTexture,
                             int imageWidth, int imageHeight, int textureWidth, int textureHeight) {
         super(title, backgroundTexture, imageWidth, imageHeight, textureWidth, textureHeight);
@@ -37,7 +38,9 @@ public abstract class VehicleScreen extends BackgroundScreen {
         }
         if (!getMinecraft().player.isPassenger()) {
             getMinecraft().setScreen(null);
+            return;
         }
+        if (infoTicks > 0) --infoTicks;
     }
     @Override
     public boolean isPauseScreen() {
@@ -56,8 +59,16 @@ public abstract class VehicleScreen extends BackgroundScreen {
         super.renderBackground(poseStack);
         if (!titleText.isEmpty()) getMinecraft().font.draw(poseStack,
                 UtilMCText.translatable(titleText), guiX+left_padding, guiY+top_padding, infoColor);
-        if (!infoText.isEmpty()) getMinecraft().font.draw(poseStack,
-                UtilMCText.translatable(infoText), guiX+left_padding, guiY+top_padding+infoTextYOffset, infoColor);
+        if (info != null && infoTicks != 0) getMinecraft().font.draw(poseStack, info,
+                guiX+left_padding, guiY+top_padding+infoTextYOffset, infoColor);
+    }
+    public void setInfoText(String info_text, int display_time) {
+        info = UtilMCText.translatable(info_text);
+        infoTicks = display_time;
+    }
+    public void setInfoFromMessage(Component component, int display_time) {
+        info = component;
+        infoTicks = display_time;
     }
     public static void sendSyncAction(VehicleSyncAction action) {
         VehicleSyncAction.sendSyncAction(action);

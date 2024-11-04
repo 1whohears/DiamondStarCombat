@@ -1,15 +1,20 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.crafting.FlareDispenserLoadRecipe;
+import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
+import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
+import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.FlareDispenserStats;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 
-public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartInstance<T> implements LoadableRecipePartInstance {
+public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartInstance<T> implements ReloadablePartInstance {
 	
 	private int flares = 0;
 	
@@ -129,6 +134,19 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 	@Override
 	public String getContinuity() {
 		return "";
+	}
+
+	private static final PartItemLoadRecipe<?> LOAD_RECIPE = new FlareDispenserLoadRecipe(
+			new ResourceLocation("dscombat:flare_load_recipe"));
+
+	@Override
+	public PartItemLoadRecipe<?> getLoadRecipe() {
+		return LOAD_RECIPE;
+	}
+
+	@Override
+	public PartItemUnloadRecipe<?> getUnloadRecipe() {
+		return null;
 	}
 
 	@Override

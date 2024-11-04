@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 
 import com.onewhohears.dscombat.util.UtilPresetParse;
@@ -18,7 +18,7 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 
-public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> extends CustomRecipe {
+public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> extends CustomRecipe {
 
 	protected PartItemLoadRecipe(ResourceLocation id) {
 		super(id);
@@ -210,7 +210,7 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 		return AmmoLoadType.ITEM_COUNT;
 	}
 	
-	public static enum AmmoLoadType {
+	public enum AmmoLoadType {
 		ITEM_COUNT,
 		ITEM_DURABILITY;
 	}

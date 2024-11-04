@@ -2,7 +2,8 @@ package com.onewhohears.dscombat.data.parts.instance;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.crafting.*;
+import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.WeaponPartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -10,9 +11,13 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.phys.Vec3;
 
-public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<T> implements LoadableRecipePartInstance {
+import javax.annotation.Nullable;
+
+public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<T> implements ReloadablePartInstance {
 	
 	protected String weapon = "";
 	private int ammo = 0;
@@ -128,6 +133,13 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	@Override
 	public void setCurrentAmmo(float ammo) {
 		this.ammo = (int)ammo;
+		if (getParent() != null) {
+			WeaponInstance<?> data = getParent().weaponSystem.get(weapon, getSlotId());
+			if (data != null) {
+				data.setCurrentAmmo((int)ammo);
+				if (!getParent().level.isClientSide) data.updateClientAmmo(getParent());
+			}
+		}
 	}
 
 	@Override
@@ -161,6 +173,21 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	
 	public String getWeaponId() {
 		return weapon;
+	}
+
+	private static final PartItemLoadRecipe<?> LOAD_RECIPE = new WeaponPartLoadRecipe(
+			new ResourceLocation("dscombat:weapon_part_load_recipe"));
+	private static final PartItemUnloadRecipe<?> UNLOAD_RECIPE = new WeaponPartUnloadRecipe(
+			new ResourceLocation("dscombat:weapon_part_unload_recipe"));
+
+	@Override
+	public PartItemLoadRecipe<?> getLoadRecipe() {
+		return LOAD_RECIPE;
+	}
+
+	@Override
+	public @Nullable PartItemUnloadRecipe<?> getUnloadRecipe() {
+		return UNLOAD_RECIPE;
 	}
 
 }

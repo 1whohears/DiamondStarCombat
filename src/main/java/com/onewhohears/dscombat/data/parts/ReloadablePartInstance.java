@@ -1,8 +1,13 @@
 package com.onewhohears.dscombat.data.parts;
 
+import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
+import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 
-public interface LoadableRecipePartInstance {
+import javax.annotation.Nullable;
+
+public interface ReloadablePartInstance {
 	
 	float getCurrentAmmo();
 	float getMaxAmmo();
@@ -19,5 +24,9 @@ public interface LoadableRecipePartInstance {
 	}
 	
 	ItemStack getNewItemStack();
+
+	PartItemLoadRecipe<?> getLoadRecipe();
+	@Nullable
+	PartItemUnloadRecipe<?> getUnloadRecipe();
 	
 }

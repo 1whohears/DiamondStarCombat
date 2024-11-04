@@ -440,6 +440,14 @@ public class PartsManager {
 		}
 		return num;
 	}
+
+	public List<PartSlot> getReloadableParts() {
+		List<PartSlot> slots = new ArrayList<>();
+		for (PartSlot p : getSlots())
+			if (p.getPartData() instanceof ReloadablePartInstance)
+				slots.add(p);
+		return slots;
+	}
 	
 	public float getTotalExtraArmor() {
 		float armor = 0;

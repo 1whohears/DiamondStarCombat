@@ -38,6 +38,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new ToItemAction());
         addVehicleSyncAction(new DismountAction());
         addVehicleSyncAction(new SwitchSeatAction());
+        addVehicleSyncAction(new LoadPartAction("", false));
     }
 
     public static void sendSyncAction(VehicleSyncAction action) {
@@ -393,6 +394,40 @@ public abstract class VehicleSyncAction {
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
             return (buffer) -> {};
+        }
+    }
+
+    public static class LoadPartAction extends VehicleSyncAction {
+        private String slotId = "";
+        private boolean unload = false;
+        public LoadPartAction(String slotId, boolean unload) {
+            super(9);
+            this.slotId = slotId;
+            this.unload = unload;
+        }
+        @Override
+        protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
+            return (player, vehicle) -> true;
+        }
+        @Override
+        protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
+            return (player, vehicle) -> {
+
+            };
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getWriteData() {
+            return (buffer) -> {
+                buffer.writeUtf(slotId);
+                buffer.writeBoolean(unload);
+            };
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getReadData() {
+            return (buffer) -> {
+                slotId = buffer.readUtf();
+                unload = buffer.readBoolean();
+            };
         }
     }
 }

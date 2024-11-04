@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public abstract class VehicleScreen extends BackgroundScreen {
-    public static int ROWS = 7, COLUMNS = 2;
+    protected int ROWS = 7, COLUMNS = 2;
     protected String titleText = "";
     protected Component info = null;
     protected int infoColor = 0x0000AA, infoTextYOffset = 164, infoTicks = -1;

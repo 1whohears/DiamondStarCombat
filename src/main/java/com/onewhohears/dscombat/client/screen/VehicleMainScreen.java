@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.client.screen;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleToItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -84,7 +83,7 @@ public class VehicleMainScreen extends VehicleScreen {
     }
 
     private void onPlaneItemButton() {
-        PacketHandler.INSTANCE.sendToServer(new ToServerVehicleToItem(getVehicle().getId()));
+        sendSyncAction(new VehicleSyncAction.ToItemAction());
     }
 
 }

@@ -49,6 +49,7 @@
 	"error.dscombat.command_must_ride_vehicle": "You must ride a vehicle to use this command!",
 	"error.dscombat.cant_item_yet_fresh": "Vehicle must exist for %1$s seconds!",
 	"error.dscombat.cant_item_yet_shoot": "Wait for %1$s more seconds after shooting!",
+	"error.dscombat.cant_unload": "Can't unload this part!",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",

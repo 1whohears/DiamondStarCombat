@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class PartItemUnloadRecipe<I extends ReloadablePartInstance> extends PartItemLoadRecipe<I> {
 	
@@ -42,7 +43,7 @@ public abstract class PartItemUnloadRecipe<I extends ReloadablePartInstance> ext
 	}
 	
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
+	public @NotNull NonNullList<ItemStack> getRemainingItems(@NotNull CraftingContainer container) {
 		AtomicInteger index = new AtomicInteger();
 		ItemStack part = getPartItem(container, index);
 		I lpd = getLoadablePartDataFromItem(part);

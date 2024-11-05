@@ -42,7 +42,7 @@ import net.minecraftforge.network.PacketDistributor;
  * used to access various information about the parts in a vehicle.
  * this part manager has a list of {@link PartSlot}.
  * each {@link PartSlot} is either empty or has {@link com.onewhohears.dscombat.data.parts.instance.PartInstance}.
- * will synch part data with client.
+ * will sync part data with client.
  * @author 1whohears
  */
 public class PartsManager {
@@ -382,7 +382,7 @@ public class PartsManager {
 	
 	public boolean dropPartItem() {
 		if (parent.level.isClientSide) return false;
-		if (slots.size() == 0) return false;
+		if (slots.isEmpty()) return false;
 		for (int i = 0; i < slots.size(); ++i) 
 			if (slots.get(i).dropPartItem(parent)) 
 				return true;
@@ -447,6 +447,14 @@ public class PartsManager {
 			if (p.getPartData() instanceof ReloadablePartInstance)
 				slots.add(p);
 		return slots;
+	}
+
+	@Nullable
+	public ReloadablePartInstance getReloadablePart(String slotId) {
+		for (PartSlot p : getSlots())
+			if (p.getSlotId().equals(slotId) && p.getPartData() instanceof ReloadablePartInstance part)
+				return part;
+		return null;
 	}
 	
 	public float getTotalExtraArmor() {

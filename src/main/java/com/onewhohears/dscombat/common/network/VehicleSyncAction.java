@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleSyncAction;
+import com.onewhohears.dscombat.data.parts.PartSlot;
+import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
@@ -399,11 +401,16 @@ public abstract class VehicleSyncAction {
 
     public static class LoadPartAction extends VehicleSyncAction {
         private String slotId = "";
-        private boolean unload = false;
+        private boolean unload = false, all = false;
         public LoadPartAction(String slotId, boolean unload) {
             super(9);
             this.slotId = slotId;
             this.unload = unload;
+        }
+        public LoadPartAction(boolean unload) {
+            super(9);
+            this.unload = unload;
+            this.all = true;
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
@@ -412,7 +419,19 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
-
+                if (all) {
+                    for (PartSlot slot : vehicle.partsManager.getReloadableParts()) {
+                        ReloadablePartInstance part = (ReloadablePartInstance) slot.getPartData();
+                        if (part == null) return;
+                        if (unload && part.canUnload()) part.unloadPartToInventory(player);
+                        else if (!unload) part.loadPartFromInventory(player);
+                    }
+                } else {
+                    ReloadablePartInstance part = vehicle.partsManager.getReloadablePart(slotId);
+                    if (part == null) return;
+                    if (unload) part.unloadPartToInventory(player);
+                    else part.loadPartFromInventory(player);
+                }
             };
         }
         @Override
@@ -420,6 +439,7 @@ public abstract class VehicleSyncAction {
             return (buffer) -> {
                 buffer.writeUtf(slotId);
                 buffer.writeBoolean(unload);
+                buffer.writeBoolean(all);
             };
         }
         @Override
@@ -427,6 +447,7 @@ public abstract class VehicleSyncAction {
             return (buffer) -> {
                 slotId = buffer.readUtf();
                 unload = buffer.readBoolean();
+                all = buffer.readBoolean();
             };
         }
     }

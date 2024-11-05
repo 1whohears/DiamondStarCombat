@@ -2,8 +2,10 @@ package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeManager;
 
 import javax.annotation.Nullable;
 
@@ -26,7 +28,37 @@ public interface ReloadablePartInstance {
 	ItemStack getNewItemStack();
 
 	PartItemLoadRecipe<?> getLoadRecipe();
-	@Nullable
-	PartItemUnloadRecipe<?> getUnloadRecipe();
+	@Nullable PartItemUnloadRecipe<?> getUnloadRecipe();
+
+	default boolean canUnload() {
+		return getUnloadRecipe() != null;
+	}
+
+	default void loadPartFromInventory(ServerPlayer player) {
+		PartItemLoadRecipe<?> recipe = getLoadRecipe();
+		recipe.reloadFromInventory(player.getInventory(), this);
+	}
+
+	default void unloadPartToInventory(ServerPlayer player) {
+		PartItemUnloadRecipe<?> recipe = getUnloadRecipe();
+		if (recipe == null) {
+			player.displayClientMessage(
+					UtilMCText.translatable("error.dscombat.cant_unload"),
+					true);
+			return;
+		}
+		String continuity = getContinuity();
+		if (recipe.checkAmmoContinuity() && !isContinuityEmpty() && !recipe.isContinuityValid(continuity)) {
+			player.displayClientMessage(
+					UtilMCText.translatable("error.dscombat.cant_unload"),
+					true);
+			return;
+		}
+		ItemStack ammo = recipe.getNewAmmoItem(continuity);
+		if (ammo.isEmpty()) return;
+		ammo.setCount((int)getCurrentAmmo());
+		player.addItem(ammo);
+		setCurrentAmmo(0);
+	}
 	
 }

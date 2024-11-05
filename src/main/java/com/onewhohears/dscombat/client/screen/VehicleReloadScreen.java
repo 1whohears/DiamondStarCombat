@@ -45,12 +45,10 @@ public class VehicleReloadScreen extends VehicleSubScreen {
     }
 
     private void onReloadAllButton() {
-        for (PartSlot slot : getVehicle().partsManager.getReloadableParts())
-            sendSyncAction(new VehicleSyncAction.LoadPartAction(slot.getSlotId(), false));
+        sendSyncAction(new VehicleSyncAction.LoadPartAction(false));
     }
 
     private void onUnloadAllButton() {
-        for (PartSlot slot : getVehicle().partsManager.getReloadableParts())
-            sendSyncAction(new VehicleSyncAction.LoadPartAction(slot.getSlotId(), true));
+        sendSyncAction(new VehicleSyncAction.LoadPartAction(true));
     }
 }

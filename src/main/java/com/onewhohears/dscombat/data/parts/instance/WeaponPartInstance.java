@@ -1,8 +1,10 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.onewhohears.dscombat.crafting.*;
+import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.WeaponPartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -158,6 +160,13 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 
 	@Override
 	public void setContinuity(String continuity) {
+		if (getParent() != null && !Objects.equals(this.weapon, continuity)) {
+			PartSlot slot = getParent().partsManager.getSlot(getSlotId());
+			if (slot == null) return;
+			slot.removePartData(getParent());
+			this.weapon = continuity;
+			slot.addPartData(this, getParent());
+		}
 		this.weapon = continuity;
 	}
 

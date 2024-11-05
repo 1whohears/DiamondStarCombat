@@ -149,6 +149,9 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 	@Override
 	public void setContinuity(String continuity) {
 		this.weapon = continuity;
+		EntityTurret turret = getTurret(getSlotId());
+		if (turret == null) return;
+		turret.setWeaponId(this.weapon);
 	}
 
 	@Override

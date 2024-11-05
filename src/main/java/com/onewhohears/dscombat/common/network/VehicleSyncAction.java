@@ -422,7 +422,7 @@ public abstract class VehicleSyncAction {
                 if (all) {
                     for (PartSlot slot : vehicle.partsManager.getReloadableParts()) {
                         ReloadablePartInstance part = (ReloadablePartInstance) slot.getPartData();
-                        if (part == null) return;
+                        if (part == null) continue;
                         if (unload && part.canUnload()) part.unloadPartToInventory(player);
                         else if (!unload) part.loadPartFromInventory(player);
                     }

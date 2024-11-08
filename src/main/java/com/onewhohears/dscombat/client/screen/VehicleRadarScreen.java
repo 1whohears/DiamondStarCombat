@@ -47,7 +47,9 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                         UtilMCText.translatable("ui.dscombat.cycle_radar_display_range"),
                         onPress -> {
                             DSCClientInputs.cycleRadarDisplayRange();
-                            rangeBox.setValue(DSCClientInputs.getRadarDisplayRange()+"");
+                            double range = DSCClientInputs.getRadarDisplayRange();
+                            rangeBox.setValue(range+"");
+                            DSCClientInputs.setRadarDisplayRange(range);
                         }),
                 ROWS, COLUMNS, 3, 2);
     }

@@ -36,7 +36,7 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
     @Override
     protected void init() {
         vertical_widget_shift = 10;
-        COLUMNS = 5;
+        COLUMNS = 7;
         padding = 0;
         super.init();
         // TARGET MODE
@@ -46,13 +46,13 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
                         .create(0, 0, 20, 20,
                                 UtilMCText.translatable("ui.dscombat.target_mode"),
                                 onTargetModeCycle()),
-                ROWS, COLUMNS, 1, padding, 3);
+                ROWS, COLUMNS, 1, padding, 4);
         // GIMBAL MODE
         positionWidgetGrid(CycleButton.onOffBuilder(DSCClientInputs.isGimbalMode())
                         .create(0, 0, 20, 20,
                                 UtilMCText.translatable("ui.dscombat.gimbal_mode"),
                                 onGimbalToggle()),
-                ROWS, COLUMNS, 4, padding);
+                ROWS, COLUMNS, 5, padding, 2);
         // TARGET POSITION X
         vertical_widget_shift = 48;
         EditBox xPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());

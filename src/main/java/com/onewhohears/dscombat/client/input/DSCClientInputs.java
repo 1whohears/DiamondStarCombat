@@ -43,6 +43,10 @@ public class DSCClientInputs {
 	public static void toggleGimbalMode() {
 		GIMBAL_MODE = !GIMBAL_MODE;
 	}
+
+	public static void setGimbalMode(boolean mode) {
+		GIMBAL_MODE = mode;
+	}
 	/**
 	 * set mouseCenterX and mouseCenterY to the mouse's current position.
 	 * used to move the "joystick" back to the middle when in LOCKED_FORWARD MouseMode.

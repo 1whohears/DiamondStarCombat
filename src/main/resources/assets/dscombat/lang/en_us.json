@@ -22,6 +22,7 @@
 	"ui.dscombat.reload": "Reload",
 	"ui.dscombat.unload": "Unload",
 	"ui.dscombat.cycle_radar_display_range": "Cycle Radar Disp R",
+	"ui.dscombat.gimbal_mode": "Gimbal",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",

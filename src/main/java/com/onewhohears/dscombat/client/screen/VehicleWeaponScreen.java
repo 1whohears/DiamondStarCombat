@@ -36,6 +36,8 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
     @Override
     protected void init() {
         vertical_widget_shift = 10;
+        COLUMNS = 5;
+        padding = 0;
         super.init();
         // TARGET MODE
         positionWidgetGrid(CycleButton.<WeaponSystem.TargetMode>builder(value -> UtilMCText.literal(value.name()))
@@ -44,7 +46,13 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
                         .create(0, 0, 20, 20,
                                 UtilMCText.translatable("ui.dscombat.target_mode"),
                                 onTargetModeCycle()),
-                ROWS, COLUMNS, 1, 2);
+                ROWS, COLUMNS, 1, padding, 3);
+        // GIMBAL MODE
+        positionWidgetGrid(CycleButton.onOffBuilder(DSCClientInputs.isGimbalMode())
+                        .create(0, 0, 20, 20,
+                                UtilMCText.translatable("ui.dscombat.gimbal_mode"),
+                                onGimbalToggle()),
+                ROWS, COLUMNS, 4, padding);
         // TARGET POSITION X
         vertical_widget_shift = 48;
         EditBox xPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
@@ -101,6 +109,10 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
         if (axis == 0) system.setTargetPos(new Vec3(number, pos.y, pos.z));
         else if (axis == 1) system.setTargetPos(new Vec3(pos.x, number, pos.z));
         else if (axis == 2) system.setTargetPos(new Vec3(pos.x, pos.y, number));
+    }
+
+    private CycleButton.OnValueChange<Boolean> onGimbalToggle() {
+        return (button, value) -> DSCClientInputs.setGimbalMode(value);
     }
 
     @Override

@@ -232,6 +232,12 @@ public class PartsManager {
 	public void repairAllParts() {
 		for (PartSlot p : slots) p.setPartRepaired(parent);
 	}
+
+	public boolean dropPartInSlot(String slotId) {
+		PartSlot slot = getSlot(slotId);
+		if (slot == null) return false;
+		return slot.dropPartItem(parent);
+	}
 	
 	@Override
 	public String toString() {

@@ -30,6 +30,16 @@ import java.util.function.Consumer;
 
 public abstract class VehicleSyncAction {
 
+    public static final BiPredicate<Player, EntityVehicle> PILOT_CHECK = (player, vehicle) -> {
+        if (!vehicle.isPilotOrCopilot(player)) {
+            player.displayClientMessage(
+                    UtilMCText.translatable("error.dscombat.not_a_pilot"),
+                    true);
+            return false;
+        }
+        return true;
+    };
+
     public static void register() {
         addVehicleSyncAction(new LandingGearAction(false));
         addVehicleSyncAction(new OpenStorageAction(0));
@@ -41,6 +51,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new DismountAction());
         addVehicleSyncAction(new SwitchSeatAction());
         addVehicleSyncAction(new LoadPartAction("", false));
+        addVehicleSyncAction(new JetesinAction(""));
     }
 
     public static void sendSyncAction(VehicleSyncAction action) {
@@ -100,15 +111,7 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
-            return (player, vehicle) -> {
-                if (!vehicle.isPilotOrCopilot(player)) {
-                    player.displayClientMessage(
-                            UtilMCText.translatable("error.dscombat.not_a_pilot"),
-                            true);
-                    return false;
-                }
-                return true;
-            };
+            return PILOT_CHECK;
         }
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
@@ -456,6 +459,36 @@ public abstract class VehicleSyncAction {
                 slotId = buffer.readUtf();
                 unload = buffer.readBoolean();
                 all = buffer.readBoolean();
+            };
+        }
+    }
+
+    public static class JetesinAction extends VehicleSyncAction {
+        private String slotId = "";
+        public JetesinAction(String slotId) {
+            super(10);
+            this.slotId = slotId;
+        }
+        @Override
+        protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
+            return PILOT_CHECK;
+        }
+        @Override
+        protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
+            return (player, vehicle) -> {
+                vehicle.jetesinPart(slotId);
+            };
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getWriteData() {
+            return (buffer) -> {
+                buffer.writeUtf(slotId);
+            };
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getReadData() {
+            return (buffer) -> {
+                slotId = buffer.readUtf();
             };
         }
     }

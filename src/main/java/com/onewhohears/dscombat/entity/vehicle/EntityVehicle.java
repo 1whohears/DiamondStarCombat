@@ -3141,5 +3141,9 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		if (seat == null) return false;
 		return seat.canPassengerShootParentWeapon();
 	}
+
+	public boolean jetesinPart(String slotId) {
+		return partsManager.dropPartInSlot(slotId);
+	}
     
 }

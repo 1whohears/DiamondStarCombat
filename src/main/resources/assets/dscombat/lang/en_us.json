@@ -52,6 +52,10 @@
 	"error.dscombat.cant_item_yet_fresh": "Vehicle must exist for %1$s seconds!",
 	"error.dscombat.cant_item_yet_shoot": "Wait for %1$s more seconds after shooting!",
 	"error.dscombat.cant_unload": "Can't unload this part!",
+	"error.dscombat.not_a_passenger": "You are not a passenger of this vehicle.",
+	"error.dscombat.no_permission": "You do not have permission to do this.",
+	"error.dscombat.not_a_pilot": "You are not a pilot or copilot!",
+	"error.dscombat.cant_load_while_moving": "You cannot load parts while moving!",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",

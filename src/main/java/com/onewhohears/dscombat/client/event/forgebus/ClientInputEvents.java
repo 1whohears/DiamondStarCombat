@@ -240,7 +240,7 @@ public final class ClientInputEvents {
 	}
 	
 	private static boolean playerCanShoot(Player player) {
-		return (System.currentTimeMillis()-DSCClientInputs.getClientMountTime()) > DSCClientInputs.MOUNT_SHOOT_COOLDOWN 
+		return (System.currentTimeMillis()-DSCClientInputs.getClientMountTime()) > DSCClientInputs.MOUNT_SHOOT_COOLDOWN
 				&& (!player.isUsingItem() || player.getItemInHand(player.getUsedItemHand()).is(Items.SHIELD));
 	}
 	

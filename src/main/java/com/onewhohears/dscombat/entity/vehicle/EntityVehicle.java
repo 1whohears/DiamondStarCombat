@@ -2188,7 +2188,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return tickCount/20 > fresh && (lastShootTime == -1 || (tickCount-lastShootTime)/20 > shoot);
     }
 
-	public Component getCantBecomeItemReason() {
+	public Component getCantBecomeItemReason(Player player) {
+		EntitySeat seat = getPassengerSeat(player);
+		if (seat == null) return UtilMCText.translatable("error.dscombat.not_a_passenger");
+		if (!seat.canPassengerShootParentWeapon()) return UtilMCText.translatable("error.dscombat.not_a_pilot");
 		int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
 		int fresh_diff = fresh - tickCount/20;
 		if (fresh_diff > 0) return UtilMCText.translatable("error.dscombat.cant_item_yet_fresh", fresh_diff);
@@ -3116,6 +3119,27 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 
 	public double getAltitude() {
 		return UtilEntity.getDistFromSeaLevel(this);
+	}
+
+	public boolean canReload(Player player) {
+		if (!isPilotOrCopilot(player)) {
+			player.displayClientMessage(
+					UtilMCText.translatable("error.dscombat.not_a_pilot"),
+					true);
+			return false;
+		} else if (xzSpeed > 0.1) {
+			player.displayClientMessage(
+					UtilMCText.translatable("error.dscombat.cant_load_while_moving"),
+					true);
+			return false;
+		}
+		return false;
+	}
+
+	public boolean isPilotOrCopilot(Entity entity) {
+		EntitySeat seat = getPassengerSeat(entity);
+		if (seat == null) return false;
+		return seat.canPassengerShootParentWeapon();
 	}
     
 }

@@ -100,7 +100,15 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
-            return (player, vehicle) -> true;
+            return (player, vehicle) -> {
+                if (!vehicle.isPilotOrCopilot(player)) {
+                    player.displayClientMessage(
+                            UtilMCText.translatable("error.dscombat.not_a_pilot"),
+                            true);
+                    return false;
+                }
+                return true;
+            };
         }
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
@@ -302,7 +310,7 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
             return (player, vehicle) -> {
-                Component reason = vehicle.getCantBecomeItemReason();
+                Component reason = vehicle.getCantBecomeItemReason(player);
                 if (reason != null) {
                     player.displayClientMessage(reason, true);
                     return false;
@@ -414,7 +422,7 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
-            return (player, vehicle) -> true;
+            return (player, vehicle) -> vehicle.canReload(player);
         }
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {

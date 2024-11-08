@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.data.parts;
 import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -60,5 +60,7 @@ public interface ReloadablePartInstance {
 		player.addItem(ammo);
 		setCurrentAmmo(0);
 	}
+
+	MutableComponent getItemName();
 	
 }

@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.parts.instance;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.crafting.FlareDispenserLoadRecipe;
 import com.onewhohears.dscombat.crafting.FuelTankLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
@@ -16,7 +15,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.Nullable;
 
 public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> implements ReloadablePartInstance {

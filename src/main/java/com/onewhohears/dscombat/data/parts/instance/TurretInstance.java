@@ -15,7 +15,6 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.phys.Vec3;
 
 public class TurretInstance<T extends TurretStats> extends SeatInstance<T> implements ReloadablePartInstance {

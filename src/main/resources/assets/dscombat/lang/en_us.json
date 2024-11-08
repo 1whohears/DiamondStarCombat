@@ -19,6 +19,8 @@
 	"ui.dscombat.target_mode": "Target Mode",
 	"ui.dscombat.reload_all": "Reload All",
 	"ui.dscombat.unload_all": "Unload All",
+	"ui.dscombat.reload": "Reload",
+	"ui.dscombat.unload": "Unload",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",

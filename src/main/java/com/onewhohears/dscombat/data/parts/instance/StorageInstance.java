@@ -4,12 +4,10 @@ import com.onewhohears.dscombat.common.container.StorageBoxContainer;
 import com.onewhohears.dscombat.common.container.menu.StorageBoxContainerMenu;
 import com.onewhohears.dscombat.data.parts.stats.StorageStats;
 import com.onewhohears.dscombat.init.ModContainers;
-import com.onewhohears.onewholibs.util.UtilItem;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 
 public class StorageInstance<T extends StorageStats> extends PartInstance<T> {

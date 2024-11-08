@@ -7,12 +7,17 @@ import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.FlareDispenserStats;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 
+import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
 
 public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartInstance<T> implements ReloadablePartInstance {
 	
@@ -150,8 +155,9 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 	}
 
 	@Override
-	public MutableComponent getItemName() {
-		return super.getItemName().append(" "+flares+"/"+getStats().getMaxFlares());
+	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
+		super.addToolTips(tips, isAdvanced);
+		tips.add(UtilMCText.literal("Ammo: "+(int)getCurrentAmmo()+"/"+getMaxAmmo())
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
-
 }

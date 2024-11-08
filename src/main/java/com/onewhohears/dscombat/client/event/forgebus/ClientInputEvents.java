@@ -219,16 +219,6 @@ public final class ClientInputEvents {
 			sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getPreferredRadarMode()));
 			radarModeUpdateTime = Util.getMillis();
 		}
-		// RADAR DISPLAY RANGE
-		if (DSCKeys.radarDisplayRangeKey.consumeClick()) {
-			double range = DSCClientInputs.getRadarDisplayRange();
-			if (range <= 250) range = 1000;
-			else if (range <= 1000) range = 2000;
-			else if (range <= 2000) range = 5000;
-			else if (range <= 5000) range = 250;
-			else range = 250;
-			DSCClientInputs.setRadarDisplayRange(range);
-		}
 		// USE GIMBAL
 		if (DSCKeys.gimbalKey.consumeClick()) {
 			DSCClientInputs.toggleGimbalMode();

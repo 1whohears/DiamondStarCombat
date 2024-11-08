@@ -25,7 +25,7 @@ public final class DSCKeys {
 	public static KeyMapping mouseModeKey, resetMouseKey, gimbalKey;
 	public static KeyMapping shootKey, landingGear, flareKey;
 	public static KeyMapping vehicleMenuKey;
-	public static KeyMapping pingCycleKey, radarModeKey, radarDisplayRangeKey;
+	public static KeyMapping pingCycleKey, radarModeKey;
 	public static KeyMapping changeSeat, dismount, eject;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
@@ -64,7 +64,6 @@ public final class DSCKeys {
 		flareKey = registerKey("flare_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_V);
 		radarModeKey = registerKey("radar_mode_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_O);
 		pingCycleKey = registerKey("ping_cycle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_I);
-		radarDisplayRangeKey = registerKey("radar_display_range_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_NUMPAD1);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

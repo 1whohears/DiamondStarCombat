@@ -4,8 +4,12 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.function.Consumer;
 
 public class VehicleRadarScreen extends VehicleSubScreen {
 
@@ -32,9 +36,34 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                                 UtilMCText.translatable("ui.dscombat.radar_mode"),
                                 onRadarModeCycle()),
                 ROWS, COLUMNS, 1, 2);
+        // RADAR DISPLAY RANGE FIELD
+        EditBox rangeBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        positionWidgetGrid(rangeBox, ROWS, COLUMNS, 2, 2);
+        rangeBox.setValue(DSCClientInputs.getRadarDisplayRange()+"");
+        rangeBox.setTextColor(0xFFFFFF);
+        rangeBox.setResponder(onRadarDisplayRangeChange());
+        // RADAR DISPLAY RANGE CYCLE
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("ui.dscombat.cycle_radar_display_range"),
+                        onPress -> {
+                            DSCClientInputs.cycleRadarDisplayRange();
+                            rangeBox.setValue(DSCClientInputs.getRadarDisplayRange()+"");
+                        }),
+                ROWS, COLUMNS, 3, 2);
     }
 
     private CycleButton.OnValueChange<RadarStats.RadarMode> onRadarModeCycle() {
         return (button, value) -> DSCClientInputs.setPreferredRadarMode(value);
+    }
+
+    private Consumer<String> onRadarDisplayRangeChange() {
+        return range -> {
+            try {
+                double number = Double.parseDouble(range);
+                DSCClientInputs.setRadarDisplayRange(number);
+            } catch(NumberFormatException e) {
+                DSCClientInputs.setRadarDisplayRange(250);
+            }
+        };
     }
 }

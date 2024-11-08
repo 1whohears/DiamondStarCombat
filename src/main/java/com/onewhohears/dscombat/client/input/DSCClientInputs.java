@@ -108,7 +108,18 @@ public class DSCClientInputs {
 	}
 	
 	public static void setRadarDisplayRange(double range) {
+		if (range < 10) range = 10;
 		radarDisplayRange = range;
+	}
+
+	public static void cycleRadarDisplayRange() {
+		double range = getRadarDisplayRange();
+		if (range <= 250) range = 1000;
+		else if (range <= 1000) range = 2000;
+		else if (range <= 2000) range = 5000;
+		else if (range <= 5000) range = 250;
+		else range = 250;
+		setRadarDisplayRange(range);
 	}
 	/**
 	 * @return the last time in millis the client mounted a vehicle

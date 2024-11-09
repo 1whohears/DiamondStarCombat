@@ -256,5 +256,9 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public float getMaxFuel() {
 		return 0;
 	}
+
+	public boolean canJetesin() {
+		return hasExternalEntity() && !getStats().isSeat();
+	}
 	
 }

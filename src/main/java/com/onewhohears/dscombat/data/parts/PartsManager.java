@@ -462,6 +462,14 @@ public class PartsManager {
 				return part;
 		return null;
 	}
+
+	public List<PartSlot> getExternalParts() {
+		List<PartSlot> slots = new ArrayList<>();
+		for (PartSlot p : getSlots())
+			if (p.getPartData() != null && p.getPartData().canJetesin())
+				slots.add(p);
+		return slots;
+	}
 	
 	public float getTotalExtraArmor() {
 		float armor = 0;

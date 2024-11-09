@@ -22,7 +22,7 @@ public class VehicleReloadScreen extends VehicleSubScreen {
     private static final int imageWidth = 240, imageHeight = 180;
     private static final int textureSize = 256;
 
-    private static final Style style = Style.EMPTY.withColor(0x00AA00);
+    private static final Style style = Style.EMPTY.withColor(0x008800);
 
     protected VehicleReloadScreen() {
         super("screen.dscombat.vehicle_reload_screen",
@@ -91,7 +91,7 @@ public class VehicleReloadScreen extends VehicleSubScreen {
                     .append(": "+(int)part.getCurrentAmmo()+"/"+(int)part.getMaxAmmo());
             getMinecraft().font.draw(poseStack, ammo.setStyle(style), x, y+10, 0xFFFFFF);
             if (i % 3 == 2) {
-                y += 20 + (int)(20f / scale);
+                y += 50;
                 x = xStart;
             } else x += width;
         }

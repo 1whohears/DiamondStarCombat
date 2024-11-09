@@ -27,25 +27,15 @@ public class VehicleMainScreen extends VehicleScreen {
         int index = 0;
         // Vehicle Name
 
-        // Open Storage Inventory
-        positionWidgetGrid(new Button(0, 0, 20, 20,
-                        UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen"),
-                        onPress -> sendSyncAction(new VehicleSyncAction.OpenStorageAction(0))),
-                ROWS, COLUMNS, index++, 2);
         // Open Parts Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_parts_screen"),
                         onPress -> sendSyncAction(new VehicleSyncAction.OpenPartsAction())),
                 ROWS, COLUMNS, index++, 2);
-        // Open Parts/Weapons Reload Screen
+        // Open Storage Inventory
         positionWidgetGrid(new Button(0, 0, 20, 20,
-                        UtilMCText.translatable("screen.dscombat.vehicle_reload_screen"),
-                        onPress -> getMinecraft().setScreen(new VehicleReloadScreen())),
-                ROWS, COLUMNS, index++, 2);
-        // Open Jetesin Parts Screen
-        positionWidgetGrid(new Button(0, 0, 20, 20,
-                        UtilMCText.translatable("screen.dscombat.vehicle_jetesin_screen"),
-                        onPress -> getMinecraft().setScreen(new VehicleJetesinScreen())),
+                        UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen"),
+                        onPress -> sendSyncAction(new VehicleSyncAction.OpenStorageAction(0))),
                 ROWS, COLUMNS, index++, 2);
         // Open Weapon Settings Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
@@ -56,6 +46,16 @@ public class VehicleMainScreen extends VehicleScreen {
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_radar_screen"),
                         onPress -> getMinecraft().setScreen(new VehicleRadarScreen())),
+                ROWS, COLUMNS, index++, 2);
+        // Open Parts/Weapons Reload Screen
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_reload_screen"),
+                        onPress -> getMinecraft().setScreen(new VehicleReloadScreen())),
+                ROWS, COLUMNS, index++, 2);
+        // Open Jetesin Parts Screen
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_jetesin_screen"),
+                        onPress -> getMinecraft().setScreen(new VehicleJetesinScreen())),
                 ROWS, COLUMNS, index++, 2);
         // Open Vehicle Health Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,

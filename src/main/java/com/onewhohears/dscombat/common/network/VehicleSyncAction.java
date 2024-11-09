@@ -46,7 +46,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new OpenPartsAction());
         addVehicleSyncAction(new SetRadarModeAction(RadarStats.RadarMode.ALL));
         addVehicleSyncAction(new PingSelectAction(null));
-        addVehicleSyncAction(new ShootAction(-1, null, null, WeaponSystem.TargetMode.LOOK));
+        addVehicleSyncAction(new ShootAction(-1, null, null));
         addVehicleSyncAction(new ToItemAction());
         addVehicleSyncAction(new DismountAction());
         addVehicleSyncAction(new SwitchSeatAction());
@@ -246,14 +246,11 @@ public abstract class VehicleSyncAction {
         private int selectedWeaponIndex;
         @Nullable private RadarStats.RadarPing ping;
         @Nullable private Vec3 targetPos;
-        private WeaponSystem.TargetMode targetMode;
-        public ShootAction(int selectedWeaponIndex, @Nullable RadarStats.RadarPing ping,
-                           @Nullable Vec3 targetPos, WeaponSystem.TargetMode targetMode) {
+        public ShootAction(int selectedWeaponIndex, @Nullable RadarStats.RadarPing ping, @Nullable Vec3 targetPos) {
             super(5);
             this.selectedWeaponIndex = selectedWeaponIndex;
             this.ping = ping;
             this.targetPos = targetPos;
-            this.targetMode = targetMode;
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
@@ -265,7 +262,6 @@ public abstract class VehicleSyncAction {
                 if (!(player.getVehicle() instanceof EntitySeat seat)) return;
                 if (ping != null) vehicle.radarSystem.selectTarget(ping);
                 if (targetPos != null) vehicle.weaponSystem.setTargetPos(targetPos);
-                vehicle.weaponSystem.setTargetMode(targetMode);
                 if (seat.isTurret()) {
                     ((EntityTurret)seat).shoot(player);
                     return;
@@ -288,7 +284,6 @@ public abstract class VehicleSyncAction {
                     buffer.writeBoolean(true);
                     DataSerializers.VEC3.write(buffer, targetPos);
                 } else buffer.writeBoolean(false);
-                buffer.writeEnum(targetMode);
             };
         }
         @Override
@@ -301,7 +296,6 @@ public abstract class VehicleSyncAction {
                 if (buffer.readBoolean())
                     targetPos = DataSerializers.VEC3.read(buffer);
                 else targetPos = null;
-                targetMode = buffer.readEnum(WeaponSystem.TargetMode.class);
             };
         }
     }

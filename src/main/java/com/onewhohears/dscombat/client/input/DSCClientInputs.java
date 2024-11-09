@@ -20,6 +20,7 @@ public class DSCClientInputs {
 	
 	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
 	private static RadarMode PREFERRED_RADAR_MODE = RadarMode.ALL;
+	private static TargetMode TARGET_MODE = TargetMode.LOOK;
 	
 	private static boolean GIMBAL_MODE = false;
 	
@@ -183,7 +184,7 @@ public class DSCClientInputs {
 		return CURRENT_MOUSE_MODE.isFreeGlobal();
 	}
 	
-	public static enum MouseMode {
+	public enum MouseMode {
 		/**
 		 * Camera can move freely but turns when the vehicle turns.
 		 * Keeps the camera's angle the same relative angle to the vehicle. 
@@ -214,6 +215,20 @@ public class DSCClientInputs {
 		public boolean isFreeGlobal() {
 			return this == FREE_GLOBAL;
 		}
+	}
+
+	public enum TargetMode {
+		LOOK,
+		COORDS,
+		INDICATOR
+	}
+
+	public static TargetMode getTargetMode() {
+		return TARGET_MODE;
+	}
+
+	public static void setTargetMode(TargetMode targetMode) {
+		TARGET_MODE = targetMode;
 	}
 	
 }

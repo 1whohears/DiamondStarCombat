@@ -4,12 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.screen.widget.WeaponButton;
-import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.onewholibs.util.UtilMCText;
-import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
@@ -40,9 +38,9 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
         padding = 0;
         super.init();
         // TARGET MODE
-        positionWidgetGrid(CycleButton.<WeaponSystem.TargetMode>builder(value -> UtilMCText.literal(value.name()))
-                        .withValues(WeaponSystem.TargetMode.values())
-                        .withInitialValue(getVehicle().weaponSystem.getTargetMode())
+        positionWidgetGrid(CycleButton.<DSCClientInputs.TargetMode>builder(value -> UtilMCText.literal(value.name()))
+                        .withValues(DSCClientInputs.TargetMode.values())
+                        .withInitialValue(DSCClientInputs.getTargetMode())
                         .create(0, 0, 20, 20,
                                 UtilMCText.translatable("ui.dscombat.target_mode"),
                                 onTargetModeCycle()),
@@ -88,8 +86,8 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
         return button -> getVehicle().weaponSystem.setSelected(weaponIndex);
     }
 
-    private CycleButton.OnValueChange<WeaponSystem.TargetMode> onTargetModeCycle() {
-        return (button, value) -> getVehicle().weaponSystem.setTargetMode(value);
+    private CycleButton.OnValueChange<DSCClientInputs.TargetMode> onTargetModeCycle() {
+        return (button, value) -> DSCClientInputs.setTargetMode(value);
     }
 
     private Consumer<String> onTargetPosCoordChange(int axis) {

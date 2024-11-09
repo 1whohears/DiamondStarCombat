@@ -40,8 +40,4 @@ public abstract class MissileInstance<T extends MissileStats> extends BulletInst
 		missile.targetPos = UtilEntity.getLookingAtBlockPos(looker, 300);
 	}
 
-	protected void setTargetPosByCoordsCommand(WeaponShootParameters params, EntityMissile<?> missile) {
-		if (params.vehicle != null) missile.targetPos = params.vehicle.weaponSystem.getTargetPos();
-	}
-
 }

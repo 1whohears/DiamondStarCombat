@@ -47,11 +47,6 @@ public class VehicleMainScreen extends VehicleScreen {
                         UtilMCText.translatable("screen.dscombat.vehicle_jetesin_screen"),
                         onPress -> getMinecraft().setScreen(new VehicleJetesinScreen())),
                 ROWS, COLUMNS, index++, 2);
-        // Open Vehicle Health Screen
-        positionWidgetGrid(new Button(0, 0, 20, 20,
-                        UtilMCText.translatable("screen.dscombat.vehicle_health_screen"),
-                        onPress -> getMinecraft().setScreen(new VehicleHealthScreen())),
-                ROWS, COLUMNS, index++, 2);
         // Open Weapon Settings Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_weapon_screen"),
@@ -61,6 +56,11 @@ public class VehicleMainScreen extends VehicleScreen {
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_radar_screen"),
                         onPress -> getMinecraft().setScreen(new VehicleRadarScreen())),
+                ROWS, COLUMNS, index++, 2);
+        // Open Vehicle Health Screen
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("screen.dscombat.vehicle_health_screen"),
+                        onPress -> getMinecraft().setScreen(new VehicleHealthScreen())),
                 ROWS, COLUMNS, index++, 2);
         // Open Keybinds screen (include option to display reminder on top left)
         positionWidgetGrid(new Button(0, 0, 20, 20,

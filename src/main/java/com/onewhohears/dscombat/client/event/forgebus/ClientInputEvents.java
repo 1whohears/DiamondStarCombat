@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.Util;
@@ -25,6 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -191,8 +193,7 @@ public final class ClientInputEvents {
 			sendSyncAction(new VehicleSyncAction.ShootAction(
 					vehicle.weaponSystem.getSelectedIndex(),
 					radar.getClientSelectedPing(),
-					vehicle.weaponSystem.getTargetPos(),
-					vehicle.weaponSystem.getTargetMode()));
+					getShootPos(player, vehicle)));
 		}
 		// DISMOUNT 
 		if (Config.CLIENT.customDismount.get() && DSCKeys.dismount.isDown()) {
@@ -227,6 +228,28 @@ public final class ClientInputEvents {
 		if (DSCKeys.vehicleMenuKey.consumeClick()) {
 			m.setScreen(new VehicleMainScreen());
 		}
+	}
+
+	public static Vec3 getShootPos(Player player, EntityVehicle vehicle) {
+		switch (DSCClientInputs.getTargetMode()) {
+            case LOOK -> { return getLookPos(player, vehicle); }
+            case COORDS -> {  return vehicle.weaponSystem.getTargetPos(); }
+			case INDICATOR -> { return Vec3.ZERO; }
+		}
+		return Vec3.ZERO;
+	}
+
+	public static Vec3 getLookPos(Player player, EntityVehicle vehicle) {
+		Entity looker = player;
+		if (DSCClientInputs.isGimbalMode()) {
+			Entity gimbal = vehicle.getGimbalForPilotCamera();
+			if (gimbal != null) {
+				looker = gimbal;
+				looker.setXRot(player.getXRot());
+				looker.setYRot(player.getYRot());
+			}
+		}
+		return UtilEntity.getLookingAtBlockPos(looker, 300);
 	}
 	
 	private static boolean playerCanShoot(Player player) {

@@ -27,7 +27,7 @@ public class GroundRadarScreenInstance extends RadarScreenInstance {
 	public void draw(Entity entity, PoseStack poseStack, MultiBufferSource buffer, 
 			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
-		String format_range = String.format("DR: %4d", 500);
+		String format_range = String.format("DR: %4d", 400);
 		drawText(UtilMCText.literal(format_range), -0.48f, -0.48f, 0.25f, 
 				poseStack, buffer, 0x00ff00, packedLight);
 	}
@@ -56,7 +56,7 @@ public class GroundRadarScreenInstance extends RadarScreenInstance {
 	
 	@Override
 	protected double getScreenDistRatio(double distance) {
-		return distance * 0.002;
+		return distance * 0.0025;
 	}
 
 }

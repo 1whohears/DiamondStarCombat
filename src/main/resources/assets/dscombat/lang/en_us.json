@@ -21,9 +21,12 @@
 	"ui.dscombat.unload_all": "Unload All",
 	"ui.dscombat.reload": "Reload",
 	"ui.dscombat.unload": "Unload",
-	"ui.dscombat.cycle_radar_display_range": "Cycle Radar Disp R",
+	"ui.dscombat.cycle_radar_display_range": "Cycle Radar Display Range",
 	"ui.dscombat.gimbal_mode": "Gimbal",
 	"ui.dscombat.drop": "Drop",
+	"ui.dscombat.root_health": "Root Health",
+	"ui.dscombat.root_armor": "Root Armor",
+	"ui.dscombat.hitbox_health_armor": "Hitbox Health and Armor",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",

@@ -37,8 +37,10 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                                 onRadarModeCycle()),
                 ROWS, COLUMNS, 1, 2);
         // RADAR DISPLAY RANGE FIELD
+        vertical_widget_shift = 34;
+        COLUMNS = 4;
         EditBox rangeBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
-        positionWidgetGrid(rangeBox, ROWS, COLUMNS, 2, 2);
+        positionWidgetGrid(rangeBox, ROWS, COLUMNS, 3, 2);
         rangeBox.setValue(DSCClientInputs.getRadarDisplayRange()+"");
         rangeBox.setTextColor(0xFFFFFF);
         rangeBox.setResponder(onRadarDisplayRangeChange());
@@ -49,7 +51,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                             DSCClientInputs.cycleRadarDisplayRange();
                             rangeBox.setValue(DSCClientInputs.getRadarDisplayRange()+"");
                         }),
-                ROWS, COLUMNS, 3, 2);
+                ROWS, COLUMNS, 0, 2, 3);
     }
 
     private CycleButton.OnValueChange<RadarStats.RadarMode> onRadarModeCycle() {

@@ -13,27 +13,32 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class Config {
 	
 	public static class Client {
-		
-		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
+		// MOUSE SETTINGS
 		public final ForgeConfigSpec.DoubleValue mouseModeMaxRadius;
 		public final ForgeConfigSpec.DoubleValue mouseYReturnRate;
 		public final ForgeConfigSpec.DoubleValue mouseXReturnRate;
 		public final ForgeConfigSpec.IntValue mouseYSteps;
 		public final ForgeConfigSpec.IntValue mouseXSteps;
+		// CONTROLS
 		public final ForgeConfigSpec.BooleanValue invertY;
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
-		public final ForgeConfigSpec.EnumValue<RadarMode> defaultRadarMode;
-		public final ForgeConfigSpec.BooleanValue debugMode;
+		// VOLUME/SOUND
 		public final ForgeConfigSpec.DoubleValue rwrWarningVol, missileWarningVol, irTargetToneVol;
 		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
 		public final ForgeConfigSpec.EnumValue<PassengerSoundPack> passengerSoundPack;
+		// DISPLAY
+		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
+		// RENDER DISTANCES
 		public final ForgeConfigSpec.IntValue maxRenderRackMissileNum;
 		public final ForgeConfigSpec.DoubleValue renderWeaponRackDistance;
 		public final ForgeConfigSpec.DoubleValue renderTurretDistance;
 		public final ForgeConfigSpec.DoubleValue renderEngineDistance;
 		public final ForgeConfigSpec.DoubleValue renderRadarDistance;
 		public final ForgeConfigSpec.DoubleValue renderOtherExternalPartDistance;
+		// OTHER
+		public final ForgeConfigSpec.BooleanValue debugMode;
+		public final ForgeConfigSpec.EnumValue<RadarMode> defaultRadarMode;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("display");

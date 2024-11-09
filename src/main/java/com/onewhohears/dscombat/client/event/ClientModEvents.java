@@ -300,7 +300,7 @@ public final class ClientModEvents {
 		// TODO 1.6.1 create turn coordinator screen
 		EntityScreenTypes.addScreenType(EntityScreenIds.ATTITUDE_SCREEN, AttitudeScreenInstance::new, "7F3300");
 		// TODO 1.6.3 create aoa meter screen
-		// TODO 1.7 create altitude screen
+		EntityScreenTypes.addScreenType(EntityScreenIds.ALTIMETER_SCREEN, AltimeterScreenInstance::new, "848400");
 		EntityScreenTypes.addScreenType(EntityScreenIds.AIR_SPEED_SCREEN, SpeedScreenInstance::new, "FFD800");
 		// TODO 1.9 create vertical speed screen
 	}

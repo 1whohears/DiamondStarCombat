@@ -20,6 +20,7 @@ public class EntityScreenIds {
 	public static final int ATTITUDE_SCREEN = 7;
 	public static final int ALTIMETER_SCREEN = 8;
 	public static final int AOA_SCREEN = 9;
+	public static final int TURN_COORD_SCREEN = 10;
 	
 	// THIS HAS TO BE HERE OTHERWISE CLIENT SIDE ONLY CLASS GETS CALLED CRASHING SERVER
 	/**

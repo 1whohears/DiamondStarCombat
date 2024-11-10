@@ -297,12 +297,11 @@ public final class ClientModEvents {
 		EntityScreenTypes.addScreenType(EntityScreenIds.HUD_SCREEN, HudScreenInstance::new, "");
 		EntityScreenTypes.addScreenType(EntityScreenIds.RWR_SCREEN, RWRScreenInstance::new, "FF00DC");
 		EntityScreenTypes.addScreenType(EntityScreenIds.HEADING_SCREEN, HeadingScreenInstance::new, "0026FF");
-		// TODO 1.6.1 create turn coordinator screen
+		EntityScreenTypes.addScreenType(EntityScreenIds.TURN_COORD_SCREEN, TurnCoordScreenInstance::new, "008718");
 		EntityScreenTypes.addScreenType(EntityScreenIds.ATTITUDE_SCREEN, AttitudeScreenInstance::new, "7F3300");
 		EntityScreenTypes.addScreenType(EntityScreenIds.AOA_SCREEN, AOAScreenInstance::new, "840084");
 		EntityScreenTypes.addScreenType(EntityScreenIds.ALTIMETER_SCREEN, AltimeterScreenInstance::new, "848400");
 		EntityScreenTypes.addScreenType(EntityScreenIds.AIR_SPEED_SCREEN, SpeedScreenInstance::new, "FFD800");
-		// TODO 1.9 create vertical speed screen
 	}
 	
 }

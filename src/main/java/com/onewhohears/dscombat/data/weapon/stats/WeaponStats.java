@@ -216,8 +216,12 @@ public abstract class WeaponStats extends JsonPresetStats {
 	public boolean isAimAssist() {
 		return false;
 	}
+
+	public boolean isPosGuided() {
+		return false;
+	}
 	
-	public static enum WeaponClientImpactType {
+	public enum WeaponClientImpactType {
 		SMALL_BULLET_IMPACT((level, pos) -> UtilParticles.bulletImpact(level, pos, 5)),
 		SMALL_BULLET_EXPLODE((level, pos) -> UtilParticles.bulletExplode(level, pos, 2.5, true)),
 		MED_BOMB_EXPLODE((level, pos) -> UtilParticles.bombExplode(level, pos, 5, true)),

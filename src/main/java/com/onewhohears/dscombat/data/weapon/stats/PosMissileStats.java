@@ -37,4 +37,9 @@ public class PosMissileStats extends MissileStats {
 		return MODID+":textures/ui/weapon_icons/pos_missile.png";
 	}
 
+	@Override
+	public boolean isPosGuided() {
+		return true;
+	}
+
 }

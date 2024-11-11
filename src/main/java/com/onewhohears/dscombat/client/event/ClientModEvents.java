@@ -289,7 +289,7 @@ public final class ClientModEvents {
 
 	@SubscribeEvent
 	public static void registerEntityScreens(FMLClientSetupEvent event) {
-		// TODO 1.0 make a big radar screen for boats, ground vehicles (axcel truck), and stationary radars
+		EntityScreenTypes.addScreenType(EntityScreenIds.BIG_RADAR_SCREEN, BigRadarScreenInstance::new, "008282");
 		EntityScreenTypes.addScreenType(EntityScreenIds.AIR_RADAR_SCREEN, AirRadarScreenInstance::new, "00FFFF");
 		EntityScreenTypes.addScreenType(EntityScreenIds.GROUND_RADAR_SCREEN, GroundRadarScreenInstance::new, "4CFF00");
 		EntityScreenTypes.addScreenType(EntityScreenIds.FUEL_SCREEN, FuelScreenInstance::new, "7F0000");

@@ -45,7 +45,7 @@ public class AirRadarScreenInstance extends RadarScreenInstance {
 			if (i == selected || i == hover) continue;
 			RadarStats.RadarPing ping = pings.get(i);
 			if (!ping.terrainType.isAir()) continue;
- 			drawPing(ping, vehicle, false, false);
+			drawPing(ping, vehicle, false, false);
 		}
 		// render hover next
 		if (hover > -1 && hover < pings.size() && pings.get(hover).terrainType.isAir()) 

@@ -41,9 +41,8 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		if (entity.tickCount == prevUpdateTickCount) return false;
 		if (entity.tickCount % 2 != 0) return false;
-		if ((entity.tickCount-vehicle.radarSystem.clientPingRefreshTime) > 100) return false;
-		return true;
-	}
+        return (entity.tickCount - vehicle.radarSystem.clientPingRefreshTime) <= 100;
+    }
 	
 	protected void drawPing(RadarStats.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover) {
 		Vec3 dp = ping.getPosForClient().subtract(vehicle.position());

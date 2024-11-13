@@ -10,6 +10,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class VehicleDamageSource extends DamageSource {
 	
 	public final EntityVehicle aircraft;
@@ -59,6 +62,18 @@ public class VehicleDamageSource extends DamageSource {
 		} else {
 			return UtilMCText.translatable(s+".player", killed.getDisplayName(), killer.getDisplayName());
 		}
+	}
+
+	@Nonnull
+	@Override
+	public Entity getDirectEntity() {
+		return aircraft;
+	}
+
+	@Nullable
+	@Override
+	public Entity getEntity() {
+		return aircraft.getControllingPassenger();
 	}
 
 }

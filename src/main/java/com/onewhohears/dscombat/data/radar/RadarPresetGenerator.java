@@ -53,10 +53,10 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "axcel_truck_radar")
-				.setRange(1000f)
+				.setRange(1500f)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
-				.setSensitivity(0.3f)
+				.setSensitivity(0.8f)
 				.setFieldOfView(-1)
 				.setScanRate(30)
 				.setScanAircraft(true)

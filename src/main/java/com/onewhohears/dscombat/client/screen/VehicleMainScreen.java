@@ -1,8 +1,11 @@
 package com.onewhohears.dscombat.client.screen;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
+import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -74,7 +77,13 @@ public class VehicleMainScreen extends VehicleScreen {
                                 (button, value) -> sendSyncAction(new VehicleSyncAction.LandingGearAction(value))),
                 ROWS, COLUMNS, index++, 2);
         // Cycle Vehicle Permission Mode
-
+        positionWidgetGrid(CycleButton.<EntityVehicle.PermMode>builder(value -> UtilMCText.literal(value.name()))
+                        .withValues(EntityVehicle.PermMode.values())
+                        .withInitialValue(getVehicle().getPermMode())
+                        .create(0, 0, 20, 20,
+                                UtilMCText.translatable("ui.dscombat.radar_mode"),
+                                onPermModeCycle()),
+                ROWS, COLUMNS, index++, 2);
         // Turn Vehicle to Item
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.shrink_plane_button"),
@@ -84,6 +93,10 @@ public class VehicleMainScreen extends VehicleScreen {
 
     private void onPlaneItemButton() {
         sendSyncAction(new VehicleSyncAction.ToItemAction());
+    }
+
+    private CycleButton.OnValueChange<EntityVehicle.PermMode> onPermModeCycle() {
+        return (button, value) -> sendSyncAction(new VehicleSyncAction.SetPermModeAction(value));
     }
 
 }

@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.phys.Vec3;
@@ -78,6 +79,7 @@ public class DataSerializers {
     };
     
     public static final EntityDataSerializer<RadarMode> RADAR_MODE = getEnumSerializer(RadarMode.class);
+	public static final EntityDataSerializer<EntityVehicle.PermMode> PERM_MODE = getEnumSerializer(EntityVehicle.PermMode.class);
     
     private static <E extends Enum<E>> EntityDataSerializer<E> getEnumSerializer(Class<E> enumClass) {
     	return new EntityDataSerializer<>() {
@@ -104,4 +106,6 @@ public class DataSerializers {
     		.register("partdata", () -> PART_DATA);
     public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_RADARMODE = DATA_SERIALIZERS
     		.register("radarmode", () -> RADAR_MODE);
+	public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PERMMODE = DATA_SERIALIZERS
+			.register("permmode", () -> PERM_MODE);
 }

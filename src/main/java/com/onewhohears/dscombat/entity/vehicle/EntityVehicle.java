@@ -1,14 +1,9 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
@@ -134,6 +129,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<PermMode> PERM_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.PERM_MODE);;
 	
 	public static final int HITBOX_PUSH_COOLDOWN = 4;
 	
@@ -196,10 +192,16 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Nullable protected EntityGimbal pilotGimbal;
 	@Nullable protected Player chainHolderPlayer;
 	@Nullable protected EntityChainHook chainHolderHook;
+
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	@Nullable private Entity owner;
+	@Nullable private UUID owner_uuid;
+	private int owner_id = -1;
 	
 	// TODO 5.4 vehicle visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
-	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
 	// TODO 2.5 add chaff
 	// TODO 2.8 external fuel tanks
 	
@@ -233,6 +235,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(PLAY_IR_TONE, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL);
 		entityData.define(LANDING_GEAR, true);
+		entityData.define(PERM_MODE, PermMode.PUBLIC);
 	}
 	
 	@Override
@@ -297,6 +300,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setRadioSong(nbt.getString("radio_song"));
 		createRotableHitboxes(nbt);
 		if (nbt.contains("ingredientDropIndex")) ingredientDropIndex = nbt.getInt("ingredientDropIndex");
+		if (nbt.contains("owner_id")) owner_uuid = nbt.getUUID("owner_id");
+		setPermMode(PermMode.values()[nbt.getInt("perm_mode")]);
 	}
 
 	@Override
@@ -317,8 +322,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putFloat("zRot", zRot);
 		nbt.putInt("radar_mode", getRadarMode().ordinal());
 		nbt.putString("radio_song", getRadioSong());
-		Entity c = getControllingPassenger();
-		if (c != null) nbt.putString("owner", c.getScoreboardName());
+		if (owner != null) {
+			nbt.putString("owner_name", owner.getScoreboardName());
+			nbt.putUUID("owner_id", owner.getUUID());
+		}
 		Component name = getCustomName();
         if (name != null) nbt.putString("CustomName", Component.Serializer.toJson(name));
         if (isCustomNameVisible()) nbt.putBoolean("CustomNameVisible", isCustomNameVisible());
@@ -326,6 +333,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         nbt.putFloat("flares", getFlareNum());
         saveRotableHitboxes(nbt);
         nbt.putInt("ingredientDropIndex", ingredientDropIndex);
+		nbt.putInt("perm_mode", getPermMode().ordinal());
 	}
 	
 	@Override
@@ -473,7 +481,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * damages plane if it falls or collides with a wall at speeds defined in config.
 	 */
 	public void tickCollisions() {
-		// TODO 9.1 break grass and leaves or just weak blocks when driving through them
 		if (!level.isClientSide) {
 			knockBack(level.getEntities(this, 
 					getBoundingBox(), 
@@ -3144,6 +3151,65 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 
 	public boolean jetesinPart(String slotId) {
 		return partsManager.dropPartInSlot(slotId);
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public void setOwner(Entity owner) {
+		this.owner = owner;
+		this.owner_uuid = owner.getUUID();
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	@Nullable
+	public Entity getOwner() {
+		if (owner_uuid == null) return null;
+		if (owner == null || getLevel().getEntity(owner_id) == null) {
+			owner = getLevel().getPlayerByUUID(owner_uuid);
+			if (owner != null) owner_id = owner.getId();
+			else owner_id = -1;
+		}
+		return owner;
+	}
+
+	public enum PermMode {
+		PUBLIC, ALLIES, PRIVATE
+	}
+
+	public PermMode getPermMode() {
+		return entityData.get(PERM_MODE);
+	}
+
+	public void setPermMode(PermMode mode) {
+		entityData.set(PERM_MODE, mode);
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public boolean hasPermission(@Nonnull Entity entity) {
+		if (DSCGameRules.isForcePublicPerm(getLevel())) return true;
+		if (getPermMode() == PermMode.PUBLIC) return true;
+		Entity owner = getOwner();
+		if (getPermMode() == PermMode.ALLIES) {
+			if (entity.equals(owner)) return true;
+			else if (owner != null) return owner.isAlliedTo(entity);
+			else return false;
+		} else {
+			return entity.equals(owner);
+		}
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public boolean isOwner(Entity entity) {
+		return entity.equals(getOwner());
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public boolean hasOwner() {
+		return owner_uuid != null;
 	}
     
 }

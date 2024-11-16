@@ -62,6 +62,8 @@
 	"error.dscombat.no_permission": "You do not have permission to do this.",
 	"error.dscombat.not_a_pilot": "You are not a pilot or copilot!",
 	"error.dscombat.cant_load_while_moving": "You cannot load parts while moving!",
+	"error.dscombat.not_owner": "You are not the owner of this vehicle!",
+	"error.dscombat.no_perm_vehicle": "The owner of this vehicle did not give you permission!",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",

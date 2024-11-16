@@ -158,7 +158,7 @@ public class ItemVehicle extends Item {
 			try { return Component.Serializer.fromJson(cn); } 
 			catch (Exception e) {}
 		}
-		String owner = etag.getString("owner");
+		String owner = etag.getString("owner_name");
 		if (owner.isEmpty()) owner = "Someone";
 		return UtilMCText.literal(owner+"'s ").append(super.getName(stack))
 				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));

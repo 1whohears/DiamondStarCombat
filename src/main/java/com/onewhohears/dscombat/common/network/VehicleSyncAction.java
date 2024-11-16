@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleSyncActio
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats;
-import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -40,6 +39,26 @@ public abstract class VehicleSyncAction {
         return true;
     };
 
+    public static final BiPredicate<Player, EntityVehicle> OWNER_CHECK = (player, vehicle) -> {
+        if (!vehicle.isOwner(player)) {
+            player.displayClientMessage(
+                    UtilMCText.translatable("error.dscombat.not_owner"),
+                    true);
+            return false;
+        }
+        return true;
+    };
+
+    public static final BiPredicate<Player, EntityVehicle> PERMISSION_CHECK = (player, vehicle) -> {
+        if (!vehicle.hasPermission(player)) {
+            player.displayClientMessage(
+                    UtilMCText.translatable("error.dscombat.no_perm_vehicle"),
+                    true);
+            return false;
+        }
+        return true;
+    };
+
     public static void register() {
         addVehicleSyncAction(new LandingGearAction(false));
         addVehicleSyncAction(new OpenStorageAction(0));
@@ -52,6 +71,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new SwitchSeatAction());
         addVehicleSyncAction(new LoadPartAction("", false));
         addVehicleSyncAction(new JetesinAction(""));
+        addVehicleSyncAction(new SetPermModeAction(EntityVehicle.PermMode.PUBLIC));
     }
 
     public static void sendSyncAction(VehicleSyncAction action) {
@@ -484,6 +504,30 @@ public abstract class VehicleSyncAction {
             return (buffer) -> {
                 slotId = buffer.readUtf();
             };
+        }
+    }
+
+    public static class SetPermModeAction extends VehicleSyncAction {
+        private EntityVehicle.PermMode mode;
+        public SetPermModeAction(EntityVehicle.PermMode mode) {
+            super(11);
+            this.mode = mode;
+        }
+        @Override
+        protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
+            return OWNER_CHECK;
+        }
+        @Override
+        protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
+            return (player, vehicle) -> vehicle.setPermMode(mode);
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getWriteData() {
+            return (buffer) -> buffer.writeEnum(mode);
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getReadData() {
+            return (buffer) -> mode = buffer.readEnum(EntityVehicle.PermMode.class);
         }
     }
 }

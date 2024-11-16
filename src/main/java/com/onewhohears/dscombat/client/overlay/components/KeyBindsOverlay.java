@@ -19,7 +19,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	private static final int DEFAULT_KEY_COLOR = 0x00ff00;
 	private static final int USE_KEY_COLOR = 0xffff00;
 	private static final int MAPPING_NAME_WIDTH = 80;
-	private static final int KEY_NAME_WIDTH = 34;
+	private static final int KEY_NAME_WIDTH = 40;
 	
 	public static Component fixKeyName(KeyMapping key) {
         return switch (key.getKey().getValue()) {

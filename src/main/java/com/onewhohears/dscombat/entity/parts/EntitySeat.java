@@ -110,11 +110,20 @@ public class EntitySeat extends EntityPart {
 	
 	@Override
     protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
+        if (!getLevel().isClientSide()) {
+			EntityVehicle vehicle = getParentVehicle();
+			if (vehicle != null && !vehicle.hasOwner()) {
+				vehicle.setOwner(passenger);
+			}
+		}
+		super.addPassenger(passenger);
 	}
 	
 	@Override
     public boolean canAddPassenger(Entity passenger) {
+		EntityVehicle vehicle = getParentVehicle();
+		if (vehicle == null) return false;
+		if (!vehicle.hasPermission(passenger)) return false;
 		if (passenger instanceof LivingEntity) return getPassenger() == null;
 		return false;
 	}

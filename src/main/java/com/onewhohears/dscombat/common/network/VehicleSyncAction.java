@@ -72,6 +72,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new LoadPartAction("", false));
         addVehicleSyncAction(new JetesinAction(""));
         addVehicleSyncAction(new SetPermModeAction(EntityVehicle.PermMode.PUBLIC));
+        addVehicleSyncAction(new SetCustomNameAction(Component.empty()));
     }
 
     public static void sendSyncAction(VehicleSyncAction action) {
@@ -528,6 +529,30 @@ public abstract class VehicleSyncAction {
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
             return (buffer) -> mode = buffer.readEnum(EntityVehicle.PermMode.class);
+        }
+    }
+
+    public static class SetCustomNameAction extends VehicleSyncAction {
+        private Component name;
+        public SetCustomNameAction(Component name) {
+            super(12);
+            this.name = name;
+        }
+        @Override
+        protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
+            return PERMISSION_CHECK;
+        }
+        @Override
+        protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
+            return (player, vehicle) -> vehicle.setCustomName(name);
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getWriteData() {
+            return (buffer) -> buffer.writeComponent(name);
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getReadData() {
+            return (buffer) -> name = buffer.readComponent();
         }
     }
 }

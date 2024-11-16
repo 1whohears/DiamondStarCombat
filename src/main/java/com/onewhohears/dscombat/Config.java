@@ -29,6 +29,7 @@ public class Config {
 		public final ForgeConfigSpec.EnumValue<PassengerSoundPack> passengerSoundPack;
 		// DISPLAY
 		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
+		public final ForgeConfigSpec.EnumValue<RadarMode> defaultRadarMode;
 		// RENDER DISTANCES
 		public final ForgeConfigSpec.IntValue maxRenderRackMissileNum;
 		public final ForgeConfigSpec.DoubleValue renderWeaponRackDistance;
@@ -38,12 +39,13 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue renderOtherExternalPartDistance;
 		// OTHER
 		public final ForgeConfigSpec.BooleanValue debugMode;
-		public final ForgeConfigSpec.EnumValue<RadarMode> defaultRadarMode;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("display");
 			radarPingOverlaySize = builder
 					.defineInRange("radarPingOverlaySize", 100, 10, 1000);
+			defaultRadarMode = builder
+					.defineEnum("defaultRadarMode", RadarMode.ALL);
 			builder.pop();
 			builder.push("mouse-joystick-settings");
 			mouseModeMaxRadius = builder
@@ -70,8 +72,6 @@ public class Config {
 			customDismount = builder
 					.comment("If enabled, your sneak key binding becomes Special2, and Special2 binding becomes dismount.")
 					.define("customDismount", true);
-			defaultRadarMode = builder
-					.defineEnum("defaultRadarMode", RadarMode.ALL);
 			builder.pop();
 			builder.push("sounds");
 			rwrWarningVol = builder

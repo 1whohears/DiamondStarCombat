@@ -547,6 +547,8 @@
 	"key.dscombat.gimbal_key": "Gimbal Mode",
 	"key.dscombat.vehicle_storage_key": "Vehicle Storage",
 	"key.dscombat.eject_key": "Eject",
+	"key.dscombat.lean_left_key": "Lean Left Key",
+	"key.dscombat.lean_right_key": "Lean Right Key",
 	
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",

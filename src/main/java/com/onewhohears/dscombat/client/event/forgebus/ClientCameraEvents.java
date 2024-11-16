@@ -110,16 +110,22 @@ public class ClientCameraEvents {
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
 		double camDist = plane.getStats().cameraDistance;
+		Camera camera = event.getCamera();
 		if (detached && isPilot && camDist > 4) {
-			double vehicleCamDist = Math.min(0, 4-getMaxDist(event.getCamera(), player, camDist));
-			((CameraAccess)event.getCamera()).invokeSetRotation(event.getYaw(), event.getPitch());
-			event.getCamera().move(vehicleCamDist, 0, 0);
+			double vehicleCamDist = Math.min(0, 4-getMaxDist(camera, player, camDist));
+			((CameraAccess)camera).invokeSetRotation(event.getYaw(), event.getPitch());
+			camera.move(vehicleCamDist, 0, 0);
 		}
-		// TODO 4.4 allow player to lean left or right in first person to see behind more easily
+		Quaternion q = null;
 		if (camYOffset != 0) {
-			Quaternion q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
+			q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
 			Vec3 yawAxis = UtilAngles.getYawAxis(q);
-			event.getCamera().setPosition(event.getCamera().getPosition().add(yawAxis.scale(camYOffset)));
+			camera.setPosition(camera.getPosition().add(yawAxis.scale(camYOffset)));
+		}
+		if (DSCClientInputs.getLeanAmount() != 0) {
+			if (q == null) q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
+			Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
+			camera.setPosition(camera.getPosition().add(pitchAxis.scale(-DSCClientInputs.getLeanAmount())));
 		}
 		ptOld = pt;
 	}

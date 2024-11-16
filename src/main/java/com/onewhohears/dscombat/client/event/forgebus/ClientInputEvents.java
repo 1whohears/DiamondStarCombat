@@ -228,6 +228,12 @@ public final class ClientInputEvents {
 		if (DSCKeys.vehicleMenuKey.consumeClick()) {
 			m.setScreen(new VehicleMainScreen());
 		}
+		// CAMERA LEAN
+		boolean leanLeft = DSCKeys.leanLeftKey.consumeClick();
+		boolean leanRight = DSCKeys.leanRightKey.consumeClick();
+		if (leanLeft && leanRight) DSCClientInputs.leanNot();
+		else if (leanLeft) DSCClientInputs.leanLeft();
+		else if (leanRight) DSCClientInputs.leanRight();
 	}
 
 	public static Vec3 getShootPos(Player player, EntityVehicle vehicle) {
@@ -275,6 +281,7 @@ public final class ClientInputEvents {
 		Entity mounted = event.getEntityBeingMounted();
 		if (!(mounted instanceof EntitySeat)) return;
 		DSCClientInputs.setClientMountTime(System.currentTimeMillis());
+		DSCClientInputs.leanNot();
 	}
 	
 	@SubscribeEvent

@@ -17,6 +17,8 @@ public class DSCClientInputs {
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
 	private static long mountTime;
+
+	private static double LEAN_AMOUNT = 0;
 	
 	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
 	private static RadarMode PREFERRED_RADAR_MODE = RadarMode.ALL;
@@ -230,5 +232,26 @@ public class DSCClientInputs {
 	public static void setTargetMode(TargetMode targetMode) {
 		TARGET_MODE = targetMode;
 	}
-	
+
+	public static void setLeanAmount(double leanAmount) {
+		LEAN_AMOUNT = leanAmount;
+	}
+
+	public static double getLeanAmount() {
+		return LEAN_AMOUNT;
+	}
+
+	public static void leanLeft() {
+		if (getLeanAmount() < 0) leanNot();
+		else setLeanAmount(-0.6);
+	}
+
+	public static void leanRight() {
+		if (getLeanAmount() > 0) leanNot();
+		else setLeanAmount(0.6);
+	}
+
+	public static void leanNot() {
+		setLeanAmount(0);
+	}
 }

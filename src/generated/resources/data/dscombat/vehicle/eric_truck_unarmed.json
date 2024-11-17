@@ -9,6 +9,10 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 1
+    },
+    {
+      "item": "dscombat:chain_hook",
+      "num": 1
     }
   ],
   "is_craftable": true,
@@ -28,6 +32,12 @@
         "part": "heavy_fuel_tank"
       },
       "name": "internal_2"
+    },
+    {
+      "data": {
+        "part": "chain_hook"
+      },
+      "name": "hitch_1"
     }
   ]
 }

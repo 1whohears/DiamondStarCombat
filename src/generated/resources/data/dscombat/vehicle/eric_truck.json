@@ -18,7 +18,7 @@
   "slots": [
     {
       "data": {
-        "part": "axcel_truck_radar"
+        "part": "air_scan_b"
       },
       "name": "frame_1"
     },

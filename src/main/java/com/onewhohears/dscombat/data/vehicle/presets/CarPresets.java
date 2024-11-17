@@ -129,22 +129,23 @@ public class CarPresets {
 			.set3rdPersonCamDist(10)
 			.setCarIsTank(false)
 			.setCanNegativeThrottle(true)
-			.addPilotSeatSlot(0.5, 0.9, 1)
-			.addSeatSlot("seat2", -0.5, 0.9, 1)
-			.addSeatSlot("seat3", -0.5, 0.9, 1)
+			.addPilotSeatSlot(1.05, 1.55, 1.1)
+			.addSeatSlot("seat2", 0, 1.55, 0.7)
+			.addSeatSlot("seat3", -1.05, 1.55, 1.1)
 			.addIngredient(ModItems.SEAT.getId(), 3)
 			.addIngredient(ModItems.LARGE_WHEEL.getId(), 8)
 			.addIngredientTag("dscombat:aluminum_ingot", 40)
 			.addIngredient("minecraft:gold_ingot", 5)
-			.addEmptySlot("cargo_bed_1", SlotType.MOUNT_HEAVY, 0, 1, -2.75, 0)
-			.addEmptySlot("frame_1", SlotType.MOUNT_TECH, 0, 2.95, 1, 0)
+			.addEmptySlot("cargo_bed_1", SlotType.MOUNT_HEAVY, 0, 3, -5.1, 0)
+			.addEmptySlot("frame_1", SlotType.MOUNT_TECH, 0, 3.4, 1, 0)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.INTERNAL)
 			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
 			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
-			// add slot that is only meant for hook
+			.addEmptySlot("hitch_1", SlotType.EXTERNAL_TOUGH, 0, 1.25, -7.4, 180)
+			.setSlotOnlyCompatible("hitch_1", "chain_hook")
 			.setEntityMainHitboxSize(3.2f, 3.2f)
 			.build();
 
@@ -153,15 +154,17 @@ public class CarPresets {
 			.setCraftable()
 			.addIngredient(ModItems.C12_ENGINE.getId())
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.addIngredient(ModItems.CHAIN_HOOK.getId())
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("hitch_1", ModItems.CHAIN_HOOK.getId())
 			.build();
 
 	public static final VehicleStats DEFAULT_ERIC_TRUCK = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "eric_truck", UNARMED_ERIC_TRUCK)
 			.addIngredient(ModItems.SAM_LAUNCHER.getId())
 			.addIngredient(ModItems.AIR_SCAN_A.getId())
-			.setSlotItem("frame_1", ModItems.AXCEL_TRUCK_RADAR.getId())
+			.setSlotItem("frame_1", ModItems.AIR_SCAN_B.getId())
 			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId(), "pac3", true)
 			.build();
 }

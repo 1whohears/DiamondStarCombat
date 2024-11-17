@@ -157,6 +157,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.MARK45_CANNON.get(), 
 				(context) -> new RendererObjEntity<>(context,
                         new Mark45GunModel()));
+		event.registerEntityRenderer(ModEntities.MLRS.get(),
+				(context) -> new RendererObjEntity<>(context,
+						new MLRSModel()));
 		// RADARS
 		event.registerEntityRenderer(ModEntities.AIR_SCAN_A.get(), 
 				(context) -> new RendererObjEntity<>(context,

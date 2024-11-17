@@ -162,9 +162,9 @@ public class CarPresets {
 
 	public static final VehicleStats DEFAULT_ERIC_TRUCK = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "eric_truck", UNARMED_ERIC_TRUCK)
-			.addIngredient(ModItems.SAM_LAUNCHER.getId())
+			.addIngredient(ModItems.MLRS.getId())
 			.addIngredient(ModItems.AIR_SCAN_A.getId())
 			.setSlotItem("frame_1", ModItems.AIR_SCAN_B.getId())
-			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId(), "pac3", true)
+			.setSlotItem("cargo_bed_1", ModItems.MLRS.getId(), "pac3", true)
 			.build();
 }

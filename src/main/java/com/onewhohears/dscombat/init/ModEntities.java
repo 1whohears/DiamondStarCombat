@@ -156,6 +156,11 @@ public class ModEntities {
 					new Vec3(0, 1.5, 0), 1.5625,
 					RotBounds.create(1.1f, 30f, 15f)), 
 					EntityDimensions.scalable(2.0f, 1.5f)));
+	public static final RegistryObject<EntityType<EntityTurret>> MLRS = ENTITIES.register("mlrs",
+			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level,
+							new Vec3(1.8, 0, 0), 2,
+							RotBounds.create(1f, 35f, 0)),
+					EntityDimensions.scalable(2.0f, 2.0f)));
 	
 	public static final RegistryObject<EntityType<EntityChainHook>> CHAIN_HOOK = ENTITIES.register("chain_hook", 
 			() -> createEntityType(EntityChainHook::new, EntityDimensions.scalable(1.0f, 1.0f)));

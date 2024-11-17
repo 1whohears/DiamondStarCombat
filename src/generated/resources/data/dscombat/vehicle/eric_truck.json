@@ -3,7 +3,7 @@
   "displayName": "preset.dscombat.eric_truck",
   "ingredients": [
     {
-      "item": "dscombat:sam_launcher",
+      "item": "dscombat:mlrs",
       "num": 1
     },
     {
@@ -26,7 +26,7 @@
       "data": {
         "filled": true,
         "param": "pac3",
-        "part": "sam_launcher"
+        "part": "mlrs"
       },
       "name": "cargo_bed_1"
     }

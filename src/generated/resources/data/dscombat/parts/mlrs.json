@@ -1,0 +1,17 @@
+{
+  "displayName": "item.dscombat.mlrs",
+  "externalEntity": "dscombat:mlrs",
+  "item": "dscombat:mlrs",
+  "maxAmmo": 10,
+  "maxHealth": 80.0,
+  "presetId": "mlrs",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 15
+    }
+  ],
+  "slotType": "mount_heavy",
+  "weight": 8000.0
+}

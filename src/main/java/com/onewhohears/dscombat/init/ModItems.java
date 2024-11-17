@@ -259,6 +259,8 @@ public class ModItems {
 			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> MLS = ITEMS.register("mls", 
 			() -> new ItemTurret(16));
+	public static final RegistryObject<ItemPart> MLRS = ITEMS.register("mlrs",
+			() -> new ItemTurret(16));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<ItemPart> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 

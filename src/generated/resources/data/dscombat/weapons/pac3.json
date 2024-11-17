@@ -5,7 +5,8 @@
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
-    "sam_launcher"
+    "sam_launcher",
+    "mlrs"
   ],
   "craftNum": 1,
   "damage": 90.0,

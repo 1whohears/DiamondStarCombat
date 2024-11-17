@@ -420,7 +420,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setNoRack()
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
-				.setCompatibleWeaponPart(ModItems.SAM_LAUNCHER.getId())
+				.setCompatibleWeaponPart("sam_launcher", "mlrs")
 				.setCraftNum(1)
 				.addIngredientTag("dscombat:aluminum_ingot",14)
 				.addIngredient("minecraft:tnt", 6)

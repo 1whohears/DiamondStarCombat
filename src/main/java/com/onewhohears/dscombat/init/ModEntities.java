@@ -113,7 +113,7 @@ public class ModEntities {
 					EntityDimensions.scalable(1.0f, 1.5f)));
 	public static final RegistryObject<EntityType<EntityTurret>> HEAVY_TANK_TURRET = ENTITIES.register("heavy_tank_turret", 
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, 
-					Vec3.ZERO, 0.5,
+					Vec3.ZERO, 0.3,
 					RotBounds.create(1.0f, 30f, 30f)), 
 					EntityDimensions.scalable(2.0f, 1.0f)));
 	public static final RegistryObject<EntityType<EntityTurret>> STEVE_UP_SMASH = ENTITIES.register("steve_up_smash", 

@@ -158,7 +158,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "120mmhe")
 				.setModelId("120mmhe")
-				.setFireRate(30)
+				.setFireRate(40)
 				.setInnacuracy(0.4f)
 				.setCanShootOnGround(true)
 				.setDamage(40f)

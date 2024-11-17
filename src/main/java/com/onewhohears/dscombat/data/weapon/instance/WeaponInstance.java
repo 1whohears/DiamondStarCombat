@@ -3,7 +3,10 @@ package com.onewhohears.dscombat.data.weapon.instance;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
@@ -114,6 +117,10 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
 		vehicle.lastShootTime = vehicle.tickCount;
+		if (vehicle.getPartBySlotId(getSlotId()) instanceof EntityWeaponRack rack) {
+			rack.lastShootTime = rack.tickCount;
+			ToClientOnShoot.onShootWeaponRack(rack);
+		}
 		return true;
 	}
 	
@@ -129,7 +136,13 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		level.addFreshEntity(w);
 		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
-		if (vehicle != null) vehicle.lastShootTime = vehicle.tickCount;
+		if (vehicle != null && !ignoreRecoil) {
+			vehicle.lastShootTime = vehicle.tickCount;
+			if (vehicle.getPartBySlotId(getSlotId()) instanceof EntityTurret turret) {
+				turret.setLastShootTick(turret.tickCount);
+				ToClientOnShoot.onShootTurret(turret);
+			}
+		}
 		return true;
 	}
 	

@@ -15,6 +15,8 @@ import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 
@@ -207,6 +209,24 @@ public class UtilClientPacket {
 		if (hitbox == null) return;
 		hitbox.setTestPos(pos);
 		hitbox.setTestSize(size);
+	}
+
+	public static void onShoot(int id, ShootType type) {
+		Minecraft m = Minecraft.getInstance();
+		Level world = m.level;
+		if (world == null) return;
+		if (type == ShootType.WEAPON_RACK) {
+			if (!(world.getEntity(id) instanceof EntityWeaponRack rack)) return;
+			rack.onClientShoot();
+		} else if (type == ShootType.TURRET) {
+			if (!(world.getEntity(id) instanceof EntityTurret turret)) return;
+			turret.onClientShoot();
+		}
+	}
+
+	public enum ShootType {
+		TURRET,
+		WEAPON_RACK
 	}
 	
 }

@@ -17,7 +17,7 @@ public class AutoloadingTurretModel extends ObjTurretModel<EntityTurret> {
 			"dscombat:textures/entity/turret/autoloading_turret_desert.png");
 
 	public AutoloadingTurretModel() {
-		super("autoloaderturret", true);
+		super("autoloaderturret", true, "autoloader_turret_shoot");
 	}
 
 	@Override

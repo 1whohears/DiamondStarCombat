@@ -1,21 +1,7 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDamagePart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDebugHitboxPos;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleChainUpdate;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleFuel;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
-import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
-import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
+import com.onewhohears.dscombat.common.network.toclient.*;
 import com.onewhohears.dscombat.common.network.toserver.*;
 
 import net.minecraft.resources.ResourceLocation;
@@ -170,6 +156,11 @@ public final class PacketHandler {
 				.encoder(ToServerVehicleSyncAction::encode)
 				.decoder(ToServerVehicleSyncAction::new)
 				.consumerMainThread(ToServerVehicleSyncAction::handle)
+				.add();
+		net.messageBuilder(ToClientOnShoot.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+				.encoder(ToClientOnShoot::encode)
+				.decoder(ToClientOnShoot::new)
+				.consumerMainThread(ToClientOnShoot::handle)
 				.add();
 	}
 	

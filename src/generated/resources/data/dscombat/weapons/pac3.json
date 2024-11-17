@@ -16,7 +16,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": 40.0,
-  "fuelTicks": 150,
+  "fuelTicks": 200,
   "fuseDist": 3.0,
   "ingredients": [
     {
@@ -42,7 +42,7 @@
   ],
   "innacuracy": 0.0,
   "itemKey": "dscombat:track_air_missile",
-  "maxAge": 300,
+  "maxAge": 400,
   "presetId": "pac3",
   "presetType": "track_missile",
   "rackTypeKey": "",

@@ -32,7 +32,7 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": 1.4,
+      "slot_posy": 1.6,
       "slot_posz": 0.0,
       "slot_type": "mount_heavy",
       "zRot": 0.0
@@ -151,5 +151,9 @@
     "torqueroll": 0.0,
     "torqueyaw": 8.0,
     "turn_radius": 0.0
+  },
+  "textures": {
+    "baseTextureVariants": 2,
+    "textureLayers": 2
   }
 }

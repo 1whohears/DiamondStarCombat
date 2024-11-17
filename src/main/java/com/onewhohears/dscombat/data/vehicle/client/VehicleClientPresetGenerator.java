@@ -145,7 +145,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 		float wheel_rot_rate = 160;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "mrbudger_tank")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/mrbudger_tank.png")
-				.setCustomAnims(VehicleAnimsBuilder.create()
+				.setCustomAnims("t72hull", VehicleAnimsBuilder.create()
 						.addWheelRotPixelAnim("wl0", 0, 8, 30, RotationAxis.X, wheel_rot_rate)
 						.addWheelRotPixelAnim("wl1", 0, 8, 15, RotationAxis.X, wheel_rot_rate)
 						.addWheelRotPixelAnim("wl2", 0, 8, 0, RotationAxis.X, wheel_rot_rate)

@@ -1,4 +1,4 @@
 # Made in Blockbench 4.10.4
 newmtl m_22ba9c08-7cd6-0ecb-dd2a-6a595ea5f093
-map_Kd autoloading-tank-turret-texture.png
+map_Kd dscombat:entity/turret/autoloading_turret_forest
 newmtl none

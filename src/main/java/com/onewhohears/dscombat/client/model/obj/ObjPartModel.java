@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.model.obj;
 
+import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -18,6 +19,10 @@ public class ObjPartModel<T extends EntityPart> extends KeyframeAnimsEntityModel
 
 	public ObjPartModel(String modelId, String... animDataIds) {
 		super(modelId, animDataIds);
+	}
+
+	public ObjPartModel(String modelId, JsonArray transforms, String... animDataIds) {
+		super(modelId, transforms, animDataIds);
 	}
 	
 	@Override

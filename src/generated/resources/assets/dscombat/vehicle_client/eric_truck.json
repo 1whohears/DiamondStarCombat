@@ -1,0 +1,122 @@
+{
+  "displayName": "preset.dscombat.eric_truck",
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "LeftFrontWheel",
+        "pivot": {
+          "x": -1.5234375,
+          "y": 0.75,
+          "z": 1.2734375
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "RightFrontWheel",
+        "pivot": {
+          "x": 1.5234375,
+          "y": 0.75,
+          "z": 1.2734375
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "LeftFrontWheel",
+        "pivot": {
+          "x": -1.5234375,
+          "y": 0.75,
+          "z": 1.2734375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "RightFrontWheel",
+        "pivot": {
+          "x": 1.5234375,
+          "y": 0.75,
+          "z": 1.2734375
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "LeftCenterWheel",
+        "pivot": {
+          "x": -1.5234375,
+          "y": 0.75,
+          "z": -2.2421875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "RightCenterWheel2",
+        "pivot": {
+          "x": 1.5234375,
+          "y": 0.75,
+          "z": -2.2421875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "LeftCenterWheel2",
+        "pivot": {
+          "x": -1.5234375,
+          "y": 0.75,
+          "z": -4.1953125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "RightCenterWheel",
+        "pivot": {
+          "x": 1.5234375,
+          "y": 0.75,
+          "z": -4.1953125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "LeftBackWheel",
+        "pivot": {
+          "x": -1.5234375,
+          "y": 0.75,
+          "z": -6.9296875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "RightBackWheel",
+        "pivot": {
+          "x": 1.5234375,
+          "y": 0.75,
+          "z": -6.9296875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      }
+    ],
+    "model_id": "eric_truck"
+  },
+  "presetId": "eric_truck",
+  "presetType": "standard"
+}

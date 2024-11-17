@@ -143,6 +143,7 @@
 	"slotname.dscombat.cargo_bed_1": "Cargo Bed 1",
 	"slotname.dscombat.nose_gun": "Nose Gun",
 	"slotname.dscombat.internal_gun": "Internal Gun",
+	"slotname.dscombat.hitch_1": "Hitch 1",
 
 	"entity.dscombat.plane": "Plane",
 	"entity.dscombat.helicopter": "Helicopter",
@@ -325,6 +326,7 @@
 	"item.dscombat.ciws": "CIWS",
 	"item.dscombat.mark7_cannon": "Mark 7 Cannon",
 	"item.dscombat.mark45_cannon": "Mark 45 Cannon",
+	"item.dscombat.mlrs": "MLRS",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	
@@ -514,6 +516,9 @@
 	"preset.dscombat.krait_chopper_unarmed": "Unarmed Krait Heli",
 	"preset.dscombat.krait_chopper": "Default Krait Heli",
 	"preset.dscombat.krait_chopper_dog_fighter": "Dog Fighter Krait Heli",
+	"preset.dscombat.eric_truck_empty": "Empty Eric Truck",
+	"preset.dscombat.eric_truck_unarmed": "Unarmed Eric Truck",
+	"preset.dscombat.eric_truck": "Default Eric Truck",
 	
 	"key.categories.vehicle_move_control": "Diamond Star Combat Vehicle Move Controls",
 	"key.categories.vehicle_control_util": "Diamond Star Combat Vehicle Control Utility",

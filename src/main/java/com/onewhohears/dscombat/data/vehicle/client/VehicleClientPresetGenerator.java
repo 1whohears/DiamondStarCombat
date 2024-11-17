@@ -452,6 +452,20 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 						.addMotorRotPixelAnim("Propeller", 0, -15, 0, RotationAxis.Z, 40)
 						.build())
 				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "eric_truck")
+				.setCustomAnims(VehicleAnimsBuilder.create()
+						.addInputBoundRotPixelAnim("LeftFrontWheel", -24.375f, 12f, 20.375f, RotationAxis.Y, InputAxis.YAW, -40)
+						.addInputBoundRotPixelAnim("RightFrontWheel", 24.375f, 12f, 20.375f, RotationAxis.Y, InputAxis.YAW, -40)
+						.addWheelRotPixelAnim("LeftFrontWheel", -24.375f, 12f, 20.375f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotPixelAnim("RightFrontWheel", 24.375f, 12f, 20.375f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotPixelAnim("LeftCenterWheel", -24.375f, 12f, -35.875f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotPixelAnim("RightCenterWheel2", 24.375f, 12f, -35.875f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotPixelAnim("LeftCenterWheel2", -24.375f, 12f, -67.125f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotPixelAnim("RightCenterWheel", 24.375f, 12f, -67.125f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotPixelAnim("LeftBackWheel", -24.375f, 12f, -110.875f, RotationAxis.X, wheel_rot_rate)
+						.addWheelRotPixelAnim("RightBackWheel", 24.375f, 12f, -110.875f, RotationAxis.X, wheel_rot_rate)
+						.build())
+				.build());
 	}
 	
 	public VehicleClientPresetGenerator(DataGenerator output) {

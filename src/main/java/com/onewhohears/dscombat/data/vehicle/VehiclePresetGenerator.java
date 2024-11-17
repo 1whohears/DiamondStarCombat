@@ -111,6 +111,10 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 
 		addPresetToGenerate(JamesPresets.EMPTY_JAMES_PLANE);
 		addPresetToGenerate(JamesPresets.DEFAULT_JAMES_PLANE);
+
+		addPresetToGenerate(CarPresets.EMPTY_ERIC_TRUCK);
+		addPresetToGenerate(CarPresets.UNARMED_ERIC_TRUCK);
+		addPresetToGenerate(CarPresets.DEFAULT_ERIC_TRUCK);
 	}
     
     public VehiclePresetGenerator(DataGenerator output) {

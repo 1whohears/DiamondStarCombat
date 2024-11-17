@@ -373,6 +373,8 @@ public class ModItems {
 			() -> new ItemVehicle(CarPresets.DEFAULT_ORANGE_TESLA.getId()));
 	public static final RegistryObject<Item> AXCEL_TRUCK = ITEMS.register("axcel_truck", 
 			() -> new ItemVehicle(CarPresets.DEFAULT_AXCEL_TRUCK.getId()));
+	public static final RegistryObject<Item> ERIC_TRUCK = ITEMS.register("eric_truck",
+			() -> new ItemVehicle(CarPresets.DEFAULT_ERIC_TRUCK.getId()));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 

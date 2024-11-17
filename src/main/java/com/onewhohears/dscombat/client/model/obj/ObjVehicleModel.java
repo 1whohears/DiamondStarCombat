@@ -11,6 +11,7 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 
 public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntityModel<T> {
@@ -34,8 +35,17 @@ public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntit
 	@Override
 	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
 		return (texture) -> {
-			if (texture.getPath().contains("base"))
+			String path = texture.getPath();
+			if (path.contains("base")) {
 				return RendererEntityVehicle.getCullBaseRenderType(entity.textureManager.getDynamicTexture());
+			} else if (path.contains("extra_")) {
+				int index = path.indexOf("extra_");
+				String[] extras = path.substring(index).split("_");
+				String newLoc = path.substring(0, index) + extras[0] + "_" + extras[1]
+						+ "_" + entity.textureManager.getBaseTextureIndex() + ".png";
+				return RendererEntityVehicle.getCullBaseRenderType(
+						new ResourceLocation(texture.getNamespace(), newLoc));
+			}
 			return RendererEntityVehicle.getCullBaseRenderType(texture);
 		};
 	}

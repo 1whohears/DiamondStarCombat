@@ -58,7 +58,7 @@ public class CarPresets {
 			.setArmorDamageThreshold(4)
 			.setArmorAbsorbtionPercent(0.20f)
 			.setMass(6500f)
-			.setMaxSpeed(0.5f)
+			.setMaxSpeed(0.6f)
 			.setStealth(1.0f)
 			.setCrossSecArea(7.5f)
 			.setIdleHeat(6f)
@@ -81,9 +81,8 @@ public class CarPresets {
 			.addEmptySlot("frame_1", SlotType.MOUNT_TECH, 0, 2.95, 1, 0)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
-			.addEmptySlot("internal_3", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
-			.addEntityScreen(EntityScreenIds.AIR_RADAR_SCREEN, 0, 1.35, 1.6, 0.6, 0.6)
 			.setEntityMainHitboxSize(2.5f, 3)
 			.build();
 	
@@ -103,5 +102,66 @@ public class CarPresets {
 			.setSlotItem("frame_1", ModItems.AXCEL_TRUCK_RADAR.getId())
 			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId(), "pac3", true)
 			.build();
-	
+
+	public static final VehicleStats EMPTY_ERIC_TRUCK = VehicleStats.Builder
+			.createCar(DSCombatMod.MODID, "eric_truck_empty")
+			.setAssetId("eric_truck")
+			.setSortFactor(6)
+			.setItem(ModItems.ERIC_TRUCK.getId())
+			.setMaxHealth(100)
+			.setBaseArmor(150)
+			.setArmorDamageThreshold(6)
+			.setArmorAbsorbtionPercent(0.4f)
+			.setMass(9600f)
+			.setMaxSpeed(0.5f)
+			.setStealth(0.9f)
+			.setCrossSecArea(9f)
+			.setIdleHeat(8f)
+			.setTurnRadius(14f)
+			.setMaxTurnRates(0f, 0f, 3f)
+			.setTurnTorques(0f, 0f, 1f)
+			.setThrottleRate(0.05f, 0.05f)
+			.setBasicEngineSounds(ModSounds.TANK_1, ModSounds.TANK_1)
+			.setBaseTextureNum(3)
+			.setLayerTextureNum(3)
+			.setRotationalInertia(9, 14, 10)
+			.setCrashExplosionRadius(3.5f)
+			.set3rdPersonCamDist(10)
+			.setCarIsTank(false)
+			.setCanNegativeThrottle(true)
+			.addPilotSeatSlot(0.5, 0.9, 1)
+			.addSeatSlot("seat2", -0.5, 0.9, 1)
+			.addSeatSlot("seat3", -0.5, 0.9, 1)
+			.addIngredient(ModItems.SEAT.getId(), 3)
+			.addIngredient(ModItems.LARGE_WHEEL.getId(), 8)
+			.addIngredientTag("dscombat:aluminum_ingot", 40)
+			.addIngredient("minecraft:gold_ingot", 5)
+			.addEmptySlot("cargo_bed_1", SlotType.MOUNT_HEAVY, 0, 1, -2.75, 0)
+			.addEmptySlot("frame_1", SlotType.MOUNT_TECH, 0, 2.95, 1, 0)
+			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
+			.addEmptySlot("internal_2", SlotType.INTERNAL)
+			.addEmptySlot("internal_3", SlotType.INTERNAL)
+			.addEmptySlot("internal_4", SlotType.INTERNAL)
+			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
+			// add slot that is only meant for hook
+			.setEntityMainHitboxSize(3.2f, 3.2f)
+			.build();
+
+	public static final VehicleStats UNARMED_ERIC_TRUCK = VehicleStats.Builder
+			.createFromCopy(DSCombatMod.MODID, "eric_truck_unarmed", EMPTY_ERIC_TRUCK)
+			.setCraftable()
+			.addIngredient(ModItems.C12_ENGINE.getId())
+			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
+			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.build();
+
+	public static final VehicleStats DEFAULT_ERIC_TRUCK = VehicleStats.Builder
+			.createFromCopy(DSCombatMod.MODID, "eric_truck", UNARMED_ERIC_TRUCK)
+			.addIngredient(ModItems.SAM_LAUNCHER.getId())
+			.addIngredient(ModItems.AIR_SCAN_A.getId())
+			.setSlotItem("frame_1", ModItems.AXCEL_TRUCK_RADAR.getId())
+			.setSlotItem("cargo_bed_1", ModItems.SAM_LAUNCHER.getId(), "pac3", true)
+			.build();
 }

@@ -1,25 +1,29 @@
 {
-  "armor": 40.0,
-  "displayName": "preset.dscombat.axcel_truck_empty",
-  "health": 40.0,
+  "armor": 150.0,
+  "displayName": "preset.dscombat.eric_truck_empty",
+  "health": 100.0,
   "ingredients": [
     {
       "item": "dscombat:seat",
-      "num": 2
+      "num": 3
     },
     {
-      "item": "dscombat:wheel",
-      "num": 6
+      "item": "dscombat:large_wheel",
+      "num": 8
     },
     {
-      "num": 24,
+      "num": 40,
       "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 5
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:axcel_truck",
+  "item": "dscombat:eric_truck",
   "landing_gear": true,
-  "presetId": "axcel_truck_empty",
+  "presetId": "eric_truck_empty",
   "presetType": "car",
   "slots": [
     {
@@ -38,6 +42,17 @@
         "itemid": "dscombat:seat"
       },
       "name": "seat2",
+      "slot_posx": -0.5,
+      "slot_posy": 0.9,
+      "slot_posz": 1.0,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat3",
       "slot_posx": -0.5,
       "slot_posy": 0.9,
       "slot_posz": 1.0,
@@ -89,46 +104,66 @@
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_5",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_6",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
       "slot_type": "tech_internal",
       "zRot": 0.0
     }
   ],
-  "sort_factor": 5,
+  "sort_factor": 6,
   "sounds": {
     "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:tank_1",
     "passengerEngine": "dscombat:tank_1"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.2,
-    "armor_damage_threshold": 4.0,
-    "assetId": "axcel_truck",
-    "base_armor": 40.0,
-    "cameraDistance": 7.0,
+    "armor_damage_absorbtion": 0.4,
+    "armor_damage_threshold": 6.0,
+    "assetId": "eric_truck",
+    "base_armor": 150.0,
+    "cameraDistance": 10.0,
     "car": {
       "isTank": false
     },
-    "crashExplosionRadius": 3.0,
-    "cross_sec_area": 7.5,
-    "entity_size_xz": 2.5,
-    "entity_size_y": 3.0,
-    "idleheat": 6.0,
-    "inertiapitch": 12.0,
-    "inertiaroll": 8.0,
-    "inertiayaw": 8.0,
-    "mass": 6500.0,
-    "max_health": 40.0,
-    "max_speed": 0.6,
+    "crashExplosionRadius": 3.5,
+    "cross_sec_area": 9.0,
+    "entity_size_xz": 3.2,
+    "entity_size_y": 3.2,
+    "idleheat": 8.0,
+    "inertiapitch": 14.0,
+    "inertiaroll": 9.0,
+    "inertiayaw": 10.0,
+    "mass": 9600.0,
+    "max_health": 100.0,
+    "max_speed": 0.5,
     "maxpitch": 0.0,
     "maxroll": 0.0,
-    "maxyaw": 4.0,
+    "maxyaw": 3.0,
     "negativeThrottle": true,
-    "stealth": 1.0,
+    "stealth": 0.9,
     "throttledown": 0.05,
     "throttleup": 0.05,
     "torquepitch": 0.0,
     "torqueroll": 0.0,
     "torqueyaw": 1.0,
-    "turn_radius": 11.0
+    "turn_radius": 14.0
+  },
+  "textures": {
+    "baseTextureVariants": 3,
+    "textureLayers": 3
   }
 }

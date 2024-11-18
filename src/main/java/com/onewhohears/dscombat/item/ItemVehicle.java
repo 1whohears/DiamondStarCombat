@@ -107,6 +107,7 @@ public class ItemVehicle extends Item {
 			CompoundTag et = new CompoundTag();
 			et.putString("preset", getPresetName(itemstack));
 			et.putBoolean("merged_preset", false);
+			et.putUUID("owner_id", player.getUUID());
 			tag.put("EntityTag", et);
 		}
 		CompoundTag et = tag.getCompound("EntityTag");

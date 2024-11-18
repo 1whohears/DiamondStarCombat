@@ -116,6 +116,7 @@
         "rot_rate": 160.0
       }
     ],
+    "dont_cull": true,
     "model_id": "orange_tesla"
   },
   "presetId": "orange_tesla",

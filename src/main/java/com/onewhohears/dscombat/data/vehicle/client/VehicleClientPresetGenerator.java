@@ -251,6 +251,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.addUIPos("seat3", orange_middle_x+18, 70)
 				.addUIPos("internal_1", orange_middle_x, 25)
 				.addUIPos("internal_2", orange_middle_x, 45)
+				.setDontCull(true)
 				.build());
 		int wood_middle_x = 118;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "wooden_plane")
@@ -465,6 +466,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 						.addWheelRotPixelAnim("LeftBackWheel", -24.375f, 12f, -110.875f, RotationAxis.X, wheel_rot_rate)
 						.addWheelRotPixelAnim("RightBackWheel", 24.375f, 12f, -110.875f, RotationAxis.X, wheel_rot_rate)
 						.build())
+				.setDontCull(true)
 				.build());
 	}
 	

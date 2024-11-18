@@ -36,17 +36,19 @@ public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntit
 	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
 		return (texture) -> {
 			String path = texture.getPath();
+			ResourceLocation loc = texture;
 			if (path.contains("base")) {
-				return RendererEntityVehicle.getCullBaseRenderType(entity.textureManager.getDynamicTexture());
+				loc = entity.textureManager.getDynamicTexture();
 			} else if (path.contains("extra_")) {
 				int index = path.indexOf("extra_");
 				String[] extras = path.substring(index).split("_");
 				String newLoc = path.substring(0, index) + extras[0] + "_" + extras[1]
 						+ "_" + entity.textureManager.getBaseTextureIndex() + ".png";
-				return RendererEntityVehicle.getCullBaseRenderType(
-						new ResourceLocation(texture.getNamespace(), newLoc));
+				loc = new ResourceLocation(texture.getNamespace(), newLoc);
 			}
-			return RendererEntityVehicle.getCullBaseRenderType(texture);
+			if (entity.getClientStats().isDontCull())
+				return RendererEntityVehicle.getBaseRenderType(loc);
+			return RendererEntityVehicle.getCullBaseRenderType(loc);
 		};
 	}
 	

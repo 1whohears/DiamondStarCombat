@@ -115,6 +115,7 @@
         "rot_rate": 160.0
       }
     ],
+    "dont_cull": true,
     "model_id": "eric_truck"
   },
   "presetId": "eric_truck",

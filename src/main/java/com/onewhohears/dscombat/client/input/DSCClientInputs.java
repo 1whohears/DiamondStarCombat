@@ -220,9 +220,10 @@ public class DSCClientInputs {
 	}
 
 	public enum TargetMode {
-		LOOK,
-		COORDS,
-		INDICATOR
+		LOOK, COORDS, INDICATOR;
+		public String getTranslatable() {
+			return "targetmode.dscombat."+name().toLowerCase();
+		}
 	}
 
 	public static TargetMode getTargetMode() {

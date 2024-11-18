@@ -32,11 +32,11 @@ public class DebugSlotPosCommand {
 				}
 				EntityPart part = vehicle.getPartBySlotId(slot_id);
 				if (part == null) {
-					context.getSource().sendFailure(UtilMCText.literal("Slot with id "+slot_id+" does not exist!"));
+					context.getSource().sendFailure(UtilMCText.translatable("slot_id_not_exist", slot_id));
 					return 0;
 				}
 				part.setRelativePos(rel_pos);
-				context.getSource().sendSuccess(UtilMCText.literal("Changed slot position! (NOT permanent!)"), false);
+				context.getSource().sendSuccess(UtilMCText.translatable("success.dscombat.changed_slot_position"), false);
 				return 1;
 			})
 		)));

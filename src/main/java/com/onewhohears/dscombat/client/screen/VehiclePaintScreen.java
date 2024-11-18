@@ -42,19 +42,19 @@ public class VehiclePaintScreen extends BackgroundScreen {
 				.withValues(count(textures.getBaseTextureNum()))
 				.withInitialValue(textures.getBaseTextureIndex())
 				.create(widgetX, widgetY, 168, 20, 
-						UtilMCText.literal("Base"), 
+						UtilMCText.translatable("info.dscombat.base_texture"),
 					onBaseChange()));
 		int layerX = widgetX, layerY = widgetY + 20;
 		for (int i = 0; i < textures.getTextureLayers().length; ++i) {
 			addRenderableWidget(CycleButton.onOffBuilder(textures.getTextureLayers()[i].canRender())
-				.create(layerX, layerY, 44, 20, 
-						UtilMCText.literal("See"), 
+				.create(layerX, layerY, 44, 20,
+						UtilMCText.translatable("info.dscombat.see_layer_texture"),
 					onRenderLayerToggle(i)));
-			addRenderableWidget(CycleButton.<BlendMode>builder((mode) -> UtilMCText.literal(mode.name()))
+			addRenderableWidget(CycleButton.<BlendMode>builder((mode) -> UtilMCText.translatable(mode.getTranslatable()))
 				.withValues(BlendMode.values())
 				.withInitialValue(textures.getTextureLayers()[i].getBlendMode())
-				.create(layerX+44, layerY, 74, 20, 
-						UtilMCText.literal("Mix"), 
+				.create(layerX+44, layerY, 74, 20,
+						UtilMCText.translatable("info.dscombat.color_mix"),
 					onBlendModeChange(i)));
 			EditBox colorBox = new EditBox(getMinecraft().font, layerX+118, layerY,
 					50, 20, UtilMCText.empty());

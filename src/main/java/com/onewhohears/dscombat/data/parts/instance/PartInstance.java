@@ -213,7 +213,8 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 			tips.add(UtilMCText.translatable("info.dscombat.damaged").setStyle(Style.EMPTY.withColor(0xCC0000)));
 			if (!getStats().getRepairCost().isEmpty()) {
 				Style repairStyle = Style.EMPTY.withColor(0xE88888);
-				MutableComponent repairCost = UtilMCText.literal("Repair Cost: ").setStyle(repairStyle);
+				MutableComponent repairCost = UtilMCText.translatable("info.dscombat.repair_cost")
+						.append(": ").setStyle(repairStyle);
 				for (Ingredient cost: getStats().getRepairCost()) {
 					int num = 1;
 					if (cost instanceof IngredientStack is) num = is.cost;

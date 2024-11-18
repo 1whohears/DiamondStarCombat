@@ -31,8 +31,8 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		EntityVehicle vehicle = (EntityVehicle)entity;
-		String radarMode = vehicle.getRadarMode().name();
-		drawText(UtilMCText.literal(radarMode), 0.28f, -0.48f, 0.2f, 
+		String radarMode = vehicle.getRadarMode().getTranslatable();
+		drawText(UtilMCText.translatable(radarMode), 0.28f, -0.48f, 0.2f,
 				poseStack, buffer, 0x00ff00, packedLight);
 	}
 

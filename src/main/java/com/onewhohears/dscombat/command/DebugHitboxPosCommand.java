@@ -37,14 +37,14 @@ public class DebugHitboxPosCommand {
 				}
 				RotableHitbox hitbox = vehicle.getHitboxByName(hitbox_name);
 				if (hitbox == null) {
-					context.getSource().sendFailure(UtilMCText.literal("Hitbox with name "+hitbox_name+" does not exist!"));
+					context.getSource().sendFailure(UtilMCText.translatable("error.dscombat.hitbox_name_not_exist",hitbox_name));
 					return 0;
 				}
 				hitbox.setTestPos(rel_pos);
 				hitbox.setTestSize(size);
 				PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
 						new ToClientDebugHitboxPos(vehicle, hitbox_name, rel_pos, size));
-				context.getSource().sendSuccess(UtilMCText.literal("Changed hitbox position and size! (NOT permanent!)"), false);
+				context.getSource().sendSuccess(UtilMCText.translatable("success.dscombat.changed_hitbox_position"), false);
 				return 1;
 			})
 		))));

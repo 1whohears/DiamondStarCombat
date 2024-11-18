@@ -136,12 +136,12 @@ public class ItemVehicle extends Item {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) return;
 		CompoundTag et = tag.getCompound("EntityTag");
-		if (et.contains("health")) tips.add(UtilMCText.literal("Health: ")
-				.append((int)et.getFloat("health")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("fuel")) tips.add(UtilMCText.literal("Fuel: ")
-				.append((int)et.getFloat("fuel")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("flares")) tips.add(UtilMCText.literal("Flares: ")
-				.append((int)et.getFloat("flares")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (et.contains("health")) tips.add(UtilMCText.translatable("info.dscombat.health")
+				.append(": "+(int)et.getFloat("health")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (et.contains("fuel")) tips.add(UtilMCText.translatable("info.dscombat.fuel")
+				.append(": "+(int)et.getFloat("fuel")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (et.contains("flares")) tips.add(UtilMCText.translatable("info.dscombat.flares")
+				.append(": "+(int)et.getFloat("flares")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override

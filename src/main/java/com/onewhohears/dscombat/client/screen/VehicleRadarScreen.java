@@ -29,7 +29,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         vertical_widget_shift = 10;
         super.init();
         // RADAR MODE
-        positionWidgetGrid(CycleButton.<RadarStats.RadarMode>builder(value -> UtilMCText.literal(value.name()))
+        positionWidgetGrid(CycleButton.<RadarStats.RadarMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
                         .withValues(RadarStats.RadarMode.values())
                         .withInitialValue(DSCClientInputs.getPreferredRadarMode())
                         .create(0, 0, 20, 20,

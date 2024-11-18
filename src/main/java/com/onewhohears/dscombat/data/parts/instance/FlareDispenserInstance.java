@@ -157,7 +157,8 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 	@Override
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
 		super.addToolTips(tips, isAdvanced);
-		tips.add(UtilMCText.literal("Ammo: "+(int)getCurrentAmmo()+"/"+getMaxAmmo())
+		tips.add(UtilMCText.translatable("info.dscombat.ammo")
+				.append(" "+(int)getCurrentAmmo()+"/"+(int)getMaxAmmo())
 				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 }

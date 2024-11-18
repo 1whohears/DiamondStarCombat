@@ -47,9 +47,9 @@ public class IRMissileStats extends MissileStats {
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
-		tips.add(UtilMCText.literal("TARGETS FLYING").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
-		if (advanced && getFlareResistance() != 0) tips.add(UtilMCText.literal("Flare Resistance: ")
-				.append(getFlareResistance()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		tips.add(UtilMCText.translatable("info.dscombat.targets_flying").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+		if (advanced && getFlareResistance() != 0) tips.add(UtilMCText.translatable("info.dscombat.flare_resistance")
+				.append(": "+getFlareResistance()).setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 	}
 	
 	@Override

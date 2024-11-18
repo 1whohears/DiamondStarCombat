@@ -102,16 +102,16 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// BREAKS
 		if (isPilot && vehicle.canBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
-				UtilMCText.literal("Breaks (S)"), vehicle.isBraking());
+				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isBraking());
 		// FLAPS DOWN
 		if (isPilot && vehicle.canFlapsDown()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.specialKey, UtilMCText.literal("Flaps Down (S1)"));
+				DSCKeys.specialKey, UtilMCText.translatable("info.dscombat.flaps_down"));
 		// WEAPON ANGLED DOWN
 		if (isPilot && vehicle.canAngleWeaponDown()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.special2Key, UtilMCText.literal("Nose Down (S2)"));
+				DSCKeys.special2Key, UtilMCText.translatable("info.dscombat.nose_down"));
 		// HOVER
 		if (isPilot && vehicle.canHover()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.specialKey, UtilMCText.literal("Hover (S1)"));
+				DSCKeys.specialKey, UtilMCText.translatable("info.dscombat.hover"));
 		// FLARES
 		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				DSCKeys.flareKey, vehicle.getFlareNum()+"");

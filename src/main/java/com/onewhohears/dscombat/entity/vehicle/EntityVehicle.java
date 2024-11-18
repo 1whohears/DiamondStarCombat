@@ -3174,7 +3174,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 
 	public enum PermMode {
-		PUBLIC, ALLIES, PRIVATE
+		PUBLIC, ALLIES, PRIVATE;
+		public String getTranslatable() {
+			return "permmode.dscombat."+name().toLowerCase();
+		}
 	}
 
 	public PermMode getPermMode() {

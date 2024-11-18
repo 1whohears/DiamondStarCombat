@@ -99,9 +99,11 @@ public abstract class PartStats extends JsonPresetStats {
 	}
 	
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
-		tips.add(UtilMCText.literal("Compatible: ").setStyle(Style.EMPTY.withColor(0xFFFF55))
+		tips.add(UtilMCText.translatable("info.dscombat.compatible")
+				.append(": ").setStyle(Style.EMPTY.withColor(0xFFFF55))
 				.append(UtilMCText.translatable(compatibleSlotType.getTranslatableName())));
-		tips.add(UtilMCText.literal("Mass: "+weight).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.translatable("info.dscombat.mass").append(": "+weight)
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	public float getExternalEntityDefaultHealth() {

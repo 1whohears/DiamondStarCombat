@@ -89,16 +89,20 @@ public class BulletStats extends WeaponStats {
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
-		tips.add(UtilMCText.literal("Damage: ").append(getDamage()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
-		if (advanced) tips.add(UtilMCText.literal("Max Speed: ").append(getSpeed()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		tips.add(UtilMCText.translatable("info.dscombat.damage").append(": "+getDamage())
+				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		if (advanced) tips.add(UtilMCText.translatable("info.dscombat.max_speed").append(": "+getSpeed())
+				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (isExplosive()) {
-			tips.add(UtilMCText.literal("Explosion Radius: ")
-				.append(getExplosionRadius()+"").setStyle(Style.EMPTY.withColor(0xAA0000)));
-			if (advanced) tips.add(UtilMCText.literal("Explosions: ")
-				.append(getExplodeNum()+"").setStyle(Style.EMPTY.withColor(0xAA0000)));
+			tips.add(UtilMCText.translatable("info.dscombat.explosion_radius")
+				.append(": "+getExplosionRadius()).setStyle(Style.EMPTY.withColor(0xAA0000)));
+			if (advanced) tips.add(UtilMCText.translatable("info.dscombat.number_of_explosions")
+				.append(": "+getExplodeNum()).setStyle(Style.EMPTY.withColor(0xAA0000)));
 		}
-		if (advanced) tips.add(UtilMCText.literal("Innacuracy: ").append(getInnacuracy()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
-		if (isCausesFire()) tips.add(UtilMCText.literal("INCENDIARY").setStyle(Style.EMPTY.withColor(0xAA0000)));
+		if (advanced) tips.add(UtilMCText.translatable("info.dscombat.inaccuracy").append(": "+getInnacuracy())
+				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		if (isCausesFire()) tips.add(UtilMCText.translatable("info.dscombat.incendiary")
+				.setStyle(Style.EMPTY.withColor(0xAA0000)));
 	}
 
 	@Override

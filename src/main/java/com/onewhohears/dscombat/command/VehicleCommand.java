@@ -32,13 +32,14 @@ public class VehicleCommand {
 			ServerPlayer player = context.getSource().getPlayer();
 			if (player != null) { 
 				player.addItem(item);
-				context.getSource().sendSuccess(UtilMCText.literal("Gave ")
-					.append(player.getDisplayName()).append(" ")
-					.append(preset.getDisplayNameComponent()), true);
+				context.getSource().sendSuccess(UtilMCText.translatable("success.dscombat.gave")
+						.append(" ").append(player.getDisplayName()).append(" ")
+						.append(preset.getDisplayNameComponent()), true);
 			}
 		} else for (ServerPlayer player : players) {
 			player.addItem(item);
-			context.getSource().sendSuccess(UtilMCText.literal("Gave "+players.size()+" players ")
+			context.getSource().sendSuccess(UtilMCText.translatable("success.dscombat.gave")
+					.append(" "+players.size()+" players ")
 					.append(preset.getDisplayNameComponent()), true);
 		}
 		return 1;

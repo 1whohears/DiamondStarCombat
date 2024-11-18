@@ -36,7 +36,7 @@ public class VehicleMainScreen extends VehicleScreen {
         rangeBox.setTextColor(0xFFFFFF);
         rangeBox.setResponder(onCustomNameChange());
         // Cycle Vehicle Permission Mode
-        positionWidgetGrid(CycleButton.<EntityVehicle.PermMode>builder(value -> UtilMCText.literal(value.name()))
+        positionWidgetGrid(CycleButton.<EntityVehicle.PermMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
                         .withValues(EntityVehicle.PermMode.values())
                         .withInitialValue(getVehicle().getPermMode())
                         .create(0, 0, 20, 20,

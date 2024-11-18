@@ -181,7 +181,8 @@ public abstract class WeaponStats extends JsonPresetStats {
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		tips.add(getType().getDisplayNameComponent().setStyle(Style.EMPTY.withColor(TYPE_COLOR)));
 		if (compatibleWeaponPart.length > 0) {
-			MutableComponent weapons = UtilMCText.literal("Compatible: ").setStyle(Style.EMPTY.withColor(COMPAT_COLOR));
+			MutableComponent weapons = UtilMCText.translatable("info.dscombat.compatible").append(": ")
+					.setStyle(Style.EMPTY.withColor(COMPAT_COLOR));
 			for (int i = 0; i < compatibleWeaponPart.length; ++i) {
 				PartStats stats = PartPresets.get().get(compatibleWeaponPart[i]);
 				if (stats == null) continue;
@@ -190,10 +191,13 @@ public abstract class WeaponStats extends JsonPresetStats {
 			}
 			tips.add(weapons);
 		}
-		tips.add(UtilMCText.literal("Fire Rate: ").append(getFireRate()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		tips.add(UtilMCText.translatable("info.dscombat.fire_rate").append(": "+getFireRate())
+				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (advanced) {
-			tips.add(UtilMCText.literal("Max Age: ").append(getMaxAge()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
-			if (!canShootOnGround) tips.add(UtilMCText.literal("Must Fly").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			tips.add(UtilMCText.translatable("info.dscombat.max_age").append(": "+getMaxAge())
+					.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+			if (!canShootOnGround) tips.add(UtilMCText.translatable("info.dscombat.must_fly")
+					.setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 		}
 	}
 	

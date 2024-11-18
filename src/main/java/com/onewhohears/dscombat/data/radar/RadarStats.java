@@ -214,7 +214,7 @@ public class RadarStats extends JsonPresetStats {
 		}
 	}
 	
-	public static enum PingEntityType {
+	public enum PingEntityType {
 		PLAYER((byte)0, 0),
 		HOSTILE_MOB((byte)1, 1),
 		FRIENDLY_MOB((byte)2, 2),
@@ -223,7 +223,7 @@ public class RadarStats extends JsonPresetStats {
 		VEHICLE_BOT((byte)5, 3);
 		public final byte id;
 		public final int offset;
-		private PingEntityType(byte id, int offset) {
+		PingEntityType(byte id, int offset) {
 			this.id = id;
 			this.offset = offset;
 		}
@@ -250,7 +250,7 @@ public class RadarStats extends JsonPresetStats {
 		}
 	}
 	
-	public static enum RadarMode {
+	public enum RadarMode {
 		ALL,
 		PLAYERS,
 		BOTS,
@@ -284,6 +284,9 @@ public class RadarStats extends JsonPresetStats {
 		}
 		public boolean isAll() {
 			return this == ALL;
+		}
+		public String getTranslatable() {
+			return "radarmode.dscombat."+name().toLowerCase();
 		}
 		public static RadarMode byId(int id) {
 			if (id < 0 || id >= values().length) return ALL;

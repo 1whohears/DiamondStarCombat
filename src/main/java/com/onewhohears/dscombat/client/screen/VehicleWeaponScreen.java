@@ -38,7 +38,7 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
         padding = 0;
         super.init();
         // TARGET MODE
-        positionWidgetGrid(CycleButton.<DSCClientInputs.TargetMode>builder(value -> UtilMCText.literal(value.name()))
+        positionWidgetGrid(CycleButton.<DSCClientInputs.TargetMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
                         .withValues(DSCClientInputs.TargetMode.values())
                         .withInitialValue(DSCClientInputs.getTargetMode())
                         .create(0, 0, 20, 20,

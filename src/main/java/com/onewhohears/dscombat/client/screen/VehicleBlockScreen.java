@@ -140,25 +140,35 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		int startX = (int)(293f * invScale);
 		int startY = (int)(34f * invScale);
 		int pColor = 0x4CFF00;
-		font.draw(stack, UtilMCText.literal("Health: "+data.getDouble("max_health")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.health").append(
+				": "+data.getDouble("max_health")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Speed: "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.speed").append(
+				": "+(int)(data.getDouble("max_speed")*20)+" m/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Mass: "+data.getDouble("mass")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.mass").append(
+				": "+data.getDouble("mass")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Area: "+data.getDouble("cross_sec_area")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.cross_sec_area").append(
+				": "+data.getDouble("cross_sec_area")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Stealth: "+data.getDouble("stealth")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.stealth").append(
+				": "+data.getDouble("stealth")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Heat: "+data.getDouble("idleheat")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.heat").append(
+				": "+data.getDouble("idleheat")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Armor: "+data.getFloat("base_armor")), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.armor").append(
+				": "+data.getFloat("base_armor")), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Yaw: "+(int)(data.getDouble("maxyaw")*20)+" d/s"), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.yaw_rate").append(
+				": "+(int)(data.getDouble("maxyaw")*20)+" d/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Pitch: "+(int)(data.getDouble("maxpitch")*20)+" d/s"), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.pitch_rate").append(
+				": "+(int)(data.getDouble("maxpitch")*20)+" d/s"), startX, startY, pColor);
 		startY += font.lineHeight;
-		font.draw(stack, UtilMCText.literal("Roll: "+(int)(data.getDouble("maxroll")*20)+" d/s"), startX, startY, pColor);
+		font.draw(stack, UtilMCText.translatable("info.dscombat.roll_rate").append(
+				": "+(int)(data.getDouble("maxroll")*20)+" d/s"), startX, startY, pColor);
 		stack.scale(1/scale, 1/scale, 1/scale);
 	}
 	
@@ -259,7 +269,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		fails.clear();
 	}
 	
-	public static enum AircraftTab {
+	public enum AircraftTab {
 		TANKS(() -> VehiclePresets.get().getTankRecipes(Minecraft.getInstance().level.getRecipeManager()), 86),
 		HELIS(() -> VehiclePresets.get().getHeliRecipes(Minecraft.getInstance().level.getRecipeManager()), 133),
 		PLANES(() -> VehiclePresets.get().getPlaneRecipes(Minecraft.getInstance().level.getRecipeManager()), 180),
@@ -269,7 +279,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		private int index = 0;
 		private final int bookmarkX;
 		
-		private AircraftTab(AircraftPresetList presetFactory, int bookmarkX) {
+		AircraftTab(AircraftPresetList presetFactory, int bookmarkX) {
 			this.presetFactory = presetFactory;
 			this.bookmarkX = bookmarkX;
 		}
@@ -313,7 +323,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		
 	}
 	
-	public static interface AircraftPresetList {
+	public interface AircraftPresetList {
 		VehicleRecipe[] get();
 	}
 

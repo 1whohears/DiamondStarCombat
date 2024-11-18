@@ -56,18 +56,18 @@ public class TrackMissileStats extends MissileStats {
 		super.addToolTips(tips, advanced);
 		switch(getTargetType()) {
 		case AIR:
-			tips.add(UtilMCText.literal("TARGETS FLYING").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			tips.add(UtilMCText.translatable("info.dscombat.targets_flying").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		case GROUND:
-			tips.add(UtilMCText.literal("TARGETS GROUNDED").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			tips.add(UtilMCText.translatable("info.dscombat.targets_grounded").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		case WATER:
-			tips.add(UtilMCText.literal("TARGETS IN WATER").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			tips.add(UtilMCText.translatable("info.dscombat.targets_in_water").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		}
 		if (advanced) {
-			if (active) tips.add(UtilMCText.literal("ACTIVE TRACK").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
-			else tips.add(UtilMCText.literal("SEMI ACTIVE").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			if (active) tips.add(UtilMCText.translatable("info.dscombat.active_track").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			else tips.add(UtilMCText.translatable("info.dscombat.semi_active").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 		}
 	}
 	

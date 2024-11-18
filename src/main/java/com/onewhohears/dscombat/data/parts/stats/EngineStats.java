@@ -70,8 +70,10 @@ public class EngineStats extends PartStats {
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
 		super.addToolTips(tips, isAdvanced);
 		tips.add(UtilMCText.translatable("info.dscombat.vehicle_engine_stats_override"));
-		tips.add(UtilMCText.literal("Thrust: "+thrust).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		tips.add(UtilMCText.literal("Fuel L/M: "+String.format("%.1f", fuelRate*1200)).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.translatable("info.dscombat.thrust")
+				.append(": "+thrust).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.translatable("info.dscombat.fuel_liter_per_minute")
+				.append(": "+String.format("%.1f", fuelRate*1200)).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 }

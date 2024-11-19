@@ -74,6 +74,7 @@
 	"ui.dscombat.root_health": "Root Health",
 	"ui.dscombat.root_armor": "Root Armor",
 	"ui.dscombat.hitbox_health_armor": "Hitbox Health and Armor",
+	"ui.dscombat.cycle_radar_target": "Cycle Radar Target",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",

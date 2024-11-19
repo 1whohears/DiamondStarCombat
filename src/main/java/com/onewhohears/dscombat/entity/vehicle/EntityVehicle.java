@@ -1862,6 +1862,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public float calcDamageToInside(DamageSource source, float amount) {
 		return calcDamageToArmor(amount) * getHealthDamageWithArmorPercent(source);
 	}
+
+	public float calcDamageToRider(DamageSource source, float amount) {
+		if (getArmor() > 0) return calcDamageToInside(source, amount);
+		return amount;
+	}
 	
 	private boolean shouldDebug(DamageSource source) {
 		//return source.getMsgId().equals("flyIntoWall");

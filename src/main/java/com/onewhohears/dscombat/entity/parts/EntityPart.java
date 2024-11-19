@@ -108,6 +108,9 @@ public abstract class EntityPart extends Entity {
 	@Override
     public boolean hurt(DamageSource source, float amount) {
 		if (!canGetHurt()) return false;
+		if (isInvulnerableTo(source)) return false;
+		EntityVehicle vehicle = getParentVehicle();
+		if (vehicle != null) amount = vehicle.calcDamageToRider(source, amount);
 		addHealth(-amount);
 		if (getHealth() <= 0) kill();
 		return true;

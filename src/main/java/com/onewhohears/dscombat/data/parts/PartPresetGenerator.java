@@ -250,7 +250,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.addIngredient("minecraft:iron_ingot", 7)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.MARK7_CANNON.getId(), PartType.TURRENT)
-				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
+				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(4500)
 				.setExternalEntityType(ModEntities.MARK7_CANNON.getId())
 				.setTurretStats(36, 200)
@@ -285,11 +285,11 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.addIngredient("minecraft:iron_ingot", 9)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.MLRS.getId(), PartType.TURRENT)
-				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
+				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(8000)
 				.setExternalEntityType(ModEntities.MLRS.getId())
 				.setTurretStats(10, 80)
-				.addIngredient("minecraft:iron_ingot", 	15)
+				.addIngredient("minecraft:iron_ingot", 15)
 				.build());
 		// DISPENSERS
 		addPresetToGenerate(PartBuilder.create(ModItems.BASIC_FLARE_DISPENSER.getId(), PartType.FLARE_DISPENSER)

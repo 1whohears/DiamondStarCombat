@@ -162,6 +162,7 @@
 	"slottype.dscombat.mount_light": "Light Mount",
 	"slottype.dscombat.mount_med": "Medium Mount",
 	"slottype.dscombat.mount_heavy": "Heavy Mount",
+	"slottype.dscombat.mount_super_heavy": "Super Heavy Mount",
 	"slottype.dscombat.mount_tech": "Tech Mount",
 	"slottype.dscombat.pylon_light": "Light Pylon",
 	"slottype.dscombat.pylon_med": "Medium Pylon",

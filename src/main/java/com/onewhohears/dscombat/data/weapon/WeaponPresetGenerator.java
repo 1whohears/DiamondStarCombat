@@ -172,7 +172,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setEntityType(ModEntities.BULLET.getId())
 				.setNoRack()
 				.setShootSound(ModSounds.CANNON_SHOOT_2.getLocation())
-				.setCompatibleWeaponPart(ModItems.HEAVY_TANK_TURRET.getId().getPath())
+				.setCompatibleWeaponPart("heavy_tank_turret", "artillery_cannon")
 				.setCraftNum(1)
 				.addIngredient("minecraft:copper_ingot", 4)
 				.addIngredient("minecraft:gunpowder", 6)

@@ -160,6 +160,9 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.MLRS.get(),
 				(context) -> new RendererObjEntity<>(context,
 						new MLRSModel()));
+		event.registerEntityRenderer(ModEntities.ARTILLERY_CANNON.get(),
+				(context) -> new RendererObjEntity<>(context,
+						new ArtilleryCannonModel()));
 		// RADARS
 		event.registerEntityRenderer(ModEntities.AIR_SCAN_A.get(), 
 				(context) -> new RendererObjEntity<>(context,

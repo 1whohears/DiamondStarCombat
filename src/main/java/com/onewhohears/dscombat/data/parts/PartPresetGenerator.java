@@ -291,6 +291,13 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setTurretStats(10, 80)
 				.addIngredient("minecraft:iron_ingot", 15)
 				.build());
+		addPresetToGenerate(PartBuilder.create(ModItems.ARTILLERY_CANNON.getId(), PartType.TURRENT)
+				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
+				.setWeight(6000)
+				.setExternalEntityType(ModEntities.ARTILLERY_CANNON.getId())
+				.setTurretStats(50, 180)
+				.addIngredient("minecraft:iron_ingot", 15)
+				.build());
 		// DISPENSERS
 		addPresetToGenerate(PartBuilder.create(ModItems.BASIC_FLARE_DISPENSER.getId(), PartType.FLARE_DISPENSER)
 				.setCompatibleSlotType(SlotType.INTERNAL)

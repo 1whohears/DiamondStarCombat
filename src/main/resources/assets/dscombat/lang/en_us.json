@@ -291,6 +291,7 @@
 	"entity.dscombat.jason_plane": "Jason Plane",
 	"entity.dscombat.eden_plane": "Eden Plane",
 	"entity.dscombat.google_sub": "Neptune Sub",
+	"entity.dscombat.artillery_cannon": "Artillery Cannon",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Vehicle Engineer",
@@ -404,6 +405,7 @@
 	"item.dscombat.mark7_cannon": "Mark 7 Cannon",
 	"item.dscombat.mark45_cannon": "Mark 45 Cannon",
 	"item.dscombat.mlrs": "MLRS",
+	"item.dscombat.artillery_cannon": "Artillery Cannon",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
 	

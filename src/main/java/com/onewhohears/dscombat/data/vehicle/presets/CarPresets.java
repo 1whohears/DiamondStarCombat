@@ -136,17 +136,39 @@ public class CarPresets {
 			.addIngredient(ModItems.LARGE_WHEEL.getId(), 8)
 			.addIngredientTag("dscombat:aluminum_ingot", 40)
 			.addIngredient("minecraft:gold_ingot", 5)
-			.addEmptySlot("cargo_bed_1", SlotType.MOUNT_HEAVY, 0, 3, -5.1, 0)
+			.addEmptySlot("cargo_bed_1", SlotType.MOUNT_HEAVY, 0, 3, -5.1, 0, "tech_platform")
 			.addEmptySlot("frame_1", SlotType.MOUNT_TECH, 0, 3.4, 1, 0)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
-			.addEmptySlot("internal_2", SlotType.INTERNAL)
-			.addEmptySlot("internal_3", SlotType.INTERNAL)
-			.addEmptySlot("internal_4", SlotType.INTERNAL)
-			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
+			.addEmptySlot("internal_2", SlotType.INTERNAL, "cargo_bed")
+			.addEmptySlot("internal_3", SlotType.INTERNAL, "cargo_bed")
+			.addEmptySlot("internal_4", SlotType.INTERNAL, "cargo_bed")
+			.addEmptySlot("internal_5", SlotType.INTERNAL, "cargo_bed")
 			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
-			.addEmptySlot("hitch_1", SlotType.EXTERNAL_TOUGH, 0, 1.25, -7.4, 180)
+			.addEmptySlot("internal_7", SlotType.TECH_INTERNAL)
+			.addEmptySlot("hitch_1", SlotType.EXTERNAL_TOUGH, 0, 1.25, -7.4, 180, "cargo_bed")
 			.setSlotOnlyCompatible("hitch_1", "chain_hook")
 			.setEntityMainHitboxSize(3.2f, 3.2f)
+			.setRootHitboxNoCollide(true)
+			.addRotableHitbox("cage", 3.625, 2.25, 3.625, 0, 2.3125, 0.9375,
+					0, 0, false, false, true)
+			.addRotableHitbox("cargo_bed", 2.125, 0.375, 7.1875, 0, 1.3125, -4.53125,
+					50, 50, false, true, false)
+			.addRotableHitbox("tech_platform", 3.625, 0.9375, 5.8125, 0, 2.59375, -4.65625,
+					40, 40, true, true, false)
+			.addRotableHitbox("left_cargo_platform", 1.1875, 0.4375, 6.625, 1.5938, 1.6563, -4.625,
+					20, 20, true, true, false)
+			.addRotableHitbox("right_cargo_platform", 1.1875, 0.4375, 6.625, -1.5938, 1.6563, -4.625,
+					20, 20, true, true, false)
+			.addRotableHitbox("left_cage_platform", 0.9375, 0.125, 2.5625, 1.9688, 1.125, -0.0313,
+					15, 15, true, true, false)
+			.addRotableHitbox("right_cage_platform", 0.9375, 0.125, 2.5625, -1.9688, 1.125, -0.0313,
+					15, 15, true, true, false)
+			.addRotableHitbox("left_step", 0.5, 0.125, 0.6875, 2.5, 0.625, -0.5313,
+					10, 10, true, true, false)
+			.addRotableHitbox("right_step", 0.5, 0.125, 0.6875, -2.5, 0.625, -0.5313,
+					10, 10, true, true, false)
+			.addRotableHitbox("back_step", 2.25, 0.125, 0.6875, 0, 0.6875, -8.3438,
+					10, 10, true, true, false)
 			.build();
 
 	public static final VehicleStats UNARMED_ERIC_TRUCK = VehicleStats.Builder

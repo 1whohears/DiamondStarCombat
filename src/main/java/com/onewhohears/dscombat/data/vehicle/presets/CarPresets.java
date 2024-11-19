@@ -77,13 +77,18 @@ public class CarPresets {
 			.addIngredient(ModItems.SEAT.getId(), 2)
 			.addIngredient(ModItems.WHEEL.getId(), 6)
 			.addIngredientTag("dscombat:aluminum_ingot", 24)
-			.addEmptySlot("cargo_bed_1", SlotType.MOUNT_HEAVY, 0, 1, -2.75, 0)
+			.addEmptySlot("cargo_bed_1", SlotType.MOUNT_HEAVY, 0, 1, -2.75, 0, "cargo_bed")
 			.addEmptySlot("frame_1", SlotType.MOUNT_TECH, 0, 2.95, 1, 0)
 			.addEmptySlot("internal_1", SlotType.SPIN_ENGINE)
-			.addEmptySlot("internal_2", SlotType.INTERNAL)
-			.addEmptySlot("internal_3", SlotType.INTERNAL)
+			.addEmptySlot("internal_2", SlotType.INTERNAL, "cargo_bed")
+			.addEmptySlot("internal_3", SlotType.INTERNAL, "cargo_bed")
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
 			.setEntityMainHitboxSize(2.5f, 3)
+			.setRootHitboxNoCollide(true)
+			.addRotableHitbox("cage", 2, 2.25, 1.875, 0, 1.6875, 0.9375,
+					0, 0, false, false, true)
+			.addRotableHitbox("cargo_bed", 2, 0.5, 3.875, 0, 0.75, -1.9375,
+					30, 30, false, true, false)
 			.build();
 	
 	public static final VehicleStats UNARMED_AXCEL_TRUCK = VehicleStats.Builder

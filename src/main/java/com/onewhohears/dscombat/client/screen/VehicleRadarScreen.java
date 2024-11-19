@@ -28,9 +28,16 @@ public class VehicleRadarScreen extends VehicleSubScreen {
             "textures/ui/radar.png");
     public static final ResourceLocation RADAR_PING = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/hud_ping.png");
+    public static final ResourceLocation RADAR_PING_HOVER = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/hud_ping_hover.png");
+    public static final ResourceLocation RADAR_PING_SELECT = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/hud_ping_select.png");
+    public static final ResourceLocation PING_DATA = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/ping_data.png");
 
     private static final int imageWidth = 240, imageHeight = 180;
     private static final int textureSize = 256;
+    private static final int PING_SIZE = 6;
 
     protected VehicleRadarScreen() {
         super("screen.dscombat.vehicle_radar_screen",
@@ -71,13 +78,39 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     protected void drawPingAtPos(RadarStats.RadarPing ping, int x, int y, boolean selected, boolean hover,
                                  @NotNull PoseStack poseStack) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, RADAR_PING);
-        blit(poseStack, x, y, 6, 6, 0, 0,
+        if (selected) RenderSystem.setShaderTexture(0, RADAR_PING_SELECT);
+        else if (hover) RenderSystem.setShaderTexture(0, RADAR_PING_HOVER);
+        else RenderSystem.setShaderTexture(0, RADAR_PING);
+        blit(poseStack, x, y, PING_SIZE, PING_SIZE, 0, 0,
                 200, 200, 200, 200);
+        RenderSystem.setShaderTexture(0, PING_DATA);
+        blit(poseStack,
+                x, y, PING_SIZE, PING_SIZE,
+                ping.entityType.getIconOffset(100)+17, 0,
+                16, 16, 500, 200);
+        blit(poseStack,
+                x, y, PING_SIZE, PING_SIZE,
+                ping.terrainType.getIconOffset(100)+33, 100,
+                16, 16, 500, 200);
+        if (ping.isFriendly) {
+            blit(poseStack,
+                    x, y, PING_SIZE, PING_SIZE, 447, 0,
+                    16, 16, 500, 200);
+        }
+        if (ping.isShared()) {
+            blit(poseStack,
+                    x, y, PING_SIZE, PING_SIZE, 467, 0,
+                    16, 16, 500, 200);
+        }
     }
 
     protected double getScreenDistRatio(double distance) {
         return distance / DSCClientInputs.getRadarDisplayRange();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
     }
 
     @Override

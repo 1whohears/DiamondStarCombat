@@ -40,6 +40,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     @Override
     protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
+        if (Minecraft.getInstance().screen != null) return false;
         if (!(getPlayerVehicle() instanceof EntitySeat seat)) return false;
         EntityVehicle vehicle = seat.getParentVehicle();
         if (vehicle == null) return false;

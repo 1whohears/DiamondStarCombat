@@ -107,17 +107,17 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         RenderSystem.setShaderTexture(0, PING_DATA);
         blit(poseStack, x-LEFT, y-HALF_PS, PING_SIZE, PING_SIZE,
                 ping.entityType.getIconOffset(100)+17, 0,
-                16, 16, 500, 200);
+                16, 16, 600, 200);
         blit(poseStack, x+HALF_PS, y-HALF_PS, PING_SIZE, PING_SIZE,
                 ping.terrainType.getIconOffset(100)+33, 100,
-                16, 16, 500, 200);
+                16, 16, 600, 200);
         if (ping.isFriendly) {
             blit(poseStack, x-PING_SIZE, y+HALF_PS, PING_SIZE, PING_SIZE,
-                    447, 0, 16, 16, 500, 200);
+                    447, 0, 16, 16, 600, 200);
         }
         if (ping.isShared()) {
             blit(poseStack, x, y+HALF_PS, PING_SIZE, PING_SIZE,
-                    467, 0, 16, 16, 500, 200);
+                    467, 0, 16, 16, 600, 200);
         }
         return true;
     }

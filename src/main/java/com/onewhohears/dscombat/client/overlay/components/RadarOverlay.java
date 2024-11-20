@@ -114,22 +114,22 @@ public class RadarOverlay extends VehicleOverlayComponent {
             blit(poseStack,
                     0, 0, ping.entityType.getIconOffset(size), 0,
                     size, size,
-                    size*5, size*2);
+                    size*6, size*2);
             blit(poseStack,
                     0, 0, ping.terrainType.getIconOffset(size), 100,
                     size, size,
-                    size*5, size*2);
+                    size*6, size*2);
             if (ping.isFriendly) {
                 blit(poseStack,
                         0, 0, size*4, 0,
                         size, size,
-                        size*5, size*2);
+                        size*6, size*2);
             }
             if (ping.isShared()) {
                 blit(poseStack,
                         0, 0, size*4, size,
                         size, size,
-                        size*5, size*2);
+                        size*6, size*2);
             }
             poseStack.popPose();
             if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj

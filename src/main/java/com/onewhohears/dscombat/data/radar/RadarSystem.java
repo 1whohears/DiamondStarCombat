@@ -212,7 +212,13 @@ public class RadarSystem {
 		int id = targets.get(selectedIndex).id;
 		return parent.level.getEntity(id);
 	}
-	
+
+	@Nullable
+	public RadarPing getServerSelectedPing() {
+		if (selectedIndex == -1) return null;
+		return targets.get(selectedIndex);
+	}
+
 	@Nullable
 	public LivingEntity getLivingTargetByWeapon(WeaponInstance<?> wd) {
 		for (RadarPing ping : targets) {

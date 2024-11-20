@@ -64,6 +64,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.setScanMobs(false)
 				.setScanGround(false)
 				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "ar20k")
@@ -78,6 +79,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.setScanMobs(false)
 				.setScanGround(false)
 				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "wr400")
@@ -176,6 +178,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.setScanMobs(true)
 				.setScanGround(false)
 				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "air_scan_b")
@@ -190,6 +193,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.setScanMobs(true)
 				.setScanGround(false)
 				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "survey_all_a")

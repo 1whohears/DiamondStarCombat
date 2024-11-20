@@ -7,6 +7,7 @@
   "scanAir": true,
   "scanAircraft": true,
   "scanGround": false,
+  "scanMissiles": true,
   "scanMobs": false,
   "scanPlayers": true,
   "scanRate": 80,

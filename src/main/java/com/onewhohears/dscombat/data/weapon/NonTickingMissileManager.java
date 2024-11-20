@@ -80,5 +80,9 @@ public class NonTickingMissileManager {
 		//System.out.println("ADDING MISSILE TO MANAGER "+missile);
 		missiles.add(missile);
 	}
+
+	public static List<EntityMissile<?>> getMissiles() {
+		return missiles;
+	}
 	
 }

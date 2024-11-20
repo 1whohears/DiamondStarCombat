@@ -116,6 +116,7 @@
 	"error.dscombat.slot_id_not_exist": "Slot with id %1$s does not exist!",
 	"error.dscombat.default_weapon_not_exist": "Default Weapon Preset %1$s does not exist?!",
 	"error.dscombat.no_targets_found": "No targets found!",
+	"error.dscombat.cannot_target_missiles": "Cannot Target Missiles!",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",

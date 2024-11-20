@@ -1,0 +1,6 @@
+{
+	"presetId": "artillery_cannon_shoot",
+	"presetType": "block_bench",
+	"animation_id": "artillery_cannon.shoot",
+	"animation_player": "turret_shoot"
+}

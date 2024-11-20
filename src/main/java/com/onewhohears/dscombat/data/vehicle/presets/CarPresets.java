@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -129,6 +130,7 @@ public class CarPresets {
 			.setBasicEngineSounds(ModSounds.TANK_1, ModSounds.TANK_1)
 			.setBaseTextureNum(3)
 			.setLayerTextureNum(3)
+			.setDefultPassengerSoundPack(VehicleSoundManager.PassengerSoundPack.ENG_MALE_1)
 			.setRotationalInertia(9, 14, 10)
 			.setCrashExplosionRadius(3.5f)
 			.set3rdPersonCamDist(10)

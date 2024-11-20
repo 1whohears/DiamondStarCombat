@@ -25,7 +25,7 @@ public class ArtilleryCannonModel extends ObjTurretModel<EntityTurret> {
 	@Override
 	protected void addComponentTransforms(Map<String, Matrix4f> transforms, EntityTurret entity, float partialTicks) {
 		float xrothead = entity.getViewXRot(partialTicks);
-		Matrix4f xrothead_mat = UtilAngles.pivotPixelsRotX(0, 5.9686f, 20.5643f, xrothead);
+		Matrix4f xrothead_mat = UtilAngles.pivotPixelsRotX(0, 12.65f, 5.8f, xrothead);
 		transforms.put("Gun", xrothead_mat);
 		super.addComponentTransforms(transforms, entity, partialTicks);
 	}

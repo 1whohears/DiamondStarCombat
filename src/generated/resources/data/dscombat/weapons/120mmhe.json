@@ -2,7 +2,8 @@
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": [
-    "heavy_tank_turret"
+    "heavy_tank_turret",
+    "artillery_cannon"
   ],
   "craftNum": 1,
   "damage": 40.0,

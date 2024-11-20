@@ -259,8 +259,12 @@ public class RadarSystem {
 	public void clientSelectNextTarget() {
 		int size = getClientRadarPings().size();
 		if (size == 0) return;
-		int s = clientSelectedIndex + 1;
-		if (s >= size) s = 0;
+		int k = 0, s = clientSelectedIndex;
+		while (k++ < size) {
+			s++;
+			if (s >= size) s = 0;
+			if (!getClientRadarPings().get(s).entityType.isMissile()) break;
+		}
 		clientSelectTarget(s);
 	}
 	

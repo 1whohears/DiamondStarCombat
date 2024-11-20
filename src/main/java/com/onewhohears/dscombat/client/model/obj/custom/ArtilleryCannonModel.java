@@ -19,7 +19,7 @@ public class ArtilleryCannonModel extends ObjTurretModel<EntityTurret> {
 			"dscombat:textures/entity/turret/artillery_cannon_woodland.png");
 
 	public ArtilleryCannonModel() {
-		super("artillery_cannon", true, "artillery_cannon_shoot");
+		super("artillery_cannon", true);
 	}
 
 	@Override

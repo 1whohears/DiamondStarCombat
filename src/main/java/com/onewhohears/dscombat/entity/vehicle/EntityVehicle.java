@@ -3150,7 +3150,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 					true);
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public boolean isPilotOrCopilot(Entity entity) {

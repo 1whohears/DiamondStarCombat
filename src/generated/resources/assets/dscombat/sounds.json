@@ -299,6 +299,12 @@
     ],
     "subtitle": "sounds.dscombat.tank_1"
   },
+  "targets_found": {
+    "sounds": [
+      "dscombat:cockpit/radar/targets_found"
+    ],
+    "subtitle": "sounds.dscombat.targets_found"
+  },
   "vehicle_hurt_collision_metal": {
     "sounds": [
       "dscombat:vehicle/hurt/collision/metal_01"

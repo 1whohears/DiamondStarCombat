@@ -666,6 +666,7 @@
 	"sounds.dscombat.lock": "Lock",
 	"sounds.dscombat.flare": "Flare",
 	"sounds.dscombat.altitude": "Altitude",
+	"sounds.dscombat.targets_found": "Radar Targets Found",
 	
 	"death.attack.dscombat.salty1": "%1$s was too easy",
 	"death.attack.dscombat.salty1.player": "%1$s was too easy for %2$s (%3$sm)",

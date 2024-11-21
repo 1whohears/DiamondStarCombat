@@ -140,7 +140,11 @@ public class RadarSystem {
 		for (int i = 0; i < clientTargets.size(); ++i) if (clientTargets.get(i).id == id) return i;
 		return -1;
 	}
-	
+
+	public boolean hasTargets() {
+		return !targets.isEmpty();
+	}
+
 	public boolean hasTarget(Entity entity) {
 		if (hasTarget(entity.getId())) return true;
 		if (entity.isPassenger()) {

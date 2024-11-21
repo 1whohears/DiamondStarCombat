@@ -12,7 +12,7 @@ public class StationaryPresets {
             .setAssetId("ewr4000")
             .setItem(ModItems.EWR4000.getId())
             .setMaxHealth(20)
-            .setBaseArmor(0)
+            .setBaseArmor(2)
             .setArmorDamageThreshold(1)
             .setArmorAbsorbtionPercent(0.01f)
             .setMass(2000f)

@@ -18,6 +18,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -433,6 +434,12 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	
 	public double getMaxY() {
 		return hitbox.getMaxY();
+	}
+
+	@Override
+	public ItemStack getPickResult() {
+		if (getParent() != null) return getParent().getItem();
+		return null;
 	}
 	
 }

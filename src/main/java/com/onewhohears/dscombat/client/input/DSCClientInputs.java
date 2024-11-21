@@ -17,9 +17,12 @@ public class DSCClientInputs {
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
 	private static long mountTime;
+
+	private static double LEAN_AMOUNT = 0;
 	
 	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
 	private static RadarMode PREFERRED_RADAR_MODE = RadarMode.ALL;
+	private static TargetMode TARGET_MODE = TargetMode.LOOK;
 	
 	private static boolean GIMBAL_MODE = false;
 	
@@ -42,6 +45,10 @@ public class DSCClientInputs {
 	
 	public static void toggleGimbalMode() {
 		GIMBAL_MODE = !GIMBAL_MODE;
+	}
+
+	public static void setGimbalMode(boolean mode) {
+		GIMBAL_MODE = mode;
 	}
 	/**
 	 * set mouseCenterX and mouseCenterY to the mouse's current position.
@@ -108,7 +115,18 @@ public class DSCClientInputs {
 	}
 	
 	public static void setRadarDisplayRange(double range) {
+		if (range < 10) range = 10;
 		radarDisplayRange = range;
+	}
+
+	public static void cycleRadarDisplayRange() {
+		double range = getRadarDisplayRange();
+		if (range <= 250) range = 1000;
+		else if (range <= 1000) range = 2000;
+		else if (range <= 2000) range = 5000;
+		else if (range <= 5000) range = 250;
+		else range = 250;
+		setRadarDisplayRange(range);
 	}
 	/**
 	 * @return the last time in millis the client mounted a vehicle
@@ -168,7 +186,7 @@ public class DSCClientInputs {
 		return CURRENT_MOUSE_MODE.isFreeGlobal();
 	}
 	
-	public static enum MouseMode {
+	public enum MouseMode {
 		/**
 		 * Camera can move freely but turns when the vehicle turns.
 		 * Keeps the camera's angle the same relative angle to the vehicle. 
@@ -200,5 +218,41 @@ public class DSCClientInputs {
 			return this == FREE_GLOBAL;
 		}
 	}
-	
+
+	public enum TargetMode {
+		LOOK, COORDS, INDICATOR;
+		public String getTranslatable() {
+			return "targetmode.dscombat."+name().toLowerCase();
+		}
+	}
+
+	public static TargetMode getTargetMode() {
+		return TARGET_MODE;
+	}
+
+	public static void setTargetMode(TargetMode targetMode) {
+		TARGET_MODE = targetMode;
+	}
+
+	public static void setLeanAmount(double leanAmount) {
+		LEAN_AMOUNT = leanAmount;
+	}
+
+	public static double getLeanAmount() {
+		return LEAN_AMOUNT;
+	}
+
+	public static void leanLeft() {
+		if (getLeanAmount() < 0) leanNot();
+		else setLeanAmount(-0.6);
+	}
+
+	public static void leanRight() {
+		if (getLeanAmount() > 0) leanNot();
+		else setLeanAmount(0.6);
+	}
+
+	public static void leanNot() {
+		setLeanAmount(0);
+	}
 }

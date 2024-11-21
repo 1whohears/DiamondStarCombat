@@ -1,0 +1,6 @@
+# Made in Blockbench 4.11.2
+newmtl m_eafa68e5-ce26-44c1-a218-fdcd63cce1f0
+map_Kd dscombat:entity/vehicle/mrbudger_tank/base0 
+newmtl m_32bd2dc6-0eef-8271-8b36-122637e372fe
+map_Kd dscombat:entity/vehicle/mrbudger_tank/tracktexture 
+newmtl none

@@ -2,6 +2,44 @@
   "armor": 40.0,
   "displayName": "preset.dscombat.axcel_truck_empty",
   "health": 40.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "damage_root": true,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "cage",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 1.6875,
+        "z": 0.9375
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 2.0,
+        "y": 2.25,
+        "z": 1.875
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 30.0,
+      "max_health": 30.0,
+      "name": "cargo_bed",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.75,
+        "z": -1.9375
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 2.0,
+        "y": 0.5,
+        "z": 3.875
+      }
+    }
+  ],
   "ingredients": [
     {
       "item": "dscombat:seat",
@@ -21,23 +59,6 @@
   "landing_gear": true,
   "presetId": "axcel_truck_empty",
   "presetType": "car",
-  "screens": [
-    {
-      "height": 0.6,
-      "id": 0,
-      "pos": {
-        "x": 0.0,
-        "y": 1.35,
-        "z": 1.6
-      },
-      "rot": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "width": 0.6
-    }
-  ],
   "slots": [
     {
       "data": {
@@ -62,6 +83,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "cargo_bed",
       "name": "cargo_bed_1",
       "slot_posx": 0.0,
       "slot_posy": 1.0,
@@ -86,6 +108,7 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "cargo_bed",
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -94,11 +117,12 @@
       "zRot": 0.0
     },
     {
+      "linkedHitbox": "cargo_bed",
       "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
       "slot_posz": 0.0,
-      "slot_type": "tech_internal",
+      "slot_type": "internal",
       "zRot": 0.0
     },
     {
@@ -135,11 +159,12 @@
     "inertiayaw": 8.0,
     "mass": 6500.0,
     "max_health": 40.0,
-    "max_speed": 0.5,
+    "max_speed": 0.6,
     "maxpitch": 0.0,
     "maxroll": 0.0,
     "maxyaw": 4.0,
     "negativeThrottle": true,
+    "rootHitboxNoCollide": true,
     "stealth": 1.0,
     "throttledown": 0.05,
     "throttleup": 0.05,

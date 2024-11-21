@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
 import com.onewhohears.dscombat.data.parts.stats.SeatStats;
-import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

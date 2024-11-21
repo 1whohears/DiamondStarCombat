@@ -31,7 +31,8 @@ public class ItemStorageBox extends ItemPart {
 		int items = 0;
 		if (stack.getTag() != null && stack.getTag().contains("items")) 
 			items = countItemsInNBT(stack.getTag().getList("items", 10));
-		tips.add(UtilMCText.literal(items+" Items").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.literal(items+" ").append(UtilMCText.translatable("info.dscombat.items"))
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	public static int countItemsInNBT(ListTag nbt) {

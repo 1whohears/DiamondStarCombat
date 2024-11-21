@@ -1,0 +1,376 @@
+{
+  "armor": 150.0,
+  "displayName": "preset.dscombat.eric_truck_empty",
+  "health": 100.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "damage_root": true,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "cage",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 2.3125,
+        "z": 0.9375
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 3.625,
+        "y": 2.25,
+        "z": 3.625
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 50.0,
+      "max_health": 50.0,
+      "name": "cargo_bed",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 1.3125,
+        "z": -4.53125
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 2.125,
+        "y": 0.375,
+        "z": 7.1875
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 40.0,
+      "max_health": 40.0,
+      "name": "tech_platform",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 2.59375,
+        "z": -4.65625
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 3.625,
+        "y": 0.9375,
+        "z": 5.8125
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "left_cargo_platform",
+      "rel_pos": {
+        "x": 1.5938,
+        "y": 1.6563,
+        "z": -4.625
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.1875,
+        "y": 0.4375,
+        "z": 6.625
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 20.0,
+      "max_health": 20.0,
+      "name": "right_cargo_platform",
+      "rel_pos": {
+        "x": -1.5938,
+        "y": 1.6563,
+        "z": -4.625
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 1.1875,
+        "y": 0.4375,
+        "z": 6.625
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 15.0,
+      "max_health": 15.0,
+      "name": "left_cage_platform",
+      "rel_pos": {
+        "x": 1.9688,
+        "y": 1.125,
+        "z": -0.0313
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.9375,
+        "y": 0.125,
+        "z": 2.5625
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 15.0,
+      "max_health": 15.0,
+      "name": "right_cage_platform",
+      "rel_pos": {
+        "x": -1.9688,
+        "y": 1.125,
+        "z": -0.0313
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.9375,
+        "y": 0.125,
+        "z": 2.5625
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "left_step",
+      "rel_pos": {
+        "x": 2.5,
+        "y": 0.625,
+        "z": -0.5313
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.5,
+        "y": 0.125,
+        "z": 0.6875
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "right_step",
+      "rel_pos": {
+        "x": -2.5,
+        "y": 0.625,
+        "z": -0.5313
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 0.5,
+        "y": 0.125,
+        "z": 0.6875
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 10.0,
+      "max_health": 10.0,
+      "name": "back_step",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.6875,
+        "z": -8.3438
+      },
+      "remove_on_destroy": true,
+      "size": {
+        "x": 2.25,
+        "y": 0.125,
+        "z": 0.6875
+      }
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 3
+    },
+    {
+      "item": "dscombat:large_wheel",
+      "num": 8
+    },
+    {
+      "num": 40,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "num": 10
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:eric_truck",
+  "landing_gear": true,
+  "presetId": "eric_truck_empty",
+  "presetType": "car",
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "pilot_seat",
+      "slot_posx": 1.05,
+      "slot_posy": 1.4,
+      "slot_posz": 1.1,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat2",
+      "slot_posx": 0.0,
+      "slot_posy": 1.4,
+      "slot_posz": 0.7,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat3",
+      "slot_posx": -1.05,
+      "slot_posy": 1.4,
+      "slot_posz": 1.1,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "tech_platform",
+      "name": "cargo_bed_1",
+      "slot_posx": 0.0,
+      "slot_posy": 3.0,
+      "slot_posz": -5.1,
+      "slot_type": "mount_super_heavy",
+      "zRot": 0.0
+    },
+    {
+      "name": "frame_1",
+      "slot_posx": 0.0,
+      "slot_posy": 3.4,
+      "slot_posz": 1.0,
+      "slot_type": "mount_tech",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "spin_engine",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "cargo_bed",
+      "name": "internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "cargo_bed",
+      "name": "internal_3",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "cargo_bed",
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "cargo_bed",
+      "name": "internal_5",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_6",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_7",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "cargo_bed",
+      "name": "hitch_1",
+      "onlyCompatPart": "chain_hook",
+      "slot_posx": 0.0,
+      "slot_posy": 1.25,
+      "slot_posz": -7.4,
+      "slot_type": "external_tough",
+      "zRot": 180.0
+    }
+  ],
+  "sort_factor": 6,
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:tank_1",
+    "passengerEngine": "dscombat:tank_1",
+    "passengerSoundPack": "eng_male_1"
+  },
+  "stats": {
+    "armor_damage_absorbtion": 0.4,
+    "armor_damage_threshold": 6.0,
+    "assetId": "eric_truck",
+    "base_armor": 150.0,
+    "cameraDistance": 10.0,
+    "car": {
+      "isTank": false
+    },
+    "crashExplosionRadius": 3.5,
+    "cross_sec_area": 9.0,
+    "entity_size_xz": 3.2,
+    "entity_size_y": 3.2,
+    "idleheat": 8.0,
+    "inertiapitch": 14.0,
+    "inertiaroll": 9.0,
+    "inertiayaw": 10.0,
+    "mass": 9600.0,
+    "max_health": 100.0,
+    "max_speed": 0.5,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 3.0,
+    "negativeThrottle": true,
+    "rootHitboxNoCollide": true,
+    "stealth": 0.9,
+    "throttledown": 0.05,
+    "throttleup": 0.05,
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 1.0,
+    "turn_radius": 14.0
+  },
+  "textures": {
+    "baseTextureVariants": 3,
+    "textureLayers": 3
+  }
+}

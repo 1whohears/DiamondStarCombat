@@ -107,6 +107,7 @@ public class ItemVehicle extends Item {
 			CompoundTag et = new CompoundTag();
 			et.putString("preset", getPresetName(itemstack));
 			et.putBoolean("merged_preset", false);
+			et.putUUID("owner_id", player.getUUID());
 			tag.put("EntityTag", et);
 		}
 		CompoundTag et = tag.getCompound("EntityTag");
@@ -135,12 +136,12 @@ public class ItemVehicle extends Item {
 		CompoundTag tag = stack.getTag();
 		if (tag == null || !tag.contains("EntityTag")) return;
 		CompoundTag et = tag.getCompound("EntityTag");
-		if (et.contains("health")) tips.add(UtilMCText.literal("Health: ")
-				.append((int)et.getFloat("health")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("fuel")) tips.add(UtilMCText.literal("Fuel: ")
-				.append((int)et.getFloat("fuel")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("flares")) tips.add(UtilMCText.literal("Flares: ")
-				.append((int)et.getFloat("flares")+"").setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (et.contains("health")) tips.add(UtilMCText.translatable("info.dscombat.health")
+				.append(": "+(int)et.getFloat("health")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (et.contains("fuel")) tips.add(UtilMCText.translatable("info.dscombat.fuel")
+				.append(": "+(int)et.getFloat("fuel")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (et.contains("flares")) tips.add(UtilMCText.translatable("info.dscombat.flares")
+				.append(": "+(int)et.getFloat("flares")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override
@@ -158,7 +159,7 @@ public class ItemVehicle extends Item {
 			try { return Component.Serializer.fromJson(cn); } 
 			catch (Exception e) {}
 		}
-		String owner = etag.getString("owner");
+		String owner = etag.getString("owner_name");
 		if (owner.isEmpty()) owner = "Someone";
 		return UtilMCText.literal(owner+"'s ").append(super.getName(stack))
 				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));

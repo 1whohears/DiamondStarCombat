@@ -44,7 +44,7 @@ public class MissileCommand {
 		String defaultId = "aim120b";
 		if (weaponStats == null) weaponStats = WeaponPresets.get().get(defaultId);
 		if (weaponStats == null) {
-			context.getSource().sendFailure(UtilMCText.literal("Default Weapon Preset "+defaultId+" does not exist?!"));
+			context.getSource().sendFailure(UtilMCText.translatable("error.dscombat.default_weapon_not_exist", defaultId));
 			return 0;
 		}
 		WeaponInstance<?> weapon = weaponStats.createWeaponInstance();
@@ -65,8 +65,8 @@ public class MissileCommand {
 			//ew.tick();
 			++i;
 		}
-		if (i == 0) context.getSource().sendFailure(UtilMCText.literal("No targets found!"));
-		else if (i > 0) context.getSource().sendSuccess(UtilMCText.literal("Launched "+i+" missiles!"), true);
+		if (i == 0) context.getSource().sendFailure(UtilMCText.translatable("error.dscombat.no_targets_found"));
+		else if (i > 0) context.getSource().sendSuccess(UtilMCText.translatable("success.dscombat.launched_missile", i), true);
 		return 1;
 	}
 	

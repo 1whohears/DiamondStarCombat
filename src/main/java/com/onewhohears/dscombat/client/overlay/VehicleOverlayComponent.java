@@ -70,16 +70,17 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
                 new DebugOverlay(),
                 new HudOverlay(),
                 new KeyBindsOverlay(),
-                new PlaneAttitudeOverlay(),
+                //new PlaneAttitudeOverlay(),
                 new PlaneDataOverlay(),
                 new RadarOverlay(),
-                new TurnCoordinatorOverlay(),
+                //new TurnCoordinatorOverlay(),
                 new VehicleCompassOverlay(),
                 new VehicleControlOverlay(),
-                new VehicleFuelOverlay(),
+                //new VehicleFuelOverlay(),
                 new VehicleStatsOverlay(),
                 new VehicleThrottleOverlay(),
-                new VehicleWeaponsOverlay()
+                new VehicleWeaponsOverlay(),
+                new PosRangeOverlay()
         };
 
         for (VehicleOverlayComponent overlay : tempArray) {

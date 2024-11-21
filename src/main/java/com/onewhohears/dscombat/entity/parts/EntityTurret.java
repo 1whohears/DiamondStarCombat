@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
@@ -41,7 +42,6 @@ public class EntityTurret extends EntitySeat {
 	public static final EntityDataAccessor<Integer> MAX_AMMO = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Float> RELROTX = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> RELROTY = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Integer> LAST_SHOOT_TICK = SynchedEntityData.defineId(EntityTurret.class, EntityDataSerializers.INT);
 
 	public final double weaponOffset;
 	public final ShootType shootType;
@@ -54,6 +54,7 @@ public class EntityTurret extends EntitySeat {
 	 * only used on server side
 	 */
 	private int newRiderCoolDown;
+	protected int lastShootTick;
 	
 	public EntityTurret(EntityType<?> type, Level level, Vec3 offset, 
 			double weaponOffset, RotBounds rotBounds) {
@@ -76,7 +77,6 @@ public class EntityTurret extends EntitySeat {
 		entityData.define(MAX_AMMO, 0);
 		entityData.define(RELROTX, 0f);
 		entityData.define(RELROTY, 0f);
-	entityData.define(LAST_SHOOT_TICK, 0);
 	}
 	
 	@Override
@@ -333,6 +333,7 @@ public class EntityTurret extends EntitySeat {
 		}
 		boolean consumeAmmo = parent.level.getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		boolean couldShoot = data.checkRecoil();
+		data.setSlot(getSlotId());
 		data.shootFromTurret(level, shooter, getLookAngle(), pos, parent, consume && consumeAmmo);
 		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo);
 		if (data.isFailedLaunch()) {
@@ -360,11 +361,11 @@ public class EntityTurret extends EntitySeat {
 	}
 	
 	public int getLastShootTick() {
-		return entityData.get(LAST_SHOOT_TICK);
+		return lastShootTick;
 	}
 
 	public void setLastShootTick(int tick) {
-		entityData.set(LAST_SHOOT_TICK, tick);
+		lastShootTick = tick;
 	}
 	
 	@Override
@@ -404,7 +405,7 @@ public class EntityTurret extends EntitySeat {
 		entityData.set(RELROTY, degrees);
 	}
 	
-	public static enum ShootType {
+	public enum ShootType {
 		NORMAL,
 		MARK7
 	}
@@ -427,6 +428,10 @@ public class EntityTurret extends EntitySeat {
 	@Override
 	public boolean isAlive() {
 		return true;
+	}
+
+	public void onClientShoot() {
+		setLastShootTick(tickCount);
 	}
 
 }

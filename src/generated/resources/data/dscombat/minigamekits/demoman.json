@@ -1,4 +1,6 @@
 {
-  "id": "demoman",
-  "kitItems": []
+  "displayName": "preset.dscombat.demoman",
+  "kitItems": [],
+  "presetId": "demoman",
+  "presetType": "gamekit"
 }

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -16,6 +17,7 @@ public class WeaponShootParameters {
 	public final EntityVehicle vehicle;
 	public final boolean ignoreRecoil;
 	public final boolean isTurret;
+	public final boolean isPlayer;
 	
 	public WeaponShootParameters(Level level, Entity owner, Vec3 pos, Vec3 direction, 
 			@Nullable EntityVehicle vehicle, boolean ignoreRecoil, boolean isTurret) {
@@ -26,6 +28,7 @@ public class WeaponShootParameters {
 		this.vehicle = vehicle;
 		this.ignoreRecoil = ignoreRecoil;
 		this.isTurret = isTurret;
+		this.isPlayer = owner instanceof Player;
 	}
 	
 }

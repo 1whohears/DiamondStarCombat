@@ -107,9 +107,12 @@ public abstract class MissileStats extends BulletStats {
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
 		if (advanced) {
-			if (getFov() != -1) tips.add(UtilMCText.literal("FOV: ").append(getFov()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
-			tips.add(UtilMCText.literal("Turn Radius: ").append(getTurnRadius()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
-			tips.add(UtilMCText.literal("Acceleration: ").append(getAcceleration()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+			if (getFov() != -1) tips.add(UtilMCText.translatable("info.dscombat.field_of_view")
+					.append(": "+getFov()).setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+			tips.add(UtilMCText.translatable("info.dscombat.turn_radius").append(": "+getTurnRadius())
+					.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+			tips.add(UtilMCText.translatable("info.dscombat.acceleration").append(": "+getAcceleration())
+					.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		}
 	}
 

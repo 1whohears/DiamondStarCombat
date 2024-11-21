@@ -3,14 +3,15 @@
   "fov": -1.0,
   "presetId": "axcel_truck_radar",
   "presetType": "standard",
-  "range": 1000.0,
+  "range": 1400.0,
   "scanAir": true,
   "scanAircraft": true,
   "scanGround": false,
+  "scanMissiles": true,
   "scanMobs": false,
   "scanPlayers": true,
   "scanRate": 30,
-  "sensitivity": 0.3,
+  "sensitivity": 0.8,
   "throGroundRange": 0.0,
   "throWaterRange": 0.0
 }

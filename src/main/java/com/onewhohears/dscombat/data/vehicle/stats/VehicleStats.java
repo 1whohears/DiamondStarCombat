@@ -297,6 +297,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public boolean isSub() {
 		return false;
 	}
+	public boolean isStationaryRadar() {
+		return false;
+	}
 	
 	public static class Builder extends IngredientStackBuilder<Builder> {
 		private boolean is_craftable = false;
@@ -320,6 +323,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 		}
 		public static Builder createSubmarine(String namespace, String name) {
 			return new Builder(namespace, name, VehicleType.SUBMARINE);
+		}
+		public static Builder createStationary(String namespace, String name) {
+			return new Builder(namespace, name, VehicleType.STATIONARY);
 		}
 		public static Builder createFromCopy(String namespace, String name, VehicleStats copy) {
 			return new Builder(namespace, name, (VehicleType) copy.getType(), copy);
@@ -413,6 +419,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 			if (filled) d.addProperty("filled", filled);
 			slot.add("data", d);
 			return this;
+		}
+		/**
+		 * sets item data of slot
+		 * @param name slot that already exists
+		 * @param part presetId of the part to get part data from
+		 */
+		public Builder setSlotItem(String name, @Nullable String part) {
+			return setSlotItem(name, part, null, false);
 		}
 		/**
 		 * sets item data of slot
@@ -547,6 +561,17 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder addEmptySlot(String name, SlotType type, double x, double y, double z, float zRot) {
 			return addItemSlot(name, type, x, y, z, zRot, null, null, false);
+		}
+		/**
+		 * used by all vehicles to add a slot that is empty by default
+		 * @param name a translatable string
+		 * @param type the type of slot
+		 * @param x the x position of the part relative to the vehicle at 0 rotation
+		 * @param y the y position of the part relative to the vehicle at 0 rotation
+		 * @param z the z position of the part relative to the vehicle at 0 rotation
+		 */
+		public Builder addEmptySlot(String name, SlotType type, double x, double y, double z) {
+			return addItemSlot(name, type, x, y, z, 0, null, null, false);
 		}
 		/**
 		 * used by all vehicles to add a slot that is empty by default
@@ -1123,7 +1148,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 		public Builder setCarIsTank(boolean isTank) {
 			return setTypedStatBoolean("isTank", isTank, "car");
 		}
-		
+
+		/**
+		 * stationary vehicles only
+		 */
+		public Builder setIsStationaryRadar(boolean radar) {
+			return setTypedStatBoolean("isStationaryRadar", radar, "stationary");
+		}
+
 		public Builder setBoolean(String key, boolean value) {
 			getData().addProperty(key, value);
 			return this;

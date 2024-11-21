@@ -14,11 +14,11 @@ import net.minecraft.network.FriendlyByteBuf;
  */
 public class VehicleInputManager {
 	
-	public boolean flare, openMenu;
+	public boolean flare, chaff;
 	public boolean special, special2, bothRoll;
 	public float throttle, pitch, roll, yaw;
 	
-	protected boolean isLandingGear, isDriverCameraLocked;
+	protected boolean isDriverCameraLocked;
 	protected int weaponIndex;
 	protected float currentThrottle;
 	
@@ -32,23 +32,21 @@ public class VehicleInputManager {
 	
 	public void clientPilotControlsToServer(EntityVehicle parent, 
 			float throttle, float pitch, float roll, float yaw,
-			boolean flare, boolean openMenu, 
+			boolean flare, boolean chaff,
 			boolean special, boolean special2, boolean bothRoll,
-			boolean toggleGear, boolean isDriverCameraLocked) {
+			boolean isDriverCameraLocked) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
 		this.yaw = yaw;
 		this.flare = flare;
-		this.openMenu = openMenu;
+		this.chaff = chaff;
 		this.special = special;
 		this.special2 = special2;
 		this.bothRoll = bothRoll;
 		this.isDriverCameraLocked = isDriverCameraLocked;
 		parent.setDriverCameraLocked(isDriverCameraLocked);
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
-		if (toggleGear) parent.toggleLandingGear();
-		isLandingGear = parent.isLandingGear();
 		currentThrottle = parent.getCurrentThrottle();
 		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleControl(parent));
 	}
@@ -56,7 +54,7 @@ public class VehicleInputManager {
 	public void updateInputsFromPacket(VehicleInputManager other, EntityVehicle parent) {
 		// raw inputs
 		this.flare = other.flare;
-		this.openMenu = other.openMenu;
+		this.chaff = other.chaff;
 		this.special = other.special;
 		this.special2 = other.special2;
 		this.throttle = other.throttle;
@@ -64,12 +62,10 @@ public class VehicleInputManager {
 		this.roll = other.roll;
 		this.yaw = other.yaw;
 		this.bothRoll = other.bothRoll;
-		this.isLandingGear = other.isLandingGear;
 		this.weaponIndex = other.weaponIndex;
 		this.currentThrottle = other.currentThrottle;
 		this.isDriverCameraLocked = other.isDriverCameraLocked;
 		// special inputs
-		parent.setLandingGear(isLandingGear);
 		parent.setCurrentThrottle(currentThrottle);
 		parent.weaponSystem.setSelected(weaponIndex);
 		parent.setDriverCameraLocked(isDriverCameraLocked);
@@ -81,7 +77,7 @@ public class VehicleInputManager {
 		this.roll = 0;
 		this.yaw = 0;
 		this.flare = false;
-		this.openMenu = false;
+		this.chaff = false;
 		this.special = false;
 		this.special2 = false;
 		this.bothRoll = false;
@@ -95,12 +91,11 @@ public class VehicleInputManager {
 		buffer.writeFloat(roll);
 		buffer.writeFloat(yaw);
 		buffer.writeBoolean(flare);
-		buffer.writeBoolean(openMenu);
+		buffer.writeBoolean(chaff);
 		buffer.writeBoolean(special);
 		buffer.writeBoolean(special2);
 		buffer.writeBoolean(bothRoll);
 		// special vehicle system inputs
-		buffer.writeBoolean(isLandingGear);
 		buffer.writeShort(weaponIndex);
 		buffer.writeFloat(currentThrottle);
 		buffer.writeBoolean(isDriverCameraLocked);
@@ -113,12 +108,11 @@ public class VehicleInputManager {
 		roll = buffer.readFloat();
 		yaw = buffer.readFloat();
 		flare = buffer.readBoolean();
-		openMenu = buffer.readBoolean();
+		chaff = buffer.readBoolean();
 		special = buffer.readBoolean();
 		special2 = buffer.readBoolean();
 		bothRoll = buffer.readBoolean();
 		// special vehicle system inputs
-		isLandingGear = buffer.readBoolean();
 		weaponIndex = buffer.readShort();
 		currentThrottle = buffer.readFloat();
 		isDriverCameraLocked = buffer.readBoolean();

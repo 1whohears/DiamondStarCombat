@@ -1,15 +1,25 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.crafting.FlareDispenserLoadRecipe;
+import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
+import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
+import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.FlareDispenserStats;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 
+import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartInstance<T> implements LoadableRecipePartInstance {
+import java.util.List;
+
+public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartInstance<T> implements ReloadablePartInstance {
 	
 	private int flares = 0;
 	
@@ -131,9 +141,24 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 		return "";
 	}
 
+	private static final PartItemLoadRecipe<?> LOAD_RECIPE = new FlareDispenserLoadRecipe(
+			new ResourceLocation("dscombat:flare_load_recipe"));
+
 	@Override
-	public MutableComponent getItemName() {
-		return super.getItemName().append(" "+flares+"/"+getStats().getMaxFlares());
+	public PartItemLoadRecipe<?> getLoadRecipe() {
+		return LOAD_RECIPE;
 	}
 
+	@Override
+	public PartItemUnloadRecipe<?> getUnloadRecipe() {
+		return null;
+	}
+
+	@Override
+	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
+		super.addToolTips(tips, isAdvanced);
+		tips.add(UtilMCText.translatable("info.dscombat.ammo")
+				.append(" "+(int)getCurrentAmmo()+"/"+(int)getMaxAmmo())
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+	}
 }

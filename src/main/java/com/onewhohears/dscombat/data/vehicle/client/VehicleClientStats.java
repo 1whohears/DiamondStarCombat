@@ -27,6 +27,7 @@ public class VehicleClientStats extends JsonPresetStats {
 	private HashMap<String, UIPos> slotsPos;
 	private ObjVehicleModel<EntityVehicle> model;
 	private List<EntityScreenData> screens;
+	private boolean dontCull = false;
 	
 	public VehicleClientStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -39,6 +40,7 @@ public class VehicleClientStats extends JsonPresetStats {
 			return model;
 		}
 		JsonObject model_data = getJsonData().get("model_data").getAsJsonObject();
+		dontCull = UtilParse.getBooleanSafe(model_data, "dont_cull", false);
 		if (model_data.has("hard_coded_model_anims")) {
 			model = HardCodedModelAnims.get(model_data.get("hard_coded_model_anims").getAsString());
 			if (model != null) return model;
@@ -86,6 +88,10 @@ public class VehicleClientStats extends JsonPresetStats {
 		if (!getSlotsPos().containsKey(slotId)) return getUIPosByIndex(i, x_start, y_start);
 		return getSlotsPos().get(slotId);
 	}
+
+	public boolean isDontCull() {
+		return dontCull;
+	}
 	
 	public static UIPos getUIPosByIndex(int i, int x_start, int y_start) {
 		int x = x_start + i % 9 * 18;
@@ -99,6 +105,10 @@ public class VehicleClientStats extends JsonPresetStats {
 				getData().add("model_data", new JsonObject());
 			}
 			return getData().get("model_data").getAsJsonObject();
+		}
+		public Builder setDontCull(boolean dontCull) {
+			getModelData().addProperty("dont_cull", dontCull);
+			return this;
 		}
 		public Builder setKFAnimDataIds(String model_id, String... animDataIds) {
 			setKFAnimsDataIds(animDataIds);

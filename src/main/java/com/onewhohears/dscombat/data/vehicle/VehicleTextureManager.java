@@ -234,7 +234,7 @@ public class VehicleTextureManager {
 		}
 	}
 	
-	public static enum BlendMode {
+	public enum BlendMode {
 		NONE,
 		ON_WHITE,
 		ON_ALL,
@@ -245,6 +245,9 @@ public class VehicleTextureManager {
 				if (mode.name().equals(name)) 
 					return mode;
 			return NONE;
+		}
+		public String getTranslatable() {
+			return "blendmode.dscombat."+name().toLowerCase();
 		}
 	}
 	

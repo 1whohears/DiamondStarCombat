@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
-import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -79,7 +79,8 @@ public class RadarSystem {
 	}
 	
 	public boolean canServerTick() {
-		return parent.isPlayerRiding() || (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar());
+		return parent.isStationaryRadar() || parent.isPlayerRiding()
+				|| (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar());
 	}
 	
 	public void tickUpdateTargets() {
@@ -102,18 +103,25 @@ public class RadarSystem {
 		// SEMI ACTIVE TRACK ROCKETS
 		updateSemiActiveTrackMissiles();
 		// PACKET
-		if (parent.tickCount % 20 == 0) parent.toClientPassengers(
-				new ToClientRadarPings(parent.getId(), targets));
+		if (parent.tickCount % 20 == 0) {
+			if (parent.isStationaryRadar()) parent.toTrackers(new ToClientRadarPings(parent.getId(), targets));
+			else parent.toClientPassengers(new ToClientRadarPings(parent.getId(), targets));
+		}
 	}
 	
 	protected void updateDataLink() {
 		refreshDataLink();
 		if (!hasDataLink()) return;
 		Entity controller = parent.getControllingPlayerOrBot();
+		boolean check_equals = true;
+		if (parent.isStationaryRadar() && controller == null) {
+			controller = parent.getOwner();
+			check_equals = false;
+		}
 		if (controller == null) return;
 		List<? extends Player> players = parent.level.players();
 		for (Player p : players) {
-			if (controller.equals(p)) continue;
+			if (check_equals && controller.equals(p)) continue;
 			if (!controller.isAlliedTo(p)) continue;
 			if (!controller.level.dimension().equals(p.level.dimension())) continue;
 			if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;
@@ -132,7 +140,11 @@ public class RadarSystem {
 		for (int i = 0; i < clientTargets.size(); ++i) if (clientTargets.get(i).id == id) return i;
 		return -1;
 	}
-	
+
+	public boolean hasTargets() {
+		return !targets.isEmpty();
+	}
+
 	public boolean hasTarget(Entity entity) {
 		if (hasTarget(entity.getId())) return true;
 		if (entity.isPassenger()) {
@@ -212,7 +224,13 @@ public class RadarSystem {
 		int id = targets.get(selectedIndex).id;
 		return parent.level.getEntity(id);
 	}
-	
+
+	@Nullable
+	public RadarPing getServerSelectedPing() {
+		if (selectedIndex == -1) return null;
+		return targets.get(selectedIndex);
+	}
+
 	@Nullable
 	public LivingEntity getLivingTargetByWeapon(WeaponInstance<?> wd) {
 		for (RadarPing ping : targets) {
@@ -253,8 +271,12 @@ public class RadarSystem {
 	public void clientSelectNextTarget() {
 		int size = getClientRadarPings().size();
 		if (size == 0) return;
-		int s = clientSelectedIndex + 1;
-		if (s >= size) s = 0;
+		int k = 0, s = clientSelectedIndex;
+		while (k++ < size) {
+			s++;
+			if (s >= size) s = 0;
+			if (!getClientRadarPings().get(s).entityType.isMissile()) break;
+		}
 		clientSelectTarget(s);
 	}
 	
@@ -263,8 +285,7 @@ public class RadarSystem {
 		if (parent.tickCount-clientSelectedTime < 2) return;
 		clientSelectedIndex = pingIndex;
 		parent.soundManager.playRadarLockSound();
-		PacketHandler.INSTANCE.sendToServer(new ToServerPingSelect(
-				parent.getId(), clientTargets.get(pingIndex)));
+		VehicleSyncAction.sendSyncAction(new VehicleSyncAction.PingSelectAction(clientTargets.get(pingIndex)));
 		clientSelectedTime = parent.tickCount;
 	}
 	

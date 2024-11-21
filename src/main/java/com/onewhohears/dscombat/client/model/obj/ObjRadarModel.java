@@ -39,7 +39,7 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 			if (mastModel != null) {
 				poseStack.pushPose();
 				poseStack.translate(0, -currentMastType.radarTopPos, 0);
-				mastModel.render(poseStack, bufferSource, (texture) -> RenderType.entitySolid(texture), 
+				mastModel.render(poseStack, bufferSource, RenderType::entitySolid,
 					getLight(entity, lightmap), getOverlay(entity), partialTicks, Transforms.EMPTY);
 				poseStack.popPose();
 			}

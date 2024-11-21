@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.vehicle.stats.CarStats;
 import com.onewhohears.dscombat.data.vehicle.stats.HeliStats;
 import com.onewhohears.dscombat.data.vehicle.stats.PlaneStats;
 import com.onewhohears.dscombat.data.vehicle.stats.SubmarineStats;
+import com.onewhohears.dscombat.data.vehicle.stats.StationaryStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModEntities;
 
@@ -18,7 +19,7 @@ public abstract class VehicleType extends JsonPresetType {
 		public static final String ID = "plane";
 		public static final Plane INSTANCE = new Plane();
 		public Plane() {
-			super(ID, (key, data) -> new PlaneStats(key, data));
+			super(ID, PlaneStats::new);
 		}
 		@Override
 		public EntityType<? extends EntityVehicle> getEntityType() {
@@ -30,7 +31,7 @@ public abstract class VehicleType extends JsonPresetType {
 		public static final String ID = "helicopter";
 		public static final Helicopter INSTANCE = new Helicopter();
 		public Helicopter() {
-			super(ID, (key, data) -> new HeliStats(key, data));
+			super(ID, HeliStats::new);
 		}
 		@Override
 		public EntityType<? extends EntityVehicle> getEntityType() {
@@ -42,7 +43,7 @@ public abstract class VehicleType extends JsonPresetType {
 		public static final String ID = "car";
 		public static final Car INSTANCE = new Car();
 		public Car() {
-			super(ID, (key, data) -> new CarStats(key, data));
+			super(ID, CarStats::new);
 		}
 		@Override
 		public EntityType<? extends EntityVehicle> getEntityType() {
@@ -54,7 +55,7 @@ public abstract class VehicleType extends JsonPresetType {
 		public static final String ID = "boat";
 		public static final Boat INSTANCE = new Boat();
 		public Boat() {
-			super(ID, (key, data) -> new BoatStats(key, data));
+			super(ID, BoatStats::new);
 		}
 		@Override
 		public EntityType<? extends EntityVehicle> getEntityType() {
@@ -66,11 +67,23 @@ public abstract class VehicleType extends JsonPresetType {
 		public static final String ID = "submarine";
 		public static final Submarine INSTANCE = new Submarine();
 		public Submarine() {
-			super(ID, (key, data) -> new SubmarineStats(key, data));
+			super(ID, SubmarineStats::new);
 		}
 		@Override
 		public EntityType<? extends EntityVehicle> getEntityType() {
 			return ModEntities.SUBMARINE.get();
+		}
+	}
+	public static final Stationary STATIONARY = Stationary.INSTANCE;
+	public static class Stationary extends VehicleType {
+		public static final String ID = "stationary";
+		public static final Stationary INSTANCE = new Stationary();
+		public Stationary() {
+			super(ID, StationaryStats::new);
+		}
+		@Override
+		public EntityType<? extends EntityVehicle> getEntityType() {
+			return ModEntities.STATIONARY.get();
 		}
 	}
 	public VehicleType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {

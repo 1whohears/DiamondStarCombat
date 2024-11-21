@@ -75,10 +75,10 @@ public class VillageDefenseData extends DeathMatchData {
 		team.setAllowFriendlyFire(false);
 		team.setSeeFriendlyInvisibles(true);
 		if (attack) {
-			team.setDisplayName(UtilMCText.literal("ATTACKERS"));
+			team.setDisplayName(UtilMCText.translatable("team.minigames.attackers"));
 			team.setColor(ChatFormatting.RED);
 		} else {
-			team.setDisplayName(UtilMCText.literal("DEFENDERS"));
+			team.setDisplayName(UtilMCText.translatable("team.minigames.defenders"));
 			team.setColor(ChatFormatting.BLUE);
 		}
 	}

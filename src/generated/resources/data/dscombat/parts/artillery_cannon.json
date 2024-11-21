@@ -1,0 +1,17 @@
+{
+  "displayName": "item.dscombat.artillery_cannon",
+  "externalEntity": "dscombat:artillery_cannon",
+  "item": "dscombat:artillery_cannon",
+  "maxAmmo": 50,
+  "maxHealth": 180.0,
+  "presetId": "artillery_cannon",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 15
+    }
+  ],
+  "slotType": "mount_super_heavy",
+  "weight": 6000.0
+}

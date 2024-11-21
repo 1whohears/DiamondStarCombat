@@ -53,10 +53,10 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "axcel_truck_radar")
-				.setRange(1000f)
+				.setRange(1400f)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
-				.setSensitivity(0.3f)
+				.setSensitivity(0.8f)
 				.setFieldOfView(-1)
 				.setScanRate(30)
 				.setScanAircraft(true)
@@ -64,6 +64,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.setScanMobs(false)
 				.setScanGround(false)
 				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "ar20k")
@@ -78,6 +79,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.setScanMobs(false)
 				.setScanGround(false)
 				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "wr400")
@@ -165,31 +167,33 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "air_scan_a")
-				.setRange(1400f)
+				.setRange(1600f)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
 				.setSensitivity(0.8f)
 				.setFieldOfView(-1f)
-				.setScanRate(20)
+				.setScanRate(30)
 				.setScanAircraft(true)
 				.setScanPlayers(true)
 				.setScanMobs(true)
 				.setScanGround(false)
 				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "air_scan_b")
-				.setRange(1800f)
+				.setRange(2400f)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
 				.setSensitivity(0.7f)
 				.setFieldOfView(-1f)
-				.setScanRate(20)
+				.setScanRate(30)
 				.setScanAircraft(true)
 				.setScanPlayers(true)
 				.setScanMobs(true)
 				.setScanGround(false)
 				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "survey_all_a")
@@ -218,6 +222,21 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.setScanMobs(true)
 				.setScanGround(true)
 				.setScanAir(true)
+				.build());
+		addPresetToGenerate(RadarStats.Builder
+				.create(DSCombatMod.MODID, "ewr4000")
+				.setRange(4000f)
+				.setThroGroundRange(0f)
+				.setThroWaterRange(0f)
+				.setSensitivity(0.6f)
+				.setFieldOfView(-1f)
+				.setScanRate(40)
+				.setScanAircraft(true)
+				.setScanPlayers(true)
+				.setScanMobs(false)
+				.setScanGround(false)
+				.setScanAir(true)
+				.setScanMissiles(true)
 				.build());
 	}
 	

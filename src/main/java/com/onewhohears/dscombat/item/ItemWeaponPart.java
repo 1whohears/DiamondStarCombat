@@ -54,7 +54,9 @@ public class ItemWeaponPart extends ItemPart {
 		if (data == null) return;
 		String id = data.getWeaponId();
 		if (id.isEmpty()) return;
-		tips.add(UtilMCText.literal("Ammo: "+(int)data.getCurrentAmmo()+"/"+data.getStats().getMaxAmmo()).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.translatable("info.dscombat.ammo")
+				.append(": "+(int)data.getCurrentAmmo()+"/"+data.getStats().getMaxAmmo())
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		WeaponStats wd = WeaponPresets.get().get(id);
 		if (wd == null) return;
 		wd.addToolTips(tips, isAdvanced.isAdvanced());

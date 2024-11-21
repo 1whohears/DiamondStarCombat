@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.model.obj;
 
+import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -11,6 +12,11 @@ public class ObjTurretModel<T extends EntityTurret> extends ObjPartModel<T> {
 	
 	public ObjTurretModel(String modelId, boolean rotYawAll, String... animDataIds) {
 		super(modelId, animDataIds);
+		this.rotYawAll = rotYawAll;
+	}
+
+	public ObjTurretModel(String modelId, boolean rotYawAll, JsonArray transforms, String... animDataIds) {
+		super(modelId, transforms, animDataIds);
 		this.rotYawAll = rotYawAll;
 	}
 	

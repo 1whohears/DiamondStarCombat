@@ -37,8 +37,10 @@ public class AntiRadarMissileStats extends MissileStats {
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
-		tips.add(UtilMCText.literal("TARGETS GROUNDED").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
-		tips.add(UtilMCText.literal("Scan Range: ").append(getScanRange()+"").setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		tips.add(UtilMCText.translatable("info.dscombat.targets_grounded")
+				.setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+		tips.add(UtilMCText.translatable("info.dscombat.scan_range").append(": "+getScanRange())
+				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 	}
 	
 	public double getScanRange() {

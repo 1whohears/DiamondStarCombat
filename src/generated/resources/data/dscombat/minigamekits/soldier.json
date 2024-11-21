@@ -1,4 +1,6 @@
 {
-  "id": "soldier",
-  "kitItems": []
+  "displayName": "preset.dscombat.soldier",
+  "kitItems": [],
+  "presetId": "soldier",
+  "presetType": "gamekit"
 }

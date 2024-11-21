@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 public class EntityWeaponRack extends EntityPart {
 	
 	private String weaponModelId;
+	public int lastShootTime;
 	
 	public EntityWeaponRack(EntityType<?> type, Level level) {
 		super(type, level);
@@ -52,6 +53,10 @@ public class EntityWeaponRack extends EntityPart {
 	@Override
 	public boolean canGetHurt() {
 		return false;
+	}
+
+	public void onClientShoot() {
+		lastShootTime = tickCount;
 	}
 
 }

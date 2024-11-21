@@ -34,7 +34,7 @@ public final class CommonForgeEvents {
 	public static void livingHurtEvent(LivingHurtEvent event) {
 		if (event.getSource().isMagic()) return;
 		if (!event.getEntity().isPassenger() || !(event.getEntity().getRootVehicle() instanceof EntityVehicle plane)) return;
-		event.setAmount(Math.max(0, plane.calcDamageToInside(event.getSource(), event.getAmount())));
+		event.setAmount(plane.calcDamageToRider(event.getSource(), event.getAmount()));
 	}
 	
 	private static Set<Integer> explodeRepeatCheck = new HashSet<>();

@@ -150,6 +150,55 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 		for (int i = x+r, j = y; i >= x; --i, ++j) for (int k = kMin; k < kMax; ++k) setPixel(i+k, j, color);
 		for (int i = x+r, j = y; i >= x; --i, --j) for (int k = kMin; k < kMax; ++k) setPixel(i+k, j, color);
 	}
+
+	protected void drawLine(int x1, int y1, int x2, int y2, int color) {
+		drawLine(x1, y1, x2, y2, 1, color);
+	}
+
+	protected void drawLine(int x1, int y1, int x2, int y2, int t, int color) {
+		if (x1 > x2) {
+			int xt = x1; x1 = x2; x2 = xt;
+			int yt = y1; y1 = y2; y2 = yt;
+		}
+		int xDiff = x2 - x1, yDiff = y2 - y1;
+		double half = t*0.5d;
+		int kMin = -(int)Math.floor(half);
+		int kMax = (int)Math.ceil(half);
+		if (Math.abs(xDiff) < 1) {
+			int ySign = (int) Math.signum(yDiff);
+			int yDiffAbs = Math.abs(yDiff);
+			for (int i = 0; i <= yDiffAbs; ++i) {
+				int y = y1 + i * ySign;
+				for (int k = kMin; k < kMax; ++k) {
+					int x = x1 + k;
+					setPixel(x, y, color);
+				}
+			}
+			return;
+		}
+		double slope = (double)yDiff / (double)xDiff;
+		double slopeAbs = Math.abs(slope);
+		double slopeSign = Math.signum(slope);
+		for (int x = x1; x <= x2; ++x) {
+			double y = slope * (x - x1) + y1;
+			if (slopeAbs > 1) {
+				for (double i = 0; i < slopeAbs; ++i) {
+					double ye = (y - i * slopeSign);
+					if (slopeSign > 0 && ye < y1) continue;
+					else if (slopeSign < 0 && ye > y1) continue;
+					int yei = (int)ye;
+					for (int k = kMin; k < kMax; ++k) {
+						setPixel(x+k, yei, color);
+					}
+				}
+			} else {
+				int yi = (int)y;
+				for (int k = kMin; k < kMax; ++k) {
+					setPixel(x, yi+k, color);
+				}
+			}
+		}
+	}
 	
 	@Override
 	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, 

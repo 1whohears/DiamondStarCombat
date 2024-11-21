@@ -183,6 +183,11 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setWeight(1000)
 				.setRadarStats("axcel_truck_radar")
 				.build());
+		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "ewr4000", ModItems.AXCEL_TRUCK_RADAR.getId(), PartType.EXTERNAL_RADAR)
+				.setCompatibleSlotType(SlotType.MOUNT_TECH)
+				.setWeight(1000)
+				.setRadarStats("ewr4000")
+				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.AIR_SCAN_A.getId(), PartType.EXTERNAL_RADAR)
 				.setCompatibleSlotType(SlotType.MOUNT_TECH)
 				.setWeight(1500)
@@ -250,7 +255,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.addIngredient("minecraft:iron_ingot", 7)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.MARK7_CANNON.getId(), PartType.TURRENT)
-				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
+				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(4500)
 				.setExternalEntityType(ModEntities.MARK7_CANNON.getId())
 				.setTurretStats(36, 200)
@@ -283,6 +288,20 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setExternalEntityType(ModEntities.MLS.getId())
 				.setTurretStats(4, 60)
 				.addIngredient("minecraft:iron_ingot", 9)
+				.build());
+		addPresetToGenerate(PartBuilder.create(ModItems.MLRS.getId(), PartType.TURRENT)
+				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
+				.setWeight(8000)
+				.setExternalEntityType(ModEntities.MLRS.getId())
+				.setTurretStats(10, 80)
+				.addIngredient("minecraft:iron_ingot", 15)
+				.build());
+		addPresetToGenerate(PartBuilder.create(ModItems.ARTILLERY_CANNON.getId(), PartType.TURRENT)
+				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
+				.setWeight(6000)
+				.setExternalEntityType(ModEntities.ARTILLERY_CANNON.getId())
+				.setTurretStats(50, 180)
+				.addIngredient("minecraft:iron_ingot", 15)
 				.build());
 		// DISPENSERS
 		addPresetToGenerate(PartBuilder.create(ModItems.BASIC_FLARE_DISPENSER.getId(), PartType.FLARE_DISPENSER)

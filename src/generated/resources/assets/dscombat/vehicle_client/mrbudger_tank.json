@@ -52,116 +52,182 @@
     "custom_anims": [
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wl0",
+        "model_part_key": "w9",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": 1.875
+          "x": 1.5585938,
+          "y": 0.440625,
+          "z": 2.49375
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wl1",
+        "model_part_key": "w10",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": 0.9375
+          "x": 1.5585938,
+          "y": 0.440625,
+          "z": 1.575
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wl2",
+        "model_part_key": "w11",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": 0.0
+          "x": 1.5585938,
+          "y": 0.440625,
+          "z": 0.65625
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wl3",
+        "model_part_key": "w12",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": -0.9375
+          "x": 1.5585938,
+          "y": 0.440625,
+          "z": -0.2625
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wl4",
+        "model_part_key": "w13",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": -1.875
+          "x": 1.5585938,
+          "y": 0.440625,
+          "z": -1.18125
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wr0",
+        "model_part_key": "w14",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": 1.875
+          "x": 1.5585938,
+          "y": 0.440625,
+          "z": -2.1
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wr1",
+        "model_part_key": "w15",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": 0.9375
+          "x": 1.59075,
+          "y": 0.886875,
+          "z": 3.17625
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wr2",
+        "model_part_key": "w16",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": 0.0
+          "x": 1.59075,
+          "y": 0.755625,
+          "z": -2.80875
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wr3",
+        "model_part_key": "w1",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": -0.9375
+          "x": -1.5585938,
+          "y": 0.440625,
+          "z": 2.49375
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       },
       {
         "anim_id": "wheel_rotation",
-        "model_part_key": "wr4",
+        "model_part_key": "w2",
         "pivot": {
-          "x": 0.0,
-          "y": 0.5,
-          "z": -1.875
+          "x": -1.5585938,
+          "y": 0.440625,
+          "z": 1.575
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w3",
+        "pivot": {
+          "x": -1.5585938,
+          "y": 0.440625,
+          "z": 0.65625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w4",
+        "pivot": {
+          "x": -1.5585938,
+          "y": 0.440625,
+          "z": -0.2625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w5",
+        "pivot": {
+          "x": -1.5585938,
+          "y": 0.440625,
+          "z": -1.18125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w6",
+        "pivot": {
+          "x": -1.5585938,
+          "y": 0.440625,
+          "z": -2.1
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w7",
+        "pivot": {
+          "x": -1.59075,
+          "y": 0.886875,
+          "z": 3.17625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w8",
+        "pivot": {
+          "x": -1.59075,
+          "y": 0.755625,
+          "z": -2.80875
         },
         "rot_axis": "X",
         "rot_rate": 160.0
       }
     ],
-    "model_id": "mrbudger_tank"
+    "model_id": "t72hull"
   },
   "presetId": "mrbudger_tank",
   "presetType": "standard"

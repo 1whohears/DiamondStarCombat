@@ -238,7 +238,7 @@ public class ModItems {
 	public static final RegistryObject<ItemPart> SEAT = ITEMS.register("seat", 
 			() -> new ItemSeat(64));
 	
-	// TURRENTS
+	// TURRETS
 	public static final RegistryObject<ItemPart> AA_TURRET = ITEMS.register("aa_turret", 
 			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
@@ -258,6 +258,10 @@ public class ModItems {
 	public static final RegistryObject<ItemPart> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
 			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> MLS = ITEMS.register("mls", 
+			() -> new ItemTurret(16));
+	public static final RegistryObject<ItemPart> MLRS = ITEMS.register("mlrs",
+			() -> new ItemTurret(16));
+	public static final RegistryObject<ItemPart> ARTILLERY_CANNON = ITEMS.register("artillery_cannon",
 			() -> new ItemTurret(16));
 	
 	// FLARE DISPENSERS
@@ -373,6 +377,8 @@ public class ModItems {
 			() -> new ItemVehicle(CarPresets.DEFAULT_ORANGE_TESLA.getId()));
 	public static final RegistryObject<Item> AXCEL_TRUCK = ITEMS.register("axcel_truck", 
 			() -> new ItemVehicle(CarPresets.DEFAULT_AXCEL_TRUCK.getId()));
+	public static final RegistryObject<Item> ERIC_TRUCK = ITEMS.register("eric_truck",
+			() -> new ItemVehicle(CarPresets.DEFAULT_ERIC_TRUCK.getId()));
 	
 	// TANKS
 	public static final RegistryObject<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
@@ -399,5 +405,8 @@ public class ModItems {
 			() -> new ItemVehicle(SubPresets.DEFAULT_ANDOLF_SUB.getId()));
 	public static final RegistryObject<Item> GOOGLE_SUB = ITEMS.register("google_sub", 
 			() -> new ItemVehicle(SubPresets.DEFAULT_GOOGLE_SUB.getId()));
-		
+
+	// STATIONARY
+	public static final RegistryObject<Item> EWR4000 = ITEMS.register("ewr4000",
+			() -> new ItemVehicle(StationaryPresets.EWR4000.getId()));
 }

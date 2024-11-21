@@ -1,20 +1,13 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
-import net.minecraft.tags.BlockTags;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -25,7 +18,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.common.container.menu.VehicleContainerMenu;
+import com.onewhohears.dscombat.common.container.menu.VehiclePartsMenu;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
@@ -135,6 +128,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
+	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<PermMode> PERM_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.PERM_MODE);;
 	
 	public static final int HITBOX_PUSH_COOLDOWN = 4;
 	
@@ -191,16 +186,22 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
 	
-	protected boolean isLandingGear, isDriverCameraLocked = false;
+	protected boolean isDriverCameraLocked = false;
 	protected float throttle;
 	
 	@Nullable protected EntityGimbal pilotGimbal;
 	@Nullable protected Player chainHolderPlayer;
 	@Nullable protected EntityChainHook chainHolderHook;
+
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	@Nullable private Entity owner;
+	@Nullable private UUID owner_uuid;
+	private int owner_id = -1;
 	
 	// TODO 5.4 vehicle visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
-	// TODO 5.7 an additional vehicle gui to control certain auxiliary functions (landing gear, jettison tanks/weapons)
 	// TODO 2.5 add chaff
 	// TODO 2.8 external fuel tanks
 	
@@ -233,6 +234,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(RADIO_SONG, "");
 		entityData.define(PLAY_IR_TONE, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL);
+		entityData.define(LANDING_GEAR, true);
+		entityData.define(PERM_MODE, PermMode.PUBLIC);
 	}
 	
 	@Override
@@ -297,6 +300,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		setRadioSong(nbt.getString("radio_song"));
 		createRotableHitboxes(nbt);
 		if (nbt.contains("ingredientDropIndex")) ingredientDropIndex = nbt.getInt("ingredientDropIndex");
+		if (nbt.contains("owner_id")) owner_uuid = nbt.getUUID("owner_id");
+		setPermMode(PermMode.values()[nbt.getInt("perm_mode")]);
 	}
 
 	@Override
@@ -317,8 +322,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		nbt.putFloat("zRot", zRot);
 		nbt.putInt("radar_mode", getRadarMode().ordinal());
 		nbt.putString("radio_song", getRadioSong());
-		Entity c = getControllingPassenger();
-		if (c != null) nbt.putString("owner", c.getScoreboardName());
+		if (owner != null) {
+			nbt.putString("owner_name", owner.getScoreboardName());
+			nbt.putUUID("owner_id", owner.getUUID());
+		}
 		Component name = getCustomName();
         if (name != null) nbt.putString("CustomName", Component.Serializer.toJson(name));
         if (isCustomNameVisible()) nbt.putBoolean("CustomNameVisible", isCustomNameVisible());
@@ -326,6 +333,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
         nbt.putFloat("flares", getFlareNum());
         saveRotableHitboxes(nbt);
         nbt.putInt("ingredientDropIndex", ingredientDropIndex);
+		nbt.putInt("perm_mode", getPermMode().ordinal());
 	}
 	
 	@Override
@@ -473,7 +481,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 * damages plane if it falls or collides with a wall at speeds defined in config.
 	 */
 	public void tickCollisions() {
-		// TODO 9.1 break grass and leaves or just weak blocks when driving through them
 		if (!level.isClientSide) {
 			knockBack(level.getEntities(this, 
 					getBoundingBox(), 
@@ -1217,7 +1224,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			if (controller == null) return;
 			boolean consume = !isNoConsume();
 			if (controller instanceof ServerPlayer player) {
-				if (inputs.openMenu) openMenu(player);
 				if (player.isCreative()) consume = false;
 			}
 			boolean consumeFuel = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
@@ -1229,35 +1235,26 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			}
 		}
 	}
-	
-	public void openMenu(ServerPlayer player) {
-		if (!canOpenMenu()) {
-			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
-			return;
-		}
-		NetworkHooks.openScreen(player, 
-			new SimpleMenuProvider((windowId, playerInv, p) -> 
-				new VehicleContainerMenu(windowId, playerInv), 
-				UtilMCText.translatable("container.dscombat.plane_menu")));
+
+	public void openPartsMenu(ServerPlayer player) {
+		NetworkHooks.openScreen(player, new SimpleMenuProvider((windowId, playerInv, p) ->
+				new VehiclePartsMenu(windowId, playerInv),
+				UtilMCText.translatable("screen.dscombat.vehicle_parts_screen")));
 	}
-	
-	public void openStorage(ServerPlayer player) {
-		if (!canOpenMenu()) {
-			player.displayClientMessage(UtilMCText.translatable(getOpenMenuError()), true);
-			return;
-		}
-		StorageInstance<?> box = partsManager.cycleStorageData();
+
+	public void openStorage(ServerPlayer player, int index) {
+		StorageInstance<?> box = partsManager.getStorageData(index);
 		if (box == null) {
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.no_storage_boxes"), true);
 			return;
 		}
-		NetworkHooks.openScreen(player, 
-			new SimpleMenuProvider((windowId, playerInventory, p) -> 
-				box.createMenu(windowId, playerInventory), 
-				UtilMCText.translatable("container.dscombat.vehicle_storage")));
+		NetworkHooks.openScreen(player, new SimpleMenuProvider((windowId, playerInventory, p) ->
+						box.createMenu(windowId, playerInventory),
+						UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen")),
+				(buff) -> buff.writeInt(partsManager.getStorageIndex()));
 	}
 	
-	public boolean canOpenMenu() {
+	public boolean canOpenPartsMenu() {
 		return (isOnGround() && xzSpeed < 0.1) || isTestMode();
 	}
 	
@@ -1865,6 +1862,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public float calcDamageToInside(DamageSource source, float amount) {
 		return calcDamageToArmor(amount) * getHealthDamageWithArmorPercent(source);
 	}
+
+	public float calcDamageToRider(DamageSource source, float amount) {
+		if (getArmor() > 0) return calcDamageToInside(source, amount);
+		return amount;
+	}
 	
 	private boolean shouldDebug(DamageSource source) {
 		//return source.getMsgId().equals("flyIntoWall");
@@ -2197,6 +2199,20 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
     	return tickCount/20 > fresh && (lastShootTime == -1 || (tickCount-lastShootTime)/20 > shoot);
     }
+
+	public Component getCantBecomeItemReason(Player player) {
+		EntitySeat seat = getPassengerSeat(player);
+		if (seat == null) return UtilMCText.translatable("error.dscombat.not_a_passenger");
+		if (!seat.canPassengerShootParentWeapon()) return UtilMCText.translatable("error.dscombat.not_a_pilot");
+		int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
+		int fresh_diff = fresh - tickCount/20;
+		if (fresh_diff > 0) return UtilMCText.translatable("error.dscombat.cant_item_yet_fresh", fresh_diff);
+		if (lastShootTime == -1) return null;
+		int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
+		int shoot_diff = shoot - (tickCount-lastShootTime)/20;
+		if (shoot_diff > 0) return UtilMCText.translatable("error.dscombat.cant_item_yet_shoot", shoot_diff);
+		return null;
+	}
     
     /**
      * SERVER SIDE ONLY
@@ -2552,14 +2568,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * @return true if landing gear is out false if folded
      */
     public boolean isLandingGear() {
-    	return isLandingGear;
+    	return entityData.get(LANDING_GEAR);
     }
     
     /**
      * @param gear true if landing gear is out false if folded
      */
     public void setLandingGear(boolean gear) {
-    	this.isLandingGear = gear;
+		entityData.set(LANDING_GEAR, gear);
     }
     
     /**
@@ -2576,9 +2592,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	entityData.set(TEST_MODE, testMode);
     }
     
-    public void toggleLandingGear() {
-    	if (!canToggleLandingGear()) return;
+    public boolean toggleLandingGear() {
+    	if (!canToggleLandingGear()) return isLandingGear();
     	setLandingGear(!isLandingGear());
+		return isLandingGear();
     }
     
     /**
@@ -2674,6 +2691,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	for (Player p : getRidingPlayers()) if (!p.level.isClientSide()) // this additional client side check should fix?
     		PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)p), packet);
     }
+
+	public void toTrackers(IPacket packet) {
+		if (level.isClientSide()) return;
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), packet);
+	}
     
     public boolean isWeaponAngledDown() {
     	return false;
@@ -3114,6 +3136,97 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 
 	public double getAltitude() {
 		return UtilEntity.getDistFromSeaLevel(this);
+	}
+
+	public boolean canReload(Player player) {
+		if (!isPilotOrCopilot(player)) {
+			player.displayClientMessage(
+					UtilMCText.translatable("error.dscombat.not_a_pilot"),
+					true);
+			return false;
+		} else if (xzSpeed > 0.1) {
+			player.displayClientMessage(
+					UtilMCText.translatable("error.dscombat.cant_load_while_moving"),
+					true);
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isPilotOrCopilot(Entity entity) {
+		EntitySeat seat = getPassengerSeat(entity);
+		if (seat == null) return false;
+		return seat.canPassengerShootParentWeapon();
+	}
+
+	public boolean jetesinPart(String slotId) {
+		return partsManager.dropPartInSlot(slotId);
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public void setOwner(Entity owner) {
+		this.owner = owner;
+		this.owner_uuid = owner.getUUID();
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	@Nullable
+	public Entity getOwner() {
+		if (owner_uuid == null) return null;
+		if (owner == null || getLevel().getEntity(owner_id) == null) {
+			owner = getLevel().getPlayerByUUID(owner_uuid);
+			if (owner != null) owner_id = owner.getId();
+			else owner_id = -1;
+		}
+		return owner;
+	}
+
+	public enum PermMode {
+		PUBLIC, ALLIES, PRIVATE;
+		public String getTranslatable() {
+			return "permmode.dscombat."+name().toLowerCase();
+		}
+	}
+
+	public PermMode getPermMode() {
+		return entityData.get(PERM_MODE);
+	}
+
+	public void setPermMode(PermMode mode) {
+		entityData.set(PERM_MODE, mode);
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public boolean hasPermission(@Nonnull Entity entity) {
+		if (DSCGameRules.isForcePublicPerm(getLevel())) return true;
+		if (getPermMode() == PermMode.PUBLIC) return true;
+		Entity owner = getOwner();
+		if (getPermMode() == PermMode.ALLIES) {
+			if (entity.equals(owner)) return true;
+			else if (owner != null) return owner.isAlliedTo(entity);
+			else return false;
+		} else {
+			return entity.equals(owner);
+		}
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public boolean isOwner(Entity entity) {
+		return entity.equals(getOwner());
+	}
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public boolean hasOwner() {
+		return owner_uuid != null;
+	}
+
+	public boolean isStationaryRadar() {
+		return getStats().isStationaryRadar();
 	}
     
 }

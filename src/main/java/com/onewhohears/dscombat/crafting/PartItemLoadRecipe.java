@@ -6,19 +6,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 
 import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> extends CustomRecipe {
+public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> extends CustomRecipe {
 
 	protected PartItemLoadRecipe(ResourceLocation id) {
 		super(id);
@@ -38,30 +42,49 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 	@Override
 	public ItemStack assemble(CraftingContainer container) {
 		ItemStack part = getPartItem(container);
-		List<ItemStack> ammo = getAmmoItems(container);
 		I lpd = getLoadablePartDataFromItem(part);
-		if (!canItemsCombine(lpd, ammo)) return ItemStack.EMPTY;
+		if (fillPart(container, lpd)) return lpd.getNewItemStack();
+		else return ItemStack.EMPTY;
+	}
+
+	public boolean fillPart(Container container, ReloadablePartInstance lpd) {
+		List<ItemStack> ammo = getAmmoItemsContainer(container, lpd.getContinuity());
+		if (!canItemsCombine(lpd, ammo)) return false;
 		if (checkAmmoContinuity()) {
 			String ammoCont = getItemAmmoContinuity(ammo.get(0));
-			if (!isContinuityValid(ammoCont)) return ItemStack.EMPTY;
+			if (!isContinuityValid(ammoCont)) return false;
 			emptyContinuityCheck(lpd, ammoCont);
 		}
 		float newAmmo = lpd.getCurrentAmmo();
 		for (int i = 0; i < ammo.size(); ++i) newAmmo += getAmmoNumFromItem(ammo.get(i));
 		if (newAmmo > lpd.getMaxAmmo()) newAmmo = lpd.getMaxAmmo();
 		lpd.setCurrentAmmo(newAmmo);
-		return lpd.getNewItemStack();
+		return true;
 	}
-	
+
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
+	public @NotNull NonNullList<ItemStack> getRemainingItems(@NotNull CraftingContainer container) {
 		ItemStack part = getPartItem(container);
-		List<ItemStack> ammo = getAmmoItems(container);
 		I lpd = getLoadablePartDataFromItem(part);
-		if (!canItemsCombine(lpd, ammo)) return super.getRemainingItems(container);
+		return getRemainingItems(container, lpd);
+	}
+
+	public NonNullList<ItemStack> getRemainingItems(Container container, I lpd) {
+		if (!consumeAmmoItems(container, lpd)) return getRemainingItemsDefault(container);
+		NonNullList<ItemStack> list = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
+		for(int i = 0; i < list.size(); ++i) {
+			ItemStack stack = container.getItem(i);
+			list.set(i, ForgeHooks.getCraftingRemainingItem(stack));
+		}
+		return list;
+	}
+
+	public boolean consumeAmmoItems(Container container, ReloadablePartInstance lpd) {
+		List<ItemStack> ammo = getAmmoItemsContainer(container, lpd.getContinuity());
+		if (!canItemsCombine(lpd, ammo)) return false;
 		if (checkAmmoContinuity()) {
 			String ammoCont = getItemAmmoContinuity(ammo.get(0));
-			if (!isContinuityValid(ammoCont)) return super.getRemainingItems(container);
+			if (!isContinuityValid(ammoCont)) return false;
 			emptyContinuityCheck(lpd, ammoCont);
 		}
 		float ca = lpd.getCurrentAmmo();
@@ -77,12 +100,40 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 				ca = ma;
 			} else setAmmoNumForItem(ammo.get(i), c);
 		}
-		NonNullList<ItemStack> list = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
-		for(int i = 0; i < list.size(); ++i) {
-			ItemStack stack = container.getItem(i);
-			list.set(i, ForgeHooks.getCraftingRemainingItem(stack));
+		return true;
+	}
+
+	public void reloadFromInventory(Inventory inventory, ReloadablePartInstance lpd) {
+		String continuity = lpd.getContinuity();
+		if (lpd.updateContinuityIfEmpty() && lpd.isContinuityEmpty())
+			continuity = null;
+		float newAmmo = lpd.getCurrentAmmo();
+		if (newAmmo >= lpd.getMaxAmmo()) return;
+		for (int i = 0; i < inventory.getContainerSize(); ++i) {
+			ItemStack stack  = inventory.getItem(i).copy();
+			if (stack.isEmpty()) continue;
+			if (!isItemAmmo(stack)) continue;
+			if (checkAmmoContinuity()) {
+				String stackCont = getItemAmmoContinuity(stack);
+				if (continuity == null && isContinuityValid(stackCont)
+						&& lpd.isCompatibleWithAmmoContinuity(stackCont)) continuity = stackCont;
+				else if (!stackCont.equals(continuity)) continue;
+			}
+			float ammo = getAmmoNumFromItem(stack);
+			newAmmo += ammo;
+			float remain = newAmmo - lpd.getMaxAmmo();
+			if (remain <= 0) inventory.setItem(i, ItemStack.EMPTY);
+			else {
+				setAmmoNumForItem(stack, remain, false);
+				inventory.setItem(i, stack);
+			}
+			if (newAmmo >= lpd.getMaxAmmo()) {
+				newAmmo = lpd.getMaxAmmo();
+				break;
+			}
 		}
-		return list;
+		if (continuity != null && !continuity.equals(lpd.getContinuity())) lpd.setContinuity(continuity);
+		lpd.setCurrentAmmo(newAmmo);
 	}
 	
 	public float getAmmoNumFromItem(ItemStack ammo) {
@@ -94,11 +145,15 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 		}
 		return 0;
 	}
-	
+
 	public void setAmmoNumForItem(ItemStack ammo, float num) {
+		setAmmoNumForItem(ammo, num, true);
+	}
+
+	public void setAmmoNumForItem(ItemStack ammo, float num, boolean add1) {
 		switch (getAmmoLoadType()) {
 		case ITEM_COUNT:
-			ammo.setCount((int)num+1);
+			ammo.setCount((int)num+(add1?1:0));
 			break;
 		case ITEM_DURABILITY:
 			ammo.setDamageValue(ammo.getMaxDamage() - (int)num);
@@ -107,11 +162,11 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 		}
 	}
 	
-	private void emptyContinuityCheck(I lpd, String ammoCont) {
+	private void emptyContinuityCheck(ReloadablePartInstance lpd, String ammoCont) {
 		if (lpd.updateContinuityIfEmpty() && lpd.isContinuityEmpty()) {
 			lpd.setContinuity(ammoCont);
 			lpd.setCurrentAmmo(0);
-			lpd.setMaxAmmo(getContinuityMaxAmmo(lpd, ammoCont));
+			lpd.setMaxAmmo(getContinuityMaxAmmo((I) lpd, ammoCont));
 		}
 	}
 
@@ -170,7 +225,11 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 	
 	@Nullable
 	public List<ItemStack> getAmmoItems(CraftingContainer container) {
-		String continuity = null;
+		return getAmmoItemsContainer(container, null);
+	}
+
+	@Nullable
+	public List<ItemStack> getAmmoItemsContainer(Container container, String continuity) {
 		List<ItemStack> ammo = new ArrayList<ItemStack>();
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack  = container.getItem(i);
@@ -179,11 +238,19 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 			if (checkAmmoContinuity()) {
 				String stackCont = getItemAmmoContinuity(stack);
 				if (continuity == null) continuity = stackCont;
-				else if (!stackCont.equals(continuity)) return null;
+				else if (!stackCont.equals(continuity)) continue;
 			}
 			ammo.add(stack);
 		}
 		return ammo;
+	}
+
+	public float getAmmoNum(Container container, String continuity) {
+		float num = 0;
+		List<ItemStack> ammos = getAmmoItemsContainer(container, continuity);
+		if (ammos == null) return 0;
+		for (ItemStack ammo : ammos) num += getAmmoNumFromItem(ammo);
+		return num;
 	}
 	
 	public abstract boolean isLoadablePartItem(ItemStack stack);
@@ -193,8 +260,8 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 	public abstract boolean isContinuityValid(String continuity);
 	public abstract int getContinuityMaxAmmo(I lpd, String continuity);
 	
-	public boolean canItemsCombine(I lpd, List<ItemStack> ammo) {
-		if (lpd == null || ammo == null || ammo.size() < 1) return false;
+	public boolean canItemsCombine(ReloadablePartInstance lpd, List<ItemStack> ammo) {
+		if (lpd == null || ammo == null || ammo.isEmpty()) return false;
 		if (checkAmmoContinuity()) {
 			String ammoCont = getItemAmmoContinuity(ammo.get(0));
 			if (!isContinuityValid(ammoCont)) return false;
@@ -210,9 +277,20 @@ public abstract class PartItemLoadRecipe<I extends LoadableRecipePartInstance> e
 		return AmmoLoadType.ITEM_COUNT;
 	}
 	
-	public static enum AmmoLoadType {
+	public enum AmmoLoadType {
 		ITEM_COUNT,
 		ITEM_DURABILITY;
+	}
+
+	protected NonNullList<ItemStack> getRemainingItemsDefault(Container pContainer) {
+		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(pContainer.getContainerSize(), ItemStack.EMPTY);
+		for(int i = 0; i < nonnulllist.size(); ++i) {
+			ItemStack item = pContainer.getItem(i);
+			if (item.hasCraftingRemainingItem()) {
+				nonnulllist.set(i, item.getCraftingRemainingItem());
+			}
+		}
+		return nonnulllist;
 	}
 
 }

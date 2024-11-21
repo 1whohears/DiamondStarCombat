@@ -19,7 +19,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	private static final int DEFAULT_KEY_COLOR = 0x00ff00;
 	private static final int USE_KEY_COLOR = 0xffff00;
 	private static final int MAPPING_NAME_WIDTH = 80;
-	private static final int KEY_NAME_WIDTH = 34;
+	private static final int KEY_NAME_WIDTH = 40;
 	
 	public static Component fixKeyName(KeyMapping key) {
         return switch (key.getKey().getValue()) {
@@ -89,9 +89,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.mouseModeKey,
 				!DSCClientInputs.getMouseMode().isLockedForward(), DSCClientInputs.getMouseMode().name());
 		// OPEN PLANE MENU
-		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleMenuKey);
-		// OPEN PLANE STORAGE
-		if (vehicle.partsManager.hasStorageBoxes()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleStorageKey);
+		displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleMenuKey);
 		// DISMOUNT
 		if (Config.CLIENT.customDismount.get()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.dismount);
 		// EJECT
@@ -104,16 +102,16 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// BREAKS
 		if (isPilot && vehicle.canBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
-				UtilMCText.literal("Breaks (S)"), vehicle.isBraking());
+				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isBraking());
 		// FLAPS DOWN
 		if (isPilot && vehicle.canFlapsDown()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.specialKey, UtilMCText.literal("Flaps Down (S1)"));
+				DSCKeys.specialKey, UtilMCText.translatable("info.dscombat.flaps_down"));
 		// WEAPON ANGLED DOWN
 		if (isPilot && vehicle.canAngleWeaponDown()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.special2Key, UtilMCText.literal("Nose Down (S2)"));
+				DSCKeys.special2Key, UtilMCText.translatable("info.dscombat.nose_down"));
 		// HOVER
 		if (isPilot && vehicle.canHover()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.specialKey, UtilMCText.literal("Hover (S1)"));
+				DSCKeys.specialKey, UtilMCText.translatable("info.dscombat.hover"));
 		// FLARES
 		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				DSCKeys.flareKey, vehicle.getFlareNum()+"");

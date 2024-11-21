@@ -28,6 +28,7 @@ public class SlotType {
 	public static SlotType MOUNT_LIGHT = registerSlotType("mount_light", SEAT);
 	public static SlotType MOUNT_MED = registerSlotType("mount_med", MOUNT_LIGHT, EXTERNAL_TOUGH);
 	public static SlotType MOUNT_HEAVY = registerSlotType("mount_heavy", MOUNT_MED);
+	public static SlotType MOUNT_SUPER_HEAVY = registerSlotType("mount_super_heavy", MOUNT_HEAVY);
 	
 	public static SlotType MOUNT_TECH = registerSlotType("mount_tech", MOUNT_LIGHT);
 	

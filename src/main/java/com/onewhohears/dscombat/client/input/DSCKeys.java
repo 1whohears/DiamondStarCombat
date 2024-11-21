@@ -24,11 +24,12 @@ public final class DSCKeys {
 	public static KeyMapping weaponSelectKey, weaponSelect2Key;
 	public static KeyMapping mouseModeKey, resetMouseKey, gimbalKey;
 	public static KeyMapping shootKey, landingGear, flareKey;
-	public static KeyMapping vehicleMenuKey, vehicleStorageKey;
-	public static KeyMapping pingCycleKey, radarModeKey, radarDisplayRangeKey;
+	public static KeyMapping vehicleMenuKey;
+	public static KeyMapping pingCycleKey, radarModeKey;
 	public static KeyMapping changeSeat, dismount, eject;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
+	public static KeyMapping leanLeftKey, leanRightKey;
 	// IDEA 4.2 temp burner boost key
 	
 	private static RegisterKeyMappingsEvent event;
@@ -48,9 +49,10 @@ public final class DSCKeys {
 		mouseModeKey = registerKey("mouse_mode_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LCONTROL);
 		flipControlsKey = registerKey("flip_controls_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LSHIFT);
 		resetMouseKey = registerKey("reset_mouse_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);
+		leanLeftKey = registerKey("lean_left_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
+		leanRightKey = registerKey("lean_right_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
 		// PASSENGER CONTROL
 		vehicleMenuKey = registerKey("plane_menu_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_U);
-		vehicleStorageKey = registerKey("vehicle_storage_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_EQUALS);
 		dismount = registerKey("dismount_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_H);
 		changeSeat = registerKey("change_seat_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_Y);
 		landingGear = registerKey("landing_gear_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_K);
@@ -65,7 +67,6 @@ public final class DSCKeys {
 		flareKey = registerKey("flare_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_V);
 		radarModeKey = registerKey("radar_mode_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_O);
 		pingCycleKey = registerKey("ping_cycle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_I);
-		radarDisplayRangeKey = registerKey("radar_display_range_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_NUMPAD1);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

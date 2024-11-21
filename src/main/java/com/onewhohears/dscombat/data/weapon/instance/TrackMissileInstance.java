@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.weapon.instance;
 
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
@@ -35,6 +36,24 @@ public class TrackMissileInstance<T extends TrackMissileStats> extends MissileIn
 		RadarSystem radar = params.vehicle.radarSystem;
 		if (!radar.hasRadar()) {
 			setLaunchFail("error.dscombat.no_radar");
+			return null;
+		}
+		RadarStats.RadarPing ping = radar.getServerSelectedPing();
+		if (ping == null) {
+			setLaunchFail("error.dscombat.no_target_selected");
+			return null;
+		}
+		if (ping.entityType.isMissile()) {
+			// FIXME currently cannot target missiles. this could be fixed...but balancing concerns.
+			// most missiles will ticked by the NonTickingMissileManager because they are outside render distances.
+			// these entities cannot be retrieved by level#getEntity(id) because they are not in loaded chunks.
+			// thus new missile tracking code just for these non ticking missiles needs to be written.
+			// however this may stay because if a SAM can shoot down every AGM-88 (HARM) easily then SEAD is impossible.
+			// in real life HARMs are too small and too fast to be reliably shot down, so air defenses have to
+			// temporarily disable their radar so the HARMs don't find and destroy their air defenses.
+			// this gives offensive aircraft a window to do damage.
+			// currently this mod allows for an incoming missile to be seen and for the radar to be turned off.
+			setLaunchFail("error.dscombat.cannot_target_missiles");
 			return null;
 		}
 		Entity target = radar.getSelectedTarget();

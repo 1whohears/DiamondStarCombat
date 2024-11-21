@@ -12,12 +12,12 @@
       "num": 4
     },
     {
-      "num": 30,
+      "num": 40,
       "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:gold_ingot",
-      "num": 5
+      "num": 10
     }
   ],
   "is_craftable": false,
@@ -32,7 +32,7 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.0,
-      "slot_posy": 1.4,
+      "slot_posy": 1.6,
       "slot_posz": 0.0,
       "slot_type": "mount_heavy",
       "zRot": 0.0
@@ -151,5 +151,9 @@
     "torqueroll": 0.0,
     "torqueyaw": 8.0,
     "turn_radius": 0.0
+  },
+  "textures": {
+    "baseTextureVariants": 2,
+    "textureLayers": 2
   }
 }

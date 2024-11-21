@@ -1,0 +1,70 @@
+{
+  "armor": 2.0,
+  "displayName": "preset.dscombat.ewr4000",
+  "health": 20.0,
+  "is_craftable": false,
+  "item": "dscombat:ewr4000",
+  "landing_gear": true,
+  "presetId": "ewr4000",
+  "presetType": "stationary",
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "locked": true,
+      "name": "pilot_seat",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": -1.5,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "part": "ewr4000"
+      },
+      "locked": true,
+      "name": "radar_tower",
+      "slot_posx": 0.0,
+      "slot_posy": 2.5,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:data_link"
+      },
+      "locked": true,
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    }
+  ],
+  "stats": {
+    "armor_damage_absorbtion": 0.01,
+    "armor_damage_threshold": 1.0,
+    "assetId": "ewr4000",
+    "base_armor": 2.0,
+    "cameraDistance": 4.0,
+    "crashExplosionRadius": 1.0,
+    "cross_sec_area": 5.375,
+    "entity_size_xz": 1.5,
+    "entity_size_y": 2.0,
+    "idleheat": 8.0,
+    "inertiapitch": 12.0,
+    "inertiaroll": 8.0,
+    "inertiayaw": 8.0,
+    "mass": 2000.0,
+    "max_health": 20.0,
+    "max_speed": 0.0,
+    "stationary": {
+      "isStationaryRadar": true
+    },
+    "stealth": 1.0
+  }
+}

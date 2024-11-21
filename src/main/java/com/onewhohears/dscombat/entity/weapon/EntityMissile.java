@@ -399,8 +399,8 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			if (targetPlayer == null) return;
 			Entity owner = getOwner();
 			if (!(owner instanceof ServerPlayer ownerPlayer)) return;
-			MutableComponent message = UtilMCText.literal("Missile from ").append(ownerPlayer.getDisplayName())
-					.append(" impacted ").append(targetPlayer.getDisplayName());
+			MutableComponent message = UtilMCText.translatable("info.dscombat.missile_impacted_player",
+					ownerPlayer.getDisplayName(), targetPlayer.getDisplayName());
 			boolean teamOnly = level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY);
 			List<ServerPlayer> players = level.getServer().getPlayerList().getPlayers();
 			for (ServerPlayer player : players) {

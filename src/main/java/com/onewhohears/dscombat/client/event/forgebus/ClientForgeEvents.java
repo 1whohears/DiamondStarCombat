@@ -2,9 +2,13 @@ package com.onewhohears.dscombat.client.event.forgebus;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.onewholibs.common.event.OnSyncBoolGameRuleEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -17,6 +21,14 @@ public class ClientForgeEvents {
             DSCClientInputs.disable3rdPersonVehicle = event.getBool();
         else if (event.getId().equals(DSCGameRules.PLANE_ARCADE_MODE.getId()))
             DSCClientInputs.planeArcadePhysicsMode = event.getBool();
+    }
+
+    @SubscribeEvent
+    public static void onChatReceivedEvent(ClientChatReceivedEvent.System event) {
+        if (!event.isOverlay()) return;
+        Minecraft m = Minecraft.getInstance();
+        if (!(m.screen instanceof VehicleScreen screen)) return;
+        screen.setInfoFromMessage(event.getMessage(), 60);
     }
 
 }

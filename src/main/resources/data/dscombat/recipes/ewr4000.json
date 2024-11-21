@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"T": {
+			"item": "minecraft:ghast_tear"
+		},
+		"X": {
+			"item": "dscombat:intel_core_i9x"
+		},
+		"I": {
+			"tag": "dscombat:aluminum_ingot"
+		},
+		"O": {
+			"item": "minecraft:observer"
+		},
+		"L": {
+			"item": "minecraft:lightning_rod"
+		}
+	},
+	"pattern": [
+		"II ",
+		"LTO",
+		"IIX"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:ewr4000"
+	}
+}

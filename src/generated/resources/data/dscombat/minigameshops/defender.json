@@ -1,5 +1,7 @@
 {
-  "id": "defender",
+  "displayName": "preset.dscombat.defender",
+  "presetId": "defender",
+  "presetType": "gameshop",
   "products": [
     {
       "cost": {

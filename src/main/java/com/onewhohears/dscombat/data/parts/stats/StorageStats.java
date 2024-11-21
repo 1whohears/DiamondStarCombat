@@ -46,7 +46,8 @@ public class StorageStats extends PartStats {
 	@Override
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
 		super.addToolTips(tips, isAdvanced);
-		tips.add(UtilMCText.literal("Total Slots: "+size).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		tips.add(UtilMCText.translatable("info.dscombat.total_slots").append(": "+size)
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 
 }

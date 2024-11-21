@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"I": {
+			"item": "dscombat:aluminum_block"
+		},
+		"C": {
+			"item": "minecraft:iron_ingot"
+		},
+		"T": {
+			"item": "minecraft:tnt"
+		}
+	},
+	"pattern": [
+		"TII",
+		"CIS",
+		"TII"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:artillery_cannon"
+	}
+}

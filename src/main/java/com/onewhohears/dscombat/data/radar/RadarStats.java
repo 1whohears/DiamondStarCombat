@@ -8,6 +8,7 @@ import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.onewholibs.data.jsonpreset.PresetBuilder;
 import com.onewhohears.dscombat.init.DataSerializers;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -27,20 +28,22 @@ public class RadarStats extends JsonPresetStats {
 	private final boolean scanAir;
 	private final double throWaterRange;
 	private final double throGroundRange;
+	private final boolean scanMissiles;
 	
 	public RadarStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		range = json.get("range").getAsDouble();
-		sensitivity = json.get("sensitivity").getAsDouble();
-		fov = json.get("fov").getAsDouble();
-		scanRate = json.get("scanRate").getAsInt();
-		scanAircraft = json.get("scanAircraft").getAsBoolean();
-		scanPlayers = json.get("scanPlayers").getAsBoolean();
-		scanMobs = json.get("scanMobs").getAsBoolean();
-		scanGround = json.get("scanGround").getAsBoolean();
-		scanAir = json.get("scanAir").getAsBoolean();
-		throWaterRange = json.get("throWaterRange").getAsDouble();
-		throGroundRange = json.get("throGroundRange").getAsDouble();
+		range = UtilParse.getFloatSafe(json, "range", 0);
+		sensitivity = UtilParse.getFloatSafe(json, "sensitivity", 0);
+		fov = UtilParse.getFloatSafe(json, "fov", 0);
+		scanRate = UtilParse.getIntSafe(json, "scanRate", 100);
+		scanAircraft = UtilParse.getBooleanSafe(json, "scanAircraft", false);
+		scanPlayers = UtilParse.getBooleanSafe(json, "scanPlayers", false);
+		scanMobs = UtilParse.getBooleanSafe(json, "scanMobs", false);
+		scanGround = UtilParse.getBooleanSafe(json, "scanGround", false);
+		scanAir = UtilParse.getBooleanSafe(json, "scanAir", false);
+		throWaterRange = UtilParse.getFloatSafe(json, "throWaterRange", 0);
+		throGroundRange = UtilParse.getFloatSafe(json, "throGroundRange", 0);
+		scanMissiles = UtilParse.getBooleanSafe(json, "scanMissiles", false);
 	}
 	
 	@Override
@@ -99,6 +102,10 @@ public class RadarStats extends JsonPresetStats {
 
 	public double getThroGroundRange() {
 		return throGroundRange;
+	}
+
+	public boolean isScanMissiles() {
+		return scanMissiles;
 	}
 
 	public static class RadarPing {
@@ -171,6 +178,7 @@ public class RadarStats extends JsonPresetStats {
 		public boolean dontDisplayByMode(RadarMode mode) {
 			if (mode.isOff()) return true;
 			if (mode.isAll()) return false;
+			if (entityType.isMissile()) return false;
 			if (mode.isMobsOnly()) return !entityType.isMob();
 			if (mode.isPlayersOnly()) return !entityType.isPlayer();
 			if (mode.isPlayersOrBots()) return !entityType.isBot();
@@ -179,13 +187,13 @@ public class RadarStats extends JsonPresetStats {
 		}
 	}
 	
-	public static enum PingTerrainType {
+	public enum PingTerrainType {
 		GROUND((byte)0, 0),
 		AIR((byte)1, 2),
 		WATER((byte)2, 1);
 		public final byte id;
 		public final int offset;
-		private PingTerrainType(byte id, int offset) {
+		PingTerrainType(byte id, int offset) {
 			this.id = id;
 			this.offset = offset;
 		}
@@ -214,16 +222,17 @@ public class RadarStats extends JsonPresetStats {
 		}
 	}
 	
-	public static enum PingEntityType {
+	public enum PingEntityType {
 		PLAYER((byte)0, 0),
 		HOSTILE_MOB((byte)1, 1),
 		FRIENDLY_MOB((byte)2, 2),
 		VEHICLE((byte)3, 3),
 		VEHICLE_PLAYER((byte)4, 3),
-		VEHICLE_BOT((byte)5, 3);
+		VEHICLE_BOT((byte)5, 3),
+		MISSILE((byte)6, 5);
 		public final byte id;
 		public final int offset;
-		private PingEntityType(byte id, int offset) {
+		PingEntityType(byte id, int offset) {
 			this.id = id;
 			this.offset = offset;
 		}
@@ -242,6 +251,9 @@ public class RadarStats extends JsonPresetStats {
 		public boolean isBot() {
 			return this == PLAYER || this == VEHICLE_PLAYER || this == VEHICLE_BOT;
 		}
+		public boolean isMissile() {
+			return this == MISSILE;
+		}
 		public static PingEntityType getById(byte id) {
 			for (int i = 0; i < values().length; ++i) 
 				if (values()[i].id == id) 
@@ -250,7 +262,7 @@ public class RadarStats extends JsonPresetStats {
 		}
 	}
 	
-	public static enum RadarMode {
+	public enum RadarMode {
 		ALL,
 		PLAYERS,
 		BOTS,
@@ -282,8 +294,14 @@ public class RadarStats extends JsonPresetStats {
 		public boolean isOff() {
 			return this == OFF;
 		}
+		public boolean isOn() {
+			return !isOff();
+		}
 		public boolean isAll() {
 			return this == ALL;
+		}
+		public String getTranslatable() {
+			return "radarmode.dscombat."+name().toLowerCase();
 		}
 		public static RadarMode byId(int id) {
 			if (id < 0 || id >= values().length) return ALL;
@@ -335,6 +353,9 @@ public class RadarStats extends JsonPresetStats {
 		}
 		public Builder setThroGroundRange(float throGroundRange) {
 			return setFloat("throGroundRange", throGroundRange);
+		}
+		public Builder setScanMissiles(boolean scanMissiles) {
+			return setBoolean("scanMissiles", scanMissiles);
 		}
 	}
 	

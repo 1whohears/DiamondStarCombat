@@ -31,6 +31,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.IntegerValue> REMOVE_DEAD_VEHICLES_TIME;
 	public static GameRules.Key<GameRules.BooleanValue> WEAPONS_BREAK_BLOCKS;
 	public static GameRules.Key<GameRules.BooleanValue> VEHICLE_TRAMPLE;
+	public static GameRules.Key<GameRules.BooleanValue> FORCE_PUBLIC_PERM;
 	
 	public static void registerAll() {
 		CONSUME_FULE = CustomGameRules.registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
@@ -57,6 +58,7 @@ public class DSCGameRules {
 		REMOVE_DEAD_VEHICLES_TIME = CustomGameRules.registerInteger("removeDeadVehiclesTime", -1, GameRules.Category.PLAYER);
 		WEAPONS_BREAK_BLOCKS = CustomGameRules.registerSyncBoolean("weaponsBreakBlocks", true, GameRules.Category.PLAYER);
 		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("vehicleTrample", true, GameRules.Category.PLAYER);
+		FORCE_PUBLIC_PERM = CustomGameRules.registerSyncBoolean("vehicleForcePublicPerm", false, GameRules.Category.PLAYER);
 	}
 
 	public static boolean isPlaneArcadeMode(Level level) {
@@ -86,6 +88,10 @@ public class DSCGameRules {
 	
 	public static int getFuelPerOilBlock(Level level) {
 		return level.getGameRules().getInt(FUEL_PER_OIL_BLOCK);
+	}
+
+	public static boolean isForcePublicPerm(Level level) {
+		return level.getGameRules().getBoolean(FORCE_PUBLIC_PERM);
 	}
 	
 }

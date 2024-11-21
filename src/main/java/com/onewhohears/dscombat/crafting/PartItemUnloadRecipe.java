@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nonnull;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -12,8 +12,9 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartInstance> extends PartItemLoadRecipe<I> {
+public abstract class PartItemUnloadRecipe<I extends ReloadablePartInstance> extends PartItemLoadRecipe<I> {
 	
 	protected PartItemUnloadRecipe(ResourceLocation id) {
 		super(id);
@@ -42,7 +43,7 @@ public abstract class PartItemUnloadRecipe<I extends LoadableRecipePartInstance>
 	}
 	
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
+	public @NotNull NonNullList<ItemStack> getRemainingItems(@NotNull CraftingContainer container) {
 		AtomicInteger index = new AtomicInteger();
 		ItemStack part = getPartItem(container, index);
 		I lpd = getLoadablePartDataFromItem(part);

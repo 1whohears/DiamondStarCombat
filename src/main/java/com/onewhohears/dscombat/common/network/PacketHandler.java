@@ -1,38 +1,8 @@
 package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
-import com.onewhohears.dscombat.common.network.toclient.ToClientAddPart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDamagePart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDebugHitboxPos;
-import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
-import com.onewhohears.dscombat.common.network.toclient.ToClientRemovePart;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleChainUpdate;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleExplode;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleFuel;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
-import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
-import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
-import com.onewhohears.dscombat.common.network.toserver.ToServerCraftPlane;
-import com.onewhohears.dscombat.common.network.toserver.ToServerCraftWeapon;
-import com.onewhohears.dscombat.common.network.toserver.ToServerDismount;
-import com.onewhohears.dscombat.common.network.toserver.ToServerFixHitboxes;
-import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
-import com.onewhohears.dscombat.common.network.toserver.ToServerOpenStorage;
-import com.onewhohears.dscombat.common.network.toserver.ToServerPingSelect;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSetRadarMode;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSwitchSeat;
-import com.onewhohears.dscombat.common.network.toserver.ToServerSyncRotBoxPassengerPos;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleCollide;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleMoveRot;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleShoot;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
-import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleToItem;
+import com.onewhohears.dscombat.common.network.toclient.*;
+import com.onewhohears.dscombat.common.network.toserver.*;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -72,11 +42,6 @@ public final class PacketHandler {
 			.decoder(ToClientRadarPings::new)
 			.consumerMainThread(ToClientRadarPings::handle)
 			.add();
-		net.messageBuilder(ToServerPingSelect.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerPingSelect::encode)
-			.decoder(ToServerPingSelect::new)
-			.consumerMainThread(ToServerPingSelect::handle)
-			.add();
 		net.messageBuilder(ToClientWeaponAmmo.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientWeaponAmmo::encode)
 			.decoder(ToClientWeaponAmmo::new)
@@ -92,21 +57,11 @@ public final class PacketHandler {
 			.decoder(ToClientAddPart::new)
 			.consumerMainThread(ToClientAddPart::handle)
 			.add();
-		net.messageBuilder(ToServerSwitchSeat.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerSwitchSeat::encode)
-			.decoder(ToServerSwitchSeat::new)
-			.consumerMainThread(ToServerSwitchSeat::handle)
-			.add();
 		net.messageBuilder(ToClientVehicleFuel.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientVehicleFuel::encode)
 			.decoder(ToClientVehicleFuel::new)
 			.consumerMainThread(ToClientVehicleFuel::handle)
 			.add();
-		net.messageBuilder(ToServerVehicleToItem.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerVehicleToItem::encode)
-			.decoder(ToServerVehicleToItem::new)
-			.consumerMainThread(ToServerVehicleToItem::handle)
-			.add();	
 		net.messageBuilder(ToServerCraftWeapon.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerCraftWeapon::encode)
 			.decoder(ToServerCraftWeapon::new)
@@ -117,11 +72,6 @@ public final class PacketHandler {
 			.decoder(ToServerCraftPlane::new)
 			.consumerMainThread(ToServerCraftPlane::handle)
 			.add();
-		net.messageBuilder(ToServerVehicleShoot.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerVehicleShoot::encode)
-			.decoder(ToServerVehicleShoot::new)
-			.consumerMainThread(ToServerVehicleShoot::handle)
-			.add();
 		net.messageBuilder(ToClientRWRWarning.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientRWRWarning::encode)
 			.decoder(ToClientRWRWarning::new)
@@ -131,11 +81,6 @@ public final class PacketHandler {
 			.encoder(ToClientAddForceMoment::encode)
 			.decoder(ToClientAddForceMoment::new)
 			.consumerMainThread(ToClientAddForceMoment::handle)
-			.add();
-		net.messageBuilder(ToServerDismount.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerDismount::encode)
-			.decoder(ToServerDismount::new)
-			.consumerMainThread(ToServerDismount::handle)
 			.add();
 		net.messageBuilder(ToServerSeatPos.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerSeatPos::encode)
@@ -177,11 +122,6 @@ public final class PacketHandler {
 			.decoder(ToClientDelayedSound::new)
 			.consumerMainThread(ToClientDelayedSound::handle)
 			.add();
-		net.messageBuilder(ToServerOpenStorage.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerOpenStorage::encode)
-			.decoder(ToServerOpenStorage::new)
-			.consumerMainThread(ToServerOpenStorage::handle)
-			.add();
 		net.messageBuilder(ToClientVehicleChainUpdate.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientVehicleChainUpdate::encode)
 			.decoder(ToClientVehicleChainUpdate::new)
@@ -191,11 +131,6 @@ public final class PacketHandler {
 			.encoder(ToServerGetHookChains::encode)
 			.decoder(ToServerGetHookChains::new)
 			.consumerMainThread(ToServerGetHookChains::handle)
-			.add();
-		net.messageBuilder(ToServerSetRadarMode.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerSetRadarMode::encode)
-			.decoder(ToServerSetRadarMode::new)
-			.consumerMainThread(ToServerSetRadarMode::handle)
 			.add();
 		net.messageBuilder(ToClientDamagePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientDamagePart::encode)
@@ -217,6 +152,16 @@ public final class PacketHandler {
 			.decoder(ToServerFixHitboxes::new)
 			.consumerMainThread(ToServerFixHitboxes::handle)
 			.add();
+		net.messageBuilder(ToServerVehicleSyncAction.class, index++, NetworkDirection.PLAY_TO_SERVER)
+				.encoder(ToServerVehicleSyncAction::encode)
+				.decoder(ToServerVehicleSyncAction::new)
+				.consumerMainThread(ToServerVehicleSyncAction::handle)
+				.add();
+		net.messageBuilder(ToClientOnShoot.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+				.encoder(ToClientOnShoot::encode)
+				.decoder(ToClientOnShoot::new)
+				.consumerMainThread(ToClientOnShoot::handle)
+				.add();
 	}
 	
 }

@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.LoadableRecipePartInstance;
+import com.onewhohears.dscombat.crafting.*;
+import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.TurretStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -13,9 +14,10 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 
-public class TurretInstance<T extends TurretStats> extends SeatInstance<T> implements LoadableRecipePartInstance {
+public class TurretInstance<T extends TurretStats> extends SeatInstance<T> implements ReloadablePartInstance {
 	
 	private String weapon = "";
 	private int ammo = 0;
@@ -124,6 +126,9 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 	@Override
 	public void setCurrentAmmo(float ammo) {
 		this.ammo = (int)ammo;
+		EntityTurret turret = getTurret(getSlotId());
+		if (turret == null) return;
+		turret.setAmmo(this.ammo);
 	}
 
 	@Override
@@ -143,6 +148,9 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 	@Override
 	public void setContinuity(String continuity) {
 		this.weapon = continuity;
+		EntityTurret turret = getTurret(getSlotId());
+		if (turret == null) return;
+		turret.setWeaponId(this.weapon);
 	}
 
 	@Override
@@ -153,6 +161,21 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 	@Override
 	public boolean isContinuityEmpty() {
 		return getContinuity() == null || getContinuity().isEmpty() || getCurrentAmmo() == 0;
+	}
+
+	private static final PartItemLoadRecipe<?> LOAD_RECIPE = new TurretLoadRecipe(
+			new ResourceLocation("dscombat:turret_load_recipe"));
+	private static final PartItemUnloadRecipe<?> UNLOAD_RECIPE = new TurretUnloadRecipe(
+			new ResourceLocation("dscombat:turret_unload_recipe"));
+
+	@Override
+	public PartItemLoadRecipe<?> getLoadRecipe() {
+		return LOAD_RECIPE;
+	}
+
+	@Override
+	public @Nullable PartItemUnloadRecipe<?> getUnloadRecipe() {
+		return UNLOAD_RECIPE;
 	}
 
 }

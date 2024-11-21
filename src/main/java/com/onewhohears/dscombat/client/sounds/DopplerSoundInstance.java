@@ -11,7 +11,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 public class DopplerSoundInstance extends AbstractTickableSoundInstance {
-	
+
+	protected static final float MIN_VOL = 0.001f;
+
 	protected final LocalPlayer player;
 	protected final Entity entity;
 	protected final float velocitySound;
@@ -21,7 +23,7 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 	protected float initPitch;
 	
 	public DopplerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound) {
-		this(sound, player, entity, SoundSource.PLAYERS, initVolume, initPitch, velSound, 128, 0);
+		this(sound, player, entity, SoundSource.PLAYERS, initVolume, initPitch, velSound, 160, 0);
 	}
 	
 	public DopplerSoundInstance(SoundEvent sound, LocalPlayer player, Entity entity, float initVolume, float initPitch, float velSound, double range) {
@@ -39,7 +41,7 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 		this.entity = entity;
 		this.looping = true;
 		this.delay = 0;
-		this.volume = 0.001f; // when missile enters client world from far a way the sound is loud at first without this
+		this.volume = MIN_VOL; // when missile enters client world from far a way the sound is loud at first without this
 		this.initVolume = initVolume;
 		this.pitch = initPitch;
 		this.initPitch = initPitch;
@@ -62,11 +64,12 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 		float minLess = minDistSqr - 400;
 		float d2 = (float)player.distanceToSqr(entity);
 		if (d2 <= minLess) {
-			volume = 0f;
-			return;
+			volume = MIN_VOL;
 		} else if (d2 > minLess && d2 < minDistSqr) {
-			volume = initVolume * (d2 - minLess) *  0.01f;
-		} else volume = initVolume - d2 * volDecreaseRate;
+			volume = Math.max(MIN_VOL, initVolume * (d2 - minLess) *  0.01f);
+		} else {
+			volume = Math.max(MIN_VOL, initVolume - d2 * volDecreaseRate);
+		}
 		// pitch
 		Vec3 v = entity.position().subtract(player.position());
 		float vp = (float)UtilGeometry.vecCompMagDirByAxis(player.getDeltaMovement(), v);

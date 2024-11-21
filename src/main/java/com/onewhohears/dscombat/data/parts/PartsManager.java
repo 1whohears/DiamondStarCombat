@@ -42,7 +42,7 @@ import net.minecraftforge.network.PacketDistributor;
  * used to access various information about the parts in a vehicle.
  * this part manager has a list of {@link PartSlot}.
  * each {@link PartSlot} is either empty or has {@link com.onewhohears.dscombat.data.parts.instance.PartInstance}.
- * will synch part data with client.
+ * will sync part data with client.
  * @author 1whohears
  */
 public class PartsManager {
@@ -232,6 +232,12 @@ public class PartsManager {
 	public void repairAllParts() {
 		for (PartSlot p : slots) p.setPartRepaired(parent);
 	}
+
+	public boolean dropPartInSlot(String slotId) {
+		PartSlot slot = getSlot(slotId);
+		if (slot == null) return false;
+		return slot.dropPartItem(parent);
+	}
 	
 	@Override
 	public String toString() {
@@ -382,7 +388,7 @@ public class PartsManager {
 	
 	public boolean dropPartItem() {
 		if (parent.level.isClientSide) return false;
-		if (slots.size() == 0) return false;
+		if (slots.isEmpty()) return false;
 		for (int i = 0; i < slots.size(); ++i) 
 			if (slots.get(i).dropPartItem(parent)) 
 				return true;
@@ -440,6 +446,30 @@ public class PartsManager {
 		}
 		return num;
 	}
+
+	public List<PartSlot> getReloadableParts() {
+		List<PartSlot> slots = new ArrayList<>();
+		for (PartSlot p : getSlots())
+			if (p.getPartData() instanceof ReloadablePartInstance)
+				slots.add(p);
+		return slots;
+	}
+
+	@Nullable
+	public ReloadablePartInstance getReloadablePart(String slotId) {
+		for (PartSlot p : getSlots())
+			if (p.getSlotId().equals(slotId) && p.getPartData() instanceof ReloadablePartInstance part)
+				return part;
+		return null;
+	}
+
+	public List<PartSlot> getExternalParts() {
+		List<PartSlot> slots = new ArrayList<>();
+		for (PartSlot p : getSlots())
+			if (p.getPartData() != null && p.getPartData().canJetesin())
+				slots.add(p);
+		return slots;
+	}
 	
 	public float getTotalExtraArmor() {
 		float armor = 0;
@@ -454,11 +484,19 @@ public class PartsManager {
 				return true;
 		return false;
 	}
-	
-	public boolean hasStorageBoxes() {
-		return getStorageBoxes().size() > 0;
+
+	public int getStorageIndex() {
+		return storageIndex;
 	}
-	
+
+	public boolean hasStorageBoxes() {
+		return !getStorageBoxes().isEmpty();
+	}
+
+	public int getStorageBoxesNum() {
+		return getStorageBoxes().size();
+	}
+
 	public List<StorageInstance<?>> getStorageBoxes() {
 		List<StorageInstance<?>> list = new ArrayList<>();
 		for (PartSlot p : slots) 
@@ -466,11 +504,26 @@ public class PartsManager {
 				list.add((StorageInstance<?>) p.getPartData());
 		return list;
 	}
+
+	@Nullable
+	public StorageInstance<?> getStorageData(int index) {
+		List<StorageInstance<?>> boxes = getStorageBoxes();
+		if (boxes.isEmpty()) {
+			storageIndex = -1;
+			return null;
+		}
+		storageIndex = index;
+		if (storageIndex <= -1)
+			storageIndex = boxes.size()-1;
+		else if (storageIndex >= boxes.size())
+			storageIndex = 0;
+		return boxes.get(storageIndex);
+	}
 	
 	@Nullable
 	public StorageInstance<?> cycleStorageData() {
 		List<StorageInstance<?>> boxes = getStorageBoxes();
-		if (boxes.size() == 0) {
+		if (boxes.isEmpty()) {
 			storageIndex = -1;
 			return null;
 		} else if (storageIndex == -1 || storageIndex >= boxes.size()-1) {

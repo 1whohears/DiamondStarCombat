@@ -1,5 +1,7 @@
 {
-  "id": "attacker",
+  "displayName": "preset.dscombat.attacker",
+  "presetId": "attacker",
+  "presetType": "gameshop",
   "products": [
     {
       "cost": {

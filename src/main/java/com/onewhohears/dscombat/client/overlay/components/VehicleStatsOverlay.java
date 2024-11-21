@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +21,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     public static final float CHANGE_G = (float) GREEN_ME_SAY_ALONE_RAMP.getGreen() / (START - END);
     public static final float CHANGE_R = (float) RED.getRed() / (START - END);
 
-    private static int getHealthColor(float health, float max) {
+    public static int getHealthColor(float health, float max) {
         float healthPercent = health / max;
         if (healthPercent >= START) return GREEN_ME_SAY_ALONE_RAMP.getRGB();
         if (healthPercent < START && healthPercent > END) {

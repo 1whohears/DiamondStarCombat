@@ -35,7 +35,6 @@ public class WeaponSystem {
 	private List<WeaponInstance<?>> weapons = new ArrayList<>();
 	private int weaponIndex = 0;
 
-	private TargetMode targetMode = TargetMode.LOOK;
 	private Vec3 targetPos = Vec3.ZERO;
 	
 	public WeaponSystem(EntityVehicle parent) {
@@ -168,20 +167,6 @@ public class WeaponSystem {
 			w.addAmmo(100000);
 			w.updateClientAmmo(parent);
 		}
-	}
-
-	public static enum TargetMode {
-		LOOK,
-		COORDS,
-		INDICATOR
-	}
-
-	public TargetMode getTargetMode() {
-		return targetMode;
-	}
-
-	public void setTargetMode(TargetMode targetMode) {
-		this.targetMode = targetMode;
 	}
 
 	public Vec3 getTargetPos() {

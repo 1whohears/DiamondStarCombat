@@ -1,0 +1,43 @@
+package com.onewhohears.dscombat.entity.vehicle;
+
+import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.vehicle.VehicleType;
+import com.onewhohears.dscombat.init.ModSounds;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+public class EntityStationaryVehicle extends EntityVehicle {
+
+    public EntityStationaryVehicle(EntityType<? extends EntityVehicle> entityType, Level level, String defaultPreset) {
+        super(entityType, level, defaultPreset);
+    }
+
+    @Override
+    public void serverTick() {
+        super.serverTick();
+        if (tickCount % 40 == 0 && radarSystem.hasTargets()) getLevel().playSound(null, this,
+                ModSounds.TARGETS_FOUND, SoundSource.PLAYERS, 1, 1);
+    }
+
+    @Override
+    public VehicleType getVehicleType() {
+        return VehicleType.STATIONARY;
+    }
+
+    @Override
+    public boolean canBrake() {
+        return false;
+    }
+
+    @Override
+    public Vec3 getThrustForce(Quaternion q) {
+        return Vec3.ZERO;
+    }
+
+    @Override
+    public boolean canToggleLandingGear() {
+        return false;
+    }
+}

@@ -31,8 +31,8 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, poseStack, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		EntityVehicle vehicle = (EntityVehicle)entity;
-		String radarMode = vehicle.getRadarMode().name();
-		drawText(UtilMCText.literal(radarMode), 0.28f, -0.48f, 0.2f, 
+		String radarMode = vehicle.getRadarMode().getTranslatable();
+		drawText(UtilMCText.translatable(radarMode), 0.28f, -0.48f, 0.2f,
 				poseStack, buffer, 0x00ff00, packedLight);
 	}
 
@@ -41,9 +41,8 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		if (entity.tickCount == prevUpdateTickCount) return false;
 		if (entity.tickCount % 2 != 0) return false;
-		if ((entity.tickCount-vehicle.radarSystem.clientPingRefreshTime) > 100) return false;
-		return true;
-	}
+        return (entity.tickCount - vehicle.radarSystem.clientPingRefreshTime) <= 100;
+    }
 	
 	protected void drawPing(RadarStats.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover) {
 		Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
@@ -67,7 +66,8 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		else if (hover) color = 0xff00ffff;
 		else if (ping.isFriendly) color = 0xffff0000;
 		else if (ping.isShared()) color = 0xffaacd66;
-		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
+		if (ping.entityType.isMissile()) drawPlus(x, y, pingIconRadius/2, 7, color);
+		else if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
 		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 7, color);
 		else {
 			drawCross(x, y, pingIconRadius, 5, color);

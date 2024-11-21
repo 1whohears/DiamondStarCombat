@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"I": {
+			"item": "dscombat:aluminum_block"
+		},
+		"R": {
+			"item": "dscombat:heavy_missile_rack"
+		}
+	},
+	"pattern": [
+		"III",
+		"RRR",
+		" S "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:mlrs"
+	}
+}

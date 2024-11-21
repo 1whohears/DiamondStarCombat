@@ -26,7 +26,8 @@ import net.minecraft.world.phys.Vec3;
 public abstract class PartInstance<T extends PartStats> extends JsonPresetInstance<T> {
 	
 	public static final int PARSE_VERSION = 3;
-	
+
+	private String slotId = "";
 	private Vec3 relPos = Vec3.ZERO;
 	private EntityVehicle parent;
 	private boolean damaged;
@@ -89,6 +90,14 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	protected void setRelPos(Vec3 pos) {
 		this.relPos = pos;
 	}
+
+	public String getSlotId() {
+		return slotId;
+	}
+
+	protected void setSlotId(String id) {
+		slotId = id;
+	}
 	
 	protected void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
 		if (hasExternalEntity() && !isDamaged()) addEntity(craft, slotId, pos);
@@ -108,6 +117,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
 		//System.out.println("setting up part "+this+" client side "+craft.level.isClientSide+" slot "+slotId);
+		setSlotId(slotId);
 		setParent(craft);
 		setRelPos(pos);
 		if (craft.level.isClientSide) clientSetup(craft, slotId, pos);
@@ -203,7 +213,8 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 			tips.add(UtilMCText.translatable("info.dscombat.damaged").setStyle(Style.EMPTY.withColor(0xCC0000)));
 			if (!getStats().getRepairCost().isEmpty()) {
 				Style repairStyle = Style.EMPTY.withColor(0xE88888);
-				MutableComponent repairCost = UtilMCText.literal("Repair Cost: ").setStyle(repairStyle);
+				MutableComponent repairCost = UtilMCText.translatable("info.dscombat.repair_cost")
+						.append(": ").setStyle(repairStyle);
 				for (Ingredient cost: getStats().getRepairCost()) {
 					int num = 1;
 					if (cost instanceof IngredientStack is) num = is.cost;
@@ -245,6 +256,10 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	public float getMaxFuel() {
 		return 0;
+	}
+
+	public boolean canJetesin() {
+		return hasExternalEntity() && !getStats().isSeat();
 	}
 	
 }

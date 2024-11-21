@@ -105,12 +105,20 @@ public class RadarOverlay extends VehicleOverlayComponent {
             poseStack.pushPose();
             poseStack.translate(x_pos, y_pos, 0);
             poseStack.scale(scale, scale, scale);
-            RenderSystem.setShaderTexture(0, PING_HUD);
-            blit(poseStack,
-                    0, 0, 0, hud_ping_offset,
-                    size, size,
-                    size, size*5);
+            if (!ping.entityType.isMissile()) {
+                RenderSystem.setShaderTexture(0, PING_HUD);
+                blit(poseStack,
+                        0, 0, 0, hud_ping_offset,
+                        size, size,
+                        size, size * 5);
+            }
             RenderSystem.setShaderTexture(0, PING_DATA);
+            if (ping.entityType.isMissile()) {
+                blit(poseStack,
+                        0, 0, size * 5, size,
+                        size, size,
+                        size * 6, size * 2);
+            }
             blit(poseStack,
                     0, 0, ping.entityType.getIconOffset(size), 0,
                     size, size,

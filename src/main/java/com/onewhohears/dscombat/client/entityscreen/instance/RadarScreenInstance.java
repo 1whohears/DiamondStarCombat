@@ -66,7 +66,8 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		else if (hover) color = 0xff00ffff;
 		else if (ping.isFriendly) color = 0xffff0000;
 		else if (ping.isShared()) color = 0xffaacd66;
-		if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
+		if (ping.entityType.isMissile()) drawPlus(x, y, pingIconRadius/2, 7, color);
+		else if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
 		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 7, color);
 		else {
 			drawCross(x, y, pingIconRadius, 5, color);

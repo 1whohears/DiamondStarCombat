@@ -115,6 +115,8 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 		addPresetToGenerate(CarPresets.EMPTY_ERIC_TRUCK);
 		addPresetToGenerate(CarPresets.UNARMED_ERIC_TRUCK);
 		addPresetToGenerate(CarPresets.DEFAULT_ERIC_TRUCK);
+
+		addPresetToGenerate(StationaryPresets.EWR4000);
 	}
     
     public VehiclePresetGenerator(DataGenerator output) {

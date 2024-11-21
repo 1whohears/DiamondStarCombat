@@ -3,11 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.stats.TurretStats.RotBounds;
-import com.onewhohears.dscombat.data.vehicle.presets.BoatPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.CarPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.NoahChopperPresets;
-import com.onewhohears.dscombat.data.vehicle.presets.PlanePresets;
-import com.onewhohears.dscombat.data.vehicle.presets.SubPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityEngine;
@@ -17,12 +13,7 @@ import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityTurret.ShootType;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
-import com.onewhohears.dscombat.entity.vehicle.EntityBoat;
-import com.onewhohears.dscombat.entity.vehicle.EntityGroundVehicle;
-import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
-import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
-import com.onewhohears.dscombat.entity.vehicle.EntitySubmarine;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.*;
 import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityBomb;
 import com.onewhohears.dscombat.entity.weapon.EntityBullet;
@@ -68,6 +59,9 @@ public class ModEntities {
 	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = ENTITIES.register("submarine", 
 			() -> createVehicleType((type, level) -> new EntitySubmarine(type, level, 
 					SubPresets.DEFAULT_ANDOLF_SUB.getId())));
+	public static final RegistryObject<EntityType<EntityStationaryVehicle>> STATIONARY = ENTITIES.register("stationary_vehicle",
+			() -> createVehicleType((type, level) -> new EntityStationaryVehicle(type, level,
+					StationaryPresets.EWR4000.getId())));
 	
 	public static final RegistryObject<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox", 
 			() -> createEntityTypeFar(RotableHitbox::new, EntityDimensions.scalable(0.1f, 0.1f)));
@@ -77,7 +71,7 @@ public class ModEntities {
 	 * 
 	 * PLANES
 	 * wooden planes, private jet, large passenger jet
-	 * Spitfire, P51 Mustang, E3 Sentry, C-5 Galaxy, Mig-29, F14, Su-27, Su-57, F22
+	 * Spitfire, P51 Mustang, C-5 Galaxy, F14, Su-27, Su-57, F22
 	 * Tariku Plane (F35-B VTOL)
 	 * 
 	 * HELICOPTORS
@@ -85,7 +79,7 @@ public class ModEntities {
 	 * Noah Chopper should resemble black hawk
 	 * 
 	 * CARS/TANKS
-	 * Honda Ferrari, Joanna Bike, Mobile SAM
+	 * Honda Ferrari, Joanna Bike
 	 * 
 	 * BOATS/SUBMARINES
 	 * 

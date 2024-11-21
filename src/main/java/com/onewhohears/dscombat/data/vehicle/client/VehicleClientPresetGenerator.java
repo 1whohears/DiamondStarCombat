@@ -468,6 +468,12 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 						.build())
 				.setDontCull(true)
 				.build());
+		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "ewr4000")
+				.setCustomAnims(VehicleAnimsBuilder.create()
+						.addContinuousRotPixelAnim("bone", 0, 32, 0, RotationAxis.Y, 2)
+						.build())
+				.setDontCull(true)
+				.build());
 	}
 	
 	public VehicleClientPresetGenerator(DataGenerator output) {

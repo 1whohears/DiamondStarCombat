@@ -405,5 +405,8 @@ public class ModItems {
 			() -> new ItemVehicle(SubPresets.DEFAULT_ANDOLF_SUB.getId()));
 	public static final RegistryObject<Item> GOOGLE_SUB = ITEMS.register("google_sub", 
 			() -> new ItemVehicle(SubPresets.DEFAULT_GOOGLE_SUB.getId()));
-		
+
+	// STATIONARY
+	public static final RegistryObject<Item> EWR4000 = ITEMS.register("ewr4000",
+			() -> new ItemVehicle(StationaryPresets.EWR4000.getId()));
 }

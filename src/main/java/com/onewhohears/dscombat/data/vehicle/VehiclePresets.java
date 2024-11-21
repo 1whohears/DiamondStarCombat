@@ -36,6 +36,7 @@ public class VehiclePresets extends JsonPresetReloadListener<VehicleStats> {
 		addPresetType(VehicleType.CAR);
 		addPresetType(VehicleType.BOAT);
 		addPresetType(VehicleType.SUBMARINE);
+		addPresetType(VehicleType.STATIONARY);
 	}
 	
 	public VehicleRecipe[] getTankRecipes(RecipeManager recipeManager) {

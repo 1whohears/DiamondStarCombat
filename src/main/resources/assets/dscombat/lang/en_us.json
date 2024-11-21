@@ -293,6 +293,7 @@
 	"entity.dscombat.eden_plane": "Eden Plane",
 	"entity.dscombat.google_sub": "Neptune Sub",
 	"entity.dscombat.artillery_cannon": "Artillery Cannon",
+	"entity.dscombat.stationary_vehicle": "Stationary Vehicle",
 	
 	"entity.minecraft.villager.dscombat.weapons_engineer": "Weapons Engineer",
 	"entity.minecraft.villager.dscombat.aircraft_engineer": "Vehicle Engineer",
@@ -389,6 +390,7 @@
 	"item.dscombat.air_scan_b": "Air Scan B",
 	"item.dscombat.survey_all_a": "Survey All A",
 	"item.dscombat.survey_all_b": "Survey All B",
+	"item.dscombat.ewr4000": "Early Warning Radar 4000",
 	
 	"item.dscombat.seat": "Seat",
 	"item.dscombat.gimbal_camera": "Gimbal Camera",
@@ -457,6 +459,7 @@
 	"preset.type.car": "Car",
 	"preset.type.boat": "Boat",
 	"preset.type.submarine": "Submarine",
+	"preset.type.stationary": "Stationary",
 	
 	"preset.type.seat": "Seat",
 	"preset.type.turret": "Turret",
@@ -600,6 +603,7 @@
 	"preset.dscombat.eric_truck_empty": "Empty Eric Truck",
 	"preset.dscombat.eric_truck_unarmed": "Unarmed Eric Truck",
 	"preset.dscombat.eric_truck": "Default Eric Truck",
+	"preset.dscombat.ewr4000": "Early Warning Radar 4000",
 	
 	"key.categories.vehicle_move_control": "Diamond Star Combat Vehicle Move Controls",
 	"key.categories.vehicle_control_util": "Diamond Star Combat Vehicle Control Utility",

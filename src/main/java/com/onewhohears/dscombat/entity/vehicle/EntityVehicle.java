@@ -2691,6 +2691,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	for (Player p : getRidingPlayers()) if (!p.level.isClientSide()) // this additional client side check should fix?
     		PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)p), packet);
     }
+
+	public void toTrackers(IPacket packet) {
+		if (level.isClientSide()) return;
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), packet);
+	}
     
     public boolean isWeaponAngledDown() {
     	return false;
@@ -3218,6 +3223,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	 */
 	public boolean hasOwner() {
 		return owner_uuid != null;
+	}
+
+	public boolean isStationaryRadar() {
+		return getStats().isStationaryRadar();
 	}
     
 }

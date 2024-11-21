@@ -109,6 +109,7 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.CAR.get(), RendererObjVehicle::new);
 		event.registerEntityRenderer(ModEntities.BOAT.get(), RendererObjVehicle::new);
 		event.registerEntityRenderer(ModEntities.SUBMARINE.get(), RendererObjVehicle::new);
+		event.registerEntityRenderer(ModEntities.STATIONARY.get(), RendererObjVehicle::new);
 		// BULLETS
 		event.registerEntityRenderer(ModEntities.BULLET.get(), RendererObjWeapon::new);
 		// BOMBS

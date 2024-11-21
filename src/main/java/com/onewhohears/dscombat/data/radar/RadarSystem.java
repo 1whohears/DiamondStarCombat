@@ -79,7 +79,8 @@ public class RadarSystem {
 	}
 	
 	public boolean canServerTick() {
-		return parent.isPlayerRiding() || (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar());
+		return parent.isStationaryRadar() || parent.isPlayerRiding()
+				|| (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar());
 	}
 	
 	public void tickUpdateTargets() {
@@ -102,18 +103,25 @@ public class RadarSystem {
 		// SEMI ACTIVE TRACK ROCKETS
 		updateSemiActiveTrackMissiles();
 		// PACKET
-		if (parent.tickCount % 20 == 0) parent.toClientPassengers(
-				new ToClientRadarPings(parent.getId(), targets));
+		if (parent.tickCount % 20 == 0) {
+			if (parent.isStationaryRadar()) parent.toTrackers(new ToClientRadarPings(parent.getId(), targets));
+			else parent.toClientPassengers(new ToClientRadarPings(parent.getId(), targets));
+		}
 	}
 	
 	protected void updateDataLink() {
 		refreshDataLink();
 		if (!hasDataLink()) return;
 		Entity controller = parent.getControllingPlayerOrBot();
+		boolean check_equals = true;
+		if (parent.isStationaryRadar() && controller == null) {
+			controller = parent.getOwner();
+			check_equals = false;
+		}
 		if (controller == null) return;
 		List<? extends Player> players = parent.level.players();
 		for (Player p : players) {
-			if (controller.equals(p)) continue;
+			if (check_equals && controller.equals(p)) continue;
 			if (!controller.isAlliedTo(p)) continue;
 			if (!controller.level.dimension().equals(p.level.dimension())) continue;
 			if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;

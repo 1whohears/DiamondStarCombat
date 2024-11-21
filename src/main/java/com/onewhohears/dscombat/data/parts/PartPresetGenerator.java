@@ -183,6 +183,11 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setWeight(1000)
 				.setRadarStats("axcel_truck_radar")
 				.build());
+		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "ewr4000", ModItems.AXCEL_TRUCK_RADAR.getId(), PartType.EXTERNAL_RADAR)
+				.setCompatibleSlotType(SlotType.MOUNT_TECH)
+				.setWeight(1000)
+				.setRadarStats("ewr4000")
+				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.AIR_SCAN_A.getId(), PartType.EXTERNAL_RADAR)
 				.setCompatibleSlotType(SlotType.MOUNT_TECH)
 				.setWeight(1500)

@@ -3149,6 +3149,11 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 					UtilMCText.translatable("error.dscombat.cant_load_while_moving"),
 					true);
 			return false;
+		} else if (!isOnGround()) {
+			player.displayClientMessage(
+					UtilMCText.translatable("error.dscombat.cant_load_while_flying"),
+					true);
+			return false;
 		}
 		return true;
 	}

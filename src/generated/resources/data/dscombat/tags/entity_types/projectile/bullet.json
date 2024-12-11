@@ -16,6 +16,14 @@
     {
       "id": "moguns:flare",
       "required": false
+    },
+    {
+      "id": "tacz:bullet",
+      "required": false
+    },
+    {
+      "id": "smallships:cannon_ball",
+      "required": false
     }
   ]
 }

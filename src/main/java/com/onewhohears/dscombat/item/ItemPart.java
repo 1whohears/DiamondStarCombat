@@ -56,7 +56,11 @@ public class ItemPart extends Item {
 	public CreativeModeTab getCreativeTab() {
 		return ModItems.PARTS;
 	}
-	
+
+	/**
+	 * DO NOT CALL BEFORE THE DATA GENERATORS HAVE BEEN RUN OR IT WILL BE NULL
+	 */
+	@Nullable
 	public PartStats getDefaultPartStats() {
 		return PartPresets.get().get(getDefaultPartPresetId());
 	}
@@ -68,7 +72,8 @@ public class ItemPart extends Item {
 	@Override
 	public @NotNull ItemStack getDefaultInstance() {
 		ItemStack stack = new ItemStack(this);
-		stack.setTag(getDefaultPartStats().createPartInstance().writeNBT());
+		PartStats stats = getDefaultPartStats();
+		if (stats != null) stack.setTag(stats.createPartInstance().writeNBT());
 		return stack;
 	}
 	

@@ -70,7 +70,8 @@ public class ItemWeaponPart extends ItemPart {
 	
 	private void addWeaponRack(String preset, NonNullList<ItemStack> items) {
 		ItemStack rack = new ItemStack(this);
-		rack.setTag(getDefaultPartStats().createFilledPartInstance(preset).writeNBT());
+		PartStats stats = getDefaultPartStats();
+		if (stats != null) rack.setTag(stats.createFilledPartInstance(preset).writeNBT());
 		items.add(rack);
 	}
 	

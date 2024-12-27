@@ -48,7 +48,8 @@ public class ItemTurret extends ItemPart {
 	
 	private void addTurret(String preset, NonNullList<ItemStack> items) {
 		ItemStack turret = new ItemStack(this);
-		turret.setTag(getDefaultPartStats().createFilledPartInstance(preset).writeNBT());
+		PartStats stats = getDefaultPartStats();
+		if (stats != null) turret.setTag(stats.createFilledPartInstance(preset).writeNBT());
 		items.add(turret);
 	}
 	

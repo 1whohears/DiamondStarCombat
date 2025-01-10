@@ -1,7 +1,5 @@
 package com.onewhohears.dscombat.data.parts.instance;
 
-import javax.annotation.Nullable;
-
 import com.onewhohears.dscombat.data.parts.stats.WeaponExternalStats;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;

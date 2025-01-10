@@ -149,7 +149,7 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 	@Override
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
 		tips.add(UtilMCText.translatable("info.dscombat.fuel")
-				.append(" "+(int)fuel+"/"+(int)getStats().getMaxFuel())
+				.append(": "+(int)fuel+"/"+(int)getStats().getMaxFuel())
 				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		super.addToolTips(tips, isAdvanced);
 	}

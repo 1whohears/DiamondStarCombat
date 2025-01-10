@@ -50,6 +50,7 @@ public class SeatInstance<T extends SeatStats> extends PartInstance<T> {
 
 	public void setCanEject(boolean eject) {
 		this.eject = eject;
+		setDirty();
 	}
 
 	@Override

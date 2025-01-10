@@ -77,17 +77,19 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	@Override
 	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
 		WeaponInstance<?> data = craft.weaponSystem.get(weapon, slotId);
-		if (data == null) {
-			if (!WeaponPresets.get().has(weapon)) return;
+		if (data == null && WeaponPresets.get().has(weapon)) {
 			data = WeaponPresets.get().get(weapon).createWeaponInstance();
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data);
 		}
-		data.setMaxAmmo(getStats().getMaxAmmo());
-		data.setCurrentAmmo(ammo);
-		data.setLaunchPos(pos);
-		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
+		// weapon instance must be created before super because of external weapon server setup
 		super.setup(craft, slotId, pos);
+		if (data != null) {
+			data.setMaxAmmo(getStats().getMaxAmmo());
+			data.setCurrentAmmo(ammo);
+			data.setLaunchPos(pos);
+			if (!craft.level.isClientSide) data.updateClientAmmo(craft);
+		}
 	}
 	
 	@Override
@@ -101,9 +103,7 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 		super.tick(slotId);
 		if (getParent() == null) return;
 		WeaponInstance<?> data = getParent().weaponSystem.get(weapon, slotId);
-		if (data != null) {
-			ammo = data.getCurrentAmmo();
-		}
+		if (data != null) ammo = data.getCurrentAmmo();
 	}
 	
 	@Override

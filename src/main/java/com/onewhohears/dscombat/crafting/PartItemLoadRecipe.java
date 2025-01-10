@@ -47,7 +47,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 	}
 
 	public boolean fillPart(Container container, ReloadablePartInstance lpd) {
-		List<ItemStack> ammo = getAmmoItemsContainer(container, lpd.getContinuity());
+		List<ItemStack> ammo = getAmmoItemsContainer(container, null);
 		if (!canItemsCombine(lpd, ammo)) return false;
 		if (checkAmmoContinuity()) {
 			String ammoCont = getItemAmmoContinuity(ammo.get(0));
@@ -79,7 +79,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 	}
 
 	public boolean consumeAmmoItems(Container container, ReloadablePartInstance lpd) {
-		List<ItemStack> ammo = getAmmoItemsContainer(container, lpd.getContinuity());
+		List<ItemStack> ammo = getAmmoItemsContainer(container, null);
 		if (!canItemsCombine(lpd, ammo)) return false;
 		if (checkAmmoContinuity()) {
 			String ammoCont = getItemAmmoContinuity(ammo.get(0));
@@ -229,7 +229,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 
 	@Nullable
 	public List<ItemStack> getAmmoItemsContainer(Container container, String continuity) {
-		List<ItemStack> ammo = new ArrayList<ItemStack>();
+		List<ItemStack> ammo = new ArrayList<>();
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack  = container.getItem(i);
 			if (stack.isEmpty()) continue;
@@ -269,6 +269,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 			else if (lpd.getContinuity().equals(ammoCont)) return true;
 			return false;
 		}
+		System.out.println("can combine");
 		return true;
 	}
 	

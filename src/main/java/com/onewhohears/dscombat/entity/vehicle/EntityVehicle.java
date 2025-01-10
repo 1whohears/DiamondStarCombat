@@ -2158,7 +2158,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public Component getCantBecomeItemReason(Player player) {
 		EntityRidablePart seat = getPassengerSeat(player);
 		if (seat == null) return UtilMCText.translatable("error.dscombat.not_a_passenger");
-		if (!seat.canPassengerShootParentWeapon()) return UtilMCText.translatable("error.dscombat.not_a_pilot");
+		if (!seat.isPilotSeat()) return UtilMCText.translatable("error.dscombat.not_a_pilot");
 		int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
 		int fresh_diff = fresh - tickCount/20;
 		if (fresh_diff > 0) return UtilMCText.translatable("error.dscombat.cant_item_yet_fresh", fresh_diff);

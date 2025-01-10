@@ -25,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInstance<P>> extends EntityPart<P,I> {
 	
@@ -141,8 +142,11 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	}
 	
 	@Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
-		return super.getDismountLocationForPassenger(entity);
+    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity entity) {
+		int minY = getLevel().getMinBuildHeight()+4;
+		Vec3 dis = super.getDismountLocationForPassenger(entity);
+		if (dis.y() < minY) dis = new Vec3(dis.x(), minY, dis.z());
+		return dis;
 	}
 	
 	@Nullable

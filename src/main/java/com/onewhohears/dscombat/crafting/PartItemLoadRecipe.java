@@ -156,7 +156,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 			break;
 		case ITEM_DURABILITY:
 			ammo.setDamageValue(ammo.getMaxDamage() - (int)num);
-			ammo.setCount(2);
+			if (add1) ammo.setCount(2);
 			break;
 		}
 	}

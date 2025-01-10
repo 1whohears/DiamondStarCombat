@@ -28,12 +28,17 @@ public class ItemTurret extends ItemPart {
 		TurretInstance<?> data = (TurretInstance<?>) UtilPresetParse.parsePartFromItem(stack);
 		if (data == null) return super.getName(stack);
 		MutableComponent name = ((MutableComponent)super.getName(stack)).append(" ");
-		WeaponStats wd = WeaponPresets.get().get(data.getWeaponId());
-		if (wd != null) {
-			name.append(wd.getDisplayNameComponent()).append(" ")
-				.append(UtilMCText.literal(wd.getWeaponTypeCode()));
+		String weapon = data.getWeaponId();
+		if (weapon.isEmpty()) {
+			name.append("EMPTY");
+		} else {
+			WeaponStats wd = WeaponPresets.get().get(weapon);
+			if (wd != null) {
+				name.append(wd.getDisplayNameComponent()).append(" ")
+						.append(UtilMCText.literal(wd.getWeaponTypeCode()));
+			}
+			else name.append(weapon+"?");
 		}
-		else name.append(data.getWeaponId()+"?");
 		int ammo = (int)data.getCurrentAmmo();
 		int max = (int)data.getMaxAmmo();
 		if (max != 0) name.append(" "+ammo+"/"+max);

@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.aa_turret",
+  "model_data": {
+    "hard_coded_model_anims": "aa_turret"
+  },
+  "presetId": "aa_turret",
+  "presetType": "turret"
+}

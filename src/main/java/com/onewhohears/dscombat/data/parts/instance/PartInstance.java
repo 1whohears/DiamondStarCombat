@@ -27,10 +27,13 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	public static final int PARSE_VERSION = 3;
 
+	protected boolean isSetup = false;
+
 	private String slotId = "";
 	private Vec3 relPos = Vec3.ZERO;
 	private EntityVehicle parent;
 	private boolean damaged;
+	private boolean dirty;
 	
 	public PartInstance(T stats) {
 		super(stats);
@@ -65,6 +68,22 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public void writeBuffer(FriendlyByteBuf buffer) {
 		buffer.writeUtf(getStats().getId());
 		buffer.writeBoolean(damaged);
+	}
+
+	public void setDirty() {
+		dirty = true;
+	}
+
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	public void onReceiveClientSync() {
+		dirty = false;
+	}
+
+	public void onSendClientSync() {
+		dirty = false;
 	}
 	
 	public int getFlares() {
@@ -122,6 +141,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		setRelPos(pos);
 		if (craft.level.isClientSide) clientSetup(craft, slotId, pos);
 		else serverSetup(craft, slotId, pos);
+		isSetup = true;
 	}
 	
 	protected void serverRemove(String slotId) {
@@ -135,6 +155,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public void remove(EntityVehicle parent, String slotId) {
 		if (parent.level.isClientSide) clientRemove(slotId);
 		else serverRemove(slotId);
+		isSetup = false;
 	}
 	
 	public void tick(String slotId) {
@@ -179,6 +200,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	}
 	
 	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {
+		part.setPreset(getStatsId());
 		part.setSlotId(slotId);
 		part.setRelativePos(pos);
 		part.setPos(craft.position());
@@ -196,6 +218,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	protected void setDamaged(boolean damaged) {
 		this.damaged = damaged;
+		setDirty();
 	}
 	
 	public void onDamaged(EntityVehicle parent, String slotId) {
@@ -260,6 +283,10 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 
 	public boolean canJetesin() {
 		return hasExternalEntity() && !getStats().isSeat();
+	}
+
+	public boolean isSetup() {
+		return isSetup;
 	}
 	
 }

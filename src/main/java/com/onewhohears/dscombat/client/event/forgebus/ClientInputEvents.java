@@ -12,8 +12,8 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -155,7 +155,7 @@ public final class ClientInputEvents {
 		else leftTicks = 0;
 		final var player = m.player;
 		if (player == null || !player.isPassenger()) return;
-		if (!(player.getVehicle() instanceof EntitySeat seat)) return;
+		if (!(player.getVehicle() instanceof EntityRidablePart seat)) return;
 		EntityVehicle vehicle = seat.getParentVehicle();
 		if (vehicle == null) return;
 		boolean isRadarController = player.equals(vehicle.getControllingPlayerOrBot());
@@ -266,7 +266,7 @@ public final class ClientInputEvents {
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void clientMoveInput(MovementInputUpdateEvent event) {
 		Player player = event.getEntity();
-		if (!(player.getVehicle() instanceof EntitySeat)) return;
+		if (!(player.getVehicle() instanceof EntityRidablePart)) return;
 		if (Config.CLIENT.customDismount.get()) {
 			event.getInput().shiftKeyDown = false;
 		}
@@ -279,7 +279,7 @@ public final class ClientInputEvents {
 		if (!mounting.level.isClientSide) return;
 		if (!(mounting instanceof Player)) return;
 		Entity mounted = event.getEntityBeingMounted();
-		if (!(mounted instanceof EntitySeat)) return;
+		if (!(mounted instanceof EntityRidablePart)) return;
 		DSCClientInputs.setClientMountTime(System.currentTimeMillis());
 		DSCClientInputs.leanNot();
 	}

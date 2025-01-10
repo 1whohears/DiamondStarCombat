@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.ciws",
+  "model_data": {
+    "hard_coded_model_anims": "ciws"
+  },
+  "presetId": "ciws",
+  "presetType": "turret"
+}

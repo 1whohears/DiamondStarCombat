@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.sam_launcher",
+  "model_data": {
+    "hard_coded_model_anims": "sam_launcher"
+  },
+  "presetId": "sam_launcher",
+  "presetType": "turret"
+}

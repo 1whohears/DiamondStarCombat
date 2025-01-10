@@ -35,7 +35,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(40)
 				.setItem(ModItems.BULLET.getId())
 				.setEntityType(ModEntities.BULLET.getId())
-				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.XM12.getId().getPath(), 
 						"m2_browning", ModItems.MINIGUN_TURRET.getId().getPath())
@@ -57,7 +56,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(40)
 				.setItem(ModItems.BULLET.getId())
 				.setEntityType(ModEntities.BULLET.getId())
-				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.XM12.getId().getPath(), 
 						ModItems.AA_TURRET.getId().getPath())
@@ -80,7 +78,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(40)
 				.setItem(ModItems.B_20MM.getId())
 				.setEntityType(ModEntities.BULLET.getId())
-				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.XM12.getId().getPath(), 
 						"m61a1_vulcan", "gsh_30_1", ModItems.CIWS.getId().getPath())
@@ -102,7 +99,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(40)
 				.setItem(ModItems.B_20MM.getId())
 				.setEntityType(ModEntities.BULLET.getId())
-				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.XM12.getId().getPath(), 
 						"m61a1_vulcan", "gsh_30_1", ModItems.CIWS.getId().getPath())
@@ -147,7 +143,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(40)
 				.setItem(ModItems.B_50MMHE.getId())
 				.setEntityType(ModEntities.BULLET.getId())
-				.setRackEntityType(ModEntities.XM12.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.XM12.getId().getPath())
 				.setCraftNum(16)
@@ -170,7 +165,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(40)
 				.setItem(ModItems.B_120MMHE.getId())
 				.setEntityType(ModEntities.BULLET.getId())
-				.setNoRack()
 				.setShootSound(ModSounds.CANNON_SHOOT_2.getLocation())
 				.setCompatibleWeaponPart("heavy_tank_turret", "artillery_cannon")
 				.setCraftNum(1)
@@ -192,7 +186,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(40)
 				.setItem(ModItems.B_120MMHE.getId())
 				.setEntityType(ModEntities.BULLET.getId())
-				.setNoRack()
 				.setShootSound(ModSounds.CANNON_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.MARK7_CANNON.getId())
 				.setCraftNum(1)
@@ -214,7 +207,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(40)
 				.setItem(ModItems.BULLET.getId())
 				.setEntityType(ModEntities.BULLET.getId())
-				.setNoRack()
 				.setShootSound(ModSounds.CANNON_SHOOT_2.getLocation())
 				.setCompatibleWeaponPart(ModItems.MARK45_CANNON.getId())
 				.setCraftNum(1)
@@ -247,7 +239,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.AIM7F.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(), 
 						ModItems.SAM_LAUNCHER.getId().getPath())
@@ -281,7 +272,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.AIM7MH.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(), 
 						ModItems.SAM_LAUNCHER.getId().getPath())
@@ -315,7 +305,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.AIM120B.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.SAM_LAUNCHER.getId().getPath())
@@ -349,7 +338,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.AIM120C.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.SAM_LAUNCHER.getId().getPath())
@@ -383,7 +371,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.TRACK_AIR_MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.SAM_LAUNCHER.getId().getPath())
@@ -418,7 +405,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.TRACK_AIR_MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setNoRack()
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart("sam_launcher", "mlrs")
 				.setCraftNum(1)
@@ -451,7 +437,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.AIR)
 				.setItem(ModItems.TRACK_AIR_MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.VLS.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.VLS.getId())
 				.setCraftNum(1)
@@ -483,7 +468,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFlareResistance(1.5f)
 				.setItem(ModItems.AIM9L.getId())
 				.setEntityType(ModEntities.IR_MISSILE.getId())
-				.setRackEntityType(ModEntities.LIGHT_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId().getPath(),
 						ModItems.STEVE_UP_SMASH.getId().getPath())
@@ -516,7 +500,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFlareResistance(1f)
 				.setItem(ModItems.AIM9P5.getId())
 				.setEntityType(ModEntities.IR_MISSILE.getId())
-				.setRackEntityType(ModEntities.LIGHT_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId().getPath(),
 						ModItems.STEVE_UP_SMASH.getId().getPath())
@@ -549,7 +532,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFlareResistance(0.7f)
 				.setItem(ModItems.AIM9X.getId())
 				.setEntityType(ModEntities.IR_MISSILE.getId())
-				.setRackEntityType(ModEntities.LIGHT_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId().getPath(),
 						ModItems.STEVE_UP_SMASH.getId().getPath())
@@ -584,7 +566,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFieldOfView(-1f)
 				.setItem(ModItems.AGM114K.getId())
 				.setEntityType(ModEntities.POS_MISSILE.getId())
-				.setRackEntityType(ModEntities.LIGHT_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())
 				.setCraftNum(1)
@@ -615,7 +596,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setExplodeNum(2)
 				.setItem(ModItems.AGM65L.getId())
 				.setEntityType(ModEntities.POS_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.MLS.getId().getPath())
@@ -649,7 +629,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setExplodeNum(2)
 				.setItem(ModItems.AGM65G.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.MLS.getId().getPath())
@@ -684,7 +663,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setExplodeNum(2)
 				.setItem(ModItems.AGM84E.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.MLS.getId().getPath())
@@ -719,7 +697,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setScanRange(1500f)
 				.setItem(ModItems.AGM88G.getId())
 				.setEntityType(ModEntities.ANTI_RADAR_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.MLS.getId().getPath())
@@ -753,7 +730,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.WATER)
 				.setItem(ModItems.MK13.getId())
 				.setEntityType(ModEntities.TORPEDO_MISSILE.getId())
-				.setRackEntityType(ModEntities.HEAVY_MISSILE_RACK.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.TORPEDO_TUBES.getId().getPath())
@@ -788,7 +764,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setTargetType(TargetType.GROUND)
 				.setItem(ModItems.TORPEDO1.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
-				.setRackEntityType(ModEntities.ADL.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.ADL.getId().getPath(), 
 						ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -817,7 +792,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(200)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
-				.setRackEntityType(ModEntities.BOMB_RACK.getId())
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
@@ -840,7 +814,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setExplodeNum(2)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
-				.setRackEntityType(ModEntities.BOMB_RACK.getId())
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
@@ -863,7 +836,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setExplodeNum(2)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
-				.setRackEntityType(ModEntities.BOMB_RACK.getId())
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)
@@ -884,7 +856,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setMaxAge(200)
 				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BOMB.getId())
-				.setRackEntityType(ModEntities.BOMB_RACK.getId())
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(3)
@@ -910,7 +881,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setBlockStrength(1500)
 				.setItem(ModItems.GRUETZ_BUNKER_BUSTER.getId())
 				.setEntityType(ModEntities.BUNKER_BUSTER.getId())
-				.setRackEntityType(ModEntities.BOMB_RACK.getId())
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())
 				.setCraftNum(1)

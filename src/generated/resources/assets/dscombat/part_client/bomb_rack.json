@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.bomb_rack",
+  "model_data": {
+    "hard_coded_model_anims": "bomb_rack"
+  },
+  "presetId": "bomb_rack",
+  "presetType": "weapon_rack"
+}

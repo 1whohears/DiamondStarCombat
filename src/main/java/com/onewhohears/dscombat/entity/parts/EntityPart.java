@@ -4,12 +4,19 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
+import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.data.parts.client.PartAssets;
+import com.onewhohears.dscombat.data.parts.client.PartClientStats;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
+import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.entity.CustomAnimEntity;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -26,8 +33,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class EntityPart extends Entity {
+public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>> extends CustomAnimEntity<P, PartClientStats> {
 	
 	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityPart.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.STRING);
@@ -36,8 +44,8 @@ public abstract class EntityPart extends Entity {
 	private float z_rot;
 	protected double renderSqrDistance = 0;
 	
-	protected EntityPart(EntityType<?> entityType, Level level) {
-		super(entityType, level);
+	protected EntityPart(EntityType<?> entityType, Level level, String defaultPresetId) {
+		super(entityType, level, defaultPresetId);
 		if (level.isClientSide && shouldRender()) {
 			double dist = getClientRenderDistance();
 			renderSqrDistance = dist * dist;
@@ -53,6 +61,7 @@ public abstract class EntityPart extends Entity {
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		setRelativePos(UtilParse.readVec3(compound, "relpos"));
 		setSlotId(compound.getString("slotid"));
 		setHealth(compound.getFloat("health"));
@@ -60,6 +69,7 @@ public abstract class EntityPart extends Entity {
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		UtilParse.writeVec3(compound, getRelativePos(), "relpos");
 		compound.putString("slotid", getSlotId());
 		compound.putFloat("health", getHealth());
@@ -230,7 +240,7 @@ public abstract class EntityPart extends Entity {
     protected AABB makeBoundingBox() {
     	if (Mth.abs(getZRot()) <= 90) return super.makeBoundingBox();
     	double pX = getX(), pY = getY(), pZ = getZ();
-    	EntityDimensions d = getDimensions(getPose());
+    	EntityDimensions d = getStats().getEntityDimensions();
     	double f = d.width / 2.0F;
         double f1 = d.height;
         return new AABB(pX-f, pY-f1, pZ-f, 
@@ -251,10 +261,26 @@ public abstract class EntityPart extends Entity {
 	}
 
 	@Nullable
-	public PartInstance<?> getPartInstance() {
+	public I getPartInstance() {
 		PartSlot slot = getSlot();
 		if (slot == null) return null;
-		return slot.getPartData();
+		if (slot.getPartData() == null) return null;
+		return (I) slot.getPartData();
 	}
 
+	@Override
+	public @Nullable String getAssetId() {
+		return getStatsId();
+	}
+
+	@Override
+	public @Nullable JsonPresetAssetReader<PartClientStats> getClientPresets() {
+		if (!getLevel().isClientSide()) return null;
+		return PartAssets.get();
+	}
+
+	@Override
+	public @NotNull JsonPresetReloadListener<P> getPresets() {
+		return (JsonPresetReloadListener<P>) PartPresets.get();
+	}
 }

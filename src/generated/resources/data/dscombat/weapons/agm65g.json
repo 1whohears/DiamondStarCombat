@@ -43,7 +43,6 @@
   "maxAge": 300,
   "presetId": "agm65g",
   "presetType": "track_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.0,
   "targetType": "GROUND",

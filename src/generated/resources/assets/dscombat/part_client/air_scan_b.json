@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.air_scan_b",
+  "model_data": {
+    "hard_coded_model_anims": "air_scan_b"
+  },
+  "presetId": "air_scan_b",
+  "presetType": "radar"
+}

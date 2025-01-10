@@ -36,9 +36,9 @@ public class VehicleTextureManager {
 		textureLayers = new TextureLayer[parent.getStats().textureLayers];
 		String namespace = parent.getStats().getNameSpace();
 		for (int i = 0; i < baseTextures.length; ++i) 
-			baseTextures[i] = new ResourceLocation(namespace+":textures/entity/vehicle/"+parent.getClientStatsId()+"/base"+i+".png");
+			baseTextures[i] = new ResourceLocation(namespace+":textures/entity/vehicle/"+parent.getAssetId()+"/base"+i+".png");
 		for (int i = 0; i < textureLayers.length; ++i) {
-			textureLayers[i] = new TextureLayer(namespace+":textures/entity/vehicle/"+parent.getClientStatsId()+"/layer"+i+".png");
+			textureLayers[i] = new TextureLayer(namespace+":textures/entity/vehicle/"+parent.getAssetId()+"/layer"+i+".png");
 		}
 	}
 	/**

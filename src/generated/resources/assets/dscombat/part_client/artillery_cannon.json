@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.artillery_cannon",
+  "model_data": {
+    "hard_coded_model_anims": "artillery_cannon"
+  },
+  "presetId": "artillery_cannon",
+  "presetType": "turret"
+}

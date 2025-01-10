@@ -9,6 +9,7 @@ import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.renderable.CompositeRenderable;
 import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
@@ -18,16 +19,15 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 	public static int renderedRackWeaponNum = 0;
 	
 	protected final int maxAmmoNum;
-	protected final float dX, dY;
+	protected final Vec3[] weapon_pos;
 	private String prevWeaponModelId = "";
 	private CompositeRenderable prevModel;
 	private ModelOverrides prevMO;
 	
-	public ObjWeaponRackModel(String modelId, int maxAmmoNum, float dX, float dY) {
+	public ObjWeaponRackModel(String modelId, int maxAmmoNum, Vec3[] weapon_pos) {
 		super(modelId);
 		this.maxAmmoNum = maxAmmoNum;
-		this.dX = dX;
-		this.dY = dY;
+		this.weapon_pos = weapon_pos;
 	}
 	
 	@Override
@@ -48,10 +48,8 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 		}
 		int ammo = entity.getAmmoNum();
 		for (int i = 0; i < ammo && i < maxAmmoNum; ++i) {
-			float x = i % 2 == 0 ? dX : -dX;
-			float y = (i/2 + 1) * dY - dY*0.5f;
-			if (i+1 == maxAmmoNum && maxAmmoNum%2 == 1) x = 0;
-			renderWeapon(entity, poseStack, bufferSource, lightmap, partialTicks, model, mo, x, y, 0);
+			Vec3 v = weapon_pos[i];
+			renderWeapon(entity, poseStack, bufferSource, lightmap, partialTicks, model, mo, v.x, v.y, v.z);
 		}
 		prevWeaponModelId = weaponModelId;
 		prevModel = model;

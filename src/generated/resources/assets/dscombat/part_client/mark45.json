@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.mark45",
+  "model_data": {
+    "hard_coded_model_anims": "mark45"
+  },
+  "presetId": "mark45",
+  "presetType": "turret"
+}

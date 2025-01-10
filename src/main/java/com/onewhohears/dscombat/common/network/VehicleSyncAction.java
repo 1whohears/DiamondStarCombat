@@ -2,9 +2,9 @@ package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleSyncAction;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
+import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -280,7 +280,7 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
-                if (!(player.getVehicle() instanceof EntitySeat seat)) return;
+                if (!(player.getVehicle() instanceof EntityRidablePart seat)) return;
                 if (ping != null) vehicle.radarSystem.selectTarget(ping);
                 if (targetPos != null) vehicle.weaponSystem.setTargetPos(targetPos);
                 if (seat.isTurret()) {
@@ -373,7 +373,7 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
-                if (eject && player.getVehicle() instanceof EntitySeat seat && seat.canEject()) {
+                if (eject && player.getVehicle() instanceof EntityRidablePart seat && seat.canEject()) {
                     seat.useEject();
                     player.stopRiding();
                     double EJECT_PUSH = 4, EJECT_MOVE = 1;

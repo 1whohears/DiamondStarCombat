@@ -42,7 +42,6 @@
   "maxAge": 300,
   "presetId": "agm65l",
   "presetType": "pos_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.0,
   "turnRadius": 60.0

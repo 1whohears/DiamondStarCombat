@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.data.parts;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.parts.stats.TurretStats;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.parts.stats.BuffStats.BuffType;
 import com.onewhohears.dscombat.data.parts.stats.EngineStats.EngineType;
@@ -9,6 +11,7 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.phys.Vec3;
 
 public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 	
@@ -124,7 +127,8 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setCompatibleSlotType(SlotType.PYLON_HEAVY)
 				.setWeight(2000)
 				.setEngineStats(EngineType.PUSH, 650, 9, 0.017f)
-				.setExternalEntityType(ModEntities.CFM56.getId())
+				.setExternalEntityType(ModEntities.EXTERNAL_ENGINE.getId())
+				.setEntityHitboxSize(0.8f, 0.8f)
 				.build());
 		// INTERNAL RADAR
 		addPresetToGenerate(PartBuilder.create(ModItems.AR500.getId(), PartType.INTERNAL_RADAR)
@@ -192,25 +196,29 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setCompatibleSlotType(SlotType.MOUNT_TECH)
 				.setWeight(1500)
 				.setRadarStats("air_scan_a")
-				.setExternalEntityType(ModEntities.AIR_SCAN_A.getId())
+				.setExternalEntityType(ModEntities.EXTERNAL_RADAR.getId())
+				.setEntityHitboxSize(1.0f, 1.0f)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.AIR_SCAN_B.getId(), PartType.EXTERNAL_RADAR)
 				.setCompatibleSlotType(SlotType.MOUNT_TECH)
 				.setWeight(1500)
 				.setRadarStats("air_scan_b")
-				.setExternalEntityType(ModEntities.AIR_SCAN_B.getId())
+				.setExternalEntityType(ModEntities.EXTERNAL_RADAR.getId())
+				.setEntityHitboxSize(1.0f, 1.0f)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.SURVEY_ALL_A.getId(), PartType.EXTERNAL_RADAR)
 				.setCompatibleSlotType(SlotType.MOUNT_TECH)
 				.setWeight(1500)
 				.setRadarStats("survey_all_a")
-				.setExternalEntityType(ModEntities.SURVEY_ALL_A.getId())
+				.setExternalEntityType(ModEntities.EXTERNAL_RADAR.getId())
+				.setEntityHitboxSize(1.0f, 0.5f)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.SURVEY_ALL_B.getId(), PartType.EXTERNAL_RADAR)
 				.setCompatibleSlotType(SlotType.MOUNT_TECH)
 				.setWeight(1500)
 				.setRadarStats("survey_all_b")
-				.setExternalEntityType(ModEntities.SURVEY_ALL_B.getId())
+				.setExternalEntityType(ModEntities.EXTERNAL_RADAR.getId())
+				.setEntityHitboxSize(1.0f, 1.0f)
 				.build());
 		// SEAT
 		addPresetToGenerate(PartBuilder.create(ModItems.SEAT.getId(), PartType.SEAT)
@@ -222,85 +230,97 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(ModItems.AA_TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_LIGHT)
 				.setWeight(1000)
-				.setExternalEntityType(ModEntities.AA_TURRET.getId())
-				.setTurretStats(750, 40)
+				.setTurretStats(750, 40, new Vec3(0, 0.5, 0), 1.03125,
+						TurretStats.RotBounds.create(3.0f, 40f, 30f),
+						1.0f, 1.25f)
 				.addIngredient("minecraft:iron_ingot", 3)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.MINIGUN_TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_LIGHT)
 				.setWeight(1500)
-				.setExternalEntityType(ModEntities.MINIGUN_TURRET.getId())
-				.setTurretStats(1000, 40)
+				.setTurretStats(1000, 40, Vec3.ZERO, 0.8,
+						TurretStats.RotBounds.create(2.5f,50f, 50f),
+						1.0f, 1.5f)
 				.addIngredient("minecraft:iron_ingot", 4)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.CIWS.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_LIGHT)
 				.setWeight(2500)
-				.setExternalEntityType(ModEntities.CIWS.getId())
-				.setTurretStats(500, 80)
+				.setTurretStats(500, 80, new Vec3(1, 0.5, 0), 0.6875,
+						TurretStats.RotBounds.create(2.0f, 75f, 30f),
+						1.5f, 2.5f)
 				.addIngredient("minecraft:iron_ingot", 5)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.MARK45_CANNON.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_LIGHT)
 				.setWeight(3000)
-				.setExternalEntityType(ModEntities.MARK45_CANNON.getId())
-				.setTurretStats(50, 120)
+				.setTurretStats(50, 120, new Vec3(0, 1.5, 0), 1.5625,
+						TurretStats.RotBounds.create(1.1f, 45f, 15f),
+						2.0f, 1.5f)
 				.addIngredient("minecraft:iron_ingot", 6)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.HEAVY_TANK_TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_MED)
 				.setWeight(4000)
-				.setExternalEntityType(ModEntities.HEAVY_TANK_TURRET.getId())
-				.setTurretStats(16, 120)
+				.setTurretStats(16, 120, Vec3.ZERO, 0.3,
+						TurretStats.RotBounds.create(1.0f, 30f, 30f),
+						2.0f, 1.0f)
 				.addIngredient("minecraft:iron_ingot", 7)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.MARK7_CANNON.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(4500)
-				.setExternalEntityType(ModEntities.MARK7_CANNON.getId())
-				.setTurretStats(36, 200)
+				.setTurretStats(36, 200, new Vec3(0, 1.5, 0), 1.625,
+						TurretStats.RotBounds.create(0.9f, 30f, 15f),
+						EntityTurret.ShootType.MARK7, 4.0f, 1.7f)
 				.addIngredient("minecraft:iron_ingot", 12)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.STEVE_UP_SMASH.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_MED)
 				.setWeight(5000)
-				.setExternalEntityType(ModEntities.STEVE_UP_SMASH.getId())
-				.setTurretStats(4, 40)
+				.setTurretStats(4, 40, Vec3.ZERO, 3.2,
+						TurretStats.RotBounds.create(1.8f, 25f, 25f),
+						1.0f, 3.5f)
 				.addIngredient("minecraft:iron_ingot", 8)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.SAM_LAUNCHER.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
-				.setExternalEntityType(ModEntities.SAM_LAUNCHER.getId())
-				.setTurretStats(4, 60)
+				.setTurretStats(4, 60, new Vec3(1.2, 0.4, 0), 2.7,
+						TurretStats.RotBounds.create(1.3f, 25f, 25f),
+						2.0f, 3.0f)
 				.addIngredient("minecraft:iron_ingot", 9)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.TORPEDO_TUBES.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_MED)
 				.setWeight(5500)
-				.setExternalEntityType(ModEntities.TORPEDO_TUBES.getId())
-				.setTurretStats(3, 60)
+				.setTurretStats(3, 60, new Vec3(0, 1.8, 0), 1,
+						TurretStats.RotBounds.create(1.6f, 5f, 5f),
+						2.5f, 2.0f)
 				.addIngredient("minecraft:iron_ingot", 8)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.MLS.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
-				.setExternalEntityType(ModEntities.MLS.getId())
-				.setTurretStats(4, 60)
+				.setTurretStats(4, 60, new Vec3(1.2, 0, 0), 1,
+						TurretStats.RotBounds.create(1.9f, 20f, 20f),
+						2.0f, 2.5f)
 				.addIngredient("minecraft:iron_ingot", 9)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.MLRS.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(8000)
-				.setExternalEntityType(ModEntities.MLRS.getId())
-				.setTurretStats(10, 80)
+				.setTurretStats(10, 80, new Vec3(1.8, 0, 0), 2,
+						TurretStats.RotBounds.create(0.8f, 35f, 0),
+						2.0f, 2.0f)
 				.addIngredient("minecraft:iron_ingot", 15)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.ARTILLERY_CANNON.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(6000)
-				.setExternalEntityType(ModEntities.ARTILLERY_CANNON.getId())
-				.setTurretStats(50, 180)
+				.setTurretStats(50, 180, new Vec3(0, 1.2, 0), 0.79,
+						TurretStats.RotBounds.create(1.0f, 35f, 15f),
+						2.0f, 1.5f)
 				.addIngredient("minecraft:iron_ingot", 15)
 				.build());
 		// DISPENSERS

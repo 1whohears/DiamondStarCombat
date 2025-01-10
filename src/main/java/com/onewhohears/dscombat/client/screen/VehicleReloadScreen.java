@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
+import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.gui.components.Button;

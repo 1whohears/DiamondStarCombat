@@ -35,7 +35,7 @@ public class TurretShootGoal extends Goal {
 	 */
 	public static final ShootFunction RANDOM_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		if (prevTargetPos == null || mob.tickCount % 30 == 0) {
-			prevTargetPos = mob.position()
+			prevTargetPos = mob.getEyePosition()
 				.add((RANDOM.nextDouble()-0.5)*100, (RANDOM.nextDouble()-0.25)*30, (RANDOM.nextDouble()-0.5)*100);
 		}
 		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());

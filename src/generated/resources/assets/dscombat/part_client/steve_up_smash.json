@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.steve_up_smash",
+  "model_data": {
+    "hard_coded_model_anims": "steve_up_smash"
+  },
+  "presetId": "steve_up_smash",
+  "presetType": "turret"
+}

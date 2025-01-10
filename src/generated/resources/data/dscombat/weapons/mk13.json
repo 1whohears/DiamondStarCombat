@@ -42,7 +42,6 @@
   "maxAge": 600,
   "presetId": "mk13",
   "presetType": "torpedo",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "seeThroWater": 10000,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,

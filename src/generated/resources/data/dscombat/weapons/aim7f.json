@@ -46,7 +46,6 @@
   "maxAge": 200,
   "presetId": "aim7f",
   "presetType": "track_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.0,
   "targetType": "AIR",

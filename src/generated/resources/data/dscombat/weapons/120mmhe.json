@@ -29,7 +29,6 @@
   "modelId": "120mmhe",
   "presetId": "120mmhe",
   "presetType": "bullet",
-  "rackTypeKey": "",
   "shootSoundKey": "dscombat:cannon_shoot_2",
   "speed": 8.0
 }

@@ -41,7 +41,6 @@
   "maxAge": 600,
   "presetId": "agm88g",
   "presetType": "anti_radar_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "scan_range": 1500.0,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.0,

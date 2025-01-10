@@ -6,14 +6,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
+import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 
 import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;

@@ -1,6 +1,9 @@
 {
   "changeLaunchPitch": 0.0,
   "displayName": "item.dscombat.light_missile_rack",
+  "externalEntity": "dscombat:external_weapon_part",
+  "hitbox_height": 0.1,
+  "hitbox_width": 0.1,
   "item": "dscombat:light_missile_rack",
   "max": 4,
   "presetId": "light_missile_rack",

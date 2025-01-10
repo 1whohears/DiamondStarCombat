@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.parts;
+package com.onewhohears.dscombat.data.parts.instance;
 
 import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;

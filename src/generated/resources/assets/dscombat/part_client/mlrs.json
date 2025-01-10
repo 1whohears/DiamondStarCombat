@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.mlrs",
+  "model_data": {
+    "hard_coded_model_anims": "mlrs"
+  },
+  "presetId": "mlrs",
+  "presetType": "turret"
+}

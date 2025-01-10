@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.KeyMapping;
@@ -68,7 +68,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	@Override
 	protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
 		if (defaultRenderConditions()) return false;
-		if (!(getPlayerVehicle() instanceof EntitySeat seat)) return false;
+		if (!(getPlayerVehicle() instanceof EntityRidablePart seat)) return false;
 
 		EntityVehicle vehicle = seat.getParentVehicle();
 		return vehicle != null;
@@ -76,7 +76,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 
 	@Override
 	protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
-		EntitySeat seat = (EntitySeat) getPlayerVehicle();
+		EntityRidablePart seat = (EntityRidablePart) getPlayerVehicle();
 		assert seat != null;
 
 		EntityVehicle vehicle = seat.getParentVehicle();

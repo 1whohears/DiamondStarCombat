@@ -30,7 +30,7 @@ public class VehiclePartsMenu extends AbstractContainerMenu {
 		if (playerInv.player.getRootVehicle() instanceof EntityVehicle plane) {
 			this.planeInv = plane.partsManager.getInventory();
 			List<PartSlot> slots = plane.partsManager.getSlots();
-			clientData = plane.getClientStats();
+			clientData = plane.getAssets();
 			//System.out.println("client preset = "+clientData);
 			// create plane menu container
 			int x_start = 48, y_start = 15;

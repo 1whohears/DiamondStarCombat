@@ -28,7 +28,6 @@
   "maxAge": 200,
   "presetId": "anm57",
   "presetType": "bomb",
-  "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
   "speed": 0.0
 }

@@ -44,7 +44,6 @@
   "maxAge": 600,
   "presetId": "rgm84",
   "presetType": "track_missile",
-  "rackTypeKey": "dscombat:adl",
   "seeThroWater": 100,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 2.5,

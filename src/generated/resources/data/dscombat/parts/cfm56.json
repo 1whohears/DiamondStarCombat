@@ -1,9 +1,11 @@
 {
   "displayName": "item.dscombat.cfm56",
   "engineType": "PUSH",
-  "externalEntity": "dscombat:cfm56",
+  "externalEntity": "dscombat:external_engine",
   "fuelRate": 0.017,
   "heat": 9.0,
+  "hitbox_height": 0.8,
+  "hitbox_width": 0.8,
   "item": "dscombat:cfm56",
   "presetId": "cfm56",
   "presetType": "internal_engine",

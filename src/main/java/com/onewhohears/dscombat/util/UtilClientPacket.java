@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -86,23 +87,15 @@ public class UtilClientPacket {
 		}
 	}
 	
-	public static void damagePartPacket(int id, String slotId, boolean damaged) {
+	public static void syncPartPacket(int id, String slotId, FriendlyByteBuf buffer) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(slotId);
-			if (slot != null) {
-				if (damaged) slot.setPartDamaged(plane);
-				else slot.setPartRepaired(plane);
+			if (slot != null && slot.getPartData() != null) {
+				slot.getPartData().readBuffer(buffer);
+				slot.getPartData().onReceiveClientSync();
 			}
-		}
-	}
-	
-	public static void setAircraftFuel(int id, float[] fuels) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityVehicle plane) {
-			plane.partsManager.readFuelsForClient(fuels);
 		}
 	}
 	

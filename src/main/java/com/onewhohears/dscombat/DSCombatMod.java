@@ -3,6 +3,7 @@ package com.onewhohears.dscombat;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
+import com.onewhohears.dscombat.data.parts.client.PartClientPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
 import com.onewhohears.dscombat.data.recipe.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
@@ -101,6 +102,7 @@ public class DSCombatMod {
     	if (event.includeClient()) {
     		generator.addProvider(true, new DSCSoundDefinitionGen(generator, event.getExistingFileHelper()));
     		generator.addProvider(true, new VehicleClientPresetGenerator(generator));
+			generator.addProvider(true, new PartClientPresetGenerator(generator));
     	}
     }
     

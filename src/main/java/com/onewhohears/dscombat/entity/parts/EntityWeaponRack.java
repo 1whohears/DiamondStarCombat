@@ -2,24 +2,27 @@ package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.data.parts.instance.WeaponExternalInstance;
+import com.onewhohears.dscombat.data.parts.stats.WeaponExternalStats;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class EntityWeaponRack extends EntityPart {
+public class EntityWeaponRack extends EntityPart<WeaponExternalStats, WeaponExternalInstance<WeaponExternalStats>> {
 	
 	private String weaponModelId;
 	public int lastShootTime;
 	
 	public EntityWeaponRack(EntityType<?> type, Level level) {
-		super(type, level);
+		super(type, level, "xm12");
 	}
 	
 	public int getAmmoNum() {
-		if (!(getVehicle() instanceof EntityVehicle plane)) return 0;
-		WeaponInstance<?> wd = plane.weaponSystem.get(getSlotId());
+		EntityVehicle vehicle = getParentVehicle();
+		if (vehicle == null) return 0;
+		WeaponInstance<?> wd = vehicle.weaponSystem.get(getSlotId());
 		if (wd == null) return 0;
 		return wd.getCurrentAmmo();
 	}
@@ -27,8 +30,9 @@ public class EntityWeaponRack extends EntityPart {
 	public String getWeaponModelId() {
 		if (weaponModelId == null) {
 			weaponModelId = "";
-			if (!(getVehicle() instanceof EntityVehicle plane)) return weaponModelId;
-			WeaponInstance<?> wd = plane.weaponSystem.get(getSlotId());
+			EntityVehicle vehicle = getParentVehicle();
+			if (vehicle == null) return weaponModelId;
+			WeaponInstance<?> wd = vehicle.weaponSystem.get(getSlotId());
 			if (wd == null) return weaponModelId;
 			weaponModelId = wd.getStats().getModelId();
 		}

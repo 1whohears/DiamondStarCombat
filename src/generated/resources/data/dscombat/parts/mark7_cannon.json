@@ -1,9 +1,16 @@
 {
   "displayName": "item.dscombat.mark7_cannon",
-  "externalEntity": "dscombat:mark7_cannon",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 1.7,
+  "hitbox_width": 4.0,
   "item": "dscombat:mark7_cannon",
   "maxAmmo": 36,
   "maxHealth": 200.0,
+  "passenger_offset": {
+    "x": 0.0,
+    "y": 1.5,
+    "z": 0.0
+  },
   "presetId": "mark7_cannon",
   "presetType": "turret",
   "repair_cost": [
@@ -12,6 +19,13 @@
       "num": 12
     }
   ],
+  "rotBounds": {
+    "maxRotX": 15.0,
+    "minRotX": -30.0,
+    "rotRate": 0.9
+  },
+  "shootType": "MARK7",
   "slotType": "mount_super_heavy",
+  "weaponOffset": 1.625,
   "weight": 4500.0
 }

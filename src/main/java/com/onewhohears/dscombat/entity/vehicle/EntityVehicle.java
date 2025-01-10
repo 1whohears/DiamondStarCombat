@@ -6,8 +6,12 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
+import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.entity.CustomAnimEntity;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -44,14 +48,9 @@ import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
-import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.VehicleDamageSource;
-import com.onewhohears.dscombat.entity.parts.EntityChainHook;
-import com.onewhohears.dscombat.entity.parts.EntityGimbal;
-import com.onewhohears.dscombat.entity.parts.EntityPart;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
-import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.item.VehicleInteractItem;
@@ -104,7 +103,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
@@ -114,7 +112,7 @@ import net.minecraftforge.network.PacketDistributor;
  * @author 1whohears
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
-public abstract class EntityVehicle extends Entity implements IEntityAdditionalSpawnData, IREmitter, CustomExplosion {
+public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -124,7 +122,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Integer> FLARE_NUM = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
@@ -132,8 +129,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public static final EntityDataAccessor<PermMode> PERM_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.PERM_MODE);;
 	
 	public static final int HITBOX_PUSH_COOLDOWN = 4;
-	
-	public final String defaultPreset;
+
 	public final VehicleInputManager inputs;
 	public final VehicleSoundManager soundManager;
 	public final VehicleTextureManager textureManager;
@@ -147,19 +143,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	private final Map<Integer, EntityCollideInfo> entityCollideInfo = new HashMap<>();
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
-	/**
-	 * CLIENT ONLY
-	 */
-	private PresetStatsHolder<VehicleClientStats> vehicleClientStats;
-	private PresetStatsHolder<VehicleStats> vehicleStats;
-	
-	/**
-	 * this vehicle's original preset. 
-	 * will be {@link #defaultPreset} if it's not defined in its NBT.
-	 * synched with client.  
-	 */
-	public String preset;
-	private String assetId;
 	
 	/**
 	 * SERVER ONLY
@@ -182,7 +165,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
 	protected double staticFric, kineticFric, airPressure;
 	
-	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks, groundTicks, hitboxRefreshAttempts;
+	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks, groundTicks, hitboxRefreshAttempts, numFlares;
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
 	
@@ -206,13 +189,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	// TODO 2.8 external fuel tanks
 	
 	public EntityVehicle(EntityType<? extends EntityVehicle> entityType, Level level, String defaultPreset) {
-		super(entityType, level);
-		this.defaultPreset = defaultPreset;
-		preset = defaultPreset;
-		vehicleStats = VehiclePresets.get().getHolder(defaultPreset);
-		assetId = getStats().getAssetId();
-		if (level.isClientSide) vehicleClientStats = VehicleClientPresets.get().getHolder(assetId);
-		else vehicleClientStats = null;
+		super(entityType, level, defaultPreset);
 		blocksBuilding = true;
 		inputs = new VehicleInputManager();
 		soundManager = new VehicleSoundManager(this);
@@ -230,7 +207,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		entityData.define(AV, Vec3.ZERO);
 		entityData.define(TEST_MODE, false);
 		entityData.define(NO_CONSUME, false);
-		entityData.define(FLARE_NUM, 0);
 		entityData.define(RADIO_SONG, "");
 		entityData.define(PLAY_IR_TONE, false);
 		entityData.define(RADAR_MODE, RadarMode.ALL);
@@ -260,25 +236,15 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	/**
 	 * if this is a brand-new entity and has no nbt custom data then the fresh entity nbt will
 	 * merge with this vehicle's preset nbt. see {@link VehiclePresets}.
-	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link EntityVehicle#defaultPreset}
+	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link CustomAnimEntity#getDefaultStatsId()}
  	 */
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
+		super.readAdditionalSaveData(nbt);
 		// ORDER MATTERS
 		setTestMode(nbt.getBoolean("test_mode"));
 		setNoConsume(nbt.getBoolean("no_consume"));
-		// check if preset was defined
-		preset = nbt.getString("preset");
-		// if not use the default preset
-		if (preset.isEmpty()) preset = defaultPreset;
-		// check if the preset exists
-		else if (!VehiclePresets.get().has(preset)) {
-			preset = defaultPreset;
-			LOGGER.warn("ERROR: preset "+preset+" doesn't exist!");
-		}
-		// get the preset data
-		vehicleStats = VehiclePresets.get().getHolder(preset);
-		assetId = getStats().getAssetId();
+		// get stats nbt
 		CompoundTag presetNbt = getStats().getDataAsNBT();
 		// merge if this entity hasn't merged yet
 		if (!nbt.getBoolean("merged_preset")) nbt.merge(presetNbt);
@@ -306,7 +272,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 
 	@Override
 	protected void addAdditionalSaveData(CompoundTag nbt) {
-		nbt.putString("preset", preset);
+		super.addAdditionalSaveData(nbt);
 		nbt.putBoolean("test_mode", isTestMode());
 		nbt.putBoolean("no_consume", isNoConsume());
 		nbt.putBoolean("merged_preset", true);
@@ -338,19 +304,13 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	@Override
 	public void readSpawnData(FriendlyByteBuf buffer) {
-		preset = buffer.readUtf();
+		super.readSpawnData(buffer);
 		int weaponIndex = buffer.readInt();
 		boolean gear = buffer.readBoolean();
 		boolean freeLook = buffer.readBoolean();
 		float throttle = buffer.readFloat();
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
 		// ORDER MATTERS
-		// PRESET STUFF
-		if (VehiclePresets.get().has(preset)) {
-			vehicleStats = VehiclePresets.get().getHolder(preset);
-			assetId = getStats().getAssetId();
-			vehicleClientStats = VehicleClientPresets.get().getHolder(assetId);
-		}
 		textureManager.read(buffer);
 		soundManager.write(buffer);
 		// ORDER MATTERS
@@ -365,7 +325,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	
 	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
-		buffer.writeUtf(preset);
+		super.writeSpawnData(buffer);
 		buffer.writeInt(weaponSystem.getSelectedIndex());
 		buffer.writeBoolean(isLandingGear());
 		buffer.writeBoolean(isDriverCameraLocked());
@@ -383,11 +343,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Override
 	public void onAddedToWorld() {
 		super.onAddedToWorld();
-	}
-	
-	public VehicleStats getStats() {
-		if (vehicleStats == null) return null;
-		return vehicleStats.get();
 	}
 	
 	public abstract VehicleType getVehicleType();
@@ -908,7 +863,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		maxSpinThrust = partsManager.getTotalSpinThrust();
 		currentFuel = partsManager.getCurrentFuel();
 		maxFuel = partsManager.getMaxFuel();
-		hasFlares = partsManager.getFlares().size() > 0;
+		hasFlares = !partsManager.getFlares().isEmpty();
+		numFlares = partsManager.getNumFlares();
 		airPressure = UtilVehicleEntity.getAirPressure(this);
 		if (isOnGround()) ++groundTicks;
 		else groundTicks = 0;
@@ -1228,7 +1184,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 			}
 			boolean consumeFuel = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
 			if (consume && consumeFuel) tickFuel();
-			setFlareNum(partsManager.getNumFlares());
 			if (inputs.flare && tickCount - flareTicks >= 10) {
 				boolean consumeFlares = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
 				flare(controller, consume && consumeFlares);
@@ -1274,7 +1229,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public void tickParts() {
 		findGimbalForPilotCamera();
 		if (level.isClientSide) partsManager.clientTickParts();
-		else partsManager.tickParts();
+		else partsManager.serverTickParts();
 	}
 	
 	/**
@@ -1569,25 +1524,25 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 				getSoundSource(), 0.5f, 1.0f);
 	}
 	
-	private boolean ridePilotSeat(Entity e, List<EntitySeat> seats) {
-		for (EntitySeat seat : seats) 
+	private boolean ridePilotSeat(Entity e, List<EntityRidablePart> seats) {
+		for (EntityRidablePart seat : seats)
 			if (seat.isPilotSeat()) 
 				return e.startRiding(seat);
 		return false;
 	}
 	
 	public boolean ridePassengerSeat(Entity e) {
-		List<EntitySeat> seats = getSeats();
-		for (EntitySeat seat : seats) 
+		List<EntityRidablePart> seats = getSeats();
+		for (EntityRidablePart seat : seats)
 			if (!seat.isPilotSeat() && e.startRiding(seat)) 
 				return true;
 		return false;
 	}
 	
 	public boolean rideAvailableSeat(Entity e) {
-		List<EntitySeat> seats = getSeats();
+		List<EntityRidablePart> seats = getSeats();
 		if (ridePilotSeat(e, seats)) return true;
-		for (EntitySeat seat : seats) 
+		for (EntityRidablePart seat : seats)
 			if (e.startRiding(seat)) {
 				return true;
 			}
@@ -1595,7 +1550,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public boolean switchSeat(Entity e) {
-		List<EntitySeat> seats = getSeats();
+		List<EntityRidablePart> seats = getSeats();
 		int seatIndex = -1;
 		for (int i = 0; i < seats.size(); ++i) {
 			Player p = seats.get(i).getPlayer();
@@ -1637,7 +1592,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	@Nullable
 	@Override
     public Entity getControllingPassenger() {
-        for (EntitySeat seat : getSeats()) 
+        for (EntityRidablePart seat : getSeats())
         	if (seat.isPilotSeat()) 
         		return seat.getPlayer();
         return null;
@@ -1647,7 +1602,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public Entity getControllingPlayerOrBot() {
 		Player playerAlt = null;
 		Entity alt = null;
-		for (EntitySeat seat : getSeats()) {
+		for (EntityRidablePart seat : getSeats()) {
 			if (seat.isPilotSeat()) {
 				Player player = seat.getPlayer();
 				if (player != null) return player;
@@ -1665,7 +1620,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public boolean isPlayerRiding() {
-		for (EntitySeat seat : getSeats()) 
+		for (EntityRidablePart seat : getSeats())
 			if (seat.getPlayer() != null) 
 				return true;
 		return false;
@@ -1679,7 +1634,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 	
 	public boolean isPlayerOrBotRiding() {
-		for (EntitySeat seat : getSeats()) 
+		for (EntityRidablePart seat : getSeats())
 			if (seat.isPlayerOrBotRiding()) 
 				return true;
 		return false;
@@ -1701,8 +1656,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
 	
 	@Nullable
-	public EntitySeat getPassengerSeat(Entity p) {
-		for (EntitySeat seat : getSeats()) 
+	public EntityRidablePart getPassengerSeat(Entity p) {
+		for (EntityRidablePart seat : getSeats())
 			if (p.equals(seat.getPassenger())) 
 				return seat;
 		return null;
@@ -1714,7 +1669,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 		List<Entity> list = getPassengers();
 		if (list.contains(e)) return true;
 		for (Entity l : list) {
-			if (l instanceof EntitySeat seat) {
+			if (l instanceof EntityRidablePart seat) {
 				List<Entity> list2 = seat.getPassengers();
 				if (list2.contains(e)) return true;
 			}
@@ -1724,7 +1679,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 
 	@Override
 	public boolean hasPassenger(@NotNull Predicate<Entity> pPredicate) {
-		for (EntitySeat seat : this.getSeats()) {
+		for (EntityRidablePart seat : this.getSeats()) {
 			if (pPredicate.test(seat.getPassenger())) return true;
 		}
 		return false;
@@ -2201,7 +2156,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     }
 
 	public Component getCantBecomeItemReason(Player player) {
-		EntitySeat seat = getPassengerSeat(player);
+		EntityRidablePart seat = getPassengerSeat(player);
 		if (seat == null) return UtilMCText.translatable("error.dscombat.not_a_passenger");
 		if (!seat.canPassengerShootParentWeapon()) return UtilMCText.translatable("error.dscombat.not_a_pilot");
 		int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
@@ -2363,7 +2318,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     public List<Player> getRidingPlayers() {
     	List<Player> players = new ArrayList<>();
-    	for (EntitySeat seat : getSeats()) {
+    	for (EntityRidablePart seat : getSeats()) {
     		Player p = seat.getPlayer();
 			if (p != null) players.add(p); 
     	}
@@ -2374,10 +2329,10 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return getPartBySlotId(PartSlot.PILOT_SLOT_NAME);
     }
     
-    public List<EntitySeat> getSeats() {
-    	List<EntitySeat> seats = new ArrayList<>();
+    public List<EntityRidablePart> getSeats() {
+    	List<EntityRidablePart> seats = new ArrayList<>();
     	for (Entity e : getPassengers())
-    		if (e instanceof EntitySeat seat) 
+    		if (e instanceof EntityRidablePart seat)
     			seats.add(seat);
     	return seats;
     }
@@ -2458,14 +2413,14 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-    	if (getStats() == null) return super.getDimensions(pose);
+    	if (!isStatsHolderLoaded()) return super.getDimensions(pose);
     	return getStats().dimensions;
     }
     
     @Override
     protected AABB makeBoundingBox() {
     	if (isCustomBoundingBox()) return makeCustomBoundingBox();
-     	return getDimensions(getPose()).makeBoundingBox(position());
+		return getDimensions(getPose()).makeBoundingBox(position());
     }
     
     protected AABB makeCustomBoundingBox() {
@@ -2511,7 +2466,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
      * consume fuel every server tick
      */
     public void tickFuel() {
-    	partsManager.tickFuel(!level.isClientSide);
+    	partsManager.tickFuel();
     }
     
     /**
@@ -2552,11 +2507,8 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	refillFlares();
     	weaponSystem.refillAll();
 		for (EntityTurret t : getTurrets()) {
-			WeaponInstance<?> wd = t.getWeaponData();
-			if (wd == null) continue;
-			wd.addAmmo(100000);
-			t.setAmmo(wd.getCurrentAmmo());
-			t.updateDataAmmo();
+			TurretInstance<?> ti = t.getPartInstance();
+			if (ti != null) ti.setWeaponAmmo(100000);
 		}
 		level.playSound(null, this, SoundEvents.VILLAGER_WORK_TOOLSMITH, 
     			SoundSource.PLAYERS, 1f, 1f);
@@ -2654,15 +2606,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
     
     public int getFlareNum() {
-    	return entityData.get(FLARE_NUM);
-    }
-    
-    /**
-     * outside mods shouldn't use this. does not change the actual number of flares.
-     * @param flares a number of flares to sync with the client
-     */
-    public void setFlareNum(int flares) {
-    	entityData.set(FLARE_NUM, flares);
+		return numFlares;
     }
     
     public boolean hasFlares() {
@@ -3088,20 +3032,6 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
     	return getStats().isAircraft();
     }
     
-    /**
-     * CLIENT ONLY
-     * @return null if server side
-     */
-    @Nullable
-    public VehicleClientStats getClientStats() {
-		if (vehicleClientStats == null) return null;
-    	return vehicleClientStats.get();
-    }
-    
-    public String getClientStatsId() {
-    	return assetId;
-    }
-    
     public int getGroundTicks() {
     	return groundTicks;
     }
@@ -3159,7 +3089,7 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	}
 
 	public boolean isPilotOrCopilot(Entity entity) {
-		EntitySeat seat = getPassengerSeat(entity);
+		EntityRidablePart seat = getPassengerSeat(entity);
 		if (seat == null) return false;
 		return seat.canPassengerShootParentWeapon();
 	}
@@ -3233,5 +3163,19 @@ public abstract class EntityVehicle extends Entity implements IEntityAdditionalS
 	public boolean isStationaryRadar() {
 		return getStats().isStationaryRadar();
 	}
-    
+
+	@Override
+	public @Nullable String getAssetId() {
+		return getStats().getAssetId();
+	}
+
+	@Override
+	public @NotNull JsonPresetReloadListener<VehicleStats> getPresets() {
+		return VehiclePresets.get();
+	}
+
+	@Override
+	public @Nullable JsonPresetAssetReader<VehicleClientStats> getClientPresets() {
+		return VehicleClientPresets.get();
+	}
 }

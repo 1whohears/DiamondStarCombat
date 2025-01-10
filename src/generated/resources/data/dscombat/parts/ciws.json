@@ -1,9 +1,16 @@
 {
   "displayName": "item.dscombat.ciws",
-  "externalEntity": "dscombat:ciws",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 2.5,
+  "hitbox_width": 1.5,
   "item": "dscombat:ciws",
   "maxAmmo": 500,
   "maxHealth": 80.0,
+  "passenger_offset": {
+    "x": 1.0,
+    "y": 0.5,
+    "z": 0.0
+  },
   "presetId": "ciws",
   "presetType": "turret",
   "repair_cost": [
@@ -12,6 +19,13 @@
       "num": 5
     }
   ],
+  "rotBounds": {
+    "maxRotX": 30.0,
+    "minRotX": -75.0,
+    "rotRate": 2.0
+  },
+  "shootType": "NORMAL",
   "slotType": "mount_light",
+  "weaponOffset": 0.6875,
   "weight": 2500.0
 }

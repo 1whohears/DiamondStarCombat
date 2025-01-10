@@ -39,14 +39,6 @@ public class AbstractWeaponBuilders {
 			return setString("shootSoundKey", shootSoundKey.toString());
 		}
 		
-		public C setRackEntityType(ResourceLocation rackTypeKey) {
-			return setString("rackTypeKey", rackTypeKey.toString());
-		}
-		
-		public C setNoRack() {
-			return setString("rackTypeKey", "");
-		}
-		
 		public C setCompatibleWeaponPart(String... compatibleWeaponPart) {
 			getData().add("compatibleWeaponPart", UtilParse.stringArrayToJsonArray(compatibleWeaponPart));
 			return (C) this;

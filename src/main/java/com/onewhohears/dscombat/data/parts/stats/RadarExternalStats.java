@@ -28,7 +28,7 @@ public class RadarExternalStats extends RadarPartStats {
 	
 	@Override
 	public EntityType<?> getDefaultExternalEntity() {
-		return ModEntities.SURVEY_ALL_A.get();
+		return ModEntities.EXTERNAL_RADAR.get();
 	}
 	
 	@Override

@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.mark7",
+  "model_data": {
+    "hard_coded_model_anims": "mark7"
+  },
+  "presetId": "mark7",
+  "presetType": "turret"
+}

@@ -6,17 +6,13 @@ import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.client.entityscreen.instance.*;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
-import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
-import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.client.model.obj.custom.*;
 import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBomb1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelBullet1;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelGruetzBB;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelMiniGunTurret;
 import com.onewhohears.dscombat.client.model.weapon.EntityModelMissile1;
-import com.onewhohears.dscombat.client.model.weapon.EntityModelSteveUpSmash;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.client.particle.AfterBurnerParticle;
 import com.onewhohears.dscombat.client.particle.BigFlameParticle;
@@ -25,18 +21,19 @@ import com.onewhohears.dscombat.client.particle.FlareParticle;
 import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
 import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
-import com.onewhohears.dscombat.client.renderer.RendererEntityTurret;
 import com.onewhohears.dscombat.client.renderer.RendererEntityWeapon;
 import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
 import com.onewhohears.dscombat.client.screen.VehiclePartsScreen;
 import com.onewhohears.dscombat.client.screen.VehicleStorageScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
+import com.onewhohears.dscombat.data.parts.client.PartAssets;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModFluids;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.ControllableAnimPlayer;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KFAnimPlayers;
+import com.onewhohears.onewholibs.client.renderer.RendererCustomAnimObjEntity;
 import com.onewhohears.onewholibs.client.renderer.RendererObjEntity;
 import com.onewhohears.dscombat.client.renderer.RendererObjVehicle;
 import com.onewhohears.dscombat.client.renderer.RendererObjWeapon;
@@ -81,11 +78,11 @@ public final class ClientModEvents {
 		//event.registerLayerDefinition(EntityModelLightMissileRack.LAYER_LOCATION, EntityModelLightMissileRack::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelHeavyMissileRack.LAYER_LOCATION, EntityModelHeavyMissileRack::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelXM12.LAYER_LOCATION, EntityModelXM12::createBodyLayer);
-		event.registerLayerDefinition(EntityModelMiniGunTurret.LAYER_LOCATION, EntityModelMiniGunTurret::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelMiniGunTurret.LAYER_LOCATION, EntityModelMiniGunTurret::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelMrBudgerTank.LAYER_LOCATION, EntityModelMrBudgerTank::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelHeavyTankTurret.LAYER_LOCATION, EntityModelHeavyTankTurret::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelSmallRoller.LAYER_LOCATION, EntityModelSmallRoller::createBodyLayer);
-		event.registerLayerDefinition(EntityModelSteveUpSmash.LAYER_LOCATION, EntityModelSteveUpSmash::createBodyLayer);
+		//event.registerLayerDefinition(EntityModelSteveUpSmash.LAYER_LOCATION, EntityModelSteveUpSmash::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelNathanBoat.LAYER_LOCATION, EntityModelNathanBoat::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelAndolfSub.LAYER_LOCATION, EntityModelAndolfSub::createBodyLayer);
 		//event.registerLayerDefinition(EntityModelOrangeTesla.LAYER_LOCATION, EntityModelOrangeTesla::createBodyLayer);
@@ -125,81 +122,11 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.TRACK_MISSILE.get(), RendererObjWeapon::new);
 		event.registerEntityRenderer(ModEntities.ANTI_RADAR_MISSILE.get(), RendererObjWeapon::new);
 		event.registerEntityRenderer(ModEntities.TORPEDO_MISSILE.get(), RendererObjWeapon::new);
-		// TURRETS
-		event.registerEntityRenderer(ModEntities.MINIGUN_TURRET.get(), 
-				(context) -> new RendererEntityTurret<>(context,
-                        new EntityModelMiniGunTurret(models.bakeLayer(EntityModelMiniGunTurret.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/minigun_turret.png")));
-		event.registerEntityRenderer(ModEntities.HEAVY_TANK_TURRET.get(), 
-				(context) -> new RendererObjEntity<>(context,
-						new AutoloadingTurretModel()));
-		event.registerEntityRenderer(ModEntities.STEVE_UP_SMASH.get(), 
-				(context) -> new RendererEntityTurret<>(context,
-                        new EntityModelSteveUpSmash(models.bakeLayer(EntityModelSteveUpSmash.LAYER_LOCATION)),
-                        new ResourceLocation(DSCombatMod.MODID, "textures/entities/steve_up_smash.png")));
-		event.registerEntityRenderer(ModEntities.SAM_LAUNCHER.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new SamLauncherModel()));
-		event.registerEntityRenderer(ModEntities.MLS.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new MLSModel()));
-		event.registerEntityRenderer(ModEntities.TORPEDO_TUBES.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new TorpedoTubesModel()));
-		event.registerEntityRenderer(ModEntities.AA_TURRET.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new AATurretModel()));
-		event.registerEntityRenderer(ModEntities.CIWS.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new CIWSModel()));
-		event.registerEntityRenderer(ModEntities.MARK7_CANNON.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new Mark7GunModel()));
-		event.registerEntityRenderer(ModEntities.MARK45_CANNON.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new Mark45GunModel()));
-		event.registerEntityRenderer(ModEntities.MLRS.get(),
-				(context) -> new RendererObjEntity<>(context,
-						new MLRSModel()));
-		event.registerEntityRenderer(ModEntities.ARTILLERY_CANNON.get(),
-				(context) -> new RendererObjEntity<>(context,
-						new ArtilleryCannonModel()));
-		// RADARS
-		event.registerEntityRenderer(ModEntities.AIR_SCAN_A.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new Radar1Model()));
-		event.registerEntityRenderer(ModEntities.AIR_SCAN_B.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new Radar2Model()));
-		event.registerEntityRenderer(ModEntities.SURVEY_ALL_A.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new StickRadarModel()));
-		event.registerEntityRenderer(ModEntities.SURVEY_ALL_B.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new BallRadarModel()));
-		// MISSILE RACKS
-		event.registerEntityRenderer(ModEntities.XM12.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new ObjPartModel<>("xm12")));
-		event.registerEntityRenderer(ModEntities.LIGHT_MISSILE_RACK.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new LightMissileRackModel()));
-		event.registerEntityRenderer(ModEntities.HEAVY_MISSILE_RACK.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new HeavyMissileRackModel()));
-		event.registerEntityRenderer(ModEntities.BOMB_RACK.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new BombRackModel()));
-		event.registerEntityRenderer(ModEntities.ADL.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new ObjPartModel<>("adl")));
-		event.registerEntityRenderer(ModEntities.VLS.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new VLSModel()));
-		// EXTERNAL ENGINES
-		event.registerEntityRenderer(ModEntities.CFM56.get(), 
-				(context) -> new RendererObjEntity<>(context,
-                        new ObjPartModel<>("cfm56")));
+		// PARTS
+		event.registerEntityRenderer(ModEntities.TURRET.get(), RendererCustomAnimObjEntity::new);
+		event.registerEntityRenderer(ModEntities.EXTERNAL_WEAPON_PART.get(), RendererCustomAnimObjEntity::new);
+		event.registerEntityRenderer(ModEntities.EXTERNAL_ENGINE.get(), RendererCustomAnimObjEntity::new);
+		event.registerEntityRenderer(ModEntities.EXTERNAL_RADAR.get(), RendererCustomAnimObjEntity::new);
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);
@@ -221,6 +148,7 @@ public final class ClientModEvents {
 	public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
 		HardCodedModelAnims.reload();
 		event.registerReloadListener(VehicleClientPresets.get());
+		event.registerReloadListener(PartAssets.get());
 	}
 	
 	@SubscribeEvent

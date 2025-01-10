@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.minigun_turret",
+  "model_data": {
+    "hard_coded_model_anims": "minigun_turret"
+  },
+  "presetId": "minigun_turret",
+  "presetType": "turret"
+}

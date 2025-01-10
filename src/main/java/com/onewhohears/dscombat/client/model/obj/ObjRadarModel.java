@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import javax.annotation.Nullable;
 
+import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
@@ -24,7 +25,11 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 	}
 
 	public ObjRadarModel(String modelId, String largeModelId, String... animDataIds) {
-		super(modelId, animDataIds);
+		this(modelId, largeModelId, new JsonArray(), animDataIds);
+	}
+
+	public ObjRadarModel(String modelId, String largeModelId, JsonArray customAnims, String... animDataIds) {
+		super(modelId, customAnims, animDataIds);
 		this.largeModelId = largeModelId;
 	}
 	
@@ -48,7 +53,7 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 	
 	@Override
 	public CompositeRenderable getModel() {
-		if (currentMastType.isLarge() && largeModelId != null) {
+		if (currentMastType.isLarge() && largeModelId != null && !largeModelId.isEmpty()) {
 			if (largeModel == null) largeModel = ObjEntityModels.get().getBakedModel(largeModelId); 
 			return largeModel;
 		}
@@ -57,21 +62,21 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 	
 	@Override
 	public ModelOverrides getModelOverride() {
-		if (currentMastType.isLarge() && largeModelId != null) {
+		if (currentMastType.isLarge() && largeModelId != null && !largeModelId.isEmpty()) {
 			if (largeOverride == null) largeOverride = ObjEntityModels.get().getModelOverride(largeModelId); 
 			return largeOverride;
 		}
 		return super.getModelOverride();
 	}
 	
-	public static enum MastType {
+	public enum MastType {
 		NONE("", 0),
 		THIN("thin_mast", 3.5f),
 		NORMAL("normal_mast", 3.125f),
 		LARGE("thick_mast", 3);
 		public final String modelId;
 		public final float radarTopPos;
-		private MastType(String modelId, float radarTopPos) {
+		MastType(String modelId, float radarTopPos) {
 			this.modelId = modelId;
 			this.radarTopPos = radarTopPos;
 		}

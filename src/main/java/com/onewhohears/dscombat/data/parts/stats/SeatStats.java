@@ -8,13 +8,18 @@ import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.init.ModEntities;
 
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.phys.Vec3;
 
 public class SeatStats extends PartStats {
 
+	private final Vec3 passenger_offset;
+
 	public SeatStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
+		passenger_offset = UtilParse.readVec3(json, "passenger_offset");
 	}
 
 	@Override
@@ -40,5 +45,9 @@ public class SeatStats extends PartStats {
 	@Override
 	public PartInstance<?> createFilledPartInstance(String param) {
 		return super.createFilledPartInstance(param);
+	}
+
+	public Vec3 getPassengerOffsets() {
+		return passenger_offset;
 	}
 }

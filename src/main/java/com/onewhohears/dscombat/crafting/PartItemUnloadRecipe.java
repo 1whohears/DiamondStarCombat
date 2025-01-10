@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nonnull;
 
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
+import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;

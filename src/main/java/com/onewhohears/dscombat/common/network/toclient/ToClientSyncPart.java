@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 
@@ -12,29 +13,32 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToClientVehicleFuel extends IPacket {
+public class ToClientSyncPart extends IPacket {
 	
-	public final int id;
-	public final float[] fuels;
+	private final int id;
+	private final String slotId;
+	private PartInstance<?> instance;
+	private FriendlyByteBuf buffer;
 	
-	public ToClientVehicleFuel(EntityVehicle plane) {
-		this.id = plane.getId();
-		this.fuels = plane.partsManager.getFuelsForClient();
+	public ToClientSyncPart(EntityVehicle vehicle, PartInstance<?> instance) {
+		this.id = vehicle.getId();
+		this.slotId = instance.getSlotId();
+		this.instance = instance;
 	}
 	
-	public ToClientVehicleFuel(FriendlyByteBuf buffer) {
-		//super(buffer);
-		this.id = buffer.readInt();
-		int num = buffer.readInt();
-		fuels = new float[num];
-		for (int i = 0 ; i < num; ++i) fuels[i] = buffer.readFloat();
+	public ToClientSyncPart(FriendlyByteBuf buffer) {
+		super(buffer);
+		id = buffer.readInt();
+		slotId = buffer.readUtf();
+		buffer.readUtf(); // read preset id cause it ain't needed
+		this.buffer = buffer;
 	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
-		buffer.writeInt(fuels.length);
-		for (int i = 0; i < fuels.length; ++i) buffer.writeFloat(fuels[i]);
+		buffer.writeUtf(slotId);
+		instance.writeBuffer(buffer);
 	}
 
 	@Override
@@ -42,7 +46,7 @@ public class ToClientVehicleFuel extends IPacket {
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilClientPacket.setAircraftFuel(id, fuels);
+				UtilClientPacket.syncPartPacket(id, slotId, this.buffer);
 				success.set(true);
 			});
 		});

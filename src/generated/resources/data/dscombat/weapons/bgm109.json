@@ -45,7 +45,6 @@
   "maxAge": 172,
   "presetId": "bgm109",
   "presetType": "track_missile",
-  "rackTypeKey": "dscombat:vls",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 3.5,
   "targetType": "AIR",

@@ -36,7 +36,6 @@
   "maxAge": 300,
   "presetId": "gruetz_bunker_buster",
   "presetType": "bunker_buster",
-  "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
   "speed": 0.0
 }

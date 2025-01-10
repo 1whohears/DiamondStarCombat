@@ -1,0 +1,8 @@
+{
+  "dX": 0.3,
+  "dY": 0.5,
+  "displayName": "preset.dscombat.heavy_missile_rack",
+  "maxAmmoNum": 3,
+  "presetId": "heavy_missile_rack",
+  "presetType": "weapon_rack"
+}

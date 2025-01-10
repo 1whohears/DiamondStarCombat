@@ -1,9 +1,16 @@
 {
   "displayName": "item.dscombat.mark45_cannon",
-  "externalEntity": "dscombat:mark45_cannon",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 1.5,
+  "hitbox_width": 2.0,
   "item": "dscombat:mark45_cannon",
   "maxAmmo": 50,
   "maxHealth": 120.0,
+  "passenger_offset": {
+    "x": 0.0,
+    "y": 1.5,
+    "z": 0.0
+  },
   "presetId": "mark45_cannon",
   "presetType": "turret",
   "repair_cost": [
@@ -12,6 +19,13 @@
       "num": 6
     }
   ],
+  "rotBounds": {
+    "maxRotX": 15.0,
+    "minRotX": -45.0,
+    "rotRate": 1.1
+  },
+  "shootType": "NORMAL",
   "slotType": "mount_light",
+  "weaponOffset": 1.5625,
   "weight": 3000.0
 }

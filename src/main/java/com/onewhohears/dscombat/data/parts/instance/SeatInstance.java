@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.parts.instance;
 
 import com.onewhohears.dscombat.data.parts.stats.SeatStats;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;

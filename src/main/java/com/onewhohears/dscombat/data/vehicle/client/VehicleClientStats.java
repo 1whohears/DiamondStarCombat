@@ -10,10 +10,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.VehicleScreenMapReader;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
-import com.onewhohears.onewholibs.data.jsonpreset.PresetBuilder;
+import com.onewhohears.onewholibs.data.jsonpreset.*;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -21,37 +18,27 @@ import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class VehicleClientStats extends JsonPresetStats {
+public class VehicleClientStats extends CustomAnimStats<ObjVehicleModel<EntityVehicle>, EntityVehicle> {
 	
 	private ResourceLocation background;
 	private HashMap<String, UIPos> slotsPos;
-	private ObjVehicleModel<EntityVehicle> model;
 	private List<EntityScreenData> screens;
 	private boolean dontCull = false;
 	
 	public VehicleClientStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 	}
-	
-	public ObjVehicleModel<EntityVehicle> getModel() {
-		if (model != null) return model;
-		if (!getJsonData().has("model_data")) {
-			model = new ObjVehicleModel<>(getId());
-			return model;
+
+	@Override
+	protected ObjVehicleModel<EntityVehicle> createModel() {
+		if (getJsonData().has("model_data")) {
+			JsonObject model_data = getJsonData().get("model_data").getAsJsonObject();
+			dontCull = UtilParse.getBooleanSafe(model_data, "dont_cull", false);
+			if (model_data.has("hard_coded_model_anims")) {
+				return HardCodedModelAnims.get(model_data.get("hard_coded_model_anims").getAsString());
+			}
 		}
-		JsonObject model_data = getJsonData().get("model_data").getAsJsonObject();
-		dontCull = UtilParse.getBooleanSafe(model_data, "dont_cull", false);
-		if (model_data.has("hard_coded_model_anims")) {
-			model = HardCodedModelAnims.get(model_data.get("hard_coded_model_anims").getAsString());
-			if (model != null) return model;
-		}
-		String model_id = getId();
-		if (model_data.has("model_id")) model_id = model_data.get("model_id").getAsString();
-		String[] animDataIds = UtilParse.getStringArraySafe(model_data, "anim_data");
-		if (model_data.has("custom_anims")) 
-			model = new ObjVehicleModel<>(model_id, model_data.get("custom_anims").getAsJsonArray(), animDataIds);
-		else model = new ObjVehicleModel<>(model_id, animDataIds);
-		return model;
+		return new ObjVehicleModel<>(getModelId(), getCustomAnims(), getKeyframeAnimIds());
 	}
 	
 	public List<EntityScreenData> getScreens() {

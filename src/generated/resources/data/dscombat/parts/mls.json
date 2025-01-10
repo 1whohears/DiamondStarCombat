@@ -1,9 +1,16 @@
 {
   "displayName": "item.dscombat.mls",
-  "externalEntity": "dscombat:mls",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 2.5,
+  "hitbox_width": 2.0,
   "item": "dscombat:mls",
   "maxAmmo": 4,
   "maxHealth": 60.0,
+  "passenger_offset": {
+    "x": 1.2,
+    "y": 0.0,
+    "z": 0.0
+  },
   "presetId": "mls",
   "presetType": "turret",
   "repair_cost": [
@@ -12,6 +19,13 @@
       "num": 9
     }
   ],
+  "rotBounds": {
+    "maxRotX": 20.0,
+    "minRotX": -20.0,
+    "rotRate": 1.9
+  },
+  "shootType": "NORMAL",
   "slotType": "mount_heavy",
+  "weaponOffset": 1.0,
   "weight": 6000.0
 }

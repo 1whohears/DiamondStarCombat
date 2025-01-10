@@ -25,7 +25,6 @@
   "modelId": "20mm",
   "presetId": "15mm",
   "presetType": "bullet",
-  "rackTypeKey": "dscombat:xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
   "speed": 11.0
 }

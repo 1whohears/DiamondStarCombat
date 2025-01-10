@@ -46,7 +46,6 @@
   "maxAge": 400,
   "presetId": "pac3",
   "presetType": "track_missile",
-  "rackTypeKey": "",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 4.0,
   "targetType": "AIR",

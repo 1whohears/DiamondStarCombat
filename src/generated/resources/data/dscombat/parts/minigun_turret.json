@@ -1,9 +1,16 @@
 {
   "displayName": "item.dscombat.minigun_turret",
-  "externalEntity": "dscombat:minigun_turret",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 1.5,
+  "hitbox_width": 1.0,
   "item": "dscombat:minigun_turret",
   "maxAmmo": 1000,
   "maxHealth": 40.0,
+  "passenger_offset": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
   "presetId": "minigun_turret",
   "presetType": "turret",
   "repair_cost": [
@@ -12,6 +19,13 @@
       "num": 4
     }
   ],
+  "rotBounds": {
+    "maxRotX": 50.0,
+    "minRotX": -50.0,
+    "rotRate": 2.5
+  },
+  "shootType": "NORMAL",
   "slotType": "mount_light",
+  "weaponOffset": 0.8,
   "weight": 1500.0
 }

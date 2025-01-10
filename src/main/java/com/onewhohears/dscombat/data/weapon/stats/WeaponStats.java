@@ -46,7 +46,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private final boolean canShootOnGround;
 	private final String entityTypeKey;
 	private final String shootSoundKey;
-	private final String rackTypeKey;
 	private final String[] compatibleWeaponPart;
 	private final String itemKey;
 	private final String modelId;
@@ -55,7 +54,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private NonNullList<Ingredient> ingredients;
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
-	private EntityType<?> rackType;
 	
 	public WeaponStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -65,7 +63,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 		this.canShootOnGround = UtilParse.getBooleanSafe(json, "canShootOnGround", false);
 		this.entityTypeKey = UtilParse.getStringSafe(json, "entityTypeKey", "");
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
-		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringArraySafe(json, "compatibleWeaponPart");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
 		this.modelId = UtilParse.getStringSafe(json, "modelId", getId());
@@ -122,13 +119,6 @@ public abstract class WeaponStats extends JsonPresetStats {
 			shootSound = UtilSound.getSoundById(shootSoundKey, ModSounds.BULLET_SHOOT_1);
 		}
 		return shootSound;
-	}
-	
-	public EntityType<?> getRackEntityType() {
-		if (rackType == null) {
-			rackType = UtilEntity.getEntityType(rackTypeKey, ModEntities.XM12.get());
-		}
-		return rackType;
 	}
 	
 	private Item item;

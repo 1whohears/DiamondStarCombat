@@ -1,9 +1,16 @@
 {
   "displayName": "item.dscombat.artillery_cannon",
-  "externalEntity": "dscombat:artillery_cannon",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 1.5,
+  "hitbox_width": 2.0,
   "item": "dscombat:artillery_cannon",
   "maxAmmo": 50,
   "maxHealth": 180.0,
+  "passenger_offset": {
+    "x": 0.0,
+    "y": 1.2,
+    "z": 0.0
+  },
   "presetId": "artillery_cannon",
   "presetType": "turret",
   "repair_cost": [
@@ -12,6 +19,13 @@
       "num": 15
     }
   ],
+  "rotBounds": {
+    "maxRotX": 15.0,
+    "minRotX": -35.0,
+    "rotRate": 1.0
+  },
+  "shootType": "NORMAL",
   "slotType": "mount_super_heavy",
+  "weaponOffset": 0.79,
   "weight": 6000.0
 }

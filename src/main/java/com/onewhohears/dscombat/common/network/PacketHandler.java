@@ -57,11 +57,6 @@ public final class PacketHandler {
 			.decoder(ToClientAddPart::new)
 			.consumerMainThread(ToClientAddPart::handle)
 			.add();
-		net.messageBuilder(ToClientVehicleFuel.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientVehicleFuel::encode)
-			.decoder(ToClientVehicleFuel::new)
-			.consumerMainThread(ToClientVehicleFuel::handle)
-			.add();
 		net.messageBuilder(ToServerCraftWeapon.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerCraftWeapon::encode)
 			.decoder(ToServerCraftWeapon::new)
@@ -132,10 +127,10 @@ public final class PacketHandler {
 			.decoder(ToServerGetHookChains::new)
 			.consumerMainThread(ToServerGetHookChains::handle)
 			.add();
-		net.messageBuilder(ToClientDamagePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientDamagePart::encode)
-			.decoder(ToClientDamagePart::new)
-			.consumerMainThread(ToClientDamagePart::handle)
+		net.messageBuilder(ToClientSyncPart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientSyncPart::encode)
+			.decoder(ToClientSyncPart::new)
+			.consumerMainThread(ToClientSyncPart::handle)
 			.add();
 		net.messageBuilder(ToServerSyncRotBoxPassengerPos.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerSyncRotBoxPassengerPos::encode)

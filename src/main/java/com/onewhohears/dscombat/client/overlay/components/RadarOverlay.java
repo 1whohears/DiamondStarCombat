@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -16,7 +17,6 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -41,7 +41,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (Minecraft.getInstance().screen != null) return false;
-        if (!(getPlayerVehicle() instanceof EntitySeat seat)) return false;
+        if (!(getPlayerVehicle() instanceof EntityRidablePart seat)) return false;
         EntityVehicle vehicle = seat.getParentVehicle();
         if (vehicle == null) return false;
         RadarSystem radar = vehicle.radarSystem;
@@ -54,7 +54,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
-        EntitySeat seat = (EntitySeat) getPlayerVehicle();
+        EntityRidablePart seat = (EntityRidablePart) getPlayerVehicle();
         assert seat != null;
 
         EntityVehicle vehicle = seat.getParentVehicle();

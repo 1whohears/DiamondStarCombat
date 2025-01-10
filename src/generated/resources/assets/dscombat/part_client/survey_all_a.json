@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.survey_all_a",
+  "model_data": {
+    "hard_coded_model_anims": "survey_all_a"
+  },
+  "presetId": "survey_all_a",
+  "presetType": "radar"
+}

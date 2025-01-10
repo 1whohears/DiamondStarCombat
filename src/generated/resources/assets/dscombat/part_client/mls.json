@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.mls",
+  "model_data": {
+    "hard_coded_model_anims": "mls"
+  },
+  "presetId": "mls",
+  "presetType": "turret"
+}

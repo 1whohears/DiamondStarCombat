@@ -19,6 +19,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
@@ -26,20 +27,23 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public abstract class PartStats extends JsonPresetStats {
 	
-	private final float weight;
+	private final float weight, hitbox_width, hitbox_height;
 	private final String itemId, externalEntityId;
 	private final SlotType compatibleSlotType;
 	
 	private Item item;
 	private EntityType<?> externalEntityType;
 	private NonNullList<Ingredient> repair_cost;
-	
+	private EntityDimensions dimensions;
+
 	public PartStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		this.weight = UtilParse.getFloatSafe(json, "weight", 0);
 		this.itemId = UtilParse.getStringSafe(json, "item", "");
 		this.externalEntityId = getExternalEntityId(json);
 		this.compatibleSlotType = SlotType.getByName(UtilParse.getStringSafe(json, "slotType", ""));
+		this.hitbox_width = UtilParse.getFloatSafe(json, "hitbox_width", 0.8f);
+		this.hitbox_height = UtilParse.getFloatSafe(json, "hitbox_height", 0.8f);
 	}
 	
 	public boolean isCompatible(SlotType type) {
@@ -144,6 +148,11 @@ public abstract class PartStats extends JsonPresetStats {
 	
 	public float getAdditionalArmor() {
 		return 0;
+	}
+
+	public EntityDimensions getEntityDimensions() {
+		if (dimensions == null) dimensions = EntityDimensions.fixed(hitbox_width, hitbox_height);
+		return dimensions;
 	}
 	
 }

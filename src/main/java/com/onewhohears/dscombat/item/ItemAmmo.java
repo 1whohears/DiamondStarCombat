@@ -86,12 +86,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 		if (!vehicle.isOperational()) return InteractionResult.FAIL;
 		String ammoId = ItemAmmo.getWeaponId(stack);
 		for (EntityTurret t : vehicle.getTurrets()) {
-			WeaponInstance<?> wd = t.getWeaponData();
-			if (wd == null) continue;
-			if (!wd.getStatsId().equals(ammoId)) continue;
-			int o = wd.addAmmo(stack.getCount());
-			t.setAmmo(wd.getCurrentAmmo());
-			t.updateDataAmmo();
+			int o = t.addAmmo(stack.getCount());
 			stack.setCount(o);
 			if (stack.getCount() == 0) return InteractionResult.SUCCESS;
 		}

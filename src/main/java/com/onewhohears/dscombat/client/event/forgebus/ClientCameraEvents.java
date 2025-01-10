@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.mixin.CameraAccess;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
@@ -11,7 +12,6 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.Camera;
@@ -52,7 +52,7 @@ public class ClientCameraEvents {
 		boolean mirrored = m.options.getCameraType().isMirrored();
 		float camYOffset = 0;
 		boolean isPilot = false, isCopilot = false;
-		if (player.getVehicle() instanceof EntitySeat seat) {
+		if (player.getVehicle() instanceof EntityRidablePart seat) {
 			isPilot = seat.isPilotSeat();
 			isCopilot = seat.isCoPilotSeat();
 			if (DSCClientInputs.isGimbalMode()) camYOffset = seat.getCameraYOffset();

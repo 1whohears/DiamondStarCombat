@@ -50,7 +50,6 @@
   "maxAge": 500,
   "presetId": "meteor",
   "presetType": "track_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "speed": 6.0,
   "targetType": "AIR",

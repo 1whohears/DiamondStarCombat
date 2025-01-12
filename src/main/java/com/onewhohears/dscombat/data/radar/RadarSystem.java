@@ -23,7 +23,9 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -110,6 +112,7 @@ public class RadarSystem {
 	}
 	
 	protected void updateDataLink() {
+		if (parent.getLevel().isClientSide()) return;
 		refreshDataLink();
 		if (!hasDataLink()) return;
 		Entity controller = parent.getControllingPlayerOrBot();
@@ -119,14 +122,25 @@ public class RadarSystem {
 			check_equals = false;
 		}
 		if (controller == null) return;
-		List<? extends Player> players = parent.level.players();
+		ServerPlayer playerController = null;
+		if (controller instanceof ServerPlayer sp) playerController = sp;
+		List<? extends Player> players = parent.getLevel().players();
 		for (Player p : players) {
-			if (check_equals && controller.equals(p)) continue;
-			if (!controller.isAlliedTo(p)) continue;
-			if (!controller.level.dimension().equals(p.level.dimension())) continue;
-			if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;
-			if (!plane.radarSystem.hasDataLink()) continue;
-			if (plane.equals(parent)) continue;
+			if (check_equals && controller.equals(p))
+				continue;
+			if (playerController != null) {
+				if (!UtilEntity.arePlayersAllied(playerController, (ServerPlayer) p))
+					continue;
+			} else if (!controller.isAlliedTo(p))
+				continue;
+			if (!controller.getLevel().dimension().equals(p.getLevel().dimension()))
+				continue;
+			if (!(p.getRootVehicle() instanceof EntityVehicle plane))
+				continue;
+			if (!plane.radarSystem.hasDataLink())
+				continue;
+			if (plane.equals(parent))
+				continue;
 			for (RadarPing rp : targets) {
 				if (rp.id == plane.getId()) continue;
 				if (rp.isShared()) continue;

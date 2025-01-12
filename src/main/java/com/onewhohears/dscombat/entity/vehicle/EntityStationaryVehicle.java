@@ -17,8 +17,8 @@ public class EntityStationaryVehicle extends EntityVehicle {
     @Override
     public void serverTick() {
         super.serverTick();
-        if (tickCount % 40 == 0 && radarSystem.hasTargets()) getLevel().playSound(null, this,
-                ModSounds.TARGETS_FOUND, SoundSource.PLAYERS, 1, 1);
+        if (getStats().isStationaryRadar() && tickCount % 40 == 0 && radarSystem.hasTargets() && isOperational())
+            getLevel().playSound(null, this, ModSounds.TARGETS_FOUND, SoundSource.PLAYERS, 1, 1);
     }
 
     @Override

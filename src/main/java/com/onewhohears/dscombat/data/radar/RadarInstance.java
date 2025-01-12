@@ -169,7 +169,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private boolean checkFriendly(Entity controller, Entity target) {
 		if (target == null) return false;
 		if (controller == null) return false;
-		return target.isAlliedTo(controller);
+		return UtilEntity.areEntitiesAllied(target, controller);
 	}
 	
 	private boolean basicCheck(EntityVehicle radar, Entity ping, double stealth) {

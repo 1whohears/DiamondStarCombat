@@ -3138,12 +3138,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * SERVER SIDE ONLY
 	 */
 	public boolean hasPermission(@Nonnull Entity entity) {
+		if (getLevel().isClientSide()) return false;
 		if (DSCGameRules.isForcePublicPerm(getLevel())) return true;
 		if (getPermMode() == PermMode.PUBLIC) return true;
 		Entity owner = getOwner();
 		if (getPermMode() == PermMode.ALLIES) {
 			if (entity.equals(owner)) return true;
-			else if (owner != null) return owner.isAlliedTo(entity);
+			else if (owner != null) return UtilEntity.areEntitiesAllied(owner, entity);
 			else return false;
 		} else {
 			return entity.equals(owner);

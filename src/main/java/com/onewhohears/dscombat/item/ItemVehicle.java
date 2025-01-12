@@ -39,7 +39,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderHighlightEvent;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemVehicle extends Item {
@@ -77,9 +76,8 @@ public class ItemVehicle extends Item {
 				String presetName = getPresetName(itemstack);
 				VehicleStats vs = VehiclePresets.get().get(presetName);
 				if (vs == null) vs = VehiclePresets.get().get(defaultPreset);
-				System.out.println("preset = "+vs.getId()+" default = "+defaultPreset);
 				EntityType<? extends EntityVehicle> entityType = vs.getEntityType();
-				ItemStack spawn_data_stack = spawnData(itemstack, player);
+				ItemStack spawn_data_stack = spawnData(itemstack, player, vs.getId());
 				EntityVehicle e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
@@ -105,7 +103,7 @@ public class ItemVehicle extends Item {
 		}
 	}
 	
-	private ItemStack spawnData(ItemStack itemstack, Player player) {
+	private ItemStack spawnData(ItemStack itemstack, Player player, String preset) {
 		ItemStack copy = itemstack.copy();
 		CompoundTag tag = copy.getOrCreateTag();
 		if (!tag.contains("EntityTag", 10)) {
@@ -115,7 +113,7 @@ public class ItemVehicle extends Item {
 			tag.put("EntityTag", et);
 		}
 		CompoundTag et = tag.getCompound("EntityTag");
-		et.putString("preset", getPresetName(itemstack));
+		et.putString("preset", preset);
 		et.putFloat("yRot", player.getYRot());
 		et.putFloat("current_throttle", 0);
 		et.putBoolean("landing_gear", true);

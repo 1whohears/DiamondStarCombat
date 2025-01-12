@@ -288,9 +288,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		nbt.putFloat("zRot", zRot);
 		nbt.putInt("radar_mode", getRadarMode().ordinal());
 		nbt.putString("radio_song", getRadioSong());
-		if (owner != null) {
-			nbt.putString("owner_name", owner.getScoreboardName());
-			nbt.putUUID("owner_id", owner.getUUID());
+		Entity own = getOwner();
+		if (own != null) {
+			nbt.putString("owner_name", own.getScoreboardName());
+			nbt.putUUID("owner_id", own.getUUID());
 		}
 		Component name = getCustomName();
         if (name != null) nbt.putString("CustomName", Component.Serializer.toJson(name));

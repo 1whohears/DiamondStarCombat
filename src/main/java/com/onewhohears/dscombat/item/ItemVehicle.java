@@ -172,7 +172,7 @@ public class ItemVehicle extends Item {
 		MutableComponent component = UtilMCText.literal(owner+"'s ")
 				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));
 		if (vs == null) return component.append(super.getName(stack));
-		return component.append(vs.getDisplayNameComponent());
+		return component.append(vs.getBaseDisplayName());
 	}
 	
 	@Override

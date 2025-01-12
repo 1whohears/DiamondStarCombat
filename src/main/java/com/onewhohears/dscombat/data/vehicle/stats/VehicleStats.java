@@ -25,9 +25,11 @@ import com.onewhohears.onewholibs.util.UtilGsonMerge;
 import com.onewhohears.onewholibs.util.UtilGsonMerge.ConflictStrategy;
 import com.onewhohears.onewholibs.util.UtilItem;
 
+import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityDimensions;
@@ -71,6 +73,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	private final boolean isCraftable;
 	private final int defaultPaintJob;
 	private final String assetId;
+	private final String display_name_base;
 	
 	private CompoundTag dataNBT;
 	private NonNullList<Ingredient> ingredients;
@@ -140,6 +143,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		controllPitchHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_pitch");
 		controllYawHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_yaw");
 		controllRollHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_roll");
+		display_name_base = UtilParse.getStringSafe(json, "display_name_base", "item.dscombat."+getAssetId());
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -260,6 +264,10 @@ public abstract class VehicleStats extends JsonPresetStats {
 				break;
 			}
 		}
+	}
+
+	public MutableComponent getBaseDisplayName() {
+		return UtilMCText.translatable(display_name_base);
 	}
 	
 	@Override

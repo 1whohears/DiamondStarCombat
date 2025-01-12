@@ -14,7 +14,7 @@ public class BroncoPresets {
 			.createPlane(DSCombatMod.MODID, "bronco_plane_empty")
 			.setAssetId("bronco_plane")
 			.setSortFactor(4)
-			.setItem(ModItems.BRONCO_PLANE.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(80f)
 			.setBaseArmor(10f)
 			.setArmorDamageThreshold(1f)

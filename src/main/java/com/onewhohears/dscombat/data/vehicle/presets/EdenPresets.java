@@ -14,7 +14,7 @@ public class EdenPresets {
 			.createPlane(DSCombatMod.MODID, "eden_plane_empty")
 			.setAssetId("eden_plane")
 			.setSortFactor(9)
-			.setItem(ModItems.EDEN_PLANE.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(100f)
 			.setBaseArmor(60f)
 			.setArmorDamageThreshold(3f)

@@ -113,7 +113,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:gronk_battleship",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "gronk_battleship_empty",
   "presetType": "boat",

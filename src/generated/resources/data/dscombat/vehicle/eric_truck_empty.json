@@ -203,7 +203,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:eric_truck",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "eric_truck_empty",
   "presetType": "car",

@@ -51,7 +51,8 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.NOAH_CHOPPER.get(), ModItems.ORANGE_TESLA.get(), ModItems.AXCEL_TRUCK.get(), ModItems.MRBUDGER_TANK.get())
 			.add(ModItems.SMALL_ROLLER.get(), ModItems.NATHAN_BOAT.get(), ModItems.GRONK_BATTLESHIP.get(), ModItems.DESTROYER.get())
 			.add(ModItems.CRUISER.get(), ModItems.CORVETTE.get(), ModItems.AIRCRAFT_CARRIER.get(), ModItems.ANDOLF_SUB.get())
-			.add(ModItems.GOOGLE_SUB.get());
+			.add(ModItems.GOOGLE_SUB.get(), ModItems.JAMES_WOODEN_PLANE.get(), ModItems.EWR4000.get(), ModItems.ERIC_TRUCK.get())
+				.add(ModItems.VEHICLE.get());
 		tag(ModTags.Items.VEHICLE_PART)
 			.addTag(ModTags.Items.VEHICLE_PART_WEAPON)
 			.addTag(ModTags.Items.VEHICLE_PART_ENGINE)

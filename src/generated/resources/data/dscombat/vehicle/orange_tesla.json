@@ -29,7 +29,7 @@
     }
   ],
   "is_craftable": true,
-  "item": "dscombat:orange_tesla",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "orange_tesla",
   "presetType": "car",

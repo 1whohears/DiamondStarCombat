@@ -29,7 +29,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:noah_chopper",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "noah_chopper_empty",
   "presetType": "helicopter",

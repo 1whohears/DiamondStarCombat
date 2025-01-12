@@ -89,7 +89,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		int posX = leftPos+170, posY = topPos+52;
 		PoseStack modelViewStack = RenderSystem.getModelViewStack();
 		modelViewStack.pushPose();
-		float scale = 2f, scaleInv = 1f / scale;
+		float scale = 3f, scaleInv = 1f / scale;
 		modelViewStack.scale(scale, scale, scale);
 		float blitOffset = 100 + minecraft.getItemRenderer().blitOffset + 50;
 		modelViewStack.translate((posX+8)*scaleInv, 0, blitOffset);
@@ -97,7 +97,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		float spinRate = 0.1f;
 		modelViewStack.mulPose(Vector3f.YP.rotationDegrees(time * spinRate));
 		modelViewStack.translate(-(posX+8)*scaleInv, 0, -blitOffset);
-		modelViewStack.translate((posX+8f)*(scaleInv-1f), (posY+8f)*(scaleInv-1f), 0);
+		modelViewStack.translate((posX+8)*(scaleInv-1), (posY+8)*(scaleInv-1), 0);
 		minecraft.getItemRenderer().renderAndDecorateItem(stack, posX, posY);
 		modelViewStack.popPose();
 	}
@@ -275,9 +275,9 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		PLANES(() -> VehiclePresets.get().getPlaneRecipes(Minecraft.getInstance().level.getRecipeManager()), 180),
 		BOATS(() -> VehiclePresets.get().getBoatRecipes(Minecraft.getInstance().level.getRecipeManager()), 227);
 		
+		private final int bookmarkX;
 		private AircraftPresetList presetFactory;
 		private int index = 0;
-		private final int bookmarkX;
 		
 		AircraftTab(AircraftPresetList presetFactory, int bookmarkX) {
 			this.presetFactory = presetFactory;

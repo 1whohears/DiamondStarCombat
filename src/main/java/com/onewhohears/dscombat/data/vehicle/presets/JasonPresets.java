@@ -12,7 +12,7 @@ public class JasonPresets {
 			.createPlane(DSCombatMod.MODID, "jason_plane_empty")
 			.setAssetId("jason_plane")
 			.setSortFactor(2)
-			.setItem(ModItems.JASON_PLANE.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(60f)
 			.setBaseArmor(10f)
 			.setArmorDamageThreshold(1f)

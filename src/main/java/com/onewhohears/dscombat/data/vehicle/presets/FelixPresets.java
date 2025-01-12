@@ -13,7 +13,7 @@ public class FelixPresets {
 			.createPlane(DSCombatMod.MODID, "felix_plane_empty")
 			.setAssetId("felix_plane")
 			.setSortFactor(7)
-			.setItem(ModItems.FELIX_PLANE.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(100f)
 			.setBaseArmor(20f)
 			.setArmorDamageThreshold(2f)

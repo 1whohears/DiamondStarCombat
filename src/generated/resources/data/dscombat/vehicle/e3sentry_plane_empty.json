@@ -33,7 +33,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:e3sentry_plane",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "e3sentry_plane_empty",
   "presetType": "plane",

@@ -424,7 +424,8 @@
 	"item.dscombat.m61a1_vulcan": "M61A1 Vulcan",
 	"item.dscombat.gsh_30_1": "GSH-30-1",
 	"item.dscombat.m2_browning": "M2 Browning",
-	
+
+	"item.dscombat.vehicle": "Vehicle",
 	"item.dscombat.test_plane": "Test Plane",
 	"item.dscombat.javi_plane": "Javi Plane",
 	"item.dscombat.alexis_plane": "Alexis Plane",

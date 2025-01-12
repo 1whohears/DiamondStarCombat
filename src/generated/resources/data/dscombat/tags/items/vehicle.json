@@ -20,6 +20,10 @@
     "dscombat:corvette",
     "dscombat:aircraft_carrier",
     "dscombat:andolf_sub",
-    "dscombat:google_sub"
+    "dscombat:google_sub",
+    "dscombat:james_wooden_plane",
+    "dscombat:ewr4000",
+    "dscombat:eric_truck",
+    "dscombat:vehicle"
   ]
 }

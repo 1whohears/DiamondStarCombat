@@ -13,7 +13,7 @@ public class AlexisPresets {
 			.createPlane(DSCombatMod.MODID, "alexis_plane_empty")
 			.setAssetId("alexis_plane")
 			.setSortFactor(10)
-			.setItem(ModItems.ALEXIS_PLANE.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(100f)
 			.setMass(8500f)
 			.setMaxSpeed(1.4f)

@@ -21,7 +21,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:mrbudger_tank",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "mrbudger_tank_empty",
   "presetType": "car",

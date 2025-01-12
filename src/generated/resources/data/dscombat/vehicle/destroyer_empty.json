@@ -41,7 +41,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:destroyer",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "destroyer_empty",
   "presetType": "boat",

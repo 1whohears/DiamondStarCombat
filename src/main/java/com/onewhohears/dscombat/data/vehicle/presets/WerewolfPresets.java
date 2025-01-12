@@ -13,7 +13,7 @@ public class WerewolfPresets {
 			.createHelicopter(DSCombatMod.MODID, "werewolf_empty")
 			.setAssetId("werewolf")
 			.setSortFactor(5)
-			.setItem(ModItems.NOAH_CHOPPER.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(100f)
 			.setBaseArmor(100f)
 			.setArmorDamageThreshold(5f)

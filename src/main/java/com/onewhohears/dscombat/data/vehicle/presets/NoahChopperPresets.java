@@ -14,7 +14,7 @@ public class NoahChopperPresets {
 			.createHelicopter(DSCombatMod.MODID, "noah_chopper_empty")
 			.setAssetId("noah_chopper")
 			.setSortFactor(4)
-			.setItem(ModItems.NOAH_CHOPPER.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(80f)
 			.setBaseArmor(20f)
 			.setArmorDamageThreshold(2f)

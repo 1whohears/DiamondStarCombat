@@ -158,7 +158,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:felix_plane",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "felix_plane_empty",
   "presetType": "plane",

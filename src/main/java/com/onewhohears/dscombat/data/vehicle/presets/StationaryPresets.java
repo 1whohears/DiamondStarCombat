@@ -10,7 +10,7 @@ public class StationaryPresets {
     public static final VehicleStats EWR4000 = VehicleStats.Builder
             .createStationary(DSCombatMod.MODID, "ewr4000")
             .setAssetId("ewr4000")
-            .setItem(ModItems.EWR4000.getId())
+            .setItem(ModItems.EWR4000.getId()) // this cant be set to VEHICLE because EWR4000 has a custom recipe
             .setMaxHealth(20)
             .setBaseArmor(2)
             .setArmorDamageThreshold(1)

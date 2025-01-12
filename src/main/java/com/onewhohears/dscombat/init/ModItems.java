@@ -345,7 +345,11 @@ public class ModItems {
 			() -> new ItemAmmo(16, "mk13")); 
 	public static final RegistryObject<Item> AGM88G = ITEMS.register("agm88g", 
 			() -> new ItemAmmo(16, "agm88g")); 
-	
+
+	// VEHICLE
+	public static final RegistryObject<Item> VEHICLE = ITEMS.register("vehicle",
+			() -> new ItemVehicle(TankPresets.UNARMED_SMALL_ROLLER.getId()));
+
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemVehicle(JaviPresets.DEFAULT_JAVI_PLANE.getId()));

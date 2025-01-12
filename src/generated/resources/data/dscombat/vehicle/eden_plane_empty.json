@@ -227,7 +227,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:eden_plane",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "eden_plane_empty",
   "presetType": "plane",

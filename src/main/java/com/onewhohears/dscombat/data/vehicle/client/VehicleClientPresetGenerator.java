@@ -331,7 +331,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int gronk_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "gronk_battleship")
-				.setHardCodedModelAnims()
+				.setSimpleModelId("battleship")
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/gronk_battleship.png")
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, gronk_middle_x-9, 40)
 				.addUIPos("seat2", gronk_middle_x+9, 40)
@@ -361,6 +361,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "bronco_plane")
 				.setHardCodedModelAnims()
+				.setSimpleModelId("bronco-plane")
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "corvette")
 				.setHardCodedModelAnims()

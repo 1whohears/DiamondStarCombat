@@ -167,7 +167,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:james_wooden_plane",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "james_wooden_plane_empty",
   "presetType": "plane",

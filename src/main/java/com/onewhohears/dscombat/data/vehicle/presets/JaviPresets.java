@@ -13,7 +13,7 @@ public class JaviPresets {
 			.createPlane(DSCombatMod.MODID, "javi_plane_empty")
 			.setAssetId("javi_plane")
 			.setSortFactor(8)
-			.setItem(ModItems.JAVI_PLANE.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(150f)
 			.setBaseArmor(100f)
 			.setArmorDamageThreshold(5f)

@@ -13,7 +13,7 @@ public class KraitChopperPresets {
 			.createHelicopter(DSCombatMod.MODID, "krait_chopper_empty")
 			.setAssetId("krait_chopper")
 			.setSortFactor(4)
-			.setItem(ModItems.KRAIT_CHOPPER.getId())
+			.setItem(ModItems.VEHICLE.getId())
 			.setMaxHealth(120f)
 			.setBaseArmor(60f)
 			.setArmorDamageThreshold(4f)

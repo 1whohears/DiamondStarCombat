@@ -2145,6 +2145,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	addAdditionalSaveData(tag);
     	CompoundTag eTag = new CompoundTag();
     	eTag.put("EntityTag", tag);
+		eTag.putString("preset", getStatsId());
     	stack.setTag(eTag);
     	return stack;
     }

@@ -99,7 +99,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:krait_chopper",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "krait_chopper_empty",
   "presetType": "helicopter",

@@ -205,9 +205,9 @@ public class VehicleScreenMapReader {
 	private static Vec3[] getQuadPositions(BakedQuad quad) {
 		Vec3[] pos = new Vec3[4];
 		for (int i = 0; i < 4; ++i) 
-			pos[i] = new Vec3((double)Float.intBitsToFloat(quad.getVertices()[i*8]), 
-					(double)Float.intBitsToFloat(quad.getVertices()[i*8+1]), 
-					(double)Float.intBitsToFloat(quad.getVertices()[i*8+2]));
+			pos[i] = new Vec3(Float.intBitsToFloat(quad.getVertices()[i*8]),
+					Float.intBitsToFloat(quad.getVertices()[i*8+1]),
+					Float.intBitsToFloat(quad.getVertices()[i*8+2]));
 		return pos;
 	}
 	

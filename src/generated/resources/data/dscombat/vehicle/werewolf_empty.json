@@ -29,7 +29,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:noah_chopper",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "werewolf_empty",
   "presetType": "helicopter",

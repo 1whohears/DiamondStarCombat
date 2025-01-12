@@ -12,7 +12,7 @@ public class JamesPresets {
             .createPlane(DSCombatMod.MODID, "james_wooden_plane_empty")
             .setAssetId("james_wooden_plane")
             .setSortFactor(1)
-            .setItem(ModItems.JAMES_WOODEN_PLANE.getId())
+            .setItem(ModItems.VEHICLE.getId())
             .setMaxHealth(60f)
             .setBaseArmor(0f)
             .setArmorDamageThreshold(0.5f)

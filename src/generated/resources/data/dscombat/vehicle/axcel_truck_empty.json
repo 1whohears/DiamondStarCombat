@@ -55,7 +55,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:axcel_truck",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "axcel_truck_empty",
   "presetType": "car",

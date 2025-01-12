@@ -169,7 +169,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:javi_plane",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "javi_plane_empty",
   "presetType": "plane",

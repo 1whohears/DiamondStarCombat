@@ -41,7 +41,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:corvette",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "corvette_empty",
   "presetType": "boat",

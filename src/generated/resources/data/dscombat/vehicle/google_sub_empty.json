@@ -21,7 +21,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:google_sub",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "google_sub_empty",
   "presetType": "submarine",

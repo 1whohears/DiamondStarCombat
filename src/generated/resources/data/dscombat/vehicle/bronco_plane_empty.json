@@ -33,7 +33,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:bronco_plane",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "bronco_plane_empty",
   "presetType": "plane",

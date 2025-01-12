@@ -59,7 +59,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:aircraft_carrier",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "aircraft_carrier_empty",
   "presetType": "boat",

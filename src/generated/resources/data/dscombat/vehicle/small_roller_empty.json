@@ -17,7 +17,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:small_roller",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "small_roller_empty",
   "presetType": "car",

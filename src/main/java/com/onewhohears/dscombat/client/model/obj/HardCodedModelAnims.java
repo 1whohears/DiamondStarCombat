@@ -9,8 +9,8 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 public class HardCodedModelAnims {
 	
-	private static Map<String, ObjVehicleModel<EntityVehicle>> models = new HashMap<>();
-	private static Map<String, ObjPartModel<?>> partModels = new HashMap<>();
+	private static final Map<String, ObjVehicleModel<EntityVehicle>> models = new HashMap<>();
+	private static final Map<String, ObjPartModel<?>> partModels = new HashMap<>();
 	
 	public static void reload() {
 		models.clear();
@@ -18,7 +18,6 @@ public class HardCodedModelAnims {
 		models.put("corvette", new CorvetteModel());
 		models.put("google_sub", new GoogleSubModel());
 		models.put("jason_plane", new JasonPlaneModel());
-		models.put("gronk_battleship", new ObjVehicleModel<>("battleship"));
 		partModels.clear();
 		partModels.put("minigun_turret", new MinigunTurretModel());
 		partModels.put("heavy_tank_turret", new AutoloadingTurretModel());

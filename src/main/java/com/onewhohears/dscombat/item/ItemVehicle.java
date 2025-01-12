@@ -1,20 +1,24 @@
 package com.onewhohears.dscombat.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.client.renderer.RendererDSCDynamicItems;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
@@ -35,6 +39,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemVehicle extends Item {
 	
@@ -51,11 +57,10 @@ public class ItemVehicle extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		HitResult hitresult = getPlayerPOVHitResult(level, player, 
-				ClipContext.Fluid.ANY);
-		if (hitresult.getType() == HitResult.Type.MISS) 
+		HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
+		if (hitresult.getType() == HitResult.Type.MISS) {
 			return InteractionResultHolder.pass(itemstack);
-		else {
+		} else {
 			Vec3 vec3 = player.getViewVector(1.0F);
 			List<Entity> list = level.getEntities(player, 
 					player.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), 
@@ -63,7 +68,7 @@ public class ItemVehicle extends Item {
 			if (!list.isEmpty()) {
 				Vec3 vec31 = player.getEyePosition();
 				for(Entity entity : list) {
-					AABB aabb = entity.getBoundingBox().inflate((double)entity.getPickRadius());
+					AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
 					if (aabb.contains(vec31)) 
 						return InteractionResultHolder.pass(itemstack);
 				}
@@ -72,6 +77,7 @@ public class ItemVehicle extends Item {
 				String presetName = getPresetName(itemstack);
 				VehicleStats vs = VehiclePresets.get().get(presetName);
 				if (vs == null) vs = VehiclePresets.get().get(defaultPreset);
+				System.out.println("preset = "+vs.getId()+" default = "+defaultPreset);
 				EntityType<? extends EntityVehicle> entityType = vs.getEntityType();
 				ItemStack spawn_data_stack = spawnData(itemstack, player);
 				EntityVehicle e = entityType.create(level);
@@ -94,8 +100,7 @@ public class ItemVehicle extends Item {
 					}
 				}
 				player.awardStat(Stats.ITEM_USED.get(this));
-				return InteractionResultHolder.sidedSuccess(itemstack, 
-						level.isClientSide());
+				return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
 			} else return InteractionResultHolder.pass(itemstack);
 		}
 	}
@@ -105,12 +110,12 @@ public class ItemVehicle extends Item {
 		CompoundTag tag = copy.getOrCreateTag();
 		if (!tag.contains("EntityTag", 10)) {
 			CompoundTag et = new CompoundTag();
-			et.putString("preset", getPresetName(itemstack));
 			et.putBoolean("merged_preset", false);
 			et.putUUID("owner_id", player.getUUID());
 			tag.put("EntityTag", et);
 		}
 		CompoundTag et = tag.getCompound("EntityTag");
+		et.putString("preset", getPresetName(itemstack));
 		et.putFloat("yRot", player.getYRot());
 		et.putFloat("current_throttle", 0);
 		et.putBoolean("landing_gear", true);
@@ -126,8 +131,13 @@ public class ItemVehicle extends Item {
 	
 	public String getPresetName(ItemStack itemstack) {
 		CompoundTag tag = itemstack.getTag();
-		if (tag == null || !tag.contains("preset")) return defaultPreset;
-		return tag.getString("preset");
+		if (tag == null) return defaultPreset;
+		if (tag.contains("preset")) return tag.getString("preset");
+		if (tag.contains("EntityTag")) {
+			CompoundTag eTag = tag.getCompound("EntityTag");
+			if (eTag.contains("preset")) return eTag.getString("preset");
+		}
+		return defaultPreset;
 	}
 	
 	@Override
@@ -147,11 +157,11 @@ public class ItemVehicle extends Item {
 	@Override
 	public Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getTag();
+		String presetId = getPresetName(stack);
+		VehicleStats vs = VehiclePresets.get().get(presetId);
 		if (tag == null || !tag.contains("EntityTag")) {
-			String name = getPresetName(stack);
-			VehicleStats ap = VehiclePresets.get().get(name);
-			if (ap == null) return UtilMCText.translatable(getDescriptionId()).append(" unknown preset!");
-			return ap.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
+			if (vs == null) return UtilMCText.translatable(getDescriptionId()).append(" unknown preset!");
+			return vs.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}
 		CompoundTag etag = tag.getCompound("EntityTag");
 		if (etag.contains("CustomName", 8)) {
@@ -161,8 +171,10 @@ public class ItemVehicle extends Item {
 		}
 		String owner = etag.getString("owner_name");
 		if (owner.isEmpty()) owner = "Someone";
-		return UtilMCText.literal(owner+"'s ").append(super.getName(stack))
+		MutableComponent component = UtilMCText.literal(owner+"'s ")
 				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));
+		if (vs == null) return component.append(super.getName(stack));
+		return component.append(vs.getDisplayNameComponent());
 	}
 	
 	@Override
@@ -182,4 +194,17 @@ public class ItemVehicle extends Item {
 		}
 	}
 
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return RendererDSCDynamicItems.get();
+			}
+		});
+	}
+
+	public String getDefaultPreset() {
+		return defaultPreset;
+	}
 }

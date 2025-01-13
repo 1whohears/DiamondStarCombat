@@ -1573,6 +1573,14 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		}
 		return false;
 	}
+
+	public boolean hasOpenPassengerSeat() {
+		List<EntityRidablePart> seats = getSeats();
+		for (EntityRidablePart seat : seats)
+			if (seat.getPassenger() == null)
+				return true;
+		return false;
+	}
 	
 	/**
 	 * all part entities ride the vehicle using the vanilla passenger system.
@@ -3180,5 +3188,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	@Override
 	public @Nullable JsonPresetAssetReader<VehicleClientStats> getClientPresets() {
 		return VehicleClientPresets.get();
+	}
+
+	@Override
+	public @NotNull Component getName() {
+		Component name = getCustomName();
+		if (name != null) return name;
+		Entity owner = getOwner();
+		if (owner != null) return UtilMCText.empty().append(owner.getDisplayName())
+					.append("'s").append(getStats().getBaseDisplayName());
+		return getStats().getBaseDisplayName();
 	}
 }

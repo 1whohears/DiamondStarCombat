@@ -54,6 +54,7 @@
 	"info.dscombat.missile_impacted_player": "Missile from %1$s impacted %2$s",
 	"info.dscombat.items": "Items",
 	"info.dscombat.flares": "Flares",
+	"info.dscombat.ticket_linked_to": "Linked to %1$s",
 	
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",
@@ -89,7 +90,7 @@
 	
 	"error.dscombat.no_menu_in_air": "Can't open vehicle menu while flying!",
 	"error.dscombat.no_menu_moving": "Can't open vehicle menu while moving!",
-	"error.dscombat.no_open_seats": "No Open Seats",
+	"error.dscombat.no_open_seats": "No Open Seats!",
 	"error.dscombat.cant_craft": "Not Enough Materials",
 	"error.dscombat.cant_shoot_on_ground": "Can't Shoot This On Ground",
 	"error.dscombat.no_ammo": "Out of Ammo",
@@ -118,6 +119,10 @@
 	"error.dscombat.no_targets_found": "No targets found!",
 	"error.dscombat.cannot_target_missiles": "Cannot Target Missiles!",
 	"error.dscombat.cant_load_while_flying": "Cannot Load Parts While Flying!",
+	"error.dscombat.ticket_not_linked_vehicle": "This ticket is not linked with a vehicle!",
+	"error.dscombat.vehicle_not_found": "This ticket's linked vehicle doesn't exist or isn't within range.'",
+	"error.dscombat.entity_cant_use_tickets": "This entity can't use tickets!",
+	"error.dscombat.entity_already_passenger": "This entity is already a passenger.",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",
@@ -125,6 +130,8 @@
 	"success.dscombat.changed_slot_position": "Changed slot position! (NOT permanent!)",
 	"success.dscombat.launched_missile": "Launched %1$s missiles!",
 	"success.dscombat.gave": "Gave",
+	"success.dscombat.ticket_book_link": "Ticket Book Linked with %1$s!",
+	"success.dscombat.ticket_book_assign": "Ticket Assigned!",
 	
 	"targetmode.dscombat.look": "LOOK",
 	"targetmode.dscombat.coordinates": "COORDS",
@@ -342,6 +349,7 @@
 	"item.dscombat.wrench": "Wrench",
 	"item.dscombat.thick_wrench": "Thiccc Wrench",
 	"item.dscombat.spraycan": "Spray Can",
+	"item.dscombat.ticket_book": "Ticket Book",
 	
 	"item.dscombat.no_consume_wand": "No Consume Wand",
 	"info.dscombat.no_consume_wand_1": "Vehicle Won't Consume Fuel/Ammo/Flares",

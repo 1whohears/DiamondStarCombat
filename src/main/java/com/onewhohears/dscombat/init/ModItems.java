@@ -121,6 +121,8 @@ public class ModItems {
             ItemParachute::new);
 	public static final RegistryObject<Item> SPRAYCAN = ITEMS.register("spraycan", 
 			() -> new Item(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1)));
+	public static final RegistryObject<Item> TICKET_BOOK = ITEMS.register("ticket_book",
+            ItemTicketBook::new);
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 

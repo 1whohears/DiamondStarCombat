@@ -134,6 +134,7 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addOptional(new ResourceLocation("iceandfire:lightning_dragon"));
 		// OTHER
 		tag(ModTags.EntityTypes.ALWAYS_GROUNDED).add(EntityType.BOAT, EntityType.MINECART);
+		tag(ModTags.EntityTypes.TICKET_BOOKER).add(EntityType.VILLAGER);
 	}
 	
 }

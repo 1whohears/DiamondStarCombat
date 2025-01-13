@@ -82,42 +82,17 @@ public class VehicleClientStats extends CustomAnimStats<ObjVehicleModel<EntityVe
 	
 	public static UIPos getUIPosByIndex(int i, int x_start, int y_start) {
 		int x = x_start + i % 9 * 18;
-		int y = y_start + (int)(i / 9) * 18;
+		int y = y_start + (i / 9) * 18;
 		return new UIPos(x, y);
 	}
 	
-	public static class Builder extends PresetBuilder<Builder> {
-		protected JsonObject getModelData() {
-			if (!getData().has("model_data")) {
-				getData().add("model_data", new JsonObject());
-			}
-			return getData().get("model_data").getAsJsonObject();
-		}
+	public static class Builder extends CustomAnimStatsBuilder<Builder> {
 		public Builder setDontCull(boolean dontCull) {
 			getModelData().addProperty("dont_cull", dontCull);
 			return this;
 		}
-		public Builder setKFAnimDataIds(String model_id, String... animDataIds) {
-			setKFAnimsDataIds(animDataIds);
-			return setSimpleModelId(model_id);
-		}
-		public Builder setKFAnimsDataIds(String... animDataIds) {
-			getModelData().add("anim_data", UtilParse.stringArrayToJsonArray(animDataIds));
-			return this;
-		}
-		public Builder setCustomAnims(String model_id, JsonArray anims) {
-			getModelData().add("custom_anims", anims);
-			return setSimpleModelId(model_id);
-		}
-		public Builder setCustomAnims(JsonArray anims) {
-			return setCustomAnims(getPresetId(), anims);
-		}
 		public Builder setHardCodedModelAnims(String hard_coded_model_anims) {
 			getModelData().addProperty("hard_coded_model_anims", hard_coded_model_anims);
-			return this;
-		}
-		public Builder setSimpleModelId(String model_id) {
-			getModelData().addProperty("model_id", model_id);
 			return this;
 		}
 		public Builder setHardCodedModelAnims() {
@@ -154,7 +129,7 @@ public class VehicleClientStats extends CustomAnimStats<ObjVehicleModel<EntityVe
 			super(namespace, name, type);
 		}
 		protected Builder(String namespace, String name, VehicleClientType type, VehicleClientStats copy) {
-			super(namespace, name, type, copy.getJsonData().deepCopy());
+			super(namespace, name, type, copy);
 		}
 		public static Builder create(String namespace, String name) {
 			return new Builder(namespace, name, VehicleClientType.STANDARD);

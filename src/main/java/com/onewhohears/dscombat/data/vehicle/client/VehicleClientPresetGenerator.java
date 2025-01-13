@@ -8,9 +8,12 @@ import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.phys.Vec3;
 
 public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleClientStats> {
-	
+
+	public static final Vec3 ONE = new Vec3(1, 1, 1);
+
 	@Override
 	protected void registerPresets() {
 		int alexis_middle_x = 120, alexis_wing_y = 57;
@@ -185,6 +188,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, roller_middle_x, 50)
 				.addUIPos("internal_1", roller_middle_x-9, 70)
 				.addUIPos("internal_2", roller_middle_x+9, 70)
+				.setItemModelOverrides(0.6f, ONE, new Vec3(0.2, 0.25, 0), Vec3.ZERO)
 				.build());
 		int nathan_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "nathan_boat")
@@ -453,6 +457,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.setCustomAnims(VehicleAnimsBuilder.create()
 						.addMotorRotPixelAnim("Propeller", 0, -15, 0, RotationAxis.Z, 40)
 						.build())
+				.setItemModelOverrides(1.1f, ONE, new Vec3(0.1, 0.2, 0), Vec3.ZERO)
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "eric_truck")
 				.setCustomAnims(VehicleAnimsBuilder.create()

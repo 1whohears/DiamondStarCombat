@@ -5,13 +5,16 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.data.jsonpreset.CustomAnimStats;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 public class PartClientStats<E extends EntityPart> extends CustomAnimStats<ObjPartModel<E>,E> {
+
     public PartClientStats(ResourceLocation key, JsonObject json) {
         super(key, json);
     }

@@ -6,14 +6,16 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.client.renderer.RendererDSCDynamicItems;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -40,8 +42,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 
-public class ItemVehicle extends Item {
+public class ItemVehicle extends Item implements ObjModelItem {
 	
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
@@ -193,16 +196,38 @@ public class ItemVehicle extends Item {
 	}
 
 	@Override
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return RendererDSCDynamicItems.get();
-			}
-		});
+	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
+		ObjModelItem.super.initializeClient(consumer);
+	}
+
+	@Override
+	public ObjEntityModels.@NotNull ModelOverrides getItemModelOverrides(@NotNull String preset) {
+		VehicleStats vs = VehiclePresets.get().get(preset);
+		if (vs == null) vs = VehiclePresets.get().get(getDefaultPreset());
+		if (vs == null) return ObjEntityModels.NO_OVERRIDES;
+		String assetId = vs.getAssetId();
+		VehicleClientStats vcs = VehicleClientPresets.get().get(assetId);
+		if (vcs == null) return ObjEntityModels.NO_OVERRIDES;
+		return vcs.getItemModelOverrides();
 	}
 
 	public String getDefaultPreset() {
 		return defaultPreset;
+	}
+
+	@Override
+	public @NotNull String getPreset(@NotNull ItemStack stack) {
+		return getPresetName(stack);
+	}
+
+	@Override
+	public @NotNull String getObjModelId(@NotNull String preset) {
+		VehicleStats vs = VehiclePresets.get().get(preset);
+		if (vs == null) vs = VehiclePresets.get().get(getDefaultPreset());
+		if (vs == null) return "";
+		String assetId = vs.getAssetId();
+		VehicleClientStats vcs = VehicleClientPresets.get().get(assetId);
+		if (vcs == null) return "";
+		return vcs.getModelId();
 	}
 }

@@ -3,7 +3,7 @@
   "externalEntity": "dscombat:turret",
   "hitbox_height": 2.0,
   "hitbox_width": 2.5,
-  "item": "dscombat:torpedo_tubes",
+  "item": "dscombat:turret",
   "maxAmmo": 3,
   "maxHealth": 60.0,
   "passenger_offset": {

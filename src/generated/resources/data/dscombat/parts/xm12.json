@@ -4,7 +4,7 @@
   "externalEntity": "dscombat:external_weapon_part",
   "hitbox_height": 0.1,
   "hitbox_width": 0.1,
-  "item": "dscombat:xm12",
+  "item": "dscombat:external_weapon_part",
   "max": 300,
   "presetId": "xm12",
   "presetType": "external_weapon",

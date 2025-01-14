@@ -28,6 +28,10 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
 	public ItemTurret(int stackSize) {
 		super(stackSize);
 	}
+
+	public ItemTurret(int stackSize, String defaultPresetId) {
+		super(stackSize, defaultPresetId);
+	}
 	
 	@Override
 	public @NotNull Component getName(@NotNull ItemStack stack) {
@@ -54,12 +58,11 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
 	@Override
 	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
 		List<String> list = WeaponPresets.get().getCompatibleWeapons(stats.getId());
-        for (String s : list) addTurret(s, items);
+        for (String s : list) addTurret(stats, s, items);
 	}
 	
-	private void addTurret(String preset, NonNullList<ItemStack> items) {
+	private void addTurret(PartStats stats, String preset, NonNullList<ItemStack> items) {
 		ItemStack turret = new ItemStack(this);
-		PartStats stats = getDefaultPartStats();
 		if (stats != null) turret.setTag(stats.createFilledPartInstance(preset).writeNBT());
 		items.add(turret);
 	}

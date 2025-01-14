@@ -3,7 +3,7 @@
   "externalEntity": "dscombat:turret",
   "hitbox_height": 1.7,
   "hitbox_width": 4.0,
-  "item": "dscombat:mark7_cannon",
+  "item": "dscombat:turret",
   "maxAmmo": 36,
   "maxHealth": 200.0,
   "passenger_offset": {

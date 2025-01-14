@@ -21,13 +21,26 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemPart extends Item {
-	
+
+	protected final String defaultPresetId;
+
+	public ItemPart(int stackSize, String defaultPresetId) {
+		this(partProps(stackSize), defaultPresetId);
+	}
+
+	public ItemPart(Properties props, String defaultPresetId) {
+		super(props);
+		this.defaultPresetId = defaultPresetId;
+	}
+
 	public ItemPart(int stackSize) {
-		this(partProps(stackSize));
+		super(partProps(stackSize));
+		this.defaultPresetId = toString();
 	}
 	
 	public ItemPart(Properties props) {
 		super(props);
+		this.defaultPresetId = toString();
 	}
 	
 	public static Properties partProps(int stackSize) {
@@ -66,7 +79,7 @@ public class ItemPart extends Item {
 	}
 	
 	public String getDefaultPartPresetId() {
-		return toString();
+		return defaultPresetId;
 	}
 	
 	@Override

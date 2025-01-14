@@ -1,14 +1,19 @@
 package com.onewhohears.dscombat.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.parts.client.PartAssets;
+import com.onewhohears.dscombat.data.parts.client.PartClientStats;
 import com.onewhohears.dscombat.data.parts.instance.WeaponPartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import com.onewhohears.dscombat.util.UtilPresetParse;
@@ -21,12 +26,17 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemWeaponPart extends ItemPart {
+public class ItemWeaponPart extends ItemPart implements ObjModelItem {
 	
 	public ItemWeaponPart(int stackSize) {
 		super(stackSize);
+	}
+
+	public ItemWeaponPart(int stackSize, String defaultPresetId) {
+		super(stackSize, defaultPresetId);
 	}
 	
 	@Override
@@ -65,12 +75,11 @@ public class ItemWeaponPart extends ItemPart {
 	@Override
 	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
 		List<String> list = WeaponPresets.get().getCompatibleWeapons(stats.getId());
-        for (String s : list) addWeaponRack(s, items);
+        for (String s : list) addWeaponRack(stats, s, items);
 	}
 	
-	private void addWeaponRack(String preset, NonNullList<ItemStack> items) {
+	private void addWeaponRack(PartStats stats, String preset, NonNullList<ItemStack> items) {
 		ItemStack rack = new ItemStack(this);
-		PartStats stats = getDefaultPartStats();
 		if (stats != null) rack.setTag(stats.createFilledPartInstance(preset).writeNBT());
 		items.add(rack);
 	}
@@ -80,4 +89,29 @@ public class ItemWeaponPart extends ItemPart {
 		return ModItems.WEAPON_PARTS;
 	}
 
+	@Override
+	public @NotNull String getPreset(@NotNull ItemStack stack) {
+		PartStats stats = UtilPresetParse.getPartStatsFromItem(stack);
+		if (stats == null) return getDefaultPartPresetId();
+		return stats.getId();
+	}
+
+	@Override
+	public @NotNull String getObjModelId(@NotNull String preset) {
+		PartClientStats<?> pcs = PartAssets.get().get(preset);
+		if (pcs == null) return "";
+		return pcs.getModelId();
+	}
+
+	@Override
+	public ObjEntityModels.@NotNull ModelOverrides getItemModelOverrides(@NotNull String preset) {
+		PartClientStats<?> pcs = PartAssets.get().get(preset);
+		if (pcs == null) return ObjEntityModels.NO_OVERRIDES;
+		return pcs.getItemModelOverrides();
+	}
+
+	@Override
+	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
+		ObjModelItem.super.initializeClient(consumer);
+	}
 }

@@ -241,6 +241,8 @@ public class ModItems {
 			() -> new ItemSeat(64));
 	
 	// TURRETS
+	public static final RegistryObject<ItemPart> TURRET = ITEMS.register("turret",
+			() -> new ItemTurret(16, "aa_turret"));
 	public static final RegistryObject<ItemPart> AA_TURRET = ITEMS.register("aa_turret", 
 			() -> new ItemTurret(16));
 	public static final RegistryObject<ItemPart> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
@@ -271,6 +273,8 @@ public class ModItems {
 			() -> new ItemPart(16));
 	
 	// WEAPON PARTS
+	public static final RegistryObject<ItemPart> EXTERNAL_WEAPON_PART = ITEMS.register("external_weapon_part",
+			() -> new ItemWeaponPart(16, "xm12"));
 	public static final RegistryObject<ItemPart> XM12 = ITEMS.register("xm12", 
 			() -> new ItemWeaponPart(16)); 
 	public static final RegistryObject<ItemPart> INTERNAL_GUN = ITEMS.register("internal_gun", 

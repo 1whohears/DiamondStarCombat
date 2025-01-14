@@ -67,11 +67,12 @@ public class ItemTagGen extends ItemTagsProvider {
 		tag(ModTags.Items.VEHICLE_PART_WEAPON)
 			.addTag(ModTags.Items.VEHICLE_TURRET)
 			.add(ModItems.XM12.get(), ModItems.LIGHT_MISSILE_RACK.get(), ModItems.HEAVY_MISSILE_RACK.get(), ModItems.BOMB_RACK.get())
-			.add(ModItems.ADL.get(), ModItems.VLS.get());
+			.add(ModItems.ADL.get(), ModItems.VLS.get(), ModItems.EXTERNAL_WEAPON_PART.get());
 		tag(ModTags.Items.VEHICLE_TURRET)
 			.add(ModItems.AA_TURRET.get(), ModItems.MINIGUN_TURRET.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get())
 			.add(ModItems.HEAVY_TANK_TURRET.get(), ModItems.MARK7_CANNON.get(), ModItems.STEVE_UP_SMASH.get(), ModItems.SAM_LAUNCHER.get())
-			.add(ModItems.TORPEDO_TUBES.get(), ModItems.MLS.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get());
+			.add(ModItems.TORPEDO_TUBES.get(), ModItems.MLS.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get())
+				.add(ModItems.TURRET.get(), ModItems.ARTILLERY_CANNON.get());
 		tag(ModTags.Items.VEHICLE_PART_ENGINE)
 			.addTag(ModTags.Items.VEHICLE_ENGINE_EXTERNAL_PUSH)
 			.addTag(ModTags.Items.VEHICLE_ENGINE_INTERNAL_PUSH)

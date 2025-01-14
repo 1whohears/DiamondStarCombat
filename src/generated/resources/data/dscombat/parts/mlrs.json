@@ -3,7 +3,7 @@
   "externalEntity": "dscombat:turret",
   "hitbox_height": 2.0,
   "hitbox_width": 2.0,
-  "item": "dscombat:mlrs",
+  "item": "dscombat:turret",
   "maxAmmo": 10,
   "maxHealth": 80.0,
   "passenger_offset": {

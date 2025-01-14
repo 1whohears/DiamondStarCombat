@@ -3196,7 +3196,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (name != null) return name;
 		Entity owner = getOwner();
 		if (owner != null) return UtilMCText.empty().append(owner.getDisplayName())
-					.append("'s").append(getStats().getBaseDisplayName());
+					.append("'s ").append(getStats().getBaseDisplayName());
 		return getStats().getBaseDisplayName();
 	}
 }

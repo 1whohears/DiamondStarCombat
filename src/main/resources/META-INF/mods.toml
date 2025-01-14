@@ -40,7 +40,7 @@ showAsResourcePack=false
 [[dependencies."${mod_id}"]]
     modId="onewholibs"
     mandatory=true
-    versionRange="[1.5.3,)"
+    versionRange="[1.5.8,)"
     ordering="NONE"
     side="BOTH"
     
@@ -69,5 +69,12 @@ showAsResourcePack=false
     modId = "architectury"
     mandatory = false
     versionRange = "[6.6.92,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+    modId = "openpartiesandclaims"
+    mandatory = false
+    versionRange = "[0.23.7,)"
     ordering = "NONE"
     side = "BOTH"

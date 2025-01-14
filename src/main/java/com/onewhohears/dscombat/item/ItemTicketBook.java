@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.entity.ai.goal.MoveToPassengerSeatGoal;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

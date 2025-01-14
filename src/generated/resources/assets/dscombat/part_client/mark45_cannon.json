@@ -1,5 +1,23 @@
 {
   "displayName": "preset.dscombat.mark45_cannon",
+  "item_model_overrides": {
+    "rotation": {
+      "x": 60.0,
+      "y": 180.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 0.8,
+    "translate": {
+      "x": -1.0,
+      "y": -0.1,
+      "z": 0.0
+    }
+  },
   "model_data": {
     "hard_coded_model_anims": "mark45",
     "model_id": "naval_gun_v2"

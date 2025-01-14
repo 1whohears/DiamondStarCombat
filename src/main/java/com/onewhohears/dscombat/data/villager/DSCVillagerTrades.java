@@ -61,13 +61,13 @@ public class DSCVillagerTrades {
 		trades.get(3).add(new EmeraldRangeForItem(ModItems.CIWS.get(), 28, 32, 2, 17));
 		trades.get(3).add(new EmeraldRangeForItem(ModItems.STEVE_UP_SMASH.get(), 29, 33, 2, 18));
 		// Expert
-		trades.get(4).add(new EmeraldForAircraft(ModItems.FELIX_PLANE.get(), "felix_plane_unarmed", 78, 83, 2, 25));
-		trades.get(4).add(new EmeraldForAircraft(ModItems.NOAH_CHOPPER.get(), "noah_chopper_unarmed", 50, 55, 2, 25));
+		trades.get(4).add(new EmeraldForAircraft(ModItems.VEHICLE.get(), "felix_plane_unarmed", 78, 83, 2, 25));
+		trades.get(4).add(new EmeraldForAircraft(ModItems.VEHICLE.get(), "noah_chopper_unarmed", 50, 55, 2, 25));
 		trades.get(4).add(new EmeraldRangeForItem(ModItems.SAM_LAUNCHER.get(), 40, 45, 2, 20));
 		// Master
-		trades.get(5).add(new EmeraldForAircraft(ModItems.JAVI_PLANE.get(), "javi_plane_unarmed", 101, 107, 2, 25));
-		trades.get(5).add(new EmeraldForAircraft(ModItems.KRAIT_CHOPPER.get(), "krait_chopper_unarmed", 65, 70, 2, 25));
-		trades.get(5).add(new EmeraldRangeForItem(ModItems.MRBUDGER_TANK.get(), 90, 96, 2, 25));
+		trades.get(5).add(new EmeraldForAircraft(ModItems.VEHICLE.get(), "javi_plane_unarmed", 101, 107, 2, 25));
+		trades.get(5).add(new EmeraldForAircraft(ModItems.VEHICLE.get(), "krait_chopper_unarmed", 65, 70, 2, 25));
+		trades.get(5).add(new EmeraldForAircraft(ModItems.VEHICLE.get(), "mrbudger_tank", 90, 96, 2, 25));
 	}
 	
 	public static class ItemForEmerald implements VillagerTrades.ItemListing {

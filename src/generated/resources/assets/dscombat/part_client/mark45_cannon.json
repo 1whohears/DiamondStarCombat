@@ -1,9 +1,9 @@
 {
-  "displayName": "preset.dscombat.mark45",
+  "displayName": "preset.dscombat.mark45_cannon",
   "model_data": {
     "hard_coded_model_anims": "mark45",
     "model_id": "naval_gun_v2"
   },
-  "presetId": "mark45",
+  "presetId": "mark45_cannon",
   "presetType": "turret"
 }

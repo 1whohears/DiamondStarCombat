@@ -34,11 +34,11 @@ public class PartClientPresetGenerator extends JsonPresetGenerator<PartClientSta
         addPresetToGenerate(PartClientStats.Builder.createTurret("ciws")
                 .setHardCodedModel("ciws")
                 .build());
-        addPresetToGenerate(PartClientStats.Builder.createTurret("mark7")
+        addPresetToGenerate(PartClientStats.Builder.createTurret("mark7_cannon")
                 .setHardCodedModel("mark7")
                 .setSimpleModelId("naval_cannon")
                 .build());
-        addPresetToGenerate(PartClientStats.Builder.createTurret("mark45")
+        addPresetToGenerate(PartClientStats.Builder.createTurret("mark45_cannon")
                 .setHardCodedModel("mark45")
                 .setSimpleModelId("naval_gun_v2")
                 .build());

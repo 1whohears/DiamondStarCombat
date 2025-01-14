@@ -1,9 +1,9 @@
 {
-  "displayName": "preset.dscombat.mark7",
+  "displayName": "preset.dscombat.mark7_cannon",
   "model_data": {
     "hard_coded_model_anims": "mark7",
     "model_id": "naval_cannon"
   },
-  "presetId": "mark7",
+  "presetId": "mark7_cannon",
   "presetType": "turret"
 }

@@ -147,6 +147,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 		int bud_middle_x = 120;
 		float wheel_rot_rate = 160;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "mrbudger_tank")
+				.setItemModelOverrides(0.9f, ONE, Vec3.ZERO, Vec3.ZERO)
 				.setBackground("dscombat:textures/ui/vehicle_inventory_backgrounds/mrbudger_tank.png")
 				.setCustomAnims("t72hull", VehicleAnimsBuilder.create()
 						.addWheelRotPixelAnim("w9", 24.9375f, 7.05f, 39.9f, RotationAxis.X, wheel_rot_rate)
@@ -188,10 +189,11 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.addUIPos(PartSlot.PILOT_SLOT_NAME, roller_middle_x, 50)
 				.addUIPos("internal_1", roller_middle_x-9, 70)
 				.addUIPos("internal_2", roller_middle_x+9, 70)
-				.setItemModelOverrides(0.6f, ONE, new Vec3(0.2, 0.25, 0), Vec3.ZERO)
+				.setItemModelOverrides(0.55f, ONE, new Vec3(0.2, 0.25, 0), Vec3.ZERO)
 				.build());
 		int nathan_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "nathan_boat")
+				.setItemModelOverrides(0.9f, ONE, Vec3.ZERO, Vec3.ZERO)
 				.setCustomAnims(VehicleAnimsBuilder.create()
 					.addMotorRotPixelAnim("rudder/blade", 0, -4, -36, RotationAxis.Z, 43)
 					.addInputBoundRotPixelAnim("rudder", 0, 11, -20, RotationAxis.Y, InputAxis.YAW, 15)
@@ -213,6 +215,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int andolf_middle_x = 117;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "andolf_sub")
+				.setItemModelOverrides(0.8f, ONE, new Vec3(0.2, 0, 0), Vec3.ZERO)
 				.setCustomAnims(VehicleAnimsBuilder.create()
 						.addMotorRotPixelAnim("propellor", 0, -1, -58, RotationAxis.Z, 19)
 						.build())
@@ -239,6 +242,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int orange_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "orange_tesla")
+				.setItemModelOverrides(0.75f, ONE, new Vec3(0.1, 0.2, 0), Vec3.ZERO)
 				.setCustomAnims(VehicleAnimsBuilder.create()
 					.addInputBoundRotPixelAnim("wheel", 8, 19, 13, RotationAxis.Z, InputAxis.YAW, 40)
 					.addInputBoundRotPixelAnim("wl0", 16, 6, 21, RotationAxis.Y, InputAxis.YAW, -40)
@@ -311,6 +315,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		int axcel_middle_x = 120;
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "axcel_truck")
+				.setItemModelOverrides(0.9f, ONE, new Vec3(0, 0.2, 0), Vec3.ZERO)
 				.setCustomAnims(VehicleAnimsBuilder.create()
 					.addSpinningRadarPixelAnim("radar", 1, 46, 15, RotationAxis.Y, 4.8f, "axcel_truck_radar")
 					.addInputBoundRotPixelAnim("wheel", 7, 27, 26, RotationAxis.Z, InputAxis.YAW, 40)
@@ -457,9 +462,10 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.setCustomAnims(VehicleAnimsBuilder.create()
 						.addMotorRotPixelAnim("Propeller", 0, -15, 0, RotationAxis.Z, 40)
 						.build())
-				.setItemModelOverrides(1.1f, ONE, new Vec3(0.1, 0.2, 0), Vec3.ZERO)
+				.setItemModelOverrides(1.25f, ONE, new Vec3(0.1, 0.2, 0), Vec3.ZERO)
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "eric_truck")
+				.setItemModelOverrides(0.9f, ONE, Vec3.ZERO, Vec3.ZERO)
 				.setCustomAnims(VehicleAnimsBuilder.create()
 						.addInputBoundRotPixelAnim("LeftFrontWheel", -24.375f, 12f, 20.375f, RotationAxis.Y, InputAxis.YAW, -40)
 						.addInputBoundRotPixelAnim("RightFrontWheel", 24.375f, 12f, 20.375f, RotationAxis.Y, InputAxis.YAW, -40)

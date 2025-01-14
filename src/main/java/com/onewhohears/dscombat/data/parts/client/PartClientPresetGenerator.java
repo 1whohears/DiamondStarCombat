@@ -13,12 +13,14 @@ public class PartClientPresetGenerator extends JsonPresetGenerator<PartClientSta
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createTurret("heavy_tank_turret")
                 .setHardCodedModel("heavy_tank_turret")
+                .setSimpleModelId("autoloaderturret")
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createTurret("steve_up_smash")
                 .setHardCodedModel("steve_up_smash")
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createTurret("sam_launcher")
                 .setHardCodedModel("sam_launcher")
+                .setSimpleModelId("samlauncherv3")
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createTurret("mls")
                 .setHardCodedModel("mls")
@@ -34,9 +36,11 @@ public class PartClientPresetGenerator extends JsonPresetGenerator<PartClientSta
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createTurret("mark7")
                 .setHardCodedModel("mark7")
+                .setSimpleModelId("naval_cannon")
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createTurret("mark45")
                 .setHardCodedModel("mark45")
+                .setSimpleModelId("naval_gun_v2")
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createTurret("mlrs")
                 .setHardCodedModel("mlrs")

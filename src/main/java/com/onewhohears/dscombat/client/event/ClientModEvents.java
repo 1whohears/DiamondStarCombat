@@ -26,6 +26,7 @@ import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
 import com.onewhohears.dscombat.client.screen.VehiclePartsScreen;
 import com.onewhohears.dscombat.client.screen.VehicleStorageScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
+import com.onewhohears.dscombat.client.screen.WeaponPartsBlockScreen;
 import com.onewhohears.dscombat.data.parts.client.PartAssets;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModFluids;
@@ -165,6 +166,7 @@ public final class ClientModEvents {
 	public static void registerItemMenuScreens(FMLClientSetupEvent event) {
 		MenuScreens.register(ModContainers.VEHICLE_PARTS_MENU.get(), VehiclePartsScreen::new);
 		MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
+		MenuScreens.register(ModContainers.WEAPON_PARTS_BLOCK_MENU.get(), WeaponPartsBlockScreen::new);
 		MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), VehicleBlockScreen::new);
 		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x0.get(), VehicleStorageScreen::new);
 		MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x1.get(), VehicleStorageScreen::new);

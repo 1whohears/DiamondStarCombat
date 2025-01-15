@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.block.custom.VehicleBlock;
+import com.onewhohears.dscombat.block.custom.WeaponPartsBlock;
 import com.onewhohears.dscombat.block.custom.WeaponsBlock;
 
 import net.minecraft.world.item.BlockItem;
@@ -39,11 +40,14 @@ public class ModBlocks {
     }
 	
 	public static final RegistryObject<Block> WEAPONS_BLOCK = registerBlock("weapons_block", 
-			() -> new WeaponsBlock(Block.Properties.of(Material.METAL)
-                    .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.WEAPONS);
+			() -> new WeaponsBlock(Block.Properties.of(Material.METAL).strength(1.5f)
+					.noOcclusion().explosionResistance(6f)), ModItems.WEAPONS);
 	public static final RegistryObject<Block> AIRCRAFT_BLOCK = registerBlock("aircraft_block", 
-			() -> new VehicleBlock(Block.Properties.of(Material.METAL)
-                    .strength(1.5f).noOcclusion().explosionResistance(6f)), ModItems.VEHICLES);
+			() -> new VehicleBlock(Block.Properties.of(Material.METAL).strength(1.5f)
+					.noOcclusion().explosionResistance(6f)), ModItems.VEHICLES);
+	public static final RegistryObject<Block> WEAPON_PARTS_BLOCK = registerBlock("weapon_parts_block",
+			() -> new WeaponPartsBlock(Block.Properties.of(Material.METAL).strength(1.5f)
+					.noOcclusion().explosionResistance(6f)), ModItems.WEAPON_PARTS);
 	
 	public static final RegistryObject<Block> ALUMINUM_BLOCK = registerBlock("aluminum_block", 
 			() -> new Block(Block.Properties.of(Material.METAL)

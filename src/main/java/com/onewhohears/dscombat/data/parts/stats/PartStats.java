@@ -35,6 +35,7 @@ public abstract class PartStats extends JsonPresetStats {
 	private EntityType<?> externalEntityType;
 	private NonNullList<Ingredient> repair_cost;
 	private EntityDimensions dimensions;
+	private NonNullList<Ingredient> ingredients;
 
 	public PartStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -153,6 +154,17 @@ public abstract class PartStats extends JsonPresetStats {
 	public EntityDimensions getEntityDimensions() {
 		if (dimensions == null) dimensions = EntityDimensions.fixed(hitbox_width, hitbox_height);
 		return dimensions;
+	}
+
+	public NonNullList<Ingredient> getIngredients() {
+		if (ingredients == null) {
+			ingredients = IngredientStackBuilder.getIngredients(getJsonData());
+		}
+		return ingredients;
+	}
+
+	public boolean isCraftableWeaponPart() {
+		return false;
 	}
 	
 }

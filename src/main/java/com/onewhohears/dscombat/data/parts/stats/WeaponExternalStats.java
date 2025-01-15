@@ -37,4 +37,9 @@ public class WeaponExternalStats extends WeaponPartStats {
 		return true;
 	}
 
+	@Override
+	public boolean isCraftableWeaponPart() {
+		return true;
+	}
+
 }

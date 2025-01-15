@@ -9,5 +9,6 @@
   "presetId": "light_missile_rack",
   "presetType": "external_weapon",
   "slotType": "pylon_light",
+  "sort_factor": 2,
   "weight": 750.0
 }

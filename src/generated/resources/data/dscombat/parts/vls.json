@@ -9,5 +9,6 @@
   "presetId": "vls",
   "presetType": "external_weapon",
   "slotType": "mount_heavy",
+  "sort_factor": 6,
   "weight": 6000.0
 }

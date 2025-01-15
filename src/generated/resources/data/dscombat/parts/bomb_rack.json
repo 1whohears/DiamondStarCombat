@@ -9,5 +9,6 @@
   "presetId": "bomb_rack",
   "presetType": "external_weapon",
   "slotType": "pylon_heavy",
+  "sort_factor": 4,
   "weight": 2000.0
 }

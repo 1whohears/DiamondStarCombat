@@ -9,5 +9,6 @@
   "presetId": "heavy_missile_rack",
   "presetType": "external_weapon",
   "slotType": "pylon_med",
+  "sort_factor": 3,
   "weight": 1500.0
 }

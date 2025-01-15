@@ -25,10 +25,23 @@ public class PartBuilder extends IngredientStackBuilder<PartBuilder> {
 		builder.setDisplayName("item."+namespace+"."+name);
 		return builder;
 	}
-	
+
+	private String ingredientListName = "ingredients";
+
+	public PartBuilder addRepairCost(String itemId, int num) {
+		ingredientListName = "repair_cost";
+		return super.addIngredient(itemId, num);
+	}
+
+	@Override
+	public PartBuilder addIngredient(String itemId, int num) {
+		ingredientListName = "ingredients";
+		return super.addIngredient(itemId, num);
+	}
+
 	@Override
 	public String getIngredientListName() {
-		return "repair_cost";
+		return ingredientListName;
 	}
 	
 	protected PartBuilder(String namespace, String name, PartType type) {

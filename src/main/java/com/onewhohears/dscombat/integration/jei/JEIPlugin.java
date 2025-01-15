@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
+import com.onewhohears.dscombat.crafting.WeaponPartRecipe;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 
 import mezz.jei.api.IModPlugin;
@@ -28,6 +29,7 @@ public class JEIPlugin implements IModPlugin {
 	public void registerCategories(IRecipeCategoryRegistration registration) {
 		registration.addRecipeCategories(new VehicleRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new WeaponRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new WeaponPartRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 
 	@Override
@@ -37,6 +39,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipes(VehicleRecipeCategory.TYPE, vehicleRecipes);
         List<WeaponRecipe> weaponRecipes = rm.getAllRecipesFor(WeaponRecipe.Type.INSTANCE);
         registration.addRecipes(WeaponRecipeCategory.TYPE, weaponRecipes);
+		List<WeaponPartRecipe> weaponPartRecipes = rm.getAllRecipesFor(WeaponPartRecipe.Type.INSTANCE);
+		registration.addRecipes(WeaponPartRecipeCategory.TYPE, weaponPartRecipes);
 	}
 
 }

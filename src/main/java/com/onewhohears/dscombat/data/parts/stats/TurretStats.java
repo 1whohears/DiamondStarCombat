@@ -132,4 +132,9 @@ public class TurretStats extends SeatStats {
 		}
 	}
 
+	@Override
+	public boolean isCraftableWeaponPart() {
+		return true;
+	}
+
 }

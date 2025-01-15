@@ -4,7 +4,9 @@ import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
+import com.onewhohears.dscombat.crafting.WeaponPartRecipe;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
+import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
@@ -25,6 +27,7 @@ public class DSCRecipeGenerator extends RecipeProvider {
 	protected void buildCraftingRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer) {
 		genAircraftRecipes(finishedRecipeConsumer);
 		genWeaponRecipes(finishedRecipeConsumer);
+		genWeaponPartRecipes(finishedRecipeConsumer);
 	}
 
 	protected void genAircraftRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer) {
@@ -39,6 +42,14 @@ public class DSCRecipeGenerator extends RecipeProvider {
 		WeaponPresetGenerator.INSTANCE.GEN_MAP.forEach((key, preset) -> {
 			finishedRecipeConsumer.accept(new FinishedPresetRecipe(preset, 
 					"workbench_weapon_", WeaponRecipe.Serializer.INSTANCE));
+		});
+	}
+
+	protected void genWeaponPartRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer) {
+		PartPresetGenerator.INSTANCE.GEN_MAP.forEach((key, preset) -> {
+			if (!preset.isCraftableWeaponPart()) return;
+			finishedRecipeConsumer.accept(new FinishedPresetRecipe(preset,
+					"workbench_weapon_part_", WeaponPartRecipe.Serializer.INSTANCE));
 		});
 	}
 	

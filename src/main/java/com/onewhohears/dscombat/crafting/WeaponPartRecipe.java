@@ -1,14 +1,11 @@
 package com.onewhohears.dscombat.crafting;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
-import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
+import com.onewhohears.dscombat.data.parts.PartPresets;
+import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.onewholibs.util.UtilItem;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -19,13 +16,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-public class VehicleRecipe implements Recipe<Inventory> {
-	
+public class WeaponPartRecipe implements Recipe<Inventory> {
+
 	private final ResourceLocation id;
-    private final String presetId;
+	private final String presetId;
 
-    public VehicleRecipe(ResourceLocation id, String presetId) {
+    public WeaponPartRecipe(ResourceLocation id, String presetId) {
         this.id = id;
         this.presetId = presetId;
     }
@@ -54,12 +52,12 @@ public class VehicleRecipe implements Recipe<Inventory> {
 	public ItemStack getResultItem() {
 		return getOutput().copy();
 	}
-	
+
 	@Override
 	public ItemStack getToastSymbol() {
-		return new ItemStack(ModBlocks.AIRCRAFT_BLOCK.get());
+		return new ItemStack(ModBlocks.WEAPON_PARTS_BLOCK.get());
 	}
-
+	
 	@Override
 	public ResourceLocation getId() {
 		return id;
@@ -75,36 +73,31 @@ public class VehicleRecipe implements Recipe<Inventory> {
 		return Type.INSTANCE;
 	}
 	
-	public String getVehiclePresetId() {
+	public String getPartPresetId() {
 		return presetId;
 	}
 	
-	public VehicleStats getVehicleStats() {
-		return VehiclePresets.get().get(getVehiclePresetId());
+	public PartStats getPartData() {
+		return PartPresets.get().get(getPartPresetId());
 	}
 	
-	public int getSortFactor() {
-		VehicleStats preset = getVehicleStats();
-		if (preset == null) return 0;
-		return preset.getSortFactor();
-	}
-	
-	public int compare(VehicleRecipe other) {
-		if (this.getSortFactor() != other.getSortFactor()) 
-			return this.getSortFactor() - other.getSortFactor();
-		return this.presetId.compareToIgnoreCase(other.presetId);
+	public int compare(WeaponPartRecipe other) {
+		PartStats me = this.getPartData();
+		PartStats you = other.getPartData();
+		if (me == null || you == null) return 0;
+		return me.compare(you);
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {
-		VehicleStats preset = getVehicleStats();
+		PartStats preset = getPartData();
 		if (preset == null) return NonNullList.create();
 		return preset.getIngredients();
 	}
 	
 	public ItemStack getOutput() {
-		VehicleStats preset = getVehicleStats();
+		PartStats preset = getPartData();
 		if (preset == null) return ItemStack.EMPTY;
-		return preset.getItem();
+		return preset.createPartInstance().getNewItemStack();
 	}
 	
 	@Override
@@ -112,31 +105,31 @@ public class VehicleRecipe implements Recipe<Inventory> {
 		return true;
 	}
 	
-	public static class Type implements RecipeType<VehicleRecipe> {
+	public static class Type implements RecipeType<WeaponPartRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "aircraft_workbench";
+        public static final String ID = "weapon_parts_workbench";
         @Override
         public String toString() {
         	return ID;
         }
     }
 	
-	public static class Serializer implements RecipeSerializer<VehicleRecipe> {
+	public static class Serializer implements RecipeSerializer<WeaponPartRecipe> {
 		public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(DSCombatMod.MODID, "aircraft_workbench");
-		@Override
-		public VehicleRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
+        public static final ResourceLocation ID = new ResourceLocation(DSCombatMod.MODID, "weapon_parts_workbench");
+        @Override
+		public WeaponPartRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
 			String presetId = serializedRecipe.get("presetId").getAsString();
-			return new VehicleRecipe(recipeId, presetId);
+			return new WeaponPartRecipe(recipeId, presetId);
 		}
 		@Override
-		public @Nullable VehicleRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+		public @Nullable WeaponPartRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			String presetId = buffer.readUtf();
-			return new VehicleRecipe(recipeId, presetId);
+			return new WeaponPartRecipe(recipeId, presetId);
 		}
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, VehicleRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, WeaponPartRecipe recipe) {
 			buffer.writeUtf(recipe.presetId);
 		}
 	}

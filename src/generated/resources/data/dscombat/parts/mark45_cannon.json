@@ -3,6 +3,20 @@
   "externalEntity": "dscombat:turret",
   "hitbox_height": 1.5,
   "hitbox_width": 2.0,
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "item": "dscombat:aluminum_block",
+      "num": 3
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 2
+    }
+  ],
   "item": "dscombat:turret",
   "maxAmmo": 50,
   "maxHealth": 120.0,
@@ -26,6 +40,7 @@
   },
   "shootType": "NORMAL",
   "slotType": "mount_light",
+  "sort_factor": 10,
   "weaponOffset": 1.5625,
   "weight": 3000.0
 }

@@ -9,5 +9,6 @@
   "presetId": "adl",
   "presetType": "external_weapon",
   "slotType": "mount_heavy",
+  "sort_factor": 5,
   "weight": 6000.0
 }

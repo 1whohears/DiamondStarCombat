@@ -1,16 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.crafting.BucketConvertRecipe;
-import com.onewhohears.dscombat.crafting.FlareDispenserLoadRecipe;
-import com.onewhohears.dscombat.crafting.FuelTankLoadRecipe;
-import com.onewhohears.dscombat.crafting.TurretLoadRecipe;
-import com.onewhohears.dscombat.crafting.TurretUnloadRecipe;
-import com.onewhohears.dscombat.crafting.VehiclePartRepairRecipe;
-import com.onewhohears.dscombat.crafting.VehicleRecipe;
-import com.onewhohears.dscombat.crafting.WeaponPartLoadRecipe;
-import com.onewhohears.dscombat.crafting.WeaponPartUnloadRecipe;
-import com.onewhohears.dscombat.crafting.WeaponRecipe;
+import com.onewhohears.dscombat.crafting.*;
 
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
@@ -46,6 +37,8 @@ public class ModRecipes {
 			RECIPES.register(VehicleRecipe.Serializer.ID.getPath(), () -> VehicleRecipe.Serializer.INSTANCE);
 	public static final RegistryObject<RecipeSerializer<WeaponRecipe>> WEAPON_RECIPE_SERIALIZER = 
 			RECIPES.register(WeaponRecipe.Serializer.ID.getPath(), () -> WeaponRecipe.Serializer.INSTANCE);
+	public static final RegistryObject<RecipeSerializer<WeaponPartRecipe>> WEAPON_PART_RECIPE_SERIALIZER =
+			RECIPES.register(WeaponPartRecipe.Serializer.ID.getPath(), () -> WeaponPartRecipe.Serializer.INSTANCE);
 	public static final RegistryObject<RecipeSerializer<BucketConvertRecipe>> BUCKET_CONVERT_RECIPE_SERIALIZER = 
 			RECIPES.register(BucketConvertRecipe.Serializer.ID.getPath(), () -> BucketConvertRecipe.Serializer.INSTANCE);
 	

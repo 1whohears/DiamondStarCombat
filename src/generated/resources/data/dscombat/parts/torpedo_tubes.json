@@ -26,6 +26,7 @@
   },
   "shootType": "NORMAL",
   "slotType": "mount_med",
+  "sort_factor": 16,
   "weaponOffset": 1.0,
   "weight": 5500.0
 }

@@ -157,6 +157,11 @@ public final class PacketHandler {
 				.decoder(ToClientOnShoot::new)
 				.consumerMainThread(ToClientOnShoot::handle)
 				.add();
+		net.messageBuilder(ToServerCraftWeaponPart.class, index++, NetworkDirection.PLAY_TO_SERVER)
+				.encoder(ToServerCraftWeaponPart::encode)
+				.decoder(ToServerCraftWeaponPart::new)
+				.consumerMainThread(ToServerCraftWeaponPart::handle)
+				.add();
 	}
 	
 }

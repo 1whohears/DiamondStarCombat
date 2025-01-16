@@ -9,8 +9,8 @@
       "num": 1
     },
     {
-      "item": "dscombat:aluminum_block",
-      "num": 1
+      "num": 6,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:dispenser",

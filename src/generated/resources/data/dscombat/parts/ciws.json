@@ -5,12 +5,12 @@
   "hitbox_width": 1.5,
   "ingredients": [
     {
-      "item": "dscombat:minigun_turret",
+      "item": "minecraft:dispenser",
       "num": 1
     },
     {
-      "item": "dscombat:aluminum_block",
-      "num": 1
+      "num": 16,
+      "tag": "dscombat:aluminum_ingot"
     },
     {
       "item": "minecraft:gold_ingot",

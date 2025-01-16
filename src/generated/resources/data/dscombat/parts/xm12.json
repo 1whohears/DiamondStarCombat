@@ -4,6 +4,16 @@
   "externalEntity": "dscombat:external_weapon_part",
   "hitbox_height": 0.1,
   "hitbox_width": 0.1,
+  "ingredients": [
+    {
+      "num": 3,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:dispenser",
+      "num": 1
+    }
+  ],
   "item": "dscombat:external_weapon_part",
   "max": 300,
   "presetId": "xm12",

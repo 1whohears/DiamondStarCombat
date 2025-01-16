@@ -4,6 +4,12 @@
   "externalEntity": "dscombat:external_weapon_part",
   "hitbox_height": 0.1,
   "hitbox_width": 0.1,
+  "ingredients": [
+    {
+      "num": 5,
+      "tag": "dscombat:aluminum_ingot"
+    }
+  ],
   "item": "dscombat:external_weapon_part",
   "max": 4,
   "presetId": "light_missile_rack",

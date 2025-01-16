@@ -4,6 +4,12 @@
   "externalEntity": "dscombat:external_weapon_part",
   "hitbox_height": 0.1,
   "hitbox_width": 0.1,
+  "ingredients": [
+    {
+      "num": 15,
+      "tag": "dscombat:aluminum_ingot"
+    }
+  ],
   "item": "dscombat:external_weapon_part",
   "max": 16,
   "presetId": "bomb_rack",

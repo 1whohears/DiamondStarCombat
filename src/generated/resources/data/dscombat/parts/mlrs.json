@@ -3,6 +3,20 @@
   "externalEntity": "dscombat:turret",
   "hitbox_height": 2.0,
   "hitbox_width": 2.0,
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "num": 60,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 60
+    }
+  ],
   "item": "dscombat:turret",
   "maxAmmo": 10,
   "maxHealth": 80.0,

@@ -311,11 +311,13 @@
 	"block.dscombat.weapons_block": "Weapons Workbench",
 	"block.dscombat.aircraft_block": "Vehicle Workbench",
 	"block.dscombat.aluminum_block": "Aluminum Block",
+	"block.dscombat.weapon_parts_block": "Weapon Parts Workbench",
 	
 	"container.dscombat.vehicle_parts_menu": "Vehicle Parts",
 	"container.dscombat.vehicle_storage": "Vehicle Storage",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",
 	"container.dscombat.aircraft_block_menu": "Vehicle Workbench",
+	"container.dscombat.weapon_parts_block_menu": "Weapon Parts Workbench",
 	
 	"itemGroup.items": "DSCombat Items",
 	"itemGroup.parts": "DSCombat Parts",

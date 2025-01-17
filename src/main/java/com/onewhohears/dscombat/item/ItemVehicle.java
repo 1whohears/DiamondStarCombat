@@ -189,7 +189,7 @@ public class ItemVehicle extends Item implements ObjModelItem {
 		if (group.getId() != ModItems.VEHICLES.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
 		VehicleStats[] presets = VehiclePresets.get().getAll();
 		for (int i = 0; i < presets.length; ++i) {
-			if (presets[i].getItem().getDescriptionId().equals(getDescriptionId())) {
+			if (presets[i].getItem().is(this)) {
 				items.add(presets[i].getItem());
 			}
 		}

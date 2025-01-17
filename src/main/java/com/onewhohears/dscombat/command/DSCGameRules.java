@@ -32,6 +32,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> WEAPONS_BREAK_BLOCKS;
 	public static GameRules.Key<GameRules.BooleanValue> VEHICLE_TRAMPLE;
 	public static GameRules.Key<GameRules.BooleanValue> FORCE_PUBLIC_PERM;
+	public static GameRules.Key<GameRules.BooleanValue> CAN_ITEM_WHILE_MOVING;
 	
 	public static void registerAll() {
 		CONSUME_FULE = CustomGameRules.registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
@@ -59,6 +60,7 @@ public class DSCGameRules {
 		WEAPONS_BREAK_BLOCKS = CustomGameRules.registerSyncBoolean("weaponsBreakBlocks", true, GameRules.Category.PLAYER);
 		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("vehicleTrample", true, GameRules.Category.PLAYER);
 		FORCE_PUBLIC_PERM = CustomGameRules.registerSyncBoolean("vehicleForcePublicPerm", false, GameRules.Category.PLAYER);
+		CAN_ITEM_WHILE_MOVING = CustomGameRules.registerBoolean("canVehicleItemWhileMoving", false, GameRules.Category.PLAYER);
 	}
 
 	public static boolean isPlaneArcadeMode(Level level) {

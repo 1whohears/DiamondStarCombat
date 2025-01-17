@@ -123,6 +123,8 @@
 	"error.dscombat.vehicle_not_found": "This ticket's linked vehicle doesn't exist or isn't within range.'",
 	"error.dscombat.entity_cant_use_tickets": "This entity can't use tickets!",
 	"error.dscombat.entity_already_passenger": "This entity is already a passenger.",
+	"error.dscombat.cant_item_while_moving": "Can't become an item while moving.",
+	"error.dscombat.cant_item_while_flying": "Can't become an item while flying.",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",
@@ -782,6 +784,7 @@
 	"gamerule.weaponsBreakBlocks": "DSC Weapons Break Blocks",
 	"gamerule.vehicleTrample": "DSC Vehicles Trample Weak Blocks",
 	"gamerule.vehicleForcePublicPerm": "DSC Force Public Permissions in Vehicles",
+	"gamerule.canVehicleItemWhileMoving": "DSC Can Vehicle become Item while Moving",
 	
 	"team.minigames.attackers": "ATTACKERS",
 	"team.minigames.defenders": "DEFENDERS"

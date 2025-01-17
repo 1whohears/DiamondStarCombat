@@ -2165,17 +2165,31 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	return tickCount/20 > fresh && (lastShootTime == -1 || (tickCount-lastShootTime)/20 > shoot);
     }
 
+	/**
+	 * @return null if can become item
+	 */
+	@Nullable
 	public Component getCantBecomeItemReason(Player player) {
+		boolean canItemWhileMoving = getLevel().getGameRules().getBoolean(DSCGameRules.CAN_ITEM_WHILE_MOVING);
+		if (!canItemWhileMoving && !isOnGround())
+			return UtilMCText.translatable("error.dscombat.cant_item_while_flying");
+		if (!canItemWhileMoving && getDeltaMovement().lengthSqr() > 0.01)
+			return UtilMCText.translatable("error.dscombat.cant_item_while_moving");
 		EntityRidablePart seat = getPassengerSeat(player);
-		if (seat == null) return UtilMCText.translatable("error.dscombat.not_a_passenger");
-		if (!seat.isPilotSeat()) return UtilMCText.translatable("error.dscombat.not_a_pilot");
+		if (seat == null)
+			return UtilMCText.translatable("error.dscombat.not_a_passenger");
+		if (!seat.isPilotSeat())
+			return UtilMCText.translatable("error.dscombat.not_a_pilot");
 		int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
 		int fresh_diff = fresh - tickCount/20;
-		if (fresh_diff > 0) return UtilMCText.translatable("error.dscombat.cant_item_yet_fresh", fresh_diff);
-		if (lastShootTime == -1) return null;
+		if (fresh_diff > 0)
+			return UtilMCText.translatable("error.dscombat.cant_item_yet_fresh", fresh_diff);
+		if (lastShootTime == -1)
+			return null;
 		int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
 		int shoot_diff = shoot - (tickCount-lastShootTime)/20;
-		if (shoot_diff > 0) return UtilMCText.translatable("error.dscombat.cant_item_yet_shoot", shoot_diff);
+		if (shoot_diff > 0)
+			return UtilMCText.translatable("error.dscombat.cant_item_yet_shoot", shoot_diff);
 		return null;
 	}
     

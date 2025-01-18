@@ -50,7 +50,7 @@ public class ItemTicketBook extends Item implements VehicleInteractItem {
         EntityVehicle vehicle = vehicles.get(0);
         if (!vehicle.hasOpenPassengerSeat())
             return sendError(player, "error.dscombat.no_open_seats");
-        mob.goalSelector.addGoal(10, new MoveToPassengerSeatGoal(mob, vehicle));
+        mob.goalSelector.addGoal(30, new MoveToPassengerSeatGoal(mob, vehicle));
         player.displayClientMessage(UtilMCText.translatable("success.dscombat.ticket_book_assign")
                 .setStyle(Style.EMPTY.withColor(0x00FF00)), true);
         return InteractionResult.SUCCESS;

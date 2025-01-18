@@ -451,8 +451,8 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "krait_chopper")
 				.setCustomAnims("krait_chopper", VehicleAnimsBuilder.create()
-						.addMotorRotPixelAnim("blade0", 0.0001f, 65.2349f, 0.0018f, RotationAxis.Y, 50)
-						.addMotorRotPixelAnim("blade1", -5.2876f, 50.56f, -154.08f, RotationAxis.X, 31)
+						.addMotorRotPixelAnim("blade0", 0.0001f, 65.2349f, 0.0018f, RotationAxis.Y, 100)
+						.addMotorRotPixelAnim("blade1", -5.2876f, 50.56f, -154.08f, RotationAxis.X, 54)
 						.addHitboxDestroyPartsAnim("tail", "blade1", "wing4", "wing3", "wing2")
 						.addHitboxDestroyPartsAnim("engine", "engine")
 						.addAlwaysHideAnims("turret0", "turret1")

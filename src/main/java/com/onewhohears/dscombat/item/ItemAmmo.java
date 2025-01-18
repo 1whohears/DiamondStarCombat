@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -24,6 +23,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemAmmo extends Item implements VehicleInteractItem {
 	
@@ -35,8 +35,8 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	}
 	
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() != ModItems.WEAPONS.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
+		if (group != ModItems.WEAPONS && group != CreativeModeTab.TAB_SEARCH) return;
 		String itemId = UtilItem.getItemKeyString(this);
 		for (int i = 0; i < WeaponPresets.get().getNum(); ++i) {
 			WeaponStats w = WeaponPresets.get().getAll()[i];
@@ -50,7 +50,8 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips,
+								@NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		String id = getWeaponId(stack);
 		WeaponStats wd = WeaponPresets.get().get(id);
@@ -59,7 +60,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
+	public @NotNull Component getName(@NotNull ItemStack stack) {
 		String id = getWeaponId(stack);
 		WeaponStats wd = WeaponPresets.get().get(id);
 		if (wd == null) return UtilMCText.translatable(getDescriptionId()).append(" ")
@@ -96,7 +97,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	}
 	
 	@Override
-	public ItemStack getDefaultInstance() {
+	public @NotNull ItemStack getDefaultInstance() {
 		ItemStack stack = super.getDefaultInstance();
 		stack.getOrCreateTag().putString("weapon", defaultWeaponId);
 		return stack;

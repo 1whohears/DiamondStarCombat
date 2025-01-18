@@ -57,7 +57,7 @@ public class ItemVehicle extends Item implements ObjModelItem {
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
 		if (hitresult.getType() == HitResult.Type.MISS) {
@@ -142,21 +142,27 @@ public class ItemVehicle extends Item implements ObjModelItem {
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips,
+								@NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		CompoundTag tag = stack.getTag();
-		if (tag == null || !tag.contains("EntityTag")) return;
-		CompoundTag et = tag.getCompound("EntityTag");
-		if (et.contains("health")) tips.add(UtilMCText.translatable("info.dscombat.health")
-				.append(": "+(int)et.getFloat("health")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("fuel")) tips.add(UtilMCText.translatable("info.dscombat.fuel")
-				.append(": "+(int)et.getFloat("fuel")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("flares")) tips.add(UtilMCText.translatable("info.dscombat.flares")
-				.append(": "+(int)et.getFloat("flares")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (tag != null && tag.contains("EntityTag")) {
+			CompoundTag et = tag.getCompound("EntityTag");
+			if (et.contains("health")) tips.add(UtilMCText.translatable("info.dscombat.health")
+					.append(": " + (int) et.getFloat("health")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+			if (et.contains("fuel")) tips.add(UtilMCText.translatable("info.dscombat.fuel")
+					.append(": " + (int) et.getFloat("fuel")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+			if (et.contains("flares")) tips.add(UtilMCText.translatable("info.dscombat.flares")
+					.append(": " + (int) et.getFloat("flares")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		}
+		String preset = getPreset(stack);
+		VehicleStats vs = VehiclePresets.get().get(preset);
+		if (vs != null) tips.add(UtilMCText.translatable(vs.getDisplayName())
+				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
+	public @NotNull Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getTag();
 		String presetId = getPresetName(stack);
 		VehicleStats vs = VehiclePresets.get().get(presetId);
@@ -185,14 +191,14 @@ public class ItemVehicle extends Item implements ObjModelItem {
 	}
 	
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() != ModItems.VEHICLES.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
+		if (group != ModItems.VEHICLES && group != CreativeModeTab.TAB_SEARCH) return;
 		VehicleStats[] presets = VehiclePresets.get().getAll();
-		for (int i = 0; i < presets.length; ++i) {
-			if (presets[i].getItem().is(this)) {
-				items.add(presets[i].getItem());
-			}
-		}
+        for (VehicleStats preset : presets) {
+            if (preset.getItem().is(this)) {
+                items.add(preset.getItem());
+            }
+        }
 	}
 
 	@Override

@@ -52,8 +52,8 @@ public class ItemPart extends Item {
 	}
 	
 	@Override
-	public void fillItemCategory(CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if (group.getId() != getCreativeTab().getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
+		if (group != getCreativeTab() && group != CreativeModeTab.TAB_SEARCH) return;
 		String itemId = UtilItem.getItemKeyString(this);
 		for (int i = 0; i < PartPresets.get().getNum(); ++i) {
 			PartStats stats = PartPresets.get().getAll()[i];
@@ -98,7 +98,8 @@ public class ItemPart extends Item {
 	}
 	
 	@Override
-	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips, @NotNull TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips,
+								@NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		PartInstance<?> instance = getPartInstance(stack);
 		if (instance != null) instance.addToolTips(tips, isAdvanced);

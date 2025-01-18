@@ -780,6 +780,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 32 iron, 16 tnt (80 gunpowder)
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm30")
+				.setModelId("anm30")
 				.setFireRate(4)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -801,6 +802,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 32 iron, 16 tnt (80 gunpowder)
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm57")
+				.setModelId("anm30")
 				.setFireRate(6)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -823,6 +825,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 24 iron, 12 tnt (60 gunpowder)
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm64")
+				.setModelId("anm30")
 				.setFireRate(11)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -844,6 +847,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "napalm")
+				.setModelId("anm30")
 				.setFireRate(3)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)

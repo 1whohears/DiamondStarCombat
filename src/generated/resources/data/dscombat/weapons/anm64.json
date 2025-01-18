@@ -26,6 +26,7 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:bomb",
   "maxAge": 200,
+  "modelId": "anm30",
   "presetId": "anm64",
   "presetType": "bomb",
   "shootSoundKey": "dscombat:bomb_shoot_1",

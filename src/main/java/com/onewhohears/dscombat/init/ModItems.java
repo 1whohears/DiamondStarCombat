@@ -296,10 +296,14 @@ public class ModItems {
 	 */
 	
 	// AMMO
+	public static final RegistryObject<Item> AMMO = ITEMS.register("ammo",
+			() -> new ItemAmmo(64, "20mm"));
 	public static final RegistryObject<Item> BULLET = ITEMS.register("bullet", 
 			() -> new ItemAmmo(64, "20mm")); 
 	public static final RegistryObject<Item> BOMB = ITEMS.register("bomb", 
-			() -> new ItemAmmo(64, "anm57")); 
+			() -> new ItemAmmo(64, "anm57"));
+	public static final RegistryObject<Item> MISSILE = ITEMS.register("missile",
+			() -> new ItemAmmo(16, "agm114k"));
 	public static final RegistryObject<Item> TRACK_AIR_MISSILE = ITEMS.register("track_air_missile", 
 			() -> new ItemAmmo(16, "aim120b")); 
 	public static final RegistryObject<Item> TRACK_GROUND_MISSILE = ITEMS.register("track_ground_missile", 

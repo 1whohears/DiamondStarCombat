@@ -44,7 +44,8 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.AGM65L.get(), ModItems.AGM84E.get(), ModItems.AGM114K.get(), ModItems.AIM7F.get())
 			.add(ModItems.AIM7MH.get(), ModItems.AIM9L.get(), ModItems.AIM9P5.get(), ModItems.AIM9X.get())
 			.add(ModItems.AIM120B.get(), ModItems.AIM120C.get(), ModItems.TORPEDO1.get(), ModItems.RIFEL1.get())
-			.add(ModItems.GRUETZ_BUNKER_BUSTER.get(), ModItems.MK13.get(), ModItems.AGM88G.get());
+			.add(ModItems.GRUETZ_BUNKER_BUSTER.get(), ModItems.MK13.get(), ModItems.AGM88G.get())
+				.add(ModItems.AMMO.get(), ModItems.MISSILE.get());
 		tag(ModTags.Items.VEHICLE)
 			.add(ModItems.JAVI_PLANE.get(), ModItems.ALEXIS_PLANE.get(), ModItems.WOODEN_PLANE.get(), ModItems.E3SENTRY_PLANE.get())
 			.add(ModItems.BRONCO_PLANE.get(), ModItems.FELIX_PLANE.get(), ModItems.JASON_PLANE.get(), ModItems.EDEN_PLANE.get())

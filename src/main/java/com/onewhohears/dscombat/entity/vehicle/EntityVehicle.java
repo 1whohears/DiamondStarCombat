@@ -292,6 +292,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (own != null) {
 			nbt.putString("owner_name", own.getScoreboardName());
 			nbt.putUUID("owner_id", own.getUUID());
+		} else if (owner_uuid != null) {
+			nbt.putUUID("owner_id", owner_uuid);
 		}
 		Component name = getCustomName();
         if (name != null) nbt.putString("CustomName", Component.Serializer.toJson(name));

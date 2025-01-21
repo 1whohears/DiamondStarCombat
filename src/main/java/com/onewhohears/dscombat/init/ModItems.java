@@ -419,4 +419,7 @@ public class ModItems {
 	// STATIONARY
 	public static final RegistryObject<Item> EWR4000 = ITEMS.register("ewr4000",
 			() -> new ItemVehicle(StationaryPresets.EWR4000.getId()));
+
+	// TEST
+	public static final RegistryObject<Item> TEST = ITEMS.register("test", TestItem::new);
 }

@@ -789,5 +789,9 @@
 	"gamerule.canVehicleItemWhileMoving": "DSC Can Vehicle become Item while Moving",
 	
 	"team.minigames.attackers": "ATTACKERS",
-	"team.minigames.defenders": "DEFENDERS"
+	"team.minigames.defenders": "DEFENDERS",
+
+	"item.dscombat.biden": "Biden",
+	"item.dscombat.obama": "Obama",
+	"item.dscombat.trump": "Trump"
 }

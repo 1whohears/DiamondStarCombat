@@ -417,6 +417,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "bgm109")
+				.setModelId("aim7f")
 				.setNotActiveTrack()
 				.setFireRate(25)
 				.setInnacuracy(0f)
@@ -742,6 +743,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 36 iron, 6 tnt (30 gunpowder), 12 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "rgm84")
+				.setModelId("agm84e")
 				.setActiveTrack()
 				.setFireRate(40)
 				.setInnacuracy(0f)
@@ -872,6 +874,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 	protected void registerOther() {
 		addPresetToGenerate(BunkerBusterStats.Builder
 				.bunkerBusterBuilder(DSCombatMod.MODID, "gruetz_bunker_buster")
+				.setModelId("gruetz_bunker_buster")
 				.setFireRate(60)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(true)

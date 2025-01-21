@@ -45,6 +45,14 @@ public abstract class WeaponType extends JsonPresetType {
 			super(ID, (key, data) -> new BunkerBusterStats(key, data));
 		}
 	}
+	public static final IrMissile IR_MISSILE = IrMissile.INSTANCE;
+	public static class IrMissile extends WeaponType {
+		public static final String ID = "ir_missile";
+		public static final IrMissile INSTANCE = new IrMissile();
+		public IrMissile() {
+			super(ID, (key, data) -> new IRMissileStats(key, data));
+		}
+	}
 	public static final PosMissile POS_MISSILE = PosMissile.INSTANCE;
 	public static class PosMissile extends WeaponType {
 		public static final String ID = "pos_missile";
@@ -67,14 +75,6 @@ public abstract class WeaponType extends JsonPresetType {
 		public static final Torpedo INSTANCE = new Torpedo();
 		public Torpedo() {
 			super(ID, (key, data) -> new TorpedoStats(key, data));
-		}
-	}
-	public static final IrMissile IR_MISSILE = IrMissile.INSTANCE;
-	public static class IrMissile extends WeaponType {
-		public static final String ID = "ir_missile";
-		public static final IrMissile INSTANCE = new IrMissile();
-		public IrMissile() {
-			super(ID, (key, data) -> new IRMissileStats(key, data));
 		}
 	}
 	public static final AntiRadarMissile ANTI_RADAR_MISSILE = AntiRadarMissile.INSTANCE;

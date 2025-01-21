@@ -42,6 +42,7 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:torpedo1",
   "maxAge": 600,
+  "modelId": "agm84e",
   "presetId": "rgm84",
   "presetType": "track_missile",
   "seeThroWater": 100,

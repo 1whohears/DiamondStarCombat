@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
@@ -9,6 +10,8 @@ import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
@@ -23,9 +26,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemAmmo extends Item implements VehicleInteractItem {
+public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem {
 	
 	private final String defaultWeaponId;
 	
@@ -75,8 +79,9 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	
 	public static String getWeaponId(ItemStack stack) {
 		if (stack.getItem() instanceof ItemAmmo ia) {
-			if (!stack.getOrCreateTag().contains("weapon")) return ia.defaultWeaponId;
-			return stack.getOrCreateTag().getString("weapon");
+			if (stack.getTag() != null && stack.getTag().contains("weapon"))
+				return stack.getTag().getString("weapon");
+			return ia.defaultWeaponId;
 		}
 		return "";
 	}
@@ -106,4 +111,26 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 		return stack;
 	}
 
+	@Override
+	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
+		ObjModelItem.super.initializeClient(consumer);
+	}
+
+	@Override
+	public @NotNull String getPreset(@NotNull ItemStack stack) {
+        return getWeaponId(stack);
+	}
+
+	@Override
+	public @NotNull String getObjModelId(@NotNull String preset) {
+		WeaponStats wd = WeaponPresets.get().get(preset);
+		if (wd == null) return "";
+        return wd.getModelId();
+	}
+
+	@Override
+	public ObjEntityModels.@NotNull ModelOverrides getItemModelOverrides(@NotNull String preset) {
+		//return ObjEntityModels.get().getModelOverride("ammo_item");
+		return ObjEntityModels.NO_OVERRIDES;
+	}
 }

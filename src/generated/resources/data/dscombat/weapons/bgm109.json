@@ -43,6 +43,7 @@
   "innacuracy": 0.0,
   "itemKey": "dscombat:track_air_missile",
   "maxAge": 172,
+  "modelId": "aim7f",
   "presetId": "bgm109",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",

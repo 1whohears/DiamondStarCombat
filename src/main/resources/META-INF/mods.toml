@@ -40,7 +40,7 @@ showAsResourcePack=false
 [[dependencies."${mod_id}"]]
     modId="onewholibs"
     mandatory=true
-    versionRange="[1.5.9,)"
+    versionRange="[1.5.10,)"
     ordering="NONE"
     side="BOTH"
     

@@ -22,25 +22,23 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemPart extends Item {
 
-	protected final String defaultPresetId;
+	@NotNull private String defaultPresetId = "";
 
-	public ItemPart(int stackSize, String defaultPresetId) {
+	public ItemPart(int stackSize, @NotNull String defaultPresetId) {
 		this(partProps(stackSize), defaultPresetId);
 	}
 
-	public ItemPart(Properties props, String defaultPresetId) {
+	public ItemPart(Properties props, @NotNull String defaultPresetId) {
 		super(props);
 		this.defaultPresetId = defaultPresetId;
 	}
 
 	public ItemPart(int stackSize) {
 		super(partProps(stackSize));
-		this.defaultPresetId = toString();
 	}
 	
 	public ItemPart(Properties props) {
 		super(props);
-		this.defaultPresetId = toString();
 	}
 	
 	public static Properties partProps(int stackSize) {
@@ -79,6 +77,7 @@ public class ItemPart extends Item {
 	}
 	
 	public String getDefaultPartPresetId() {
+		if (defaultPresetId.isEmpty()) defaultPresetId = toString();
 		return defaultPresetId;
 	}
 	

@@ -106,7 +106,6 @@ public class VehicleMainScreen extends VehicleScreen {
 
     private Consumer<String> onCustomNameChange() {
         return name -> {
-            if (name.isEmpty()) return;
             sendSyncAction(new VehicleSyncAction.SetCustomNameAction(Component.literal(name)));
         };
     }

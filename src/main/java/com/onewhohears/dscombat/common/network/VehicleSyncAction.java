@@ -544,7 +544,10 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
-            return (player, vehicle) -> vehicle.setCustomName(name);
+            return (player, vehicle) -> {
+                if (name.getString().isEmpty()) vehicle.setCustomName(null);
+                else vehicle.setCustomName(name);
+            };
         }
         @Override
         protected Consumer<FriendlyByteBuf> getWriteData() {

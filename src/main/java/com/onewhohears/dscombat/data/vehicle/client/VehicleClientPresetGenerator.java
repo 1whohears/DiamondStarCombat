@@ -462,7 +462,7 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.setCustomAnims(VehicleAnimsBuilder.create()
 						.addMotorRotPixelAnim("Propeller", 0, -15, 0, RotationAxis.Z, 40)
 						.build())
-				.setItemModelOverrides(1.25f, ONE, new Vec3(0.1, 0.2, 0), Vec3.ZERO)
+				.setItemModelOverrides(1.1f, ONE, new Vec3(-0.2, -0.05, 0), Vec3.ZERO)
 				.build());
 		addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "eric_truck")
 				.setItemModelOverrides(0.9f, ONE, Vec3.ZERO, Vec3.ZERO)

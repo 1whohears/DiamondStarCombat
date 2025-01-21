@@ -57,6 +57,9 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 		WeaponStats wd = WeaponPresets.get().get(id);
 		if (wd == null) return;
 		wd.addToolTips(tips, isAdvanced.isAdvanced());
+		if (isAdvanced.isAdvanced()) {
+			tips.add(ItemVehicle.formatTooltip("WeaponId", id));
+		}
 	}
 	
 	@Override

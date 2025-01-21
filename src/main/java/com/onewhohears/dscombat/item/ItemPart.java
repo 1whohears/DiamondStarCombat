@@ -101,12 +101,23 @@ public class ItemPart extends Item {
 								@NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		PartInstance<?> instance = getPartInstance(stack);
-		if (instance != null) instance.addToolTips(tips, isAdvanced);
+		if (instance != null) {
+			instance.addToolTips(tips, isAdvanced);
+			if (isAdvanced.isAdvanced()) {
+				tips.add(ItemVehicle.formatTooltip("PartId", instance.getStatsId()));
+			}
+		}
 	}
 
 	@Nullable
 	public PartInstance<?> getPartInstance(ItemStack stack) {
 		return UtilPresetParse.parsePartFromItem(stack, getDefaultPartPresetId());
+	}
+
+	public @NotNull String getPreset(@NotNull ItemStack stack) {
+		PartStats stats = UtilPresetParse.getPartStatsFromItem(stack);
+		if (stats == null) return getDefaultPartPresetId();
+		return stats.getId();
 	}
 
 }

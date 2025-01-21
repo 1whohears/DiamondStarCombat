@@ -16,6 +16,7 @@ import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -155,10 +156,13 @@ public class ItemVehicle extends Item implements ObjModelItem {
 			if (et.contains("flares")) tips.add(UtilMCText.translatable("info.dscombat.flares")
 					.append(": " + (int) et.getFloat("flares")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		}
-		String preset = getPreset(stack);
-		VehicleStats vs = VehiclePresets.get().get(preset);
-		if (vs != null) tips.add(UtilMCText.translatable(vs.getDisplayName())
-				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (isAdvanced.isAdvanced()) {
+			tips.add(formatTooltip("VehicleId", getPreset(stack)));
+		}
+	}
+
+	public static Component formatTooltip(String key, String value) {
+		return Component.literal(String.format("%s: \"%s\"", key, value)).withStyle(ChatFormatting.DARK_GRAY);
 	}
 	
 	@Override
@@ -196,7 +200,9 @@ public class ItemVehicle extends Item implements ObjModelItem {
 		VehicleStats[] presets = VehiclePresets.get().getAll();
         for (VehicleStats preset : presets) {
             if (preset.getItem().is(this)) {
-                items.add(preset.getItem());
+				ItemStack stack = new ItemStack(this);
+				stack.getOrCreateTag().putString("preset", preset.getId());
+				items.add(stack);
             }
         }
 	}

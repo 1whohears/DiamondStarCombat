@@ -77,13 +77,6 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
 	}
 
 	@Override
-	public @NotNull String getPreset(@NotNull ItemStack stack) {
-		PartStats stats = UtilPresetParse.getPartStatsFromItem(stack);
-		if (stats == null) return getDefaultPartPresetId();
-		return stats.getId();
-	}
-
-	@Override
 	public @NotNull String getObjModelId(@NotNull String preset) {
 		PartClientStats<?> pcs = PartAssets.get().get(preset);
 		if (pcs == null) return "";

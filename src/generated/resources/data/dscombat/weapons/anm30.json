@@ -29,5 +29,6 @@
   "presetId": "anm30",
   "presetType": "bomb",
   "shootSoundKey": "dscombat:bomb_shoot_1",
+  "sort_factor": 2,
   "speed": 0.0
 }

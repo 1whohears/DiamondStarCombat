@@ -33,5 +33,6 @@
   "presetId": "napalm",
   "presetType": "bomb",
   "shootSoundKey": "dscombat:bomb_shoot_1",
+  "sort_factor": 1,
   "speed": 0.0
 }

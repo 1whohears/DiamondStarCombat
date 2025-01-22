@@ -23,11 +23,12 @@
     }
   ],
   "innacuracy": 1.0,
-  "itemKey": "dscombat:50mmhe",
+  "itemKey": "dscombat:bullet",
   "maxAge": 40,
   "modelId": "50mmhe",
   "presetId": "50mmhe",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:bullet_shoot_1",
+  "sort_factor": 6,
   "speed": 9.0
 }

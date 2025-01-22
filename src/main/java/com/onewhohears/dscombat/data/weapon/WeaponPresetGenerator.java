@@ -23,6 +23,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "10mm")
 				.setModelId("12.7mm")
+				.setSortFactor(1)
 				.setFireRate(1)
 				.setInnacuracy(2.2f)
 				.setCanShootOnGround(true)
@@ -44,6 +45,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "15mm")
 				.setModelId("20mm")
+				.setSortFactor(2)
 				.setFireRate(2)
 				.setInnacuracy(1.8f)
 				.setCanShootOnGround(true)
@@ -66,6 +68,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mm")
 				.setModelId("20mm")
+				.setSortFactor(3)
 				.setFireRate(1)
 				.setInnacuracy(1.1f)
 				.setCanShootOnGround(true)
@@ -76,7 +79,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setDestoryTerrain(false)
 				.setCausesFire(false)
 				.setMaxAge(40)
-				.setItem(ModItems.B_20MM.getId())
+				.setItem(ModItems.BULLET.getId())
 				.setEntityType(ModEntities.BULLET.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.XM12.getId().getPath(), 
@@ -87,6 +90,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mmhe")
 				.setModelId("20mm")
+				.setSortFactor(4)
 				.setFireRate(1)
 				.setInnacuracy(1.2f)
 				.setCanShootOnGround(true)
@@ -97,7 +101,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setDestoryTerrain(true)
 				.setCausesFire(false)
 				.setMaxAge(40)
-				.setItem(ModItems.B_20MM.getId())
+				.setItem(ModItems.BULLET.getId())
 				.setEntityType(ModEntities.BULLET.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.XM12.getId().getPath(), 
@@ -109,6 +113,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "30mmhe")
 				.setModelId("20mm")
+				.setSortFactor(5)
 				.setFireRate(2)
 				.setInnacuracy(1.1f)
 				.setCanShootOnGround(true)
@@ -131,6 +136,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
 				.setModelId("50mmhe")
+				.setSortFactor(6)
 				.setFireRate(5)
 				.setInnacuracy(1.0f)
 				.setCanShootOnGround(true)
@@ -141,7 +147,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setDestoryTerrain(true)
 				.setCausesFire(false)
 				.setMaxAge(40)
-				.setItem(ModItems.B_50MMHE.getId())
+				.setItem(ModItems.BULLET.getId())
 				.setEntityType(ModEntities.BULLET.getId())
 				.setShootSound(ModSounds.BULLET_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.XM12.getId().getPath())
@@ -153,6 +159,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "120mmhe")
 				.setModelId("120mmhe")
+				.setSortFactor(7)
 				.setFireRate(40)
 				.setInnacuracy(0.4f)
 				.setCanShootOnGround(true)
@@ -163,7 +170,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setDestoryTerrain(true)
 				.setCausesFire(false)
 				.setMaxAge(40)
-				.setItem(ModItems.B_120MMHE.getId())
+				.setItem(ModItems.BULLET.getId())
 				.setEntityType(ModEntities.BULLET.getId())
 				.setShootSound(ModSounds.CANNON_SHOOT_2.getLocation())
 				.setCompatibleWeaponPart("heavy_tank_turret", "artillery_cannon")
@@ -174,6 +181,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "406mmhe")
 				.setModelId("406mmhe")
+				.setSortFactor(10)
 				.setFireRate(60)
 				.setInnacuracy(1.1f)
 				.setCanShootOnGround(true)
@@ -184,7 +192,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setDestoryTerrain(true)
 				.setCausesFire(true)
 				.setMaxAge(40)
-				.setItem(ModItems.B_120MMHE.getId())
+				.setItem(ModItems.BULLET.getId())
 				.setEntityType(ModEntities.BULLET.getId())
 				.setShootSound(ModSounds.CANNON_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.MARK7_CANNON.getId())
@@ -195,6 +203,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "127mm")
 				.setModelId("120mmhe")
+				.setSortFactor(8)
 				.setFireRate(12)
 				.setInnacuracy(0.3f)
 				.setCanShootOnGround(true)
@@ -219,6 +228,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 24 iron, 10 tnt (50 gunpowder), 14 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim7f")
+				.setSortFactor(4)
 				.setNotActiveTrack()
 				.setFireRate(40)
 				.setInnacuracy(0f)
@@ -237,7 +247,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(3f)
 				.setFieldOfView(-1f)
 				.setTargetType(TargetType.AIR)
-				.setItem(ModItems.AIM7F.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(), 
@@ -252,6 +262,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 24 iron, 10 tnt (50 gunpowder), 14 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim7mh")
+				.setSortFactor(4)
 				.setNotActiveTrack()
 				.setFireRate(40)
 				.setInnacuracy(0f)
@@ -270,7 +281,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(3f)
 				.setFieldOfView(-1f)
 				.setTargetType(TargetType.AIR)
-				.setItem(ModItems.AIM7MH.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(), 
@@ -285,6 +296,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 24 iron, 9 tnt (45 gunpowder), 15 coal block, 3 pentium (30 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim120b")
+				.setSortFactor(6)
 				.setActiveTrack()
 				.setFireRate(30)
 				.setInnacuracy(0f)
@@ -303,7 +315,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(3f)
 				.setFieldOfView(60f)
 				.setTargetType(TargetType.AIR)
-				.setItem(ModItems.AIM120B.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -318,6 +330,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 24 iron, 9 tnt (45 gunpowder), 18 coal block, 3 pentium (30 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim120c")
+				.setSortFactor(7)
 				.setActiveTrack()
 				.setFireRate(30)
 				.setInnacuracy(0f)
@@ -336,7 +349,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(3f)
 				.setFieldOfView(60f)
 				.setTargetType(TargetType.AIR)
-				.setItem(ModItems.AIM120C.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -351,6 +364,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		//
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "meteor")
+				.setSortFactor(10)
 				.setActiveTrack()
 				.setFireRate(50)
 				.setInnacuracy(0f)
@@ -369,7 +383,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(4f)
 				.setFieldOfView(50f)
 				.setTargetType(TargetType.AIR)
-				.setItem(ModItems.TRACK_AIR_MISSILE.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -385,6 +399,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 40 iron, 24 tnt (120 gunpowder), 24 coal block, 4 pentium (40 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "pac3")
+				.setSortFactor(9)
 				.setActiveTrack()
 				.setFireRate(40)
 				.setInnacuracy(0f)
@@ -403,7 +418,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(3f)
 				.setFieldOfView(40f)
 				.setTargetType(TargetType.AIR)
-				.setItem(ModItems.TRACK_AIR_MISSILE.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart("sam_launcher", "mlrs")
@@ -417,6 +432,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "bgm109")
+				.setSortFactor(3)
 				.setModelId("aim7f")
 				.setNotActiveTrack()
 				.setFireRate(25)
@@ -436,7 +452,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(2f)
 				.setFieldOfView(-1f)
 				.setTargetType(TargetType.AIR)
-				.setItem(ModItems.TRACK_AIR_MISSILE.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.VLS.getId())
@@ -450,6 +466,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 16 iron, 4 tnt (20 gunpowder), 4 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9l")
+				.setSortFactor(1)
 				.setFireRate(20)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -467,7 +484,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(3f)
 				.setFieldOfView(30f)
 				.setFlareResistance(1.5f)
-				.setItem(ModItems.AIM9L.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.IR_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId().getPath(),
@@ -482,6 +499,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 16 iron, 4 tnt (20 gunpowder), 4 coal block, 8 ti83 (16 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9p5")
+				.setSortFactor(4)
 				.setFireRate(20)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -499,7 +517,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(3f)
 				.setFieldOfView(40f)
 				.setFlareResistance(1f)
-				.setItem(ModItems.AIM9P5.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.IR_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId().getPath(),
@@ -514,6 +532,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 20 iron, 4 tnt (20 gunpowder), 8 coal block, 4 pentium (40 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9x")
+				.setSortFactor(10)
 				.setFireRate(20)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -531,7 +550,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(3f)
 				.setFieldOfView(50f)
 				.setFlareResistance(0.7f)
-				.setItem(ModItems.AIM9X.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.IR_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId().getPath(),
@@ -549,6 +568,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 18 iron, 6 tnt (30 gunpowder), 6 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.posMissileBuilder(DSCombatMod.MODID, "agm114k")
+				.setSortFactor(1)
 				.setFireRate(20)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -565,7 +585,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setBleed(0.02f)
 				.setFuseDistance(2f)
 				.setFieldOfView(-1f)
-				.setItem(ModItems.AGM114K.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.POS_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())
@@ -578,6 +598,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 20 iron, 12 tnt (60 gunpowder), 8 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.posMissileBuilder(DSCombatMod.MODID, "agm65l")
+				.setSortFactor(4)
 				.setFireRate(40)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -595,7 +616,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(1.5f)
 				.setFieldOfView(-1f)
 				.setExplodeNum(2)
-				.setItem(ModItems.AGM65L.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.POS_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -609,6 +630,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 20 iron, 12 tnt (60 gunpowder), 8 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "agm65g")
+				.setSortFactor(4)
 				.setActiveTrack()
 				.setTargetType(TargetType.GROUND)
 				.setFireRate(40)
@@ -628,7 +650,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(1.5f)
 				.setFieldOfView(-1f)
 				.setExplodeNum(2)
-				.setItem(ModItems.AGM65G.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -642,6 +664,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 18 iron, 9 tnt (45 gunpowder), 9 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "agm84e")
+				.setSortFactor(8)
 				.setActiveTrack()
 				.setTargetType(TargetType.GROUND)
 				.setFireRate(50)
@@ -662,7 +685,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFieldOfView(-1f)
 				.setSeeThroBlockNum(8)
 				.setExplodeNum(2)
-				.setItem(ModItems.AGM84E.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -679,6 +702,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 24 iron, 8 tnt (40 gunpowder), 8 coal block, 2 pentium (20 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.antiRadarMissileBuilder(DSCombatMod.MODID, "agm88g")
+				.setSortFactor(10)
 				.setFireRate(40)
 				.setInnacuracy(0f)
 				.setCanShootOnGround(false)
@@ -696,7 +720,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(2f)
 				.setFieldOfView(30f)
 				.setScanRange(1500f)
-				.setItem(ModItems.AGM88G.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.ANTI_RADAR_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -710,6 +734,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 36 iron, 6 tnt (30 gunpowder), 12 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.torpedoBuilder(DSCombatMod.MODID, "mk13")
+				.setSortFactor(3)
 				.setActiveTrack()
 				.setFireRate(40)
 				.setInnacuracy(0f)
@@ -729,7 +754,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFieldOfView(40f)
 				.setSeeThroWaterNum(10000)
 				.setTargetType(TargetType.WATER)
-				.setItem(ModItems.MK13.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TORPEDO_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
@@ -743,6 +768,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 36 iron, 6 tnt (30 gunpowder), 12 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "rgm84")
+				.setSortFactor(6)
 				.setModelId("agm84e")
 				.setActiveTrack()
 				.setFireRate(40)
@@ -764,7 +790,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setSeeThroWaterNum(100)
 				.setExplodeNum(2)
 				.setTargetType(TargetType.GROUND)
-				.setItem(ModItems.TORPEDO1.getId())
+				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.ADL.getId().getPath(), 
@@ -782,6 +808,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 32 iron, 16 tnt (80 gunpowder)
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm30")
+				.setSortFactor(2)
 				.setModelId("anm30")
 				.setFireRate(4)
 				.setInnacuracy(0f)
@@ -804,6 +831,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 32 iron, 16 tnt (80 gunpowder)
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm57")
+				.setSortFactor(4)
 				.setModelId("anm30")
 				.setFireRate(6)
 				.setInnacuracy(0f)
@@ -827,6 +855,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 24 iron, 12 tnt (60 gunpowder)
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm64")
+				.setSortFactor(6)
 				.setModelId("anm30")
 				.setFireRate(11)
 				.setInnacuracy(0f)
@@ -849,6 +878,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "napalm")
+				.setSortFactor(1)
 				.setModelId("anm30")
 				.setFireRate(3)
 				.setInnacuracy(0f)
@@ -874,6 +904,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 	protected void registerOther() {
 		addPresetToGenerate(BunkerBusterStats.Builder
 				.bunkerBusterBuilder(DSCombatMod.MODID, "gruetz_bunker_buster")
+				.setSortFactor(10)
 				.setModelId("gruetz_bunker_buster")
 				.setFireRate(60)
 				.setInnacuracy(0f)
@@ -886,7 +917,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setCausesFire(false)
 				.setMaxAge(300)
 				.setBlockStrength(1500)
-				.setItem(ModItems.GRUETZ_BUNKER_BUSTER.getId())
+				.setItem(ModItems.BOMB.getId())
 				.setEntityType(ModEntities.BUNKER_BUSTER.getId())
 				.setShootSound(ModSounds.BOMB_SHOOT_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.BOMB_RACK.getId())

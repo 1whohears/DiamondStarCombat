@@ -26,5 +26,6 @@
   "presetId": "15mm",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:bullet_shoot_1",
+  "sort_factor": 2,
   "speed": 11.0
 }

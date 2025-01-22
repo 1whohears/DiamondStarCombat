@@ -42,11 +42,12 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:aim7mh",
+  "itemKey": "dscombat:missile",
   "maxAge": 334,
   "presetId": "aim7mh",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 4,
   "speed": 3.0,
   "targetType": "AIR",
   "turnRadius": 220.0

@@ -40,13 +40,14 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:torpedo1",
+  "itemKey": "dscombat:missile",
   "maxAge": 600,
   "modelId": "agm84e",
   "presetId": "rgm84",
   "presetType": "track_missile",
   "seeThroWater": 100,
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 6,
   "speed": 2.5,
   "targetType": "GROUND",
   "turnRadius": 80.0

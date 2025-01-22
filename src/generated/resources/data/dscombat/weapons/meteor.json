@@ -46,11 +46,12 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:track_air_missile",
+  "itemKey": "dscombat:missile",
   "maxAge": 500,
   "presetId": "meteor",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 10,
   "speed": 6.0,
   "targetType": "AIR",
   "turnRadius": 160.0

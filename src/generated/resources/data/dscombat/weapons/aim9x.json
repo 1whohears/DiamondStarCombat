@@ -42,11 +42,12 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:aim9x",
+  "itemKey": "dscombat:missile",
   "maxAge": 100,
   "presetId": "aim9x",
   "presetType": "ir_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 10,
   "speed": 3.0,
   "turnRadius": 60.0
 }

@@ -29,5 +29,6 @@
   "presetId": "127mm",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:cannon_shoot_2",
+  "sort_factor": 8,
   "speed": 7.0
 }

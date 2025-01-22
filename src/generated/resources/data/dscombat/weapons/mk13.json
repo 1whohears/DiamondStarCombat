@@ -38,12 +38,13 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:mk13",
+  "itemKey": "dscombat:missile",
   "maxAge": 600,
   "presetId": "mk13",
   "presetType": "torpedo",
   "seeThroWater": 10000,
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 3,
   "speed": 2.5,
   "targetType": "WATER",
   "turnRadius": 80.0

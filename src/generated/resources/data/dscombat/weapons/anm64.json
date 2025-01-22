@@ -30,5 +30,6 @@
   "presetId": "anm64",
   "presetType": "bomb",
   "shootSoundKey": "dscombat:bomb_shoot_1",
+  "sort_factor": 6,
   "speed": 0.0
 }

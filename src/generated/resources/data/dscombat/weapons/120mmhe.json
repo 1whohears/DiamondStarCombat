@@ -24,11 +24,12 @@
     }
   ],
   "innacuracy": 0.4,
-  "itemKey": "dscombat:120mmhe",
+  "itemKey": "dscombat:bullet",
   "maxAge": 40,
   "modelId": "120mmhe",
   "presetId": "120mmhe",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:cannon_shoot_2",
+  "sort_factor": 7,
   "speed": 8.0
 }

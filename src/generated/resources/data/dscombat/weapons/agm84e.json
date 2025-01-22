@@ -39,12 +39,13 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:agm84e",
+  "itemKey": "dscombat:missile",
   "maxAge": 300,
   "presetId": "agm84e",
   "presetType": "track_missile",
   "seeThroBlock": 8,
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 8,
   "speed": 2.5,
   "targetType": "GROUND",
   "turnRadius": 45.0

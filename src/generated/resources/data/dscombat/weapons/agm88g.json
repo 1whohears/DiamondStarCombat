@@ -37,12 +37,13 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:agm88g",
+  "itemKey": "dscombat:missile",
   "maxAge": 600,
   "presetId": "agm88g",
   "presetType": "anti_radar_missile",
   "scan_range": 1500.0,
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 10,
   "speed": 3.0,
   "turnRadius": 160.0
 }

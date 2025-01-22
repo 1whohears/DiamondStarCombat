@@ -36,11 +36,12 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:agm114k",
+  "itemKey": "dscombat:missile",
   "maxAge": 200,
   "presetId": "agm114k",
   "presetType": "pos_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 1,
   "speed": 3.0,
   "turnRadius": 30.0
 }

@@ -26,11 +26,12 @@
     }
   ],
   "innacuracy": 1.2,
-  "itemKey": "dscombat:20mm",
+  "itemKey": "dscombat:bullet",
   "maxAge": 40,
   "modelId": "20mm",
   "presetId": "20mmhe",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:bullet_shoot_1",
+  "sort_factor": 4,
   "speed": 10.0
 }

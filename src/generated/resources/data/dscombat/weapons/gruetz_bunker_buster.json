@@ -32,11 +32,12 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:gruetz_bunker_buster",
+  "itemKey": "dscombat:bomb",
   "maxAge": 300,
   "modelId": "gruetz_bunker_buster",
   "presetId": "gruetz_bunker_buster",
   "presetType": "bunker_buster",
   "shootSoundKey": "dscombat:bomb_shoot_1",
+  "sort_factor": 10,
   "speed": 0.0
 }

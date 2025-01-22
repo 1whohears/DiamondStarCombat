@@ -42,11 +42,12 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:aim120c",
+  "itemKey": "dscombat:missile",
   "maxAge": 500,
   "presetId": "aim120c",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 7,
   "speed": 4.0,
   "targetType": "AIR",
   "turnRadius": 160.0

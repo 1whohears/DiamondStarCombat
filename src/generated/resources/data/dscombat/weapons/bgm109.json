@@ -41,12 +41,13 @@
     }
   ],
   "innacuracy": 0.0,
-  "itemKey": "dscombat:track_air_missile",
+  "itemKey": "dscombat:missile",
   "maxAge": 172,
   "modelId": "aim7f",
   "presetId": "bgm109",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 3,
   "speed": 3.5,
   "targetType": "AIR",
   "turnRadius": 100.0

@@ -30,7 +30,7 @@ public class WeaponPartRecipeCategory implements IRecipeCategory<WeaponPartRecip
 	public WeaponPartRecipeCategory(IGuiHelper helper) {
 		background = helper.drawableBuilder(TEXTURE, 64, 27, 224, 129)
 				.setTextureSize(512, 512).build();
-		icon = helper.createDrawableItemStack(ModBlocks.WEAPONS_BLOCK.get().asItem().getDefaultInstance());
+		icon = helper.createDrawableItemStack(ModBlocks.WEAPON_PARTS_BLOCK.get().asItem().getDefaultInstance());
 	}
 	
 	@Override
@@ -40,7 +40,7 @@ public class WeaponPartRecipeCategory implements IRecipeCategory<WeaponPartRecip
 
 	@Override
 	public Component getTitle() {
-		return UtilMCText.translatable("container.dscombat.weapons_block_menu");
+		return UtilMCText.translatable("container.dscombat.weapon_parts_block_menu");
 	}
 
 	@Override

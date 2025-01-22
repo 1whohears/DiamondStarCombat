@@ -71,7 +71,8 @@ public class Config {
 					.comment("If enabled, turning your player head may feel more natural.")
 					.define("cameraTurnRelativeToVehicle", true);
 			customDismount = builder
-					.comment("If enabled, your sneak key binding becomes Special2, and Special2 binding becomes dismount.")
+					.comment("If enabled, your sneak key binding doesn't dismount you from DSC vehicles. " +
+							"You will have to you the diamond star combat dismount keybinding instead (H by default.)")
 					.define("customDismount", true);
 			builder.pop();
 			builder.push("sounds");

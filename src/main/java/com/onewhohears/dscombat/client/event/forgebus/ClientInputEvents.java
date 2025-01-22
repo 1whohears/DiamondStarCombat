@@ -161,13 +161,13 @@ public final class ClientInputEvents {
 		boolean isRadarController = player.equals(vehicle.getControllingPlayerOrBot());
 		if (DSCClientInputs.disable3rdPersonVehicle) m.options.setCameraType(CameraType.FIRST_PERSON);
 		/*
-		 * THIS TELLS SERVER WHERE THE SEAT IS INCASE LAG CAUSES VIOLENCE
-		 * HOW 4 the culprit of the seat desync issue is net.minecraft.server.level.ChunkMap.TrackedEntity.updatePlayer
+		 * THIS TELLS SERVER WHERE THE SEAT IS IN CASE LAG CAUSES VIOLENCE
+		 * HOW 4 the culprit of the seat de-sync issue is net.minecraft.server.level.ChunkMap.TrackedEntity.updatePlayer
 		 * sometimes when the server lags the seat position on the server side doesn't get updated with the plane and the player
 		 * so the server thinks the seat is outside the player render distance and sends a discard packet to the client
 		 * is there a way to fix this without the ToServerSeatPos packet?
 		 */
-		if (player.tickCount % 40 == 0) {
+		if (player.tickCount % Config.CLIENT.syncSeatPosRate.get() == 0) {
 			PacketHandler.INSTANCE.sendToServer(new ToServerSeatPos(player.getVehicle().position()));
 		}
 		// SWITCH SEAT

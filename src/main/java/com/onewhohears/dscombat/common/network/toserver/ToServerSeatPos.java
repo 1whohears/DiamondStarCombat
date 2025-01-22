@@ -31,11 +31,12 @@ public class ToServerSeatPos extends IPacket {
 
 	@Override
 	public boolean handle(Supplier<Context> ctx) {
-		//System.out.println("HANDELING PACKET");
+		//System.out.println("HANDLING PACKET");
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
+			if (player == null) return;
 			if (player.isPassenger() && player.getVehicle() instanceof EntityRidablePart) {
 				player.getVehicle().setPosRaw(seatPos.x, seatPos.y, seatPos.z);
 			}

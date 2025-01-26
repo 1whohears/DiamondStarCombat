@@ -19,6 +19,7 @@
   "fov": 50.0,
   "fuelTicks": 300,
   "fuseDist": 4.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 16,
@@ -45,7 +46,6 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
   "itemKey": "dscombat:missile",
   "maxAge": 500,
   "presetId": "meteor",

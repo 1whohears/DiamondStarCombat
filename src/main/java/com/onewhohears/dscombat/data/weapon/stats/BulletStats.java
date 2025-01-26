@@ -34,18 +34,19 @@ public class BulletStats extends WeaponStats {
 	private final boolean destroyTerrain;
 	private final boolean causesFire;
 	private final float explosionRadius;
-	private final float innacuracy;
+	private final float inaccuracy;
 	private final int explodeNum;
 	
 	public BulletStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		this.damage = json.get("damage").getAsFloat();
-		this.speed = json.get("speed").getAsDouble();
-		this.explosive = json.get("explosive").getAsBoolean();
-		this.destroyTerrain = json.get("destroyTerrain").getAsBoolean();
-		this.causesFire = json.get("causesFire").getAsBoolean();
-		this.explosionRadius = json.get("explosionRadius").getAsFloat();
-		this.innacuracy = json.get("innacuracy").getAsFloat();
+		UtilParse.getBooleanSafe(json, "", false);
+		this.damage = UtilParse.getFloatSafe(json, "damage", 0);
+		this.speed = UtilParse.getFloatSafe(json, "speed", 0);
+		this.explosive = UtilParse.getBooleanSafe(json, "explosive", false);
+		this.destroyTerrain = UtilParse.getBooleanSafe(json, "destroyTerrain", false);
+		this.causesFire = UtilParse.getBooleanSafe(json, "causesFire", false);
+		this.explosionRadius = UtilParse.getFloatSafe(json, "explosionRadius", 0);
+		this.inaccuracy = UtilParse.getFloatSafe(json, "inaccuracy", 0);
 		this.explodeNum = UtilParse.getIntSafe(json, "explodeNum", 1);
 	}
 	
@@ -73,8 +74,8 @@ public class BulletStats extends WeaponStats {
 		return causesFire;
 	}
 
-	public float getInnacuracy() {
-		return innacuracy;
+	public float getInaccuracy() {
+		return inaccuracy;
 	}
 	
 	public int getExplodeNum() {
@@ -99,7 +100,7 @@ public class BulletStats extends WeaponStats {
 			if (advanced) tips.add(UtilMCText.translatable("info.dscombat.number_of_explosions")
 				.append(": "+getExplodeNum()).setStyle(Style.EMPTY.withColor(0xAA0000)));
 		}
-		if (advanced) tips.add(UtilMCText.translatable("info.dscombat.inaccuracy").append(": "+getInnacuracy())
+		if (advanced) tips.add(UtilMCText.translatable("info.dscombat.inaccuracy").append(": "+ getInaccuracy())
 				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (isCausesFire()) tips.add(UtilMCText.translatable("info.dscombat.incendiary")
 				.setStyle(Style.EMPTY.withColor(0xAA0000)));

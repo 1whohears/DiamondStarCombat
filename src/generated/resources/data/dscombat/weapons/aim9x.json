@@ -19,6 +19,7 @@
   "fov": 50.0,
   "fuelTicks": 85,
   "fuseDist": 3.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 5,
@@ -41,7 +42,6 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
   "itemKey": "dscombat:missile",
   "maxAge": 100,
   "presetId": "aim9x",

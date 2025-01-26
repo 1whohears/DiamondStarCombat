@@ -86,7 +86,7 @@ public class AbstractWeaponBuilders {
 			return setBoolean("explosive", explosive);
 		}
 		
-		public C setDestoryTerrain(boolean destroyTerrain) {
+		public C setDestroyTerrain(boolean destroyTerrain) {
 			return setBoolean("destroyTerrain", destroyTerrain);
 		}
 		
@@ -98,8 +98,8 @@ public class AbstractWeaponBuilders {
 			return setFloat("explosionRadius", explosionRadius);
 		}
 		
-		public C setInnacuracy(float innacuracy) {
-			return setFloat("innacuracy", innacuracy);
+		public C setInaccuracy(float inaccuracy) {
+			return setFloat("inaccuracy", inaccuracy);
 		}
 		
 		public C setExplodeNum(int explodeNum) {

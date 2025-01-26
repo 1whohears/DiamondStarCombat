@@ -18,6 +18,7 @@
   "fov": 30.0,
   "fuelTicks": 400,
   "fuseDist": 2.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 12,
@@ -36,7 +37,6 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
   "itemKey": "dscombat:missile",
   "maxAge": 600,
   "presetId": "agm88g",

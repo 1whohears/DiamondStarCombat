@@ -13,6 +13,7 @@
   "explosionRadius": 8.5,
   "explosive": true,
   "fireRate": 11,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 4,
@@ -23,7 +24,6 @@
       "num": 8
     }
   ],
-  "innacuracy": 0.0,
   "itemKey": "dscombat:bomb",
   "maxAge": 200,
   "modelId": "anm30",

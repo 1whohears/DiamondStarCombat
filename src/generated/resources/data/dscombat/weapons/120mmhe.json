@@ -13,6 +13,7 @@
   "explosionRadius": 4.5,
   "explosive": true,
   "fireRate": 40,
+  "inaccuracy": 0.4,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
@@ -23,7 +24,6 @@
       "num": 6
     }
   ],
-  "innacuracy": 0.4,
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
   "modelId": "120mmhe",

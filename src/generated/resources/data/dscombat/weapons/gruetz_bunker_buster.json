@@ -13,6 +13,7 @@
   "explosionRadius": 12.0,
   "explosive": true,
   "fireRate": 60,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 16,
@@ -31,7 +32,6 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
   "itemKey": "dscombat:bomb",
   "maxAge": 300,
   "modelId": "gruetz_bunker_buster",

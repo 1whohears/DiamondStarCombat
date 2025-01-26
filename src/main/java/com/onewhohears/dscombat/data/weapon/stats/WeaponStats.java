@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.parts.PartPresets;
@@ -126,7 +127,7 @@ public abstract class WeaponStats extends JsonPresetStats {
 	
 	private Item getItem() {
 		if (item == null) {
-			item = UtilItem.getItem(itemKey);
+			item = UtilItem.getItem(itemKey, ModItems.AMMO.get());
 		}
 		return item;
 	}

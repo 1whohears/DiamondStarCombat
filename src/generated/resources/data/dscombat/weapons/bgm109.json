@@ -18,6 +18,7 @@
   "fov": -1.0,
   "fuelTicks": 150,
   "fuseDist": 2.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 10,
@@ -40,7 +41,6 @@
       "num": 2
     }
   ],
-  "innacuracy": 0.0,
   "itemKey": "dscombat:missile",
   "maxAge": 172,
   "modelId": "aim7f",

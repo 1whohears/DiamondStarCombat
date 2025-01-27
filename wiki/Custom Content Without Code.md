@@ -188,8 +188,9 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
   - `canAimDown` | BOOLEAN | **false** | *If true, a plane can press the Special 2 key to point the nose gun down about 25 degrees.*
   - `wing_area` | NUMBER | **10** | *Surface area of the plane's wings. A higher value means more lift generated from the wings. Must be positive!*
   - `fuselage_lift_area` | NUMBER | **0** | *Surface area of the plane's fuselage. A higher value means more lift generated from the fuselage. Must be positive!*
-  - `wing_lift_k_graph` | STRING | **fuselage** | *A stat graph id. Must be a stat graph with a `presetType` of `aoaliftk`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) Determines the lift coefficient for the wings based on AOA.*
-  - `fuselage_lift_k_graph` | STRING | **fuselage** | *A stat graph id. Must be a stat graph with a `presetType` of `aoaliftk`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) Determines the lift coefficient for the fuselage based on AOA.*
+  - `wing_lift_k_graph` | STRING | **fuselage** | *A stat graph id. Must be a stat graph with a `presetType` of `aoaliftk`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the lift coefficient for the wings based on AOA.*
+  - `fuselage_lift_k_graph` | STRING | **fuselage** | *A stat graph id. Must be a stat graph with a `presetType` of `aoaliftk`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the lift coefficient for the fuselage based on AOA.*
+  - `turn_rates_graph` | STRING | **wooden_plane_turn_rates** | *A stat graph id. Must be a stat graph with a `presetType` of `turn_rates_speed`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the max turn rate of the plane vs speed.*
   - `wing_lift_hitbox_names` | STRING_ARRAY | **OPTIONAL** | *A list of names from `hitboxes`. The percentage of hitboxes in this list that are still alive, is the percentage of `wing_area` used to generate lift.*
   - `aoa_drag_factor` | NUMBER | **1** | *Scale how much drag high AOA causes.*
   - `centripetal_scale` | NUMBER | **0.4** | *Scale the horizontal force wings generate.*
@@ -516,11 +517,75 @@ An example of the 10mm Bullet recipe can be seen below. Replace `10mm` with your
  
 # Radars
 
-WIP. [Please see these examples for now!](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/radars)
+WIP. A lot of the current radar data gen will be outdated once radar mechanics are revamped. [Please see these examples for now!](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/radars)
 
 # Parts
 
-WIP. [Please see these examples for now!](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/parts)
+## Data
+
+[Here are some example presets to get started with!](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/parts)
+
+### Available Preset Types (`presetType`)
+
+- `internal_weapon`: A weapon that will appear in the pilot weapon system. Does NOT have an external entity weapon rack.
+- `external_weapon`: A **Weapon Part** that will appear in the pilot weapon system. Has an external entity weapon rack. See Assets for making custom weapon rack models.
+- `seat`: Invisible seat entity that players/mobs can sit in. 
+- `turret`: A **Weapon Part** that the player can sit in. See Assets for making custom turret models.
+- `internal_engine`: An engine that doesn't have an external entity.
+- `external_engine`: An engine that has an external entity. (not implemented yet)
+- `fuel_tank`: Internal fuel tank.
+- `external_fuel_tank`: External fuel tank with an external model.
+- `internal_radar`: Internal radar. 
+- `external_radar`: External radar with an external radar model.
+- `flare_dispenser`: Drops flares.
+- `chaff_dispenser`: Drops chaff. (not implemented yet)
+- `buff`: Simple improvement part that is used for data link, night vision, radio, or extra armor. 
+- `gimbal`: An external gimbal camera that the pilot can see through use.
+- `chain_hook`: A hook that other vehicles can be chained to.
+- `internal_storage`: Used for internal storage boxes.
+- `external_storage`: Used for external storage boxes that have external models. (not implemented yet)
+
+### All Parts Parameter list
+
+`weight` | NUMBER | **0** | *The weight this part will add to the vehicle. See the examples to see what values are typically used.*
+
+`item` | RESOURCE_LOCATION | **REQUIRED** | *The item that this part uses. Scroll down to more details on each `presetType` for which item should be used.*
+
+`slotType` | STRING | **internal** | *The type of slot this part is compatible with. Options: `seat`, `external`, `external_tough`, `mount_light`, `mount_med`, `mount_heavy`, `mount_tech`, `pylon_light`, `pylon_med`, `pylon_heavy`, `internal`, `tech_internal`, `high_tech_internal`, `internal_gun`, `spin_engine`, `push_engine`, `radial_engine`.*
+
+`externalEntity` | RESOURCE_LOCATION | **OPTIONAL?** | *If the `presetType` is external, then scroll down for more details on that `presetType` to see what kind of entity should be used.*
+
+`hitbox_width` | NUMBER | **0.8** | *If the part has an external entity, this is the width of its hitbox.*
+
+`hitbox_height` | NUMBER | **0.8** | *If the part has an external entity, this is the height of its hitbox.*
+
+`ingredients` | JSON_OBJECT_ARRAY | **OPTIONAL?** | *Most parts are obtained via crafting table except for `external_weapon` and `turret`. A list of ingredients needed to craft the part in the Weapon Parts Workbench. You need to add a recipe json file to the recipes folder. Scroll down to Part Recipes.*
+- `num` | INTEGER | **REQUIRED** | *The number of this item needed to craft.*
+- `item` | RESOURCE_LOCATION | **REQUIRED?** | *Either `item` or `tag` is required, NOT BOTH. The item id of the ingredient. Example: `minecraft:iron_ingot`*
+- `tag` | RESOURCE_LOCATION | **REQUIRED?** | *Either `item` or `tag` is required, NOT BOTH. If more than one item is compatible with this ingredient, use a tag id. Example: `minecraft:planks`*
+
+`repair_cost` | JSON_OBJECT_ARRAY | **OPTIONAL** | *If a part is damaged, these are additional items that need to be present in the crafting table to repair the part.*
+- `num` | INTEGER | **REQUIRED** | *The number of this item needed to craft.*
+- `item` | RESOURCE_LOCATION | **REQUIRED?** | *Either `item` or `tag` is required, NOT BOTH. The item id of the ingredient. Example: `minecraft:iron_ingot`*
+- `tag` | RESOURCE_LOCATION | **REQUIRED?** | *Either `item` or `tag` is required, NOT BOTH. If more than one item is compatible with this ingredient, use a tag id. Example: `minecraft:planks`*
+
+
+### Part Recipes
+
+In order for your custom weapon rack/turret to appear in the Weapon Parts Workbench you need to add a recipe json file to `//data/[namespace]/recipes/workbench_weapon_part_[presetId].json`
+
+An example of the CIWS recipe can be seen below. Replace `ciws` with your plane's `presetId`. The Weapon Parts Workbench will use the items defined in `ingredients` in the part preset file. 
+
+```
+{
+  "type": "dscombat:weapon_parts_workbench",
+  "presetId": "ciws"
+}
+```
+
+## Assets
+
+
 
 # Models
 

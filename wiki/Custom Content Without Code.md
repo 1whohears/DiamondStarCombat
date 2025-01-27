@@ -545,7 +545,7 @@ WIP. A lot of the current radar data gen will be outdated once radar mechanics a
 - `internal_storage`: Used for internal storage boxes.
 - `external_storage`: Used for external storage boxes that have external models. (not implemented yet)
 
-### All Parts Parameter list
+### All Parts Parameter List
 
 `weight` | NUMBER | **0** | *The weight this part will add to the vehicle. See the examples to see what values are typically used.*
 
@@ -569,6 +569,208 @@ WIP. A lot of the current radar data gen will be outdated once radar mechanics a
 - `item` | RESOURCE_LOCATION | **REQUIRED?** | *Either `item` or `tag` is required, NOT BOTH. The item id of the ingredient. Example: `minecraft:iron_ingot`*
 - `tag` | RESOURCE_LOCATION | **REQUIRED?** | *Either `item` or `tag` is required, NOT BOTH. If more than one item is compatible with this ingredient, use a tag id. Example: `minecraft:planks`*
 
+### Internal Weapon Parameter List
+
+`presetType` = `internal_weapon`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`max` | INTEGER | **0** | *The max number of weapons/ammo this weapon can hold.*
+
+`item` Options: `dscombat:internal_gun`
+
+### External Weapon Parameter List
+
+`presetType` = `external_weapon`
+
+Includes all stats listed in **All Parts Parameter List** and **Internal Weapon Parameter List**.
+
+`changeLaunchPitch` | NUMBER | **0** | *Increase the pitch relative to the vehicle's pitch that this weapon shoots. Useful for vertically launched missiles.*
+
+`item` Options: `dscombat:external_weapon_part`
+
+`externalEntity` Default: `dscombat:external_weapon_part`
+
+Scroll down to assets section for information of custom animations and missile positions on custom pylons.
+
+### Seat Parameter List
+
+`presetType` = `seat`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`passenger_offset` | VEC3 | **[0,0,0]** | *The passenger's offset from the seat relative to the vehicle's/turret's direction.*
+
+`item` Options: `dscombat:seat`
+
+`externalEntity` Default: `dscombat:seat`
+
+### Turret Parameter List
+
+`presetType` = `turret`
+
+Includes all stats listed in **All Parts Parameter List** and **Seat Parameter List**.
+
+`maxHealth` | NUMBER | **0** | *How much health this turret will start with.*
+
+`maxAmmo` | NUMBER | **0** | *The max ammo this turret can hold.*
+
+`weaponOffset` | NUMBER | **0** | *The vertical offset relative to the turret entities base of the initial position of the shot weapon.*
+
+`shootType` | ENUM | **`NORMAL`** | *Special hard coded firing instructions. Options: `NORMAL`, `MARK7`. (custom shoot types currently require code)*
+
+`rotBounds` | JSON_OBJECT | **REQUIRED** | *Controls the rotation rate, and rotation bounds of the turret.*
+- `rotRate` | NUMBER | **0** | *The max degrees per tick the turret can rotate.*
+- `minRotX` | NUMBER | **0** | *The most degrees the turret can look down.*
+- `maxRotX` | NUMBER | **0** | *The most degrees the turret can look up.*
+
+`item` Options: `dscombat:turret`
+
+`externalEntity` Default: `dscombat:turret`
+
+Scroll down to assets section for information of custom animations.
+
+### Internal Engine Parameter List
+
+`presetType` = `internal_engine`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`thrust` | NUMBER | **0** | *How much force this engine provides at max throttle.*
+
+`heat` | NUMBER | **0** | *How much heat this engine creates at max throttle.*
+
+`fuelRate` | NUMBER | **0** | *How much fuel this engine consumes per tick at max throttle.*
+
+`engineType` | ENUM | **`SPIN`** | *Options: `SPIN`, `PUSH`. Spin engines generate force for wheels/ground vehicles and helicopter blades. Push engines generate force for planes, boats, and submarines.*
+
+`item` Options: `dscombat:c6_engine`, `dscombat:c12_engine`, `dscombat:turbofan_f25`, `dscombat:turbofan_f145`, `dscombat:turbofan_f39`, `dscombat:klimov_rd33`, `dscombat:cm_manly_52`, `dscombat:allison_v_1710`, `dscombat:compound_turbine`
+
+### External Engine Parameter List
+
+`presetType` = `external_engine`
+
+Includes all stats listed in **All Parts Parameter List** and **Internal Engine Parameter List**.
+
+`item` Options: `dscombat:cfm56`
+
+`externalEntity` Default: `dscombat:external_engine`
+
+### Internal Fuel Tank Parameter List
+
+`presetType` = `fuel_tank`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`max` | NUMBER | **0** | *The max amount of fuel this tank can hold.*
+
+`item` Options: `dscombat:light_fuel_tank`, `dscombat:heavy_fuel_tank`
+
+### External Fuel Tank Parameter List
+
+`presetType` = `external_fuel_tank`
+
+Includes all stats listed in **All Parts Parameter List** and **Internal Fuel Tank Parameter List**.
+
+`item` Options: Not yet implemented
+
+`externalEntity` Default: Not yet implemented
+
+### Internal Radar Parameter List
+
+`presetType` = `internal_radar`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`radar` | STRING | **REQUIRED** | *The radar `presetId` from the Radar Super Type.*
+
+`item` Options: `dscombat:ar500`, `dscombat:ar1k`, `dscombat:ar2k`, `dscombat:gr200`, `dscombat:gr400`, `dscombat:wr400`, `dscombat:wr1k`, `dscombat:gpr20`, `dscombat:gpr100`
+
+### External Radar Parameter List
+
+`presetType` = `external_radar`
+
+Includes all stats listed in **All Parts Parameter List** and **Internal Radar Parameter List**.
+
+`item` Options: `dscombat:air_scan_a`, `dscombat:air_scan_b`, `dscombat:survey_all_a`, `dscombat:survey_all_b`
+
+`externalEntity` Default: `dscombat:external_radar`
+
+### Flare Dispenser Parameter List
+
+`presetType` = `flare_dispenser`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`max` | NUMBER | **0** | *The max amount of flares this dispenser can hold.*
+
+`age` | NUMBER | **0** | *The max age in ticks one of these flares can last.*
+
+`heat` | NUMBER | **0** | *The amount of heat a flare creates. Note: the heat decays slowly as it gets older.*
+
+`item` Options: `dscombat:basic_flare_dispenser`
+
+### Chaff Dispenser Parameter List
+
+`presetType` = `chaff_dispenser`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`item` Options: (not yet implemented)
+
+### Buff Parameter List
+
+`presetType` = `buff`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`buffType` | ENUM | **`DATA_LINK`** | *The type of buff this part is. Options:*
+- `DATA_LINK`: Radar pings found by this vehicle will be shared with team members. Note: If the gamerule `dataLinkAlwaysOn` = `true`, then this buff is automatically given to every vehicle.
+- `NIGHT_VISION_HUD`: Gives pilots night vision.
+- `RADIO`: If you right-click a vehicle with a music disk, the vehicle will start playing the song.
+- `ARMOR`: Adds a little extra armor to the vehicle.
+
+`item` Options: `dscombat:data_link`, `dscombat:night_vision_hud`, `dscombat:radio`, `dscombat:armor_piece`
+
+### Gimbal Parameter List
+
+`presetType` = `gimbal`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`item` Options: `dscombat:gimbal_camera`
+
+`externalEntity` Default: `dscombat:gimbal_camera`
+
+### Chain Hook Parameter List
+
+`presetType` = `chain_hook`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`item` Options: `dscombat:chain_hook`
+
+`externalEntity` Default: `dscombat:chain_hook`
+
+### Internal Storage Parameter List
+
+`presetType` = `internal_storage`
+
+Includes all stats listed in **All Parts Parameter List**.
+
+`size` | INTEGER | **0** | *The number of storage slots in this container.*
+
+`item` Options: `dscombat:small_storage_box`, `dscombat:medium_storage_box`, `dscombat:large_storage_box`
+
+### External Storage Parameter List
+
+`presetType` = `external_storage`
+
+Includes all stats listed in **All Parts Parameter List** and **Internal Storage Parameter List**.
+
+`item` Options: (not yet implemented)
+
+`externalEntity` Default: (not yet implemented)
 
 ### Part Recipes
 
@@ -585,7 +787,83 @@ An example of the CIWS recipe can be seen below. Replace `ciws` with your plane'
 
 ## Assets
 
+All External Parts support the Obj Model custom animation system. It functions nearly identically to the vehicle client preset system. __**External Weapon Racks, and Turrets require a Part Client Preset file.**__ You can also use the custom anims system for turrets. If a Part Client Preset file is not created, the `modelId` will be assumed to be `presetId`.
 
+### Part Client Preset
+
+Part client presets use the same `presetId` as their respective Datapack `presetId`. The file is located here:
+
+**`part_client_preset_file` = //assets/[`namespace`]/part_client/[`presetId`].json**
+
+Part Client Presets have the same format as Json Presets, but they are an asset. Thus, they can be modified with resource packs and the server doesn't force syncing this data. [Here are some examples.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/assets/dscombat/part_client) Again, note that the file name has to be the same as `presetId`.
+
+#### Available Preset Types
+
+Unlike Vehicle Client Presets, Part Client Presets have more than one `presetType`:
+
+- `standard`: External parts like engines, and chain hooks (they are visually just static models) use this type.
+- `turret`: Used by turrets. 
+- `radar`: Used by external radars.
+- `weapon_rack`: Used by external weapons/missile racks.
+
+#### All Part Client Preset Parameters
+
+`model_data` | JSON_OBJECT | **OPTIONAL** | *If not included, `model_id` will be assumed to be `assetId`, and there won't be any animations.*
+- `model_id` | STRING | **`assetId`** | *The file name of the model used for this vehicle. Scroll down to the Models section for more information.*
+- `custom_anims` | JSON_OBJECT_ARRAY | **OPTIONAL** | *A list of custom animations. These animations manipulate individual groups/bones/model parts. multiple animations can be stacked on the same `model_part_key`! There are different animation types, each requiring different parameters. All the parameters will be listed below, but a bit further down an explanation of each animation type will be documented.*
+  - `anim_id` | STRING | **REQUIRED** | *Each animation type will be explained below. Options: `continuous_rotation`, `motor_rotation`, `wheel_rotation`, `input_bound_rotation`, `spinning_radar`, `landing_gear`, `input_bound_translation`, `plane_flap_rotation`, `hitbox_destroy_part`.*
+  - `model_part_key` | STRING | **REQUIRED** | *The name of the bone/group/object within the model that is being animated.*
+  - `pivot` | VEC3 | **ZEROS** | *The pivot point a model part will rotate around. The units are Minecraft pixels or 1/16th of a block.*
+  - `rot_axis` | ENUM | **X** | *The axis the model part rotates around. Options: `X`, `Y`, `Z`.*
+  - `rot_rate` | NUMBER | **0** | *Maximum rotation rate in degrees per tick.*
+  - `input_axis` | ENUM | **PITCH** | *The input axis that controls how much the part rotates. Options: `PITCH`, `YAW`, `ROLL`, `THROTTLE`*
+  - `bound` | NUMBER | **0** | *How for the part rotates in degrees.*
+  - `radar_id` | STRING | **OPTIONAL** | *The `presetId` of the radar that should spin.*
+  - `fold_angle` | NUMBER | **0** | *The angle in degrees the landing gear part rotates while folding.*
+  - `bounds` | VEC3 | **ZEROS** | *The max distance the model part will be translated.*
+  - `hitbox_name` | STRING | **OPTIONAL** | *If a hitbox from `hitboxes` with this `name` gets destroyed, this model pat will disappear.*
+  - `rotPitch` | BOOLEAN | **true** | *If `rotPitch` = `true` then the animation will follow the up and down rotation of the model. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
+
+#### Turret Client Preset Parameters
+
+`rot_all_yaw` | BOOLEAN | **true** | *If `true`, the turret renderer will rotate every model component to the y angle. If `false`, custom animations will be needed to rotate the model.*
+
+#### Radar Client Preset Parameters
+
+`large_model_id` | STRING | **OPTIONAL** | *If the parent vehicle uses a large mast to support their external radars, use this alternative `modelId` to render the external radar.*
+
+#### Weapon Rack Client Preset Parameters
+
+`weapon_pos` | VEC3_ARRAY | **OPTIONAL** | *An array of positions relative to the model root that weapon models should be positioned.*
+
+<details>
+
+<summary>`weapon_pos` example: </summary>
+
+```
+"weapon_pos": [
+  {
+    "x":-0.5,
+    "y":-0.2,
+    "z":0,
+  },
+  {
+    "x":0.5,
+    "y":-0.2,
+    "z":0,
+  }
+]
+```
+
+</details>
+
+### Custom Animation Types
+
+The following is a description of each Custom Animation Type compatible with parts, and what parameters they need. See `custom_anims` above for documentation on all the parameters.
+
+`continuous_rotation` | `pivot`, `rot_axis`, `rot_rate` | *Continuously rotates the model part at `rot_rate` degrees per tick.*
+
+`turret_rotation` | `pivot`, `rot_axis`, `rotPitch` | *Control which parts of the turret will rotate. If `rotPitch` = `true` then the animation will follow the up and down rotation of the turret. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
 
 # Models
 

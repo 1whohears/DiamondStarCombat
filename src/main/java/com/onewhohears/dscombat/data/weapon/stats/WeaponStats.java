@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
@@ -110,7 +111,7 @@ public abstract class WeaponStats extends JsonPresetStats {
 	
 	public EntityType<?> getEntityType() {
 		if (entityType == null) {
-			entityType = UtilEntity.getEntityType(entityTypeKey, ModEntities.BULLET.get());
+			entityType = UtilEntity.getEntityType(entityTypeKey, getWeaponType().getDefaultEntityType());
 		}
 		return entityType;
 	}
@@ -168,6 +169,10 @@ public abstract class WeaponStats extends JsonPresetStats {
 	}
 	
 	public abstract String getWeaponTypeCode();
+
+	public WeaponType getWeaponType() {
+		return (WeaponType) getType();
+	}
 	
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		tips.add(getType().getDisplayNameComponent().setStyle(Style.EMPTY.withColor(TYPE_COLOR)));

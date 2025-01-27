@@ -57,9 +57,11 @@ public class TankPresets {
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), false)
-			.addIngredient(ModItems.HEAVY_TANK_TURRET.getId())
 			.addIngredient(ModItems.C12_ENGINE.getId(), 1)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
+			.addIngredient("dscombat:seat", 5)
+			.addIngredientTag("dscombat:aluminum_ingot", 40)
+			.addIngredient("minecraft:tnt", 2)
 			.build();
 	
 	public static final VehicleStats DEFAULT_MRBUDGER_TANK = VehicleStats.Builder

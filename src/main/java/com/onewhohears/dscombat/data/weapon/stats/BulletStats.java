@@ -39,7 +39,6 @@ public class BulletStats extends WeaponStats {
 	
 	public BulletStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		UtilParse.getBooleanSafe(json, "", false);
 		this.damage = UtilParse.getFloatSafe(json, "damage", 0);
 		this.speed = UtilParse.getFloatSafe(json, "speed", 0);
 		this.explosive = UtilParse.getBooleanSafe(json, "explosive", false);

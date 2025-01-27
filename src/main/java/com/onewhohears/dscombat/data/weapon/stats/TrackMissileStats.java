@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TrackMissileStats extends MissileStats {
 	
-	public static enum TargetType {
+	public enum TargetType {
 		AIR,
 		GROUND,
 		WATER
@@ -29,7 +29,7 @@ public class TrackMissileStats extends MissileStats {
 
 	public TrackMissileStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		targetType = TargetType.valueOf(json.get("targetType").getAsString());
+		targetType = UtilParse.getEnumSafe(json, "targetType", TargetType.class);
 		active = UtilParse.getBooleanSafe(json, "activeTrack", true);
 	}
 	

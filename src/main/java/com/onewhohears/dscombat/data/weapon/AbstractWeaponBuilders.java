@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
-import com.onewhohears.dscombat.init.ModEntities;
 
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -68,12 +67,6 @@ public class AbstractWeaponBuilders {
 			super(namespace, name, type);
 		}
 		
-		@Override
-		protected void setupJsonData() {
-			super.setupJsonData();
-			setEntityType(ModEntities.BULLET.getId());
-		}
-		
 		public C setDamage(float damage) {
 			return setFloat("damage", damage);
 		}
@@ -114,12 +107,6 @@ public class AbstractWeaponBuilders {
 			super(namespace, name, type);
 		}
 		
-		@Override
-		protected void setupJsonData() {
-			super.setupJsonData();
-			setEntityType(ModEntities.BOMB.getId());
-		}
-		
 	}
 	
 	public abstract static class BunkerBusterBuilder<C extends BunkerBusterBuilder<C>> extends BombBuilder<C> {
@@ -130,12 +117,6 @@ public class AbstractWeaponBuilders {
 		
 		public C setBlockStrength(float blockStrength) {
 			return setFloat("blockStrength", blockStrength);
-		}
-		
-		@Override
-		protected void setupJsonData() {
-			super.setupJsonData();
-			setEntityType(ModEntities.BUNKER_BUSTER.getId());
 		}
 		
 	}
@@ -189,7 +170,7 @@ public class AbstractWeaponBuilders {
 		 * Track Missile only
 		 */
 		public C setTargetType(TargetType targetType) {
-			return setString("targetType", targetType.name());
+			return setEnum("targetType", targetType);
 		}
 		
 		/**

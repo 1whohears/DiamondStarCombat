@@ -39,6 +39,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue renderOtherExternalPartDistance;
 		// OTHER
 		public final ForgeConfigSpec.BooleanValue debugMode;
+		public final ForgeConfigSpec.IntValue syncSeatPosRate;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("display");
@@ -70,7 +71,8 @@ public class Config {
 					.comment("If enabled, turning your player head may feel more natural.")
 					.define("cameraTurnRelativeToVehicle", true);
 			customDismount = builder
-					.comment("If enabled, your sneak key binding becomes Special2, and Special2 binding becomes dismount.")
+					.comment("If enabled, your sneak key binding doesn't dismount you from DSC vehicles. " +
+							"You will have to you the diamond star combat dismount keybinding instead (H by default.)")
 					.define("customDismount", true);
 			builder.pop();
 			builder.push("sounds");
@@ -95,6 +97,16 @@ public class Config {
 			debugMode = builder
 					.comment("Stats for nerds.")
 					.define("debugMode", false);
+			syncSeatPosRate = builder
+					.comment("Sometimes when the server lags, the server side position of the player's seat " +
+							"entity doesn't get updated. Eventually the server thinks the seat is outside " +
+							"of the player's render distance and sends a discard packet. This causes the player " +
+							"to randomly fall out of their plane. This is solved by having the client tell the " +
+							"server explicitly where the seat actually is on the client side. This config controls " +
+							"how often (in ticks) this sync packet is sent from the client to the server. This used " +
+							"to be set to 40 for everyone, but some have exceptionally poor connections and may " +
+							"need this value to be lowered.")
+					.defineInRange("syncSeatPosRate", 10, 0, 200);
 			builder.push("entity-render-distance");
 			renderWeaponRackDistance = builder
 					.defineInRange("renderWeaponRackDistance", 256.0, 0, 1000);

@@ -143,6 +143,7 @@ public final class ClientModEvents {
 		CustomAnims.addAnim("landing_gear", VehicleModelTransforms.LandingGear::new);
 		CustomAnims.addAnim("hitbox_destroy_part", VehicleModelTransforms.HitboxDestroyPart::new);
 		CustomAnims.addAnim("plane_flap_rotation", VehicleModelTransforms.PlaneFlapRotation::new);
+		CustomAnims.addAnim("turret_rotation", VehicleModelTransforms.TurretRotation::new);
 	}
 
 	@SubscribeEvent

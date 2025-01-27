@@ -2,11 +2,13 @@ package com.onewhohears.dscombat.client.model.obj.customanims;
 
 import com.google.gson.JsonObject;
 import com.mojang.math.Matrix4f;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
 import com.onewhohears.onewholibs.client.model.obj.customanims.EntityModelTransform;
 
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.util.Mth;
 
 public class VehicleModelTransforms {
@@ -63,17 +65,17 @@ public class VehicleModelTransforms {
 		}
 	}
 	
-	private static interface InputFactory {
+	private interface InputFactory {
 		float get(EntityVehicle entity);
 	}
 	
-	public static enum InputAxis {
+	public enum InputAxis {
 		PITCH((entity) -> entity.inputs.pitch), 
 		YAW((entity) -> entity.inputs.yaw), 
 		ROLL((entity) -> entity.inputs.roll), 
 		THROTTLE(EntityVehicle::getCurrentThrottle);
 		private final InputFactory input;
-		private InputAxis(InputFactory input) {
+		InputAxis(InputFactory input) {
 			this.input = input;
 		}
 		public float getVehicleInput(EntityVehicle entity) {
@@ -149,6 +151,19 @@ public class VehicleModelTransforms {
 		public Matrix4f getTransform(T entity, float partialTicks) {
 			if (entity.getLandingGearPos(partialTicks) == 1) return INVISIBLE;
 			return super.getTransform(entity, partialTicks);
+		}
+	}
+
+	public static class TurretRotation<T extends EntityTurret> extends EntityModelTransform.AxisRotation<T> {
+		private final boolean rotPitch;
+		public TurretRotation(JsonObject data) {
+			super(data);
+			rotPitch = UtilParse.getBooleanSafe(data, "rotPitch", true);
+		}
+		@Override
+		public float getRotDeg(T turret, float partialTicks) {
+			if (rotPitch) return UtilAngles.lerpAngle180(partialTicks, turret.xRotRelO, turret.getRelRotX());
+			return UtilAngles.lerpAngle180(partialTicks, turret.yRotRelO, turret.getRelRotY());
 		}
 	}
 	

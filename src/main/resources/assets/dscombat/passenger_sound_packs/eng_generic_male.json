@@ -1,0 +1,78 @@
+{
+  "presetId": "eng_generic_male",
+  "presetType": "standard",
+  "sounds": [
+    {
+      "trigger": "rwr_missile_alert",
+      "sound": "dscombat:missile_warning",
+      "repeat_rate": 4,
+      "skip_queue": true
+    },
+    {
+      "trigger": "rwr_tracked_alert",
+      "sound": "dscombat:getting_locked",
+      "repeat_rate": 8,
+      "skip_queue": true
+    },
+    {
+      "trigger": "rwr_pinged_warning",
+      "sound": "dscombat:getting_locked",
+      "repeat_rate": 8,
+      "skip_queue": true
+    },
+    {
+      "trigger": "ir_tone_low",
+      "sound": "dscombat:fox2_tone_1",
+      "repeat_rate": 10,
+      "skip_queue": true
+    },
+    {
+      "trigger": "ir_tone_high",
+      "sound": "dscombat:fox2_tone_1",
+      "repeat_rate": 10,
+      "skip_queue": true
+    },
+    {
+      "trigger": "stall_alert",
+      "sound": "dscombat:stall_alert_gm1",
+      "repeat_rate": 24,
+      "skip_queue": true
+    },
+    {
+      "trigger": "stall_warning",
+      "sound": "dscombat:stall_warning_gm1",
+      "repeat_rate": 40,
+      "skip_queue": true
+    },
+    {
+      "trigger": "pull_up",
+      "sound": "dscombat:pull_up_gm1",
+      "repeat_rate": 13,
+      "skip_queue": true
+    },
+    {
+      "trigger": "engine_fire",
+      "sound": "dscombat:engine_fire_gm1",
+      "repeat_rate": 160
+    },
+    {
+      "trigger": "fuel_leak",
+      "sound": "dscombat:fuel_leak_gm1",
+      "repeat_rate": 30,
+      "group_burst_size": 2,
+      "group_burst_repeat_rate": 200
+    },
+    {
+      "trigger": "bingo",
+      "sound": "dscombat:bingo_gm1",
+      "repeat_rate": 20,
+      "group_burst_size": 3,
+      "group_burst_repeat_rate": 240
+    },
+    {
+      "trigger": "radar_lock",
+      "sound": "dscombat:lock_gm1",
+      "skip_queue": true
+    }
+  ]
+}

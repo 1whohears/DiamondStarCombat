@@ -47,6 +47,7 @@ public class PassengerSoundPack extends JsonPresetStats {
 
     public static void registerBuiltInPassengerSoundTriggers() {
         registerPassengerSoundTrigger("always", (vehicle, sound) -> true);
+        registerPassengerSoundTrigger("never", (vehicle, sound) -> false);
         registerPassengerSoundTrigger("rwr_missile_alert", (vehicle, sound) ->
                 vehicle.radarSystem.isTrackedByMissile() && testTime(sound, vehicle.tickCount));
         registerPassengerSoundTrigger("rwr_tracked_alert", (vehicle, sound) ->
@@ -76,18 +77,20 @@ public class PassengerSoundPack extends JsonPresetStats {
                 vehicle.getStats().isAircraft() && testTime(sound, vehicle.getFuelLeakTicks()));
         registerPassengerSoundTrigger("bingo", (vehicle, sound) ->
                 vehicle.getStats().isAircraft() && testTime(sound, vehicle.getBingoTicks()));
+        registerPassengerSoundTrigger("radar_lock", (vehicle, sound) -> false);
         // Hydraulics Failure
         // Altitude
-        // Lock
         // Flare
         // Chaff
         // New radar target found
+        // Jammer warning
     }
 
     public static final JsonPresetType STANDARD = new JsonPresetType(
             "standard", PassengerSoundPack::new) {};
 
     private final List<PassengerSound> passengerSounds = new ArrayList<>();
+    private int radarLockIndex = -1;
 
     public PassengerSoundPack(ResourceLocation key, JsonObject json) {
         super(key, json);
@@ -98,8 +101,14 @@ public class PassengerSoundPack extends JsonPresetStats {
         for (int i = 0; i < sounds.size(); ++i) {
             if (!sounds.get(i).isJsonObject()) continue;
             JsonObject sound = sounds.get(i).getAsJsonObject();
-            passengerSounds.add(new PassengerSound(sound));
+            PassengerSound ps = new PassengerSound(sound);
+            passengerSounds.add(ps);
+            if (ps.getTriggerId().equals("radar_lock")) radarLockIndex = i;
         }
+    }
+
+    public void playRadarLockSound() {
+        if (radarLockIndex > -1) passengerSounds.get(radarLockIndex).playSound();
     }
 
     public void clientTickPassengerSounds(EntityVehicle vehicle) {
@@ -121,24 +130,24 @@ public class PassengerSoundPack extends JsonPresetStats {
             else sound = new SoundEvent(new ResourceLocation(soundId));
             volume = UtilParse.getFloatSafe(json, "volume", 1);
             pitch = UtilParse.getFloatSafe(json, "pitch", 1);
-            tick_length = UtilParse.getIntSafe(json, "tick_length", 0);
             repeat_rate = UtilParse.getIntSafe(json, "repeat_rate", 20);
+            tick_length = UtilParse.getIntSafe(json, "tick_length", repeat_rate);
             group_burst_size = UtilParse.getIntSafe(json, "group_burst_size", -1);
             group_burst_repeat_rate = UtilParse.getIntSafe(json, "group_burst_repeat_rate", -1);
             skip_queue = UtilParse.getBooleanSafe(json, "skip_queue", false);
-            triggerId = UtilParse.getStringSafe(json, "trigger", "always");
-            shouldPlaySound = soundTriggers.getOrDefault(triggerId, (vehicle, sound) -> true);
+            triggerId = UtilParse.getStringSafe(json, "trigger", "never");
+            shouldPlaySound = soundTriggers.getOrDefault(triggerId, (vehicle, sound) -> false);
         }
         public boolean shouldPlaySound(EntityVehicle vehicle) {
             return shouldPlaySound.test(vehicle, this);
         }
         public void testPlaySound(EntityVehicle vehicle) {
-            if (sound != null && shouldPlaySound(vehicle)) {
-                if (skipQueue()) UtilClientSafeSounds.playCockpitSound(
-                        getSound(), getPitch(), getVolume());
-                else UtilClientSafeSounds.queueCockpitSound(getSound(),
-                        getPitch(), getVolume(), getTickLength());
-            }
+            if (getSound() != null && shouldPlaySound(vehicle)) playSound();
+        }
+        public void playSound() {
+            if (getSound() == null) return;
+            if (skipQueue()) UtilClientSafeSounds.playCockpitSound(getSound(), getPitch(), getVolume());
+            else UtilClientSafeSounds.queueCockpitSound(getSound(), getPitch(), getVolume(), getTickLength());
         }
         @Nullable
         public SoundEvent getSound() {

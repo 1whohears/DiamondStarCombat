@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -106,7 +105,6 @@ public class PlanePresets {
 			.setPlaneLiftAOAGraph("e3sentry_plane")
 			.setPlaneFlapDownAOABias(10)
 			.setPlaneNoseCanAimDown(false)
-			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_MALE_1)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId(), 11)
 			.addIngredient(ModItems.LARGE_FUSELAGE.getId(), 2)

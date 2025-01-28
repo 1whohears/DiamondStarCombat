@@ -333,8 +333,7 @@
   "sounds": {
     "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:tank_1",
-    "passengerEngine": "dscombat:tank_1",
-    "passengerSoundPack": "eng_male_1"
+    "passengerEngine": "dscombat:tank_1"
   },
   "stats": {
     "armor_damage_absorbtion": 0.4,

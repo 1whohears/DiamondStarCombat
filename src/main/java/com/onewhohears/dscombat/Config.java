@@ -6,7 +6,6 @@ import com.onewhohears.onewholibs.util.UtilEntity;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -26,7 +25,7 @@ public class Config {
 		// VOLUME/SOUND
 		public final ForgeConfigSpec.DoubleValue rwrWarningVol, missileWarningVol, irTargetToneVol;
 		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
-		public final ForgeConfigSpec.EnumValue<PassengerSoundPack> passengerSoundPack;
+		public final ForgeConfigSpec.ConfigValue<String> passengerSoundPack;
 		// DISPLAY
 		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
 		public final ForgeConfigSpec.EnumValue<RadarMode> defaultRadarMode;
@@ -89,7 +88,10 @@ public class Config {
 					.comment("Cockpit Voicelines Volume")
 					.defineInRange("cockpitVoiceLineVol", 1d, 0, 1d);
 			passengerSoundPack = builder
-					.defineEnum("passengerSoundPackOverride", PassengerSoundPack.SAME_AS_VEHICLE);
+					.comment("The voice line pack your fighter jets use. You can use resource packs to add custom " +
+							"sound packs. The packs that come built into the mod are 'eng_non_binary_goober', " +
+							"'eng_generic_male'.")
+					.define("passengerSoundPack", "eng_non_binary_goober");
 			builder.pop();
 			builder.push("performance");
 			maxRenderRackMissileNum = builder

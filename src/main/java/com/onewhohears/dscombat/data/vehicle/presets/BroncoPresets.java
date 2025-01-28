@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -40,7 +39,6 @@ public class BroncoPresets {
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(2)
 			.setLayerTextureNum(2)
-			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addIngredientTag("minecraft:planks", 40)
 			.addIngredientTag("dscombat:aluminum_ingot", 6)
 			.addIngredient(ModItems.WING.getId(), 3)

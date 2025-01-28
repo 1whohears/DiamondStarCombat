@@ -338,8 +338,7 @@
     "externalRPM": "dscombat:alexis_ext_rpm",
     "externalWindClose": "dscombat:alexis_ext_wind_close",
     "externalWindFar": "dscombat:alexis_ext_wind_far",
-    "loopSoundType": "fighter_jet",
-    "passengerSoundPack": "eng_non_binary_goober"
+    "loopSoundType": "fighter_jet"
   },
   "stats": {
     "armor_damage_absorbtion": 0.3,

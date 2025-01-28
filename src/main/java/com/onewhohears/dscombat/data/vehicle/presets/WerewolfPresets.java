@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -36,7 +35,6 @@ public class WerewolfPresets {
 			.setHeliAlwaysLandingGear(false)
 			.setHeliLiftFactor(10)
 			.setLayerTextureNum(1)
-			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addPilotSeatSlot(0.4, -0.65, 1.5, true)
 			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 0.75, -0.5, 1.8, -90)
 			.addEmptySlot("left_wing_2", SlotType.PYLON_MED, 0.75, -0.5, 0.9, -90)

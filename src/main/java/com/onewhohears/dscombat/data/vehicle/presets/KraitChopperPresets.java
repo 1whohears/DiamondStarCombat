@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -35,7 +34,6 @@ public class KraitChopperPresets {
 			.set3rdPersonCamDist(6)
 			.setHeliAlwaysLandingGear(true)
 			.setHeliLiftFactor(15)
-			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.setBaseTextureNum(4)
 			.setLayerTextureNum(4)
 			.addPilotSeatSlot(0, -0.05, 2, true)

@@ -1,9 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -36,7 +34,6 @@ public class NoahChopperPresets {
 			.setHeliAlwaysLandingGear(true)
 			.setHeliLiftFactor(10)
 			.setLayerTextureNum(1)
-			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addPilotSeatSlot(0.4, -0.65, 1.5)
 			.addSeatSlot("seat2", SlotType.MOUNT_MED, -0.4, -0.65, 1.5)
 			.addSeatSlot("seat3", SlotType.MOUNT_MED, 0.4, -0.65, 0.3)

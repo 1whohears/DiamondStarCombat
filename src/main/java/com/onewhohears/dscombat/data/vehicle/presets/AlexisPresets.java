@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -43,7 +42,6 @@ public class AlexisPresets {
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(2)
 			.setLayerTextureNum(2)
-			.setDefultPassengerSoundPack(PassengerSoundPack.ENG_NON_BINARY_GOOBER)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 3)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())

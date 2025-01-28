@@ -171,8 +171,7 @@
   "sounds": {
     "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:heli_1",
-    "passengerEngine": "dscombat:heli_1",
-    "passengerSoundPack": "eng_non_binary_goober"
+    "passengerEngine": "dscombat:heli_1"
   },
   "stats": {
     "armor_damage_absorbtion": 0.275,

@@ -163,8 +163,7 @@
   "sounds": {
     "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:biplane_1",
-    "passengerEngine": "dscombat:biplane_1",
-    "passengerSoundPack": "eng_non_binary_goober"
+    "passengerEngine": "dscombat:biplane_1"
   },
   "stats": {
     "armor_damage_absorbtion": 0.05,

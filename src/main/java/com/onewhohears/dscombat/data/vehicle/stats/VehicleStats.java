@@ -16,7 +16,6 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
@@ -1046,13 +1045,6 @@ public abstract class VehicleStats extends JsonPresetStats {
 			getSounds().addProperty("cockpitAfterBurner", cockpitAfterBurner.getLocation().toString());
 			getSounds().addProperty("cockpitWindSlow", cockpitWindSlow.getLocation().toString());
 			getSounds().addProperty("cockpitWindFast", cockpitWindFast.getLocation().toString());
-			return this;
-		}
-		/**
-		 * all vehicles 
-		 */
-		public Builder setDefultPassengerSoundPack(PassengerSoundPack passengerSoundPack) {
-			getSounds().addProperty("passengerSoundPack", passengerSoundPack.id);
 			return this;
 		}
 		/**

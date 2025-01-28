@@ -26,6 +26,7 @@ public class EntityPlane extends EntityVehicle {
 	private double wingLiftMag, maxSpeedMod = 1, arcadeIgnoreGravityFactor;
 	private Vec3 liftDir = Vec3.ZERO, liftForce = Vec3.ZERO;
 	private boolean isArcadeMode = false;
+	private int pullUpWarningTicks, altitudeWarningTicks;
 	
 	public EntityPlane(EntityType<? extends EntityPlane> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
@@ -97,6 +98,11 @@ public class EntityPlane extends EntityVehicle {
 		calculateAOA(q);
 		calculateLift(q);
 		calculateCentripetalForce();
+		double ym = getDeltaMovement().y;
+		if (ym <= -DSCPhyCons.COLLIDE_SPEED && getAltitude() / -ym <= 80) ++pullUpWarningTicks;
+		else pullUpWarningTicks = 0;
+		if (getDeltaMovement().y < 0 && getAltitude() < 40) ++altitudeWarningTicks;
+		else altitudeWarningTicks = 0;
 	}
 	
 	@Override
@@ -329,6 +335,16 @@ public class EntityPlane extends EntityVehicle {
 
 	public double getCentripetalScale() {
 		return getPlaneStats().centripetal_scale;
+	}
+
+	@Override
+	public int getPullUpWarningTicks() {
+		return pullUpWarningTicks;
+	}
+
+	@Override
+	public int getAltitudeWarningTicks() {
+		return altitudeWarningTicks;
 	}
 
 }

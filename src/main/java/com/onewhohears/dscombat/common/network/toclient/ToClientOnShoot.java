@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,6 +27,18 @@ public class ToClientOnShoot extends IPacket {
 		if (turret.getLevel().isClientSide()) return;
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> turret),
 				new ToClientOnShoot(turret.getId(), UtilClientPacket.ShootType.TURRET));
+	}
+
+	public static void onShootFlareRack(EntityVehicle vehicle) {
+		if (vehicle.getLevel().isClientSide()) return;
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle),
+				new ToClientOnShoot(vehicle.getId(), UtilClientPacket.ShootType.FLARE));
+	}
+
+	public static void onShootChaffRack(EntityVehicle vehicle) {
+		if (vehicle.getLevel().isClientSide()) return;
+		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle),
+				new ToClientOnShoot(vehicle.getId(), UtilClientPacket.ShootType.CHAFF));
 	}
 
 	public final int id;

@@ -51,6 +51,13 @@
       "skip_queue": true
     },
     {
+      "trigger": "altitude",
+      "sound": "dscombat:altitude_gm1",
+      "repeat_rate": 30,
+      "group_burst_size": 2,
+      "group_burst_repeat_rate": 220
+    },
+    {
       "trigger": "engine_fire",
       "sound": "dscombat:engine_fire_gm1",
       "repeat_rate": 160
@@ -72,6 +79,11 @@
     {
       "trigger": "radar_lock",
       "sound": "dscombat:lock_gm1",
+      "skip_queue": true
+    },
+    {
+      "trigger": "flare",
+      "sound": "dscombat:flare_gm1",
       "skip_queue": true
     }
   ]

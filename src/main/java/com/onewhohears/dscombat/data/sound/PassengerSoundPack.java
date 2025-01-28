@@ -56,6 +56,8 @@ public class PassengerSoundPack extends JsonPresetStats {
         registerPassengerSoundTrigger("rwr_pinged_warning", (vehicle, sound) ->
                 !vehicle.radarSystem.isTrackedByMissile() && !vehicle.radarSystem.isTrackedByRadar()
                         && vehicle.radarSystem.clientConsumePingWarningSound());
+        registerPassengerSoundTrigger("jammed_warning", (vehicle, sound) ->
+                testTime(sound, vehicle.radarSystem.getJammedTicks()));
         registerPassengerSoundTrigger("ir_tone_low", (vehicle, sound) ->
                 vehicle.shouldPlayLowIRTone() && !vehicle.shouldPlayHighIRTone()
                         && testTime(sound, vehicle.tickCount));
@@ -68,29 +70,28 @@ public class PassengerSoundPack extends JsonPresetStats {
                 vehicle.getStats().isPlane() && !vehicle.isStalling() && vehicle.isAboutToStall()
                         && testTime(sound, vehicle.getAboutToStallTicks()));
         registerPassengerSoundTrigger("pull_up", (vehicle, sound) ->
-                vehicle.getStats().isPlane() && vehicle.getDeltaMovement().y <= -DSCPhyCons.COLLIDE_SPEED
-                        && testTime(sound, vehicle.tickCount)
-                        && UtilEntity.getDistFromGround(vehicle) / -vehicle.getDeltaMovement().y <= 80);
+                testTime(sound, vehicle.getPullUpWarningTicks()));
+        registerPassengerSoundTrigger("altitude", (vehicle, sound) ->
+                testTime(sound, vehicle.getAltitudeWarningTicks()));
         registerPassengerSoundTrigger("engine_fire", (vehicle, sound) ->
                 vehicle.getStats().isAircraft() && testTime(sound, vehicle.getEngineFireTicks()));
         registerPassengerSoundTrigger("fuel_leak", (vehicle, sound) ->
                 vehicle.getStats().isAircraft() && testTime(sound, vehicle.getFuelLeakTicks()));
         registerPassengerSoundTrigger("bingo", (vehicle, sound) ->
                 vehicle.getStats().isAircraft() && testTime(sound, vehicle.getBingoTicks()));
+        registerPassengerSoundTrigger("hydraulics_failure", (vehicle, sound) ->
+                vehicle.getStats().isAircraft() && testTime(sound, vehicle.getHydraulicsFailureTicks()));
         registerPassengerSoundTrigger("radar_lock", (vehicle, sound) -> false);
-        // Hydraulics Failure
-        // Altitude
-        // Flare
-        // Chaff
-        // New radar target found
-        // Jammer warning
+        registerPassengerSoundTrigger("radar_found", (vehicle, sound) -> false);
+        registerPassengerSoundTrigger("flare", (vehicle, sound) -> false);
+        registerPassengerSoundTrigger("chaff", (vehicle, sound) -> false);
     }
 
     public static final JsonPresetType STANDARD = new JsonPresetType(
             "standard", PassengerSoundPack::new) {};
 
     private final List<PassengerSound> passengerSounds = new ArrayList<>();
-    private int radarLockIndex = -1;
+    private int radarLockIndex = -1, radarFoundIndex = -1, flareIndex = -1, chaffIndex = -1;
 
     public PassengerSoundPack(ResourceLocation key, JsonObject json) {
         super(key, json);
@@ -103,12 +104,29 @@ public class PassengerSoundPack extends JsonPresetStats {
             JsonObject sound = sounds.get(i).getAsJsonObject();
             PassengerSound ps = new PassengerSound(sound);
             passengerSounds.add(ps);
-            if (ps.getTriggerId().equals("radar_lock")) radarLockIndex = i;
+            switch (ps.getTriggerId()) {
+                case "radar_lock" -> radarLockIndex = i;
+                case "radar_found" -> radarFoundIndex = i;
+                case "flare" -> flareIndex = i;
+                case "chaff" -> chaffIndex = i;
+            }
         }
     }
 
     public void playRadarLockSound() {
         if (radarLockIndex > -1) passengerSounds.get(radarLockIndex).playSound();
+    }
+
+    public void playRadarFoundSound() {
+        if (radarFoundIndex > -1) passengerSounds.get(radarFoundIndex).playSound();
+    }
+
+    public void playFlareSound() {
+        if (flareIndex > -1) passengerSounds.get(flareIndex).playSound();
+    }
+
+    public void playChaffSound() {
+        if (chaffIndex > -1) passengerSounds.get(chaffIndex).playSound();
     }
 
     public void clientTickPassengerSounds(EntityVehicle vehicle) {

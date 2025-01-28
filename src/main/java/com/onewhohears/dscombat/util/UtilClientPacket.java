@@ -214,12 +214,20 @@ public class UtilClientPacket {
 		} else if (type == ShootType.TURRET) {
 			if (!(world.getEntity(id) instanceof EntityTurret turret)) return;
 			turret.onClientShoot();
+		} else if (type == ShootType.FLARE) {
+			if (!(world.getEntity(id) instanceof EntityVehicle vehicle)) return;
+			vehicle.soundManager.playPassengerFlareSound();
+		} else if (type == ShootType.CHAFF) {
+			if (!(world.getEntity(id) instanceof EntityVehicle vehicle)) return;
+			vehicle.soundManager.playPassengerChaffSound();
 		}
 	}
 
 	public enum ShootType {
 		TURRET,
-		WEAPON_RACK
+		WEAPON_RACK,
+		FLARE,
+		CHAFF
 	}
 	
 }

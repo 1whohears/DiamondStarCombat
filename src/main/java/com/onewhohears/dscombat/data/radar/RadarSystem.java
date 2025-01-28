@@ -298,7 +298,7 @@ public class RadarSystem {
 		if (pingIndex < 0 || pingIndex >= getClientRadarPings().size()) return;
 		if (parent.tickCount-clientSelectedTime < 2) return;
 		clientSelectedIndex = pingIndex;
-		parent.soundManager.playRadarLockSound();
+		parent.soundManager.playPassengerRadarLockSound();
 		VehicleSyncAction.sendSyncAction(new VehicleSyncAction.PingSelectAction(clientTargets.get(pingIndex)));
 		clientSelectedTime = parent.tickCount;
 	}
@@ -436,7 +436,7 @@ public class RadarSystem {
 	private void ageRWR() {
 		rwrRadar = false;
 		rwrMissile = false;
-		if (rwrWarnings.size() == 0) return;
+		if (rwrWarnings.isEmpty()) return;
 		Iterator<RWRWarning> it = rwrWarnings.values().iterator();
 		while (it.hasNext()) {
 			RWRWarning n = it.next();
@@ -490,6 +490,11 @@ public class RadarSystem {
 		public String toString() {
 			return "RWR["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
 		}
+	}
+
+	public int getJammedTicks() {
+		if (!hasRadar()) return 0;
+		return 0;
 	}
 	
 }

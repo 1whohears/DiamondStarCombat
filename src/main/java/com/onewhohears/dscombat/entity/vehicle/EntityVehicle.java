@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
@@ -163,9 +164,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected boolean hasFlares;
 	protected int xzSpeedDir, hurtByFireTime, flareTicks;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
-	protected double staticFric, kineticFric, airPressure;
+	protected double staticFric, kineticFric, airPressure, currentAltitude;
 	
-	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks, groundTicks, hitboxRefreshAttempts, numFlares;
+	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
+	private int groundTicks, hitboxRefreshAttempts, numFlares, hydraulicsFailureTicks;
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
 	
@@ -892,6 +894,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		}
 		xzSpeedDir = 1;
 		if (Math.abs(slideAngle) > 90) xzSpeedDir = -1;
+		currentAltitude = UtilEntity.getDistFromSeaLevel(this);
 	}
 	
 	public float getXZSpeed() {
@@ -1222,8 +1225,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void flare(Entity controller, boolean consume) {
-		partsManager.useFlares(consume);
-		flareTicks = tickCount;
+		if (partsManager.useFlares(consume)) {
+			ToClientOnShoot.onShootFlareRack(this);
+			flareTicks = tickCount;
+		}
 	}
 	
 	/**
@@ -3028,6 +3033,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	else fuelLeakTicks = 0;
     	if (isBingoFuelWarning()) ++bingoTicks;
     	else bingoTicks = 0;
+		if (isHydraulicsFailure()) ++hydraulicsFailureTicks;
+		else hydraulicsFailureTicks = 0;
     }
     
     @Override
@@ -3095,7 +3102,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public double getAltitude() {
-		return UtilEntity.getDistFromSeaLevel(this);
+		return currentAltitude;
 	}
 
 	public boolean canReload(Player player) {
@@ -3218,5 +3225,21 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (owner != null) return UtilMCText.empty().append(owner.getDisplayName())
 					.append("'s ").append(getStats().getBaseDisplayName());
 		return getStats().getBaseDisplayName();
+	}
+
+	public int getPullUpWarningTicks() {
+		return 0;
+	}
+
+	public int getAltitudeWarningTicks() {
+		return 0;
+	}
+
+	public boolean isHydraulicsFailure() {
+		return !(canControlPitch() && canControlRoll() && canControlYaw());
+	}
+
+	public int getHydraulicsFailureTicks() {
+		return hydraulicsFailureTicks;
 	}
 }

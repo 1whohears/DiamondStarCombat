@@ -12,7 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class EntityHelicopter extends EntityVehicle {
-	
+
+	private int altitudeWarningTicks;
+
 	public EntityHelicopter(EntityType<? extends EntityHelicopter> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
 	}
@@ -122,4 +124,15 @@ public class EntityHelicopter extends EntityVehicle {
 		return super.getMaxSpeedFactor() * Config.COMMON.heliSpeedFactor.get();
 	}
 
+	@Override
+	public int getAltitudeWarningTicks() {
+		return altitudeWarningTicks;
+	}
+
+	@Override
+	protected void calcMoveStatsPre(Quaternion q) {
+		super.calcMoveStatsPre(q);
+		if (getDeltaMovement().y < 0 && getAltitude() < 40) ++altitudeWarningTicks;
+		else altitudeWarningTicks = 0;
+	}
 }

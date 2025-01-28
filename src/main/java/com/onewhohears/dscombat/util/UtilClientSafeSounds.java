@@ -139,9 +139,18 @@ public class UtilClientSafeSounds {
 	
 	public static SimpleSoundInstance forCockpit(SoundEvent sound, float pitch, float volume) {
 		if (sound == null) sound = SoundEvents.VILLAGER_YES;
+		Minecraft m = Minecraft.getInstance();
+		final int vehicleId = m.player.getRootVehicle().getId();
 		return new SimpleSoundInstance(sound.getLocation(), SoundSource.PLAYERS, volume, pitch, 
 				SoundInstance.createUnseededRandom(), false, 0, 
-				SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D, true);
+				SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D, true) {
+			@Override
+			public float getVolume() {
+				if (m.player != null && m.player.isPassenger() && m.player.getRootVehicle().getId() == vehicleId)
+					return super.getVolume();
+				return 0;
+			}
+		};
 	}
 
 	public static boolean isClientRidingVehicle(EntityVehicle vehicle) {

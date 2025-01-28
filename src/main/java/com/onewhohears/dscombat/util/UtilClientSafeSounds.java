@@ -113,7 +113,8 @@ public class UtilClientSafeSounds {
 			LOGGER.error("ERROR: "+sound+" does not exist!");
 		}
 	}
-	
+
+	@Deprecated
 	public static void tickPassengerSounds(EntityVehicle vehicle, PassengerSoundPack passengerSoundPack) {
 		if (!vehicle.isOperational()) return;
 		Minecraft m = Minecraft.getInstance();
@@ -127,7 +128,7 @@ public class UtilClientSafeSounds {
 				1f, Config.CLIENT.rwrWarningVol.get().floatValue());
 		}
 		// IR LOCK TONE
-		if (vehicle.tickCount%10==0 && vehicle.shouldPlayIRTone())  {
+		if (vehicle.tickCount%10==0 && vehicle.shouldPlayHighIRTone())  {
 			playCockpitSound(passengerSoundPack.irLockTone, 
 	    		1f, Config.CLIENT.irTargetToneVol.get().floatValue());
 		}

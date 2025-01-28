@@ -23,6 +23,8 @@ import com.onewhohears.dscombat.client.screen.VehicleStorageScreen;
 import com.onewhohears.dscombat.client.screen.WeaponsBlockScreen;
 import com.onewhohears.dscombat.client.screen.WeaponPartsBlockScreen;
 import com.onewhohears.dscombat.data.parts.client.PartAssets;
+import com.onewhohears.dscombat.data.sound.PassengerSoundPack;
+import com.onewhohears.dscombat.data.sound.VehiclePassengerSoundPacks;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModFluids;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
@@ -106,6 +108,7 @@ public final class ClientModEvents {
 		HardCodedModelAnims.reload();
 		event.registerReloadListener(VehicleClientPresets.get());
 		event.registerReloadListener(PartAssets.get());
+		event.registerReloadListener(VehiclePassengerSoundPacks.get());
 	}
 	
 	@SubscribeEvent
@@ -179,6 +182,11 @@ public final class ClientModEvents {
 		EntityScreenTypes.addScreenType(EntityScreenIds.AOA_SCREEN, AOAScreenInstance::new, "840084");
 		EntityScreenTypes.addScreenType(EntityScreenIds.ALTIMETER_SCREEN, AltimeterScreenInstance::new, "848400");
 		EntityScreenTypes.addScreenType(EntityScreenIds.AIR_SPEED_SCREEN, SpeedScreenInstance::new, "FFD800");
+	}
+
+	@SubscribeEvent
+	public static void registerPassengerSoundTriggers(FMLClientSetupEvent event) {
+		PassengerSoundPack.registerBuiltInPassengerSoundTriggers();
 	}
 	
 }

@@ -419,6 +419,10 @@ public class RadarSystem {
 	public boolean isTrackedByRadar() {
 		return rwrRadar;
 	}
+
+	public boolean clientConsumePingWarningSound() {
+		return false;
+	}
 	
 	public void serverTick() {
 		tickUpdateTargets();

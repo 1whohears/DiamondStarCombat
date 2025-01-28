@@ -2432,8 +2432,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     public void stopIRTone() {
     	entityData.set(PLAY_IR_TONE, false);
     }
-    
-    public boolean shouldPlayIRTone() {
+
+	public boolean shouldPlayLowIRTone() {
+		return weaponSystem.getSelected().getStats().isIRMissile();
+	}
+
+    public boolean shouldPlayHighIRTone() {
     	return entityData.get(PLAY_IR_TONE);
     }
     

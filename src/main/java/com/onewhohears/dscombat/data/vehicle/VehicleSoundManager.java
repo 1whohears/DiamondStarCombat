@@ -31,14 +31,14 @@ public class VehicleSoundManager {
 		String loopSoundType = sounds.getString("loopSoundType");
 		loopManager = VehicleLoopingSounds.getByType(loopSoundType, parent);
 		loopManager.loadPreset(sounds);
-		if (sounds.contains("passengerSoundPack")) 
+		if (sounds.contains("passengerSoundPack"))
 			passengerSoundPack = PassengerSoundPack.getById(sounds.getString("passengerSoundPack"));
 	}
 	
 	public void read(CompoundTag nbt) {
 		if (!nbt.contains("sounds")) return;
 		CompoundTag sounds = nbt.getCompound("sounds");
-		if (sounds.contains("passengerSoundPack")) 
+		if (sounds.contains("passengerSoundPack"))
 			passengerSoundPack = PassengerSoundPack.getById(sounds.getString("passengerSoundPack"));
 	}
 	
@@ -133,7 +133,8 @@ public class VehicleSoundManager {
 
 		return toReturn;
 	}
-	
+
+	@Deprecated
 	public enum PassengerSoundPack {
 		SAME_AS_VEHICLE("same_as_vehicle", 
 				null, null, null, null,

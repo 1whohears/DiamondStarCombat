@@ -76,6 +76,7 @@
 	"ui.dscombat.root_armor": "Root Armor",
 	"ui.dscombat.hitbox_health_armor": "Hitbox Health and Armor",
 	"ui.dscombat.cycle_radar_target": "Cycle Radar Target",
+	"ui.dscombat.passenger_sounds": "Rider Sounds",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",
@@ -87,6 +88,7 @@
 	"screen.dscombat.vehicle_weapon_screen": "Weapon System",
 	"screen.dscombat.vehicle_radar_screen": "Radar System",
 	"screen.dscombat.vehicle_keybinds_screen": "Keybinds",
+	"screen.dscombat.vehicle_other_screen": "Other Settings",
 	
 	"error.dscombat.no_menu_in_air": "Can't open vehicle menu while flying!",
 	"error.dscombat.no_menu_moving": "Can't open vehicle menu while moving!",
@@ -134,6 +136,9 @@
 	"success.dscombat.gave": "Gave",
 	"success.dscombat.ticket_book_link": "Ticket Book Linked with %1$s!",
 	"success.dscombat.ticket_book_assign": "Ticket Assigned!",
+
+	"passenger_sound_pack.eng_non_binary_goober": "English Default",
+	"passenger_sound_pack.eng_generic_male": "English Generic Male",
 	
 	"targetmode.dscombat.look": "LOOK",
 	"targetmode.dscombat.coordinates": "COORDS",
@@ -789,9 +794,5 @@
 	"gamerule.canVehicleItemWhileMoving": "DSC Can Vehicle become Item while Moving",
 	
 	"team.minigames.attackers": "ATTACKERS",
-	"team.minigames.defenders": "DEFENDERS",
-
-	"item.dscombat.biden": "Biden",
-	"item.dscombat.obama": "Obama",
-	"item.dscombat.trump": "Trump"
+	"team.minigames.defenders": "DEFENDERS"
 }

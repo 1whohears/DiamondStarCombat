@@ -80,8 +80,8 @@ public class VehicleMainScreen extends VehicleScreen {
                 ROWS, COLUMNS, index++, 2);
         // Open Keybinds screen (include option to display reminder on top left)
         positionWidgetGrid(new Button(0, 0, 20, 20,
-                        UtilMCText.translatable("screen.dscombat.vehicle_keybinds_screen"),
-                        onPress -> getMinecraft().setScreen(new VehicleKeybindScreen())),
+                        UtilMCText.translatable("screen.dscombat.vehicle_other_screen"),
+                        onPress -> getMinecraft().setScreen(new VehicleOtherScreen())),
                 ROWS, COLUMNS, index++, 2);
         // Landing Gear Toggle
         positionWidgetGrid(CycleButton.onOffBuilder(getVehicle().isLandingGear())

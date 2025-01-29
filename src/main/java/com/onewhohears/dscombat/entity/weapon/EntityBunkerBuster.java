@@ -45,7 +45,7 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 			BlockState state = getLevel().getBlockState(pos);
 			int hit_block_strength = getBlockStrength(pos, state);
 			if (getBlockStrength() >= hit_block_strength &&
-					UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), owner)) {
+					UtilVehicleEntity.weaponHasPermissionToBreak(pos, state, getLevel(), owner)) {
 				level.destroyBlock(pos, true, this);
 				reduceBlockStrength(hit_block_strength);
 			} else {

@@ -224,7 +224,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 		if (canBreakFragileBlocks()) {
 			BlockState state = getLevel().getBlockState(result.getBlockPos());
 			if (state.is(ModTags.Blocks.FRAGILE) && getLevel().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
-					&& UtilVehicleEntity.hasPermissionToBreakBlock(result.getBlockPos(), state, getLevel(), getOwner())) {
+					&& UtilVehicleEntity.weaponHasPermissionToBreak(result.getBlockPos(), state, getLevel(), getOwner())) {
 				getLevel().destroyBlock(result.getBlockPos(), true, this);
 				return;
 			}

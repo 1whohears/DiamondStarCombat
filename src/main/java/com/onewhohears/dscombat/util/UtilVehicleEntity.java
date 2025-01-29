@@ -5,7 +5,9 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -41,13 +43,31 @@ public class UtilVehicleEntity {
         return SeaLevels.getAirPressure(entity.getLevel().dimension(), entity.getY());
     }
 
-    public static boolean hasPermissionToBreakBlock(BlockPos pos, BlockState state, Level level, @Nullable Entity entity) {
+    public static boolean hasPermissionToBreakBlock(BlockPos pos, BlockState state, Level level,
+                                                    @Nullable Entity entity, DSCFakePlayer type) {
         if (entity instanceof Player player) {
             BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, pos, state, player);
             MinecraftForge.EVENT_BUS.post(event);
             return !event.isCanceled();
+        } else if (entity instanceof Enemy) {
+            return level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+        } else if (!level.isClientSide()) {
+            BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, pos, state,
+                    type.getPlayer((ServerLevel) level));
+            MinecraftForge.EVENT_BUS.post(event);
+            return !event.isCanceled();
         }
-        return level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+        return false;
+    }
+
+    public static boolean vehicleHasPermissionToTrample(BlockPos pos, BlockState state, Level level,
+                                                        @Nullable Entity entity) {
+        return hasPermissionToBreakBlock(pos, state, level, entity, DSCFakePlayer.VEHICLE_TRAMPLE);
+    }
+
+    public static boolean weaponHasPermissionToBreak(BlockPos pos, BlockState state, Level level,
+                                                        @Nullable Entity entity) {
+        return hasPermissionToBreakBlock(pos, state, level, entity, DSCFakePlayer.WEAPON_BREAK);
     }
 
 }

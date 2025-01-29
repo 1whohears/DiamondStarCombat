@@ -466,7 +466,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 					BlockPos pos = new BlockPos(x, y, z);
 					BlockState state = getLevel().getBlockState(pos);
 					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;
-					if (UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), controller))
+					if (UtilVehicleEntity.vehicleHasPermissionToTrample(pos, state, getLevel(), controller))
 						getLevel().destroyBlock(pos, true, this);
 				}
 			}

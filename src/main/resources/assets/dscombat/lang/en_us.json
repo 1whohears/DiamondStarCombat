@@ -137,9 +137,6 @@
 	"success.dscombat.gave": "Gave",
 	"success.dscombat.ticket_book_link": "Ticket Book Linked with %1$s!",
 	"success.dscombat.ticket_book_assign": "Ticket Assigned!",
-
-	"passenger_sound_pack.eng_non_binary_goober": "English Default",
-	"passenger_sound_pack.eng_generic_male": "English Generic Male",
 	
 	"targetmode.dscombat.look": "LOOK",
 	"targetmode.dscombat.coordinates": "COORDS",
@@ -660,7 +657,11 @@
 	"key.dscombat.eject_key": "Eject",
 	"key.dscombat.lean_left_key": "Lean Left Key",
 	"key.dscombat.lean_right_key": "Lean Right Key",
-	
+
+	"passenger_sound_pack.eng_non_binary_goober": "English Default",
+	"passenger_sound_pack.eng_generic_male": "English Generic Male",
+	"passenger_sound_pack.valorant_vc": "Valorant VC",
+
 	"sounds.dscombat.missile_warning": "Missile Warning",
 	"sounds.dscombat.getting_locked": "Getting Locked",
 	"sounds.dscombat.rocket_launch_1": "Missile Launch",

@@ -49,10 +49,9 @@ public class PassengerSoundPack extends JsonPresetStats {
         registerPassengerSoundTrigger("always", (vehicle, sound) -> true);
         registerPassengerSoundTrigger("never", (vehicle, sound) -> false);
         registerPassengerSoundTrigger("rwr_missile_alert", (vehicle, sound) ->
-                vehicle.radarSystem.isTrackedByMissile() && testTime(sound, vehicle.tickCount));
+                testTime(sound, vehicle.getMissileTicks()));
         registerPassengerSoundTrigger("rwr_tracked_alert", (vehicle, sound) ->
-                !vehicle.radarSystem.isTrackedByMissile() && vehicle.radarSystem.isTrackedByRadar()
-                        && testTime(sound, vehicle.tickCount));
+                !vehicle.radarSystem.isTrackedByMissile() && testTime(sound, vehicle.getTrackedTicks()));
         registerPassengerSoundTrigger("rwr_pinged_warning", (vehicle, sound) ->
                 !vehicle.radarSystem.isTrackedByMissile() && !vehicle.radarSystem.isTrackedByRadar()
                         && vehicle.radarSystem.clientConsumePingWarningSound());
@@ -60,9 +59,9 @@ public class PassengerSoundPack extends JsonPresetStats {
                 testTime(sound, vehicle.radarSystem.getJammedTicks()));
         registerPassengerSoundTrigger("ir_tone_low", (vehicle, sound) ->
                 vehicle.shouldPlayLowIRTone() && !vehicle.shouldPlayHighIRTone()
-                        && testTime(sound, vehicle.tickCount));
+                        && testTime(sound, (int) (System.currentTimeMillis() / 50)));
         registerPassengerSoundTrigger("ir_tone_high", (vehicle, sound) ->
-                vehicle.shouldPlayHighIRTone() && testTime(sound, vehicle.tickCount));
+                vehicle.shouldPlayHighIRTone() && testTime(sound, (int) (System.currentTimeMillis() / 50)));
         registerPassengerSoundTrigger("stall_alert", (vehicle, sound) ->
                 vehicle.getStats().isPlane() && vehicle.isStalling()
                         && testTime(sound, vehicle.getStallTicks()));
@@ -85,6 +84,9 @@ public class PassengerSoundPack extends JsonPresetStats {
         registerPassengerSoundTrigger("radar_found", (vehicle, sound) -> false);
         registerPassengerSoundTrigger("flare", (vehicle, sound) -> false);
         registerPassengerSoundTrigger("chaff", (vehicle, sound) -> false);
+        // caution?
+        // warning?
+        // funny crashed
     }
 
     public static final JsonPresetType STANDARD = new JsonPresetType(
@@ -139,9 +141,10 @@ public class PassengerSoundPack extends JsonPresetStats {
         private final float volume, pitch;
         private final int tick_length, repeat_rate;
         private final int group_burst_size, group_burst_repeat_rate;
-        private final boolean skip_queue;
+        private final boolean skip_queue, allow_overlap;
         private final String triggerId;
         private final BiPredicate<EntityVehicle, PassengerSound> shouldPlaySound;
+        private long lastPlay = 0;
         public PassengerSound(JsonObject json) {
             String soundId = UtilParse.getStringSafe(json, "sound", "");
             if (soundId.isEmpty()) sound = null;
@@ -153,6 +156,7 @@ public class PassengerSoundPack extends JsonPresetStats {
             group_burst_size = UtilParse.getIntSafe(json, "group_burst_size", -1);
             group_burst_repeat_rate = UtilParse.getIntSafe(json, "group_burst_repeat_rate", -1);
             skip_queue = UtilParse.getBooleanSafe(json, "skip_queue", false);
+            allow_overlap = UtilParse.getBooleanSafe(json, "allow_overlap", false);
             triggerId = UtilParse.getStringSafe(json, "trigger", "never");
             shouldPlaySound = soundTriggers.getOrDefault(triggerId, (vehicle, sound) -> false);
         }
@@ -164,8 +168,13 @@ public class PassengerSoundPack extends JsonPresetStats {
         }
         public void playSound() {
             if (getSound() == null) return;
+            if (!allow_overlap && wouldOverlap()) return;
             if (skipQueue()) UtilClientSafeSounds.playCockpitSound(getSound(), getPitch(), getVolume());
             else UtilClientSafeSounds.queueCockpitSound(getSound(), getPitch(), getVolume(), getTickLength());
+            lastPlay = System.currentTimeMillis();
+        }
+        public boolean wouldOverlap() {
+            return System.currentTimeMillis() - lastPlay <= tick_length * 50L - 50L;
         }
         @Nullable
         public SoundEvent getSound() {
@@ -194,6 +203,9 @@ public class PassengerSoundPack extends JsonPresetStats {
         }
         public String getTriggerId() {
             return triggerId;
+        }
+        public boolean allowOverlap() {
+            return allow_overlap;
         }
     }
 

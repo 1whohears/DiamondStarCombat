@@ -168,6 +168,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
 	private int groundTicks, hitboxRefreshAttempts, numFlares, hydraulicsFailureTicks;
+	private int missileTicks, trackedTicks;
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
 	
@@ -3035,6 +3036,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	else bingoTicks = 0;
 		if (isHydraulicsFailure()) ++hydraulicsFailureTicks;
 		else hydraulicsFailureTicks = 0;
+		if (isTrackedByMissile()) ++missileTicks;
+		else missileTicks = 0;
+		if (isTrackedByRadar()) ++trackedTicks;
+		else trackedTicks = 0;
     }
     
     @Override
@@ -3241,5 +3246,21 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public int getHydraulicsFailureTicks() {
 		return hydraulicsFailureTicks;
+	}
+
+	public boolean isTrackedByMissile() {
+		return radarSystem.isTrackedByMissile();
+	}
+
+	public int getMissileTicks() {
+		return missileTicks;
+	}
+
+	public boolean isTrackedByRadar() {
+		return radarSystem.isTrackedByRadar();
+	}
+
+	public int getTrackedTicks() {
+		return trackedTicks;
 	}
 }

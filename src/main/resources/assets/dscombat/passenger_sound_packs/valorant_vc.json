@@ -1,0 +1,93 @@
+{
+  "presetId": "valorant_vc",
+  "presetType": "standard",
+  "sounds": [
+    {
+      "trigger": "rwr_missile_alert",
+      "sound": "dscombat:missile_alert_valvc",
+      "repeat_rate": 50,
+      "skip_queue": true
+    },
+    {
+      "trigger": "rwr_tracked_alert",
+      "sound": "dscombat:tracked_alert_valvc",
+      "repeat_rate": 74,
+      "skip_queue": true
+    },
+    {
+      "trigger": "rwr_pinged_warning",
+      "sound": "dscombat:tracked_alert_valvc",
+      "repeat_rate": 8,
+      "skip_queue": true
+    },
+    {
+      "trigger": "ir_tone_low",
+      "sound": "dscombat:ir_tone_low_valvc",
+      "repeat_rate": 13,
+      "skip_queue": true
+    },
+    {
+      "trigger": "ir_tone_high",
+      "sound": "dscombat:ir_tone_high_valvc",
+      "repeat_rate": 12,
+      "skip_queue": true
+    },
+    {
+      "trigger": "stall_alert",
+      "sound": "dscombat:stall_alert_valvc",
+      "repeat_rate": 50,
+      "skip_queue": true
+    },
+    {
+      "trigger": "stall_warning",
+      "sound": "dscombat:stall_warning_valvc",
+      "repeat_rate": 51,
+      "skip_queue": true
+    },
+    {
+      "trigger": "pull_up",
+      "sound": "dscombat:pull_up_valvc",
+      "repeat_rate": 64,
+      "skip_queue": true
+    },
+    {
+      "trigger": "altitude",
+      "sound": "dscombat:altitude_valvc",
+      "repeat_rate": 54,
+      "group_burst_size": 1,
+      "group_burst_repeat_rate": 220
+    },
+    {
+      "trigger": "engine_fire",
+      "sound": "dscombat:engine_fire_valvc",
+      "tick_length": 61,
+      "repeat_rate": 160
+    },
+    {
+      "trigger": "fuel_leak",
+      "sound": "dscombat:fuel_leak_valvc",
+      "repeat_rate": 50,
+      "group_burst_size": 1,
+      "group_burst_repeat_rate": 200
+    },
+    {
+      "trigger": "bingo",
+      "sound": "dscombat:bingo_valvc",
+      "repeat_rate": 50,
+      "group_burst_size": 1,
+      "group_burst_repeat_rate": 240
+    },
+    {
+      "trigger": "radar_lock",
+      "sound": "dscombat:lock_valvc",
+      "skip_queue": true,
+      "repeat_rate": 26
+    },
+    {
+      "trigger": "flare",
+      "sound": "dscombat:flare_valvc",
+      "tick_length": 54,
+      "skip_queue": true
+    }
+  ]
+}

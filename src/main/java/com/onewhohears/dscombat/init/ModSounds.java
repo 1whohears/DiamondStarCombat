@@ -69,6 +69,20 @@ public class ModSounds {
 	public static final SoundEvent FLARE_NBG = registerSoundEvent("flare_nbg", "cockpit/warnings/non_binary_goober/flare", "sounds.dscombat.flare");
 	public static final SoundEvent ALTITUDE_NBG = registerSoundEvent("altitude_nbg", "cockpit/warnings/non_binary_goober/altitude", "sounds.dscombat.altitude");
 
+	public static final SoundEvent MISSILE_ALERT_VALVC = registerSoundEvent("missile_alert_valvc", "sounds.dscombat.missile_warning", 1, "cockpit/warnings/valorant_vc/missile_alert", "cockpit/warnings/valorant_vc/missile_alert", "cockpit/warnings/valorant_vc/missile_alert", "cockpit/warnings/valorant_vc/scream");
+	public static final SoundEvent TRACKED_ALERT_VALVC = registerSoundEvent("tracked_alert_valvc", "sounds.dscombat.getting_locked", 1, "cockpit/warnings/valorant_vc/tracked_alert");
+	public static final SoundEvent IR_TONE_LOW_VALVC = registerSoundEvent("ir_tone_low_valvc", "sounds.dscombat.fox2_tone_1", 1, "cockpit/warnings/valorant_vc/ir_tone_low");
+	public static final SoundEvent IR_TONE_HIGH_VALVC = registerSoundEvent("ir_tone_high_valvc", "sounds.dscombat.fox2_tone_1", 1, "cockpit/warnings/valorant_vc/ir_tone_high");
+	public static final SoundEvent STALL_ALERT_VALVC = registerSoundEvent("stall_alert_valvc", "cockpit/warnings/valorant_vc/stall_alert", "sounds.dscombat.stall_alert");
+	public static final SoundEvent STALL_WARNING_VALVC = registerSoundEvent("stall_warning_valvc", "cockpit/warnings/valorant_vc/stall_warn", "sounds.dscombat.stall_warn");
+	public static final SoundEvent ENGINE_FIRE_VALVC = registerSoundEvent("engine_fire_valvc", "cockpit/warnings/valorant_vc/engine_fire", "sounds.dscombat.engine_fire");
+	public static final SoundEvent FUEL_LEAK_VALVC = registerSoundEvent("fuel_leak_valvc", "cockpit/warnings/valorant_vc/fuel_leak", "sounds.dscombat.fuel_leak");
+	public static final SoundEvent BINGO_VALVC = registerSoundEvent("bingo_valvc", "cockpit/warnings/valorant_vc/bingo", "sounds.dscombat.bingo");
+	public static final SoundEvent PULL_UP_VALVC = registerSoundEvent("pull_up_valvc", "sounds.dscombat.pull_up", 1, "cockpit/warnings/valorant_vc/pull_up", "cockpit/warnings/valorant_vc/pull_up", "cockpit/warnings/valorant_vc/pull_up", "cockpit/warnings/valorant_vc/your_gunna_crash");
+	public static final SoundEvent LOCK_VALVC = registerSoundEvent("lock_valvc", "cockpit/warnings/valorant_vc/lock", "sounds.dscombat.lock");
+	public static final SoundEvent FLARE_VALVC = registerSoundEvent("flare_valvc", "cockpit/warnings/valorant_vc/flare", "sounds.dscombat.flare");
+	public static final SoundEvent ALTITUDE_VALVC = registerSoundEvent("altitude_valvc", "cockpit/warnings/valorant_vc/altitude", "sounds.dscombat.altitude");
+
 	public static final SoundEvent EJECT = registerSoundEvent("eject", "cockpit/eject/eject", "sounds.dscombat.eject");
 	public static final SoundEvent EJECT_WIND = registerSoundEvent("eject_wind", "cockpit/eject/eject_wind", "sounds.dscombat.eject_wind");
 

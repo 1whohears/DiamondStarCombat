@@ -14,6 +14,7 @@ import com.onewhohears.minigames.minigame.data.DeathMatchData;
 import com.onewhohears.minigames.minigame.data.MiniGameData;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.scores.PlayerTeam;
 
@@ -55,6 +56,25 @@ public class VillageDefenseData extends DeathMatchData {
 		super(instanceId, gameTypeId);
 		this.addKits("scout", "soldier", "demoman", "heavy", "sniper");
 		this.moneyPerRound = 24;
+	}
+
+	@Override
+	public CompoundTag save() {
+		CompoundTag nbt = super.save();
+		nbt.putInt("buyTime", buyTime);
+		nbt.putInt("attackTime", attackTime);
+		nbt.putInt("roundsToWin", roundsToWin);
+		nbt.putBoolean("buyInAttackTime", buyInAttackTime);
+		return nbt;
+	}
+
+	@Override
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
+		buyTime = nbt.getInt("buyTime");
+		attackTime = nbt.getInt("attackTime");
+		roundsToWin = nbt.getInt("roundsToWin");
+		buyInAttackTime = nbt.getBoolean("buyInAttackTime");
 	}
 	
 	public void serverTick(MinecraftServer server) {
@@ -118,13 +138,12 @@ public class VillageDefenseData extends DeathMatchData {
 	public boolean canBuyInAttackTime() {
 		return buyInAttackTime;
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Override
-	public <D extends MiniGameData> TeamAgent<D> createTeamAgent(String teamName) {
-		if (teamName.equals("defend")) return (TeamAgent<D>) new DefendTeamAgent(teamName, this);
-		else if (teamName.equals("attack")) return (TeamAgent<D>) new AttackTeamAgent(teamName, this);
-		return new TeamAgent<D>(teamName, (D)this);
+	public TeamAgent createTeamAgent(String teamName) {
+		if (teamName.equals("defend")) return new DefendTeamAgent(teamName, this);
+		else if (teamName.equals("attack")) return new AttackTeamAgent(teamName, this);
+		return new TeamAgent(teamName, this);
 	}
 
 }

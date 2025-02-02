@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.integration.minigame.condition;
+package com.onewhohears.dscombat.integration.minigame.condition.villagedefense;
 
 import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.condition.PhaseExitCondition;
@@ -14,7 +14,7 @@ public class TeamDeathExitCondition extends PhaseExitCondition<VillageDefenseDat
 
 	@Override
 	public boolean shouldExit(MinecraftServer server, GamePhase<VillageDefenseData> currentPhase) {
-		return currentPhase.getGameData().getDefenders().getLivingPlayerAgents().size() == 0;
+		return currentPhase.getGameData().getDefenders().getLivingPlayerAgents().isEmpty();
 	}
 	
 	@Override

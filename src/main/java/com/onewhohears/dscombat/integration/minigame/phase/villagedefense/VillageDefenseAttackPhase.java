@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.integration.minigame.phase.villagedefense;
 
-import com.onewhohears.dscombat.integration.minigame.condition.FlagDeathExitCondition;
-import com.onewhohears.dscombat.integration.minigame.condition.TeamDeathExitCondition;
+import com.onewhohears.dscombat.integration.minigame.condition.villagedefense.FlagDeathExitCondition;
+import com.onewhohears.dscombat.integration.minigame.condition.villagedefense.TeamDeathExitCondition;
 import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.condition.TimeoutPhaseExitCondition;
 import com.onewhohears.minigames.minigame.phase.deathmatch.DeathMatchPlayPhase;

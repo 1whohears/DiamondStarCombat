@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.integration.minigame.phase.villagedefense;
 
-import com.onewhohears.dscombat.integration.minigame.condition.ScoreWinExitCondition;
+import com.onewhohears.dscombat.integration.minigame.condition.villagedefense.ScoreWinExitCondition;
 import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.agent.PlayerAgent;
 import com.onewhohears.minigames.minigame.condition.TimeoutPhaseExitCondition;
@@ -38,7 +38,7 @@ public class VillageDefenseBuyPhase extends DeathMatchPlayPhase<VillageDefenseDa
 		// TODO 3.8.3.1 tell teams current game info (buy phase start/score/time left)
 	}
 	
-	public void setupPlayer(MinecraftServer server, PlayerAgent<?> agent) {
+	public void setupPlayer(MinecraftServer server, PlayerAgent agent) {
 		agent.setLives(getGameData().getInitialLives());
 		agent.refillPlayerKit(server);
 	}

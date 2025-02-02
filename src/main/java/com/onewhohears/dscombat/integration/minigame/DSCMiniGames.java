@@ -16,16 +16,15 @@ public class DSCMiniGames {
 		 * easy/fair dog fight resets (both players tp to runway when an vehicle is destroyed)
 		 * bomb the flag/s
 		 */
-		MiniGameManager.registerGame("simple_dog_fight", (instanceId, gameTypeId) -> 
-			DogFightData.createSimpleFFADogFight(instanceId, gameTypeId));
-		MiniGameManager.registerGame("village_defense_3", (instanceId, gameTypeId) -> 
+		MiniGameManager.registerGame("simple_dog_fight", DogFightData::createSimpleDogFight);
+		/*MiniGameManager.registerGame("village_defense_3", (instanceId, gameTypeId) ->
 			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 3));
 		MiniGameManager.registerGame("village_defense_5", (instanceId, gameTypeId) -> 
 			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 5));
 		MiniGameManager.registerGame("village_defense_10", (instanceId, gameTypeId) -> 
 			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 10));
 		MiniGameManager.registerGame("village_defense_extended", (instanceId, gameTypeId) -> 
-			VillageDefenseData.createExtendedVillageDefense(instanceId, gameTypeId));
+			VillageDefenseData.createExtendedVillageDefense(instanceId, gameTypeId));*/
 	}
 	
 }

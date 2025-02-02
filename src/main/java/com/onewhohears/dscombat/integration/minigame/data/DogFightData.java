@@ -1,27 +1,30 @@
 package com.onewhohears.dscombat.integration.minigame.data;
 
-import com.onewhohears.minigames.minigame.data.DeathMatchData;
-import com.onewhohears.minigames.minigame.phase.deathmatch.DeathMatchEndPhase;
-import com.onewhohears.minigames.minigame.phase.deathmatch.DeathMatchPlayPhase;
-import com.onewhohears.minigames.minigame.phase.deathmatch.DeathMatchSetupPhase;
+import com.onewhohears.dscombat.integration.minigame.phase.dog_fight.DogFightAttackPhase;
+import com.onewhohears.minigames.minigame.data.BuyAttackData;
+import com.onewhohears.minigames.minigame.phase.buyattackrounds.*;
 
-public class DogFightData extends DeathMatchData {
+public class DogFightData extends BuyAttackData {
 	
-	public static DogFightData createSimpleFFADogFight(String instanceId, String gameTypeId) {
+	public static DogFightData createSimpleDogFight(String instanceId, String gameTypeId) {
 		DogFightData game = new DogFightData(instanceId, gameTypeId);
-		game.setPhases(new DeathMatchSetupPhase<>(game), 
-				new DeathMatchPlayPhase<>(game), 
-				new DeathMatchEndPhase<>(game));
+		game.setPhases(new BuyAttackSetupPhase<>(game),
+				new BuyAttackBuyPhase<>(game),
+				new DogFightAttackPhase(game),
+				new BuyAttackAttackEndPhase<>(game),
+				new BuyAttackEndPhase<>(game));
 		game.canAddIndividualPlayers = true;
-		game.canAddTeams = false;
+		game.canAddTeams = true;
 		game.requiresSetRespawnPos = true;
-		game.worldBorderDuringGame = false;
+		game.worldBorderDuringGame = true;
 		game.initialLives = 1;
+		game.roundsToWin = 5;
+		game.buyTime = 200;
+		game.addKits("dogfight_alexis", "dogfight_felix", "dogfight_javi", "dogfight_eden");
 		return game;
 	}
 	
 	protected DogFightData(String instanceId, String gameTypeId) {
 		super(instanceId, gameTypeId);
 	}
-
 }

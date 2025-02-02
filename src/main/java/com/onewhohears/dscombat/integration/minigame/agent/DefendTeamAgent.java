@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.integration.minigame.agent;
 import com.onewhohears.dscombat.integration.minigame.data.VillageDefenseData;
 import com.onewhohears.minigames.minigame.agent.TeamAgent;
 
-public class DefendTeamAgent extends TeamAgent<VillageDefenseData> {
+public class DefendTeamAgent extends TeamAgent {
 
 	public DefendTeamAgent(String teamName, VillageDefenseData gameData) {
 		super(teamName, gameData);

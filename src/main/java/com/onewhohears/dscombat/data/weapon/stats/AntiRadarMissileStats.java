@@ -5,7 +5,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.minigames.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.WeaponType;

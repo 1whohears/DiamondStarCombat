@@ -47,7 +47,7 @@ showAsResourcePack=false
 [[dependencies."${mod_id}"]]
     modId="minigames"
     mandatory=false
-    versionRange="[0.1.8,)"
+    versionRange="[0.1.9,)"
     ordering="NONE"
     side="BOTH"
 

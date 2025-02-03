@@ -9,7 +9,10 @@
         "num": 8
       },
       "product": {
-        "item": "dscombat:bronco_plane",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "bronco_plane"
+        },
         "num": 1
       }
     },
@@ -19,7 +22,10 @@
         "num": 13
       },
       "product": {
-        "item": "dscombat:noah_chopper",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "noah_chopper"
+        },
         "num": 1
       }
     },
@@ -29,7 +35,10 @@
         "num": 10
       },
       "product": {
-        "item": "dscombat:felix_plane",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "felix_plane"
+        },
         "num": 1
       }
     },
@@ -39,7 +48,7 @@
         "num": 15
       },
       "product": {
-        "item": "dscombat:felix_plane",
+        "item": "dscombat:vehicle",
         "nbt": {
           "preset": "felix_plane_support"
         },
@@ -52,7 +61,10 @@
         "num": 20
       },
       "product": {
-        "item": "dscombat:javi_plane",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "javi_plane"
+        },
         "num": 1
       }
     },
@@ -62,7 +74,7 @@
         "num": 31
       },
       "product": {
-        "item": "dscombat:javi_plane",
+        "item": "dscombat:vehicle",
         "nbt": {
           "preset": "javi_plane_bomber"
         },
@@ -75,7 +87,10 @@
         "num": 16
       },
       "product": {
-        "item": "dscombat:alexis_plane",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "alexis_plane"
+        },
         "num": 1
       }
     },
@@ -85,7 +100,7 @@
         "num": 34
       },
       "product": {
-        "item": "dscombat:alexis_plane",
+        "item": "dscombat:vehicle",
         "nbt": {
           "preset": "alexis_plane_support"
         },

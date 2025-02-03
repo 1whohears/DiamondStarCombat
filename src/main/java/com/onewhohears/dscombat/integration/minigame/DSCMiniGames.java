@@ -17,14 +17,7 @@ public class DSCMiniGames {
 		 * bomb the flag/s
 		 */
 		MiniGameManager.registerGame("simple_dog_fight", DogFightData::createSimpleDogFight);
-		/*MiniGameManager.registerGame("village_defense_3", (instanceId, gameTypeId) ->
-			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 3));
-		MiniGameManager.registerGame("village_defense_5", (instanceId, gameTypeId) -> 
-			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 5));
-		MiniGameManager.registerGame("village_defense_10", (instanceId, gameTypeId) -> 
-			VillageDefenseData.createVillageDefense(instanceId, gameTypeId, 10));
-		MiniGameManager.registerGame("village_defense_extended", (instanceId, gameTypeId) -> 
-			VillageDefenseData.createExtendedVillageDefense(instanceId, gameTypeId));*/
+		MiniGameManager.registerGame("village_defense_vehicle_only", VillageDefenseData::createVillageDefenseVehicle);
 	}
 	
 }

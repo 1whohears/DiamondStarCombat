@@ -2219,6 +2219,18 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	if (level.isClientSide) return;
     	becomeItem(position());
     }
+
+	/**
+	 * SERVER SIDE ONLY
+	 */
+	public void becomeItem(@NotNull ServerPlayer player) {
+		ItemStack item = getItem();
+		if (player.getInventory().getFreeSlot() != -1 && player.addItem(item)) {
+			discard();
+			return;
+		}
+		becomeItem(player.position());
+	}
     
     @Override
     public ItemStack getPickResult() {

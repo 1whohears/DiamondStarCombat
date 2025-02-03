@@ -9,7 +9,10 @@
         "num": 8
       },
       "product": {
-        "item": "dscombat:small_roller",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "small_roller"
+        },
         "num": 1
       }
     },
@@ -19,7 +22,10 @@
         "num": 11
       },
       "product": {
-        "item": "dscombat:mrbudger_tank",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "mrbudger_tank"
+        },
         "num": 1
       }
     },
@@ -29,7 +35,10 @@
         "num": 15
       },
       "product": {
-        "item": "dscombat:axcel_truck",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "axcel_truck"
+        },
         "num": 1
       }
     },
@@ -39,7 +48,10 @@
         "num": 7
       },
       "product": {
-        "item": "dscombat:jason_plane",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "jason_plane"
+        },
         "num": 1
       }
     },
@@ -49,7 +61,10 @@
         "num": 16
       },
       "product": {
-        "item": "dscombat:felix_plane",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "felix_plane"
+        },
         "num": 1
       }
     },
@@ -59,7 +74,10 @@
         "num": 18
       },
       "product": {
-        "item": "dscombat:noah_chopper",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "krait_chopper"
+        },
         "num": 1
       }
     },
@@ -69,7 +87,7 @@
         "num": 29
       },
       "product": {
-        "item": "dscombat:javi_plane",
+        "item": "dscombat:vehicle",
         "nbt": {
           "preset": "javi_plane_truck"
         },
@@ -82,7 +100,10 @@
         "num": 31
       },
       "product": {
-        "item": "dscombat:alexis_plane",
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "alexis_plane"
+        },
         "num": 1
       }
     },
@@ -92,7 +113,7 @@
         "num": 45
       },
       "product": {
-        "item": "dscombat:alexis_plane",
+        "item": "dscombat:vehicle",
         "nbt": {
           "preset": "alexis_plane_sniper"
         },

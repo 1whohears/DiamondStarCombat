@@ -75,7 +75,7 @@ public class VillageDefenseVehiclePresetGen {
                 .setSlotItem("left_wing_4", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
                 .setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120c", true)
                 .setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
-                .setSlotItem("right_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "agm65l", true)
+                .setSlotItem("right_wing_3", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
                 .setSlotItem("right_wing_4", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9x", true)
                 .setSlotItem("internal_gun", "m61a1_vulcan", "20mmhe", true)
                 .setSlotItem("internal_4", ModItems.AR2K.getId())

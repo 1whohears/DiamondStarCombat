@@ -66,6 +66,13 @@
         "part": "basic_flare_dispenser"
       },
       "name": "internal_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_2"
     }
   ]
 }

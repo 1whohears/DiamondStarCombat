@@ -98,6 +98,7 @@ public class VillageDefenseVehiclePresetGen {
                 .setSlotItem("nose_1", ModItems.XM12.getId(), "15mm", true)
                 .setSlotItem("internal_4", ModItems.AR1K.getId())
                 .setSlotItem("internal_3", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
+                .setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)
                 .build());
         // eden interceptor
         VehiclePresetGenerator.INSTANCE.addPresetToGenerate(VehicleStats.Builder
@@ -108,7 +109,7 @@ public class VillageDefenseVehiclePresetGen {
                 .setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "aim120b", true)
                 .setSlotItem("internal_gun", "gsh_30_1", "20mm", true)
                 .setSlotItem("internal_4", ModItems.AR2K.getId())
-                .setSlotItem("internal_3", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
+                .setSlotItem("internal_5", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
                 .setDefaultBaseTexture(1)
                 .build());
         // BOTH

@@ -198,7 +198,7 @@
       "slot_posx": 2.4,
       "slot_posy": -0.64,
       "slot_posz": -0.05,
-      "slot_type": "pylon_light",
+      "slot_type": "pylon_med",
       "zRot": 180.0
     },
     {
@@ -216,7 +216,7 @@
       "slot_posx": -2.4,
       "slot_posy": -0.64,
       "slot_posz": -0.05,
-      "slot_type": "pylon_light",
+      "slot_type": "pylon_med",
       "zRot": 180.0
     },
     {

@@ -20,26 +20,25 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 
 	@Override
 	protected void registerPresets() {
-		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "attacker")
-				.addProduct("dscombat:vehicle", vehicleItem("bronco_plane"), "minigames:money", 8)
-				.addProduct("dscombat:vehicle", vehicleItem("noah_chopper"), "minigames:money", 13)
-				.addProduct("dscombat:vehicle", vehicleItem("felix_plane"), "minigames:money", 10)
-				.addProduct("dscombat:vehicle", vehicleItem("felix_plane_support"), "minigames:money", 15)
-				.addProduct("dscombat:vehicle", vehicleItem("javi_plane"), "minigames:money", 20)
-				.addProduct("dscombat:vehicle", vehicleItem("javi_plane_bomber"), "minigames:money", 31)
-				.addProduct("dscombat:vehicle", vehicleItem("alexis_plane"), "minigames:money", 16)
-				.addProduct("dscombat:vehicle", vehicleItem("alexis_plane_support"), "minigames:money", 34)
+		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "vehicle_attacker")
+				.addProduct("dscombat:big_gas_can", "minigames:money", 4)
+				.addProduct("dscombat:vehicle", vehicleItem("bronco_plane_shitter"), "minigames:money", 8)
+				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper_door_knocker"), "minigames:money", 12)
+				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper_brawler"), "minigames:money", 12)
+				.addProduct("dscombat:vehicle", vehicleItem("javi_plane_close_air"), "minigames:money", 18)
+				.addProduct("dscombat:vehicle", vehicleItem("javi_plane_heavy_bomber"), "minigames:money", 24)
+				.addProduct("dscombat:vehicle", vehicleItem("alexis_plane_escort"), "minigames:money", 24)
+				.addProduct("dscombat:vehicle", vehicleItem("alexis_plane_infiltrator"), "minigames:money", 32)
 				.build());
-		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "defender")
+		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "vehicle_defender")
+				.addProduct("dscombat:big_gas_can", "minigames:money", 4)
 				.addProduct("dscombat:vehicle", vehicleItem("small_roller"), "minigames:money", 8)
-				.addProduct("dscombat:vehicle", vehicleItem("mrbudger_tank"), "minigames:money", 11)
-				.addProduct("dscombat:vehicle", vehicleItem("axcel_truck"), "minigames:money", 15)
-				.addProduct("dscombat:vehicle", vehicleItem("jason_plane"), "minigames:money", 7)
-				.addProduct("dscombat:vehicle", vehicleItem("felix_plane"), "minigames:money", 16)
-				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper"), "minigames:money", 18)
-				.addProduct("dscombat:vehicle", vehicleItem("javi_plane_truck"), "minigames:money", 29)
-				.addProduct("dscombat:vehicle", vehicleItem("alexis_plane"), "minigames:money", 31)
-				.addProduct("dscombat:vehicle", vehicleItem("alexis_plane_sniper"), "minigames:money", 45)
+				.addProduct("dscombat:vehicle", vehicleItem("mrbudger_tank"), "minigames:money", 18)
+				.addProduct("dscombat:vehicle", vehicleItem("eric_truck"), "minigames:money", 32)
+				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper_door_knocker"), "minigames:money", 12)
+				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper_brawler"), "minigames:money", 12)
+				.addProduct("dscombat:vehicle", vehicleItem("felix_plane_defender"), "minigames:money", 18)
+				.addProduct("dscombat:vehicle", vehicleItem("eden_plane_interceptor"), "minigames:money", 24)
 				.build());
 	}
 

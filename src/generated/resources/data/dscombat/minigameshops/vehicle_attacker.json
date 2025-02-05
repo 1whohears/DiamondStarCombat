@@ -1,8 +1,18 @@
 {
-  "displayName": "preset.dscombat.attacker",
-  "presetId": "attacker",
+  "displayName": "preset.dscombat.vehicle_attacker",
+  "presetId": "vehicle_attacker",
   "presetType": "gameshop",
   "products": [
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 4
+      },
+      "product": {
+        "item": "dscombat:big_gas_can",
+        "num": 1
+      }
+    },
     {
       "cost": {
         "item": "minigames:money",
@@ -11,7 +21,7 @@
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "bronco_plane"
+          "preset": "bronco_plane_shitter"
         },
         "num": 1
       }
@@ -19,12 +29,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 13
+        "num": 12
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "noah_chopper"
+          "preset": "krait_chopper_door_knocker"
         },
         "num": 1
       }
@@ -32,12 +42,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 10
+        "num": 12
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "felix_plane"
+          "preset": "krait_chopper_brawler"
         },
         "num": 1
       }
@@ -45,12 +55,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 15
+        "num": 18
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "felix_plane_support"
+          "preset": "javi_plane_close_air"
         },
         "num": 1
       }
@@ -58,12 +68,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 20
+        "num": 24
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "javi_plane"
+          "preset": "javi_plane_heavy_bomber"
         },
         "num": 1
       }
@@ -71,12 +81,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 31
+        "num": 24
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "javi_plane_bomber"
+          "preset": "alexis_plane_escort"
         },
         "num": 1
       }
@@ -84,25 +94,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 16
+        "num": 32
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "alexis_plane"
-        },
-        "num": 1
-      }
-    },
-    {
-      "cost": {
-        "item": "minigames:money",
-        "num": 34
-      },
-      "product": {
-        "item": "dscombat:vehicle",
-        "nbt": {
-          "preset": "alexis_plane_support"
+          "preset": "alexis_plane_infiltrator"
         },
         "num": 1
       }

@@ -1,8 +1,18 @@
 {
-  "displayName": "preset.dscombat.defender",
-  "presetId": "defender",
+  "displayName": "preset.dscombat.vehicle_defender",
+  "presetId": "vehicle_defender",
   "presetType": "gameshop",
   "products": [
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 4
+      },
+      "product": {
+        "item": "dscombat:big_gas_can",
+        "num": 1
+      }
+    },
     {
       "cost": {
         "item": "minigames:money",
@@ -19,7 +29,7 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 11
+        "num": 18
       },
       "product": {
         "item": "dscombat:vehicle",
@@ -32,12 +42,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 15
+        "num": 32
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "axcel_truck"
+          "preset": "eric_truck"
         },
         "num": 1
       }
@@ -45,12 +55,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 7
+        "num": 12
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "jason_plane"
+          "preset": "krait_chopper_door_knocker"
         },
         "num": 1
       }
@@ -58,12 +68,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 16
+        "num": 12
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "felix_plane"
+          "preset": "krait_chopper_brawler"
         },
         "num": 1
       }
@@ -76,7 +86,7 @@
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "krait_chopper"
+          "preset": "felix_plane_defender"
         },
         "num": 1
       }
@@ -84,38 +94,12 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 29
+        "num": 24
       },
       "product": {
         "item": "dscombat:vehicle",
         "nbt": {
-          "preset": "javi_plane_truck"
-        },
-        "num": 1
-      }
-    },
-    {
-      "cost": {
-        "item": "minigames:money",
-        "num": 31
-      },
-      "product": {
-        "item": "dscombat:vehicle",
-        "nbt": {
-          "preset": "alexis_plane"
-        },
-        "num": 1
-      }
-    },
-    {
-      "cost": {
-        "item": "minigames:money",
-        "num": 45
-      },
-      "product": {
-        "item": "dscombat:vehicle",
-        "nbt": {
-          "preset": "alexis_plane_sniper"
+          "preset": "eden_plane_interceptor"
         },
         "num": 1
       }

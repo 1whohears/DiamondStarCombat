@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.integration.minigame.gen.VillageDefenseVehiclePresetGen;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -117,6 +118,8 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 		addPresetToGenerate(CarPresets.DEFAULT_ERIC_TRUCK);
 
 		addPresetToGenerate(StationaryPresets.EWR4000);
+
+		VillageDefenseVehiclePresetGen.generate();
 	}
     
     public VehiclePresetGenerator(DataGenerator output) {

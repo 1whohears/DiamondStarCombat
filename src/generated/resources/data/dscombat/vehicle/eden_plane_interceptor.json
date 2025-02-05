@@ -1,0 +1,66 @@
+{
+  "copyId": "eden_plane_unarmed",
+  "displayName": "preset.dscombat.eden_plane_interceptor",
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "eden_plane_interceptor",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120b",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9x",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120c",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120b",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "20mm",
+        "part": "gsh_30_1"
+      },
+      "name": "internal_gun"
+    },
+    {
+      "data": {
+        "part": "ar2k"
+      },
+      "name": "internal_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_3"
+    }
+  ],
+  "textures": {
+    "baseTexture": 1
+  }
+}

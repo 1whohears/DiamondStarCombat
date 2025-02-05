@@ -1,0 +1,110 @@
+{
+  "copyId": "javi_plane_unarmed",
+  "displayName": "preset.dscombat.javi_plane_heavy_bomber",
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "javi_plane_heavy_bomber",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "agm88g",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm84e",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_3"
+    },
+    {
+      "data": {
+        "part": "gimbal_camera"
+      },
+      "name": "left_wing_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm88g",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9p5",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "30mmhe",
+        "part": "gau_avenger"
+      },
+      "name": "internal_gun"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "anm64",
+        "part": "bomb_rack"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "part": "ar500"
+      },
+      "name": "internal_5"
+    },
+    {
+      "data": {
+        "part": "gpr20"
+      },
+      "name": "internal_6"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_4"
+    }
+  ],
+  "textures": {
+    "baseTexture": 1
+  }
+}

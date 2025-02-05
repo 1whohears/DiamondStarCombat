@@ -15,8 +15,8 @@
   "explosionRadius": 8.0,
   "explosive": true,
   "fireRate": 40,
-  "fov": 30.0,
-  "fuelTicks": 400,
+  "fov": 80.0,
+  "fuelTicks": 500,
   "fuseDist": 2.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -26,11 +26,11 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 4
+      "num": 5
     },
     {
       "item": "minecraft:coal_block",
-      "num": 4
+      "num": 5
     },
     {
       "item": "dscombat:intel_pentium",
@@ -38,10 +38,10 @@
     }
   ],
   "itemKey": "dscombat:missile",
-  "maxAge": 600,
+  "maxAge": 700,
   "presetId": "agm88g",
   "presetType": "anti_radar_missile",
-  "scan_range": 1500.0,
+  "scan_range": 3000.0,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 10,
   "speed": 3.0,

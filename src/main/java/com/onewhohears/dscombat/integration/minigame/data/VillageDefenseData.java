@@ -19,8 +19,8 @@ public class VillageDefenseData extends KillFlagData {
 				new KillFlagAttackPhase<>(game),
 				new BuyAttackAttackEndPhase<>(game),
 				new BuyAttackEndPhase<>(game));
-		game.addAttackerShop("attacker");
-		game.addDefenderShop("defender");
+		game.addAttackerShop("vehicle_attacker");
+		game.addDefenderShop("vehicle_defender");
 		return game;
 	}
 	

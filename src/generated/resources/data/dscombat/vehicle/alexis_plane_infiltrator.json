@@ -17,7 +17,7 @@
     {
       "data": {
         "filled": true,
-        "param": "aim120b",
+        "param": "aim120c",
         "part": "heavy_missile_rack"
       },
       "name": "left_wing_2"
@@ -31,7 +31,7 @@
     {
       "data": {
         "filled": true,
-        "param": "agm114k",
+        "param": "aim9x",
         "part": "light_missile_rack"
       },
       "name": "left_wing_4"
@@ -39,7 +39,7 @@
     {
       "data": {
         "filled": true,
-        "param": "aim120c",
+        "param": "aim120b",
         "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
@@ -55,18 +55,10 @@
     {
       "data": {
         "filled": true,
-        "param": "agm65l",
-        "part": "heavy_missile_rack"
-      },
-      "name": "right_wing_3"
-    },
-    {
-      "data": {
-        "filled": true,
-        "param": "aim9x",
+        "param": "agm114k",
         "part": "light_missile_rack"
       },
-      "name": "right_wing_4"
+      "name": "right_wing_3"
     },
     {
       "data": {

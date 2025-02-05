@@ -239,7 +239,7 @@ public final class ClientInputEvents {
 	public static Vec3 getShootPos(Player player, EntityVehicle vehicle) {
 		switch (DSCClientInputs.getTargetMode()) {
             case LOOK -> { return getLookPos(player, vehicle); }
-            case COORDS -> {  return vehicle.weaponSystem.getTargetPos(); }
+            case COORDS -> {  return Config.CLIENT.getTargetPos(); }
 			case INDICATOR -> { return Vec3.ZERO; }
 		}
 		return Vec3.ZERO;

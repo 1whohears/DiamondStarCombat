@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -33,7 +34,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
         assert data != null;
 
         double range = data.getStats().getMobTurretRange();
-        Vec3 pos = vehicle.weaponSystem.getTargetPos();
+        Vec3 pos = Config.CLIENT.getTargetPos();
         int dist = (int) pos.distanceTo(vehicle.position());
         int alt = UtilEntity.getDistFromSeaLevel(pos.y, vehicle.level);
         String text = dist + " | " + alt;

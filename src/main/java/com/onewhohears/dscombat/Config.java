@@ -3,6 +3,7 @@ package com.onewhohears.dscombat;
 import java.util.List;
 
 import com.onewhohears.onewholibs.util.UtilEntity;
+import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
@@ -22,6 +23,8 @@ public class Config {
 		public final ForgeConfigSpec.BooleanValue invertY;
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
+		// TARGET POS
+		public final ForgeConfigSpec.DoubleValue targetPosX, targetPosY, targetPosZ;
 		// VOLUME/SOUND
 		public final ForgeConfigSpec.DoubleValue rwrWarningVol, missileWarningVol, irTargetToneVol;
 		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
@@ -73,6 +76,11 @@ public class Config {
 					.comment("If enabled, your sneak key binding doesn't dismount you from DSC vehicles. " +
 							"You will have to you the diamond star combat dismount keybinding instead (H by default.)")
 					.define("customDismount", true);
+			builder.push("targetPos");
+			targetPosX = builder.defineInRange("targetPosX", 0, Double.MIN_VALUE, Double.MAX_VALUE);
+			targetPosY = builder.defineInRange("targetPosY", 0, Double.MIN_VALUE, Double.MAX_VALUE);
+			targetPosZ = builder.defineInRange("targetPosZ", 0, Double.MIN_VALUE, Double.MAX_VALUE);
+			builder.pop();
 			builder.pop();
 			builder.push("sounds");
 			rwrWarningVol = builder
@@ -123,7 +131,10 @@ public class Config {
 			builder.pop();
 			builder.pop();
 		}
-		
+
+		public Vec3 getTargetPos() {
+			return new Vec3(targetPosX.get(), targetPosY.get(), targetPosZ.get());
+		}
 	}
 	
 	public static class Common {

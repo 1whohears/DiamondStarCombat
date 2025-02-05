@@ -139,7 +139,7 @@
 	"success.dscombat.ticket_book_assign": "Ticket Assigned!",
 	
 	"targetmode.dscombat.look": "LOOK",
-	"targetmode.dscombat.coordinates": "COORDS",
+	"targetmode.dscombat.coords": "COORDS",
 	"targetmode.dscombat.indicator": "INDICATOR",
 	
 	"blendmode.dscombat.none": "NONE",

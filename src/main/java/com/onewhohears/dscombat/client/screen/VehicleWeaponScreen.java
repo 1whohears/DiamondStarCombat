@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.screen.widget.WeaponButton;
@@ -25,6 +26,8 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
 
     private static final int imageWidth = 240, imageHeight = 180;
     private static final int textureSize = 256;
+
+    EditBox xPosBox, yPosBox, zPosBox;
 
     protected VehicleWeaponScreen() {
         super("screen.dscombat.vehicle_weapon_screen",
@@ -53,21 +56,21 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
                 ROWS, COLUMNS, 5, padding, 2);
         // TARGET POSITION X
         vertical_widget_shift = 48;
-        EditBox xPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        xPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(xPosBox, 9, 3, 0, 2);
-        xPosBox.setValue((int)getVehicle().weaponSystem.getTargetPos().x()+"");
+        xPosBox.setValue((int) Config.CLIENT.getTargetPos().x()+"");
         xPosBox.setTextColor(0xFFFFFF);
         xPosBox.setResponder(onTargetPosCoordChange(0));
         // TARGET POSITION Y
-        EditBox yPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        yPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(yPosBox, 9, 3, 1, 2);
-        yPosBox.setValue((int)getVehicle().weaponSystem.getTargetPos().y()+"");
+        yPosBox.setValue((int)Config.CLIENT.getTargetPos().y()+"");
         yPosBox.setTextColor(0xFFFFFF);
         yPosBox.setResponder(onTargetPosCoordChange(1));
         // TARGET POSITION Z
-        EditBox zPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        zPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(zPosBox, 9, 3, 2, 2);
-        zPosBox.setValue((int)getVehicle().weaponSystem.getTargetPos().z()+"");
+        zPosBox.setValue((int)Config.CLIENT.getTargetPos().z()+"");
         zPosBox.setTextColor(0xFFFFFF);
         zPosBox.setResponder(onTargetPosCoordChange(2));
         // SELECT WEAPON
@@ -95,18 +98,15 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
             try {
                 double number = Double.parseDouble(coord);
                 setTargetPos(axis, number);
-            } catch(NumberFormatException e) {
-                setTargetPos(axis, 0);
+            } catch(NumberFormatException ignored) {
             }
         };
     }
 
     private void setTargetPos(int axis, double number) {
-        WeaponSystem system = getVehicle().weaponSystem;
-        Vec3 pos = system.getTargetPos();
-        if (axis == 0) system.setTargetPos(new Vec3(number, pos.y, pos.z));
-        else if (axis == 1) system.setTargetPos(new Vec3(pos.x, number, pos.z));
-        else if (axis == 2) system.setTargetPos(new Vec3(pos.x, pos.y, number));
+        if (axis == 0) Config.CLIENT.targetPosX.set(number);
+        else if (axis == 1) Config.CLIENT.targetPosY.set(number);
+        else if (axis == 2) Config.CLIENT.targetPosZ.set(number);
     }
 
     private CycleButton.OnValueChange<Boolean> onGimbalToggle() {
@@ -116,7 +116,16 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
     @Override
     public void renderBackground(@NotNull PoseStack poseStack) {
         super.renderBackground(poseStack);
-        getMinecraft().font.draw(poseStack, UtilMCText.translatable("info.dscombat.target_mode_pos"),
-                guiX + left_padding, guiY + top_padding + 38, infoColor);
+        if (DSCClientInputs.getTargetMode() == DSCClientInputs.TargetMode.COORDS) {
+            getMinecraft().font.draw(poseStack, UtilMCText.translatable("info.dscombat.target_mode_pos"),
+                    guiX + left_padding, guiY + top_padding + 38, infoColor);
+            if (xPosBox != null) xPosBox.setVisible(true);
+            if (yPosBox != null) yPosBox.setVisible(true);
+            if (zPosBox != null) zPosBox.setVisible(true);
+        } else {
+            if (xPosBox != null) xPosBox.setVisible(false);
+            if (yPosBox != null) yPosBox.setVisible(false);
+            if (zPosBox != null) zPosBox.setVisible(false);
+        }
     }
 }

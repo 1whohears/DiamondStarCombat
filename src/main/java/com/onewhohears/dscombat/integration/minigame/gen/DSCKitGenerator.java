@@ -21,19 +21,31 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 	@Override
 	protected void registerPresets() {
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "scout")
-
+				// shot gun
+				// deagle
+				// mid armor (iron)
+				// swift sneak pants
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "soldier")
-
+				// m1 rifel
+				// glock
+				// mid armor (iron)
+				// bread,
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "demoman")
-
+				// golden deagle
+				// rpg
+				// weak armor (leather)
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "heavy")
-
+				// odin a gun
+				// glock
+				// heavy armor (diamond)
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "sniper")
-
+				// awp
+				// glock
+				// weak armor (leather)
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "dogfight_alexis")
 				.addItem("dscombat:vehicle", vehicleItem("alexis_plane"))

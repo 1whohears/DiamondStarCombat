@@ -2,7 +2,7 @@
   "displayName": "preset.dscombat.scout",
   "kitItems": [
     {
-      "ignoreNbt": true,
+      "distinguishByNBT": "GunId",
       "item": "tacz:modern_kinetic_gun",
       "keep": true,
       "nbt": {
@@ -15,7 +15,7 @@
       "num": 1
     },
     {
-      "ignoreNbt": true,
+      "distinguishByNBT": "GunId",
       "item": "tacz:modern_kinetic_gun",
       "keep": true,
       "nbt": {
@@ -113,7 +113,7 @@
     },
     {
       "checkCountByNBT": "AmmoCount",
-      "ignoreNbt": true,
+      "distinguishByNBT": "AmmoId",
       "item": "tacz:ammo_box",
       "keep": true,
       "nbt": {
@@ -127,7 +127,7 @@
     },
     {
       "checkCountByNBT": "AmmoCount",
-      "ignoreNbt": true,
+      "distinguishByNBT": "AmmoId",
       "item": "tacz:ammo_box",
       "keep": true,
       "nbt": {

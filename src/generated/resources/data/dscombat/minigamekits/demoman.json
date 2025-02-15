@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.demoman",
   "kitItems": [
     {
+      "ignoreNbt": true,
       "item": "tacz:modern_kinetic_gun",
       "keep": true,
       "nbt": {
@@ -14,6 +15,7 @@
       "num": 1
     },
     {
+      "ignoreNbt": true,
       "item": "tacz:modern_kinetic_gun",
       "keep": true,
       "nbt": {
@@ -101,7 +103,6 @@
       "refill": true
     },
     {
-      "checkCountByNBT": "AmmoCount",
       "item": "tacz:ammo",
       "keep": true,
       "nbt": {
@@ -112,12 +113,14 @@
     },
     {
       "checkCountByNBT": "AmmoCount",
+      "ignoreNbt": true,
       "item": "tacz:ammo_box",
       "keep": true,
       "nbt": {
         "AmmoCount": 180,
         "AmmoId": "tacz:45acp",
-        "Level": 0
+        "Level": 0,
+        "kitOnly": "demoman"
       },
       "num": 1,
       "refill": true

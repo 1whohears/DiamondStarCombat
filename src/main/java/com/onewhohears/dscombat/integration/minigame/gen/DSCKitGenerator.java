@@ -68,11 +68,15 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 		JsonObject healthPotionNbt = new JsonObject();
 		healthPotionNbt.addProperty("Potion", "minecraft:strong_healing");
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "soldier")
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:ak47",
-						30, "AUTO", "tacz:stock_tactical_ar",
-						"tacz:muzzle_silencer_phantom_s1", "tacz:sight_coyote"))
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:p320",
-						12, "SEMI"))
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:ak47", 30, "AUTO",
+								"tacz:stock_tactical_ar",
+								"tacz:muzzle_silencer_phantom_s1",
+								"tacz:sight_coyote"),
+						true, false, true, "", "GunId")
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:p320", 12, "SEMI"),
+						true, false, true, "", "GunId")
 				.addItemKeep("minecraft:iron_axe", true)
 				.addItemKeep("minecraft:iron_pickaxe", true)
 				.addItemKeep("minecraft:iron_shovel", true)
@@ -83,14 +87,20 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 				.addItemKeep("minecraft:iron_leggings", true)
 				.addItemKeep("minecraft:iron_boots", true)
 				.addItemRefill("dscombat:parachute")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(360,1,"tacz:762x39"), "AmmoCount")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(180,0,"tacz:9mm"), "AmmoCount")
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(360,1,"tacz:762x39"),
+						true, true, true, "AmmoCount", "AmmoId")
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(180,0,"tacz:45acp"),
+						true, true, true, "AmmoCount", "AmmoId")
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "scout")
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:m870",
-						5, "SEMI"))
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:deagle",
-						7, "SEMI"))
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:m870", 5, "SEMI"),
+						true, false, true, "", "GunId")
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:deagle", 7, "SEMI"),
+						true, false, true, "", "GunId")
 				.addItemKeep("minecraft:iron_axe", true)
 				.addItemKeep("minecraft:iron_pickaxe", true)
 				.addItemKeep("minecraft:iron_shovel", true)
@@ -101,14 +111,20 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 				.addItemKeep("minecraft:iron_leggings", true)
 				.addItemKeep("minecraft:iron_boots", true)
 				.addItemRefill("dscombat:parachute")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(108,0,"tacz:12g"), "AmmoCount")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(144,0,"tacz:50ae"), "AmmoCount")
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(108,0,"tacz:12g"),
+						true, true, true, "AmmoCount", "AmmoId")
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(144,0,"tacz:50ae"),
+						true, true, true, "AmmoCount", "AmmoId")
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "demoman")
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:rpg7",
-						1, "SEMI"))
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:ump45",
-						25, "AUTO"))
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:rpg7", 1, "SEMI"),
+						true, false, true, "", "GunId")
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:ump45", 25, "AUTO"),
+						true, false, true, "", "GunId")
 				.addItemKeep("minecraft:iron_axe", true)
 				.addItemKeep("minecraft:iron_pickaxe", true)
 				.addItemKeep("minecraft:iron_shovel", true)
@@ -118,14 +134,18 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 				.addItemKeep("minecraft:leather_leggings", true)
 				.addItemKeep("minecraft:leather_boots", true)
 				.addItemRefill("dscombat:parachute")
-				.addItemRefill("tacz:ammo", 6, createTaczAmmo("tacz:rpg_rocket"), "AmmoCount")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(180,0,"tacz:45acp"), "AmmoCount")
+				.addItemRefill("tacz:ammo", 6, createTaczAmmo("tacz:rpg_rocket"))
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(180,0,"tacz:45acp"),
+						true, true, true, "AmmoCount", "AmmoId")
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "heavy")
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:m249",
-						75, "AUTO"))
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:glock_17",
-						17, "SEMI"))
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:m249", 75, "AUTO"),
+						true, false, true, "", "GunId")
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:glock_17", 17, "SEMI"),
+						true, false, true, "", "GunId")
 				.addItemKeep("minecraft:iron_axe", true)
 				.addItemKeep("minecraft:iron_pickaxe", true)
 				.addItemKeep("minecraft:iron_shovel", true)
@@ -135,15 +155,21 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 				.addItemKeep("minecraft:iron_leggings", true)
 				.addItemKeep("minecraft:iron_boots", true)
 				.addItemRefill("dscombat:parachute")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(180,0,"tacz:556x45"), "AmmoCount")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(180,0,"tacz:9mm"), "AmmoCount")
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(180,0,"tacz:556x45"),
+						true, true, true, "AmmoCount", "AmmoId")
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(180,0,"tacz:9mm"),
+						true, true, true, "AmmoCount", "AmmoId")
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "sniper")
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:ai_awp",
-						5, "SEMI", null, null,
-						"tacz:scope_standard_8x"))
-				.addItemKeep("tacz:modern_kinetic_gun", createTaczGunItemJson("tacz:tec9",
-						15, "AUTO"))
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:ai_awp", 5, "SEMI",
+								null, null, "tacz:scope_standard_8x"),
+						true, false, true, "", "GunId")
+				.addItem("tacz:modern_kinetic_gun", 1, false,
+						createTaczGunItemJson("tacz:tec9", 15, "AUTO"),
+						true, false, true, "", "GunId")
 				.addItemKeep("minecraft:iron_axe", true)
 				.addItemKeep("minecraft:iron_pickaxe", true)
 				.addItemKeep("minecraft:iron_shovel", true)
@@ -153,8 +179,12 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 				.addItemKeep("minecraft:leather_leggings", true)
 				.addItemKeep("minecraft:leather_boots", true)
 				.addItemRefill("dscombat:parachute")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(90,0,"tacz:338"), "AmmoCount")
-				.addItemRefill("tacz:ammo_box", createTaczAmmoBox(180,0,"tacz:9mm"), "AmmoCount")
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(90,0,"tacz:338"),
+						true, true, true, "AmmoCount", "AmmoId")
+				.addItem("tacz:ammo_box", 1, false,
+						createTaczAmmoBox(180,0,"tacz:9mm"),
+						true, true, true, "AmmoCount", "AmmoId")
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "dogfight_alexis")
 				.addItem("dscombat:vehicle", vehicleItem("alexis_plane"))

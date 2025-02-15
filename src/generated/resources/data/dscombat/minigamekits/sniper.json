@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.sniper",
   "kitItems": [
     {
+      "ignoreNbt": true,
       "item": "tacz:modern_kinetic_gun",
       "keep": true,
       "nbt": {
@@ -21,6 +22,7 @@
       "num": 1
     },
     {
+      "ignoreNbt": true,
       "item": "tacz:modern_kinetic_gun",
       "keep": true,
       "nbt": {
@@ -109,24 +111,28 @@
     },
     {
       "checkCountByNBT": "AmmoCount",
+      "ignoreNbt": true,
       "item": "tacz:ammo_box",
       "keep": true,
       "nbt": {
         "AmmoCount": 90,
         "AmmoId": "tacz:338",
-        "Level": 0
+        "Level": 0,
+        "kitOnly": "sniper"
       },
       "num": 1,
       "refill": true
     },
     {
       "checkCountByNBT": "AmmoCount",
+      "ignoreNbt": true,
       "item": "tacz:ammo_box",
       "keep": true,
       "nbt": {
         "AmmoCount": 180,
         "AmmoId": "tacz:9mm",
-        "Level": 0
+        "Level": 0,
+        "kitOnly": "sniper"
       },
       "num": 1,
       "refill": true

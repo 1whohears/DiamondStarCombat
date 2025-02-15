@@ -2,6 +2,7 @@
   "displayName": "preset.dscombat.soldier",
   "kitItems": [
     {
+      "ignoreNbt": true,
       "item": "tacz:modern_kinetic_gun",
       "keep": true,
       "nbt": {
@@ -35,6 +36,7 @@
       "num": 1
     },
     {
+      "ignoreNbt": true,
       "item": "tacz:modern_kinetic_gun",
       "keep": true,
       "nbt": {
@@ -132,24 +134,28 @@
     },
     {
       "checkCountByNBT": "AmmoCount",
+      "ignoreNbt": true,
       "item": "tacz:ammo_box",
       "keep": true,
       "nbt": {
         "AmmoCount": 360,
         "AmmoId": "tacz:762x39",
-        "Level": 1
+        "Level": 1,
+        "kitOnly": "soldier"
       },
       "num": 1,
       "refill": true
     },
     {
       "checkCountByNBT": "AmmoCount",
+      "ignoreNbt": true,
       "item": "tacz:ammo_box",
       "keep": true,
       "nbt": {
         "AmmoCount": 180,
         "AmmoId": "tacz:9mm",
-        "Level": 0
+        "Level": 0,
+        "kitOnly": "soldier"
       },
       "num": 1,
       "refill": true

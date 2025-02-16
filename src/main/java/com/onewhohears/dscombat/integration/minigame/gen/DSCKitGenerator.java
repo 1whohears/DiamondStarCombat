@@ -168,7 +168,7 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 								null, null, "tacz:scope_standard_8x"),
 						true, false, true, "", "GunId")
 				.addItem("tacz:modern_kinetic_gun", 1, false,
-						createTaczGunItemJson("tacz:tec9", 15, "AUTO"),
+						createTaczGunItemJson("tacz:m1911", 15, "AUTO"),
 						true, false, true, "", "GunId")
 				.addItemKeep("minecraft:iron_axe", true)
 				.addItemKeep("minecraft:iron_pickaxe", true)
@@ -183,7 +183,7 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 						createTaczAmmoBox(90,0,"tacz:338"),
 						true, true, true, "AmmoCount", "AmmoId")
 				.addItem("tacz:ammo_box", 1, false,
-						createTaczAmmoBox(180,0,"tacz:9mm"),
+						createTaczAmmoBox(180,0,"tacz:45acp"),
 						true, true, true, "AmmoCount", "AmmoId")
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "dogfight_alexis")

@@ -28,7 +28,7 @@
       "nbt": {
         "GunCurrentAmmoCount": 15,
         "GunFireMode": "AUTO",
-        "GunId": "tacz:tec9",
+        "GunId": "tacz:m1911",
         "HasBulletInBarrel": true,
         "kitOnly": "sniper"
       },
@@ -130,7 +130,7 @@
       "keep": true,
       "nbt": {
         "AmmoCount": 180,
-        "AmmoId": "tacz:9mm",
+        "AmmoId": "tacz:45acp",
         "Level": 0,
         "kitOnly": "sniper"
       },

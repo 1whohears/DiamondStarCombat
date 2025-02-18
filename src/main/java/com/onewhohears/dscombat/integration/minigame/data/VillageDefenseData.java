@@ -21,6 +21,8 @@ public class VillageDefenseData extends KillFlagData {
 				new BuyAttackEndPhase<>(game));
 		game.addAttackerShop("vehicle_attacker");
 		game.addDefenderShop("vehicle_defender");
+		game.addAttackerShop("military_misc");
+		game.addDefenderShop("military_misc");
 		game.addKits("soldier", "scout", "demoman", "heavy", "sniper");
 		return game;
 	}
@@ -31,11 +33,11 @@ public class VillageDefenseData extends KillFlagData {
 		this.canAddTeams = true;
 		this.requiresSetRespawnPos = true;
 		this.worldBorderDuringGame = true;
-		this.initialLives = 1;
+		this.defaultInitialLives = 1;
 		this.buyTime = 600;
 		this.attackTime = 6000;
 		this.roundsToWin = 5;
-		this.moneyPerRound = 24;
+		this.moneyPerRound = 20;
 	}
 
 	public void givePlayersTheirVehicle(MinecraftServer server) {

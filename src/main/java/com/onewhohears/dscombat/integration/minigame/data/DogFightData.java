@@ -17,7 +17,7 @@ public class DogFightData extends BuyAttackData {
 		game.canAddTeams = true;
 		game.requiresSetRespawnPos = true;
 		game.worldBorderDuringGame = true;
-		game.initialLives = 1;
+		game.defaultInitialLives = 1;
 		game.roundsToWin = 5;
 		game.buyTime = 200;
 		game.addKits("dogfight_alexis", "dogfight_felix", "dogfight_javi", "dogfight_eden");

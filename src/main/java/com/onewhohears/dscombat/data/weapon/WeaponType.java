@@ -1,17 +1,9 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import com.onewhohears.dscombat.data.weapon.stats.*;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
-import com.onewhohears.dscombat.data.weapon.stats.AntiRadarMissileStats;
-import com.onewhohears.dscombat.data.weapon.stats.BombStats;
-import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
-import com.onewhohears.dscombat.data.weapon.stats.BunkerBusterStats;
-import com.onewhohears.dscombat.data.weapon.stats.IRMissileStats;
-import com.onewhohears.dscombat.data.weapon.stats.NoWeaponStats;
-import com.onewhohears.dscombat.data.weapon.stats.PosMissileStats;
-import com.onewhohears.dscombat.data.weapon.stats.TorpedoStats;
-import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
 import net.minecraft.world.entity.EntityType;
 
 public abstract class WeaponType extends JsonPresetType {
@@ -73,6 +65,18 @@ public abstract class WeaponType extends JsonPresetType {
 		@Override
 		public EntityType<?> getDefaultEntityType() {
 			return ModEntities.IR_MISSILE.get();
+		}
+	}
+	public static final DumbTorpedo DUMB_TORPEDO = DumbTorpedo.INSTANCE;
+	public static class DumbTorpedo extends WeaponType {
+		public static final String ID = "dumb_torpedo";
+		public static final DumbTorpedo INSTANCE = new DumbTorpedo();
+		public DumbTorpedo() {
+			super(ID, (key, data) -> new DumbTorpedoStats(key, data));
+		}
+		@Override
+		public EntityType<?> getDefaultEntityType() {
+			return ModEntities.DUMB_TORPEDO_MISSILE.get();
 		}
 	}
 	public static final PosMissile POS_MISSILE = PosMissile.INSTANCE;

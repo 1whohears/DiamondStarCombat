@@ -6,15 +6,7 @@ import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.entity.vehicle.*;
-import com.onewhohears.dscombat.entity.weapon.AntiRadarMissile;
-import com.onewhohears.dscombat.entity.weapon.EntityBomb;
-import com.onewhohears.dscombat.entity.weapon.EntityBullet;
-import com.onewhohears.dscombat.entity.weapon.EntityBunkerBuster;
-import com.onewhohears.dscombat.entity.weapon.EntityFlare;
-import com.onewhohears.dscombat.entity.weapon.IRMissile;
-import com.onewhohears.dscombat.entity.weapon.PositionMissile;
-import com.onewhohears.dscombat.entity.weapon.TorpedoMissile;
-import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
+import com.onewhohears.dscombat.entity.weapon.*;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -130,6 +122,9 @@ public class ModEntities {
 					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistryObject<EntityType<TorpedoMissile<?>>> TORPEDO_MISSILE = ENTITIES.register("torpedo_missile", 
 			() -> createEntityTypeFar((type, level) -> new TorpedoMissile<>(type, level, "mk13"), 
+					EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistryObject<EntityType<EntityDumbTorpedo<?>>> DUMB_TORPEDO_MISSILE = ENTITIES.register("dumb_torpedo_missile",
+			() -> createEntityTypeFar((type, level) -> new EntityDumbTorpedo<>(type, level, "type91"),
 					EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 

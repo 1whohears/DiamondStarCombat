@@ -1,6 +1,7 @@
 {
   "acceleration": 0.1,
   "activeTrack": false,
+  "assetId": "aim7f",
   "bleed": 0.03,
   "canShootOnGround": true,
   "causesFire": true,
@@ -43,7 +44,6 @@
   ],
   "itemKey": "dscombat:missile",
   "maxAge": 172,
-  "modelId": "aim7f",
   "presetId": "bgm109",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",

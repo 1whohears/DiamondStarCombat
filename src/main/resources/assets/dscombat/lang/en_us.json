@@ -504,6 +504,7 @@
 	"preset.type.pos_missile": "Position Missile",
 	"preset.type.track_missile": "Track Missile",
 	"preset.type.torpedo": "Torpedo",
+	"preset.type.dumb_torpedo": "Dumb Torpedo",
 	"preset.type.ir_missile": "IR Missile",
 	"preset.type.anti_radar_missile": "Anti Radar Missile",
 	
@@ -540,6 +541,7 @@
 	"preset.dscombat.rgm84": "RGM-84",
 	"preset.dscombat.meteor": "METEOR",
 	"preset.dscombat.mk13": "MK-13",
+	"preset.dscombat.type91": "Type 91",
 	
 	"preset.dscombat.alexis_plane_empty": "Empty Alexis Plane",
 	"preset.dscombat.alexis_plane_unarmed": "Unarmed Alexis Plane",

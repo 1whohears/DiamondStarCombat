@@ -31,7 +31,7 @@ public class DumbTorpedoStats extends MissileStats {
 
     @Override
     public String getWeaponTypeCode() {
-        return "TR";
+        return "DTR";
     }
 
     @Override

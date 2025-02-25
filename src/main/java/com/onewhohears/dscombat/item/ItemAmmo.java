@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
+import com.onewhohears.dscombat.data.weapon.client.WeaponClientStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -125,7 +127,10 @@ public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem 
 	public @NotNull String getObjModelId(@NotNull String preset) {
 		WeaponStats wd = WeaponPresets.get().get(preset);
 		if (wd == null) return "";
-        return wd.getModelId();
+        String assetId = wd.getAssetId();
+		WeaponClientStats<?> assets = WeaponAssets.get().get(assetId);
+		if (assets == null) return "";
+		return assets.getModelId();
 	}
 
 	@Override

@@ -1,25 +1,20 @@
 {
   "acceleration": 0.04,
-  "activeTrack": true,
-  "assetId": "agm84e",
   "bleed": 0.05,
-  "canShootOnGround": true,
+  "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
-    "adl",
     "heavy_missile_rack",
-    "mls"
+    "torpedo_tubes"
   ],
   "craftNum": 1,
   "damage": 50.0,
   "destroyTerrain": true,
-  "displayName": "preset.dscombat.rgm84",
-  "entityTypeKey": "dscombat:track_missile",
-  "explodeNum": 2,
+  "displayName": "preset.dscombat.type91",
+  "entityTypeKey": "dscombat:dumb_torpedo_missile",
   "explosionRadius": 4.0,
   "explosive": true,
   "fireRate": 40,
-  "fov": 60.0,
   "fuelTicks": 400,
   "fuseDist": 2.0,
   "inaccuracy": 0.0,
@@ -30,25 +25,19 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 5
+      "num": 2
     },
     {
       "item": "minecraft:coal_block",
       "num": 4
-    },
-    {
-      "item": "dscombat:ti83",
-      "num": 2
     }
   ],
   "itemKey": "dscombat:missile",
   "maxAge": 600,
-  "presetId": "rgm84",
-  "presetType": "track_missile",
-  "seeThroWater": 100,
+  "presetId": "type91",
+  "presetType": "dumb_torpedo",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "sort_factor": 6,
+  "sort_factor": 1,
   "speed": 2.5,
-  "targetType": "GROUND",
   "turnRadius": 80.0
 }

@@ -1,4 +1,5 @@
 {
+  "assetId": "20mm",
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": [
@@ -22,7 +23,6 @@
   ],
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
-  "modelId": "20mm",
   "presetId": "15mm",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:bullet_shoot_1",

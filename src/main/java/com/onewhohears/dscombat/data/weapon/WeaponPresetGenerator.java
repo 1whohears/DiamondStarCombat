@@ -22,7 +22,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 63 copper
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "10mm")
-				.setModelId("12.7mm")
+				.setAssetId("12.7mm")
 				.setSortFactor(1)
 				.setFireRate(1)
 				.setInaccuracy(2.2f)
@@ -44,7 +44,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "15mm")
-				.setModelId("20mm")
+				.setAssetId("20mm")
 				.setSortFactor(2)
 				.setFireRate(2)
 				.setInaccuracy(1.8f)
@@ -67,7 +67,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 63 copper
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mm")
-				.setModelId("20mm")
+				.setAssetId("20mm")
 				.setSortFactor(3)
 				.setFireRate(1)
 				.setInaccuracy(1.1f)
@@ -89,7 +89,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mmhe")
-				.setModelId("20mm")
+				.setAssetId("20mm")
 				.setSortFactor(4)
 				.setFireRate(1)
 				.setInaccuracy(1.2f)
@@ -112,7 +112,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "30mmhe")
-				.setModelId("20mm")
+				.setAssetId("20mm")
 				.setSortFactor(5)
 				.setFireRate(2)
 				.setInaccuracy(1.1f)
@@ -135,7 +135,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 125 copper, 78 gun powder
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
-				.setModelId("50mmhe")
+				.setAssetId("50mmhe")
 				.setSortFactor(6)
 				.setFireRate(5)
 				.setInaccuracy(1.0f)
@@ -158,7 +158,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		// max ammo cost: 64 copper, 80 gunpowder
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "120mmhe")
-				.setModelId("120mmhe")
+				.setAssetId("120mmhe")
 				.setSortFactor(7)
 				.setFireRate(40)
 				.setInaccuracy(0.4f)
@@ -180,7 +180,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "406mmhe")
-				.setModelId("406mmhe")
+				.setAssetId("406mmhe")
 				.setSortFactor(10)
 				.setFireRate(60)
 				.setInaccuracy(1.1f)
@@ -202,7 +202,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "127mm")
-				.setModelId("120mmhe")
+				.setAssetId("120mmhe")
 				.setSortFactor(8)
 				.setFireRate(12)
 				.setInaccuracy(0.3f)
@@ -433,7 +433,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "bgm109")
 				.setSortFactor(3)
-				.setModelId("aim7f")
+				.setAssetId("aim7f")
 				.setNotActiveTrack()
 				.setFireRate(25)
 				.setInaccuracy(0f)
@@ -769,7 +769,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "rgm84")
 				.setSortFactor(6)
-				.setModelId("agm84e")
+				.setAssetId("agm84e")
 				.setActiveTrack()
 				.setFireRate(40)
 				.setInaccuracy(0f)
@@ -809,7 +809,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm30")
 				.setSortFactor(2)
-				.setModelId("anm30")
+				.setAssetId("anm30")
 				.setFireRate(4)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -832,7 +832,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm57")
 				.setSortFactor(4)
-				.setModelId("anm30")
+				.setAssetId("anm30")
 				.setFireRate(6)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -856,7 +856,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm64")
 				.setSortFactor(6)
-				.setModelId("anm30")
+				.setAssetId("anm30")
 				.setFireRate(11)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -879,7 +879,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "napalm")
 				.setSortFactor(1)
-				.setModelId("anm30")
+				.setAssetId("anm30")
 				.setFireRate(3)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -905,7 +905,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BunkerBusterStats.Builder
 				.bunkerBusterBuilder(DSCombatMod.MODID, "gruetz_bunker_buster")
 				.setSortFactor(10)
-				.setModelId("gruetz_bunker_buster")
+				.setAssetId("gruetz_bunker_buster")
 				.setFireRate(60)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(true)
@@ -926,6 +926,34 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.addIngredient("minecraft:tnt", 8)
 				.addIngredient("minecraft:diamond_pickaxe")
 				.addIngredient(ModItems.TI83.getId())
+				.build());
+		addPresetToGenerate(MissileStats.Builder
+				.dumbTorpedoBuilder(DSCombatMod.MODID, "type91")
+				.setSortFactor(1)
+				.setFireRate(40)
+				.setInaccuracy(0f)
+				.setCanShootOnGround(false)
+				.setDamage(50f)
+				.setSpeed(2.5f)
+				.setExplosionRadius(4f)
+				.setExplosive(true)
+				.setDestroyTerrain(true)
+				.setCausesFire(true)
+				.setMaxAge(600)
+				.setFuelTicks(400)
+				.setTurnRadius(80f)
+				.setAcceleration(0.04f)
+				.setBleed(0.05f)
+				.setFuseDistance(2f)
+				.setItem(ModItems.MISSILE.getId())
+				.setEntityType(ModEntities.DUMB_TORPEDO_MISSILE.getId())
+				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
+				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
+						ModItems.TORPEDO_TUBES.getId().getPath())
+				.setCraftNum(1)
+				.addIngredientTag("dscombat:aluminum_ingot", 12)
+				.addIngredient("minecraft:tnt", 2)
+				.addIngredient("minecraft:coal_block", 4)
 				.build());
 	}
 	

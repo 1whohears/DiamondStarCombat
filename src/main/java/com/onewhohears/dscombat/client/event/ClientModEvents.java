@@ -25,6 +25,7 @@ import com.onewhohears.dscombat.client.screen.WeaponPartsBlockScreen;
 import com.onewhohears.dscombat.data.parts.client.PartAssets;
 import com.onewhohears.dscombat.data.sound.PassengerSoundPack;
 import com.onewhohears.dscombat.data.sound.VehiclePassengerSoundPacks;
+import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModFluids;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
@@ -81,6 +82,7 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.TRACK_MISSILE.get(), RendererObjWeapon::new);
 		event.registerEntityRenderer(ModEntities.ANTI_RADAR_MISSILE.get(), RendererObjWeapon::new);
 		event.registerEntityRenderer(ModEntities.TORPEDO_MISSILE.get(), RendererObjWeapon::new);
+		event.registerEntityRenderer(ModEntities.DUMB_TORPEDO_MISSILE.get(), RendererObjWeapon::new);
 		// PARTS
 		event.registerEntityRenderer(ModEntities.TURRET.get(), RendererCustomAnimObjEntity::new);
 		event.registerEntityRenderer(ModEntities.EXTERNAL_WEAPON_PART.get(), RendererCustomAnimObjEntity::new);
@@ -108,6 +110,7 @@ public final class ClientModEvents {
 		HardCodedModelAnims.reload();
 		event.registerReloadListener(VehicleClientPresets.get());
 		event.registerReloadListener(PartAssets.get());
+		event.registerReloadListener(WeaponAssets.get());
 		event.registerReloadListener(VehiclePassengerSoundPacks.get());
 	}
 	

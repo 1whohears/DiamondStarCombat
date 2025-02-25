@@ -3,8 +3,6 @@ package com.onewhohears.dscombat.data.weapon.client;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.ObjWeaponModel;
-import com.onewhohears.dscombat.data.parts.client.PartClientStats;
-import com.onewhohears.dscombat.data.parts.client.PartClientType;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.onewholibs.data.jsonpreset.CustomAnimStats;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
@@ -35,12 +33,15 @@ public class WeaponClientStats<E extends EntityWeapon<?>> extends CustomAnimStat
         return null;
     }
 
-    public static class Builder extends CustomAnimStatsBuilder<PartClientStats.Builder> {
+    public static class Builder extends CustomAnimStatsBuilder<WeaponClientStats.Builder> {
         public static Builder createStandard(String name) {
-            return new Builder(name, PartClientType.STANDARD);
+            return new Builder(name, STANDARD);
         }
         protected Builder(String name, JsonPresetType type) {
-            super(DSCombatMod.MODID, name, type);
+            this(DSCombatMod.MODID, name, type);
+        }
+        protected Builder(String namespace, String name, JsonPresetType type) {
+            super(namespace, name, type);
         }
     }
 }

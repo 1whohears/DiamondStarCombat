@@ -1,4 +1,5 @@
 {
+  "assetId": "anm30",
   "canShootOnGround": false,
   "causesFire": false,
   "compatibleWeaponPart": [
@@ -25,7 +26,6 @@
   ],
   "itemKey": "dscombat:bomb",
   "maxAge": 200,
-  "modelId": "anm30",
   "presetId": "anm30",
   "presetType": "bomb",
   "shootSoundKey": "dscombat:bomb_shoot_1",

@@ -33,6 +33,9 @@ public abstract class MissileStats extends BulletStats {
 		public static Builder antiRadarMissileBuilder(String namespace, String name) {
 			return new Builder(namespace, name, WeaponType.ANTI_RADAR_MISSILE);
 		}
+		public static Builder dumbTorpedoBuilder(String namespace, String name) {
+			return new Builder(namespace, name, WeaponType.DUMB_TORPEDO);
+		}
 	}
 	
 	private final float turnRadius;

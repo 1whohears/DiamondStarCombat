@@ -22,8 +22,15 @@ public class EntityDumbTorpedo<T extends DumbTorpedoStats> extends EntityMissile
 
     @Override
     protected void tickSetMove() {
-        if (isInWater()) super.tickSetMove();
-        else {
+        if (isInWater()) {
+            super.tickSetMove();
+            if (isUnderWater()) {
+                Vec3 cm = getDeltaMovement();
+                double my = Math.min(cm.y + 0.1, 0.4);
+                cm = new Vec3(0, my, 0);
+                setDeltaMovement(cm);
+            }
+        } else {
             Vec3 cm = getDeltaMovement();
             cm = cm.add(0, -DSCPhyCons.GRAVITY, 0);
             setDeltaMovement(cm);

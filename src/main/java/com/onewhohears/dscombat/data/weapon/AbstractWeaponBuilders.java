@@ -55,8 +55,8 @@ public class AbstractWeaponBuilders {
 			return setString("icon", weaponIcon.toString());
 		}
 		
-		public C setModelId(String modelId) {
-			return setString("modelId", modelId);
+		public C setAssetId(String assetId) {
+			return setString("assetId", assetId);
 		}
 		
 	}

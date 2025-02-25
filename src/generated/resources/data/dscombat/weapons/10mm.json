@@ -1,4 +1,5 @@
 {
+  "assetId": "12.7mm",
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": [
@@ -23,7 +24,6 @@
   ],
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
-  "modelId": "12.7mm",
   "presetId": "10mm",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:bullet_shoot_1",

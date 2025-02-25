@@ -1,4 +1,4 @@
-This page is updated for v0.12.5. If anything is unclear please let me know in the discord so I can update this page!
+This page is updated for v0.12.7. If anything is unclear please let me know in the discord so I can update this page!
 
 # The JSON Preset System
 
@@ -397,7 +397,9 @@ The following is a description of each Custom Animation Type, and what parameter
 
 `itemKey` | RESOURCE_LOCATION | **dscombat:ammo** | *Can also be set to `dscombat:bullet`, `dscombat:bomb`, or `dscombat:missile`.*
 
-`modelId` | STRING | **`presetId`** | *The file name of the model that this weapon uses. Scroll down to the Models section for more info.*
+`assetId` | STRING | **`presetId`** | *Either the file name of the model that this weapon uses 
+(Scroll down to the Models section for more info), or the name of the Weapon Client Preset file used to
+define custom weapon animations.*
 
 `icon` | FULL_RESOURCE_LOCATION | **dscombat:textures/ui/weapon_icons/default.png** | *The texture that the weapon select UI uses. All weapon preset types already have their own default texture. But you can override it.*
 
@@ -514,7 +516,51 @@ An example of the 10mm Bullet recipe can be seen below. Replace `10mm` with your
   "presetId": "10mm"
 }
 ```
- 
+
+## Assets
+
+All Weapons support the Obj Model custom animation system. It functions nearly identically to the vehicle 
+client preset system. Weapon Client preset files are only needed if you want to add custom animations. 
+If a Weapon Client Preset file is not created, the `model_id` will be assumed to be the `assetId` defined
+in the Datapack json file.
+
+### Weapon Client Preset
+
+Weapon Client Presets must have a `presetId` equal to `assetId` as defined in the Datapack portion above. 
+The file is located here:
+
+**`weapon_client_preset_file` = //assets/[`namespace`]/part_client/[`assetId`].json**
+
+Part Client Presets have the same format as Json Presets, but they are an asset. 
+Thus, they can be modified with resource packs and the server doesn't force syncing this data. 
+[Here are some examples.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/assets/dscombat/weapon_client) 
+Again, note that the file name has to be the same as `presetId`.
+
+#### Available Preset Types
+
+Weapons Client Presets currently only use one `presetType`:
+
+- `standard`
+
+#### All Weapon Client Preset Parameters
+
+`model_data` | JSON_OBJECT | **OPTIONAL** | *If not included, `model_id` will be assumed to be `assetId`, and there won't be any animations.*
+- `model_id` | STRING | **`assetId`** | *The file name of the model used for this vehicle. Scroll down to the Models section for more information.*
+- `custom_anims` | JSON_OBJECT_ARRAY | **OPTIONAL** | *A list of custom animations. These animations manipulate individual groups/bones/model parts. multiple animations can be stacked on the same `model_part_key`! There are different animation types, each requiring different parameters. All the parameters will be listed below, but a bit further down an explanation of each animation type will be documented.*
+  - `anim_id` | STRING | **REQUIRED** | *Each animation type will be explained below. Options: `continuous_rotation`, `motor_rotation`, `wheel_rotation`, `input_bound_rotation`, `spinning_radar`, `landing_gear`, `input_bound_translation`, `plane_flap_rotation`, `hitbox_destroy_part`.*
+  - `model_part_key` | STRING | **REQUIRED** | *The name of the bone/group/object within the model that is being animated.*
+  - `pivot` | VEC3 | **ZEROS** | *The pivot point a model part will rotate around. The units are Minecraft pixels or 1/16th of a block.*
+  - `rot_axis` | ENUM | **X** | *The axis the model part rotates around. Options: `X`, `Y`, `Z`.*
+  - `rot_rate` | NUMBER | **0** | *Maximum rotation rate in degrees per tick.*
+  - `input_axis` | ENUM | **PITCH** | *The input axis that controls how much the part rotates. Options: `PITCH`, `YAW`, `ROLL`, `THROTTLE`*
+  - `bound` | NUMBER | **0** | *How for the part rotates in degrees.*
+  - `radar_id` | STRING | **OPTIONAL** | *The `presetId` of the radar that should spin.*
+  - `fold_angle` | NUMBER | **0** | *The angle in degrees the landing gear part rotates while folding.*
+  - `bounds` | VEC3 | **ZEROS** | *The max distance the model part will be translated.*
+  - `hitbox_name` | STRING | **OPTIONAL** | *If a hitbox from `hitboxes` with this `name` gets destroyed, this model pat will disappear.*
+  - `rotPitch` | BOOLEAN | **true** | *If `rotPitch` = `true` then the animation will follow the up and down rotation of the model. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
+
+
 # Radars
 
 WIP. A lot of the current radar data gen will be outdated once radar mechanics are revamped. [Please see these examples for now!](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/radars)

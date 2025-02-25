@@ -15,7 +15,6 @@ import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
-import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilItem;
@@ -50,7 +49,7 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private final String shootSoundKey;
 	private final String[] compatibleWeaponPart;
 	private final String itemKey;
-	private final String modelId;
+	private final String assetId;
 	private final ResourceLocation icon;
 	
 	private NonNullList<Ingredient> ingredients;
@@ -67,7 +66,9 @@ public abstract class WeaponStats extends JsonPresetStats {
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringArraySafe(json, "compatibleWeaponPart");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
-		this.modelId = UtilParse.getStringSafe(json, "modelId", getId());
+		if (json.has("assetId")) this.assetId = json.get("assetId").getAsString();
+		else if (json.has("modelId")) this.assetId = json.get("modelId").getAsString();
+		else this.assetId = getId();
 		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
 	}
 	
@@ -156,8 +157,8 @@ public abstract class WeaponStats extends JsonPresetStats {
 		return compatibleWeaponPart;
 	}
 	
-	public String getModelId() {
-		return modelId;
+	public String getAssetId() {
+		return assetId;
 	}
 	
 	public ResourceLocation getWeaponIcon() {

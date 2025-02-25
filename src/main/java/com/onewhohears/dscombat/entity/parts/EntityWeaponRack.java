@@ -4,6 +4,8 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.WeaponExternalInstance;
 import com.onewhohears.dscombat.data.parts.stats.WeaponExternalStats;
+import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
+import com.onewhohears.dscombat.data.weapon.client.WeaponClientStats;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
@@ -34,7 +36,10 @@ public class EntityWeaponRack extends EntityPart<WeaponExternalStats, WeaponExte
 			if (vehicle == null) return weaponModelId;
 			WeaponInstance<?> wd = vehicle.weaponSystem.get(getSlotId());
 			if (wd == null) return weaponModelId;
-			weaponModelId = wd.getStats().getModelId();
+			String assetId = wd.getStats().getAssetId();
+			WeaponClientStats<?> assets = WeaponAssets.get().get(assetId);
+			if (assets == null) return weaponModelId;
+			weaponModelId = assets.getModelId();
 		}
 		return weaponModelId;
 	}

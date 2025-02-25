@@ -14,7 +14,6 @@ import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.onewholibs.data.jsonpreset.CustomAnimStats;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.CustomAnimProjectile;
@@ -23,7 +22,6 @@ import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -362,7 +360,8 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
     }
     
     public String getModelId() {
-    	return getWeaponStats().getModelId();
+		if (getAssets() == null) return getAssetId();
+    	return getAssets().getModelId();
     }
     
     public abstract WeaponType getWeaponType();
@@ -376,7 +375,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 
 	@Override
 	public @Nullable String getAssetId() {
-		return getStats().getModelId();
+		return getStats().getAssetId();
 	}
 
 	@Override

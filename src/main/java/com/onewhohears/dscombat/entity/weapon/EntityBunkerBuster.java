@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<T> {
 	
@@ -69,13 +70,13 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		setBlockStrength(compound.getInt("blockStrength"));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("blockStrength", getBlockStrength());
 	}

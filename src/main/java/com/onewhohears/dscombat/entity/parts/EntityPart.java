@@ -60,7 +60,7 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		setRelativePos(UtilParse.readVec3(compound, "relpos"));
 		setSlotId(compound.getString("slotid"));
@@ -68,7 +68,7 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		UtilParse.writeVec3(compound, getRelativePos(), "relpos");
 		compound.putString("slotid", getSlotId());

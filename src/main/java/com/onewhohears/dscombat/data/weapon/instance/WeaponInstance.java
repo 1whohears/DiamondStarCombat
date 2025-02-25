@@ -66,7 +66,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		EntityType<?> type = getStats().getEntityType();
 		Entity entity = type.create(level);
 		if (entity instanceof EntityWeapon<?> w) {
-			w.setWeaponData(getStats());
+			w.setPreset(getStatsId());
 			return w;
 		}
 		return null;

@@ -58,7 +58,7 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 	}
 	
 	@Override
-	protected void addAdditionalSaveData(CompoundTag nbt) {
+	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		ListTag conns = new ListTag();
 		for (int i = 0; i < chains.size(); ++i) {

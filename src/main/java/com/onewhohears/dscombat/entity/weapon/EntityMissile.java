@@ -78,10 +78,6 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	@Override
 	public void tick() {
-		if (weaponStats == null) {
-			kill();
-			return;
-		}
 		if (level.isClientSide) clientTickParticles();
 		if (isTestMode()) return;
 		xRotO = getXRot(); 

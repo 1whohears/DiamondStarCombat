@@ -56,7 +56,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag tag) {
+	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		setXRot(tag.getFloat("xRot"));
 		setYRot(tag.getFloat("yRot"));
@@ -65,7 +65,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tag) {
+	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putFloat("xRot", getXRot());
 		tag.putFloat("yRot", getYRot());

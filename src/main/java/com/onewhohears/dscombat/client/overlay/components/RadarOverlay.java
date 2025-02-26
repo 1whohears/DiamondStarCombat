@@ -34,6 +34,8 @@ public class RadarOverlay extends VehicleOverlayComponent {
             "textures/ui/ping_hud.png");
     public static final ResourceLocation PING_DATA = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/ping_data.png");
+    public static final ResourceLocation PING_ICONS = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/ping_data_icons.png");
     protected static final int[] HUD_PING_ANIM = new int[] {0,1,2,3,2,1};
     protected static float PARTIAL_TICK;
 

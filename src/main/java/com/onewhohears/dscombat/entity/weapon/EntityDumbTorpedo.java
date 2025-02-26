@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.DumbTorpedoStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -17,7 +18,11 @@ public class EntityDumbTorpedo<T extends DumbTorpedoStats> extends EntityMissile
 
     @Override
     public void tickGuide() {
-
+        if (isUnderWater()) {
+            setXRot(Mth.approachDegrees(getXRot(), -10, 1));
+        } else {
+            setXRot(Mth.approachDegrees(getXRot(), 0, 1));
+        }
     }
 
     @Override
@@ -26,8 +31,8 @@ public class EntityDumbTorpedo<T extends DumbTorpedoStats> extends EntityMissile
             super.tickSetMove();
             if (isUnderWater()) {
                 Vec3 cm = getDeltaMovement();
-                double my = Math.min(cm.y + 0.1, 0.4);
-                cm = new Vec3(0, my, 0);
+                double my = Math.min(cm.y + 0.05, 0.1);
+                cm = new Vec3(cm.x, my, cm.z);
                 setDeltaMovement(cm);
             }
         } else {

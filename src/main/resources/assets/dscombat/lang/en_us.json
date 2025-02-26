@@ -78,6 +78,7 @@
 	"ui.dscombat.cycle_radar_target": "Cycle Radar Target",
 	"ui.dscombat.passenger_sounds": "Rider Sounds",
 	"ui.dscombat.dismount_key": "Dismount (%1$s)",
+	"ui.dscombat.change_ping_size": "Ping Size",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",

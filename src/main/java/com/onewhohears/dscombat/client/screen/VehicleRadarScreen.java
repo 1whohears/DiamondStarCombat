@@ -39,7 +39,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     public static final ResourceLocation RADAR_PING_SELECT = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/hud_ping_select.png");
     public static final ResourceLocation PING_DATA = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/ping_data.png");
+            "textures/ui/ping_data_icons_color.png");
 
     private static final int imageWidth = 240, imageHeight = 180;
     private static final int textureSize = 256;
@@ -109,18 +109,18 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         font.draw(poseStack, comp, x-width/2f, y-UP, 0x00FF00);
         RenderSystem.setShaderTexture(0, PING_DATA);
         blit(poseStack, x-LEFT, y-HALF_PS, PING_SIZE, PING_SIZE,
-                ping.entityType.getIconOffset(100)+17, 0,
-                16, 16, 600, 200);
+                ping.entityType.getIconIndex()*16, 0,
+                16, 16, 240, 16);
         blit(poseStack, x+HALF_PS, y-HALF_PS, PING_SIZE, PING_SIZE,
-                ping.terrainType.getIconOffset(100)+33, 100,
-                16, 16, 600, 200);
+                ping.terrainType.getIconIndex()*16, 0,
+                16, 16, 240, 16);
         if (ping.isFriendly) {
             blit(poseStack, x-PING_SIZE, y+HALF_PS, PING_SIZE, PING_SIZE,
-                    447, 0, 16, 16, 600, 200);
+                    16*4, 0, 16, 16, 240, 16);
         }
         if (ping.isShared()) {
             blit(poseStack, x, y+HALF_PS, PING_SIZE, PING_SIZE,
-                    467, 0, 16, 16, 600, 200);
+                    16*9, 0, 16, 16, 240, 16);
         }
         return true;
     }
@@ -184,13 +184,13 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                 value -> Config.CLIENT.radarPingOverlaySize.set(Math.max(Math.min(value, 1000), 10))));
         // INCREASE PING SIZE BUTTON
         PageButton increaseSize = new PageButton(0, 0, true, button -> {
-            Config.CLIENT.radarPingOverlaySize.set(Math.min(Config.CLIENT.radarPingOverlaySize.get() + 1, 1000));
+            Config.CLIENT.radarPingOverlaySize.set(Math.min(Config.CLIENT.radarPingOverlaySize.get() + 50, 1000));
             pingSizeBox.setValue(Config.CLIENT.radarPingOverlaySize.get()+"");
             }, false);
         positionWidgetGrid(increaseSize, ROWS, 6, 16, 2);
         // DECREASE PING SIZE BUTTON
         PageButton decreaseSize = new PageButton(0, 0, false, button -> {
-            Config.CLIENT.radarPingOverlaySize.set(Math.max(Config.CLIENT.radarPingOverlaySize.get()-1, 10));
+            Config.CLIENT.radarPingOverlaySize.set(Math.max(Config.CLIENT.radarPingOverlaySize.get() - 50, 10));
             pingSizeBox.setValue(Config.CLIENT.radarPingOverlaySize.get()+"");
             }, false);
         positionWidgetGrid(decreaseSize, ROWS, 6, 15, 2);

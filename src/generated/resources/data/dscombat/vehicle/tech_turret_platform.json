@@ -1,0 +1,26 @@
+{
+  "copyId": "turret_platform",
+  "displayName": "preset.dscombat.tech_turret_platform",
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "tech_turret_platform",
+  "presetType": "stationary",
+  "slots": [
+    {
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.125,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.125,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    }
+  ]
+}

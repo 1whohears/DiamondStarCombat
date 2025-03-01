@@ -51,13 +51,14 @@ public class StationaryPresets {
             .setRotationalInertia(100, 100, 100)
             .setCrashExplosionRadius(1)
             .set3rdPersonCamDist(4)
-            .addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.MOUNT_SUPER_HEAVY, 0, 0.125, 0)
+            .addSeatSlot(PartSlot.COPILOT_SLOT_NAME, SlotType.MOUNT_SUPER_HEAVY, 0, 0.125, 0)
+            .setEntityMainHitboxSize(1f, 0.125f)
+            .build();
+
+    public static final VehicleStats TECH_TURRET_PLATFORM = VehicleStats.Builder
+            .createFromCopy(DSCombatMod.MODID, "tech_turret_platform", TURRET_PLATFORM)
             .addEmptySlot("internal_1", SlotType.TECH_INTERNAL, 0, 0.125, 0)
             .addEmptySlot("internal_2", SlotType.TECH_INTERNAL, 0, 0.125, 0)
-            /*.lockSlot(PartSlot.PILOT_SLOT_NAME)
-            .lockSlot("internal_1")
-            .lockSlot("internal_2")*/
-            .setEntityMainHitboxSize(1f, 0.125f)
             .build();
 
 }

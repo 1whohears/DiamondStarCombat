@@ -119,6 +119,7 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 
 		addPresetToGenerate(StationaryPresets.EWR4000);
 		addPresetToGenerate(StationaryPresets.TURRET_PLATFORM);
+		addPresetToGenerate(StationaryPresets.TECH_TURRET_PLATFORM);
 
 		VillageDefenseVehiclePresetGen.generate();
 	}

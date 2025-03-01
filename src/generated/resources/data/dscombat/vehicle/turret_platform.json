@@ -12,27 +12,11 @@
       "data": {
         "itemid": "dscombat:seat"
       },
-      "name": "pilot_seat",
+      "name": "copilot_seat",
       "slot_posx": 0.0,
       "slot_posy": 0.125,
       "slot_posz": 0.0,
       "slot_type": "mount_super_heavy",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_1",
-      "slot_posx": 0.0,
-      "slot_posy": 0.125,
-      "slot_posz": 0.0,
-      "slot_type": "tech_internal",
-      "zRot": 0.0
-    },
-    {
-      "name": "internal_2",
-      "slot_posx": 0.0,
-      "slot_posy": 0.125,
-      "slot_posz": 0.0,
-      "slot_type": "tech_internal",
       "zRot": 0.0
     }
   ],

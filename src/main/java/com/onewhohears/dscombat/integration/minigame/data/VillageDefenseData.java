@@ -34,10 +34,11 @@ public class VillageDefenseData extends KillFlagData {
 		this.requiresSetRespawnPos = true;
 		this.worldBorderDuringGame = true;
 		this.defaultInitialLives = 1;
-		this.buyTime = 600;
+		this.buyTime = 900;
 		this.attackTime = 6000;
 		this.roundsToWin = 5;
 		this.moneyPerRound = 20;
+		this.buyRadius = 50;
 	}
 
 	public void givePlayersTheirVehicle(MinecraftServer server) {

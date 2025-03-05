@@ -379,6 +379,7 @@ The following is a description of each Custom Animation Type, and what parameter
 - `ir_missile`: A missile that tracks heat sources.
 - `track_missile`: A missile that tracks the entity that the player selects with their radar.
 - `torpedo`: Same as track missile, but it doesn't explode in water.
+- `dumb_torpedo`: Does nothing in the air, goes straight when it touches water. 
 - `anti_radar_missile`: These missiles target radar sources.
 
 ### All Weapons Parameter List
@@ -495,6 +496,13 @@ Includes all stats listed in **All Weapons Parameter List**, **Bullet Parameter 
 `presetType` = `torpedo`
 
 Includes all stats listed in **All Weapons Parameter List**, **Bullet Parameter List**, **Missile Parameter List**, and **Track Missile Parameter List**.
+
+### Dumb Torpedo Missile Parameter List
+
+`presetType` = `dumb_torpedo`
+
+Includes all stats listed in **All Weapons Parameter List**, **Bullet Parameter List**, and **Missile Parameter List**.
+
 
 ### Anti Radar Missile Parameter List
 

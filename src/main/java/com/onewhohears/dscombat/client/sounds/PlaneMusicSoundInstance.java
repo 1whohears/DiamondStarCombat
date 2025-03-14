@@ -23,6 +23,10 @@ public class PlaneMusicSoundInstance extends DopplerSoundInstance {
 	
 	@Override
 	public void tick() {
+		if (entity.isRemoved()) {
+			stop();
+			return;
+		}
 		EntityVehicle craft = (EntityVehicle)entity;
 		if (!craft.getRadioSong().equals(song)) {
 			stop();

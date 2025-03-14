@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.integration.minigame.data;
 
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.integration.minigame.phase.village_defense.VillageDefenseBuyPhase;
 import com.onewhohears.minigames.minigame.data.KillFlagData;
 import com.onewhohears.minigames.minigame.param.MiniGameParamTypes;
@@ -8,8 +7,6 @@ import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackAttackE
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackEndPhase;
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackSetupPhase;
 import com.onewhohears.minigames.minigame.phase.flag.KillFlagAttackPhase;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 
 public class VillageDefenseData extends KillFlagData {
 	
@@ -33,15 +30,6 @@ public class VillageDefenseData extends KillFlagData {
 	
 	public VillageDefenseData(String instanceId, String gameTypeId) {
 		super(instanceId, gameTypeId);
-	}
-
-	public void givePlayersTheirVehicle(MinecraftServer server) {
-		getAllPlayerAgents().forEach(agent -> {
-			ServerPlayer sp = agent.getPlayer(server);
-			if (sp == null || !sp.isPassenger() || !(sp.getRootVehicle() instanceof EntityVehicle vehicle)) return;
-			if (!sp.equals(vehicle.getControllingPlayerOrBot())) return;
-			vehicle.becomeItem(sp);
-		});
 	}
 
 }

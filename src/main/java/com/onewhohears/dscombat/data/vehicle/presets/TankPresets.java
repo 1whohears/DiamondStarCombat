@@ -38,6 +38,7 @@ public class TankPresets {
 			.addIngredient(ModItems.SEAT.getId(), 4)
 			.addIngredient(ModItems.TANK_TRACK.getId(), 4)
 			.addIngredientTag("dscombat:aluminum_ingot", 40)
+			.addIngredient("minecraft:iron_ingot", 40)
 			.addIngredient("minecraft:gold_ingot", 10)
 			.addSeatSlot(PartSlot.PILOT_SLOT_NAME, SlotType.MOUNT_HEAVY, 0, 1.6, 0)
 			.addSeatSlot("seat1", SlotType.MOUNT_MED, 1, 1.4, 2)
@@ -59,9 +60,6 @@ public class TankPresets {
 			.setSlotItem(PartSlot.PILOT_SLOT_NAME, ModItems.HEAVY_TANK_TURRET.getId(), false)
 			.addIngredient(ModItems.C12_ENGINE.getId(), 1)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
-			.addIngredient("dscombat:seat", 5)
-			.addIngredientTag("dscombat:aluminum_ingot", 40)
-			.addIngredient("minecraft:tnt", 2)
 			.build();
 	
 	public static final VehicleStats DEFAULT_MRBUDGER_TANK = VehicleStats.Builder

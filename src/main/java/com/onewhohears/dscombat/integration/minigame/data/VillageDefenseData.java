@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.integration.minigame.data;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.integration.minigame.phase.village_defense.VillageDefenseBuyPhase;
 import com.onewhohears.minigames.minigame.data.KillFlagData;
+import com.onewhohears.minigames.minigame.param.MiniGameParamTypes;
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackAttackEndPhase;
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackEndPhase;
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackSetupPhase;
@@ -19,26 +20,19 @@ public class VillageDefenseData extends KillFlagData {
 				new KillFlagAttackPhase<>(game),
 				new BuyAttackAttackEndPhase<>(game),
 				new BuyAttackEndPhase<>(game));
-		game.addAttackerShop("vehicle_attacker");
-		game.addDefenderShop("vehicle_defender");
-		game.addAttackerShop("military_misc");
-		game.addDefenderShop("military_misc");
 		game.addKits("soldier", "scout", "demoman", "heavy", "sniper");
+		game.getParam(MiniGameParamTypes.ATTACKER_SHOPS).add("vehicle_attacker");
+		game.getParam(MiniGameParamTypes.ATTACKER_SHOPS).add("military_misc");
+		game.getParam(MiniGameParamTypes.DEFENDER_SHOPS).add("vehicle_defender");
+		game.getParam(MiniGameParamTypes.DEFENDER_SHOPS).add("military_misc");
+		game.setParam(MiniGameParamTypes.ROUNDS_TO_WIN, 5);
+		game.setParam(MiniGameParamTypes.BUY_RADIUS, 50);
+		game.setParam(MiniGameParamTypes.REQUIRE_SET_SPAWN, true);
 		return game;
 	}
 	
 	public VillageDefenseData(String instanceId, String gameTypeId) {
 		super(instanceId, gameTypeId);
-		this.canAddIndividualPlayers = false;
-		this.canAddTeams = true;
-		this.requiresSetRespawnPos = true;
-		this.worldBorderDuringGame = true;
-		this.defaultInitialLives = 1;
-		this.buyTime = 900;
-		this.attackTime = 6000;
-		this.roundsToWin = 5;
-		this.moneyPerRound = 20;
-		this.buyRadius = 50;
 	}
 
 	public void givePlayersTheirVehicle(MinecraftServer server) {

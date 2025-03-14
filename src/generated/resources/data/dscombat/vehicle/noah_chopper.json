@@ -21,22 +21,6 @@
     {
       "item": "dscombat:basic_flare_dispenser",
       "num": 1
-    },
-    {
-      "item": "minecraft:copper_ingot",
-      "num": 64
-    },
-    {
-      "item": "dscombat:aluminum_ingot",
-      "num": 64
-    },
-    {
-      "item": "minecraft:redstone",
-      "num": 64
-    },
-    {
-      "item": "minecraft:gunpowder",
-      "num": 64
     }
   ],
   "is_craftable": false,
@@ -87,6 +71,12 @@
         "part": "gr400"
       },
       "name": "internal_6"
+    },
+    {
+      "data": {
+        "part": "c12_engine"
+      },
+      "name": "internal_2"
     }
   ]
 }

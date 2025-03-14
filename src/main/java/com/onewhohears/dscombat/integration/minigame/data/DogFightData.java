@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.integration.minigame.data;
 
 import com.onewhohears.dscombat.integration.minigame.phase.dog_fight.DogFightAttackPhase;
 import com.onewhohears.minigames.minigame.data.BuyAttackData;
+import com.onewhohears.minigames.minigame.param.MiniGameParamTypes;
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.*;
 
 public class DogFightData extends BuyAttackData {
@@ -13,13 +14,9 @@ public class DogFightData extends BuyAttackData {
 				new DogFightAttackPhase(game),
 				new BuyAttackAttackEndPhase<>(game),
 				new BuyAttackEndPhase<>(game));
-		game.canAddIndividualPlayers = true;
-		game.canAddTeams = true;
-		game.requiresSetRespawnPos = true;
-		game.worldBorderDuringGame = true;
-		game.defaultInitialLives = 1;
-		game.roundsToWin = 5;
-		game.buyTime = 200;
+		game.setParam(MiniGameParamTypes.BUY_TIME, 200);
+		game.setParam(MiniGameParamTypes.ROUNDS_TO_WIN, 5);
+		game.setParam(MiniGameParamTypes.REQUIRE_SET_SPAWN, true);
 		game.addKits("dogfight_alexis", "dogfight_felix", "dogfight_javi", "dogfight_eden");
 		return game;
 	}

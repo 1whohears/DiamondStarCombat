@@ -9,18 +9,6 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 1
-    },
-    {
-      "item": "dscombat:seat",
-      "num": 5
-    },
-    {
-      "num": 40,
-      "tag": "dscombat:aluminum_ingot"
-    },
-    {
-      "item": "minecraft:tnt",
-      "num": 2
     }
   ],
   "is_craftable": true,

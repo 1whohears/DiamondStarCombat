@@ -16,6 +16,10 @@
       "tag": "dscombat:aluminum_ingot"
     },
     {
+      "item": "minecraft:iron_ingot",
+      "num": 40
+    },
+    {
       "item": "minecraft:gold_ingot",
       "num": 10
     }

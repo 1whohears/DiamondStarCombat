@@ -60,9 +60,8 @@ public class NoahChopperPresets {
 			.createFromCopy(DSCombatMod.MODID, "noah_chopper_unarmed", EMPTY_NOAH_CHOPPER)
 			.setCraftable()
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
-			.setSlotItem("internal_2", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
-			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
+			.addIngredient(ModItems.C12_ENGINE.getId(), 1)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
 			.build();
 	
@@ -74,15 +73,12 @@ public class NoahChopperPresets {
 			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.setSlotItem("internal_6", ModItems.GR400.getId())
+			.setSlotItem("internal_2", ModItems.C12_ENGINE.getId())
 			.addIngredient(ModItems.GR400.getId())
 			.addIngredient(ModItems.MINIGUN_TURRET.getId())
 			.addIngredient(ModItems.HEAVY_MISSILE_RACK.getId(), 2)
 			.addIngredient(ModItems.LIGHT_MISSILE_RACK.getId(), 1)
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
-			.addIngredient("minecraft:copper_ingot", 64)
-			.addIngredient("dscombat:aluminum_ingot", 64)
-			.addIngredient("minecraft:redstone", 64)
-			.addIngredient("minecraft:gunpowder", 64)
 			.build();
 	
 }

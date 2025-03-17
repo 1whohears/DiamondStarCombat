@@ -1,7 +1,7 @@
 {
-  "armor": 300.0,
+  "armor": 200.0,
   "displayName": "preset.dscombat.mrbudger_tank_empty",
-  "health": 200.0,
+  "health": 100.0,
   "ingredients": [
     {
       "item": "dscombat:seat",
@@ -125,10 +125,10 @@
     "passengerEngine": "dscombat:tank_1"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.55,
+    "armor_damage_absorbtion": 0.5,
     "armor_damage_threshold": 8.0,
     "assetId": "mrbudger_tank",
-    "base_armor": 300.0,
+    "base_armor": 200.0,
     "cameraDistance": 4.0,
     "car": {
       "isTank": true
@@ -142,7 +142,7 @@
     "inertiaroll": 8.0,
     "inertiayaw": 8.0,
     "mass": 15000.0,
-    "max_health": 200.0,
+    "max_health": 100.0,
     "max_speed": 0.3,
     "maxpitch": 0.0,
     "maxroll": 0.0,

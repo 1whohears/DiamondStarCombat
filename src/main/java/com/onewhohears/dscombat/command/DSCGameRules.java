@@ -50,7 +50,7 @@ public class DSCGameRules {
 		MOBS_TICK_RADAR = CustomGameRules.registerBoolean("mobsTickRadar", true, GameRules.Category.MOBS);
 		MOBS_RIDE_VEHICLES = CustomGameRules.registerBoolean("mobsRideVehicles", true, GameRules.Category.MOBS);
 		VEHICLE_ARMOR_PERCENT = CustomGameRules.registerInteger("vehicleArmorStrengthPercent", 100, GameRules.Category.PLAYER);
-		BULLET_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("bulletDamageVehiclePercent", 100, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("bulletDamageVehiclePercent", 50, GameRules.Category.PLAYER);
 		EXPLO_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("explosionDamageVehiclePercent", 300, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_PLANE_PER = CustomGameRules.registerInteger("bulletDamagePlanePercent", 100, GameRules.Category.PLAYER);
 		BULLET_DAMAGE_HELI_PER = CustomGameRules.registerInteger("bulletDamageHeliPercent", 100, GameRules.Category.PLAYER);

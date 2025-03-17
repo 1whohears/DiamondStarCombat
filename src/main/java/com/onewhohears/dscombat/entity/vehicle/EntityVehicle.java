@@ -1786,8 +1786,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		/*if (shouldDebug(source)) 
 			System.out.println("D="+amount+" C?"+level.isClientSide+" R?"+hurtRoot+" H="+hitbox+" source "+source);*/
-		if (source.getDirectEntity() != null && source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) 
+		if (!source.isExplosion() && source.getDirectEntity() != null
+				&& source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) {
 			amount = calcDamageFromBullet(source, amount);
+		}
 		float armorDamage = calcDamageToArmor(amount);
 		float healthDamageWithArmorPercent = getHealthDamageWithArmorPercent(source);
 		float healthDamage = armorDamage * healthDamageWithArmorPercent;
@@ -1955,6 +1957,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         
         if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
         else hurtLogic(exp.getDamageSource(), amount, null);
+
+		System.out.println("explode damage = "+amount+" health "+getHealth()+" armor "+getArmor());
         
         Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(DSCPhyCons.EXP_FORCE_FACTOR);
         

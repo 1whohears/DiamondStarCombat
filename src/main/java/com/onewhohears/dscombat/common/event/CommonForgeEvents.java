@@ -37,7 +37,7 @@ public final class CommonForgeEvents {
 		event.setAmount(plane.calcDamageToRider(event.getSource(), event.getAmount()));
 	}
 	
-	private static Set<Integer> explodeRepeatCheck = new HashSet<>();
+	private static final Set<Integer> explodeRepeatCheck = new HashSet<>();
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void explosionEvent(ExplosionEvent.Detonate event) {

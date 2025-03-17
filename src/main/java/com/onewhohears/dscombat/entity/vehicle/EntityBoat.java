@@ -160,7 +160,7 @@ public class EntityBoat extends EntityVehicle {
 
 	@Override
 	public double getMaxSpeedFactor() {
-		return super.getMaxSpeedFactor() * Config.COMMON.boatSpeedFactor.get();
+		return super.getMaxSpeedFactor() * Config.SERVER.boatSpeedFactor.get();
 	}
 	
 	@Override

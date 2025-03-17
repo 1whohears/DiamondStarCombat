@@ -117,7 +117,7 @@ public class EntityPlane extends EntityVehicle {
 
 	@Override
 	public double getMaxSpeedFactor() {
-		return super.getMaxSpeedFactor() * Config.COMMON.planeSpeedFactor.get();
+		return super.getMaxSpeedFactor() * Config.SERVER.planeSpeedFactor.get();
 	}
 	
 	public double getMaxSpeedFromThrottleMod() {

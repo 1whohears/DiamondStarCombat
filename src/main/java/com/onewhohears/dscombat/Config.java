@@ -144,11 +144,6 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue recoverPartWeight;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> dimensionSeaLevels;
-		public final ForgeConfigSpec.DoubleValue vehicleSpeedFactor;
-		public final ForgeConfigSpec.DoubleValue planeSpeedFactor;
-		public final ForgeConfigSpec.DoubleValue heliSpeedFactor;
-		public final ForgeConfigSpec.DoubleValue carSpeedFactor;
-		public final ForgeConfigSpec.DoubleValue boatSpeedFactor;
 		
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("performance");
@@ -171,6 +166,18 @@ public class Config {
 							"minecraft:the_nether!128!512",
 							"minecraft:the_end!0!500"),
 					entry -> ((String)entry).split("!").length == 3);
+			builder.pop();
+		}
+		
+	}
+
+	public static class Server {
+		public final ForgeConfigSpec.DoubleValue vehicleSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue planeSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue heliSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue carSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue boatSpeedFactor;
+		public Server(ForgeConfigSpec.Builder builder) {
 			builder.push("speed_factors");
 			vehicleSpeedFactor = builder.defineInRange("vehicleSpeedFactor", 1.0, 0, 10);
 			planeSpeedFactor = builder.defineInRange("planeSpeedFactor", 1.0, 0, 10);
@@ -178,9 +185,7 @@ public class Config {
 			carSpeedFactor = builder.defineInRange("carSpeedFactor", 1.0, 0, 10);
 			boatSpeedFactor = builder.defineInRange("boatSpeedFactor", 1.0, 0, 10);
 			builder.pop();
-			builder.pop();
 		}
-		
 	}
 	
 	static final ForgeConfigSpec clientSpec;
@@ -188,6 +193,9 @@ public class Config {
 	
 	static final ForgeConfigSpec commonSpec;
 	public static final Config.Common COMMON;
+
+	static final ForgeConfigSpec serverSpec;
+	public static final Config.Server SERVER;
 	
 	static {
         final Pair<Client, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder()
@@ -199,6 +207,11 @@ public class Config {
         		.configure(Config.Common::new);
         commonSpec = commonSpecPair.getRight();
         COMMON = commonSpecPair.getLeft();
+
+		final Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder()
+				.configure(Config.Server::new);
+		serverSpec = serverSpecPair.getRight();
+		SERVER = serverSpecPair.getLeft();
 	}
 	
 }

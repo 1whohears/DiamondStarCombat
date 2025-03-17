@@ -121,7 +121,7 @@ public class EntityHelicopter extends EntityVehicle {
 
 	@Override
 	public double getMaxSpeedFactor() {
-		return super.getMaxSpeedFactor() * Config.COMMON.heliSpeedFactor.get();
+		return super.getMaxSpeedFactor() * Config.SERVER.heliSpeedFactor.get();
 	}
 
 	@Override

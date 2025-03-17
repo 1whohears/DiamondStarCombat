@@ -656,7 +656,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public double getMaxSpeedFactor() {
-		return Config.COMMON.vehicleSpeedFactor.get();
+		return Config.SERVER.vehicleSpeedFactor.get();
 	}
 	
 	/**

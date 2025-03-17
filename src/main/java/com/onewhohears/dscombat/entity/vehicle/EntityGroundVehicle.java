@@ -70,7 +70,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 
 	@Override
 	public double getMaxSpeedFactor() {
-		return super.getMaxSpeedFactor() * Config.COMMON.carSpeedFactor.get();
+		return super.getMaxSpeedFactor() * Config.SERVER.carSpeedFactor.get();
 	}
 
 }

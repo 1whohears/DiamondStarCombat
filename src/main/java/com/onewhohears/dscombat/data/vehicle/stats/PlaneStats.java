@@ -15,6 +15,8 @@ public class PlaneStats extends VehicleStats {
 	public final float wing_area, flapsAOABias, fuselage_lift_area, aoa_drag_factor, centripetal_scale;
 	public final boolean canAimDown;
 	public final String[] wingLiftHitboxNames;
+	public final double cruise_speed, max_ground_speed;
+	public final double builtin_thrust_dry, builtin_thrust_afterburner;
 	private final String wing_lift_k_graph_key, fuselage_lift_k_graph_key, turn_rates_graph_key;
 	private AoaLiftKGraph wing_lift_k_graph, fuselage_lift_k_graph;
 	private TurnRatesBySpeedGraph turn_rates_graph;
@@ -32,6 +34,10 @@ public class PlaneStats extends VehicleStats {
 		wingLiftHitboxNames = UtilParse.getStringArraySafe(plane, "wing_lift_hitbox_names");
 		aoa_drag_factor = UtilParse.getFloatSafe(plane, "aoa_drag_factor", 1);
 		centripetal_scale = UtilParse.getFloatSafe(plane, "centripetal_scale", 0.4f);
+		cruise_speed = UtilParse.getFloatSafe(plane, "cruise_speed", max_speed);
+		max_ground_speed = UtilParse.getFloatSafe(plane, "max_ground_speed", max_speed);
+		builtin_thrust_dry = UtilParse.getFloatSafe(plane, "builtin_thrust_dry", 0);
+		builtin_thrust_afterburner = UtilParse.getFloatSafe(plane, "builtin_thrust_afterburner", (float) builtin_thrust_dry);
 	}
 
 	@Override

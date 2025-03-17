@@ -14,7 +14,7 @@ import net.minecraft.network.FriendlyByteBuf;
  */
 public class VehicleInputManager {
 	
-	public boolean flare, chaff;
+	public boolean flare, chaff, afterburner;
 	public boolean special, special2, bothRoll;
 	public float throttle, pitch, roll, yaw;
 	
@@ -32,7 +32,7 @@ public class VehicleInputManager {
 	
 	public void clientPilotControlsToServer(EntityVehicle parent, 
 			float throttle, float pitch, float roll, float yaw,
-			boolean flare, boolean chaff,
+			boolean flare, boolean chaff, boolean afterburner,
 			boolean special, boolean special2, boolean bothRoll,
 			boolean isDriverCameraLocked) {
 		this.throttle = throttle;
@@ -41,6 +41,7 @@ public class VehicleInputManager {
 		this.yaw = yaw;
 		this.flare = flare;
 		this.chaff = chaff;
+		this.afterburner = afterburner;
 		this.special = special;
 		this.special2 = special2;
 		this.bothRoll = bothRoll;
@@ -55,6 +56,7 @@ public class VehicleInputManager {
 		// raw inputs
 		this.flare = other.flare;
 		this.chaff = other.chaff;
+		this.afterburner = other.afterburner;
 		this.special = other.special;
 		this.special2 = other.special2;
 		this.throttle = other.throttle;
@@ -78,6 +80,7 @@ public class VehicleInputManager {
 		this.yaw = 0;
 		this.flare = false;
 		this.chaff = false;
+		this.afterburner = false;
 		this.special = false;
 		this.special2 = false;
 		this.bothRoll = false;
@@ -92,6 +95,7 @@ public class VehicleInputManager {
 		buffer.writeFloat(yaw);
 		buffer.writeBoolean(flare);
 		buffer.writeBoolean(chaff);
+		buffer.writeBoolean(afterburner);
 		buffer.writeBoolean(special);
 		buffer.writeBoolean(special2);
 		buffer.writeBoolean(bothRoll);
@@ -109,6 +113,7 @@ public class VehicleInputManager {
 		yaw = buffer.readFloat();
 		flare = buffer.readBoolean();
 		chaff = buffer.readBoolean();
+		afterburner = buffer.readBoolean();
 		special = buffer.readBoolean();
 		special2 = buffer.readBoolean();
 		bothRoll = buffer.readBoolean();

@@ -128,7 +128,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<PermMode> PERM_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.PERM_MODE);
-	
+
 	public static final int HITBOX_PUSH_COOLDOWN = 4;
 
 	public final VehicleInputManager inputs;
@@ -3278,5 +3278,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public int getTrackedTicks() {
 		return trackedTicks;
+	}
+
+	public boolean isAfterBurnerEnabled() {
+		return inputs.afterburner;
+	}
+
+	public boolean canUseAfterburner() {
+		return getStats().canUseAfterBurner();
 	}
 }

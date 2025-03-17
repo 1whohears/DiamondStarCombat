@@ -58,6 +58,8 @@ public final class ClientInputEvents {
 		double mouseX = mc.mouseHandler.xpos() - DSCClientInputs.getMouseCenterX();
 		double mouseY = -(mc.mouseHandler.ypos() - DSCClientInputs.getMouseCenterY());
 		boolean flare = DSCKeys.flareKey.isDown();
+		boolean chaff = DSCKeys.chaffKey.isDown();
+		if (DSCKeys.afterBurnerKey.consumeClick()) DSCClientInputs.toggleAfterBurner();
 		boolean flip = DSCKeys.flipControlsKey.isDown();
 		boolean special = DSCKeys.specialKey.isDown();
 		boolean special2 = DSCKeys.special2Key.isDown();
@@ -135,8 +137,8 @@ public final class ClientInputEvents {
 		if (throttleDown) throttle -= 1;
 		vehicle.inputs.clientPilotControlsToServer(vehicle,
 				throttle, pitch, roll, yaw, 
-				flare, false, special, special2,
-				rollLeft && rollRight,
+				flare, chaff, DSCClientInputs.isAfterBurner(),
+				special, special2, rollLeft && rollRight,
 				DSCClientInputs.isCameraLockedForward());
 		if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
 		if (DSCKeys.landingGear.consumeClick()) {

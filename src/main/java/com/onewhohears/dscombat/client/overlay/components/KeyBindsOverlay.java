@@ -48,6 +48,10 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, boolean isUsed, String setting) {
 		displayMapping(poseStack, screenWidth, screenHeight, index, key, UtilMCText.translatable(key.getName()), isUsed, setting);
 	}
+
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, boolean isUsed) {
+		displayMapping(poseStack, screenWidth, screenHeight, index, key, UtilMCText.translatable(key.getName()), isUsed, null);
+	}
     
     protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key) {
     	displayMapping(poseStack, screenWidth, screenHeight, index, key, key.isDown(), null);
@@ -83,7 +87,6 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		assert vehicle != null;
 
 		boolean isPilot = seat.isPilotSeat(), isCoPilot = seat.isCoPilotSeat();
-		// TODO 0.1 until a better way is made, these controls and other info need to be displayed somewhere
 		int index = 0;
 		// MOUSE MODE
 		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.mouseModeKey,
@@ -115,6 +118,9 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// FLARES
 		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				DSCKeys.flareKey, vehicle.getFlareNum()+"");
+		// CHAFF
+		//if (isPilot && vehicle.hasChaff()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+		//		DSCKeys.chaffKey, vehicle.getChaffNum()+"");
 		// CYCLE WEAPON
 		if (isPilot || isCoPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.weaponSelectKey);
 		// RADAR MODE
@@ -129,6 +135,9 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (vehicle.getGimbalForPilotCamera() != null || seat.getCameraYOffset() != 0) displayMapping(poseStack,
 				screenWidth, screenHeight, index++, DSCKeys.gimbalKey,
 				DSCClientInputs.isGimbalMode(), DSCClientInputs.isGimbalMode() ? "ON" : "OFF");
+		// AFTERBURNER
+		if (vehicle.canUseAfterburner()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+				DSCKeys.afterBurnerKey, DSCClientInputs.isAfterBurner());
 	}
 
 	@Override

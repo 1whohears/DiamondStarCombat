@@ -25,6 +25,7 @@ public class DSCClientInputs {
 	private static TargetMode TARGET_MODE = TargetMode.LOOK;
 	
 	private static boolean GIMBAL_MODE = false;
+	private static boolean AFTERBURNER = false;
 	
 	public static RadarMode getPreferredRadarMode() {
 		return PREFERRED_RADAR_MODE;
@@ -254,5 +255,13 @@ public class DSCClientInputs {
 
 	public static void leanNot() {
 		setLeanAmount(0);
+	}
+
+	public static boolean isAfterBurner() {
+		return AFTERBURNER;
+	}
+
+	public static void toggleAfterBurner() {
+		AFTERBURNER = !AFTERBURNER;
 	}
 }

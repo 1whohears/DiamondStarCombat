@@ -307,8 +307,11 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public boolean isStationaryRadar() {
 		return false;
 	}
-	
-	public static class Builder extends IngredientStackBuilder<Builder> {
+    public boolean canUseAfterBurner() {
+		return false;
+    }
+
+    public static class Builder extends IngredientStackBuilder<Builder> {
 		private boolean is_craftable = false;
 		protected Builder(String namespace, String name, VehicleType type) {
 			super(namespace, name, type);

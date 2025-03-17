@@ -23,14 +23,14 @@ public final class DSCKeys {
 	public static KeyMapping yawLeftKey, yawRightKey;
 	public static KeyMapping weaponSelectKey, weaponSelect2Key;
 	public static KeyMapping mouseModeKey, resetMouseKey, gimbalKey;
-	public static KeyMapping shootKey, landingGear, flareKey;
+	public static KeyMapping shootKey, landingGear, flareKey, chaffKey;
 	public static KeyMapping vehicleMenuKey;
 	public static KeyMapping pingCycleKey, radarModeKey;
 	public static KeyMapping changeSeat, dismount, eject;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
 	public static KeyMapping leanLeftKey, leanRightKey;
-	// IDEA 4.2 temp burner boost key
+	public static KeyMapping afterBurnerKey;
 	
 	private static RegisterKeyMappingsEvent event;
 	
@@ -65,8 +65,10 @@ public final class DSCKeys {
 		weaponSelectKey = registerKey("weapon_select_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_G);
 		weaponSelect2Key = registerKey("weapon_select_up_key", VEHICLE_COMBAT_CONTROL, InputConstants.UNKNOWN.getValue());
 		flareKey = registerKey("flare_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_V);
+		chaffKey = registerKey("chaff_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_V);
 		radarModeKey = registerKey("radar_mode_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_O);
 		pingCycleKey = registerKey("ping_cycle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_I);
+		afterBurnerKey = registerKey("afterburner_toggle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_B);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {

@@ -212,7 +212,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 			return false;
 		}
 		if (stealth == -1) return true;
-		double area = UtilVehicleEntity.getCrossSectionalArea(target) * stealth;
+		double area = UtilVehicleEntity.getRadarCrossSectionalArea(target, radar.position()) * stealth;
 		double areaMin = (1-Math.pow(getStats().getRange(),-2)*Math.pow(dist-getStats().getRange(),2))*getStats().getSensitivity();
 		//System.out.println("area = "+area+" min = "+areaMin);
 		return area >= areaMin;

@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.stats;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
+import com.onewhohears.dscombat.data.graph.FloatFloatGraph;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.data.graph.TurnRatesBySpeedGraph;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
@@ -17,9 +18,10 @@ public class PlaneStats extends VehicleStats {
 	public final String[] wingLiftHitboxNames;
 	public final double cruise_speed, max_ground_speed;
 	public final double builtin_thrust_dry, builtin_thrust_afterburner;
-	private final String wing_lift_k_graph_key, fuselage_lift_k_graph_key, turn_rates_graph_key;
+	private final String wing_lift_k_graph_key, fuselage_lift_k_graph_key, turn_rates_graph_key, drag_aoa_graph_key;
 	private AoaLiftKGraph wing_lift_k_graph, fuselage_lift_k_graph;
 	private TurnRatesBySpeedGraph turn_rates_graph;
+	private FloatFloatGraph drag_aoa_graph;
 	
 	public PlaneStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -31,6 +33,7 @@ public class PlaneStats extends VehicleStats {
 		wing_lift_k_graph_key = UtilParse.getStringSafe(plane, "wing_lift_k_graph", "fuselage");
 		fuselage_lift_k_graph_key = UtilParse.getStringSafe(plane, "fuselage_lift_k_graph", "fuselage");
 		turn_rates_graph_key = UtilParse.getStringSafe(plane, "turn_rates_graph", "wooden_plane_turn_rates");
+		drag_aoa_graph_key = UtilParse.getStringSafe(plane, "drag_aoa_graph_key", "default_drag_aoa");
 		wingLiftHitboxNames = UtilParse.getStringArraySafe(plane, "wing_lift_hitbox_names");
 		aoa_drag_factor = UtilParse.getFloatSafe(plane, "aoa_drag_factor", 1);
 		centripetal_scale = UtilParse.getFloatSafe(plane, "centripetal_scale", 0.4f);
@@ -100,4 +103,9 @@ public class PlaneStats extends VehicleStats {
 		return turn_rates_graph;
 	}
 
+	public FloatFloatGraph getDragAoaGraph() {
+		if (drag_aoa_graph == null)
+			drag_aoa_graph = StatGraphs.get().getFloatFloatGraph(drag_aoa_graph_key);
+		return drag_aoa_graph;
+	}
 }

@@ -21,6 +21,7 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 
 	private List<AoaLiftKGraph> aoaLiftKGraphs;
 	private List<TurnRatesBySpeedGraph> turnRateGraphs;
+	private List<FloatFloatGraph> floatFloatGraphs;
 	
 	public StatGraphs() {
 		super("stat_graph");
@@ -33,9 +34,15 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 	}
 	
 	public List<TurnRatesBySpeedGraph> getTurnRateGraphs() {
-		if (turnRateGraphs == null) 
+		if (turnRateGraphs == null)
 			turnRateGraphs = getPresetsOfType(GraphType.TURN_RATES_SPEED);
 		return turnRateGraphs;
+	}
+
+	public List<FloatFloatGraph> getFloatFloatGraphs() {
+		if (floatFloatGraphs == null)
+			floatFloatGraphs = getPresetsOfType(GraphType.FLOATFLOAT);
+		return floatFloatGraphs;
 	}
 	
 	public AoaLiftKGraph getAoaLiftKGraph(String id) {
@@ -49,6 +56,14 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 	public TurnRatesBySpeedGraph getTurnRateGraph(String id) {
 		for (TurnRatesBySpeedGraph g : getTurnRateGraphs()) 
 			if (g.getId().equals(id)) 
+				return g;
+		return null;
+	}
+
+	@Nullable
+	public FloatFloatGraph getFloatFloatGraph(String id) {
+		for (FloatFloatGraph g : getFloatFloatGraphs())
+			if (g.getId().equals(id))
 				return g;
 		return null;
 	}
@@ -70,5 +85,4 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 		addPresetType(GraphType.FLOATFLOAT_MULTI);
 		addPresetType(GraphType.TURN_RATES_SPEED);
 	}
-
 }

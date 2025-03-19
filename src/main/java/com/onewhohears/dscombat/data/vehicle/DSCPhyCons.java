@@ -1,11 +1,35 @@
 package com.onewhohears.dscombat.data.vehicle;
 
+/**
+ * There are 20 minecraft game ticks every second.
+ * Thus, all physics must run at this discrete time interval.
+ * <p></p>
+ * All velocity constants are in Meters / Tick.
+ * <p></p>
+ * m/t = m/s / 20
+ * <p></p>
+ * All Acceleration Constants are in Meters / Tick^2
+ * <p></p>
+ * m/t^2 = m/s^2 / 400
+ */
 public class DSCPhyCons {
-	
-	public static final float GRAVITY = 0.08f;
-	
-	public static final float DRAG = 10f;
-	public static final float DRAG_WATER = 25f;
+
+	/**
+	 * real life acceleration due to gravity (G) is 9.81 m/s^2
+	 * <p></p>
+	 * 9.81 / 400 = 0.025 m/t^2
+	 * <p></p>
+	 * for some reason minecraft G is 0.08 m/t^2 = 32 m/s^2
+	 */
+	public static final double GRAVITY = 0.025f;
+
+	public static final double HORIZONTAL_SPEED_SCALE = 0.1;
+
+	public static final double WATER_FLUID_DENSITY = 1000;
+
+	public static final double DEFAULT_DRAG_C = 100;
+	public static final double INCREASED_LANDING_GEAR_DRAG_AREA = 2;
+
 	public static final float LIFT = 70f;
 	public static final float FLOAT = 150f;
 	

@@ -40,4 +40,9 @@ public class EntityStationaryVehicle extends EntityVehicle {
     public boolean canToggleLandingGear() {
         return false;
     }
+
+    @Override
+    public boolean canDriveOnGround() {
+        return false;
+    }
 }

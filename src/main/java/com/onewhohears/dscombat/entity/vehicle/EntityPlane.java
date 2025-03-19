@@ -4,6 +4,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
+import com.onewhohears.dscombat.data.graph.FloatFloatGraph;
 import com.onewhohears.dscombat.data.graph.TurnRatesBySpeedGraph;
 import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
@@ -21,7 +22,7 @@ public class EntityPlane extends EntityVehicle {
 
 	private static final float AOA_CHANGE_RATE = 0.5f;
 
-	private float aoa, liftK, airFoilSpeedSqr, airSpeed, fuselageAoa, fuselageLiftK;
+	private float aoa, liftK, airFoilSpeedSqr, airSpeed, fuselageAoa, fuselageLiftK, dragC;
 	private float centripetalForce, centrifugalForce; 
 	private double wingLiftMag, maxSpeedMod = 1, arcadeIgnoreGravityFactor;
 	private Vec3 liftDir = Vec3.ZERO, liftForce = Vec3.ZERO;
@@ -36,18 +37,6 @@ public class EntityPlane extends EntityVehicle {
 	public VehicleType getVehicleType() {
 		return VehicleType.PLANE;
 	}
-	
-	@Override
-	public void directionAir(Quaternion q) {
-		super.directionAir(q);
-		if (!isOperational()) return;
-		if (canControlPitch()) addMomentX(inputs.pitch * getPitchTorque(), true);
-		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
-		if (canControlRoll()) {
-			if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
-			else addMomentZ(inputs.roll * getRollTorque(), true);
-		}
-	}
 
 	@Override
 	public void tick() {
@@ -56,12 +45,12 @@ public class EntityPlane extends EntityVehicle {
 	}
 
 	@Override
-	public void tickAlways(Quaternion q) {
-		super.tickAlways(q);
+	public void calcUniversalForces(Quaternion q) {
+		super.calcUniversalForces(q);
 		if (isArcadeMode) {
-			setForces(getForces().add(getWeightForce().scale(-getArcadeIgnoreGravityFactor())));
-			if (isOnGround() && isFlapsDown()) setForces(getForces().add(0, 200, 0));
-		} else setForces(getForces().add(getLiftForce(q)));
+			addForce(getWeightForce().scale(-getArcadeIgnoreGravityFactor()));
+			if (isOnGround() && isFlapsDown()) addForce(new Vec3(0, 200, 0));
+		} else addForce(getLiftForce(q));
 	}
 
 	protected void calcIgnoreGravityFactor(Quaternion q) {
@@ -143,11 +132,6 @@ public class EntityPlane extends EntityVehicle {
 		return inputs.special;
 	}
 	
-	@Override
-	public void tickAir(Quaternion q) {
-		super.tickAir(q);
-	}
-	
 	protected void calculateAOA(Quaternion q) {
 		Vec3 u = getDeltaMovement();
 		Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
@@ -172,12 +156,14 @@ public class EntityPlane extends EntityVehicle {
 		// find liftK
 		liftK = getWingLiftKGraph().getLerpFloat(aoa);
 		fuselageLiftK = getFuselageLiftKGraph().getLerpFloat(fuselageAoa);
+		// dragC
+		dragC = getDragAoaGraph().getLerpFloat(aoa);
 	}
 	
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		wingLiftMag = liftK * airPressure * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT * getWingLiftPercent();
-        double fuselageLift = fuselageLiftK * airPressure * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
+		wingLiftMag = liftK * getFluidDensity() * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT * getWingLiftPercent();
+        double fuselageLift = fuselageLiftK * getFluidDensity() * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
 		double cenScale = getCentripetalScale();
 		liftForce = liftDir.scale(getLiftMag()).multiply(cenScale, 1, cenScale).add(0, fuselageLift, 0);
 	}
@@ -204,15 +190,8 @@ public class EntityPlane extends EntityVehicle {
 		return UtilAngles.getRollAxis(q).scale(getPushThrustMag());
 	}
 	
-	@Override
-	public double getCrossSectionArea() {
-		double area = super.getCrossSectionArea();
-		double aoaSin = Math.sin(Math.toRadians(aoa));
-		area += getWingSurfaceArea() * aoaSin * getAOADragFactor();
-		double aoaCos = Math.cos(Math.toRadians(aoa));
-		if (isLandingGear()) area += 10.0 * aoaCos;
-		if (isFlapsDown()) area += getWingSurfaceArea() / 4 * aoaCos;
-		return area;
+	public double getDragCoefficient() {
+		return dragC;
 	}
 
 	public float getAOA() {
@@ -251,6 +230,10 @@ public class EntityPlane extends EntityVehicle {
 	
 	public AoaLiftKGraph getFuselageLiftKGraph() {
 		return getPlaneStats().getFuselageLiftKGraph();
+	}
+
+	public FloatFloatGraph getDragAoaGraph() {
+		return getPlaneStats().getDragAoaGraph();
 	}
 
 	@Override

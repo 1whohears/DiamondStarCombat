@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
 
@@ -19,8 +20,8 @@ import javax.annotation.Nullable;
 
 public class UtilVehicleEntity {
 
-    public static double getCrossSectionalArea(Entity entity) {
-        if (entity instanceof EntityVehicle plane) return plane.getCrossSectionArea();
+    public static double getRadarCrossSectionalArea(Entity entity, Vec3 radarPos) {
+        if (entity instanceof EntityVehicle plane) return plane.getRadarArea(radarPos);
         double area = entity.getBbHeight()*entity.getBbWidth();
         if (entity.getType().is(ModTags.EntityTypes.VEHICLE)) return Math.max(area, 1);
         return area;
@@ -39,7 +40,7 @@ public class UtilVehicleEntity {
         return false;
     }
 
-    public static double getAirPressure(Entity entity) {
+    public static double getAirDensity(Entity entity) {
         return SeaLevels.getAirPressure(entity.getLevel().dimension(), entity.getY());
     }
 

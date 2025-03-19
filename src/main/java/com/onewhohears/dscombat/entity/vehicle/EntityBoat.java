@@ -27,42 +27,23 @@ public class EntityBoat extends EntityVehicle {
 	public VehicleType getVehicleType() {
 		return VehicleType.BOAT;
 	}
-	
+
 	@Override
-	public void directionGround(Quaternion q) {
-		flatten(q, 4f, 4f, true);
-		if (!isOperational()) return;
-		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque() * 0.1f, true);
+	public void applyBreaks() {
+		throttleToZero();
+		super.applyBreaks();
 	}
-	
-	@Override
-	public void directionWater(Quaternion q) {
-		if (!isOperational()) return;
-		flatten(q, 2f, 2f, true);
-		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
-	}
-	
-	@Override
-	public void tickMovement(Quaternion q) {
-		if (inputs.special) throttleToZero();
-		super.tickMovement(q);
-	}
-	
-	@Override
-	public void tickGround(Quaternion q) {
-		addFrictionForce(kineticFric);
-	}
-	
+
 	@Override
 	public double getDriveAcc() {
 		return 0;
 	}
 	
 	@Override
-	public void tickWater(Quaternion q) {
-		super.tickWater(q);
+	public void calcWaterMovement(Quaternion q) {
+		super.calcWaterMovement(q);
 		if (!checkInWater()) return;
-		if (canBrake() && isBraking()) addFrictionForce(2000);
+		flatten(q, 2f, 2f, true);
 		tickFloat();
 	}
 	
@@ -118,15 +99,6 @@ public class EntityBoat extends EntityVehicle {
 		return isOperational();
 	}
 	
-	@Override
-	public void tickGroundWater(Quaternion q) {
-		tickWater(q);
-		Vec3 motion = getDeltaMovement();
-		if (motion.y < 0) motion = motion.multiply(1, 0, 1);
-		motion = motion.multiply(0.5, 1, 0.5);
-		setDeltaMovement(motion);
-	}
-	
 	protected boolean checkInWater() {
 		AABB aabb = getBoundingBox();
 		int i = Mth.floor(aabb.minX);
@@ -172,8 +144,7 @@ public class EntityBoat extends EntityVehicle {
 	public Vec3 getThrustForce(Quaternion q) {
 		if (!isInWater()) return Vec3.ZERO;
 		Vec3 direction = UtilAngles.getRollAxis(q);
-		Vec3 thrustForce = direction.scale(getPushThrustMag());
-		return thrustForce;
+        return direction.scale(getPushThrustMag());
 	}
 	
 	@Override
@@ -208,6 +179,21 @@ public class EntityBoat extends EntityVehicle {
 
 	@Override
 	public boolean canToggleLandingGear() {
+		return false;
+	}
+
+	@Override
+	public boolean isPitchControllable() {
+		return false;
+	}
+
+	@Override
+	public boolean isRollControllable() {
+		return false;
+	}
+
+	@Override
+	public boolean canDriveOnGround() {
 		return false;
 	}
 

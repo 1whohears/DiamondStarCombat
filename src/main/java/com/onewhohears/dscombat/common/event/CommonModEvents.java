@@ -23,7 +23,6 @@ public final class CommonModEvents {
 	public static void loadModConfigEvent(ModConfigEvent.Loading event) {
 		if (event.getConfig().getType() == Type.COMMON) {
 			RadarTargetTypes.get().readConfig();
-			SeaLevels.readConfig();
 		}
 	}
 	
@@ -31,7 +30,6 @@ public final class CommonModEvents {
 	public static void reloadModConfigEvent(ModConfigEvent.Reloading event) {
 		if (event.getConfig().getType() == Type.COMMON) {
 			RadarTargetTypes.get().readConfig();
-			SeaLevels.readConfig();
 		}
 	}
 

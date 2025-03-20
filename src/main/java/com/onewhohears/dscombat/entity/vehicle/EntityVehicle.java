@@ -532,8 +532,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public double getAngularDragFactor() {
-		if (onGround) return 10;
-		else return 1;
+		if (onGround) return 0.9;
+		else return 0.5;
 	}
 
 	protected void calcRotAcc(Quaternion q) {
@@ -759,7 +759,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void motionClamp() {
 		Vec3 move = getDeltaMovement();
-		double maxXZ = getMaxSpeedForMotion();
+		double goalMaxXZ = getMaxSpeedForMotion();
+		// put smoothing here
+		double maxXZ = goalMaxXZ;
 		
 		Vec3 motionXZ = new Vec3(move.x, 0, move.z);
 		double velXZ = motionXZ.length();
@@ -795,11 +797,19 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * @return the max speed {@link EntityVehicle#motionClamp} tests for.
 	 */
 	public double getMaxSpeedForMotion() {
-		return getMaxSpeed() * getMaxSpeedFactor();
+		double max;
+		if (isOnGround()) max = getMaxGroundSpeed();
+		else max = getMaxSpeed();
+		if (applyHorizontalSpeedScale()) max *= getHorizontalSpeedScale();
+		return max * getMaxSpeedFactor();
 	}
 
 	public double getMaxSpeedFactor() {
 		return Config.SERVER.vehicleSpeedFactor.get();
+	}
+
+	public double getMaxGroundSpeed() {
+		return getStats().max_ground_speed;
 	}
 	
 	/**
@@ -964,11 +974,20 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * F=M*A -> A=F/M then A is added to current velocity
 	 */
 	public void calcAcc() {
-		//if (!addForceBetweenTicks.equals(Vec3.ZERO)) System.out.println("add force "+addForceBetweenTicks+" "+this);
 		Vec3 f = getForces().add(addForceBetweenTicks);
-		double s = 1/getTotalMass();
-		setDeltaMovement(getDeltaMovement().add(f.scale(s)));
+		if (applyHorizontalSpeedScale())
+			f = f.multiply(getHorizontalSpeedScale(), 1, getHorizontalSpeedScale());
+		double massScale = 1/getTotalMass();
+		setDeltaMovement(getDeltaMovement().add(f.scale(massScale).scale(DSCPhyCons.FORCE_TIME_SCALE)));
 		addForceBetweenTicks = Vec3.ZERO;
+	}
+
+	public boolean applyHorizontalSpeedScale() {
+		return getStats().use_horizontal_speed_scale;
+	}
+
+	public double getHorizontalSpeedScale() {
+		return DSCPhyCons.HORIZONTAL_SPEED_SCALE;
 	}
 	
 	@Override
@@ -1100,12 +1119,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public double getDragMag() {
 		// Drag = (drag coefficient) * (air density) * (speed)^2 * (drag area) / 2
-		double speedSqr = getDeltaMovement().lengthSqr();
+		double speedSqr = getDeltaMovement().lengthSqr() * 400; // m/s
         return 0.5 * getFluidDensity() * speedSqr * getDragArea() * getDragCoefficient();
 	}
 
 	public double getDragArea() {
-		double a = getBaseCrossSecArea();
+		double a = getStats().drag_area;
 		if (canToggleLandingGear() && isLandingGear())
 			a += DSCPhyCons.INCREASED_LANDING_GEAR_DRAG_AREA;
 		return a;
@@ -1961,7 +1980,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * @return the max speed of the craft along the x and z axis
 	 */
     public final float getMaxSpeed() {
-    	return getStats().max_speed;
+		if (isUsingAfterburner()) return getStats().max_speed;
+		return getStats().cruise_speed;
     }
     
     /**
@@ -3270,6 +3290,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public boolean canUseAfterburner() {
 		return getStats().canUseAfterBurner();
+	}
+
+	public boolean isUsingAfterburner() {
+		return canUseAfterburner() && isAfterBurnerEnabled() && getCurrentThrottle() > 0.8;
 	}
 
 	public double getFluidDensity() {

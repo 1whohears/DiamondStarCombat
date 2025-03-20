@@ -15,22 +15,32 @@ package com.onewhohears.dscombat.data.vehicle;
 public class DSCPhyCons {
 
 	/**
+	 * All force units in stat files are in m/s^2
+	 * <p></p>
+	 * accelerations are applies 20 times a second so they must be converted is
+	 * {@link com.onewhohears.dscombat.entity.vehicle.EntityVehicle#calcAcc()}
+	 */
+	public static final double FORCE_TIME_SCALE = 1.0 / 20.0 / 20.0;
+
+	/**
 	 * real life acceleration due to gravity (G) is 9.81 m/s^2
 	 * <p></p>
 	 * 9.81 / 400 = 0.025 m/t^2
 	 * <p></p>
 	 * for some reason minecraft G is 0.08 m/t^2 = 32 m/s^2
 	 */
-	public static final double GRAVITY = 0.025f;
+	public static final double GRAVITY = 9.81;
 
+	/**
+	 * all stats
+	 */
 	public static final double HORIZONTAL_SPEED_SCALE = 0.1;
 
 	public static final double WATER_FLUID_DENSITY = 1000;
 
 	public static final double DEFAULT_DRAG_C = 100;
-	public static final double INCREASED_LANDING_GEAR_DRAG_AREA = 2;
+	public static final double INCREASED_LANDING_GEAR_DRAG_AREA = 100;
 
-	public static final float LIFT = 70f;
 	public static final float FLOAT = 150f;
 	
 	public static final float STATIC_FRICTION = 1f;

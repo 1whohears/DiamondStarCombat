@@ -40,9 +40,9 @@ import net.minecraft.world.phys.Vec3;
 public abstract class VehicleStats extends JsonPresetStats {
 	
 	// basic
-	public final float max_health, max_speed, mass;
+	public final float max_health, max_speed, mass, max_ground_speed;
 	// defense
-	public final float stealth, cross_sec_area, idleheat;
+	public final float stealth, cross_sec_area, idleheat, drag_area;
 	public final float base_armor, armor_damage_threshold, armor_damage_absorbtion;
 	// turn
 	public final float turn_radius;
@@ -58,8 +58,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final float crashExplosionRadius;
 	public final float max_push_thrust_per_engine;
 	public final float max_spin_thrust_per_engine;
+	public final float max_afterburner_push_thrust_per_engine;
 	public final float heat_per_engine;
 	public final float fuel_consume_per_engine;
+	public final boolean use_horizontal_speed_scale;
+	private final boolean has_afterburner;
+	public final float cruise_speed;
 	// appearance
 	public final int baseTextureVariants, textureLayers;
 	public final Vec3[] afterBurnerSmokePos;
@@ -86,9 +90,11 @@ public abstract class VehicleStats extends JsonPresetStats {
 		JsonObject stats = UtilParse.getJsonSafe(json, "stats");
 		max_health = UtilParse.getFloatSafe(stats, "max_health", 10);
 		max_speed = UtilParse.getFloatSafe(stats, "max_speed", 0.1f);
+		max_ground_speed = UtilParse.getFloatSafe(stats, "max_ground_speed", max_speed);
 		mass = UtilParse.getFloatSafe(stats, "mass", 1000);
 		stealth = UtilParse.getFloatSafe(stats, "stealth", 1);
 		cross_sec_area = UtilParse.getFloatSafe(stats, "cross_sec_area", 10);
+		drag_area = UtilParse.getFloatSafe(stats, "drag_area", cross_sec_area);
 		idleheat = UtilParse.getFloatSafe(stats, "idleheat", 10);
 		base_armor = UtilParse.getFloatSafe(stats, "base_armor", 0);
 		armor_damage_threshold = UtilParse.getFloatSafe(stats, "armor_damage_threshold", 0);
@@ -119,8 +125,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 		groundXTilt = UtilParse.getIntSafe(stats, "groundXTilt", 0);
 		max_push_thrust_per_engine = UtilParse.getFloatSafe(stats, "max_push_thrust_per_engine", -1);
 		max_spin_thrust_per_engine = UtilParse.getFloatSafe(stats, "max_spin_thrust_per_engine", -1);
+		max_afterburner_push_thrust_per_engine = UtilParse.getFloatSafe(stats, "max_afterburner_push_thrust_per_engine", max_push_thrust_per_engine);
+		has_afterburner = max_afterburner_push_thrust_per_engine > max_push_thrust_per_engine;
 		heat_per_engine = UtilParse.getFloatSafe(stats, "heat_per_engine", -1);
 		fuel_consume_per_engine = UtilParse.getFloatSafe(stats, "fuel_consume_per_engine", -1);
+		use_horizontal_speed_scale = UtilParse.getBooleanSafe(stats, "use_horizontal_speed_scale", false);
+		cruise_speed = UtilParse.getFloatSafe(stats, "cruise_speed", max_speed);
 		if (json.has("textures")) {
 			JsonObject textures = json.get("textures").getAsJsonObject();
 			baseTextureVariants = UtilParse.getIntSafe(textures, "baseTextureVariants", 1);
@@ -308,7 +318,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		return false;
 	}
     public boolean canUseAfterBurner() {
-		return false;
+		return has_afterburner;
     }
 
     public static class Builder extends IngredientStackBuilder<Builder> {
@@ -966,6 +976,17 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * all vehicles
 		 */
+		public Builder setPushEngineOverrideAfterburnerStats(float max_push_thrust_per_engine,
+															 float max_afterburner_push_thrust_per_engine,
+															 float heat_per_engine, float fuel_consume_per_engine) {
+			setStatFloat("max_push_thrust_per_engine", max_push_thrust_per_engine);
+			setStatFloat("max_afterburner_push_thrust_per_engine", max_afterburner_push_thrust_per_engine);
+			setStatFloat("heat_per_engine", heat_per_engine);
+			return setStatFloat("fuel_consume_per_engine", fuel_consume_per_engine);
+		}
+		/**
+		 * all vehicles
+		 */
 		public Builder setSpinEngineOverrideStats(float max_spin_thrust_per_engine,
 												  float heat_per_engine, float fuel_consume_per_engine) {
 			setStatFloat("max_spin_thrust_per_engine", max_spin_thrust_per_engine);
@@ -1157,6 +1178,40 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder setIsStationaryRadar(boolean radar) {
 			return setTypedStatBoolean("isStationaryRadar", radar, "stationary");
+		}
+
+		/**
+		 * all vehicles
+		 */
+		public Builder setUseHorizontalSpeedScale(boolean apply) {
+			return setStatBoolean("use_horizontal_speed_scale", apply);
+		}
+
+		/**
+		 * all vehicles
+		 */
+		public Builder setMaxGroundSpeed(float speed) {
+			return setStatFloat("max_ground_speed", speed);
+		}
+
+		/**
+		 * planes only
+		 */
+		public Builder setCruiseSpeed(float speed) {
+			return setStatFloat("cruise_speed", speed);
+		}
+
+		/**
+		 * planes only
+		 */
+		public Builder setPlaneSpeeds(float max_speed, float cruise_speed, float max_takeoff_speed) {
+			setCruiseSpeed(cruise_speed);
+			setMaxGroundSpeed(max_takeoff_speed);
+			return setMaxSpeed(max_speed);
+		}
+
+		public Builder setDragArea(float drag_area) {
+			return setFloat("drag_area", drag_area);
 		}
 
 		public Builder setBoolean(String key, boolean value) {

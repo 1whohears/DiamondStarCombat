@@ -10,6 +10,7 @@
   ],
   "armor": 40.0,
   "displayName": "preset.dscombat.alexis_plane_empty",
+  "drag_area": 0.49,
   "health": 100.0,
   "hitboxes": [
     {
@@ -350,8 +351,11 @@
     "cameraDistance": 17.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 4.0,
+    "cruise_speed": 12.96,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
+    "fuel_consume_per_engine": 0.02,
+    "heat_per_engine": 10.0,
     "hitboxes_control_pitch": [
       "left_elevator",
       "right_elevator"
@@ -364,20 +368,23 @@
       "tail"
     ],
     "idleheat": 4.0,
-    "inertiapitch": 8.0,
-    "inertiaroll": 4.0,
-    "inertiayaw": 2.0,
-    "mass": 8500.0,
-    "max_altitude": 630.0,
+    "inertiapitch": 80187.1,
+    "inertiaroll": 9086.7,
+    "inertiayaw": 85602.3,
+    "mass": 8573.0,
+    "max_afterburner_push_thrust_per_engine": 131000.0,
+    "max_altitude": 750.0,
+    "max_ground_speed": 5.19,
     "max_health": 100.0,
-    "max_speed": 1.4,
+    "max_push_thrust_per_engine": 76310.0,
+    "max_speed": 30.25,
     "maxpitch": 2.5,
     "maxroll": 6.0,
     "maxyaw": 1.5,
     "plane": {
       "canAimDown": false,
-      "flapsAOABias": 8.0,
-      "fuselage_lift_area": 18.0,
+      "flapsAOABias": 13.0,
+      "fuselage_lift_area": 18.67,
       "fuselage_lift_k_graph": "fuselage",
       "turn_rates_graph": "alexis_plane_turn_rates",
       "wing_area": 28.0,
@@ -391,10 +398,11 @@
     "stealth": 0.9,
     "throttledown": 0.08,
     "throttleup": 0.04,
-    "torquepitch": 2.0,
-    "torqueroll": 1.5,
-    "torqueyaw": 4.0,
-    "turn_radius": 10.0
+    "torquepitch": 40000.0,
+    "torqueroll": 4000.0,
+    "torqueyaw": 20000.0,
+    "turn_radius": 10.0,
+    "use_horizontal_speed_scale": true
   },
   "textures": {
     "baseTextureVariants": 2,

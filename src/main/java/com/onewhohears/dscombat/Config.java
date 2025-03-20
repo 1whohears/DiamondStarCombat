@@ -143,7 +143,6 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue gasCanXpRepairRate;
 		public final ForgeConfigSpec.DoubleValue recoverPartWeight;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> dimensionSeaLevels;
 		
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("performance");
@@ -161,11 +160,6 @@ public class Config {
 			radarMobs = builder.defineList("radarMobs",
                     List.of("net.minecraft.world.entity.Mob"),
 					entry -> UtilEntity.getEntityClass((String)entry) != null);
-			dimensionSeaLevels = builder.defineList("dimensionSeaLevels",
-					List.of("minecraft:overworld!70!2500",
-							"minecraft:the_nether!128!512",
-							"minecraft:the_end!0!500"),
-					entry -> ((String)entry).split("!").length == 3);
 			builder.pop();
 		}
 		

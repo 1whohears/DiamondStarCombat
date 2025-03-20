@@ -101,7 +101,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public double getMaxSpeedForMotion() {
-		return super.getMaxSpeedForMotion()  * getMaxSpeedFromThrottleMod();
+		return super.getMaxSpeedForMotion() * getMaxSpeedFromThrottleMod();
 	}
 
 	@Override
@@ -114,12 +114,13 @@ public class EntityPlane extends EntityVehicle {
 	}
 
 	protected void calcMaxSpeedMod() {
-		if (isOnGround()) maxSpeedMod = 1;
+		/*if (isOnGround()) maxSpeedMod = 1;
 		float th = getCurrentThrottle();
 		double goal;
 		if (th < 0.5) goal = 0.6;
 		else goal = 0.6 + 0.8 * (th - 0.5);
-		maxSpeedMod = Mth.lerp(0.015, maxSpeedMod, goal);
+		maxSpeedMod = Mth.lerp(0.015, maxSpeedMod, goal);*/
+		maxSpeedMod = 1;
 	}
 	
 	@Override
@@ -154,16 +155,17 @@ public class EntityPlane extends EntityVehicle {
 		aoa = Mth.lerp(AOA_CHANGE_RATE, aoa, goalAOA);
 		fuselageAoa = Mth.lerp(AOA_CHANGE_RATE, fuselageAoa, goalFuselageAOA);
 		// find liftK
-		liftK = getWingLiftKGraph().getLerpFloat(aoa);
-		fuselageLiftK = getFuselageLiftKGraph().getLerpFloat(fuselageAoa);
+		float speedScaleSqr = (float) (1 / getHorizontalSpeedScale() / getHorizontalSpeedScale() * 400);
+        liftK = getWingLiftKGraph().getLerpFloat(aoa) * speedScaleSqr;
+		fuselageLiftK = getFuselageLiftKGraph().getLerpFloat(fuselageAoa) * speedScaleSqr;
 		// dragC
 		dragC = getDragAoaGraph().getLerpFloat(aoa);
 	}
 	
 	protected void calculateLift(Quaternion q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-		wingLiftMag = liftK * getFluidDensity() * airFoilSpeedSqr * getWingSurfaceArea() * DSCPhyCons.LIFT * getWingLiftPercent();
-        double fuselageLift = fuselageLiftK * getFluidDensity() * airFoilSpeedSqr * getFuselageLiftArea() * DSCPhyCons.LIFT;
+		wingLiftMag = liftK * getFluidDensity() * airFoilSpeedSqr * getWingSurfaceArea() * getWingLiftPercent();
+        double fuselageLift = fuselageLiftK * getFluidDensity() * airFoilSpeedSqr * getFuselageLiftArea();
 		double cenScale = getCentripetalScale();
 		liftForce = liftDir.scale(getLiftMag()).multiply(cenScale, 1, cenScale).add(0, fuselageLift, 0);
 	}
@@ -306,10 +308,6 @@ public class EntityPlane extends EntityVehicle {
 
 	public TurnRatesBySpeedGraph getTurnRateGraph() {
 		return getPlaneStats().getTurnRatesGraph();
-	}
-
-	public double getAOADragFactor() {
-		return getPlaneStats().aoa_drag_factor;
 	}
 
 	public PlaneStats getPlaneStats() {

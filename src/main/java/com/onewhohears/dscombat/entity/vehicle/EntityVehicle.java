@@ -557,7 +557,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	protected void calcRotAcc(Quaternion q) {
-		Vec3 m = getMoment().add(addMomentBetweenTicks), av = getAngularVel();
+		Vec3 m = getMoment().add(addMomentBetweenTicks).scale(DSCPhyCons.ACC_TIME_SCALE);
+		Vec3 av = getAngularVel();
 		if (!UtilGeometry.isZero(m)) {
 			Vec3 I = getTotalRotInertia();
 			av = av.add(m.x/I.x, m.y/I.y, m.z/I.z);
@@ -998,7 +999,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (applyHorizontalSpeedScale())
 			f = f.multiply(getHorizontalSpeedScale(), 1, getHorizontalSpeedScale());
 		double massScale = 1/getTotalMass();
-		setDeltaMovement(getDeltaMovement().add(f.scale(massScale).scale(DSCPhyCons.FORCE_TIME_SCALE)));
+		setDeltaMovement(getDeltaMovement().add(f.scale(massScale).scale(DSCPhyCons.ACC_TIME_SCALE)));
 		addForceBetweenTicks = Vec3.ZERO;
 	}
 

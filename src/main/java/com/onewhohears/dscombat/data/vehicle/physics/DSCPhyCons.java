@@ -20,7 +20,7 @@ public class DSCPhyCons {
 	 * accelerations are applies 20 times a second so they must be converted is
 	 * {@link com.onewhohears.dscombat.entity.vehicle.EntityVehicle#calcAcc()}
 	 */
-	public static final double FORCE_TIME_SCALE = 1.0 / 20.0 / 20.0;
+	public static final double ACC_TIME_SCALE = 1.0 / 20.0 / 20.0;
 
 	/**
 	 * real life acceleration due to gravity (G) is 9.81 m/s^2

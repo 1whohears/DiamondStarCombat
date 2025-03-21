@@ -189,7 +189,7 @@
       "hitbox": "left_wing",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 4.0,
+      "input_rotation_max": 8.0,
       "input_type": "LEFT_FLAP",
       "lift_k_graph": "alexis_plane",
       "pos": {
@@ -208,7 +208,7 @@
       "hitbox": "right_wing",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 4.0,
+      "input_rotation_max": 8.0,
       "input_type": "RIGHT_FLAP",
       "lift_k_graph": "alexis_plane",
       "pos": {
@@ -220,6 +220,63 @@
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
+      }
+    },
+    {
+      "area": 2.0,
+      "hitbox": "left_elevator",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 20.0,
+      "input_type": "ELEVATOR",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 2.61,
+        "y": 0.39,
+        "z": -6.1
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "area": 2.0,
+      "hitbox": "right_elevator",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 20.0,
+      "input_type": "ELEVATOR",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": -2.61,
+        "y": 0.39,
+        "z": -6.1
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "area": 4.0,
+      "hitbox": "tail",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 8.0,
+      "input_type": "STABILIZER",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 0.0,
+        "y": 2.63,
+        "z": -5.07
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 90.0
       }
     }
   ],

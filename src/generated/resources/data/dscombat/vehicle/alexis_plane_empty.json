@@ -194,8 +194,8 @@
       "lift_k_graph": "alexis_plane",
       "pos": {
         "x": 4.43,
-        "y": 0.27,
-        "z": -0.85
+        "y": 0.0,
+        "z": 0.0
       },
       "rotation": {
         "x": 0.0,
@@ -213,8 +213,8 @@
       "lift_k_graph": "alexis_plane",
       "pos": {
         "x": -4.43,
-        "y": 0.27,
-        "z": -0.85
+        "y": 0.0,
+        "z": 0.0
       },
       "rotation": {
         "x": 0.0,
@@ -232,7 +232,7 @@
       "lift_k_graph": "alexis_plane",
       "pos": {
         "x": 2.61,
-        "y": 0.39,
+        "y": 0.0,
         "z": -6.1
       },
       "rotation": {
@@ -251,7 +251,7 @@
       "lift_k_graph": "alexis_plane",
       "pos": {
         "x": -2.61,
-        "y": 0.39,
+        "y": 0.0,
         "z": -6.1
       },
       "rotation": {

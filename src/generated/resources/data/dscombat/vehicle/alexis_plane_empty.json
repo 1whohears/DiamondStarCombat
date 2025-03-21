@@ -185,11 +185,11 @@
   "landing_gear": true,
   "physics_components": [
     {
-      "area": 12.0,
+      "area": 10.0,
       "hitbox": "left_wing",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 8.0,
+      "input_rotation_max": 13.0,
       "input_type": "LEFT_FLAP",
       "lift_k_graph": "alexis_plane",
       "pos": {
@@ -204,11 +204,11 @@
       }
     },
     {
-      "area": 12.0,
+      "area": 10.0,
       "hitbox": "right_wing",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 8.0,
+      "input_rotation_max": 13.0,
       "input_type": "RIGHT_FLAP",
       "lift_k_graph": "alexis_plane",
       "pos": {
@@ -223,11 +223,11 @@
       }
     },
     {
-      "area": 2.0,
+      "area": 4.0,
       "hitbox": "left_elevator",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 20.0,
+      "input_rotation_max": 25.0,
       "input_type": "ELEVATOR",
       "lift_k_graph": "alexis_plane",
       "pos": {
@@ -242,11 +242,11 @@
       }
     },
     {
-      "area": 2.0,
+      "area": 4.0,
       "hitbox": "right_elevator",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 20.0,
+      "input_rotation_max": 25.0,
       "input_type": "ELEVATOR",
       "lift_k_graph": "alexis_plane",
       "pos": {
@@ -261,16 +261,16 @@
       }
     },
     {
-      "area": 4.0,
+      "area": 8.0,
       "hitbox": "tail",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 8.0,
+      "input_rotation_max": 10.0,
       "input_type": "STABILIZER",
       "lift_k_graph": "alexis_plane",
       "pos": {
         "x": 0.0,
-        "y": 2.63,
+        "y": 0.0,
         "z": -5.07
       },
       "rotation": {

@@ -41,6 +41,8 @@ public class DSCPhyCons {
 	public static final double DEFAULT_DRAG_C = 100;
 	public static final double INCREASED_LANDING_GEAR_DRAG_AREA = 100;
 
+	public static final float AOA_CHANGE_RATE = 0.5f;
+
 	public static final float FLOAT = 150f;
 	
 	public static final float STATIC_FRICTION = 1f;

@@ -20,8 +20,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class EntityPlane extends EntityVehicle {
 
-	private static final float AOA_CHANGE_RATE = 0.5f;
-
 	private float aoa, liftK, airFoilSpeedSqr, airSpeed, fuselageAoa, fuselageLiftK, dragC;
 	private float centripetalForce, centrifugalForce; 
 	private double wingLiftMag, maxSpeedMod = 1, arcadeIgnoreGravityFactor;

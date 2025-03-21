@@ -9,6 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
@@ -64,6 +65,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final boolean use_horizontal_speed_scale;
 	private final boolean has_afterburner;
 	public final float cruise_speed;
+	private final PhysicsComponentData[] physics_components;
 	// appearance
 	public final int baseTextureVariants, textureLayers;
 	public final Vec3[] afterBurnerSmokePos;
@@ -153,6 +155,16 @@ public abstract class VehicleStats extends JsonPresetStats {
 		controllYawHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_yaw");
 		controllRollHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_roll");
 		display_name_base = UtilParse.getStringSafe(json, "display_name_base", "item.dscombat."+getAssetId());
+		if (json.has("physics_components")) {
+			JsonArray ja = json.get("physics_components").getAsJsonArray();
+			physics_components = new PhysicsComponentData[ja.size()];
+			for (int i = 0; i < physics_components.length; ++i) {
+				JsonObject jo = ja.get(i).getAsJsonObject();
+				PhysicsComponentData data = PhysicsComponentData.getData(jo);
+				if (data == null) continue;
+				physics_components[i] = data;
+			}
+		} else physics_components = new PhysicsComponentData[0];
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -277,6 +289,10 @@ public abstract class VehicleStats extends JsonPresetStats {
 
 	public MutableComponent getBaseDisplayName() {
 		return UtilMCText.translatable(display_name_base);
+	}
+
+	public PhysicsComponentData[] getPhysicsComponents() {
+		return physics_components;
 	}
 	
 	@Override
@@ -1208,6 +1224,17 @@ public abstract class VehicleStats extends JsonPresetStats {
 			setCruiseSpeed(cruise_speed);
 			setMaxGroundSpeed(max_takeoff_speed);
 			return setMaxSpeed(max_speed);
+		}
+
+		protected JsonArray getPhysicsComponents() {
+			if (!getData().has("physics_components"))
+				getData().add("physics_components", new JsonArray());
+			return getData().get("physics_components").getAsJsonArray();
+		}
+
+		public Builder addPhysicsComponent(JsonObject data) {
+			getPhysicsComponents().add(data);
+			return this;
 		}
 
 		public Builder setDragArea(float drag_area) {

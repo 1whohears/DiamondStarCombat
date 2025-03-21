@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.vehicle.physics.LiftSurfaceData;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
+import net.minecraft.world.phys.Vec3;
 
 public class AlexisPresets {
 	
@@ -22,7 +24,8 @@ public class AlexisPresets {
 			.setArmorAbsorbtionPercent(0.135f)
 			.setTurnRadius(10f)
 			.setMaxTurnRates(6f, 2.5f, 1.5f)
-			.setTurnTorques(4000, 40000f, 20000f)
+			//.setTurnTorques(4000, 40000, 20000)
+			.setTurnTorques(0, 0, 0)
 			.setRotationalInertia(9086.7f, 80187.1f, 85602.3f)
 			.setThrottleRate(0.04f, 0.08f)
 			.setCrossSecArea(4f)
@@ -37,6 +40,12 @@ public class AlexisPresets {
 			.setPushEngineOverrideAfterburnerStats(76310, 131000,10, 0.02f)
 			.setMaxSpeed(30.25f)
 			.setPlaneSpeeds(30.25f, 12.96f, 5.19f)
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
+					4, 12, new Vec3(4.43, 0.27, -0.85), 0, 0, 0,
+					LiftSurfaceData.InputType.LEFT_FLAP, "alexis_plane"))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
+					4, 12, new Vec3(-4.43, 0.27, -0.85), 0, 0, 0,
+					LiftSurfaceData.InputType.RIGHT_FLAP, "alexis_plane"))
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 

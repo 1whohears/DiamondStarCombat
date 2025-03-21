@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.vehicle.physics;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;

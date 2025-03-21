@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.graph.FloatFloatGraph;
 import com.onewhohears.dscombat.data.graph.TurnRatesBySpeedGraph;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.data.vehicle.stats.PlaneStats;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -48,7 +48,7 @@ public class EntityPlane extends EntityVehicle {
 		if (isArcadeMode) {
 			addForce(getWeightForce().scale(-getArcadeIgnoreGravityFactor()));
 			if (isOnGround() && isFlapsDown()) addForce(new Vec3(0, 200, 0));
-		} else addForce(getLiftForce(q));
+		} //else addForce(getLiftForce(q));
 	}
 
 	protected void calcIgnoreGravityFactor(Quaternion q) {
@@ -150,8 +150,8 @@ public class EntityPlane extends EntityVehicle {
 		}
 		if (isFlapsDown()) goalAOA += getPlaneStats().flapsAOABias;
 		// change in AOA shouldn't be instant
-		aoa = Mth.lerp(AOA_CHANGE_RATE, aoa, goalAOA);
-		fuselageAoa = Mth.lerp(AOA_CHANGE_RATE, fuselageAoa, goalFuselageAOA);
+		aoa = Mth.lerp(DSCPhyCons.AOA_CHANGE_RATE, aoa, goalAOA);
+		fuselageAoa = Mth.lerp(DSCPhyCons.AOA_CHANGE_RATE, fuselageAoa, goalFuselageAOA);
 		// find liftK
 		float speedScaleSqr = (float) (1 / getHorizontalSpeedScale() / getHorizontalSpeedScale() * 400);
         liftK = getWingLiftKGraph().getLerpFloat(aoa) * speedScaleSqr;

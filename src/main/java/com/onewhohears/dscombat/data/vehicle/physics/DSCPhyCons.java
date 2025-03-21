@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.data.vehicle;
+package com.onewhohears.dscombat.data.vehicle.physics;
 
 /**
  * There are 20 minecraft game ticks every second.

@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
@@ -38,7 +40,7 @@ import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
@@ -141,6 +143,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	private final Set<Integer> collidedEntityIds = new HashSet<>();
 	private final Map<Integer, Integer> hitboxEntityCoolDown = new HashMap<>();
 	private final Map<Integer, EntityCollideInfo> entityCollideInfo = new HashMap<>();
+	protected final List<PhysicsComponentInstance<?>> physicsInstances = new ArrayList<>();
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
 	
@@ -199,8 +202,24 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
+		updatePhysicsInstances();
 	}
-	
+
+	@Override
+	public void updateStatsHolder(@NotNull String preset) {
+		super.updateStatsHolder(preset);
+		if (isStatsHolderLoaded()) updatePhysicsInstances();
+	}
+
+	protected void updatePhysicsInstances() {
+		physicsInstances.clear();
+		for (PhysicsComponentData data : getStats().getPhysicsComponents()) {
+			if (data == null) continue;
+			physicsInstances.add(data.createInstance());
+		}
+		System.out.println("physics instance size "+physicsInstances.size()+" "+this);
+	}
+
 	@Override
 	protected void defineSynchedData() {
         entityData.define(HEALTH, 100f);
@@ -399,6 +418,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		// CALC NEW FORCE MOMENTS
 		calcMoveStatsPre(q);
 		calcForceMoment(q);
+		physicsInstances.forEach(instance -> instance.tick(this));
 		// APPLY NEW FORCES
 		calcAcc();
 		motionClamp();

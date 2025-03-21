@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.util;
 
-import com.onewhohears.dscombat.data.vehicle.SeaLevels;
+import com.onewhohears.dscombat.data.vehicle.physics.SeaLevels;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;

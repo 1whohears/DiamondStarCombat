@@ -183,6 +183,46 @@
   "is_craftable": false,
   "item": "dscombat:vehicle",
   "landing_gear": true,
+  "physics_components": [
+    {
+      "area": 12.0,
+      "hitbox": "left_wing",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 4.0,
+      "input_type": "LEFT_FLAP",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 4.43,
+        "y": 0.27,
+        "z": -0.85
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    },
+    {
+      "area": 12.0,
+      "hitbox": "right_wing",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 4.0,
+      "input_type": "RIGHT_FLAP",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": -4.43,
+        "y": 0.27,
+        "z": -0.85
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  ],
   "presetId": "alexis_plane_empty",
   "presetType": "plane",
   "slots": [
@@ -398,9 +438,9 @@
     "stealth": 0.9,
     "throttledown": 0.08,
     "throttleup": 0.04,
-    "torquepitch": 40000.0,
-    "torqueroll": 4000.0,
-    "torqueyaw": 20000.0,
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 0.0,
     "turn_radius": 10.0,
     "use_horizontal_speed_scale": true
   },

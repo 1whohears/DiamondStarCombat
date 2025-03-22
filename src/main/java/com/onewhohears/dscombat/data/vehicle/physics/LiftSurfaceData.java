@@ -93,7 +93,7 @@ public class LiftSurfaceData extends PhysicsComponentData {
             if (vehicle.isFlapsDown()) return surface.getInputRotationMax();
             return -vehicle.inputs.roll * surface.getInputRotationMax() * 0.5f;
         }),
-        ELEVATOR((surface,vehicle) -> vehicle.inputs.pitch * surface.getInputRotationMax()),
+        ELEVATOR((surface,vehicle) -> -vehicle.inputs.pitch * surface.getInputRotationMax()),
         STABILIZER((surface,vehicle) -> -vehicle.inputs.yaw * surface.getInputRotationMax());
         private final BiFunction<LiftSurfaceData, EntityVehicle, Float> input;
         InputType(BiFunction<LiftSurfaceData, EntityVehicle, Float> input) {

@@ -32,28 +32,42 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
         Vec3 liftDir = u.cross(pitchAxis).normalize();
         Vec3 airFoilAxes = UtilAngles.getRollAxis(q);
-        System.out.println("airFoilAxes = "+UtilParse.prettyVec3(airFoilAxes, 2));
-        float airFoilSpeedSqr = (float) UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr();
+        float airFoilSpeedSqr = (float) UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr() * 400; // m/s
         float goalAOA;
+        Vec3 wingNormal = UtilAngles.getYawAxis(q).scale(-1);
         if (/*vehicle.isOnGround() || */UtilGeometry.isZero(u)) {
             goalAOA = 0;
         } else {
-            Vec3 wingNormal = UtilAngles.getYawAxis(q).scale(-1);
-            goalAOA = (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
+            goalAOA = calcAOA(u, wingNormal, pitchAxis);
         }
         // change in AOA shouldn't be instant
         aoa = Mth.lerp(DSCPhyCons.AOA_CHANGE_RATE, aoa, goalAOA);
         // find liftK
-        float speedScaleSqr = (float) (1 / vehicle.getHorizontalSpeedScale() / vehicle.getHorizontalSpeedScale() * 400);
+        float speedScaleSqr = (float) (1 / vehicle.getHorizontalSpeedScale() / vehicle.getHorizontalSpeedScale());
         float liftK = getData().getLiftKGraph().getLerpFloat(aoa) * speedScaleSqr;
         // Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
         double wingLiftMag = 0.5 * liftK * vehicle.getFluidDensity() * airFoilSpeedSqr * getData().getArea();
         Vec3 liftForce = liftDir.scale(wingLiftMag);
         vehicle.addForce(liftForce);
-        Vec3 liftMoment = getData().getPos().cross(liftForce);
+        Vec3 liftMoment = getData().getPos().cross(liftForce).multiply(-1, 1, 1);
+        liftMoment = UtilAngles.rotateVector(liftMoment, q);
         vehicle.addMoment(liftMoment, false);
-        System.out.println("lift surface "+getData().getHitbox()+" aoa "+aoa+" liftK "+liftK+" rotate "+rotate);
-        System.out.println("liftForce = "+UtilParse.prettyVec3(liftForce, 2));
-        System.out.println("liftMoment = "+UtilParse.prettyVec3(liftMoment, 2));
+
+        vehicle.debug("LIFT SURFACE = "+getData().getHitbox());
+        vehicle.debug("wingNormal = "+UtilParse.prettyVec3(wingNormal, 2));
+        vehicle.debug("airFoilAxes = "+UtilParse.prettyVec3(airFoilAxes, 2));
+        vehicle.debug("aoa "+aoa+" liftK "+liftK+" rotate "+rotate);
+        vehicle.debug("liftForce = "+UtilParse.prettyVec3(liftForce, 2));
+        vehicle.debug("liftMoment = "+UtilParse.prettyVec3(liftMoment, 2));
+    }
+
+    public static float calcAOA(Vec3 u, Vec3 wingNormal, Vec3 pitchAxis) {
+        //return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
+        //float dot = (float) u.dot(airFoilAxes);
+        //float dot = (float) u.dot(wingNormal);
+        //return Mth.abs((float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal)) * Mth.sign(dot);
+        //return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal) * Mth.sign(dot);
+        float dot = (float) wingNormal.cross(u).dot(pitchAxis);
+        return (float) (-UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal) * Mth.sign(dot));
     }
 }

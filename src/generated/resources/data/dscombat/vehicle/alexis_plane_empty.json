@@ -185,7 +185,7 @@
   "landing_gear": true,
   "physics_components": [
     {
-      "area": 10.0,
+      "area": 14.0,
       "hitbox": "left_wing",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -204,7 +204,7 @@
       }
     },
     {
-      "area": 10.0,
+      "area": 14.0,
       "hitbox": "right_wing",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -223,7 +223,7 @@
       }
     },
     {
-      "area": 4.0,
+      "area": 5.0,
       "hitbox": "left_elevator",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -242,7 +242,7 @@
       }
     },
     {
-      "area": 4.0,
+      "area": 5.0,
       "hitbox": "right_elevator",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -261,7 +261,7 @@
       }
     },
     {
-      "area": 8.0,
+      "area": 9.0,
       "hitbox": "tail",
       "id": "lift_surface",
       "ignore_roll": false,

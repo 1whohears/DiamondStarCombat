@@ -217,7 +217,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			if (data == null) continue;
 			physicsInstances.add(data.createInstance());
 		}
-		System.out.println("physics instance size "+physicsInstances.size()+" "+this);
 	}
 
 	@Override
@@ -548,7 +547,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public Vec3 getAngularDrag(Vec3 av) {
-		return av.multiply(av).scale(-getAngularDragFactor() * getFluidDensity());
+		return av.scale(-getAngularDragFactor() * getFluidDensity());
 	}
 
 	public double getAngularDragFactor() {
@@ -2971,7 +2970,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public boolean showAfterBurnerParticles() {
-    	return getCurrentThrottle() > 0.5;
+    	return isUsingAfterburner();
     }
     
     public boolean showMoreAfterBurnerParticles() {

@@ -41,19 +41,19 @@ public class AlexisPresets {
 			.setMaxSpeed(30.25f)
 			.setPlaneSpeeds(30.25f, 12.96f, 5.19f)
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
-					13, 10, new Vec3(4.43, 0, 0), 0, 0, 0,
+					13, 14, new Vec3(4.43, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.LEFT_FLAP, "alexis_plane"))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
-					13, 10, new Vec3(-4.43, 0, 0), 0, 0, 0,
+					13, 14, new Vec3(-4.43, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.RIGHT_FLAP, "alexis_plane"))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_elevator", false,
-					25, 4, new Vec3(2.61, 0, -6.10), 0, 0, 0,
+					25, 5, new Vec3(2.61, 0, -6.10), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane"))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_elevator", false,
-					25, 4, new Vec3(-2.61, 0, -6.10), 0, 0, 0,
+					25, 5, new Vec3(-2.61, 0, -6.10), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane"))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
-					10, 8, new Vec3(0, 0, -5.07), 0, 0, 90,
+					10, 9, new Vec3(0, 0, -5.07), 0, 0, 90,
 					LiftSurfaceData.InputType.STABILIZER, "alexis_plane"))
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,

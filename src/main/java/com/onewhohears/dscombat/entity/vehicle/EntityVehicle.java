@@ -614,7 +614,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		controlMoment = new Vec3(x, y, z);
 	}
 
-	private double getControlMomentComponent(double cm, double v, float max, double I) {
+	protected double getControlMomentComponent(double cm, double v, float max, double I) {
 		if (Math.abs(v) > max && Math.signum(v) == Math.signum(cm)) return 0;
 		double a2 = cm / I * DSCPhyCons.ACC_TIME_SCALE;
 		double v2 = v + a2;

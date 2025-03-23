@@ -14,8 +14,8 @@ import java.util.function.BiFunction;
 public class LiftSurfaceData extends PhysicsComponentData {
 
     public static JsonObject createJsonData(String hitbox, boolean ignore_roll, float input_rotation_max, double area,
-                                            Vec3 pos, float xRot, float yRot, float zRot,
-                                            InputType input_type, String lift_k_graph) {
+                                            Vec3 pos, float xRot, float yRot, float zRot, InputType input_type,
+                                            String lift_k_graph, String drag_graph, double zero_lift_drag) {
         JsonObject json = new JsonObject();
         json.addProperty("id", "lift_surface");
         json.addProperty("hitbox", hitbox);
@@ -26,6 +26,8 @@ public class LiftSurfaceData extends PhysicsComponentData {
         UtilParse.writeVec3f(json, "rotation", new Vector3f(xRot, yRot, zRot));
         UtilParse.writeEnum(json, "input_type", input_type);
         json.addProperty("lift_k_graph", lift_k_graph);
+        json.addProperty("drag_graph", drag_graph);
+        json.addProperty("zero_lift_drag", zero_lift_drag);
         return json;
     }
 
@@ -49,8 +51,8 @@ public class LiftSurfaceData extends PhysicsComponentData {
         rotation = UtilParse.readVec3f(json, "rotation");
         input_type = UtilParse.getEnumSafe(json, "input_type", InputType.class);
         lift_k_graph_key = UtilParse.getStringSafe(json, "lift_k_graph", "fuselage");
-        zero_lift_drag = UtilParse.getFloatSafe(json, "zero_lift_drag", 0.02f);
-        drag_graph_key = UtilParse.getStringSafe(json, "drag_graph_key", "default_drag_aoa");
+        zero_lift_drag = UtilParse.getFloatSafe(json, "zero_lift_drag", 0.5f);
+        drag_graph_key = UtilParse.getStringSafe(json, "drag_graph", "default_drag_aoa");
     }
 
     @Override

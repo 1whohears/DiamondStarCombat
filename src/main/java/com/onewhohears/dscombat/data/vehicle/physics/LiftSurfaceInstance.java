@@ -73,23 +73,17 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
                 .multiply(-1, 1, 1);
         vehicle.addMoment(dragMoment, false, true);
 
-        vehicle.debug("LIFT SURFACE = "+getData().getHitbox());
+        /*vehicle.debug("LIFT SURFACE = "+getData().getHitbox());
         //vehicle.debug("wingNormal = "+UtilParse.prettyVec3(wingNormal, 2));
         //vehicle.debug("airFoilAxes = "+UtilParse.prettyVec3(airFoilAxes, 2));
         vehicle.debug("aoa "+aoa+" liftK "+liftK+" rotate "+rotate);
         vehicle.debug("liftForce = "+UtilParse.prettyVec3(liftForce, 2));
         vehicle.debug("liftMoment = "+UtilParse.prettyVec3(liftMoment, 2));
         vehicle.debug("dragForce = "+UtilParse.prettyVec3(dragForce, 2));
-        vehicle.debug("dragMoment = "+UtilParse.prettyVec3(dragMoment, 2));
+        vehicle.debug("dragMoment = "+UtilParse.prettyVec3(dragMoment, 2));*/
     }
 
     public static float calcAOA(Vec3 u, Vec3 wingNormal, Vec3 pitchAxis) {
         return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
-        //float dot = (float) u.dot(airFoilAxes);
-        //float dot = (float) u.dot(wingNormal);
-        //return Mth.abs((float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal)) * Mth.sign(dot);
-        //return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal) * Mth.sign(dot);
-        //float dot = (float) wingNormal.cross(u).dot(pitchAxis);
-        //return (float) (-UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal) * Mth.sign(dot));
     }
 }

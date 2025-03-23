@@ -34,16 +34,17 @@ public class DSCPhyCons {
 	/**
 	 * all stats
 	 */
-	public static final double HORIZONTAL_SPEED_SCALE = 0.1;
+	public static final double HORIZONTAL_SPEED_SCALE = 0.125;
 
 	public static final double WATER_FLUID_DENSITY = 1000;
 
-	public static final double DEFAULT_DRAG_C = 100;
 	public static final double INCREASED_LANDING_GEAR_DRAG_AREA = 100;
+
+	public static final float DRAG_SCALE = 1;
 
 	public static final float ANGULAR_DRAG_C = 1E3f;
 
-	public static final float MAX_SPEED_CHANGE_RATE = 0.1f;
+	public static final float MAX_SPEED_CHANGE_RATE = 0.05f;
 	public static final float AOA_CHANGE_RATE = 0.5f;
 
 	public static final float FLOAT = 150f;
@@ -59,7 +60,7 @@ public class DSCPhyCons {
 	public static final double MAX_FALL_SPEED = 2.5;
 	public static final double MAX_CLIMB_SPEED = 1.0;
 	
-	public static final float VEL_SOUND = 10f;
+	public static final float VEL_SOUND = (float) (17.5 * HORIZONTAL_SPEED_SCALE); // m/t
 	
 	public static final int EJECT_SAFETY_COOLDOWN = 100;
 	

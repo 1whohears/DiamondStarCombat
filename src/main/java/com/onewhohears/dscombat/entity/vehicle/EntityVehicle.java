@@ -14,7 +14,6 @@ import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.CustomAnimEntity;
-import com.onewhohears.onewholibs.util.UtilParse;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -279,6 +278,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		setXRotNoQ(nbt.getFloat("xRot"));
 		setYRotNoQ(nbt.getFloat("yRot"));
 		zRot = nbt.getFloat("zRot");
+		maxXZ = nbt.getDouble("maxXZ");
 		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
 		setQ(q);
 		setPrevQ(q);
@@ -307,6 +307,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		nbt.putFloat("xRot", getXRot());
 		nbt.putFloat("yRot", getYRot());
 		nbt.putFloat("zRot", zRot);
+		nbt.putDouble("maxXZ", maxXZ);
 		nbt.putInt("radar_mode", getRadarMode().ordinal());
 		nbt.putString("radio_song", getRadioSong());
 		Entity own = getOwner();
@@ -537,7 +538,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	private double getADComponent(double v, float d, double I) {
-		double a = Math.abs(v) - d/I;
+		// AD needs to be scaled with speed
+		double av = Math.abs(v);
+		double a = av - (d/I + av * 0.01);
 		if (a < 0) return 0;
 		return a * Math.signum(v);
 	}
@@ -1182,7 +1185,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public double getDragCoefficient() {
-		return DSCPhyCons.DEFAULT_DRAG_C;
+		return DSCPhyCons.DRAG_SCALE;
 	}
 
 	public double getRadarArea(Vec3 radarPos) {

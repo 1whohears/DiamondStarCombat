@@ -157,7 +157,7 @@ public class EntityPlane extends EntityVehicle {
         liftK = getWingLiftKGraph().getLerpFloat(aoa) * speedScaleSqr;
 		fuselageLiftK = getFuselageLiftKGraph().getLerpFloat(fuselageAoa) * speedScaleSqr;
 		// dragC
-		dragC = getDragAoaGraph().getLerpFloat(aoa);
+		//dragC = getDragAoaGraph().getLerpFloat(aoa) * DSCPhyCons.DRAG_SCALE;
 	}
 	
 	protected void calculateLift(Quaternion q) {
@@ -189,10 +189,11 @@ public class EntityPlane extends EntityVehicle {
 	public Vec3 getThrustForce(Quaternion q) {
 		return UtilAngles.getRollAxis(q).scale(getPushThrustMag());
 	}
-	
+
+	/*@Override
 	public double getDragCoefficient() {
 		return dragC;
-	}
+	}*/
 
 	public float getAOA() {
 		return aoa;

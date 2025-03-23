@@ -22,7 +22,7 @@ public class EntityPlane extends EntityVehicle {
 
 	private float aoa, liftK, airFoilSpeedSqr, airSpeed, fuselageAoa, fuselageLiftK, dragC;
 	private float centripetalForce, centrifugalForce, aoaTurnRateMod = 1;
-	private double wingLiftMag, maxSpeedMod = 1, arcadeIgnoreGravityFactor;
+	private double wingLiftMag, arcadeIgnoreGravityFactor;
 	private Vec3 liftDir = Vec3.ZERO, liftForce = Vec3.ZERO;
 	private boolean isArcadeMode = false;
 	private int pullUpWarningTicks, altitudeWarningTicks;
@@ -76,7 +76,6 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	protected void calcMoveStatsPre(Quaternion q) {
 		super.calcMoveStatsPre(q);
-		calcMaxSpeedMod();
 		if (isArcadeMode) {
 			aoa = 0;
 			calcIgnoreGravityFactor(q);
@@ -99,26 +98,12 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public double getMaxSpeedForMotion() {
-		return super.getMaxSpeedForMotion() * getMaxSpeedFromThrottleMod();
+		return super.getMaxSpeedForMotion();
 	}
 
 	@Override
 	public double getMaxSpeedFactor() {
 		return super.getMaxSpeedFactor() * Config.SERVER.planeSpeedFactor.get();
-	}
-	
-	public double getMaxSpeedFromThrottleMod() {
-		return maxSpeedMod;
-	}
-
-	protected void calcMaxSpeedMod() {
-		/*if (isOnGround()) maxSpeedMod = 1;
-		float th = getCurrentThrottle();
-		double goal;
-		if (th < 0.5) goal = 0.6;
-		else goal = 0.6 + 0.8 * (th - 0.5);
-		maxSpeedMod = Mth.lerp(0.015, maxSpeedMod, goal);*/
-		maxSpeedMod = 1;
 	}
 	
 	@Override

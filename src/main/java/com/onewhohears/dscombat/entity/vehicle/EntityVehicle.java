@@ -334,6 +334,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		boolean gear = buffer.readBoolean();
 		boolean freeLook = buffer.readBoolean();
 		float throttle = buffer.readFloat();
+		maxXZ = buffer.readDouble();
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
 		// ORDER MATTERS
 		textureManager.read(buffer);
@@ -355,6 +356,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		buffer.writeBoolean(isLandingGear());
 		buffer.writeBoolean(isDriverCameraLocked());
 		buffer.writeFloat(getCurrentThrottle());
+		buffer.writeDouble(maxXZ);
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 		textureManager.write(buffer);
 		soundManager.write(buffer);

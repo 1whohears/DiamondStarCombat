@@ -80,4 +80,9 @@ public class EntityGroundVehicle extends EntityVehicle {
 		return isOperational() && isOnGround() && getStats().asCar().isTank;
 	}
 
+	@Override
+	public boolean canDriveOnGround() {
+		return true;
+	}
+
 }

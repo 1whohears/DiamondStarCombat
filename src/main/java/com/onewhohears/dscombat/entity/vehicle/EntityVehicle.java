@@ -468,7 +468,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			addFrictionForce(kineticFric);
 		} else {
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
-			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(DSCPhyCons.DRIVE_FRICTION);
+			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(kineticFric * 0.2);
 		}
 		// turn physics
 		float max_tr = getTurnRadius();
@@ -488,7 +488,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public boolean canDriveOnGround() {
-		return true;
+		return !canToggleLandingGear() || isLandingGear();
 	}
 
 	protected void calcOtherGroundMovement(Quaternion q) {
@@ -987,8 +987,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	protected void calcMoveStatsPre(Quaternion q) {
 		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
-		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION;
-		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION;
+		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION * DSCPhyCons.ACC_TIME_SCALE;
+		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION * DSCPhyCons.ACC_TIME_SCALE;
 		maxPushThrust = partsManager.getTotalPushThrust();
 		maxSpinThrust = partsManager.getTotalSpinThrust();
 		currentFuel = partsManager.getCurrentFuel();

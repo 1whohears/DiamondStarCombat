@@ -137,7 +137,10 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 				DSCClientInputs.isGimbalMode(), DSCClientInputs.isGimbalMode() ? "ON" : "OFF");
 		// AFTERBURNER
 		if (vehicle.canUseAfterburner()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.afterBurnerKey, DSCClientInputs.isAfterBurner());
+				DSCKeys.afterBurnerKey, DSCClientInputs.isAfterBurner(), DSCClientInputs.isAfterBurner() ? "ON" : "OFF");
+		// AFTERBURNER
+		if (vehicle.canUseTurnAssist()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+				DSCKeys.turnAssistKey, DSCClientInputs.isTurnAssist(), DSCClientInputs.isTurnAssist() ? "ON" : "OFF");
 	}
 
 	@Override

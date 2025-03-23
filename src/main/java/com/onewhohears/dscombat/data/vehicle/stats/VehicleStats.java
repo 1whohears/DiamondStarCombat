@@ -53,7 +53,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final float groundXTilt;
 	// control
 	public final float throttleup, throttledown;
-	public final boolean negativeThrottle;
+	public final boolean negativeThrottle, has_turn_assist;
 	public final double cameraDistance, max_altitude;
 	// physics
 	public final float crashExplosionRadius;
@@ -104,6 +104,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		throttleup = UtilParse.getFloatSafe(stats, "throttleup", 0.01f);
 		throttledown = UtilParse.getFloatSafe(stats, "throttledown", 0.01f);
 		negativeThrottle = UtilParse.getBooleanSafe(stats, "negativeThrottle", false);
+		has_turn_assist = UtilParse.getBooleanSafe(stats, "has_turn_assist", false);
 		turn_radius = UtilParse.getFloatSafe(stats, "turn_radius", 100);
 		maxroll = UtilParse.getFloatSafe(stats, "maxroll", 0);
 		maxpitch = UtilParse.getFloatSafe(stats, "maxpitch", 0);
@@ -936,6 +937,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 			return setStatBoolean("negativeThrottle", negativeThrottle);
 		}
 		/**
+		 * all vehicles
+		 */
+		public Builder setHasTurnAssist(boolean has_turn_assist) {
+			return setStatBoolean("has_turn_assist", has_turn_assist);
+		}
+		/**
 		 * all vehicles 
 		 */
 		public Builder setCrashExplosionRadius(float crashExplosionRadius) {
@@ -1188,35 +1195,30 @@ public abstract class VehicleStats extends JsonPresetStats {
 		public Builder setCarIsTank(boolean isTank) {
 			return setTypedStatBoolean("isTank", isTank, "car");
 		}
-
 		/**
 		 * stationary vehicles only
 		 */
 		public Builder setIsStationaryRadar(boolean radar) {
 			return setTypedStatBoolean("isStationaryRadar", radar, "stationary");
 		}
-
 		/**
 		 * all vehicles
 		 */
 		public Builder setUseHorizontalSpeedScale(boolean apply) {
 			return setStatBoolean("use_horizontal_speed_scale", apply);
 		}
-
 		/**
 		 * all vehicles
 		 */
 		public Builder setMaxGroundSpeed(float speed) {
 			return setStatFloat("max_ground_speed", speed);
 		}
-
 		/**
 		 * planes only
 		 */
 		public Builder setCruiseSpeed(float speed) {
 			return setStatFloat("cruise_speed", speed);
 		}
-
 		/**
 		 * planes only
 		 */

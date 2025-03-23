@@ -14,7 +14,7 @@ import net.minecraft.network.FriendlyByteBuf;
  */
 public class VehicleInputManager {
 	
-	public boolean flare, chaff, afterburner;
+	public boolean flare, chaff, afterburner, turnAssist = true;
 	public boolean special, special2, bothRoll;
 	public float throttle, pitch, roll, yaw;
 	
@@ -34,7 +34,7 @@ public class VehicleInputManager {
 			float throttle, float pitch, float roll, float yaw,
 			boolean flare, boolean chaff, boolean afterburner,
 			boolean special, boolean special2, boolean bothRoll,
-			boolean isDriverCameraLocked) {
+			boolean isDriverCameraLocked, boolean turnAssist) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
@@ -46,6 +46,7 @@ public class VehicleInputManager {
 		this.special2 = special2;
 		this.bothRoll = bothRoll;
 		this.isDriverCameraLocked = isDriverCameraLocked;
+		this.turnAssist = turnAssist;
 		parent.setDriverCameraLocked(isDriverCameraLocked);
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
 		currentThrottle = parent.getCurrentThrottle();
@@ -67,6 +68,7 @@ public class VehicleInputManager {
 		this.weaponIndex = other.weaponIndex;
 		this.currentThrottle = other.currentThrottle;
 		this.isDriverCameraLocked = other.isDriverCameraLocked;
+		this.turnAssist = other.turnAssist;
 		// special inputs
 		parent.setCurrentThrottle(currentThrottle);
 		parent.weaponSystem.setSelected(weaponIndex);
@@ -85,6 +87,7 @@ public class VehicleInputManager {
 		this.special2 = false;
 		this.bothRoll = false;
 		this.isDriverCameraLocked = false;
+		this.turnAssist = true;
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -99,6 +102,7 @@ public class VehicleInputManager {
 		buffer.writeBoolean(special);
 		buffer.writeBoolean(special2);
 		buffer.writeBoolean(bothRoll);
+		buffer.writeBoolean(turnAssist);
 		// special vehicle system inputs
 		buffer.writeShort(weaponIndex);
 		buffer.writeFloat(currentThrottle);
@@ -117,6 +121,7 @@ public class VehicleInputManager {
 		special = buffer.readBoolean();
 		special2 = buffer.readBoolean();
 		bothRoll = buffer.readBoolean();
+		turnAssist = buffer.readBoolean();
 		// special vehicle system inputs
 		weaponIndex = buffer.readShort();
 		currentThrottle = buffer.readFloat();

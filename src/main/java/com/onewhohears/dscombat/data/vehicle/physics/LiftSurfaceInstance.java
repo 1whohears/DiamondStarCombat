@@ -61,7 +61,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         Vec3 liftMoment = getData().getPos()
                 .cross(UtilAngles.rotateVector(liftForce, vehicleQI))
                 .multiply(-1, 1, 1);
-        vehicle.addMoment(liftMoment, false, true);
+        vehicle.addMoment(liftMoment, true, true);
         // Drag = (drag coefficient) * (air density) * (speed)^2 * (drag area) / 2
         Vec3 windDir = u.normalize();
         float dragK = getData().getDragGraph().getLerpFloat(aoa) * speedScaleSqr;

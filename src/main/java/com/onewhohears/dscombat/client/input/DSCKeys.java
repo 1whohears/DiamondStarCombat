@@ -30,7 +30,7 @@ public final class DSCKeys {
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
 	public static KeyMapping leanLeftKey, leanRightKey;
-	public static KeyMapping afterBurnerKey;
+	public static KeyMapping afterBurnerKey, turnAssistKey;
 	
 	private static RegisterKeyMappingsEvent event;
 	
@@ -48,9 +48,10 @@ public final class DSCKeys {
 		// CONTROL UTIL
 		mouseModeKey = registerKey("mouse_mode_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LCONTROL);
 		flipControlsKey = registerKey("flip_controls_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LSHIFT);
-		resetMouseKey = registerKey("reset_mouse_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);
+		resetMouseKey = registerKey("reset_mouse_key", VEHICLE_CONTROL_UTIL, InputConstants.MOUSE_BUTTON_MIDDLE);
 		leanLeftKey = registerKey("lean_left_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
 		leanRightKey = registerKey("lean_right_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
+		turnAssistKey = registerKey("turn_assist_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);
 		// PASSENGER CONTROL
 		vehicleMenuKey = registerKey("plane_menu_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_U);
 		dismount = registerKey("dismount_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_H);

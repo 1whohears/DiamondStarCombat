@@ -504,6 +504,7 @@
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
     "fuel_consume_per_engine": 0.004,
+    "has_turn_assist": true,
     "heat_per_engine": 10.0,
     "hitboxes_control_pitch": [
       "left_elevator",

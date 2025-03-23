@@ -159,7 +159,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public float zRot, zRotO; 
 	public Vec3 prevMotion = Vec3.ZERO;
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO, addForceBetweenTicks = Vec3.ZERO;
-	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentBetweenTicks = Vec3.ZERO;
+	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentBetweenTicks = Vec3.ZERO, controlMoment = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false, hasRadio = false;
 	
@@ -416,6 +416,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		// SET CURRENT FORCE/MOMENT TO 0
 		setForces(Vec3.ZERO);
 		setMoment(Vec3.ZERO);
+		controlMoment = Vec3.ZERO;
 		// CALC NEW FORCE MOMENTS
 		calcMoveStatsPre(q);
 		calcForceMoment(q);
@@ -587,6 +588,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	protected void calcRotAcc(Quaternion q) {
+		clampControlMoment();
+		addMoment(controlMoment, false, true);
 		Vec3 m = getMoment().add(addMomentBetweenTicks).scale(DSCPhyCons.ACC_TIME_SCALE);
 		Vec3 av = getAngularVel();
 		if (!UtilGeometry.isZero(m)) {
@@ -598,6 +601,26 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
 		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
 		addMomentBetweenTicks = Vec3.ZERO;
+	}
+
+	protected void clampControlMoment() {
+		if (UtilGeometry.isZero(controlMoment)) return;
+		Vec3 I = getTotalRotInertia();
+		Vec3 av = getAngularVel();
+		double x = 0, y = 0, z = 0;
+		if (controlMoment.x != 0) x = getControlMomentComponent(controlMoment.x, av.x, getControlMaxDeltaPitch(), I.x);
+		if (controlMoment.y != 0) y = getControlMomentComponent(controlMoment.y, av.y, getControlMaxDeltaYaw(), I.y);
+		if (controlMoment.z != 0) z = getControlMomentComponent(controlMoment.z, av.z, getControlMaxDeltaRoll(), I.z);
+		controlMoment = new Vec3(x, y, z);
+	}
+
+	private double getControlMomentComponent(double cm, double v, float max, double I) {
+		if (Math.abs(v) > max && Math.signum(v) == Math.signum(cm)) return 0;
+		double a2 = cm / I * DSCPhyCons.ACC_TIME_SCALE;
+		double v2 = v + a2;
+		double vd = Math.abs(v2) - max;
+		if (vd > 0) cm -= vd * Math.signum(v2) * I / DSCPhyCons.ACC_TIME_SCALE;
+		return cm;
 	}
 
 	public Vec3 getTotalRotInertia() {
@@ -922,30 +945,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void addMoment(Vec3 moment, boolean control, boolean relative) {
-		Vec3 m = getMoment();
-		double x = moment.x, y = moment.y, z = moment.z;
-		Vec3 I = getTotalRotInertia();
-		if (control) {
-			Vec3 av = getAngularVel();
-			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), I.x);
-			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), I.y);
-			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), I.z);
-		}
 		//if (!relative) {
-			// FIXME not all moments are applies relative to the vehicle's current axis of rotation
+		// FIXME not all moments are applies relative to the vehicle's current axis of rotation
 
 		//}
-		setMoment(m.add(x, y, z));
-	}
-	
-	private double getControlMomentComponent(double cm, double m, double v, float max, double I) {
-		if (Math.abs(v) > max && Math.signum(v) == Math.signum(m)) return 0;
-		double m2 = cm + m;
-		double a2 = m2 / I;
-		double v2 = v + a2;
-		double vd = Math.abs(v2) - max;
-		if (vd > 0) m -= vd * Math.signum(v2) * I;
-		return m;
+		if (control && (!canUseTurnAssist() || isUsingTurnAssist())) {
+			controlMoment = controlMoment.add(moment);
+		} else {
+			setMoment(getMoment().add(moment));
+		}
 	}
 	
 	public void addMomentX(float moment, boolean control) {
@@ -2005,8 +2013,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         
         if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
         else hurtLogic(exp.getDamageSource(), amount, null);
-
-		System.out.println("explode damage = "+amount+" health "+getHealth()+" armor "+getArmor());
         
         Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(DSCPhyCons.EXP_FORCE_FACTOR);
         
@@ -2922,7 +2928,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         }
 		return max;
 	}
-	
+
+	public boolean canUseTurnAssist() {
+		return getStats().has_turn_assist;
+	}
+
+	public boolean isUsingTurnAssist() {
+		return canUseTurnAssist() && inputs.turnAssist;
+	}
+
 	private static class EntityCollideInfo {
 		private final List<CollideInfo> collides = new ArrayList<>();
 		EntityCollideInfo() {}

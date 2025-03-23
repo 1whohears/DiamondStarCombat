@@ -27,6 +27,7 @@ public class AlexisPresets {
 			//.setTurnTorques(4000, 40000, 20000)
 			.setTurnTorques(0, 0, 0)
 			.setRotationalInertia(9086.7f, 80187.1f, 85602.3f)
+			.setHasTurnAssist(true)
 			.setThrottleRate(0.04f, 0.08f)
 			.setCrossSecArea(4f)
 			.setDragArea(0.49f)

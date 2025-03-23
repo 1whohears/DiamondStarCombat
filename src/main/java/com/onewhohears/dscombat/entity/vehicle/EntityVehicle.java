@@ -14,6 +14,7 @@ import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.CustomAnimEntity;
+import com.onewhohears.onewholibs.util.UtilParse;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -166,7 +167,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected boolean hasFlares;
 	protected int xzSpeedDir, hurtByFireTime, flareTicks;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
-	protected double staticFric, kineticFric, airDensity, currentAltitude;
+	protected double staticFric, kineticFric, airDensity, currentAltitude, maxXZ;
 	
 	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
 	private int groundTicks, hitboxRefreshAttempts, numFlares, hydraulicsFailureTicks;
@@ -422,7 +423,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		calcAcc();
 		motionClamp();
 		if (!getLevel().isClientSide() && canTrample()) tickTrample();
-		move(MoverType.SELF, getDeltaMovement());
+		if (!isTestMode()) move(MoverType.SELF, getDeltaMovement());
 		calcMoveStatsPost(q);
 		tickCollisions();
 		// APPLY NEW MOMENT
@@ -516,43 +517,70 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public boolean canTurnViaTorque() {
-		return isOperational() && !isOnGround();
+		return isOperational() && !isOnGround() && physicsInstances.isEmpty();
 	}
 
 	protected void applyAngularDrag() {
 		Vec3 av = getAngularVel();
+		float d = getAngularDrag();
+		float dx = d, dy = d, dz = d;
+		if (!isOnGround()) {
+			if (inputs.pitch != 0 && Math.abs(av.x) <= getControlMaxDeltaPitch()) dx = 0;
+			if (inputs.yaw != 0 && Math.abs(av.y) <= getControlMaxDeltaYaw()) dy = 0;
+			if (inputs.roll != 0 && Math.abs(av.z) <= getControlMaxDeltaRoll()) dz = 0;
+		}
+		Vec3 I = getTotalRotInertia();
+		setAngularVel(new Vec3(
+				getADComponent(av.x, dx, I.x),
+				getADComponent(av.y, dy, I.y),
+				getADComponent(av.z, dz, I.z)));
+	}
+
+	private double getADComponent(double v, float d, double I) {
+		double a = Math.abs(v) - d/I;
+		if (a < 0) return 0;
+		return a * Math.signum(v);
+	}
+
+	protected float getAngularDrag() {
+		float d = (float) getFluidDensity() * DSCPhyCons.ANGULAR_DRAG_C;
+		if (isOnGround()) d *= 10;
+		return d;
+	}
+
+	/*protected void applyAngularDrag() {
+		Vec3 av = getAngularVel();
 		if (av.x == 0 && av.z == 0 && av.y == 0) return;
-		Vec3 avn = av.normalize();
-		Vec3 moment = avn.multiply(getAngularDrag(av));
+		Vec3 moment = getAngularDrag(av);
+		debug("ANGULAR DRAG MOMENT = "+ UtilParse.prettyVec3(moment, 4)+" "+physicsInstances.size());
 		Vec3 I = getTotalRotInertia();
 		Vec3 acc = moment.multiply(1/I.x, 1/I.y, 1/I.z);
-		double angleSpeedDeadZone = 0.2;
-		if (Math.abs(av.x) < angleSpeedDeadZone ||
-				(av.x != 0 && Math.signum(av.x+acc.x) != Math.signum(av.x))) {
+		if (av.x != 0 && Math.signum(av.x+acc.x) != Math.signum(av.x)) {
 			moment = moment.multiply(0, 1, 1);
 			av = av.multiply(0, 1, 1);
 		}
-		if (Math.abs(av.y) < angleSpeedDeadZone ||
-				(av.y != 0 && Math.signum(av.y+acc.y) != Math.signum(av.y))) {
+		if (av.y != 0 && Math.signum(av.y+acc.y) != Math.signum(av.y)) {
 			moment = moment.multiply(1, 0, 1);
 			av = av.multiply(1, 0, 1);
 		}
-		if (Math.abs(av.z) < angleSpeedDeadZone ||
-				(av.z != 0 && Math.signum(av.z+acc.z) != Math.signum(av.z))) {
+		if (av.z != 0 && Math.signum(av.z+acc.z) != Math.signum(av.z)) {
 			moment = moment.multiply(1, 1, 0);
 			av = av.multiply(1, 1, 0);
 		}
 		setAngularVel(av);
-		addMoment(moment, false);
+		addMoment(moment, false, true);
 	}
 
 	public Vec3 getAngularDrag(Vec3 av) {
-		return av.scale(-getAngularDragFactor() * getFluidDensity());
-	}
+		//return av.multiply(av).multiply(Math.signum(av.x), Math.signum(av.y), Math.signum(av.z))
+		//		.scale(-getAngularDragFactor() * getFluidDensity() * getDragArea() * DSCPhyCons.ACC_TIME_SCALE);
+		return av.scale(-getAngularDragFactor() * getFluidDensity() * getDragArea() * DSCPhyCons.ACC_TIME_SCALE);
+	}*/
 
 	public double getAngularDragFactor() {
-		if (onGround) return 0.9;
-		else return 0.5;
+		double f = 9E4;
+		if (onGround) return f * 1E2;
+		else return f;
 	}
 
 	protected void calcRotAcc(Quaternion q) {
@@ -780,8 +808,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public void motionClamp() {
 		Vec3 move = getDeltaMovement();
 		double goalMaxXZ = getMaxSpeedForMotion();
-		// put smoothing here
-		double maxXZ = goalMaxXZ;
+		maxXZ = Mth.lerp(DSCPhyCons.MAX_SPEED_CHANGE_RATE, maxXZ, goalMaxXZ);;
 		
 		Vec3 motionXZ = new Vec3(move.x, 0, move.z);
 		double velXZ = motionXZ.length();
@@ -891,7 +918,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		setAngularVel(new Vec3(x, av.y, z));
 	}
 	
-	public void addMoment(Vec3 moment, boolean control) {
+	public void addMoment(Vec3 moment, boolean control, boolean relative) {
 		Vec3 m = getMoment();
 		double x = moment.x, y = moment.y, z = moment.z;
 		Vec3 I = getTotalRotInertia();
@@ -901,6 +928,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), I.y);
 			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), I.z);
 		}
+		//if (!relative) {
+			// FIXME not all moments are applies relative to the vehicle's current axis of rotation
+
+		//}
 		setMoment(m.add(x, y, z));
 	}
 	
@@ -915,15 +946,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void addMomentX(float moment, boolean control) {
-		addMoment(Vec3.ZERO.add(moment, 0, 0), control);
+		addMoment(Vec3.ZERO.add(moment, 0, 0), control, true);
 	}
 	
 	public void addMomentY(float moment, boolean control) {
-		addMoment(Vec3.ZERO.add(0, moment, 0), control);
+		addMoment(Vec3.ZERO.add(0, moment, 0), control, true);
 	}
 	
 	public void addMomentZ(float moment, boolean control) {
-		addMoment(Vec3.ZERO.add(0, 0, moment), control);
+		addMoment(Vec3.ZERO.add(0, 0, moment), control, true);
 	}
 	
 	public float getControlMaxDeltaPitch() {

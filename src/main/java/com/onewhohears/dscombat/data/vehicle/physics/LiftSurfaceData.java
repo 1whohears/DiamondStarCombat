@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.vehicle.physics;
 import com.google.gson.JsonObject;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
+import com.onewhohears.dscombat.data.graph.FloatFloatGraph;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -30,12 +31,14 @@ public class LiftSurfaceData extends PhysicsComponentData {
 
     private final boolean ignore_roll;
     private final float input_rotation_max;
-    private final double area;
+    private final double area, zero_lift_drag;
     private final Vec3 pos;
     private final Vector3f rotation;
     private final InputType input_type;
     private final String lift_k_graph_key;
+    private final String drag_graph_key;
     private AoaLiftKGraph lift_k_graph;
+    private FloatFloatGraph drag_graph;
 
     public LiftSurfaceData(JsonObject json) {
         super(json);
@@ -46,6 +49,8 @@ public class LiftSurfaceData extends PhysicsComponentData {
         rotation = UtilParse.readVec3f(json, "rotation");
         input_type = UtilParse.getEnumSafe(json, "input_type", InputType.class);
         lift_k_graph_key = UtilParse.getStringSafe(json, "lift_k_graph", "fuselage");
+        zero_lift_drag = UtilParse.getFloatSafe(json, "zero_lift_drag", 0.02f);
+        drag_graph_key = UtilParse.getStringSafe(json, "drag_graph_key", "default_drag_aoa");
     }
 
     @Override
@@ -59,8 +64,18 @@ public class LiftSurfaceData extends PhysicsComponentData {
         return lift_k_graph;
     }
 
+    public FloatFloatGraph getDragGraph() {
+        if (drag_graph == null)
+            drag_graph = StatGraphs.get().getFloatFloatGraph(drag_graph_key);
+        return drag_graph;
+    }
+
     public double getArea() {
         return area;
+    }
+
+    public double getZeroLiftDrag() {
+        return zero_lift_drag;
     }
 
     public Vec3 getPos() {
@@ -94,7 +109,7 @@ public class LiftSurfaceData extends PhysicsComponentData {
             return -vehicle.inputs.roll * surface.getInputRotationMax() * 0.5f;
         }),
         ELEVATOR((surface,vehicle) -> -vehicle.inputs.pitch * surface.getInputRotationMax()),
-        STABILIZER((surface,vehicle) -> -vehicle.inputs.yaw * surface.getInputRotationMax());
+        STABILIZER((surface,vehicle) -> vehicle.inputs.yaw * surface.getInputRotationMax());
         private final BiFunction<LiftSurfaceData, EntityVehicle, Float> input;
         InputType(BiFunction<LiftSurfaceData, EntityVehicle, Float> input) {
             this.input = input;

@@ -26,7 +26,7 @@ public abstract class PhysicsComponentData {
     private final String hitbox;
 
     public PhysicsComponentData(JsonObject json) {
-        hitbox = UtilParse.getStringSafe(json, "hitbox", "");
+        hitbox = UtilParse.getStringSafe(json, "hitbox", " ");
     }
 
     public String getHitbox() {

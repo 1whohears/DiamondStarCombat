@@ -40,21 +40,35 @@ public class AlexisPresets {
 			.setPushEngineOverrideAfterburnerStats(76310, 131000,10, 0.02f)
 			.setMaxSpeed(30.25f)
 			.setPlaneSpeeds(30.25f, 12.96f, 5.19f)
+			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
 					13, 14, new Vec3(4.43, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.LEFT_FLAP, "alexis_plane"))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
 					13, 14, new Vec3(-4.43, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.RIGHT_FLAP, "alexis_plane"))
+			// elevators
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_elevator", false,
-					25, 5, new Vec3(2.61, 0, -6.10), 0, 0, 0,
+					25, 2, new Vec3(2.61, 0, -6.10), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane"))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_elevator", false,
-					25, 5, new Vec3(-2.61, 0, -6.10), 0, 0, 0,
+					25, 2, new Vec3(-2.61, 0, -6.10), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane"))
+			// tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
 					10, 9, new Vec3(0, 0, -5.07), 0, 0, 90,
 					LiftSurfaceData.InputType.STABILIZER, "alexis_plane"))
+			// nose to counter elevators and tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					0, 4, new Vec3(0, 0, 6.10), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "alexis_plane"))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					0, 9, new Vec3(0, 0, 5.07), 0, 0, 90,
+					LiftSurfaceData.InputType.NONE, "alexis_plane"))
+			// fuselage
+			/*.addPhysicsComponent(LiftSurfaceData.createJsonData(" ", true,
+					0, 10, new Vec3(0, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "fuselage"))*/
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 

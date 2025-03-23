@@ -19,22 +19,28 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
 
     @Override
     protected void calcPhysics(EntityVehicle vehicle) {
-        Quaternion q;
-        if (getData().isIgnoreRoll()) q = new Quaternion(0, 0, 0, 1);
-        else q = vehicle.getQBySide().copy();
+        Quaternion vehicleQ;
+        if (getData().isIgnoreRoll()) {
+            vehicleQ = new Quaternion(0, 0, 0, 1);
+            vehicleQ.mul(Vector3f.XP.rotationDegrees(vehicle.getXRot()));
+            vehicleQ.mul(Vector3f.YP.rotationDegrees(vehicle.getYRot()));
+        } else {
+            vehicleQ = vehicle.getQBySide().copy();
+        }
+        Quaternion surfaceQ = vehicleQ.copy();
         Vector3f rotation = getData().getRotation();
-        if (rotation.x() != 0) q.mul(Vector3f.XN.rotationDegrees(rotation.x()));
-        if (rotation.y() != 0) q.mul(Vector3f.YP.rotationDegrees(rotation.y()));
-        if (rotation.z() != 0) q.mul(Vector3f.ZP.rotationDegrees(rotation.z()));
+        if (rotation.x() != 0) surfaceQ.mul(Vector3f.XN.rotationDegrees(rotation.x()));
+        if (rotation.y() != 0) surfaceQ.mul(Vector3f.YP.rotationDegrees(rotation.y()));
+        if (rotation.z() != 0) surfaceQ.mul(Vector3f.ZP.rotationDegrees(rotation.z()));
         float rotate = getData().getInputType().getRotationFromInput(getData(), vehicle);
-        if (rotate != 0) q.mul(Vector3f.XN.rotationDegrees(rotate));
+        if (rotate != 0) surfaceQ.mul(Vector3f.XN.rotationDegrees(rotate));
         Vec3 u = vehicle.getDeltaMovement();
-        Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
+        Vec3 pitchAxis = UtilAngles.getPitchAxis(surfaceQ);
         Vec3 liftDir = u.cross(pitchAxis).normalize();
-        Vec3 airFoilAxes = UtilAngles.getRollAxis(q);
+        Vec3 airFoilAxes = UtilAngles.getRollAxis(surfaceQ);
         float airFoilSpeedSqr = (float) UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr() * 400; // m/s
         float goalAOA;
-        Vec3 wingNormal = UtilAngles.getYawAxis(q).scale(-1);
+        Vec3 wingNormal = UtilAngles.getYawAxis(surfaceQ).scale(-1);
         if (/*vehicle.isOnGround() || */UtilGeometry.isZero(u)) {
             goalAOA = 0;
         } else {
@@ -45,29 +51,45 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         // find liftK
         float speedScaleSqr = (float) (1 / vehicle.getHorizontalSpeedScale() / vehicle.getHorizontalSpeedScale());
         float liftK = getData().getLiftKGraph().getLerpFloat(aoa) * speedScaleSqr;
+        double P = vehicle.getFluidDensity();
         // Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
-        double wingLiftMag = 0.5 * liftK * vehicle.getFluidDensity() * airFoilSpeedSqr * getData().getArea();
+        double wingLiftMag = 0.5 * liftK * P * airFoilSpeedSqr * getData().getArea();
         Vec3 liftForce = liftDir.scale(wingLiftMag);
         vehicle.addForce(liftForce);
-        Vec3 liftMoment = getData().getPos().cross(liftForce).multiply(-1, 1, 1);
-        liftMoment = UtilAngles.rotateVector(liftMoment, q);
-        vehicle.addMoment(liftMoment, false);
+        Quaternion vehicleQI = vehicleQ.copy();
+        vehicleQI.conj();
+        Vec3 liftMoment = getData().getPos()
+                .cross(UtilAngles.rotateVector(liftForce, vehicleQI))
+                .multiply(-1, 1, 1);
+        vehicle.addMoment(liftMoment, false, true);
+        // Drag = (drag coefficient) * (air density) * (speed)^2 * (drag area) / 2
+        Vec3 windDir = u.normalize();
+        float dragK = getData().getDragGraph().getLerpFloat(aoa) * speedScaleSqr;
+        double dragMag = 0.5 * dragK * P * airFoilSpeedSqr * getData().getArea() * getData().getZeroLiftDrag();
+        Vec3 dragForce = windDir.scale(-dragMag);
+        vehicle.addForce(dragForce);
+        Vec3 dragMoment = getData().getPos()
+                .cross(UtilAngles.rotateVector(dragForce, vehicleQI))
+                .multiply(-1, 1, 1);
+        vehicle.addMoment(dragMoment, false, true);
 
         vehicle.debug("LIFT SURFACE = "+getData().getHitbox());
-        vehicle.debug("wingNormal = "+UtilParse.prettyVec3(wingNormal, 2));
-        vehicle.debug("airFoilAxes = "+UtilParse.prettyVec3(airFoilAxes, 2));
+        //vehicle.debug("wingNormal = "+UtilParse.prettyVec3(wingNormal, 2));
+        //vehicle.debug("airFoilAxes = "+UtilParse.prettyVec3(airFoilAxes, 2));
         vehicle.debug("aoa "+aoa+" liftK "+liftK+" rotate "+rotate);
         vehicle.debug("liftForce = "+UtilParse.prettyVec3(liftForce, 2));
         vehicle.debug("liftMoment = "+UtilParse.prettyVec3(liftMoment, 2));
+        vehicle.debug("dragForce = "+UtilParse.prettyVec3(dragForce, 2));
+        vehicle.debug("dragMoment = "+UtilParse.prettyVec3(dragMoment, 2));
     }
 
     public static float calcAOA(Vec3 u, Vec3 wingNormal, Vec3 pitchAxis) {
-        //return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
+        return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
         //float dot = (float) u.dot(airFoilAxes);
         //float dot = (float) u.dot(wingNormal);
         //return Mth.abs((float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal)) * Mth.sign(dot);
         //return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal) * Mth.sign(dot);
-        float dot = (float) wingNormal.cross(u).dot(pitchAxis);
-        return (float) (-UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal) * Mth.sign(dot));
+        //float dot = (float) wingNormal.cross(u).dot(pitchAxis);
+        //return (float) (-UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal) * Mth.sign(dot));
     }
 }

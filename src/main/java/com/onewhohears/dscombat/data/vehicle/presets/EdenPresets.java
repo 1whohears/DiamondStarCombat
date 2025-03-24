@@ -3,9 +3,11 @@ package com.onewhohears.dscombat.data.vehicle.presets;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.vehicle.physics.LiftSurfaceData;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
+import net.minecraft.world.phys.Vec3;
 
 public class EdenPresets {
 	
@@ -25,16 +27,53 @@ public class EdenPresets {
 			.setIdleHeat(5f)
 			.setTurnRadius(11f)
 			.setMaxTurnRates(5.5f, 2.25f, 1.25f)
-			.setTurnTorques(1.5f, 2f, 4f)
+			.setTurnTorques(0, 0, 0)
+			.setRotationalInertia(9086.7f, 80187.1f, 85602.3f)
+			.setDragArea(0.703f)
+			.setHasTurnAssist(true)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(38f)
 			.setFuselageLiftArea(22)
-			.setMaxAltitude(730)
-			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
-					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
-					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
-					ModSounds.ALEXIS_CP_WIND_FAST)
-			.setRotationalInertia(4.5f, 8.5f, 2.5f)
+			.setMaxAltitude(900)
+			.setPushEngineOverrideAfterburnerStats(49420, 81580,7, 0.003f)
+			.setUseHorizontalSpeedScale(true)
+			.setPlaneSpeeds(34.03f, 16.67f, 3.91f)
+			// wings
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
+					14, 19, new Vec3(4.31, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.LEFT_FLAP, "alexis_plane",
+					"default_drag_aoa", 0.8f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
+					14, 19, new Vec3(-4.31, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.RIGHT_FLAP, "alexis_plane",
+					"default_drag_aoa", 0.8f))
+			// elevators
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_elevator", false,
+					20, 2, new Vec3(3.69, 0, -6.19), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane",
+					"default_drag_aoa", 0.4f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_elevator", false,
+					20, 2, new Vec3(-3.69, 0, -6.19), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane",
+					"default_drag_aoa", 0.4f))
+			// tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_tail", false,
+					3, 6, new Vec3(2.13, 0, -4.25), 0, 0, 90,
+					LiftSurfaceData.InputType.STABILIZER, "alexis_plane",
+					"default_drag_aoa", 0.6f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_tail", false,
+					3, 6, new Vec3(-2.13, 0, -4.25), 0, 0, 90,
+					LiftSurfaceData.InputType.STABILIZER, "alexis_plane",
+					"default_drag_aoa", 0.6f))
+			// nose to counter elevators and tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					0, 4, new Vec3(0, 0, 6.19), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "alexis_plane",
+					"default_drag_aoa", 0.8f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					0, 12, new Vec3(0, 0, 4.25), 0, 0, 90,
+					LiftSurfaceData.InputType.NONE, "alexis_plane",
+					"default_drag_aoa", 0.8f))
 			.setCrashExplosionRadius(5.5f)
 			.set3rdPersonCamDist(19)
 			.setPlaneLiftAOAGraph("alexis_plane")
@@ -43,6 +82,10 @@ public class EdenPresets {
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(8)
 			.setLayerTextureNum(3)
+			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
+					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
+					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW,
+					ModSounds.ALEXIS_CP_WIND_FAST)
 			.addIngredient(ModItems.FUSELAGE.getId(), 1)
 			.addIngredient(ModItems.WING.getId(), 4)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())

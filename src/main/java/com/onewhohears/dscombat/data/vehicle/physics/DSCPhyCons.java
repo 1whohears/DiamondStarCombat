@@ -40,7 +40,7 @@ public class DSCPhyCons {
 
 	public static final double INCREASED_LANDING_GEAR_DRAG_AREA = 100;
 
-	public static final float DRAG_SCALE = 1;
+	public static final float DRAG_SCALE = 0.125f / (float)HORIZONTAL_SPEED_SCALE;
 
 	public static final float ANGULAR_DRAG_C = 1E3f;
 

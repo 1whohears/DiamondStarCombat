@@ -48,7 +48,7 @@ public class EngineInstance<T extends EngineStats> extends PartInstance<T> {
 		if (vehicleStats.fuel_consume_per_engine != -1)
 			fuel = vehicleStats.fuel_consume_per_engine;
 		else fuel = getStats().getFuelPerTick();
-		if (getParent() != null && getParent().isUsingAfterburner()) fuel *= 8;
+		if (getParent() != null && getParent().isUsingAfterburner()) fuel *= 4;
 		return fuel;
 	}
 	

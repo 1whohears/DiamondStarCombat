@@ -38,7 +38,7 @@ public class AlexisPresets {
 			.setPlaneFlapDownAOABias(13)
 			.setMaxAltitude(750)
 			.setUseHorizontalSpeedScale(true)
-			.setPushEngineOverrideAfterburnerStats(76310, 131000,10, 0.004f)
+			.setPushEngineOverrideAfterburnerStats(76310, 131000,10, 0.005f)
 			.setMaxSpeed(30.25f)
 			.setPlaneSpeeds(30.25f, 12.96f, 5.19f)
 			// wings

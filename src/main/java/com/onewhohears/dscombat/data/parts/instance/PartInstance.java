@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -89,7 +90,9 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public int getFlares() {
 		return 0;
 	}
-	
+	/**
+	 * this is actually mass, but refactoring would cause additional confusion
+	 */
 	public float getWeight() {
 		return getStats().getWeight();
 	}
@@ -288,5 +291,13 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public boolean isSetup() {
 		return isSetup;
 	}
-	
+
+    public Vec3 getRotInertia() {
+		if (parent == null || UtilGeometry.isZero(relPos)) return Vec3.ZERO;
+		return new Vec3(
+				getWeight() * (relPos.y*relPos.y + relPos.z*relPos.z),
+				getWeight() * (relPos.x*relPos.x + relPos.z*relPos.z),
+				getWeight() * (relPos.x*relPos.x + relPos.y*relPos.y)
+		);
+    }
 }

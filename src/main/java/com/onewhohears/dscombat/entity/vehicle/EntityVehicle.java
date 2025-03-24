@@ -159,7 +159,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public float zRot, zRotO; 
 	public Vec3 prevMotion = Vec3.ZERO;
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO, addForceBetweenTicks = Vec3.ZERO;
-	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentBetweenTicks = Vec3.ZERO, controlMoment = Vec3.ZERO;
+	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentBetweenTicks = Vec3.ZERO;
+	protected Vec3 controlMoment = Vec3.ZERO, additionalRotInertia = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false, hasRadio = false;
 	
@@ -630,7 +631,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	protected Vec3 getAdditionalRotInertia() {
-		return Vec3.ZERO;
+		return additionalRotInertia;
 	}
 	
 	/**
@@ -1000,6 +1001,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		airDensity = UtilVehicleEntity.getAirDensity(this);
 		if (isOnGround()) ++groundTicks;
 		else groundTicks = 0;
+		additionalRotInertia = partsManager.calcRotInertialFromParts();
 	}
 	
 	/**

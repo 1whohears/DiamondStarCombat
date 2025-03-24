@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.parts.instance.*;
 import com.onewhohears.dscombat.util.UtilPresetParse;
+import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -567,10 +568,16 @@ public class PartsManager {
 	}
 	
 	public List<PartSlot> getSlotsRandomOrder() {
-		List<PartSlot> random = new ArrayList<>();
-		for (PartSlot p : slots) random.add(p);
+        List<PartSlot> random = new ArrayList<>(slots);
 		Collections.shuffle(random, UtilEntity.random);
 		return random;
 	}
-	
+
+    public Vec3 calcRotInertialFromParts() {
+		Vec3 inertia = Vec3.ZERO;
+		for (PartSlot p : slots)
+			if (p.getSlotType().isExternal() && p.getPartData() != null)
+				inertia = inertia.add(p.getPartData().getRotInertia());
+		return inertia;
+    }
 }

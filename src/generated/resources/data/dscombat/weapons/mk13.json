@@ -39,6 +39,7 @@
     }
   ],
   "itemKey": "dscombat:missile",
+  "mass": 1005.0,
   "maxAge": 600,
   "presetId": "mk13",
   "presetType": "torpedo",

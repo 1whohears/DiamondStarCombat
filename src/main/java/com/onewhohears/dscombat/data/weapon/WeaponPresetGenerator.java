@@ -229,6 +229,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim7f")
 				.setSortFactor(4)
+				.setMass(230)
 				.setNotActiveTrack()
 				.setFireRate(40)
 				.setInaccuracy(0f)
@@ -263,6 +264,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim7mh")
 				.setSortFactor(4)
+				.setMass(230)
 				.setNotActiveTrack()
 				.setFireRate(40)
 				.setInaccuracy(0f)
@@ -297,6 +299,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim120b")
 				.setSortFactor(6)
+				.setMass(161.5f)
 				.setActiveTrack()
 				.setFireRate(30)
 				.setInaccuracy(0f)
@@ -331,6 +334,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "aim120c")
 				.setSortFactor(7)
+				.setMass(161.5f)
 				.setActiveTrack()
 				.setFireRate(30)
 				.setInaccuracy(0f)
@@ -365,6 +369,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "meteor")
 				.setSortFactor(10)
+				.setMass(190)
 				.setActiveTrack()
 				.setFireRate(50)
 				.setInaccuracy(0f)
@@ -400,6 +405,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "pac3")
 				.setSortFactor(9)
+				.setMass(318)
 				.setActiveTrack()
 				.setFireRate(40)
 				.setInaccuracy(0f)
@@ -433,6 +439,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "bgm109")
 				.setSortFactor(3)
+				.setMass(1300)
 				.setAssetId("aim7f")
 				.setNotActiveTrack()
 				.setFireRate(25)
@@ -467,6 +474,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9l")
 				.setSortFactor(1)
+				.setMass(85.3f)
 				.setFireRate(20)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -500,6 +508,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9p5")
 				.setSortFactor(4)
+				.setMass(85.3f)
 				.setFireRate(20)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -533,6 +542,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.irMissileBuilder(DSCombatMod.MODID, "aim9x")
 				.setSortFactor(10)
+				.setMass(85.3f)
 				.setFireRate(20)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -569,6 +579,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.posMissileBuilder(DSCombatMod.MODID, "agm114k")
 				.setSortFactor(1)
+				.setMass(45f)
 				.setFireRate(20)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -599,6 +610,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.posMissileBuilder(DSCombatMod.MODID, "agm65l")
 				.setSortFactor(4)
+				.setMass(250)
 				.setFireRate(40)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -631,6 +643,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "agm65g")
 				.setSortFactor(4)
+				.setMass(250)
 				.setActiveTrack()
 				.setTargetType(TargetType.GROUND)
 				.setFireRate(40)
@@ -665,6 +678,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "agm84e")
 				.setSortFactor(8)
+				.setMass(627)
 				.setActiveTrack()
 				.setTargetType(TargetType.GROUND)
 				.setFireRate(50)
@@ -703,6 +717,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.antiRadarMissileBuilder(DSCombatMod.MODID, "agm88g")
 				.setSortFactor(10)
+				.setMass(361)
 				.setFireRate(40)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -735,6 +750,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.torpedoBuilder(DSCombatMod.MODID, "mk13")
 				.setSortFactor(3)
+				.setMass(1005)
 				.setActiveTrack()
 				.setFireRate(40)
 				.setInaccuracy(0f)
@@ -769,6 +785,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.trackMissileBuilder(DSCombatMod.MODID, "rgm84")
 				.setSortFactor(6)
+				.setMass(691)
 				.setAssetId("agm84e")
 				.setActiveTrack()
 				.setFireRate(40)
@@ -809,6 +826,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm30")
 				.setSortFactor(2)
+				.setMass(50)
 				.setAssetId("anm30")
 				.setFireRate(4)
 				.setInaccuracy(0f)
@@ -832,6 +850,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm57")
 				.setSortFactor(4)
+				.setMass(118)
 				.setAssetId("anm30")
 				.setFireRate(6)
 				.setInaccuracy(0f)
@@ -856,6 +875,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "anm64")
 				.setSortFactor(6)
+				.setMass(278)
 				.setAssetId("anm30")
 				.setFireRate(11)
 				.setInaccuracy(0f)
@@ -879,6 +899,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BombStats.Builder
 				.bombBuilder(DSCombatMod.MODID, "napalm")
 				.setSortFactor(1)
+				.setMass(30)
 				.setAssetId("anm30")
 				.setFireRate(3)
 				.setInaccuracy(0f)
@@ -905,6 +926,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BunkerBusterStats.Builder
 				.bunkerBusterBuilder(DSCombatMod.MODID, "gruetz_bunker_buster")
 				.setSortFactor(10)
+				.setMass(1000)
 				.setAssetId("gruetz_bunker_buster")
 				.setFireRate(60)
 				.setInaccuracy(0f)
@@ -930,6 +952,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(MissileStats.Builder
 				.dumbTorpedoBuilder(DSCombatMod.MODID, "type91")
 				.setSortFactor(1)
+				.setMass(848)
 				.setFireRate(40)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)

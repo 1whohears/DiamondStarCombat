@@ -43,6 +43,7 @@
     }
   ],
   "itemKey": "dscombat:missile",
+  "mass": 161.5,
   "maxAge": 350,
   "presetId": "aim120b",
   "presetType": "track_missile",

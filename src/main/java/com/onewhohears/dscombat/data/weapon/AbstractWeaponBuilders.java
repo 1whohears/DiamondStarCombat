@@ -29,6 +29,10 @@ public class AbstractWeaponBuilders {
 		public C setCanShootOnGround(boolean canShootOnGround) {
 			return setBoolean("canShootOnGround", canShootOnGround);
 		}
+
+		public C setMass(float mass) {
+			return setFloat("mass", mass);
+		}
 		
 		public C setEntityType(ResourceLocation entityTypeKey) {
 			return setString("entityTypeKey", entityTypeKey.toString());

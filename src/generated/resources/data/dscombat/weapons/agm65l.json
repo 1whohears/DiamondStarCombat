@@ -39,6 +39,7 @@
     }
   ],
   "itemKey": "dscombat:missile",
+  "mass": 250.0,
   "maxAge": 300,
   "presetId": "agm65l",
   "presetType": "pos_missile",

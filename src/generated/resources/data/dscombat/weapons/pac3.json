@@ -43,6 +43,7 @@
     }
   ],
   "itemKey": "dscombat:missile",
+  "mass": 318.0,
   "maxAge": 400,
   "presetId": "pac3",
   "presetType": "track_missile",

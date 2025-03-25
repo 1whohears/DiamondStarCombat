@@ -383,21 +383,21 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "light_missile_rack", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
-				.setWeight(750)
+				.setWeight(15)
 				.setExternalWeaponStats(4, 0)
 				.setSortFactor(2)
 				.addIngredientTag("dscombat:aluminum_ingot", 5)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "heavy_missile_rack", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_MED)
-				.setWeight(1500)
+				.setWeight(30)
 				.setExternalWeaponStats(2, 0)
 				.setSortFactor(3)
 				.addIngredientTag("dscombat:aluminum_ingot", 10)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "bomb_rack", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_HEAVY)
-				.setWeight(2000)
+				.setWeight(40)
 				.setExternalWeaponStats(16, 0)
 				.setSortFactor(4)
 				.addIngredientTag("dscombat:aluminum_ingot", 15)
@@ -427,22 +427,22 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"gau_avenger", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
-				.setWeight(1250)
+				.setWeight(281)
 				.setWeaponStats(1000)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"m61a1_vulcan", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
-				.setWeight(900)
+				.setWeight(112)
 				.setWeaponStats(500)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"gsh_30_1", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
-				.setWeight(200)
+				.setWeight(46)
 				.setWeaponStats(200)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"m2_browning", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
-				.setWeight(300)
+				.setWeight(38)
 				.setWeaponStats(300)
 				.build());
 		// DISPENSERS

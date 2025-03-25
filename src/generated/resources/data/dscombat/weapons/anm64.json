@@ -26,6 +26,7 @@
     }
   ],
   "itemKey": "dscombat:bomb",
+  "mass": 278.0,
   "maxAge": 200,
   "presetId": "anm64",
   "presetType": "bomb",

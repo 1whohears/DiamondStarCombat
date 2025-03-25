@@ -47,6 +47,7 @@
     }
   ],
   "itemKey": "dscombat:missile",
+  "mass": 190.0,
   "maxAge": 500,
   "presetId": "meteor",
   "presetType": "track_missile",

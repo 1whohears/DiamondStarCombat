@@ -29,6 +29,7 @@
     }
   ],
   "itemKey": "dscombat:bomb",
+  "mass": 30.0,
   "maxAge": 200,
   "presetId": "napalm",
   "presetType": "bomb",

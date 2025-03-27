@@ -44,7 +44,7 @@ public class DSCPhyCons {
 
 	public static final float ANGULAR_DRAG_C = 1E3f;
 
-	public static final float MAX_SPEED_CHANGE_RATE = 0.05f;
+	public static final float MAX_SPEED_CHANGE_RATE = 0.01f;
 	public static final float AOA_CHANGE_RATE = 0.5f;
 
 	public static final float FLOAT = 150f;
@@ -57,7 +57,7 @@ public class DSCPhyCons {
 	public static final float COLLIDE_DAMAGE_RATE = 300f;
 	
 	public static final double MAX_FALL_SPEED = 2.5;
-	public static final double MAX_CLIMB_SPEED = 1.0;
+	public static final double MAX_CLIMB_SPEED = 2.5;
 	
 	public static final float VEL_SOUND = (float) (17.5 * HORIZONTAL_SPEED_SCALE); // m/t
 	

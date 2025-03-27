@@ -837,12 +837,16 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public void motionClamp() {
 		Vec3 move = getDeltaMovement();
 		double goalMaxXZ = getMaxSpeedForMotion();
-		maxXZ = Mth.lerp(DSCPhyCons.MAX_SPEED_CHANGE_RATE, maxXZ, goalMaxXZ);;
+		maxXZ = Mth.lerp(DSCPhyCons.MAX_SPEED_CHANGE_RATE, maxXZ, goalMaxXZ);
 		
 		Vec3 motionXZ = new Vec3(move.x, 0, move.z);
 		double velXZ = motionXZ.length();
 		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
-		
+
+		setDeltaMovement(motionXZ.x, clampYMove(move), motionXZ.z);
+	}
+
+	protected double clampYMove(Vec3 move) {
 		double my = move.y;
 		if (my > getMaxClimbSpeed()) my = getMaxClimbSpeed();
 		else if (my < -getMaxFallSpeed()) my = -getMaxFallSpeed();
@@ -858,9 +862,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		}
 
 		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
-		setDeltaMovement(motionXZ.x, my, motionXZ.z);
+		return my;
 	}
-	
+
 	public double getMaxClimbSpeed() {
 		return DSCPhyCons.MAX_CLIMB_SPEED;
 	}

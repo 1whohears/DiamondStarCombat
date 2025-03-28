@@ -65,6 +65,8 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final boolean use_horizontal_speed_scale;
 	private final boolean has_afterburner;
 	public final float cruise_speed;
+	public final float break_deacc_ground;
+	public final float break_deacc_air;
 	private final PhysicsComponentData[] physics_components;
 	// appearance
 	public final int baseTextureVariants, textureLayers;
@@ -93,6 +95,8 @@ public abstract class VehicleStats extends JsonPresetStats {
 		max_health = UtilParse.getFloatSafe(stats, "max_health", 10);
 		max_speed = UtilParse.getFloatSafe(stats, "max_speed", 0.1f);
 		max_ground_speed = UtilParse.getFloatSafe(stats, "max_ground_speed", max_speed);
+		break_deacc_ground = UtilParse.getFloatSafe(stats, "break_deacc_ground", 0.005f);
+		break_deacc_air = UtilParse.getFloatSafe(stats, "break_deacc_air", 0.001f);
 		mass = UtilParse.getFloatSafe(stats, "mass", 1000);
 		stealth = UtilParse.getFloatSafe(stats, "stealth", 1);
 		cross_sec_area = UtilParse.getFloatSafe(stats, "cross_sec_area", 10);
@@ -1241,6 +1245,11 @@ public abstract class VehicleStats extends JsonPresetStats {
 
 		public Builder setDragArea(float drag_area) {
 			return setFloat("drag_area", drag_area);
+		}
+
+		public Builder setBreakDeAcc(float break_deacc_ground, float break_deacc_air) {
+			setStatFloat("break_deacc_ground", break_deacc_ground);
+			return setStatFloat("break_deacc_air", break_deacc_air);
 		}
 
 		public Builder setBoolean(String key, boolean value) {

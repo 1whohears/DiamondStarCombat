@@ -455,12 +455,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	protected void calcAirMovement(Quaternion q) {
 		resetFallDistance();
+		if (canAirBreak() && isAirBreaking() && isOperational()) applyAirBreaks();
 	}
 
 	protected void calcGroundMovement(Quaternion q) {
 		if (canDriveOnGround()) calcDriveMovement(q);
 		else calcOtherGroundMovement(q);
-		if (canBrake() && isBraking() && isOperational()) applyBreaks();
+		if (canGroundBrake() && isGroundBraking() && isOperational()) applyGroundBreaks();
 	}
 
 	protected void calcDriveMovement(Quaternion q) {
@@ -471,7 +472,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			addFrictionForce(kineticFric);
 		} else {
 			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
-			if (getCurrentThrottle() == 0 && xzSpeed != 0) addFrictionForce(kineticFric * 0.2);
+			if (getCurrentThrottle() == 0 && xzSpeed != 0) driveSlowDown(0.0002);
 		}
 		// turn physics
 		float max_tr = getTurnRadius();
@@ -488,6 +489,26 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 				.add(0, turnDeg, 0);
 		else addMomentY(turnDeg*slideAngleCos, false);
 		setAngularVel(av);
+	}
+
+	protected void driveSlowDown(double amount) {
+		Vec3 m = getDeltaMovement().multiply(1, 0, 1);
+		if (UtilGeometry.isZero(m)) return;
+		double speed = m.length();
+		double newSpeed = speed - amount;
+		if (Math.signum(newSpeed) != Math.signum(speed)) newSpeed = 0;
+		m = m.scale(newSpeed / speed);
+		setDeltaMovement(new Vec3(m.x, getDeltaMovement().y, m.z));
+	}
+
+	protected void airSlowDown(double amount) {
+		Vec3 m = getDeltaMovement();
+		if (UtilGeometry.isZero(m)) return;
+		double speed = m.length();
+		double newSpeed = speed - amount;
+		if (Math.signum(newSpeed) != Math.signum(speed)) newSpeed = 0;
+		m = m.scale(newSpeed / speed);
+		setDeltaMovement(m);
 	}
 
 	public boolean canDriveOnGround() {
@@ -1089,14 +1110,26 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return getSpinThrustMag()/getTotalMass();
 	}
 	
-	public boolean isBraking() {
+	public boolean isGroundBraking() {
 		return false;
 	}
 	
-	public abstract boolean canBrake();
+	public abstract boolean canGroundBrake();
 	
-	public void applyBreaks() {
-		addFrictionForce(kineticFric);
+	protected void applyGroundBreaks() {
+		driveSlowDown(getStats().break_deacc_ground * DSCPhyCons.HORIZONTAL_SPEED_SCALE);
+	}
+
+	public boolean canAirBreak() {
+		return getStats().break_deacc_air > 0;
+	}
+
+	public boolean isAirBreaking() {
+		return isGroundBraking();
+	}
+
+	protected void applyAirBreaks() {
+		airSlowDown(getStats().break_deacc_air * DSCPhyCons.HORIZONTAL_SPEED_SCALE);
 	}
 	
 	protected void addFrictionForce(double f) {

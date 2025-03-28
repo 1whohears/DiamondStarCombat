@@ -29,9 +29,9 @@ public class EntityBoat extends EntityVehicle {
 	}
 
 	@Override
-	public void applyBreaks() {
+	protected void applyGroundBreaks() {
 		throttleToZero();
-		super.applyBreaks();
+		super.applyGroundBreaks();
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public boolean isBraking() {
+	public boolean isGroundBraking() {
 		return inputs.special;
 	}
 	
@@ -173,7 +173,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 
 	@Override
-	public boolean canBrake() {
+	public boolean canGroundBrake() {
 		return true;
 	}
 

@@ -27,7 +27,7 @@ public class EntityStationaryVehicle extends EntityVehicle {
     }
 
     @Override
-    public boolean canBrake() {
+    public boolean canGroundBrake() {
         return false;
     }
 

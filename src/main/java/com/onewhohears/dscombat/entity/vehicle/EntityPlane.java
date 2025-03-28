@@ -107,7 +107,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public boolean isBraking() {
+	public boolean isGroundBraking() {
 		return inputs.special2 && isOnGround();
 	}
 	
@@ -236,7 +236,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 
 	@Override
-	public boolean canBrake() {
+	public boolean canGroundBrake() {
 		return onGround;
 	}
 

@@ -102,7 +102,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 
 	@Override
-	protected void calcMoveStatsPre(Quaternion q) {
+	public void calcMoveStatsPre(Quaternion q) {
 		super.calcMoveStatsPre(q);
 		if (getDeltaMovement().y < 0 && getAltitude() < 40) ++altitudeWarningTicks;
 		else altitudeWarningTicks = 0;

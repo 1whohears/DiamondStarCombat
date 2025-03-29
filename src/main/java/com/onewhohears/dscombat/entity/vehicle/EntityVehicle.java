@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
+import com.onewhohears.dscombat.entity.PhysicsBody;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
@@ -19,7 +20,6 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
@@ -114,7 +114,7 @@ import net.minecraftforge.network.PacketDistributor;
  * @author 1whohears
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
-public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion {
+public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion, PhysicsBody {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -397,6 +397,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		controlSystem();
 		// PHYSICS
 		tickPhysics();
+		tickCollisions();
+		if (!getLevel().isClientSide() && canTrample()) tickTrample();
+		tickLerp();
 		// HITBOXES
 		tickHitboxes();
         // OTHER
@@ -408,57 +411,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		else serverTick();
 	}
 
-	protected void tickPhysics() {
-		Quaternion q = getQBySide();
-		// SET PREV/OLD
-		prevMotion = getDeltaMovement();
-		forcesO = getForces();
-		momentO = getMoment();
-		zRotO = zRot;
-		setPrevQ(q);
-		// SET CURRENT FORCE/MOMENT TO 0
-		setForces(Vec3.ZERO);
-		setMoment(Vec3.ZERO);
-		controlMoment = Vec3.ZERO;
-		// CALC NEW FORCE MOMENTS
-		calcMoveStatsPre(q);
-		calcForceMoment(q);
-		physicsInstances.forEach(instance -> instance.tick(this));
-		// APPLY NEW FORCES
-		calcAcc();
-		motionClamp();
-		if (!getLevel().isClientSide() && canTrample()) tickTrample();
-		if (!isTestMode()) move(MoverType.SELF, getDeltaMovement());
-		calcMoveStatsPost(q);
-		tickCollisions();
-		// APPLY NEW MOMENT
-		calcRotAcc(q);
-		setQBySide(q);
-		EulerAngles angles = UtilAngles.toDegrees(q);
-		setXRotNoQ((float)angles.pitch);
-		setYRotNoQ((float)angles.yaw);
-		zRot = (float)angles.roll;
-		// TICK OTHER
-		tickLerp();
-	}
-
-	protected void calcForceMoment(Quaternion q) {
-		calcUniversalForces(q);
-		calcUniversalMoments(q);
-		if (isOnGround() && isInWater()) {
-			calcGroundMovement(q);
-			calcWaterMovement(q);
-		} else if (isOnGround()) calcGroundMovement(q);
-		else if (isInWater()) calcWaterMovement(q);
-		else calcAirMovement(q);
-	}
-
-	protected void calcAirMovement(Quaternion q) {
+	public void calcAirMovement(Quaternion q) {
 		resetFallDistance();
 		if (canAirBreak() && isAirBreaking() && isOperational()) applyAirBreaks();
 	}
 
-	protected void calcGroundMovement(Quaternion q) {
+	public void calcGroundMovement(Quaternion q) {
 		if (canDriveOnGround()) calcDriveMovement(q);
 		else calcOtherGroundMovement(q);
 		if (canGroundBrake() && isGroundBraking() && isOperational()) applyGroundBreaks();
@@ -519,18 +477,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		addFrictionForce(kineticFric);
 	}
 
-	protected void calcWaterMovement(Quaternion q) {
+	public void calcWaterMovement(Quaternion q) {
 
 	}
 
-	protected void calcUniversalForces(Quaternion q) {
-		addForce(getWeightForce());
-		addForce(getThrustForce(q));
-		addForce(getDragForce(q));
-	}
-
-	protected void calcUniversalMoments(Quaternion q) {
-		applyAngularDrag();
+	@Override
+	public void addControllingTorques(Quaternion q) {
 		if (isOperational() && isOnGround()) flatten(q, 4f, 4f, true);
 		if (canTurnViaTorque()) {
 			if (canControlPitch()) addMomentX(inputs.pitch * getPitchTorque(), true);
@@ -544,107 +496,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public boolean canTurnViaTorque() {
 		return isOperational() && !isOnGround() && physicsInstances.isEmpty();
-	}
-
-	protected void applyAngularDrag() {
-		Vec3 av = getAngularVel();
-		float d = getAngularDrag();
-		float dx = d, dy = d, dz = d;
-		if (!isOnGround()) {
-			if (inputs.pitch != 0 && Math.abs(av.x) <= getControlMaxDeltaPitch()) dx = 0;
-			if (inputs.yaw != 0 && Math.abs(av.y) <= getControlMaxDeltaYaw()) dy = 0;
-			if (inputs.roll != 0 && Math.abs(av.z) <= getControlMaxDeltaRoll()) dz = 0;
-		}
-		Vec3 I = getTotalRotInertia();
-		setAngularVel(new Vec3(
-				getADComponent(av.x, dx, I.x),
-				getADComponent(av.y, dy, I.y),
-				getADComponent(av.z, dz, I.z)));
-	}
-
-	private double getADComponent(double v, float d, double I) {
-		// AD needs to be scaled with speed
-		double av = Math.abs(v);
-		double a = av - (d/I + av * 0.01);
-		if (a < 0) return 0;
-		return a * Math.signum(v);
-	}
-
-	protected float getAngularDrag() {
-		float d = (float) getFluidDensity() * DSCPhyCons.ANGULAR_DRAG_C;
-		if (isOnGround()) d *= 10;
-		return d;
-	}
-
-	/*protected void applyAngularDrag() {
-		Vec3 av = getAngularVel();
-		if (av.x == 0 && av.z == 0 && av.y == 0) return;
-		Vec3 moment = getAngularDrag(av);
-		debug("ANGULAR DRAG MOMENT = "+ UtilParse.prettyVec3(moment, 4)+" "+physicsInstances.size());
-		Vec3 I = getTotalRotInertia();
-		Vec3 acc = moment.multiply(1/I.x, 1/I.y, 1/I.z);
-		if (av.x != 0 && Math.signum(av.x+acc.x) != Math.signum(av.x)) {
-			moment = moment.multiply(0, 1, 1);
-			av = av.multiply(0, 1, 1);
-		}
-		if (av.y != 0 && Math.signum(av.y+acc.y) != Math.signum(av.y)) {
-			moment = moment.multiply(1, 0, 1);
-			av = av.multiply(1, 0, 1);
-		}
-		if (av.z != 0 && Math.signum(av.z+acc.z) != Math.signum(av.z)) {
-			moment = moment.multiply(1, 1, 0);
-			av = av.multiply(1, 1, 0);
-		}
-		setAngularVel(av);
-		addMoment(moment, false, true);
-	}
-
-	public Vec3 getAngularDrag(Vec3 av) {
-		//return av.multiply(av).multiply(Math.signum(av.x), Math.signum(av.y), Math.signum(av.z))
-		//		.scale(-getAngularDragFactor() * getFluidDensity() * getDragArea() * DSCPhyCons.ACC_TIME_SCALE);
-		return av.scale(-getAngularDragFactor() * getFluidDensity() * getDragArea() * DSCPhyCons.ACC_TIME_SCALE);
-	}*/
-
-	public double getAngularDragFactor() {
-		double f = 9E4;
-		if (onGround) return f * 1E2;
-		else return f;
-	}
-
-	protected void calcRotAcc(Quaternion q) {
-		clampControlMoment();
-		addMoment(controlMoment, false, true);
-		Vec3 m = getMoment().add(addMomentBetweenTicks).scale(DSCPhyCons.ACC_TIME_SCALE);
-		Vec3 av = getAngularVel();
-		if (!UtilGeometry.isZero(m)) {
-			Vec3 I = getTotalRotInertia();
-			av = av.add(m.x/I.x, m.y/I.y, m.z/I.z);
-			setAngularVel(av);
-		}
-		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
-		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
-		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
-		addMomentBetweenTicks = Vec3.ZERO;
-	}
-
-	protected void clampControlMoment() {
-		if (UtilGeometry.isZero(controlMoment)) return;
-		Vec3 I = getTotalRotInertia();
-		Vec3 av = getAngularVel();
-		double x = 0, y = 0, z = 0;
-		if (controlMoment.x != 0) x = getControlMomentComponent(controlMoment.x, av.x, getControlMaxDeltaPitch(), I.x);
-		if (controlMoment.y != 0) y = getControlMomentComponent(controlMoment.y, av.y, getControlMaxDeltaYaw(), I.y);
-		if (controlMoment.z != 0) z = getControlMomentComponent(controlMoment.z, av.z, getControlMaxDeltaRoll(), I.z);
-		controlMoment = new Vec3(x, y, z);
-	}
-
-	protected double getControlMomentComponent(double cm, double v, float max, double I) {
-		if (Math.abs(v) > max && Math.signum(v) == Math.signum(cm)) return 0;
-		double a2 = cm / I * DSCPhyCons.ACC_TIME_SCALE;
-		double v2 = v + a2;
-		double vd = Math.abs(v2) - max;
-		if (vd > 0) cm -= vd * Math.signum(v2) * I / DSCPhyCons.ACC_TIME_SCALE;
-		return cm;
 	}
 
 	public Vec3 getTotalRotInertia() {
@@ -850,41 +701,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		UtilParticles.vehicleParticles(this);
 		tickClientLandingGear();
 	}
-	
-	/**
-	 * called every tick after movement is calculated.
-	 * restricts the motion of the craft based on max horizontal speed and max vertical speed.
-	 */
-	public void motionClamp() {
-		Vec3 move = getDeltaMovement();
-		double goalMaxXZ = getMaxSpeedForMotion();
-		maxXZ = Mth.lerp(DSCPhyCons.MAX_SPEED_CHANGE_RATE, maxXZ, goalMaxXZ);
-		
-		Vec3 motionXZ = new Vec3(move.x, 0, move.z);
-		double velXZ = motionXZ.length();
-		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
-
-		setDeltaMovement(motionXZ.x, clampYMove(move), motionXZ.z);
-	}
-
-	protected double clampYMove(Vec3 move) {
-		double my = move.y;
-		if (my > getMaxClimbSpeed()) my = getMaxClimbSpeed();
-		else if (my < -getMaxFallSpeed()) my = -getMaxFallSpeed();
-		else if (Math.abs(my) < 0.001) my = 0;
-
-		double decreaseSpeedPos = 100;
-		double altitude = getAltitude();
-		double nextY = altitude + my;
-		if (nextY > getMaxAltitude()) my = getMaxAltitude() - altitude;
-		else if (altitude > getMaxAltitude() - decreaseSpeedPos) {
-			double maxY = 1 - (altitude - getMaxAltitude() + decreaseSpeedPos) / decreaseSpeedPos;
-			if (my > maxY) my = maxY;
-		}
-
-		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
-		return my;
-	}
 
 	public double getMaxClimbSpeed() {
 		return DSCPhyCons.MAX_CLIMB_SPEED;
@@ -972,18 +788,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		setAngularVel(new Vec3(x, av.y, z));
 	}
 	
-	public void addMoment(Vec3 moment, boolean control, boolean relative) {
-		//if (!relative) {
-		// FIXME not all moments are applies relative to the vehicle's current axis of rotation
-
-		//}
-		if (control && (!canUseTurnAssist() || isUsingTurnAssist())) {
-			controlMoment = controlMoment.add(moment);
-		} else {
-			setMoment(getMoment().add(moment));
-		}
-	}
-	
 	public void addMomentX(float moment, boolean control) {
 		addMoment(Vec3.ZERO.add(moment, 0, 0), control, true);
 	}
@@ -1013,7 +817,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * instead of calculating values multiple times per tick.
 	 * @param q the current direction of the vehicle
 	 */
-	protected void calcMoveStatsPre(Quaternion q) {
+	public void calcMoveStatsPre(Quaternion q) {
 		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
 		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION * DSCPhyCons.ACC_TIME_SCALE;
 		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION * DSCPhyCons.ACC_TIME_SCALE;
@@ -1034,7 +838,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * instead of calculating values multiple times per tick.
 	 * @param q the current direction of the vehicle
 	 */
-	protected void calcMoveStatsPost(Quaternion q) {
+	public void calcMoveStatsPost(Quaternion q) {
 		Vec3 m = getDeltaMovement();
 		float y = getYRot();
 		xzSpeed = (float) Math.sqrt(m.x*m.x + m.z*m.z);
@@ -1057,20 +861,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public int getXZSpeedDir() {
 		return xzSpeedDir;
-	}
-	
-	/**
-	 * called every tick on server and client side.
-	 * after forces are calculated. see {@link EntityVehicle#calcForceMoment(Quaternion)}.
-	 * F=M*A -> A=F/M then A is added to current velocity
-	 */
-	public void calcAcc() {
-		Vec3 f = getForces().add(addForceBetweenTicks);
-		if (applyHorizontalSpeedScale())
-			f = f.multiply(getHorizontalSpeedScale(), 1, getHorizontalSpeedScale());
-		double massScale = 1/getTotalMass();
-		setDeltaMovement(getDeltaMovement().add(f.scale(massScale).scale(DSCPhyCons.ACC_TIME_SCALE)));
-		addForceBetweenTicks = Vec3.ZERO;
 	}
 
 	public boolean applyHorizontalSpeedScale() {
@@ -1174,12 +964,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	/**
-	 * @param q the plane's current rotation
-	 * @return a force vector as the plane's thrust force this tick
-	 */
-	public abstract Vec3 getThrustForce(Quaternion q);
-	
-	/**
 	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
 	 */
 	public double getPushThrustMag() {
@@ -1210,16 +994,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	/**
-	 * will be the inverse of some proportion of the plane's current movement
-	 * @param q the plane's current rotation
-	 * @return a force vector as the plane's drag this tick
-	 */
-	public Vec3 getDragForce(Quaternion q) {
-		Vec3 direction = getDeltaMovement().normalize().scale(-1);
-        return direction.scale(getDragMag());
-	}
-	
-	/**
 	 * @return the magnitude of the drag force
 	 */
 	public double getDragMag() {
@@ -1243,13 +1017,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		double a = getBaseCrossSecArea();
 		if (canToggleLandingGear() && isLandingGear()) a += 1;
 		return a;
-	}
-	
-	/**
-	 * @return srly bro you dont know what this is?
-	 */
-	public Vec3 getWeightForce() {
-		return new Vec3(0, -getTotalMass() * DSCPhyCons.GRAVITY, 0);
 	}
 	
 	/**
@@ -2227,10 +1994,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     public final Vec3 getForces() {
     	return forces;
     }
-
-	public final void addForce(Vec3 force) {
-		forces = forces.add(force);
-	}
     
     public final Vec3 getAngularVel() {
     	if (level.isClientSide) return clientAV;
@@ -3410,5 +3173,130 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public double getFluidDensity() {
 		if (isInWater()) return DSCPhyCons.WATER_FLUID_DENSITY;
 		return airDensity;
+	}
+
+	@Override
+	public float getAngularDragScale() {
+		return DSCPhyCons.ANGULAR_DRAG_C;
+	}
+
+	@Override
+	public List<PhysicsComponentInstance<?>> getPhysicsInstances() {
+		return physicsInstances;
+	}
+
+	@Override
+	public double getAccTimeScale() {
+		return DSCPhyCons.ACC_TIME_SCALE;
+	}
+
+	@Override
+	public double getLerpMaxXZ() {
+		return maxXZ;
+	}
+
+	@Override
+	public void setLerpMaxXZ(double maxXZ) {
+		this.maxXZ = maxXZ;
+	}
+
+	@Override
+	public double getAccGravity() {
+		return DSCPhyCons.GRAVITY;
+	}
+
+	@Override
+	public float getZRot() {
+		return zRot;
+	}
+
+	@Override
+	public void setZRot(float rot) {
+		this.zRot = rot;
+	}
+
+	@Override
+	public float getPrevZRot() {
+		return zRotO;
+	}
+
+	@Override
+	public void setPrevZRot(float rot) {
+		this.zRotO = rot;
+	}
+
+	@Override
+	public Vec3 getPrevDeltaMove() {
+		return prevMotion;
+	}
+
+	@Override
+	public void setPrevDeltaMove(Vec3 move) {
+		this.prevMotion = move;
+	}
+
+	@Override
+	public Vec3 getForcesBetweenTicks() {
+		return addForceBetweenTicks;
+	}
+
+	@Override
+	public void setForcesBetweenTicks(Vec3 forces) {
+		this.addForceBetweenTicks = forces;
+	}
+
+	@Override
+	public Vec3 getPrevForces() {
+		return forcesO;
+	}
+
+	@Override
+	public void setPrevForces(Vec3 forces) {
+		this.forcesO = forces;
+	}
+
+	@Override
+	public Vec3 getPrevMoment() {
+		return momentO;
+	}
+
+	@Override
+	public void setPrevMoment(Vec3 moment) {
+		this.momentO = moment;
+	}
+
+	@Override
+	public Vec3 getControlMoment() {
+		return controlMoment;
+	}
+
+	@Override
+	public void setControlMoment(Vec3 moment) {
+		this.controlMoment = moment;
+	}
+
+	@Override
+	public Vec3 getMomentBetweenTicks() {
+		return addMomentBetweenTicks;
+	}
+
+	@Override
+	public void setMomentBetweenTicks(Vec3 moment) {
+		this.addMomentBetweenTicks = moment;
+	}
+
+	@Override
+	public float getPitchInput() {
+		return inputs.pitch;
+	}
+
+	@Override
+	public float getYawInput() {
+		return inputs.yaw;
+	}
+
+	@Override
+	public float getRollInput() {
+		return inputs.roll;
 	}
 }

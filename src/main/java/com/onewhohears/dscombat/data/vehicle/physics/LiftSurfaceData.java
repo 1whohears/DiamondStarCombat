@@ -5,7 +5,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.graph.FloatFloatGraph;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.PhysicsBody;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.world.phys.Vec3;
 
@@ -101,23 +101,23 @@ public class LiftSurfaceData extends PhysicsComponentData {
     }
 
     public enum InputType {
-        NONE((surface,vehicle) -> 0f),
-        LEFT_FLAP((surface,vehicle) -> {
-            if (vehicle.isFlapsDown()) return surface.getInputRotationMax();
-            return vehicle.inputs.roll * surface.getInputRotationMax() * 0.5f;
+        NONE((surface,body) -> 0f),
+        LEFT_FLAP((surface,body) -> {
+            if (body.isFlapsDown()) return surface.getInputRotationMax();
+            return body.getRollInput() * surface.getInputRotationMax() * 0.5f;
         }),
-        RIGHT_FLAP((surface,vehicle) -> {
-            if (vehicle.isFlapsDown()) return surface.getInputRotationMax();
-            return -vehicle.inputs.roll * surface.getInputRotationMax() * 0.5f;
+        RIGHT_FLAP((surface,body) -> {
+            if (body.isFlapsDown()) return surface.getInputRotationMax();
+            return -body.getRollInput() * surface.getInputRotationMax() * 0.5f;
         }),
-        ELEVATOR((surface,vehicle) -> -vehicle.inputs.pitch * surface.getInputRotationMax()),
-        STABILIZER((surface,vehicle) -> vehicle.inputs.yaw * surface.getInputRotationMax());
-        private final BiFunction<LiftSurfaceData, EntityVehicle, Float> input;
-        InputType(BiFunction<LiftSurfaceData, EntityVehicle, Float> input) {
+        ELEVATOR((surface,body) -> -body.getPitchInput() * surface.getInputRotationMax()),
+        STABILIZER((surface,body) -> body.getYawInput() * surface.getInputRotationMax());
+        private final BiFunction<LiftSurfaceData, PhysicsBody, Float> input;
+        InputType(BiFunction<LiftSurfaceData, PhysicsBody, Float> input) {
             this.input = input;
         }
-        public float getRotationFromInput(LiftSurfaceData liftSurface, EntityVehicle vehicle) {
-            return input.apply(liftSurface, vehicle);
+        public float getRotationFromInput(LiftSurfaceData liftSurface, PhysicsBody body) {
+            return input.apply(liftSurface, body);
         }
     }
 }

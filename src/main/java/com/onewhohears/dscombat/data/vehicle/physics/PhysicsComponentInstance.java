@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.vehicle.physics;
 
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.PhysicsBody;
 
 public abstract class PhysicsComponentInstance<D extends PhysicsComponentData> {
 
@@ -10,15 +10,15 @@ public abstract class PhysicsComponentInstance<D extends PhysicsComponentData> {
         this.data = data;
     }
 
-    public void tick(EntityVehicle vehicle) {
-        if (canCalcPhysics(vehicle)) calcPhysics(vehicle);
+    public void tick(PhysicsBody body) {
+        if (canCalcPhysics(body)) calcPhysics(body);
     }
 
-    protected boolean canCalcPhysics(EntityVehicle vehicle) {
-        return getData().getHitbox().isEmpty() || !vehicle.areAllHitboxesDead(getData().getHitbox());
+    protected boolean canCalcPhysics(PhysicsBody body) {
+        return getData().getHitbox().isEmpty() || !body.areAllHitboxesDead(getData().getHitbox());
     }
 
-    protected abstract void calcPhysics(EntityVehicle vehicle);
+    protected abstract void calcPhysics(PhysicsBody body);
 
     public D getData() {
         return data;

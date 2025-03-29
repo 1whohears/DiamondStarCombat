@@ -74,7 +74,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	protected void calcMoveStatsPre(Quaternion q) {
+	public void calcMoveStatsPre(Quaternion q) {
 		super.calcMoveStatsPre(q);
 		if (isArcadeMode) {
 			aoa = 0;

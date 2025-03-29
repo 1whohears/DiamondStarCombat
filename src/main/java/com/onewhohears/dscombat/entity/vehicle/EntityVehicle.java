@@ -2927,15 +2927,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     @Override
     public void setYRot(float yRot) {
         super.setYRot(yRot);
-        Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
-        setQBySide(q);
+        PhysicsBody.super.setYRot(yRot);
     }
     
     @Override
     public void setXRot(float xRot) {
         super.setXRot(xRot);
-        Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
-        setQBySide(q);
+		PhysicsBody.super.setXRot(xRot);
     }
     
     @Override

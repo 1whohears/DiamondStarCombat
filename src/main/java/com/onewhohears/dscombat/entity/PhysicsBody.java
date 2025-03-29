@@ -15,6 +15,23 @@ import java.util.List;
 
 public interface PhysicsBody {
 
+    /**
+     * if an entity implements PhysicsBody, override setYRot and after calling super.setYRot(yRot)
+     * call PhysicsBody.super.setYRot(yRot)
+     */
+    default void setYRot(float yRot) {
+        setQBySide(UtilAngles.toQuaternion(getYRot(), getXRot(), getZRot()));
+    }
+    /**
+     * if an entity implements PhysicsBody, override setXRot and after calling super.setXRot(xRot)
+     * call PhysicsBody.super.setXRot(xRot)
+     */
+    default void setXRot(float xRot) {
+        setQBySide(UtilAngles.toQuaternion(getYRot(), getXRot(), getZRot()));
+    }
+    /**
+     * call this somewhere in {@link net.minecraft.world.entity.Entity#tick()} after super.tick()
+     */
     default void tickPhysics() {
         Quaternion q = getQBySide();
         // SET PREV/OLD

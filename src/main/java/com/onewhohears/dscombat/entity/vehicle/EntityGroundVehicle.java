@@ -51,11 +51,6 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 
 	@Override
-	public boolean canGroundBrake() {
-		return true;
-	}
-
-	@Override
 	public boolean canToggleLandingGear() {
 		return false;
 	}

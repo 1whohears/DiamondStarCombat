@@ -108,7 +108,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isGroundBraking() {
-		return inputs.special2 && isOnGround();
+		return inputs.special2;
 	}
 	
 	@Override
@@ -233,11 +233,6 @@ public class EntityPlane extends EntityVehicle {
 
 	public FloatFloatGraph getDragAoaGraph() {
 		return getPlaneStats().getDragAoaGraph();
-	}
-
-	@Override
-	public boolean canGroundBrake() {
-		return onGround;
 	}
 
 	@Override

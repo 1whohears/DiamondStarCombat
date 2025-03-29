@@ -497,7 +497,7 @@
     "armor_damage_threshold": 2.0,
     "assetId": "alexis_plane",
     "base_armor": 40.0,
-    "break_deacc_air": 0.008,
+    "break_deacc_air": 0.016,
     "break_deacc_ground": 0.032,
     "cameraDistance": 17.0,
     "crashExplosionRadius": 5.0,

@@ -1114,14 +1114,16 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return false;
 	}
 	
-	public abstract boolean canGroundBrake();
+	public boolean canGroundBrake() {
+		return isOnGround() && getStats().break_deacc_ground > 0;
+	}
 	
 	protected void applyGroundBreaks() {
 		driveSlowDown(getStats().break_deacc_ground * DSCPhyCons.HORIZONTAL_SPEED_SCALE);
 	}
 
 	public boolean canAirBreak() {
-		return getStats().break_deacc_air > 0;
+		return !isOnGround() && getStats().break_deacc_air > 0;
 	}
 
 	public boolean isAirBreaking() {

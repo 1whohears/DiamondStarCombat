@@ -39,7 +39,7 @@ public class AlexisPresets {
 			.setUseHorizontalSpeedScale(true)
 			.setPushEngineOverrideAfterburnerStats(76310, 131000,10, 0.005f)
 			.setPlaneSpeeds(30.25f, 12.96f, 5.19f)
-			.setBreakDeAcc(0.032f, 0.008f)
+			.setBreakDeAcc(0.032f, 0.016f)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
 					13, 14, new Vec3(4.43, 0, 0), 0, 0, 0,

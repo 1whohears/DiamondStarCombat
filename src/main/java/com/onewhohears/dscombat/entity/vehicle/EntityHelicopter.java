@@ -72,11 +72,6 @@ public class EntityHelicopter extends EntityVehicle {
     }
 
 	@Override
-	public boolean canGroundBrake() {
-		return false;
-	}
-
-	@Override
 	public boolean canToggleLandingGear() {
 		return !getStats().asHeli().alwaysLandingGear;
 	}

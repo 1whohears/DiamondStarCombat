@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
+import static com.onewhohears.dscombat.util.UtilRender.drawTextureCentered;
+
 public class AltimeterScreenInstance extends SpinMeterScreenInstance {
 
 	public static final ResourceLocation BACKGROUND = new ResourceLocation(DSCombatMod.MODID,

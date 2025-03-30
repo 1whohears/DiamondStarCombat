@@ -12,6 +12,8 @@ import net.minecraft.world.entity.Entity;
 
 import java.util.List;
 
+import static com.onewhohears.dscombat.util.UtilRender.drawText;
+
 public class BigRadarScreenInstance extends RadarScreenInstance {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,

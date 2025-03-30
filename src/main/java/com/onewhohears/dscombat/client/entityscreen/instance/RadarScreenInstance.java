@@ -13,6 +13,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
+import static com.onewhohears.dscombat.util.UtilRender.drawText;
+
 public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 	
 	protected final int centerX, centerY, textureRadius, pingIconRadius;

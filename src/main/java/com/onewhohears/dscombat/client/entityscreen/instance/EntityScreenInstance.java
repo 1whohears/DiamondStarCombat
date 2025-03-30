@@ -16,6 +16,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import static com.onewhohears.dscombat.util.UtilRender.drawTextureCentered;
+
 @OnlyIn(Dist.CLIENT)
 public abstract class EntityScreenInstance implements AutoCloseable{
 	
@@ -35,49 +37,6 @@ public abstract class EntityScreenInstance implements AutoCloseable{
 	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, float partialTicks, int packedLight,
 			float worldWidth, float worldHeight) {
 		if (baseRenderType != null) drawTextureCentered(baseRenderType, matrix4f, buffer, packedLight, 0);
-	}
-	
-	protected void drawText(Component text, float xPos, float yPos, float maxWidth, PoseStack poseStack, MultiBufferSource buffer, int color, int packedLight) {
-		Font font = Minecraft.getInstance().font;
-		float width = font.width(text);
-		float scale = maxWidth/width;
-		poseStack.pushPose();
-		poseStack.translate(xPos, yPos, -0.005f);
-		poseStack.scale(scale, scale, 1);
-		font.draw(poseStack, text, 0, 0, color);
-		poseStack.popPose();
-	}
-	
-	protected void drawTextureTopLeft(RenderType type, Matrix4f matrix4f, MultiBufferSource buffer, int packedLight, float z) {
-		VertexConsumer vertexconsumer = buffer.getBuffer(type);
-        vertexconsumer.vertex(matrix4f, 0, 1, z)
-        	.color(255, 255, 255, 255)
-        	.uv(0.0F, 1.0F).uv2(packedLight).endVertex();
-        vertexconsumer.vertex(matrix4f, 1, 1, z)
-        	.color(255, 255, 255, 255)
-        	.uv(1.0F, 1.0F).uv2(packedLight).endVertex();
-        vertexconsumer.vertex(matrix4f, 1, 0, z)
-        	.color(255, 255, 255, 255)
-        	.uv(1.0F, 0.0F).uv2(packedLight).endVertex();
-        vertexconsumer.vertex(matrix4f, 0, 0, z)
-        	.color(255, 255, 255, 255)
-        	.uv(0.0F, 0.0F).uv2(packedLight).endVertex();
-	}
-	
-	protected void drawTextureCentered(RenderType type, Matrix4f matrix4f, MultiBufferSource buffer, int packedLight, float z) {
-		VertexConsumer vertexconsumer = buffer.getBuffer(type);
-        vertexconsumer.vertex(matrix4f, -0.5f, 0.5f, z)
-        	.color(255, 255, 255, 255)
-        	.uv(0.0F, 1.0F).uv2(packedLight).endVertex();
-        vertexconsumer.vertex(matrix4f, 0.5f, 0.5f, z)
-        	.color(255, 255, 255, 255)
-        	.uv(1.0F, 1.0F).uv2(packedLight).endVertex();
-        vertexconsumer.vertex(matrix4f, 0.5f, -0.5f, z)
-        	.color(255, 255, 255, 255)
-        	.uv(1.0F, 0.0F).uv2(packedLight).endVertex();
-        vertexconsumer.vertex(matrix4f, -0.5f, -0.5f, z)
-        	.color(255, 255, 255, 255)
-        	.uv(0.0F, 0.0F).uv2(packedLight).endVertex();
 	}
 	
 	@Override

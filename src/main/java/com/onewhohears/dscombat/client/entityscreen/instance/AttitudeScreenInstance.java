@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
+import static com.onewhohears.dscombat.util.UtilRender.drawTextureCentered;
+
 public class AttitudeScreenInstance extends EntityScreenInstance {
 
     public static final ResourceLocation ATTITUDE_BASE = new ResourceLocation(DSCombatMod.MODID,

@@ -10,6 +10,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
+import static com.onewhohears.dscombat.util.UtilRender.drawTextureCentered;
+
 public class TurnCoordScreenInstance extends SpinMeterScreenInstance {
 
     public static final ResourceLocation TURN_COORD_BASE = new ResourceLocation(DSCombatMod.MODID,

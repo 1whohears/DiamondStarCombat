@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -22,6 +24,8 @@ public class EntityWindTunnel extends Entity {
     public static final EntityDataAccessor<Vec3> SPEED = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
     public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QUATERNION);
 
+    private EntityVehicle vehicle;
+
     public EntityWindTunnel(EntityType<?> type, Level level) {
         super(type, level);
         noPhysics = true;
@@ -29,7 +33,32 @@ public class EntityWindTunnel extends Entity {
 
     @Override
     public void tick() {
+        EntityVehicle vehicle = getSimulatedVehicle();
+        vehicle.setTestMode(true);
+        vehicle.setPos(position().add(0, 4, 0));
+        vehicle.setQBySide(getQ());
+        vehicle.setDeltaMovement(getSpeed());
+        vehicle.tickPhysics();
+        // calc forces to be rendered in wind tunnel
+    }
 
+    public EntityVehicle getSimulatedVehicle() {
+        if (vehicle == null) vehicle = createVehicleToSimulate();
+        return vehicle;
+    }
+
+    private EntityVehicle createVehicleToSimulate() {
+        verifyCurrentPresetId();
+        VehicleStats stats = VehiclePresets.get().get(getPresetId());
+        EntityType<? extends EntityVehicle> entityType = stats.getEntityType();
+        EntityVehicle vehicle = entityType.create(getLevel());
+        if (getLevel().isClientSide()) vehicle.updateClientStatsHolder();
+        return vehicle;
+    }
+
+    public void verifyCurrentPresetId() {
+        if (!VehiclePresets.get().has(getPresetId()))
+            setPresetId("wooden_plane");
     }
 
     @Override
@@ -41,8 +70,8 @@ public class EntityWindTunnel extends Entity {
 
     @Override
     protected void readAdditionalSaveData(@NotNull CompoundTag tag) {
-        if (tag.contains("preset")) setPresetId(tag.getString("preset"));
-        else setPresetId("wooden_plane");
+        setPresetId(tag.getString("preset"));
+        verifyCurrentPresetId();
         setSpeed(UtilParse.readVec3(tag, "speed"));
         double zRot = tag.getDouble("zRot");
         setQ(UtilAngles.toQuaternion(getYRot(), getXRot(), zRot));

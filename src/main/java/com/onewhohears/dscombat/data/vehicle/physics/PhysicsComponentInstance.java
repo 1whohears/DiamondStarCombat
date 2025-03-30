@@ -15,7 +15,7 @@ public abstract class PhysicsComponentInstance<D extends PhysicsComponentData> {
     }
 
     protected boolean canCalcPhysics(PhysicsBody body) {
-        return getData().getHitbox().isEmpty() || !body.areAllHitboxesDead(getData().getHitbox());
+        return body.isTestMode() || getData().getHitbox().isEmpty() || !body.areAllHitboxesDead(getData().getHitbox());
     }
 
     protected abstract void calcPhysics(PhysicsBody body);

@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -26,7 +28,7 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
     public static final ResourceLocation ARROW_TXT = new ResourceLocation(DSCombatMod.MODID,
             "textures/misc/arrow.png");
     private static final RenderType ARROW = RenderType.text(ARROW_TXT);
-    private static final float ARROW_LENGTH_SCALE = 4;
+    private static final float ARROW_LENGTH_SCALE = 10;
 
     public RendererWindTunnel(EntityRendererProvider.Context ctx) {
         super(ctx);
@@ -35,53 +37,75 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
     @Override
     public void render(@NotNull EntityWindTunnel entity, float yaw, float partialTicks, @NotNull PoseStack poseStack,
                        @NotNull MultiBufferSource buffer, int packedLight) {
+        if (entity.getSimulatedVehicle().getClientStatsHolder() == null) return;
         poseStack.pushPose();
         ObjVehicleModel<EntityVehicle> model = entity.getSimulatedVehicle().getClientStatsHolder().get().getModel();
         poseStack.translate(0, 4, 0);
+        drawGlobalAxis(partialTicks, poseStack, buffer, packedLight);
         model.render(entity.getSimulatedVehicle(), poseStack, buffer, packedLight, partialTicks);
         drawForces(entity, partialTicks, poseStack, buffer, packedLight);
         poseStack.popPose();
     }
 
+    private void drawGlobalAxis(float partialTicks, @NotNull PoseStack poseStack,
+                                @NotNull MultiBufferSource buffer, int packedLight) {
+        VertexConsumer buff = buffer.getBuffer(RenderType.lines());
+        Vector3f O = new Vector3f();
+        Vector3f X = new Vector3f(8, 0, 0);
+        Vector3f Y = new Vector3f(0, 8, 0);
+        Vector3f Z = new Vector3f(0, 0, 8);
+        Matrix4f m4 = poseStack.last().pose();
+        Matrix3f m3 = poseStack.last().normal();
+        drawLine(O, X, buff, m4, m3, RED);
+        drawLine(O, Y, buff, m4, m3, GREEN);
+        drawLine(O, Z, buff, m4, m3, BLUE);
+    }
+
     private void drawForces(@NotNull EntityWindTunnel entity, float partialTicks, @NotNull PoseStack poseStack,
                             @NotNull MultiBufferSource buffer, int packedLight) {
+        poseStack.pushPose();
         EntityVehicle vehicle = entity.getSimulatedVehicle();
-        float y = UtilAngles.getYaw(vehicle.position().subtract(Minecraft.getInstance().player.position()));
-        Quaternion q = vehicle.getQBySide();
-        float totalForceMag = (float) vehicle.getForces().length();
+        Quaternion qi = vehicle.getQBySide();
+        qi.conj();
+        poseStack.mulPose(qi);
+        float maxForceMag;
+        if (entity.weightForce.lengthSqr() > vehicle.getForces().lengthSqr())
+            maxForceMag = (float) entity.weightForce.length();
+        else maxForceMag = (float) vehicle.getForces().length();
         // draw sum forces
-        drawForce(poseStack, buffer, packedLight, y, WHITE, totalForceMag, Vec3.ZERO, vehicle.getForces());
+        drawForce(poseStack, buffer, packedLight, WHITE, maxForceMag, Vec3.ZERO, vehicle.getForces());
         // draw gravity
-
+        drawForce(poseStack, buffer, packedLight, BLACK, maxForceMag, Vec3.ZERO, entity.weightForce);
         // draw thrust
-
+        drawForce(poseStack, buffer, packedLight, BLUE, maxForceMag, Vec3.ZERO, entity.thrustForce);
         // draw drag
-
+        drawForce(poseStack, buffer, packedLight, RED, maxForceMag, Vec3.ZERO, entity.dragForce);
         // draw forces from surfaces
 
+        poseStack.popPose();
     }
 
     private void drawForce(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
-                           float lookYaw, int[] color, float totalForceMag, Vec3 pos, Vec3 force) {
-        drawForce(poseStack, buffer, packedLight, lookYaw, color, pos, force.normalize(),
-                (float)force.length()/totalForceMag*ARROW_LENGTH_SCALE);
+                           int[] color, float maxForceMag, Vec3 pos, Vec3 force) {
+        drawForce(poseStack, buffer, packedLight, color, pos, force.normalize(),
+                (float)force.length()/maxForceMag*ARROW_LENGTH_SCALE);
     }
 
     private void drawForce(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
-                           float lookYaw, int[] color, Vec3 pos, Vec3 dir, float mag) {
+                           int[] color, Vec3 pos, Vec3 dir, float mag) {
         poseStack.pushPose();
         poseStack.translate(pos.x, pos.y, pos.z);
-        //poseStack.mulPose(Vector3f.YN.rotationDegrees(yaw));
         float y = UtilAngles.getYaw(dir);
         float x = UtilAngles.getPitch(dir);
-        //poseStack.mulPose(Vector3f.YN.rotationDegrees(y));
+        poseStack.mulPose(Vector3f.YN.rotationDegrees(y+180));
         poseStack.mulPose(Vector3f.XN.rotationDegrees(x-90));
         poseStack.translate(0, -mag*0.5, 0);
 
         poseStack.scale(1, mag, 1);
-        drawTextureCentered(ARROW, poseStack.last().pose(), buffer, packedLight, 0, color);
-        poseStack.mulPose(Vector3f.YN.rotationDegrees(180));
-        drawTextureCentered(ARROW, poseStack.last().pose(), buffer, packedLight, 0, color);
+        for (int i = 0; i < 4; ++i) {
+            poseStack.mulPose(Vector3f.YN.rotationDegrees(90*i));
+            drawTextureCentered(ARROW, poseStack.last().pose(), buffer, packedLight, 0, color);
+        }
         poseStack.popPose();
     }
 

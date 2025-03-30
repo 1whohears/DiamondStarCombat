@@ -3164,8 +3164,14 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return getStats().canUseAfterBurner();
 	}
 
+	private boolean afterBurnerOverride = false;
+
 	public boolean isUsingAfterburner() {
-		return canUseAfterburner() && isAfterBurnerEnabled() && getCurrentThrottle() > 0.8;
+		return afterBurnerOverride || (canUseAfterburner() && isAfterBurnerEnabled() && getCurrentThrottle() > 0.8);
+	}
+
+	public void setUseAfterBurnerOverride(boolean enable) {
+		afterBurnerOverride = enable;
 	}
 
 	public double getFluidDensity() {
@@ -3297,4 +3303,5 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public float getRollInput() {
 		return inputs.roll;
 	}
+
 }

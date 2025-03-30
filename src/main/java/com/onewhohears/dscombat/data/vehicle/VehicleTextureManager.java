@@ -31,7 +31,7 @@ public class VehicleTextureManager {
 		dynamicTexture = getBaseTexture();
 	}
 	
-	private void setupTextureLocations() {
+	public void setupTextureLocations() {
 		baseTextures = new ResourceLocation[parent.getStats().baseTextureVariants];
 		textureLayers = new TextureLayer[parent.getStats().textureLayers];
 		String namespace = parent.getStats().getNameSpace();
@@ -44,7 +44,7 @@ public class VehicleTextureManager {
 	/**
 	 * CLIENT ONLY
 	 */
-	private void setupDynamicTexture() {
+	public void setupDynamicTexture() {
 		if (!parent.level.isClientSide) return;
 		dynamicTexture = VehicleDynamicTextures.createVehicleDynamicTexture(parent);
 	}

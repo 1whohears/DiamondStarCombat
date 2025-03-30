@@ -17,14 +17,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class EntityWindTunnel extends Entity {
 
     public static final EntityDataAccessor<String> PRESET = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Vec3> SPEED = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
     public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QUATERNION);
+    public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Boolean> AFTERBURNER = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
 
-    private EntityVehicle vehicle;
+    @Nullable private EntityVehicle vehicle;
+
+    public Vec3 weightForce = Vec3.ZERO, thrustForce = Vec3.ZERO, dragForce = Vec3.ZERO;
 
     public EntityWindTunnel(EntityType<?> type, Level level) {
         super(type, level);
@@ -33,17 +38,39 @@ public class EntityWindTunnel extends Entity {
 
     @Override
     public void tick() {
+        if (getLevel().isClientSide()) clientTick();
+    }
+
+    protected void clientTick() {
+        Quaternion q = getQ();
         EntityVehicle vehicle = getSimulatedVehicle();
         vehicle.setTestMode(true);
         vehicle.setPos(position().add(0, 4, 0));
-        vehicle.setQBySide(getQ());
+        vehicle.setQBySide(q);
         vehicle.setDeltaMovement(getSpeed());
+        vehicle.setCurrentThrottle(getThrottle());
+        vehicle.setUseAfterBurnerOverride(getAfterBurner());
         vehicle.tickPhysics();
+        vehicle.setLandingGear(false);
+        vehicle.clientTick();
         // calc forces to be rendered in wind tunnel
+        weightForce = vehicle.getWeightForce();
+        thrustForce = vehicle.getThrustForce(q);
+        dragForce = vehicle.getDragForce(q);
+        System.out.println("WIND TUNNEL "+this);
+        System.out.println("speed = "+UtilParse.prettyVec3(getSpeed()));
+        System.out.println("total forces = "+UtilParse.prettyVec3(vehicle.getForces()));
+        System.out.println("weightForce = "+UtilParse.prettyVec3(weightForce));
+        System.out.println("thrustForce = "+UtilParse.prettyVec3(thrustForce));
+        System.out.println("dragForce = "+UtilParse.prettyVec3(dragForce));
+        System.out.println("num phy instances = "+vehicle.getPhysicsInstances().size());
     }
 
+    @NotNull
     public EntityVehicle getSimulatedVehicle() {
-        if (vehicle == null) vehicle = createVehicleToSimulate();
+        if (vehicle == null || !vehicle.getStatsId().equals(getPresetId())) {
+            vehicle = createVehicleToSimulate();
+        }
         return vehicle;
     }
 
@@ -52,7 +79,16 @@ public class EntityWindTunnel extends Entity {
         VehicleStats stats = VehiclePresets.get().get(getPresetId());
         EntityType<? extends EntityVehicle> entityType = stats.getEntityType();
         EntityVehicle vehicle = entityType.create(getLevel());
-        if (getLevel().isClientSide()) vehicle.updateClientStatsHolder();
+        vehicle.setPreset(getPresetId());
+        vehicle.updatePhysicsInstances();
+        vehicle.partsManager.read(stats.getDataAsNBT(), stats.getDataAsNBT());
+        if (getLevel().isClientSide()) {
+            vehicle.partsManager.clientPartsSetup();
+            vehicle.textureManager.setupTextureLocations();
+            vehicle.textureManager.setupDynamicTexture();
+        } else {
+            vehicle.partsManager.setupParts();
+        }
         return vehicle;
     }
 
@@ -66,6 +102,8 @@ public class EntityWindTunnel extends Entity {
         entityData.define(PRESET, "wooden_plane");
         entityData.define(SPEED, Vec3.ZERO);
         entityData.define(Q, Quaternion.ONE);
+        entityData.define(THROTTLE, 1f);
+        entityData.define(AFTERBURNER, false);
     }
 
     @Override
@@ -73,16 +111,26 @@ public class EntityWindTunnel extends Entity {
         setPresetId(tag.getString("preset"));
         verifyCurrentPresetId();
         setSpeed(UtilParse.readVec3(tag, "speed"));
-        double zRot = tag.getDouble("zRot");
-        setQ(UtilAngles.toQuaternion(getYRot(), getXRot(), zRot));
+        float qi = tag.getFloat("qi");
+        float qj = tag.getFloat("qj");
+        float qk = tag.getFloat("qk");
+        float qr = tag.getFloat("qr");
+        setQ(new Quaternion(qi, qj, qk, qr));
+        setThrottle(tag.getFloat("throttle"));
+        setAfterBurner(tag.getBoolean("afterburner"));
     }
 
     @Override
     protected void addAdditionalSaveData(@NotNull CompoundTag tag) {
         tag.putString("preset", getPresetId());
         UtilParse.writeVec3(tag, getSpeed(), "speed");
-        double zRot = UtilAngles.toDegrees(getQ()).roll;
-        tag.putDouble("zRot", zRot);
+        Quaternion q = getQ();
+        tag.putFloat("qi", q.i());
+        tag.putFloat("qj", q.j());
+        tag.putFloat("qk", q.k());
+        tag.putFloat("qr", q.r());
+        tag.putFloat("throttle", getThrottle());
+        tag.putBoolean("afterburner", getAfterBurner());
     }
 
     public String getPresetId() {
@@ -91,6 +139,7 @@ public class EntityWindTunnel extends Entity {
 
     public void setPresetId(String id) {
         entityData.set(PRESET, id);
+        verifyCurrentPresetId();
     }
 
     public Vec3 getSpeed() {
@@ -107,6 +156,22 @@ public class EntityWindTunnel extends Entity {
 
     public void setQ(Quaternion q) {
         entityData.set(Q, q);
+    }
+
+    public float getThrottle() {
+        return entityData.get(THROTTLE);
+    }
+
+    public void setThrottle(float throttle) {
+        entityData.set(THROTTLE, throttle);
+    }
+
+    public boolean getAfterBurner() {
+        return entityData.get(AFTERBURNER);
+    }
+
+    public void setAfterBurner(boolean enable) {
+        entityData.set(AFTERBURNER, enable);
     }
 
     @Override

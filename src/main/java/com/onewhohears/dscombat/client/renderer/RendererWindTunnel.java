@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
@@ -43,6 +44,8 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         poseStack.translate(0, 4, 0);
         drawGlobalAxis(partialTicks, poseStack, buffer, packedLight);
         model.render(entity.getSimulatedVehicle(), poseStack, buffer, packedLight, partialTicks);
+        ObjEntityModels.ModelOverrides overrides = model.getModelOverride();
+        poseStack.translate(-overrides.translate.x(), -overrides.translate.y(), -overrides.translate.z());
         drawForces(entity, partialTicks, poseStack, buffer, packedLight);
         poseStack.popPose();
     }

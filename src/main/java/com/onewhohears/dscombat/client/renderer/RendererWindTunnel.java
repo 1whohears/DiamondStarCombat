@@ -50,20 +50,6 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         poseStack.popPose();
     }
 
-    private void drawGlobalAxis(float partialTicks, @NotNull PoseStack poseStack,
-                                @NotNull MultiBufferSource buffer, int packedLight) {
-        VertexConsumer buff = buffer.getBuffer(RenderType.lines());
-        Vector3f O = new Vector3f();
-        Vector3f X = new Vector3f(8, 0, 0);
-        Vector3f Y = new Vector3f(0, 8, 0);
-        Vector3f Z = new Vector3f(0, 0, 8);
-        Matrix4f m4 = poseStack.last().pose();
-        Matrix3f m3 = poseStack.last().normal();
-        drawLine(O, X, buff, m4, m3, RED);
-        drawLine(O, Y, buff, m4, m3, GREEN);
-        drawLine(O, Z, buff, m4, m3, BLUE);
-    }
-
     private void drawForces(@NotNull EntityWindTunnel entity, float partialTicks, @NotNull PoseStack poseStack,
                             @NotNull MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
@@ -71,10 +57,7 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         Quaternion qi = vehicle.getQBySide();
         qi.conj();
         poseStack.mulPose(qi);
-        float maxForceMag;
-        if (entity.weightForce.lengthSqr() > vehicle.getForces().lengthSqr())
-            maxForceMag = (float) entity.weightForce.length();
-        else maxForceMag = (float) vehicle.getForces().length();
+        float maxForceMag = (float) entity.weightForce.length();
         // draw sum forces
         drawForce(poseStack, buffer, packedLight, WHITE, maxForceMag, Vec3.ZERO, vehicle.getForces());
         // draw gravity
@@ -110,6 +93,20 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
             drawTextureCentered(ARROW, poseStack.last().pose(), buffer, packedLight, 0, color);
         }
         poseStack.popPose();
+    }
+
+    private void drawGlobalAxis(float partialTicks, @NotNull PoseStack poseStack,
+                                @NotNull MultiBufferSource buffer, int packedLight) {
+        VertexConsumer buff = buffer.getBuffer(RenderType.lines());
+        Vector3f O = new Vector3f();
+        Vector3f X = new Vector3f(8, 0, 0);
+        Vector3f Y = new Vector3f(0, 8, 0);
+        Vector3f Z = new Vector3f(0, 0, 8);
+        Matrix4f m4 = poseStack.last().pose();
+        Matrix3f m3 = poseStack.last().normal();
+        drawLine(O, X, buff, m4, m3, RED);
+        drawLine(O, Y, buff, m4, m3, GREEN);
+        drawLine(O, Z, buff, m4, m3, BLUE);
     }
 
     @Override

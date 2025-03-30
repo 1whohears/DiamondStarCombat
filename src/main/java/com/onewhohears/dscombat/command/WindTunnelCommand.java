@@ -22,6 +22,8 @@ import java.util.Optional;
 
 public class WindTunnelCommand {
 
+    public static final int WIND_TUNNEL_SEARCH_RANGE = 16;
+
     public WindTunnelCommand(CommandDispatcher<CommandSourceStack> d) {
         d.register(Commands.literal("windtunnel").requires((stack) -> stack.hasPermission(2))
                 .then(Commands.literal("set_all")
@@ -42,21 +44,22 @@ public class WindTunnelCommand {
                                 )
                         )
                 )
+                .then(Commands.literal("set_hidden")
+                        .then(Commands.argument("hidden", BoolArgumentType.bool())
+                                .executes(context -> setVehicleHidden(context, BoolArgumentType.getBool(context, "hidden")))
+                        )
+                )
         );
     }
 
     private int setWindTunnelCommand(CommandContext<CommandSourceStack> context, @Nullable VehicleStats preset,
                                      @Nullable Vec3 speed, @Nullable Vec3 rotation, float throttle, boolean afterburner) {
-        Vec3 pos = context.getSource().getPosition();
-        double r = 16;
-        List<EntityWindTunnel> tunnels = context.getSource().getLevel().getEntitiesOfClass(EntityWindTunnel.class,
-                new AABB(pos.x-r, pos.y-r, pos.z-r, pos.x+r, pos.y+r, pos.z+r));
-        if (tunnels.isEmpty()) {
-            context.getSource().sendFailure(UtilMCText.literal("No Wind Tunnels within "+r+" blocks found!"));
+        Optional<EntityWindTunnel> opt = getWindTunnel(context);
+        if (opt.isEmpty()) {
+            context.getSource().sendFailure(UtilMCText.literal("No Wind Tunnels within "
+                    +WIND_TUNNEL_SEARCH_RANGE+" blocks found!"));
             return 0;
         }
-        Optional<EntityWindTunnel> opt = tunnels.stream().min((tunnel1, tunnel2) ->
-                (int) (tunnel2.distanceToSqr(pos) - tunnel1.distanceToSqr(pos)));
         EntityWindTunnel tunnel = opt.get();
         if (preset != null) tunnel.setPresetId(preset.getId());
         if (speed != null) tunnel.setSpeed(speed);
@@ -64,6 +67,27 @@ public class WindTunnelCommand {
         if (throttle >= 0) tunnel.setThrottle(throttle);
         tunnel.setAfterBurner(afterburner);
         return 1;
+    }
+
+    private int setVehicleHidden(CommandContext<CommandSourceStack> context, boolean hidden) {
+        Optional<EntityWindTunnel> opt = getWindTunnel(context);
+        if (opt.isEmpty()) {
+            context.getSource().sendFailure(UtilMCText.literal("No Wind Tunnels within "
+                    +WIND_TUNNEL_SEARCH_RANGE+" blocks found!"));
+            return 0;
+        }
+        EntityWindTunnel tunnel = opt.get();
+        tunnel.setHideModel(hidden);
+        return 1;
+    }
+
+    private Optional<EntityWindTunnel> getWindTunnel(CommandContext<CommandSourceStack> context) {
+        double r = WIND_TUNNEL_SEARCH_RANGE;
+        Vec3 pos = context.getSource().getPosition();
+        List<EntityWindTunnel> tunnels = context.getSource().getLevel().getEntitiesOfClass(EntityWindTunnel.class,
+                new AABB(pos.x-r, pos.y-r, pos.z-r, pos.x+r, pos.y+r, pos.z+r));
+        if (tunnels.isEmpty()) return Optional.empty();
+        return tunnels.stream().min((tunnel1, tunnel2) -> (int) (tunnel2.distanceToSqr(pos) - tunnel1.distanceToSqr(pos)));
     }
 
 }

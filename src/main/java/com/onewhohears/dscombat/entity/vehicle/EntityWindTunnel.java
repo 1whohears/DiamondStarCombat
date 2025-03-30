@@ -26,6 +26,7 @@ public class EntityWindTunnel extends Entity {
     public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QUATERNION);
     public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Boolean> AFTERBURNER = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> HIDE_MODEL = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
 
     @Nullable private EntityVehicle vehicle;
 
@@ -104,6 +105,7 @@ public class EntityWindTunnel extends Entity {
         entityData.define(Q, Quaternion.ONE);
         entityData.define(THROTTLE, 1f);
         entityData.define(AFTERBURNER, false);
+        entityData.define(HIDE_MODEL, false);
     }
 
     @Override
@@ -118,6 +120,7 @@ public class EntityWindTunnel extends Entity {
         setQ(new Quaternion(qi, qj, qk, qr));
         setThrottle(tag.getFloat("throttle"));
         setAfterBurner(tag.getBoolean("afterburner"));
+        setHideModel(tag.getBoolean("hide_model"));
     }
 
     @Override
@@ -131,6 +134,7 @@ public class EntityWindTunnel extends Entity {
         tag.putFloat("qr", q.r());
         tag.putFloat("throttle", getThrottle());
         tag.putBoolean("afterburner", getAfterBurner());
+        tag.putBoolean("hide_model", getHideModel());
     }
 
     public String getPresetId() {
@@ -172,6 +176,14 @@ public class EntityWindTunnel extends Entity {
 
     public void setAfterBurner(boolean enable) {
         entityData.set(AFTERBURNER, enable);
+    }
+
+    public boolean getHideModel() {
+        return entityData.get(HIDE_MODEL);
+    }
+
+    public void setHideModel(boolean enable) {
+        entityData.set(HIDE_MODEL, enable);
     }
 
     @Override

@@ -40,12 +40,16 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
                        @NotNull MultiBufferSource buffer, int packedLight) {
         if (entity.getSimulatedVehicle().getClientStatsHolder() == null) return;
         poseStack.pushPose();
-        ObjVehicleModel<EntityVehicle> model = entity.getSimulatedVehicle().getClientStatsHolder().get().getModel();
         poseStack.translate(0, 4, 0);
         drawGlobalAxis(partialTicks, poseStack, buffer, packedLight);
-        model.render(entity.getSimulatedVehicle(), poseStack, buffer, packedLight, partialTicks);
-        ObjEntityModels.ModelOverrides overrides = model.getModelOverride();
-        poseStack.translate(-overrides.translate.x(), -overrides.translate.y(), -overrides.translate.z());
+        if (!entity.getHideModel()) {
+            ObjVehicleModel<EntityVehicle> model = entity.getSimulatedVehicle().getClientStatsHolder().get().getModel();
+            model.render(entity.getSimulatedVehicle(), poseStack, buffer, packedLight, partialTicks);
+            ObjEntityModels.ModelOverrides overrides = model.getModelOverride();
+            poseStack.translate(-overrides.translate.x(), -overrides.translate.y(), -overrides.translate.z());
+        } else {
+            poseStack.mulPose(entity.getQ());
+        }
         drawForces(entity, partialTicks, poseStack, buffer, packedLight);
         poseStack.popPose();
     }

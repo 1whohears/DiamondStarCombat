@@ -278,9 +278,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
 		setXRotNoQ(nbt.getFloat("xRot"));
 		setYRotNoQ(nbt.getFloat("yRot"));
-		zRot = nbt.getFloat("zRot");
-		maxXZ = nbt.getDouble("maxXZ");
-		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
+		setZRot(nbt.getFloat("zRot"));
+		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), getZRot());
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
@@ -290,6 +289,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (nbt.contains("ingredientDropIndex")) ingredientDropIndex = nbt.getInt("ingredientDropIndex");
 		if (nbt.contains("owner_id")) owner_uuid = nbt.getUUID("owner_id");
 		setPermMode(PermMode.values()[nbt.getInt("perm_mode")]);
+		maxXZ = nbt.getDouble("maxXZ");
 	}
 
 	@Override

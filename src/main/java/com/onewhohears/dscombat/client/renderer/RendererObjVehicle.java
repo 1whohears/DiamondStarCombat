@@ -47,7 +47,7 @@ public class RendererObjVehicle extends RendererCustomAnimObjEntity<EntityVehicl
 	
 	@Override
 	public boolean shouldRenderScreens(EntityVehicle vehicle) {
-		if (getScreens(vehicle).size() == 0) return false;
+		if (getScreens(vehicle).isEmpty()) return false;
 		Minecraft m = Minecraft.getInstance();
 		if (m.player == null) return false;
 		Entity seat = vehicle.getPilotSeat();

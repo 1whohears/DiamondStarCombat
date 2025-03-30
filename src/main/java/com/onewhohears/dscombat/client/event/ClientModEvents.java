@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.client.particle.FlareParticle;
 import com.onewhohears.dscombat.client.particle.LargeSmokeCloudParticle;
 import com.onewhohears.dscombat.client.particle.ShrapnelParticle;
 import com.onewhohears.dscombat.client.renderer.RendererEntityInvisible;
+import com.onewhohears.dscombat.client.renderer.RendererWindTunnel;
 import com.onewhohears.dscombat.client.screen.VehicleBlockScreen;
 import com.onewhohears.dscombat.client.screen.VehiclePartsScreen;
 import com.onewhohears.dscombat.client.screen.VehicleStorageScreen;
@@ -98,6 +99,7 @@ public final class ClientModEvents {
 				(context) -> new RendererObjEntity<>(context, new GimbalCameraModel()));
 		event.registerEntityRenderer(ModEntities.PARACHUTE.get(), 
 				(context) -> new RendererObjEntity<>(context, new ObjEntityModel<>("parachute")));
+		event.registerEntityRenderer(ModEntities.WIND_TUNNEL.get(), RendererWindTunnel::new);
 	}
 	
 	@SubscribeEvent

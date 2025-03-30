@@ -24,7 +24,10 @@ public class ModEntities {
 	public static void register(IEventBus eventBus) {
 		ENTITIES.register(eventBus);
 	}
-	
+
+	public static final RegistryObject<EntityType<EntityWindTunnel>> WIND_TUNNEL = ENTITIES.register("wind_tunnel",
+			() -> createEntityType(EntityWindTunnel::new, EntityDimensions.fixed(16, 8)));
+
 	// VEHICLES
 	
 	public static final RegistryObject<EntityType<EntityPlane>> PLANE = ENTITIES.register("plane", 

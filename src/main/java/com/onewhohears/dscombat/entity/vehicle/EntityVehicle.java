@@ -870,6 +870,14 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public double getHorizontalSpeedScale() {
 		return DSCPhyCons.HORIZONTAL_SPEED_SCALE;
 	}
+
+	public boolean applyVerticalSpeedScale() {
+		return getStats().use_vertical_speed_scale;
+	}
+
+	public double getVerticalSpeedScale() {
+		return DSCPhyCons.VERTICAL_SPEED_SCALE;
+	}
 	
 	@Override
 	public void move(@NotNull MoverType type, @NotNull Vec3 move) {

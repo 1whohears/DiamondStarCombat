@@ -624,7 +624,8 @@
     "torqueroll": 0.0,
     "torqueyaw": 0.0,
     "turn_radius": 11.0,
-    "use_horizontal_speed_scale": true
+    "use_horizontal_speed_scale": true,
+    "use_vertical_speed_scale": true
   },
   "textures": {
     "baseTextureVariants": 8,

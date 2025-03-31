@@ -200,6 +200,8 @@ public interface PhysicsBody {
     default Vec3 getAccFromForce(Vec3 forces) {
         if (applyHorizontalSpeedScale())
             forces = forces.multiply(getHorizontalSpeedScale(), 1, getHorizontalSpeedScale());
+        if (applyVerticalSpeedScale())
+            forces = forces.multiply(1, getVerticalSpeedScale(), 1);
         double massScale = 1/getTotalMass();
         return forces.scale(massScale).scale(getAccTimeScale());
     }
@@ -262,6 +264,8 @@ public interface PhysicsBody {
     double getAccTimeScale();
     double getHorizontalSpeedScale();
     boolean applyHorizontalSpeedScale();
+    double getVerticalSpeedScale();
+    boolean applyVerticalSpeedScale();
     double getMaxSpeedForMotion();
     double getLerpMaxXZ();
     void setLerpMaxXZ(double maxXZ);

@@ -63,6 +63,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final float heat_per_engine;
 	public final float fuel_consume_per_engine;
 	public final boolean use_horizontal_speed_scale;
+	public final boolean use_vertical_speed_scale;
 	private final boolean has_afterburner;
 	public final float cruise_speed;
 	public final float break_deacc_ground;
@@ -137,6 +138,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		heat_per_engine = UtilParse.getFloatSafe(stats, "heat_per_engine", -1);
 		fuel_consume_per_engine = UtilParse.getFloatSafe(stats, "fuel_consume_per_engine", -1);
 		use_horizontal_speed_scale = UtilParse.getBooleanSafe(stats, "use_horizontal_speed_scale", false);
+		use_vertical_speed_scale = UtilParse.getBooleanSafe(stats, "use_vertical_speed_scale", false);
 		cruise_speed = UtilParse.getFloatSafe(stats, "cruise_speed", max_speed);
 		if (json.has("textures")) {
 			JsonObject textures = json.get("textures").getAsJsonObject();
@@ -1208,8 +1210,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * all vehicles
 		 */
-		public Builder setUseHorizontalSpeedScale(boolean apply) {
-			return setStatBoolean("use_horizontal_speed_scale", apply);
+		public Builder setUseSpeedScales(boolean horizontal, boolean vertical) {
+			setStatBoolean("use_vertical_speed_scale", vertical);
+			return setStatBoolean("use_horizontal_speed_scale", horizontal);
 		}
 		/**
 		 * all vehicles

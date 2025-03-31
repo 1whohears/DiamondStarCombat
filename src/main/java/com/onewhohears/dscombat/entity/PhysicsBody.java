@@ -172,7 +172,7 @@ public interface PhysicsBody {
     default void calcUniversalForces(Quaternion q) {
         addForce(getWeightForce());
         addForce(getThrustForce(q));
-        addForce(getDragForce(q));
+        addForce(getDragForce(q)); // FIXME plane bounces when touching water
     }
 
     void calcGroundMovement(Quaternion q);

@@ -39,7 +39,8 @@ public class DSCPhyCons {
 
 	public static final double WATER_FLUID_DENSITY = 1000;
 
-	public static final double INCREASED_LANDING_GEAR_DRAG_AREA = 100;
+	public static final double INCREASED_DRAG_AREA_LANDING_GEAR = 100;
+	public static final double INCREASED_DRAG_AREA_DESTROYED = 1000;
 
 	public static final float DRAG_SCALE = 0.125f / (float)HORIZONTAL_SPEED_SCALE;
 

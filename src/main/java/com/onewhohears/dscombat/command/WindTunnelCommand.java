@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.command;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
@@ -13,16 +12,15 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Optional;
 
-public class WindTunnelCommand {
+import static com.onewhohears.dscombat.util.UtilVehicleEntity.WIND_TUNNEL_SEARCH_RANGE;
+import static com.onewhohears.dscombat.util.UtilVehicleEntity.findWindTunnel;
 
-    public static final int WIND_TUNNEL_SEARCH_RANGE = 16;
+public class WindTunnelCommand {
 
     public WindTunnelCommand(CommandDispatcher<CommandSourceStack> d) {
         d.register(Commands.literal("windtunnel").requires((stack) -> stack.hasPermission(2))
@@ -82,12 +80,7 @@ public class WindTunnelCommand {
     }
 
     private Optional<EntityWindTunnel> getWindTunnel(CommandContext<CommandSourceStack> context) {
-        double r = WIND_TUNNEL_SEARCH_RANGE;
-        Vec3 pos = context.getSource().getPosition();
-        List<EntityWindTunnel> tunnels = context.getSource().getLevel().getEntitiesOfClass(EntityWindTunnel.class,
-                new AABB(pos.x-r, pos.y-r, pos.z-r, pos.x+r, pos.y+r, pos.z+r));
-        if (tunnels.isEmpty()) return Optional.empty();
-        return tunnels.stream().min((tunnel1, tunnel2) -> (int) (tunnel2.distanceToSqr(pos) - tunnel1.distanceToSqr(pos)));
+        return findWindTunnel(context.getSource().getPosition(), context.getSource().getLevel());
     }
 
 }

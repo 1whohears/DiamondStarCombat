@@ -6,11 +6,14 @@ import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -31,6 +34,7 @@ public class EntityWindTunnel extends Entity {
     @Nullable private EntityVehicle vehicle;
 
     public Vec3 totalAcc = Vec3.ZERO, weightAcc = Vec3.ZERO, thrustAcc = Vec3.ZERO, dragAcc = Vec3.ZERO, liftAcc = Vec3.ZERO;
+    public double windCompThrust, windCompDrag, centripetalAcc, yawRate;
 
     public EntityWindTunnel(EntityType<?> type, Level level) {
         super(type, level);
@@ -43,12 +47,14 @@ public class EntityWindTunnel extends Entity {
     }
 
     protected void clientTick() {
+        Vec3 speed = getSpeed();
         Quaternion q = getQ();
         EntityVehicle vehicle = getSimulatedVehicle();
         vehicle.setTestMode(true);
-        vehicle.setPos(position().add(0, 4, 0));
+        vehicle.setPos(position().multiply(1, 0, 1)
+                .add(0, 0, 0));
         vehicle.setQBySide(q);
-        vehicle.setDeltaMovement(getSpeed());
+        vehicle.setDeltaMovement(speed);
         vehicle.setCurrentThrottle(getThrottle());
         vehicle.setUseAfterBurnerOverride(getAfterBurner());
         vehicle.tickPhysics();
@@ -64,13 +70,12 @@ public class EntityWindTunnel extends Entity {
             dragAcc = dragAcc.add(vehicle.getAccFromForce(phy.getDragForce()));
             liftAcc = liftAcc.add(vehicle.getAccFromForce(phy.getLiftForce()));
         }
-        /*System.out.println("WIND TUNNEL "+this);
-        System.out.println("speed = "+UtilParse.prettyVec3(getSpeed()));
-        System.out.println("total forces = "+UtilParse.prettyVec3(vehicle.getForces()));
-        System.out.println("weightForce = "+UtilParse.prettyVec3(weightForce));
-        System.out.println("thrustForce = "+UtilParse.prettyVec3(thrustForce));
-        System.out.println("dragForce = "+UtilParse.prettyVec3(dragForce));
-        System.out.println("num phy instances = "+vehicle.getPhysicsInstances().size());*/
+        windCompDrag = UtilGeometry.vecCompMagDirByAxis(dragAcc, speed);
+        windCompThrust = UtilGeometry.vecCompMagDirByAxis(thrustAcc, speed);
+        Vec3 cenAxis = UtilAngles.getRollAxis(0, (vehicle.getYRot()+90)* Mth.DEG_TO_RAD);
+        centripetalAcc = UtilGeometry.vecCompMagDirByNormAxis(liftAcc, cenAxis);
+        yawRate = centripetalAcc / vehicle.xzSpeed * Mth.RAD_TO_DEG;
+        System.out.println("vehicle y = "+vehicle.getY());
     }
 
     @NotNull

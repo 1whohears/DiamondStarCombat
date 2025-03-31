@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.client.model.obj.custom.*;
 import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
+import com.onewhohears.dscombat.client.overlay.WindTunnelOverlay;
 import com.onewhohears.dscombat.client.particle.AfterBurnerParticle;
 import com.onewhohears.dscombat.client.particle.BigFlameParticle;
 import com.onewhohears.dscombat.client.particle.ContrailParticle;
@@ -105,6 +106,7 @@ public final class ClientModEvents {
 	@SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
         VehicleOverlayComponent.registerOverlays(event);
+		WindTunnelOverlay.register(event);
     }
 	
 	@SubscribeEvent

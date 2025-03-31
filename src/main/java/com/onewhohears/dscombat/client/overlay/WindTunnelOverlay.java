@@ -70,10 +70,10 @@ public class WindTunnelOverlay extends GuiComponent {
         gui.getFont().draw(stack, printSigFig(Ny), VALUE_OFFSET, LABEL_PADDING+10*index, 0xffff00);
 
         gui.getFont().draw(stack, "YawRate", LABEL_PADDING, LABEL_PADDING+10*(++index), 0xff00ff);
-        gui.getFont().draw(stack, printSigFig(tunnel.yawRate), VALUE_OFFSET, LABEL_PADDING+10*index, 0xff00ff);
+        gui.getFont().draw(stack, printDec(tunnel.yawRate*20), VALUE_OFFSET, LABEL_PADDING+10*index, 0xff00ff);
 
         gui.getFont().draw(stack, "TurnRad", LABEL_PADDING, LABEL_PADDING+10*(++index), 0x00ffff);
-        gui.getFont().draw(stack, printSigFig(tunnel.turnRadius), VALUE_OFFSET, LABEL_PADDING+10*index, 0x00ffff);
+        gui.getFont().draw(stack, printDec(tunnel.turnRadius), VALUE_OFFSET, LABEL_PADDING+10*index, 0x00ffff);
     }
 
     static void findTunnel(Vec3 pos, Level level) {
@@ -97,6 +97,15 @@ public class WindTunnelOverlay extends GuiComponent {
 
     public static String printSigFig(double d, int s) {
         String format = "%."+s+"e";
+        return String.format(format, d);
+    }
+
+    public static String printDec(double d) {
+        return printDec(d, 2);
+    }
+
+    public static String printDec(double d, int s) {
+        String format = "%."+s+"f";
         return String.format(format, d);
     }
 

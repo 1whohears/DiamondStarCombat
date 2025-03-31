@@ -819,8 +819,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void calcMoveStatsPre(Quaternion q) {
 		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
-		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION * DSCPhyCons.ACC_TIME_SCALE;
-		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION * DSCPhyCons.ACC_TIME_SCALE;
+		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION;
+		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION;
 		maxPushThrust = partsManager.getTotalPushThrust();
 		maxSpinThrust = partsManager.getTotalSpinThrust();
 		currentFuel = partsManager.getCurrentFuel();
@@ -937,7 +937,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (m.x == 0 && m.z == 0) return;
 		Vec3 mn = m.normalize();
  		Vec3 force = mn.scale(-f);
-		Vec3 acc = force.scale(1/getTotalMass());
+		Vec3 acc = getAccFromForce(force);
 		if (m.x != 0 && Math.signum(m.x+acc.x) != Math.signum(m.x)) {
 			force = force.multiply(0, 1, 1);
 			m = m.multiply(0, 1, 1);

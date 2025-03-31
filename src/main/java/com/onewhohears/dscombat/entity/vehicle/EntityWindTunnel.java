@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
@@ -30,11 +31,12 @@ public class EntityWindTunnel extends Entity {
     public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Boolean> AFTERBURNER = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> HIDE_MODEL = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Float> ALTITUDE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
 
     @Nullable private EntityVehicle vehicle;
 
     public Vec3 totalAcc = Vec3.ZERO, weightAcc = Vec3.ZERO, thrustAcc = Vec3.ZERO, dragAcc = Vec3.ZERO, liftAcc = Vec3.ZERO;
-    public double windCompThrust, windCompDrag, centripetalAcc, yawRate;
+    public double windCompThrust, windCompDrag, centripetalAcc, yawRate, turnRadius;
 
     public EntityWindTunnel(EntityType<?> type, Level level) {
         super(type, level);
@@ -52,7 +54,7 @@ public class EntityWindTunnel extends Entity {
         EntityVehicle vehicle = getSimulatedVehicle();
         vehicle.setTestMode(true);
         vehicle.setPos(position().multiply(1, 0, 1)
-                .add(0, 0, 0));
+                .add(0, getAltitude()+UtilEntity.getSeaLevel(getLevel()), 0));
         vehicle.setQBySide(q);
         vehicle.setDeltaMovement(speed);
         vehicle.setCurrentThrottle(getThrottle());
@@ -75,7 +77,6 @@ public class EntityWindTunnel extends Entity {
         Vec3 cenAxis = UtilAngles.getRollAxis(0, (vehicle.getYRot()+90)* Mth.DEG_TO_RAD);
         centripetalAcc = UtilGeometry.vecCompMagDirByNormAxis(liftAcc, cenAxis);
         yawRate = centripetalAcc / vehicle.xzSpeed * Mth.RAD_TO_DEG;
-        System.out.println("vehicle y = "+vehicle.getY());
     }
 
     @NotNull
@@ -117,6 +118,7 @@ public class EntityWindTunnel extends Entity {
         entityData.define(THROTTLE, 1f);
         entityData.define(AFTERBURNER, false);
         entityData.define(HIDE_MODEL, false);
+        entityData.define(ALTITUDE, 0f);
     }
 
     @Override
@@ -132,6 +134,7 @@ public class EntityWindTunnel extends Entity {
         setThrottle(tag.getFloat("throttle"));
         setAfterBurner(tag.getBoolean("afterburner"));
         setHideModel(tag.getBoolean("hide_model"));
+        setAltitude(tag.getFloat("altitude"));
     }
 
     @Override
@@ -146,6 +149,7 @@ public class EntityWindTunnel extends Entity {
         tag.putFloat("throttle", getThrottle());
         tag.putBoolean("afterburner", getAfterBurner());
         tag.putBoolean("hide_model", getHideModel());
+        tag.putFloat("altitude", getAltitude());
     }
 
     public String getPresetId() {
@@ -195,6 +199,14 @@ public class EntityWindTunnel extends Entity {
 
     public void setHideModel(boolean enable) {
         entityData.set(HIDE_MODEL, enable);
+    }
+
+    public float getAltitude() {
+        return entityData.get(ALTITUDE);
+    }
+
+    public void setAltitude(float alt) {
+        entityData.set(ALTITUDE, alt);
     }
 
     @Override

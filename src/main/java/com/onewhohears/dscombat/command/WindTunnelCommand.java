@@ -47,6 +47,11 @@ public class WindTunnelCommand {
                                 .executes(context -> setVehicleHidden(context, BoolArgumentType.getBool(context, "hidden")))
                         )
                 )
+                .then(Commands.literal("set_altitude")
+                        .then(Commands.argument("altitude", FloatArgumentType.floatArg(-1000, 10000))
+                                .executes(context -> setVehicleAltitude(context, FloatArgumentType.getFloat(context, "altitude")))
+                        )
+                )
         );
     }
 
@@ -76,6 +81,18 @@ public class WindTunnelCommand {
         }
         EntityWindTunnel tunnel = opt.get();
         tunnel.setHideModel(hidden);
+        return 1;
+    }
+
+    private int setVehicleAltitude(CommandContext<CommandSourceStack> context, float altitude) {
+        Optional<EntityWindTunnel> opt = getWindTunnel(context);
+        if (opt.isEmpty()) {
+            context.getSource().sendFailure(UtilMCText.literal("No Wind Tunnels within "
+                    +WIND_TUNNEL_SEARCH_RANGE+" blocks found!"));
+            return 0;
+        }
+        EntityWindTunnel tunnel = opt.get();
+        tunnel.setAltitude(altitude);
         return 1;
     }
 

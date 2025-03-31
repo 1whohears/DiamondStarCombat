@@ -8,6 +8,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
@@ -58,6 +59,7 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
                             @NotNull MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         EntityVehicle vehicle = entity.getSimulatedVehicle();
+        Quaternion q = vehicle.getQBySide();
         Quaternion qi = vehicle.getQBySide();
         qi.conj();
         poseStack.mulPose(qi);
@@ -70,8 +72,14 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         drawForce(poseStack, buffer, packedLight, BLUE, maxForceMag, Vec3.ZERO, entity.thrustForce);
         // draw drag
         drawForce(poseStack, buffer, packedLight, RED, maxForceMag, Vec3.ZERO, entity.dragForce);
+        // draw lift
+        drawForce(poseStack, buffer, packedLight, GREEN, maxForceMag, Vec3.ZERO, entity.liftForce);
         // draw forces from surfaces
-
+        for (PhysicsComponentInstance<?> phy : vehicle.getPhysicsInstances()) {
+            Vec3 pos = UtilAngles.rotateVector(phy.getData().getPos(), q);
+            drawForce(poseStack, buffer, packedLight, YELLOW, maxForceMag, pos, phy.getDragForce());
+            drawForce(poseStack, buffer, packedLight, CYAN, maxForceMag, pos, phy.getLiftForce());
+        }
         poseStack.popPose();
     }
 

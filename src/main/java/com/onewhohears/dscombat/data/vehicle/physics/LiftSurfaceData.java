@@ -34,7 +34,6 @@ public class LiftSurfaceData extends PhysicsComponentData {
     private final boolean ignore_roll;
     private final float input_rotation_max;
     private final double area, zero_lift_drag;
-    private final Vec3 pos;
     private final Vector3f rotation;
     private final InputType input_type;
     private final String lift_k_graph_key;
@@ -47,7 +46,6 @@ public class LiftSurfaceData extends PhysicsComponentData {
         ignore_roll = UtilParse.getBooleanSafe(json, "ignore_roll", false);
         input_rotation_max = UtilParse.getFloatSafe(json, "input_rotation_max", 4);
         area = UtilParse.getFloatSafe(json, "area", 10);
-        pos = UtilParse.readVec3(json, "pos");
         rotation = UtilParse.readVec3f(json, "rotation");
         input_type = UtilParse.getEnumSafe(json, "input_type", InputType.class);
         lift_k_graph_key = UtilParse.getStringSafe(json, "lift_k_graph", "fuselage");
@@ -78,10 +76,6 @@ public class LiftSurfaceData extends PhysicsComponentData {
 
     public double getZeroLiftDrag() {
         return zero_lift_drag;
-    }
-
-    public Vec3 getPos() {
-        return pos;
     }
 
     public Vector3f getRotation() {

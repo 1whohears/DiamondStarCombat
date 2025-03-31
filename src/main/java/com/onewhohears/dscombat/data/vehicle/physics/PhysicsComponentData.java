@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.vehicle.physics;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.onewholibs.util.UtilParse;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -24,13 +25,19 @@ public abstract class PhysicsComponentData {
     }
 
     private final String hitbox;
+    private final Vec3 pos;
 
     public PhysicsComponentData(JsonObject json) {
         hitbox = UtilParse.getStringSafe(json, "hitbox", " ");
+        pos = UtilParse.readVec3(json, "pos");
     }
 
     public String getHitbox() {
         return hitbox;
+    }
+
+    public Vec3 getPos() {
+        return pos;
     }
 
     public abstract PhysicsComponentInstance<?> createInstance();

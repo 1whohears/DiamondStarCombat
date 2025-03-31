@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -30,7 +31,7 @@ public class EntityWindTunnel extends Entity {
 
     @Nullable private EntityVehicle vehicle;
 
-    public Vec3 weightForce = Vec3.ZERO, thrustForce = Vec3.ZERO, dragForce = Vec3.ZERO;
+    public Vec3 weightForce = Vec3.ZERO, thrustForce = Vec3.ZERO, dragForce = Vec3.ZERO, liftForce = Vec3.ZERO;
 
     public EntityWindTunnel(EntityType<?> type, Level level) {
         super(type, level);
@@ -58,6 +59,11 @@ public class EntityWindTunnel extends Entity {
         weightForce = vehicle.getWeightForce();
         thrustForce = vehicle.getThrustForce(q);
         dragForce = vehicle.getDragForce(q);
+        liftForce = Vec3.ZERO;
+        for (PhysicsComponentInstance<?> phy : vehicle.getPhysicsInstances()) {
+            dragForce = dragForce.add(phy.getDragForce());
+            liftForce = liftForce.add(phy.getLiftForce());
+        }
         System.out.println("WIND TUNNEL "+this);
         System.out.println("speed = "+UtilParse.prettyVec3(getSpeed()));
         System.out.println("total forces = "+UtilParse.prettyVec3(vehicle.getForces()));

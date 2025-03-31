@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.physics;
 
 import com.onewhohears.dscombat.entity.PhysicsBody;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class PhysicsComponentInstance<D extends PhysicsComponentData> {
 
@@ -23,4 +24,7 @@ public abstract class PhysicsComponentInstance<D extends PhysicsComponentData> {
     public D getData() {
         return data;
     }
+
+    public abstract Vec3 getDragForce();
+    public abstract Vec3 getLiftForce();
 }

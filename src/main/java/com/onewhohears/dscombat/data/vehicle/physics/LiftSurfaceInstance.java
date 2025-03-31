@@ -13,6 +13,7 @@ import net.minecraft.world.phys.Vec3;
 public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceData> {
 
     private float aoa = 0;
+    private Vec3 dragForce = Vec3.ZERO, liftForce = Vec3.ZERO;
 
     public LiftSurfaceInstance(LiftSurfaceData data) {
         super(data);
@@ -55,7 +56,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         double P = body.getFluidDensity();
         // Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
         double wingLiftMag = 0.5 * liftK * P * airFoilSpeedSqr * getData().getArea();
-        Vec3 liftForce = liftDir.scale(wingLiftMag);
+        liftForce = liftDir.scale(wingLiftMag);
         body.addForce(liftForce);
         Quaternion vehicleQI = vehicleQ.copy();
         vehicleQI.conj();
@@ -67,7 +68,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         Vec3 windDir = u.normalize();
         float dragK = getData().getDragGraph().getLerpFloat(aoa) * speedScaleSqr;
         double dragMag = 0.5 * dragK * P * airFoilSpeedSqr * getData().getArea() * getData().getZeroLiftDrag();
-        Vec3 dragForce = windDir.scale(-dragMag);
+        dragForce = windDir.scale(-dragMag);
         body.addForce(dragForce);
         Vec3 dragMoment = getData().getPos()
                 .cross(UtilAngles.rotateVector(dragForce, vehicleQI))
@@ -82,6 +83,16 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         vehicle.debug("liftMoment = "+UtilParse.prettyVec3(liftMoment, 2));
         vehicle.debug("dragForce = "+UtilParse.prettyVec3(dragForce, 2));
         vehicle.debug("dragMoment = "+UtilParse.prettyVec3(dragMoment, 2));*/
+    }
+
+    @Override
+    public Vec3 getDragForce() {
+        return dragForce;
+    }
+
+    @Override
+    public Vec3 getLiftForce() {
+        return liftForce;
     }
 
     public static float calcAOA(Vec3 u, Vec3 wingNormal, Vec3 pitchAxis) {

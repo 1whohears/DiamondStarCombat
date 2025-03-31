@@ -3,8 +3,6 @@ package com.onewhohears.dscombat.data.vehicle.physics;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.PhysicsBody;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.util.Mth;
@@ -43,11 +41,8 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         float airFoilSpeedSqr = (float) UtilGeometry.vecCompByNormAxis(u, airFoilAxes).lengthSqr() * 400; // m/s
         float goalAOA;
         Vec3 wingNormal = UtilAngles.getYawAxis(surfaceQ).scale(-1);
-        if (/*vehicle.isOnGround() || */UtilGeometry.isZero(u)) {
-            goalAOA = 0;
-        } else {
-            goalAOA = calcAOA(u, wingNormal, pitchAxis);
-        }
+        if (UtilGeometry.isZero(u)) goalAOA = 0;
+        else goalAOA = calcAOA(u, wingNormal);
         // change in AOA shouldn't be instant
         aoa = Mth.lerp(DSCPhyCons.AOA_CHANGE_RATE, aoa, goalAOA);
         // find liftK
@@ -69,20 +64,11 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         float dragK = getData().getDragGraph().getLerpFloat(aoa) * speedScaleSqr;
         double dragMag = 0.5 * dragK * P * airFoilSpeedSqr * getData().getArea() * getData().getZeroLiftDrag();
         dragForce = windDir.scale(-dragMag);
-        body.addForce(dragForce);
+        body.addDragForce(dragForce);
         Vec3 dragMoment = getData().getPos()
                 .cross(UtilAngles.rotateVector(dragForce, vehicleQI))
                 .multiply(-1, 1, 1);
         body.addMoment(dragMoment, false, true);
-
-        /*vehicle.debug("LIFT SURFACE = "+getData().getHitbox());
-        //vehicle.debug("wingNormal = "+UtilParse.prettyVec3(wingNormal, 2));
-        //vehicle.debug("airFoilAxes = "+UtilParse.prettyVec3(airFoilAxes, 2));
-        vehicle.debug("aoa "+aoa+" liftK "+liftK+" rotate "+rotate);
-        vehicle.debug("liftForce = "+UtilParse.prettyVec3(liftForce, 2));
-        vehicle.debug("liftMoment = "+UtilParse.prettyVec3(liftMoment, 2));
-        vehicle.debug("dragForce = "+UtilParse.prettyVec3(dragForce, 2));
-        vehicle.debug("dragMoment = "+UtilParse.prettyVec3(dragMoment, 2));*/
     }
 
     @Override
@@ -95,7 +81,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         return liftForce;
     }
 
-    public static float calcAOA(Vec3 u, Vec3 wingNormal, Vec3 pitchAxis) {
+    public static float calcAOA(Vec3 u, Vec3 wingNormal) {
         return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
     }
 }

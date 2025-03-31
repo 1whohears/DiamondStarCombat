@@ -172,7 +172,7 @@ public interface PhysicsBody {
     default void calcUniversalForces(Quaternion q) {
         addForce(getWeightForce());
         addForce(getThrustForce(q));
-        addForce(getDragForce(q)); // FIXME plane bounces when touching water
+        addDragForce(getDragForce(q));
     }
 
     void calcGroundMovement(Quaternion q);
@@ -239,6 +239,26 @@ public interface PhysicsBody {
 
     default void addForce(Vec3 force) {
         setForces(getForces().add(force));
+    }
+
+    default void addDragForce(Vec3 force) {
+        Vec3 m = getDeltaMovement();
+        if (UtilGeometry.isZero(m)) return;
+        Vec3 acc = getAccFromForce(force);
+        if (m.x != 0 && Math.signum(m.x+acc.x) != Math.signum(m.x)) {
+            force = force.multiply(0, 1, 1);
+            m = m.multiply(0, 1, 1);
+        }
+        if (m.y != 0 && Math.signum(m.y+acc.y) != Math.signum(m.y)) {
+            force = force.multiply(1, 0, 1);
+            m = m.multiply(1, 0, 1);
+        }
+        if (m.z != 0 && Math.signum(m.z+acc.z) != Math.signum(m.z)) {
+            force = force.multiply(1, 1, 0);
+            m = m.multiply(1, 1, 0);
+        }
+        setDeltaMovement(m);
+        addForce(force);
     }
 
     default void addControlMoment(Vec3 moment) {

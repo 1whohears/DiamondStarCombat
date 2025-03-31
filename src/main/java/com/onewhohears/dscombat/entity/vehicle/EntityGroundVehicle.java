@@ -23,9 +23,9 @@ public class EntityGroundVehicle extends EntityVehicle {
 	public boolean isGroundBraking() {
 		return inputs.special;
 	}
-	
+
 	@Override
-	protected void applyGroundBreaks() {
+	public void applyGroundBreaks() {
 		throttleToZero();
 		super.applyGroundBreaks();
 	}

@@ -29,7 +29,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 
 	@Override
-	protected void applyGroundBreaks() {
+	public void applyGroundBreaks() {
 		throttleToZero();
 		super.applyGroundBreaks();
 	}

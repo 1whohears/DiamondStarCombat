@@ -189,7 +189,14 @@ public interface PhysicsBody {
         return getDeltaMovement().normalize().scale(-getDragMag());
     }
 
-    double getDragMag();
+    default double getDragMag() {
+        // Drag = (drag coefficient) * (air density) * (speed)^2 * (drag area) / 2
+        double speedSqr = getDeltaMovement().lengthSqr() * 400; // m/s
+        return 0.5 * getFluidDensity() * speedSqr * getDragArea() * getDragCoefficient();
+    }
+
+    double getDragArea();
+    double getDragCoefficient();
 
     default void calcAcc() {
         Vec3 f = getForces().add(getForcesBetweenTicks());
@@ -261,6 +268,24 @@ public interface PhysicsBody {
         addForce(force);
     }
 
+    default void addFrictionForce(double f) {
+        Vec3 m = getDeltaMovement();
+        if (m.x == 0 && m.z == 0) return;
+        Vec3 mn = m.normalize();
+        Vec3 force = mn.scale(-f);
+        Vec3 acc = getAccFromForce(force);
+        if (m.x != 0 && Math.signum(m.x+acc.x) != Math.signum(m.x)) {
+            force = force.multiply(0, 1, 1);
+            m = m.multiply(0, 1, 1);
+        }
+        if (m.z != 0 && Math.signum(m.z+acc.z) != Math.signum(m.z)) {
+            force = force.multiply(1, 1, 0);
+            m = m.multiply(1, 1, 0);
+        }
+        setDeltaMovement(m);
+        setForces(getForces().add(force));
+    }
+
     default void addControlMoment(Vec3 moment) {
         setControlMoment(getControlMoment().add(moment));
     }
@@ -271,6 +296,43 @@ public interface PhysicsBody {
 
     default void addMomentBetweenTicks(Vec3 moment) {
         setMomentBetweenTicks(getMomentBetweenTicks().add(moment));
+    }
+
+    default void addMomentX(float moment, boolean control) {
+        addMoment(Vec3.ZERO.add(moment, 0, 0), control, true);
+    }
+
+    default void addMomentY(float moment, boolean control) {
+        addMoment(Vec3.ZERO.add(0, moment, 0), control, true);
+    }
+
+    default void addMomentZ(float moment, boolean control) {
+        addMoment(Vec3.ZERO.add(0, 0, moment), control, true);
+    }
+
+    default void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {
+        Vec3 av = getAngularVel();
+        float x = (float)av.x, z = (float)av.z;
+        if (!forced) {
+            if (Math.abs(av.x) <= dPitch) x = 0;
+            if (Math.abs(av.z) <= dRoll) z = 0;
+        } else x = z = 0;
+        UtilAngles.EulerAngles angles = UtilAngles.toDegrees(q);
+        float roll, pitch;
+        if (dRoll != 0) {
+            if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
+            else roll = -(float)Math.signum(angles.roll) * dRoll;
+            z += roll;
+        }
+        if (dPitch != 0) {
+            float goalPitch = 0;
+            if (isOnGround()) goalPitch = -getGroundXTilt();
+            float diff = (float)angles.pitch - goalPitch;
+            if (Math.abs(diff) < dPitch) pitch = diff;
+            else pitch = Math.signum(diff) * dPitch;
+            x += pitch;
+        }
+        setAngularVel(new Vec3(x, av.y, z));
     }
 
     void move(@NotNull MoverType type, @NotNull Vec3 move);
@@ -294,6 +356,7 @@ public interface PhysicsBody {
     double getAltitude();
     double getMaxAltitude();
     double getAccGravity();
+    float getGroundXTilt();
 
     Quaternion getQBySide();
     void setQBySide(Quaternion q);

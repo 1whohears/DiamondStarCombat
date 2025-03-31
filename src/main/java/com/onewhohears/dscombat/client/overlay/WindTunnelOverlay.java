@@ -1,13 +1,12 @@
 package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -61,17 +60,20 @@ public class WindTunnelOverlay extends GuiComponent {
         gui.getFont().draw(stack, "Weight", LABEL_PADDING, LABEL_PADDING+10*(++index), 0x000000);
         gui.getFont().draw(stack, printVec3SigFig(tunnel.weightAcc), VALUE_OFFSET, LABEL_PADDING+10*index, 0x000000);
 
-        double tdw = tunnel.windCompThrust+tunnel.windCompDrag;
         int color = 0x00ff00;
-        if (tdw < 0) color = 0xff0000;
-        gui.getFont().draw(stack, "T-D", LABEL_PADDING, LABEL_PADDING+10*(++index), color);
-        gui.getFont().draw(stack, printSigFig(tdw), VALUE_OFFSET, LABEL_PADDING+10*index, color);
+        if (tunnel.windCompAcc < 0) color = 0xff0000;
+        gui.getFont().draw(stack, "WCA", LABEL_PADDING, LABEL_PADDING+10*(++index), color);
+        gui.getFont().draw(stack, printSigFig(tunnel.windCompAcc), VALUE_OFFSET, LABEL_PADDING+10*index, color);
 
-        gui.getFont().draw(stack, "CenAcc", LABEL_PADDING, LABEL_PADDING+10*(++index), 0xffff00);
-        gui.getFont().draw(stack, printSigFig(tunnel.centripetalAcc), VALUE_OFFSET, LABEL_PADDING+10*index, 0xffff00);
+        double Ny = tunnel.centripetalAcc / (DSCPhyCons.GRAVITY * DSCPhyCons.ACC_TIME_SCALE);
+        gui.getFont().draw(stack, "Ny", LABEL_PADDING, LABEL_PADDING+10*(++index), 0xffff00);
+        gui.getFont().draw(stack, printSigFig(Ny), VALUE_OFFSET, LABEL_PADDING+10*index, 0xffff00);
 
         gui.getFont().draw(stack, "YawRate", LABEL_PADDING, LABEL_PADDING+10*(++index), 0xff00ff);
         gui.getFont().draw(stack, printSigFig(tunnel.yawRate), VALUE_OFFSET, LABEL_PADDING+10*index, 0xff00ff);
+
+        gui.getFont().draw(stack, "TurnRad", LABEL_PADDING, LABEL_PADDING+10*(++index), 0x00ffff);
+        gui.getFont().draw(stack, printSigFig(tunnel.turnRadius), VALUE_OFFSET, LABEL_PADDING+10*index, 0x00ffff);
     }
 
     static void findTunnel(Vec3 pos, Level level) {

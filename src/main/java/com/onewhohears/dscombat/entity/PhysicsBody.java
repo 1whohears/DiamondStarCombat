@@ -193,11 +193,15 @@ public interface PhysicsBody {
 
     default void calcAcc() {
         Vec3 f = getForces().add(getForcesBetweenTicks());
-        if (applyHorizontalSpeedScale())
-            f = f.multiply(getHorizontalSpeedScale(), 1, getHorizontalSpeedScale());
-        double massScale = 1/getTotalMass();
-        setDeltaMovement(getDeltaMovement().add(f.scale(massScale).scale(getAccTimeScale())));
+        setDeltaMovement(getDeltaMovement().add(getAccFromForce(f)));
         setForcesBetweenTicks(Vec3.ZERO);
+    }
+
+    default Vec3 getAccFromForce(Vec3 forces) {
+        if (applyHorizontalSpeedScale())
+            forces = forces.multiply(getHorizontalSpeedScale(), 1, getHorizontalSpeedScale());
+        double massScale = 1/getTotalMass();
+        return forces.scale(massScale).scale(getAccTimeScale());
     }
 
     default void motionClamp() {

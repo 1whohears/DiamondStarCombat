@@ -12,9 +12,7 @@ import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
-import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -51,46 +49,46 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         } else {
             poseStack.mulPose(entity.getQ());
         }
-        drawForces(entity, partialTicks, poseStack, buffer, packedLight);
+        drawAccs(entity, partialTicks, poseStack, buffer, packedLight);
         poseStack.popPose();
     }
 
-    private void drawForces(@NotNull EntityWindTunnel entity, float partialTicks, @NotNull PoseStack poseStack,
-                            @NotNull MultiBufferSource buffer, int packedLight) {
+    private void drawAccs(@NotNull EntityWindTunnel entity, float partialTicks, @NotNull PoseStack poseStack,
+                          @NotNull MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         EntityVehicle vehicle = entity.getSimulatedVehicle();
         Quaternion q = vehicle.getQBySide();
         Quaternion qi = vehicle.getQBySide();
         qi.conj();
         poseStack.mulPose(qi);
-        float maxForceMag = (float) entity.weightForce.length();
+        float maxForceMag = (float) entity.weightAcc.length();
         // draw sum forces
-        drawForce(poseStack, buffer, packedLight, WHITE, maxForceMag, Vec3.ZERO, vehicle.getForces());
+        drawAcc(poseStack, buffer, packedLight, WHITE, maxForceMag, Vec3.ZERO, entity.totalAcc);
         // draw gravity
-        drawForce(poseStack, buffer, packedLight, BLACK, maxForceMag, Vec3.ZERO, entity.weightForce);
+        drawAcc(poseStack, buffer, packedLight, BLACK, maxForceMag, Vec3.ZERO, entity.weightAcc);
         // draw thrust
-        drawForce(poseStack, buffer, packedLight, BLUE, maxForceMag, Vec3.ZERO, entity.thrustForce);
+        drawAcc(poseStack, buffer, packedLight, BLUE, maxForceMag, Vec3.ZERO, entity.thrustAcc);
         // draw drag
-        drawForce(poseStack, buffer, packedLight, RED, maxForceMag, Vec3.ZERO, entity.dragForce);
+        drawAcc(poseStack, buffer, packedLight, RED, maxForceMag, Vec3.ZERO, entity.dragAcc);
         // draw lift
-        drawForce(poseStack, buffer, packedLight, GREEN, maxForceMag, Vec3.ZERO, entity.liftForce);
+        drawAcc(poseStack, buffer, packedLight, GREEN, maxForceMag, Vec3.ZERO, entity.liftAcc);
         // draw forces from surfaces
         for (PhysicsComponentInstance<?> phy : vehicle.getPhysicsInstances()) {
             Vec3 pos = UtilAngles.rotateVector(phy.getData().getPos(), q);
-            drawForce(poseStack, buffer, packedLight, YELLOW, maxForceMag, pos, phy.getDragForce());
-            drawForce(poseStack, buffer, packedLight, CYAN, maxForceMag, pos, phy.getLiftForce());
+            drawAcc(poseStack, buffer, packedLight, YELLOW, maxForceMag, pos, vehicle.getAccFromForce(phy.getDragForce()));
+            drawAcc(poseStack, buffer, packedLight, CYAN, maxForceMag, pos, vehicle.getAccFromForce(phy.getLiftForce()));
         }
         poseStack.popPose();
     }
 
-    private void drawForce(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
-                           int[] color, float maxForceMag, Vec3 pos, Vec3 force) {
-        drawForce(poseStack, buffer, packedLight, color, pos, force.normalize(),
+    private void drawAcc(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
+                         int[] color, float maxForceMag, Vec3 pos, Vec3 force) {
+        drawAcc(poseStack, buffer, packedLight, color, pos, force.normalize(),
                 (float)force.length()/maxForceMag*ARROW_LENGTH_SCALE);
     }
 
-    private void drawForce(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
-                           int[] color, Vec3 pos, Vec3 dir, float mag) {
+    private void drawAcc(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
+                         int[] color, Vec3 pos, Vec3 dir, float mag) {
         poseStack.pushPose();
         poseStack.translate(pos.x, pos.y, pos.z);
         float y = UtilAngles.getYaw(dir);

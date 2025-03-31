@@ -6,7 +6,6 @@ import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.onewholibs.util.UtilParse;
-import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -31,7 +30,7 @@ public class EntityWindTunnel extends Entity {
 
     @Nullable private EntityVehicle vehicle;
 
-    public Vec3 weightForce = Vec3.ZERO, thrustForce = Vec3.ZERO, dragForce = Vec3.ZERO, liftForce = Vec3.ZERO;
+    public Vec3 totalAcc = Vec3.ZERO, weightAcc = Vec3.ZERO, thrustAcc = Vec3.ZERO, dragAcc = Vec3.ZERO, liftAcc = Vec3.ZERO;
 
     public EntityWindTunnel(EntityType<?> type, Level level) {
         super(type, level);
@@ -56,21 +55,22 @@ public class EntityWindTunnel extends Entity {
         vehicle.setLandingGear(false);
         vehicle.clientTick();
         // calc forces to be rendered in wind tunnel
-        weightForce = vehicle.getWeightForce();
-        thrustForce = vehicle.getThrustForce(q);
-        dragForce = vehicle.getDragForce(q);
-        liftForce = Vec3.ZERO;
+        totalAcc = vehicle.getAccFromForce(vehicle.getForces());
+        weightAcc = vehicle.getAccFromForce(vehicle.getWeightForce());
+        thrustAcc = vehicle.getAccFromForce(vehicle.getThrustForce(q));
+        dragAcc = vehicle.getAccFromForce(vehicle.getDragForce(q));
+        liftAcc = Vec3.ZERO;
         for (PhysicsComponentInstance<?> phy : vehicle.getPhysicsInstances()) {
-            dragForce = dragForce.add(phy.getDragForce());
-            liftForce = liftForce.add(phy.getLiftForce());
+            dragAcc = dragAcc.add(vehicle.getAccFromForce(phy.getDragForce()));
+            liftAcc = liftAcc.add(vehicle.getAccFromForce(phy.getLiftForce()));
         }
-        System.out.println("WIND TUNNEL "+this);
+        /*System.out.println("WIND TUNNEL "+this);
         System.out.println("speed = "+UtilParse.prettyVec3(getSpeed()));
         System.out.println("total forces = "+UtilParse.prettyVec3(vehicle.getForces()));
         System.out.println("weightForce = "+UtilParse.prettyVec3(weightForce));
         System.out.println("thrustForce = "+UtilParse.prettyVec3(thrustForce));
         System.out.println("dragForce = "+UtilParse.prettyVec3(dragForce));
-        System.out.println("num phy instances = "+vehicle.getPhysicsInstances().size());
+        System.out.println("num phy instances = "+vehicle.getPhysicsInstances().size());*/
     }
 
     @NotNull

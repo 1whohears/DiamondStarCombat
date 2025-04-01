@@ -18,7 +18,7 @@
   "explodeNum": 2,
   "explosionRadius": 4.0,
   "explosive": true,
-  "fireRate": 40,
+  "fireRate": 1,
   "fov": 60.0,
   "fuelTicks": 400,
   "fuseDist": 2.0,

@@ -14,7 +14,7 @@
   "entityTypeKey": "dscombat:dumb_torpedo_missile",
   "explosionRadius": 4.0,
   "explosive": true,
-  "fireRate": 40,
+  "fireRate": 1,
   "fuelTicks": 400,
   "fuseDist": 2.0,
   "inaccuracy": 0.0,

@@ -1,7 +1,7 @@
 {
   "displayName": "item.dscombat.gau_avenger",
   "item": "dscombat:internal_gun",
-  "max": 1000,
+  "max": 1000000,
   "presetId": "gau_avenger",
   "presetType": "internal_weapon",
   "slotType": "internal_gun",

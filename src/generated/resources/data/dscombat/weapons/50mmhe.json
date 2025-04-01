@@ -12,7 +12,7 @@
   "entityTypeKey": "dscombat:bullet",
   "explosionRadius": 3.0,
   "explosive": true,
-  "fireRate": 5,
+  "fireRate": 1,
   "inaccuracy": 1.0,
   "ingredients": [
     {

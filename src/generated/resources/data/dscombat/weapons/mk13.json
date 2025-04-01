@@ -15,7 +15,7 @@
   "entityTypeKey": "dscombat:torpedo_missile",
   "explosionRadius": 4.0,
   "explosive": true,
-  "fireRate": 40,
+  "fireRate": 1,
   "fov": 40.0,
   "fuelTicks": 400,
   "fuseDist": 2.0,

@@ -22,7 +22,7 @@
     }
   ],
   "item": "dscombat:turret",
-  "maxAmmo": 36,
+  "maxAmmo": 1000000,
   "maxHealth": 200.0,
   "passenger_offset": {
     "x": 0.0,

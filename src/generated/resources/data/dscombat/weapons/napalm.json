@@ -12,7 +12,7 @@
   "entityTypeKey": "dscombat:bomb",
   "explosionRadius": 2.0,
   "explosive": true,
-  "fireRate": 3,
+  "fireRate": 1,
   "inaccuracy": 0.0,
   "ingredients": [
     {

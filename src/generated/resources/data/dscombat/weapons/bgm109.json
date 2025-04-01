@@ -15,7 +15,7 @@
   "entityTypeKey": "dscombat:track_missile",
   "explosionRadius": 3.5,
   "explosive": true,
-  "fireRate": 25,
+  "fireRate": 1,
   "fov": -1.0,
   "fuelTicks": 150,
   "fuseDist": 2.0,

@@ -13,7 +13,7 @@
   "entityTypeKey": "dscombat:bunker_buster",
   "explosionRadius": 12.0,
   "explosive": true,
-  "fireRate": 60,
+  "fireRate": 1,
   "inaccuracy": 0.0,
   "ingredients": [
     {

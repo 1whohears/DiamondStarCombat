@@ -1,7 +1,7 @@
 {
   "displayName": "item.dscombat.m61a1_vulcan",
   "item": "dscombat:internal_gun",
-  "max": 500,
+  "max": 1000000,
   "presetId": "m61a1_vulcan",
   "presetType": "internal_weapon",
   "slotType": "internal_gun",

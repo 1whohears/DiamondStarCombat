@@ -14,7 +14,7 @@
   "entityTypeKey": "dscombat:anti_radar_missile",
   "explosionRadius": 8.0,
   "explosive": true,
-  "fireRate": 40,
+  "fireRate": 1,
   "fov": 80.0,
   "fuelTicks": 500,
   "fuseDist": 2.0,

@@ -3,7 +3,7 @@
   "displayName": "item.dscombat.basic_flare_dispenser",
   "heat": 20.0,
   "item": "dscombat:basic_flare_dispenser",
-  "max": 20,
+  "max": 1000000,
   "presetId": "basic_flare_dispenser",
   "presetType": "flare_dispenser",
   "slotType": "internal",

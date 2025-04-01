@@ -13,7 +13,7 @@
   "entityTypeKey": "dscombat:pos_missile",
   "explosionRadius": 3.5,
   "explosive": true,
-  "fireRate": 20,
+  "fireRate": 1,
   "fov": -1.0,
   "fuelTicks": 200,
   "fuseDist": 2.0,

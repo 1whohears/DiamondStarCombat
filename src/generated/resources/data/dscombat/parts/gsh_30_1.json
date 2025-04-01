@@ -1,7 +1,7 @@
 {
   "displayName": "item.dscombat.gsh_30_1",
   "item": "dscombat:internal_gun",
-  "max": 200,
+  "max": 1000000,
   "presetId": "gsh_30_1",
   "presetType": "internal_weapon",
   "slotType": "internal_gun",

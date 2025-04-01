@@ -14,7 +14,7 @@
   "entityTypeKey": "dscombat:ir_missile",
   "explosionRadius": 3.5,
   "explosive": true,
-  "fireRate": 20,
+  "fireRate": 1,
   "flareResistance": 1.0,
   "fov": 40.0,
   "fuelTicks": 80,

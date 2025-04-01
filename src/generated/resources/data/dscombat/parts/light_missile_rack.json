@@ -11,7 +11,7 @@
     }
   ],
   "item": "dscombat:external_weapon_part",
-  "max": 4,
+  "max": 1000000,
   "presetId": "light_missile_rack",
   "presetType": "external_weapon",
   "slotType": "pylon_light",

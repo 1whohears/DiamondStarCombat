@@ -15,7 +15,7 @@
     }
   ],
   "item": "dscombat:external_weapon_part",
-  "max": 300,
+  "max": 1000000,
   "presetId": "xm12",
   "presetType": "external_weapon",
   "slotType": "pylon_light",

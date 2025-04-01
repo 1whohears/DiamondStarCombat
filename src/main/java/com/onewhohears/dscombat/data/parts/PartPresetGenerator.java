@@ -232,7 +232,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "aa_turret", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_LIGHT)
 				.setWeight(1000)
-				.setTurretStats(750, 40, new Vec3(0, 0.5, 0), 1.03125,
+				.setTurretStats(1000000, 40, new Vec3(0, 0.5, 0), 1.03125,
 						TurretStats.RotBounds.create(3.0f, 40f, 30f),
 						1.0f, 1.25f)
 				.addIngredient("dscombat:seat", 1)
@@ -244,7 +244,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "minigun_turret", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_LIGHT)
 				.setWeight(1500)
-				.setTurretStats(1000, 40, Vec3.ZERO, 0.8,
+				.setTurretStats(1000000, 40, Vec3.ZERO, 0.8,
 						TurretStats.RotBounds.create(2.5f,50f, 50f),
 						1.0f, 1.5f)
 				.addIngredient("dscombat:seat", 1)
@@ -256,7 +256,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "ciws", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_LIGHT)
 				.setWeight(2500)
-				.setTurretStats(500, 80, new Vec3(1, 0.5, 0), 0.6875,
+				.setTurretStats(1000000, 80, new Vec3(1, 0.5, 0), 0.6875,
 						TurretStats.RotBounds.create(2.0f, 75f, 30f),
 						1.5f, 2.5f)
 				.addIngredient("minecraft:dispenser", 1)
@@ -268,7 +268,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "mark45_cannon", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_LIGHT)
 				.setWeight(3000)
-				.setTurretStats(50, 120, new Vec3(0, 1.5, 0), 1.5625,
+				.setTurretStats(1000000, 120, new Vec3(0, 1.5, 0), 1.5625,
 						TurretStats.RotBounds.create(1.1f, 45f, 15f),
 						2.0f, 1.5f)
 				.addIngredient("dscombat:seat", 1)
@@ -280,7 +280,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "heavy_tank_turret", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_MED)
 				.setWeight(4000)
-				.setTurretStats(16, 120, Vec3.ZERO, 0.3,
+				.setTurretStats(1000000, 120, Vec3.ZERO, 0.3,
 						TurretStats.RotBounds.create(1.0f, 30f, 30f),
 						2.0f, 1.0f)
 				.addIngredient("dscombat:seat", 1)
@@ -292,7 +292,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "mark7_cannon", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(4500)
-				.setTurretStats(36, 200, new Vec3(0, 1.5, 0), 1.625,
+				.setTurretStats(1000000, 200, new Vec3(0, 1.5, 0), 1.625,
 						TurretStats.RotBounds.create(0.9f, 30f, 15f),
 						EntityTurret.ShootType.MARK7, 4.0f, 1.7f)
 				.addIngredient("dscombat:seat", 1)
@@ -305,7 +305,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "steve_up_smash", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_MED)
 				.setWeight(5000)
-				.setTurretStats(4, 40, Vec3.ZERO, 3.2,
+				.setTurretStats(1000000, 40, Vec3.ZERO, 3.2,
 						TurretStats.RotBounds.create(1.8f, 25f, 25f),
 						1.0f, 3.5f)
 				.addIngredient("dscombat:seat", 1)
@@ -317,7 +317,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "sam_launcher", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
-				.setTurretStats(4, 60, new Vec3(1.2, 0.4, 0), 2.7,
+				.setTurretStats(1000000, 60, new Vec3(1.2, 0.4, 0), 2.7,
 						TurretStats.RotBounds.create(1.3f, 25f, 25f),
 						2.0f, 3.0f)
 				.addIngredient("dscombat:seat", 1)
@@ -328,7 +328,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "torpedo_tubes", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_MED)
 				.setWeight(5500)
-				.setTurretStats(3, 60, new Vec3(0, 1.8, 0), 1,
+				.setTurretStats(1000000, 60, new Vec3(0, 1.8, 0), 1,
 						TurretStats.RotBounds.create(1.6f, 5f, 5f),
 						2.5f, 2.0f)
 				.addIngredient("dscombat:seat", 1)
@@ -339,7 +339,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "mls", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
-				.setTurretStats(4, 60, new Vec3(1.2, 0, 0), 1,
+				.setTurretStats(1000000, 60, new Vec3(1.2, 0, 0), 1,
 						TurretStats.RotBounds.create(1.9f, 20f, 20f),
 						2.0f, 2.5f)
 				.addIngredient("dscombat:seat", 1)
@@ -350,7 +350,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "mlrs", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(8000)
-				.setTurretStats(10, 80, new Vec3(1.8, 0, 0), 2,
+				.setTurretStats(1000000, 80, new Vec3(1.8, 0, 0), 2,
 						TurretStats.RotBounds.create(0.8f, 35f, 0),
 						2.0f, 2.0f)
 				.addIngredient("dscombat:seat", 1)
@@ -362,7 +362,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "artillery_cannon", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_SUPER_HEAVY)
 				.setWeight(6000)
-				.setTurretStats(50, 180, new Vec3(0, 1.2, 0), 0.79,
+				.setTurretStats(1000000, 180, new Vec3(0, 1.2, 0), 0.79,
 						TurretStats.RotBounds.create(1.0f, 35f, 15f),
 						2.0f, 1.5f)
 				.addIngredient("dscombat:seat", 1)
@@ -376,7 +376,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "xm12", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
 				.setWeight(500)
-				.setExternalWeaponStats(300, 0)
+				.setExternalWeaponStats(1000000, 0)
 				.setSortFactor(1)
 				.addIngredientTag("dscombat:aluminum_ingot", 3)
 				.addIngredient("minecraft:dispenser", 1)
@@ -384,28 +384,28 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "light_missile_rack", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
 				.setWeight(750)
-				.setExternalWeaponStats(4, 0)
+				.setExternalWeaponStats(1000000, 0)
 				.setSortFactor(2)
 				.addIngredientTag("dscombat:aluminum_ingot", 5)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "heavy_missile_rack", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_MED)
 				.setWeight(1500)
-				.setExternalWeaponStats(2, 0)
+				.setExternalWeaponStats(1000000, 0)
 				.setSortFactor(3)
 				.addIngredientTag("dscombat:aluminum_ingot", 10)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "bomb_rack", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_HEAVY)
 				.setWeight(2000)
-				.setExternalWeaponStats(16, 0)
+				.setExternalWeaponStats(1000000, 0)
 				.setSortFactor(4)
 				.addIngredientTag("dscombat:aluminum_ingot", 15)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "adl", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
-				.setExternalWeaponStats(3, 20)
+				.setExternalWeaponStats(1000000, 20)
 				.setSortFactor(5)
 				.addIngredientTag("dscombat:aluminum_ingot", 10)
 				.addIngredient("minecraft:dispenser", 3)
@@ -413,7 +413,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "vls", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
 				.setWeight(6000)
-				.setExternalWeaponStats(16, 90)
+				.setExternalWeaponStats(1000000, 90)
 				.setSortFactor(6)
 				.addIngredient("dscombat:ti83", 1)
 				.addIngredient("minecraft:dispenser", 8)
@@ -423,33 +423,33 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
 				.setWeight(1000)
-				.setWeaponStats(1000)
+				.setWeaponStats(1000000)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"gau_avenger", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
 				.setWeight(1250)
-				.setWeaponStats(1000)
+				.setWeaponStats(1000000)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"m61a1_vulcan", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
 				.setWeight(900)
-				.setWeaponStats(500)
+				.setWeaponStats(1000000)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"gsh_30_1", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
 				.setWeight(200)
-				.setWeaponStats(200)
+				.setWeaponStats(1000000)
 				.build());
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID,"m2_browning", ModItems.INTERNAL_GUN.getId(), PartType.INTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.INTERNAL_GUN)
 				.setWeight(300)
-				.setWeaponStats(300)
+				.setWeaponStats(1000000)
 				.build());
 		// DISPENSERS
 		addPresetToGenerate(PartBuilder.create(ModItems.BASIC_FLARE_DISPENSER.getId(), PartType.FLARE_DISPENSER)
 				.setCompatibleSlotType(SlotType.INTERNAL)
 				.setWeight(100)
-				.setFlareDispenserStats(20, 120, 20)
+				.setFlareDispenserStats(1000000, 120, 20)
 				.build());
 	}
 	

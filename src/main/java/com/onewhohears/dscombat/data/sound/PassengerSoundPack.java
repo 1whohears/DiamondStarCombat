@@ -130,7 +130,6 @@ public class PassengerSoundPack extends JsonPresetStats {
     }
 
     public void clientTickPassengerSounds(EntityVehicle vehicle) {
-        if (!vehicle.isOperational()) return;
         passengerSounds.forEach(sound -> sound.testPlaySound(vehicle));
     }
 

@@ -33,6 +33,10 @@ public class VehicleDamageSource extends DamageSource {
 	public static DamageSource collide(EntityVehicle aircraft) {
 		return new VehicleDamageSource(getCollideDeath(), aircraft).setExplosion();
 	}
+
+	public static DamageSource trip(EntityVehicle aircraft) {
+		return new VehicleDamageSource("brawl_trip", aircraft).setExplosion();
+	}
 	
 	public static final String[] roadKillDeaths = {"roadkill1","roadkill2"};
 	public static final String[] crashDeaths = {"plane_crash1","plane_crash2"};

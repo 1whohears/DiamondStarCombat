@@ -412,6 +412,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (level.isClientSide) clientTick();
 		else serverTick();
 	}
+
+	private float moveDistPrev = this.moveDist;
+
+	public void tickTrip() {
+		if (moveDist - moveDistPrev > 1) {
+			if (random.nextDouble() < 0.001) explode(VehicleDamageSource.trip(this));
+			moveDistPrev = moveDist;
+		}
+	}
 	
 	/**
 	 * called on server side every tick
@@ -420,6 +429,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		waterDamage();
 		if (!isTestMode() && !isOperational()) tickNoHealth();
 		if (hasRadioSong() && (!isOperational() || !hasRadio)) turnRadioOff();
+		tickTrip();
 	}
 	
 	/**
@@ -1910,7 +1920,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (level.isClientSide) return;
 		level.explode(this, source,
 			null, getX(), getY(), getZ(), 
-			getStats().crashExplosionRadius, true,
+			getStats().crashExplosionRadius*20, true,
 			Explosion.BlockInteraction.BREAK);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientVehicleExplode(this));

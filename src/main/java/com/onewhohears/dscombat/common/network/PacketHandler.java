@@ -13,7 +13,7 @@ public final class PacketHandler {
 	
 	private PacketHandler() {}
 	
-	private static final String PROTOCOL_VERSION = "1.0";
+	private static final String PROTOCOL_VERSION = "0.13.0-beta";
 	
 	public static SimpleChannel INSTANCE;
 

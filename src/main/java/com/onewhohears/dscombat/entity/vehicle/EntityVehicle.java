@@ -1996,7 +1996,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * @return the max speed of the craft along the x and z axis
 	 */
     public final float getMaxSpeed() {
-    	return getStats().max_speed;
+    	return getStats().max_speed * 100;
     }
     
     /**

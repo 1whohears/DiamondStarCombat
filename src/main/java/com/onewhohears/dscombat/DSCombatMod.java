@@ -56,6 +56,7 @@ public class DSCombatMod {
 	public static final String MODID = "dscombat";
 	
 	public static boolean minigamesLoaded = false;
+	public static boolean distantPlayersLoaded = false;
 
     public DSCombatMod() {
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
@@ -79,6 +80,7 @@ public class DSCombatMod {
     	ModTags.init();
     	
     	minigamesLoaded = ModList.get().isLoaded("minigames");
+		distantPlayersLoaded = ModList.get().isLoaded("distant_players");
 
     	eventBus.addListener(this::onGatherData);
     }

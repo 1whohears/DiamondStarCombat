@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat;
 
+import com.onewhohears.dscombat.integration.distant_players.DSCDistantPlayers;
 import com.onewhohears.dscombat.integration.minigame.DSCMiniGames;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCKitGenerator;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCShopGenerator;
@@ -10,6 +11,7 @@ public class DependencySafety {
 	
 	public static void fmlCommonSetup() {
 		if (DSCombatMod.minigamesLoaded) DSCMiniGames.registerGames();
+		if (DSCombatMod.distantPlayersLoaded) DSCDistantPlayers.register();
 	}
 	
 	public static void serverDataGen(DataGenerator generator) {

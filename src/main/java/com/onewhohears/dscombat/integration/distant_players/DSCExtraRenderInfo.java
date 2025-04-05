@@ -30,6 +30,7 @@ public class DSCExtraRenderInfo implements ExtraRenderTargetInfo {
     public void updateFakeEntity(@NotNull Entity entity) {
         if (!(entity instanceof EntityVehicle vehicle)) return;
         vehicle.setPreset(preset);
+        vehicle.updateClientStatsHolder();
         vehicle.setPrevQ(q);
         vehicle.setClientQ(q);
         vehicle.setLandingGear(landingGear);
@@ -41,6 +42,7 @@ public class DSCExtraRenderInfo implements ExtraRenderTargetInfo {
     public void setupEntityOnCreate(@NotNull Entity entity) {
         if (!(entity instanceof EntityVehicle vehicle)) return;
         vehicle.setPreset(preset);
+        vehicle.updateClientStatsHolder();
         vehicle.textureManager.setupTextureLocations();
         vehicle.textureManager.setupDynamicTexture();
     }

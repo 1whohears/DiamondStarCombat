@@ -35,7 +35,7 @@ public class EntityWindTunnel extends Entity {
 
     @Nullable private EntityVehicle vehicle;
 
-    public Vec3 totalAcc = Vec3.ZERO, weightAcc = Vec3.ZERO, thrustAcc = Vec3.ZERO, dragAcc = Vec3.ZERO, liftAcc = Vec3.ZERO;
+    public Vec3 totalAcc = Vec3.ZERO, weightAcc = Vec3.ZERO, thrustAcc = Vec3.ZERO, dragAcc = Vec3.ZERO, liftAcc = Vec3.ZERO, rotAcc = Vec3.ZERO;
     public double windCompAcc, centripetalAcc, yawRate, turnRadius;
 
     public EntityWindTunnel(EntityType<?> type, Level level) {
@@ -77,6 +77,9 @@ public class EntityWindTunnel extends Entity {
         centripetalAcc = UtilGeometry.vecCompMagDirByNormAxis(liftAcc, cenAxis);
         yawRate = centripetalAcc / vehicle.xzSpeed * Mth.RAD_TO_DEG;
         turnRadius = vehicle.xzSpeed / (yawRate * Mth.DEG_TO_RAD);
+        Vec3 m = vehicle.getMoment();
+        Vec3 I = vehicle.getTotalRotInertia();
+        rotAcc = new Vec3(m.x/I.x, m.y/I.y, m.z/I.z).scale(vehicle.getAccTimeScale());
     }
 
     @NotNull

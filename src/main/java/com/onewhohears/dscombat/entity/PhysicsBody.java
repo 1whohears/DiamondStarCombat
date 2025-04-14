@@ -67,7 +67,8 @@ public interface PhysicsBody {
     default void calcRotAcc(Quaternion q) {
         clampControlMoment();
         addMoment(getControlMoment(), false, true);
-        Vec3 m = getMoment().add(getMomentBetweenTicks()).scale(getAccTimeScale());
+        addMoment(getMomentBetweenTicks(), false, true);
+        Vec3 m = getMoment().scale(getAccTimeScale());
         Vec3 av = getAngularVel();
         if (!UtilGeometry.isZero(m)) {
             Vec3 I = getTotalRotInertia();

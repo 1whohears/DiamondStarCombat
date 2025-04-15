@@ -63,6 +63,11 @@ public class WindTunnelOverlay extends GuiComponent {
         gui.getFont().draw(stack, "RotAcc", LABEL_PADDING, LABEL_PADDING+10*(++index), 0x0000ff);
         gui.getFont().draw(stack, printVec3SigFig(tunnel.rotAcc), VALUE_OFFSET, LABEL_PADDING+10*index, 0x0000ff);
 
+        gui.getFont().draw(stack, "AOA", LABEL_PADDING, LABEL_PADDING+10*(++index), 0x00ff00);
+        StringBuilder aoaStr = new StringBuilder();
+        for (Float aoa : tunnel.aoas) aoaStr.append(printDec(aoa)).append(" ");
+        gui.getFont().draw(stack, aoaStr.toString(), VALUE_OFFSET, LABEL_PADDING+10*index, 0x00ff00);
+
         int color = 0x00ff00;
         if (tunnel.windCompAcc < 0) color = 0xff0000;
         gui.getFont().draw(stack, "WCA", LABEL_PADDING, LABEL_PADDING+10*(++index), color);

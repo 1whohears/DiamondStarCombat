@@ -27,4 +27,5 @@ public abstract class PhysicsComponentInstance<D extends PhysicsComponentData> {
 
     public abstract Vec3 getDragForce();
     public abstract Vec3 getLiftForce();
+    public abstract float getAOA();
 }

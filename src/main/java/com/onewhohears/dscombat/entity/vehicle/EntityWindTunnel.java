@@ -23,6 +23,9 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EntityWindTunnel extends Entity {
 
     public static final EntityDataAccessor<String> PRESET = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.STRING);
@@ -38,6 +41,7 @@ public class EntityWindTunnel extends Entity {
 
     public Vec3 totalAcc = Vec3.ZERO, weightAcc = Vec3.ZERO, thrustAcc = Vec3.ZERO, dragAcc = Vec3.ZERO, liftAcc = Vec3.ZERO, rotAcc = Vec3.ZERO;
     public double windCompAcc, centripetalAcc, yawRate, turnRadius;
+    public final List<Float> aoas = new ArrayList<>();
 
     public EntityWindTunnel(EntityType<?> type, Level level) {
         super(type, level);
@@ -73,9 +77,11 @@ public class EntityWindTunnel extends Entity {
         thrustAcc = vehicle.getAccFromForce(vehicle.getThrustForce(q));
         dragAcc = vehicle.getAccFromForce(vehicle.getDragForce(q));
         liftAcc = Vec3.ZERO;
+        aoas.clear();
         for (PhysicsComponentInstance<?> phy : vehicle.getPhysicsInstances()) {
             dragAcc = dragAcc.add(vehicle.getAccFromForce(phy.getDragForce()));
             liftAcc = liftAcc.add(vehicle.getAccFromForce(phy.getLiftForce()));
+            aoas.add(phy.getAOA());
         }
         windCompAcc = UtilGeometry.vecCompMagDirByAxis(totalAcc, speed);
         Vec3 cenAxis = UtilAngles.getRollAxis(0, (vehicle.getYRot()+90)*Mth.DEG_TO_RAD);

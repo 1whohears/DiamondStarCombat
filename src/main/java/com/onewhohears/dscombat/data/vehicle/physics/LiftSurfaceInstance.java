@@ -81,6 +81,11 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         return liftForce;
     }
 
+    @Override
+    public float getAOA() {
+        return aoa;
+    }
+
     public static float calcAOA(Vec3 u, Vec3 wingNormal) {
         return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
     }

@@ -1172,6 +1172,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * used by planes
 		 */
+		public Builder setDragAOAGraph(String drag_aoa_graph_key) {
+			return setTypedStatString("drag_aoa_graph_key", drag_aoa_graph_key, "plane");
+		}
+		/**
+		 * used by planes
+		 */
 		public Builder setWingLiftHitboxNames(String... wing_lift_hitbox_names) {
 			getStatsByType("plane").add("wing_lift_hitbox_names", UtilParse.stringArrayToJsonArray(wing_lift_hitbox_names));
 			return this;

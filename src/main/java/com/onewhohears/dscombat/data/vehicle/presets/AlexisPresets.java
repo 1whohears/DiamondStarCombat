@@ -33,6 +33,7 @@ public class AlexisPresets {
 			.setPlaneWingArea(28f)
 			.setFuselageLiftArea(18.67f)
 			.setPlaneLiftAOAGraph("alexis_plane")
+			.setDragAOAGraph("alexis_drag_aoa")
 			.setTurnRateGraph("alexis_plane_turn_rates")
 			.setPlaneFlapDownAOABias(13)
 			.setMaxAltitude(750)
@@ -44,34 +45,34 @@ public class AlexisPresets {
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
 					13, 14, new Vec3(4.43, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.LEFT_FLAP, "alexis_plane",
-					"default_drag_aoa", 0.8f))
+					"alexis_drag_aoa", 0.8f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
 					13, 14, new Vec3(-4.43, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.RIGHT_FLAP, "alexis_plane",
-					"default_drag_aoa", 0.8f))
+					"alexis_drag_aoa", 0.8f))
 			// elevators
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_elevator", false,
 					20, 2, new Vec3(2.61, 0, -6.10), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane",
-					"default_drag_aoa", 0.4f))
+					"alexis_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_elevator", false,
 					20, 2, new Vec3(-2.61, 0, -6.10), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane",
-					"default_drag_aoa", 0.4f))
+					"alexis_drag_aoa", 0.4f))
 			// tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
 					4, 6, new Vec3(0, 0, -5.07), 0, 0, 90,
 					LiftSurfaceData.InputType.STABILIZER, "alexis_plane",
-					"default_drag_aoa", 0.6f))
+					"alexis_drag_aoa", 0.6f))
 			// nose to counter elevators and tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
 					0, 4, new Vec3(0, 0, 6.10), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "alexis_plane",
-					"default_drag_aoa", 0.8f))
+					"alexis_drag_aoa", 0.8f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
 					0, 6, new Vec3(0, 0, 5.07), 0, 0, 90,
 					LiftSurfaceData.InputType.NONE, "alexis_plane",
-					"default_drag_aoa", 0.8f))
+					"alexis_drag_aoa", 0.8f))
 			// fuselage
 			/*.addPhysicsComponent(LiftSurfaceData.createJsonData(" ", true,
 					0, 10, new Vec3(0, 0, 0), 0, 0, 0,

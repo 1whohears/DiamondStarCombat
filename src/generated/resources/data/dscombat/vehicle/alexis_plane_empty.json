@@ -186,7 +186,7 @@
   "physics_components": [
     {
       "area": 14.0,
-      "drag_graph": "default_drag_aoa",
+      "drag_graph": "alexis_drag_aoa",
       "hitbox": "left_wing",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -207,7 +207,7 @@
     },
     {
       "area": 14.0,
-      "drag_graph": "default_drag_aoa",
+      "drag_graph": "alexis_drag_aoa",
       "hitbox": "right_wing",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -228,7 +228,7 @@
     },
     {
       "area": 2.0,
-      "drag_graph": "default_drag_aoa",
+      "drag_graph": "alexis_drag_aoa",
       "hitbox": "left_elevator",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -249,7 +249,7 @@
     },
     {
       "area": 2.0,
-      "drag_graph": "default_drag_aoa",
+      "drag_graph": "alexis_drag_aoa",
       "hitbox": "right_elevator",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -270,7 +270,7 @@
     },
     {
       "area": 6.0,
-      "drag_graph": "default_drag_aoa",
+      "drag_graph": "alexis_drag_aoa",
       "hitbox": "tail",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -291,7 +291,7 @@
     },
     {
       "area": 4.0,
-      "drag_graph": "default_drag_aoa",
+      "drag_graph": "alexis_drag_aoa",
       "hitbox": "nose",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -312,7 +312,7 @@
     },
     {
       "area": 6.0,
-      "drag_graph": "default_drag_aoa",
+      "drag_graph": "alexis_drag_aoa",
       "hitbox": "nose",
       "id": "lift_surface",
       "ignore_roll": false,
@@ -535,6 +535,7 @@
     "maxyaw": 1.5,
     "plane": {
       "canAimDown": false,
+      "drag_aoa_graph_key": "alexis_drag_aoa",
       "flapsAOABias": 13.0,
       "fuselage_lift_area": 18.67,
       "fuselage_lift_k_graph": "fuselage",

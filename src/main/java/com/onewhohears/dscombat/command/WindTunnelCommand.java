@@ -52,6 +52,18 @@ public class WindTunnelCommand {
                                 .executes(context -> setVehicleAltitude(context, FloatArgumentType.getFloat(context, "altitude")))
                         )
                 )
+                .then(Commands.literal("set_inputs")
+                        .then(Commands.argument("pitch", FloatArgumentType.floatArg(-1f, 1f))
+                                .then(Commands.argument("yaw", FloatArgumentType.floatArg(-1f, 1f))
+                                        .then(Commands.argument("roll", FloatArgumentType.floatArg(-1f, 1f))
+                                                .executes(context -> setVehicleInputs(context,
+                                                        FloatArgumentType.getFloat(context, "pitch"),
+                                                        FloatArgumentType.getFloat(context, "yaw"),
+                                                        FloatArgumentType.getFloat(context, "roll")))
+                                        )
+                                )
+                        )
+                )
         );
     }
 
@@ -93,6 +105,18 @@ public class WindTunnelCommand {
         }
         EntityWindTunnel tunnel = opt.get();
         tunnel.setAltitude(altitude);
+        return 1;
+    }
+
+    private int setVehicleInputs(CommandContext<CommandSourceStack> context, float pitch, float yaw, float roll) {
+        Optional<EntityWindTunnel> opt = getWindTunnel(context);
+        if (opt.isEmpty()) {
+            context.getSource().sendFailure(UtilMCText.literal("No Wind Tunnels within "
+                    +WIND_TUNNEL_SEARCH_RANGE+" blocks found!"));
+            return 0;
+        }
+        EntityWindTunnel tunnel = opt.get();
+        tunnel.setInputs(new Vec3(pitch, yaw, roll));
         return 1;
     }
 

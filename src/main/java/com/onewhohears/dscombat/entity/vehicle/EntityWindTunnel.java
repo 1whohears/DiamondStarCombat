@@ -32,6 +32,7 @@ public class EntityWindTunnel extends Entity {
     public static final EntityDataAccessor<Boolean> AFTERBURNER = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> HIDE_MODEL = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Float> ALTITUDE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Vec3> INPUTS = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
 
     @Nullable private EntityVehicle vehicle;
 
@@ -62,6 +63,10 @@ public class EntityWindTunnel extends Entity {
         vehicle.tickPhysics();
         vehicle.setLandingGear(false);
         vehicle.clientTick();
+        Vec3 i = getInputs();
+        vehicle.inputs.pitch = (float) i.x;
+        vehicle.inputs.yaw = (float) i.y;
+        vehicle.inputs.roll = (float) i.z;
         // calc forces to be rendered in wind tunnel
         totalAcc = vehicle.getAccFromForce(vehicle.getForces());
         weightAcc = vehicle.getAccFromForce(vehicle.getWeightForce());
@@ -122,6 +127,7 @@ public class EntityWindTunnel extends Entity {
         entityData.define(AFTERBURNER, false);
         entityData.define(HIDE_MODEL, false);
         entityData.define(ALTITUDE, 0f);
+        entityData.define(INPUTS, Vec3.ZERO);
     }
 
     @Override
@@ -138,6 +144,7 @@ public class EntityWindTunnel extends Entity {
         setAfterBurner(tag.getBoolean("afterburner"));
         setHideModel(tag.getBoolean("hide_model"));
         setAltitude(tag.getFloat("altitude"));
+        setInputs(UtilParse.readVec3(tag, "inputs"));
     }
 
     @Override
@@ -153,6 +160,7 @@ public class EntityWindTunnel extends Entity {
         tag.putBoolean("afterburner", getAfterBurner());
         tag.putBoolean("hide_model", getHideModel());
         tag.putFloat("altitude", getAltitude());
+        UtilParse.writeVec3(tag, getInputs(), "inputs");
     }
 
     public String getPresetId() {
@@ -210,6 +218,14 @@ public class EntityWindTunnel extends Entity {
 
     public void setAltitude(float alt) {
         entityData.set(ALTITUDE, alt);
+    }
+
+    public Vec3 getInputs() {
+        return entityData.get(INPUTS);
+    }
+
+    public void setInputs(Vec3 inputs) {
+        entityData.set(INPUTS, inputs);
     }
 
     @Override

@@ -82,10 +82,13 @@ public interface PhysicsBody {
     }
 
     default void addMoment(Vec3 moment, boolean control, boolean relative) {
-        //if (!relative) {
-        // FIXME not all moments are applies relative to the vehicle's current axis of rotation
+        if (!relative) {
+            /* FIXME angular velocities must be represented as a quaternion
+             * angular velocities should not be applied relative to the current orientation
+             * the relative parameter should be removed and assumed always false
+             */
 
-        //}
+        }
         if (control && (!canUseTurnAssist() || isUsingTurnAssist())) {
             addControlMoment(moment);
         } else {

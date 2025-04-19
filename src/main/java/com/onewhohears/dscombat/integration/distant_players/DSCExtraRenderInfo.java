@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.integration.distant_players;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
-import com.onewhohears.distant_players.client.core.ExtraRenderTargetInfo;
+import com.onewhohears.distant_players.common.core.ExtraRenderTargetInfo;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import net.minecraft.client.Camera;

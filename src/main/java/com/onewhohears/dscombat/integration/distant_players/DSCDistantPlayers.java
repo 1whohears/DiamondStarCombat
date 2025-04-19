@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.integration.distant_players;
 
-import com.onewhohears.distant_players.client.core.ExtraInfoManager;
+import com.onewhohears.distant_players.common.core.ExtraInfoManager;
 import com.onewhohears.dscombat.init.ModEntities;
 
 public class DSCDistantPlayers {

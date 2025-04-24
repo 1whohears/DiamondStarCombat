@@ -50,7 +50,9 @@ public class DSCPhyCons {
 	public static final float AOA_CHANGE_RATE = 0.5f;
 
 	public static final float FLOAT = 150f;
-	
+
+	public static final double PART_ROT_INERTIA_SCALE = 0.5;
+
 	public static final float STATIC_FRICTION = 2.0f;
 	public static final float KINETIC_FRICTION = 1.0f;
 	
@@ -67,5 +69,4 @@ public class DSCPhyCons {
 	
 	public static final double EXP_FORCE_FACTOR = 100;
 	public static final double EXP_MOMENT_FACTOR = 100;
-	
 }

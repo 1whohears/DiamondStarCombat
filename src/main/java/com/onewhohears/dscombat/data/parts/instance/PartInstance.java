@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.onewholibs.data.crafting.IngredientStack;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
@@ -298,6 +299,6 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 				getWeight() * (relPos.y*relPos.y + relPos.z*relPos.z),
 				getWeight() * (relPos.x*relPos.x + relPos.z*relPos.z),
 				getWeight() * (relPos.x*relPos.x + relPos.y*relPos.y)
-		);
+		).scale(DSCPhyCons.PART_ROT_INERTIA_SCALE);
     }
 }

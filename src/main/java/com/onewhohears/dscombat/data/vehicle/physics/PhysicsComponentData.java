@@ -28,7 +28,7 @@ public abstract class PhysicsComponentData {
     private final Vec3 pos;
 
     public PhysicsComponentData(JsonObject json) {
-        hitbox = UtilParse.getStringSafe(json, "hitbox", " ");
+        hitbox = UtilParse.getStringSafe(json, "hitbox", "NONE");
         pos = UtilParse.readVec3(json, "pos");
     }
 

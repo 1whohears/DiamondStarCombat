@@ -57,11 +57,16 @@ public interface PhysicsBody {
         calcRotAcc(q);
         if (!isTestMode()) {
             setQBySide(q);
-            UtilAngles.EulerAngles angles = UtilAngles.toDegrees(q);
-            setXRotNoQ((float)angles.pitch);
-            setYRotNoQ((float)angles.yaw);
-            setZRot((float)angles.roll);
+            updateEulerAngles();
         }
+    }
+
+    default void updateEulerAngles() {
+        Quaternion q = getQBySide();
+        UtilAngles.EulerAngles angles = UtilAngles.toDegrees(q);
+        setXRotNoQ((float)angles.pitch);
+        setYRotNoQ((float)angles.yaw);
+        setZRot((float)angles.roll);
     }
 
     default void calcRotAcc(Quaternion q) {

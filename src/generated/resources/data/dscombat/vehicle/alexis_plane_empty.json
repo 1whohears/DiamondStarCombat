@@ -330,6 +330,27 @@
         "z": 90.0
       },
       "zero_lift_drag": 0.800000011920929
+    },
+    {
+      "area": 10.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": true,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
     }
   ],
   "presetId": "alexis_plane_empty",

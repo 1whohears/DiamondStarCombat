@@ -65,6 +65,7 @@ public class EntityWindTunnel extends Entity {
         vehicle.setCurrentThrottle(getThrottle());
         vehicle.setUseAfterBurnerOverride(getAfterBurner());
         vehicle.tickPhysics();
+        vehicle.updateEulerAngles();
         vehicle.setLandingGear(false);
         vehicle.clientTick();
         Vec3 i = getInputs();

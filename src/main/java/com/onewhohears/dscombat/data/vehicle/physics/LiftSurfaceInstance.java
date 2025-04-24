@@ -21,7 +21,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
     protected void calcPhysics(PhysicsBody body) {
         Quaternion vehicleQ;
         if (getData().isIgnoreRoll()) {
-            vehicleQ = new Quaternion(0, 0, 0, 1);
+            vehicleQ = Quaternion.ONE.copy();
             vehicleQ.mul(Vector3f.XP.rotationDegrees(body.getXRot()));
             vehicleQ.mul(Vector3f.YP.rotationDegrees(body.getYRot()));
         } else {

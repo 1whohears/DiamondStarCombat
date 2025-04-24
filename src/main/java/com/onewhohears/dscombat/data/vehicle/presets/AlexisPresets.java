@@ -74,9 +74,10 @@ public class AlexisPresets {
 					LiftSurfaceData.InputType.NONE, "alexis_plane",
 					"alexis_drag_aoa", 0.8f))
 			// fuselage
-			/*.addPhysicsComponent(LiftSurfaceData.createJsonData(" ", true,
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
 					0, 10, new Vec3(0, 0, 0), 0, 0, 0,
-					LiftSurfaceData.InputType.NONE, "fuselage"))*/
+					LiftSurfaceData.InputType.NONE, "alexis_plane",
+					"alexis_drag_aoa", 0.8f))
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 

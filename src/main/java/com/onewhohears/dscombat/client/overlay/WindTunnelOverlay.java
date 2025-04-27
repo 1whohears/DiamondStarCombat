@@ -40,7 +40,7 @@ public class WindTunnelOverlay extends GuiComponent {
             findTunnel(player.position(), player.getLevel());
         if (tunnel == null) return;
         int index = 0;
-        gui.getFont().draw(stack, tunnel.getPresetId(), LABEL_PADDING, LABEL_PADDING, 0x00ff00);
+        gui.getFont().draw(stack, tunnel.getStatsId(), LABEL_PADDING, LABEL_PADDING, 0x00ff00);
 
         gui.getFont().draw(stack, "Speed", LABEL_PADDING, LABEL_PADDING+10*(++index), 0x00ffff);
         gui.getFont().draw(stack, printVec3SigFig(tunnel.getSpeed()), VALUE_OFFSET, LABEL_PADDING+10*index, 0x00ffff);
@@ -63,10 +63,10 @@ public class WindTunnelOverlay extends GuiComponent {
         gui.getFont().draw(stack, "RotAcc", LABEL_PADDING, LABEL_PADDING+10*(++index), 0x0000ff);
         gui.getFont().draw(stack, printVec3SigFig(tunnel.rotAcc), VALUE_OFFSET, LABEL_PADDING+10*index, 0x0000ff);
 
-        gui.getFont().draw(stack, "AOA", LABEL_PADDING, LABEL_PADDING+10*(++index), 0x00ff00);
+        gui.getFont().draw(stack, "AOA", LABEL_PADDING, LABEL_PADDING+10*(++index), 0xff00ff);
         StringBuilder aoaStr = new StringBuilder();
         for (Float aoa : tunnel.aoas) aoaStr.append(printDec(aoa)).append(" ");
-        gui.getFont().draw(stack, aoaStr.toString(), VALUE_OFFSET, LABEL_PADDING+10*index, 0x00ff00);
+        gui.getFont().draw(stack, aoaStr.toString(), VALUE_OFFSET, LABEL_PADDING+10*index, 0xff00ff);
 
         int color = 0x00ff00;
         if (tunnel.windCompAcc < 0) color = 0xff0000;

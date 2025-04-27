@@ -3,7 +3,27 @@
 	"presetType": "aoaliftk",
 	"mirror_negative_keys": true,
 	"invert_mirrored_values": true,
-	"size": 14,
-	"keys":   [0,   5,  10,13.18,  15,  20,  25,  30,  35,  40,  45,  50,  55,  60],
-	"values": [0,0.39,0.78,0.980,1.15,1.35,1.55,1.80,1.90,1.85,1.80,1.55,0.50, 0.0]
+	"size": 20,
+	"map": [
+		{"key": 0.000, "value": 0},
+		{"key": 5.000, "value": 0.39},
+		{"key": 12.26, "value": 0.80},
+		{"key": 13.11, "value": 0.98},
+		{"key": 14.09, "value": 1.10},
+		{"key": 15.11, "value": 1.15},
+		{"key": 16.21, "value": 1.20},
+		{"key": 17.28, "value": 1.25},
+		{"key": 18.42, "value": 1.30},
+		{"key": 19.82, "value": 1.33},
+		{"key": 21.53, "value": 1.38},
+		{"key": 23.49, "value": 1.45},
+		{"key": 25.00, "value": 1.55},
+		{"key": 30.00, "value": 1.80},
+		{"key": 35.00, "value": 1.90},
+		{"key": 40.00, "value": 1.85},
+		{"key": 45.00, "value": 1.80},
+		{"key": 50.00, "value": 1.55},
+		{"key": 55.00, "value": 0.50},
+		{"key": 60.00, "value": 0.0}
+	]
 }

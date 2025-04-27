@@ -76,7 +76,7 @@ public class WindTunnelCommand {
             return 0;
         }
         EntityWindTunnel tunnel = opt.get();
-        if (preset != null) tunnel.setPresetId(preset.getId());
+        if (preset != null) tunnel.setPreset(preset.getId());
         if (speed != null) tunnel.setSpeed(speed);
         if (rotation != null) tunnel.setQ(UtilAngles.toQuaternion(rotation.y, rotation.x, rotation.z));
         if (throttle >= 0) tunnel.setThrottle(throttle);

@@ -15,11 +15,20 @@ public class FloatFloatGraph extends Graph<Float, Float> {
 		super(key, json);
 		keys = new Float[getSize()];
 		values = new Float[getSize()];
-		JsonArray keyJA = json.get("keys").getAsJsonArray();
-		JsonArray valueJA = json.get("values").getAsJsonArray();
-		for (int i = 0; i < getSize(); ++i) {
-			keys[i] = keyJA.get(i).getAsFloat();
-			values[i] = valueJA.get(i).getAsFloat();
+		if (json.has("map")) {
+			JsonArray mapJA = json.get("map").getAsJsonArray();
+			for (int i = 0; i < getSize(); ++i) {
+				JsonObject entry = mapJA.get(i).getAsJsonObject();
+				keys[i] = entry.get("key").getAsFloat();
+				values[i] = entry.get("value").getAsFloat();
+			}
+		} else {
+			JsonArray keyJA = json.get("keys").getAsJsonArray();
+			JsonArray valueJA = json.get("values").getAsJsonArray();
+			for (int i = 0; i < getSize(); ++i) {
+				keys[i] = keyJA.get(i).getAsFloat();
+				values[i] = valueJA.get(i).getAsFloat();
+			}
 		}
 	}
 

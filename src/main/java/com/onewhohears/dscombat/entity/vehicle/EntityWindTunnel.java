@@ -5,6 +5,8 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.entity.JsonPresetEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -15,7 +17,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -26,9 +27,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityWindTunnel extends Entity {
+public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
 
-    public static final EntityDataAccessor<String> PRESET = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Vec3> SPEED = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
     public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QUATERNION);
     public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
@@ -44,7 +44,7 @@ public class EntityWindTunnel extends Entity {
     public final List<Float> aoas = new ArrayList<>();
 
     public EntityWindTunnel(EntityType<?> type, Level level) {
-        super(type, level);
+        super(type, level, "alexis_plane_unarmed");
         noPhysics = true;
     }
 
@@ -96,7 +96,8 @@ public class EntityWindTunnel extends Entity {
 
     @NotNull
     public EntityVehicle getSimulatedVehicle() {
-        if (vehicle == null || !vehicle.getStatsId().equals(getPresetId())) {
+        if (vehicle == null || getStatsHolder().getHolderReloads() != getPresets().getReloads()
+                || !vehicle.getStatsId().equals(getStatsId())) {
             vehicle = createVehicleToSimulate();
         }
         return vehicle;
@@ -104,10 +105,10 @@ public class EntityWindTunnel extends Entity {
 
     private EntityVehicle createVehicleToSimulate() {
         verifyCurrentPresetId();
-        VehicleStats stats = VehiclePresets.get().get(getPresetId());
+        VehicleStats stats = getStats();
         EntityType<? extends EntityVehicle> entityType = stats.getEntityType();
         EntityVehicle vehicle = entityType.create(getLevel());
-        vehicle.setPreset(getPresetId());
+        vehicle.setPreset(getStatsId());
         vehicle.updatePhysicsInstances();
         vehicle.partsManager.read(stats.getDataAsNBT(), stats.getDataAsNBT());
         if (getLevel().isClientSide()) {
@@ -121,13 +122,12 @@ public class EntityWindTunnel extends Entity {
     }
 
     public void verifyCurrentPresetId() {
-        if (!VehiclePresets.get().has(getPresetId()))
-            setPresetId("wooden_plane");
+        if (!VehiclePresets.get().has(getStatsId()))
+            setPreset("wooden_plane");
     }
 
     @Override
     protected void defineSynchedData() {
-        entityData.define(PRESET, "wooden_plane");
         entityData.define(SPEED, Vec3.ZERO);
         entityData.define(Q, Quaternion.ONE);
         entityData.define(THROTTLE, 1f);
@@ -138,8 +138,13 @@ public class EntityWindTunnel extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(@NotNull CompoundTag tag) {
-        setPresetId(tag.getString("preset"));
+    public @NotNull JsonPresetReloadListener<VehicleStats> getPresets() {
+        return VehiclePresets.get();
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
         verifyCurrentPresetId();
         setSpeed(UtilParse.readVec3(tag, "speed"));
         float qi = tag.getFloat("qi");
@@ -155,8 +160,8 @@ public class EntityWindTunnel extends Entity {
     }
 
     @Override
-    protected void addAdditionalSaveData(@NotNull CompoundTag tag) {
-        tag.putString("preset", getPresetId());
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
         UtilParse.writeVec3(tag, getSpeed(), "speed");
         Quaternion q = getQ();
         tag.putFloat("qi", q.i());
@@ -168,15 +173,6 @@ public class EntityWindTunnel extends Entity {
         tag.putBoolean("hide_model", getHideModel());
         tag.putFloat("altitude", getAltitude());
         UtilParse.writeVec3(tag, getInputs(), "inputs");
-    }
-
-    public String getPresetId() {
-        return entityData.get(PRESET);
-    }
-
-    public void setPresetId(String id) {
-        entityData.set(PRESET, id);
-        verifyCurrentPresetId();
     }
 
     public Vec3 getSpeed() {

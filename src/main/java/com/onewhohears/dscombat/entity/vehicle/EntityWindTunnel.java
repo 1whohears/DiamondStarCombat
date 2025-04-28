@@ -67,6 +67,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         vehicle.tickPhysics();
         vehicle.updateEulerAngles();
         vehicle.setLandingGear(false);
+        vehicle.foldLandingGearNow();
         vehicle.clientTick();
         Vec3 i = getInputs();
         vehicle.inputs.pitch = (float) i.x;

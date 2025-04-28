@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.graph.FloatFloatGraph;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.entity.PhysicsBody;
+import com.onewhohears.onewholibs.data.jsonpreset.PresetStatsHolder;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.world.phys.Vec3;
 
@@ -38,8 +39,8 @@ public class LiftSurfaceData extends PhysicsComponentData {
     private final InputType input_type;
     private final String lift_k_graph_key;
     private final String drag_graph_key;
-    private AoaLiftKGraph lift_k_graph;
-    private FloatFloatGraph drag_graph;
+    private PresetStatsHolder<?> lift_k_graph;
+    private PresetStatsHolder<?> drag_graph;
 
     public LiftSurfaceData(JsonObject json) {
         super(json);
@@ -60,14 +61,14 @@ public class LiftSurfaceData extends PhysicsComponentData {
 
     public AoaLiftKGraph getLiftKGraph() {
         if (lift_k_graph == null)
-            lift_k_graph = StatGraphs.get().getAoaLiftKGraph(lift_k_graph_key);
-        return lift_k_graph;
+            lift_k_graph = new PresetStatsHolder<>(StatGraphs.get(), lift_k_graph_key);
+        return (AoaLiftKGraph) lift_k_graph.get();
     }
 
     public FloatFloatGraph getDragGraph() {
         if (drag_graph == null)
-            drag_graph = StatGraphs.get().getFloatFloatGraph(drag_graph_key);
-        return drag_graph;
+            drag_graph = new PresetStatsHolder<>(StatGraphs.get(), drag_graph_key);
+        return (FloatFloatGraph) drag_graph.get();
     }
 
     public double getArea() {

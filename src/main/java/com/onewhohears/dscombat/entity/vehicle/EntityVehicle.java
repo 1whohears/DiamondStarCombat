@@ -2321,6 +2321,11 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     public float getLandingGearPos(float partialTicks) {
 		return Mth.lerp(partialTicks, landingGearPosOld, landingGearPos);
 	}
+
+	public void foldLandingGearNow() {
+		landingGearPos = 1;
+		landingGearPosOld = 1;
+	}
     
     @Override
     public void kill() {

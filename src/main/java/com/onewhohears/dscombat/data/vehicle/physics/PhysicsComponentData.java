@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 public abstract class PhysicsComponentData {
 
-    private static Map<String, Function<JsonObject, PhysicsComponentData>> components = new HashMap<>();
+    private static final Map<String, Function<JsonObject, PhysicsComponentData>> components = new HashMap<>();
 
     public static void register() {
         components.put("lift_surface", LiftSurfaceData::new);

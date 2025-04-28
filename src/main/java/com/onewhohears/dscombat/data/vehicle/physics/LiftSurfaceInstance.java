@@ -55,9 +55,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         body.addForce(liftForce);
         Quaternion vehicleQI = vehicleQ.copy();
         vehicleQI.conj();
-        Vec3 liftMoment = getData().getPos()
-                .cross(UtilAngles.rotateVector(liftForce, vehicleQI))
-                .multiply(-1, 1, 1);
+        Vec3 liftMoment = getData().getPos().cross(UtilAngles.rotateVector(liftForce, vehicleQI));
         body.addMoment(liftMoment, true, true);
         // Drag = (drag coefficient) * (air density) * (speed)^2 * (drag area) / 2
         Vec3 windDir = u.normalize();
@@ -65,9 +63,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         double dragMag = 0.5 * dragK * P * airFoilSpeedSqr * getData().getArea() * getData().getZeroLiftDrag();
         dragForce = windDir.scale(-dragMag);
         body.addDragForce(dragForce);
-        Vec3 dragMoment = getData().getPos()
-                .cross(UtilAngles.rotateVector(dragForce, vehicleQI))
-                .multiply(-1, 1, 1);
+        Vec3 dragMoment = getData().getPos().cross(UtilAngles.rotateVector(dragForce, vehicleQI));
         body.addMoment(dragMoment, false, true);
     }
 

@@ -62,7 +62,6 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilServerPacket;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
-import com.onewhohears.onewholibs.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import com.onewhohears.dscombat.util.math.UtilRandom;
 
@@ -751,12 +750,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return DSCPhyCons.HORIZONTAL_SPEED_SCALE;
 	}
 
-	public boolean applyVerticalSpeedScale() {
+	public boolean applyVerticalAccScale() {
 		return getStats().use_vertical_speed_scale;
 	}
 
-	public double getVerticalSpeedScale() {
-		return DSCPhyCons.VERTICAL_SPEED_SCALE;
+	public double getVerticalAccScale(double verticalForce) {
+		if (verticalForce < 0) return DSCPhyCons.VERTICAL_DOWN_ACC_SCALE;
+		return DSCPhyCons.VERTICAL_UP_ACC_SCALE;
 	}
 	
 	@Override

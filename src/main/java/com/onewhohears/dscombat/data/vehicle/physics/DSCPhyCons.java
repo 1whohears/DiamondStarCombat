@@ -35,7 +35,8 @@ public class DSCPhyCons {
 	 * all stats
 	 */
 	public static final double HORIZONTAL_SPEED_SCALE = 0.125;
-	public static final double VERTICAL_SPEED_SCALE = 0.125;
+	public static final double VERTICAL_UP_ACC_SCALE = 0.125;
+	public static final double VERTICAL_DOWN_ACC_SCALE = 1;
 
 	public static final double WATER_FLUID_DENSITY = 1000;
 

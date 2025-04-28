@@ -410,10 +410,10 @@ public interface PhysicsBody {
     boolean canUseTurnAssist();
     boolean isUsingTurnAssist();
     boolean areAllHitboxesDead(String... hitbox);
+    boolean isOperational();
 
     float getPitchInput();
     float getYawInput();
     float getRollInput();
     boolean isFlapsDown();
-
 }

@@ -80,7 +80,7 @@ public interface PhysicsBody {
             av = av.add(m.x/I.x, m.y/I.y, m.z/I.z);
             setAngularVel(av);
         }
-        q.mul(Vector3f.XP.rotationDegrees((float)av.x));
+        q.mul(Vector3f.XN.rotationDegrees((float)av.x));
         q.mul(Vector3f.YN.rotationDegrees((float)av.y));
         q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
         setMomentBetweenTicks(Vec3.ZERO);
@@ -216,8 +216,9 @@ public interface PhysicsBody {
     default Vec3 getAccFromForce(Vec3 forces) {
         if (applyHorizontalSpeedScale())
             forces = forces.multiply(getHorizontalSpeedScale(), 1, getHorizontalSpeedScale());
-        if (applyVerticalAccScale())
+        if (applyVerticalAccScale()) {
             forces = forces.multiply(1, getVerticalAccScale(forces.y()), 1);
+        }
         double massScale = 1/getTotalMass();
         return forces.scale(massScale).scale(getAccTimeScale());
     }

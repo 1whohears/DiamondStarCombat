@@ -422,6 +422,7 @@ public interface PhysicsBody {
     boolean isUsingTurnAssist();
     boolean areAllHitboxesDead(String... hitbox);
     boolean isOperational();
+    int getAge();
 
     float getPitchInput();
     float getYawInput();

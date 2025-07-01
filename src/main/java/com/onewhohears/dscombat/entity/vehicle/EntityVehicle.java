@@ -3211,4 +3211,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return isOperational();
 	}
 
+	@Override
+	public int getAge() {
+		return tickCount;
+	}
 }

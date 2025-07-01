@@ -78,7 +78,7 @@ public interface PhysicsBody {
             av = av.add(m.x/I.x, m.y/I.y, m.z/I.z);
             setAngularVel(av);
         }
-        
+
         q.mul(Vector3f.XN.rotationDegrees((float)av.x));
         q.mul(Vector3f.YP.rotationDegrees((float)av.y));
         q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
@@ -89,6 +89,12 @@ public interface PhysicsBody {
             if (isFlapsDown()) q.set(0, 0, 0, 1);
         }
         setMomentBetweenTicks(Vec3.ZERO);
+        reducePitchRateWhileRolling();
+    }
+
+    default void reducePitchRateWhileRolling() {
+        if (Math.abs(getZRot()) < 40 && getPitchInput() == 0 && isOperational())
+            setAngularVel(getAngularVel().multiply(0.8, 1, 1));
     }
 
     default void addMoment(Vec3 moment, boolean control, boolean relative) {

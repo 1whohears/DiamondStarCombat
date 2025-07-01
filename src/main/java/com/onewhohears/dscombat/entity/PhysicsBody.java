@@ -78,9 +78,17 @@ public interface PhysicsBody {
             av = av.add(m.x/I.x, m.y/I.y, m.z/I.z);
             setAngularVel(av);
         }
-        q.mul(Vector3f.XN.rotationDegrees((float)av.x));
-        q.mul(Vector3f.YN.rotationDegrees((float)av.y));
-        q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
+
+        Quaternion dq = Quaternion.ONE.copy();
+        dq.mul(Vector3f.XN.rotationDegrees((float)av.x));
+        dq.mul(Vector3f.YN.rotationDegrees((float)av.y));
+        dq.mul(Vector3f.ZP.rotationDegrees((float)av.z));
+
+        q.mul(dq);
+
+        av = UtilAngles.rotateVector(av, dq);
+        setAngularVel(av);
+
         if (isTestMode()) {
             if (getRollInput() != 0) q.mul(Vector3f.ZP.rotationDegrees(30*getRollInput()));
             if (getPitchInput() != 0) q.mul(Vector3f.XP.rotationDegrees(30*getPitchInput()));

@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.JsonPresetEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -40,6 +39,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     public static final EntityDataAccessor<Boolean> HIDE_MODEL = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Float> ALTITUDE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Vec3> INPUTS = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
+    public static final EntityDataAccessor<CompoundTag> OVERRIDES = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.COMPOUND_TAG);
 
     @Nullable private EntityVehicle vehicle;
     @Nullable private WindTunnelJob job;
@@ -63,10 +63,32 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         setAltitude(altitude);
         setInputs(new Vec3(0.2, 0, 0));
         // find optimal pitch
-        job = new WindTunnelJob.FindOptimalPitchJob(aoa, 90);
-        // find optimal lift coefficient
-
+        job = new WindTunnelJob.FindOptimalPitchJob(aoa, 90) {
+            @Override
+            protected void onJobComplete(EntityWindTunnel tunnel) {
+                super.onJobComplete(tunnel);
+                job = new FindOptimalLiftC(aoa, 90, this.getPitch(), turn_rate);
+            }
+        };
         // find optimal drag coefficient
+    }
+
+    public void setOverrideValue(String name, CompoundTag value) {
+        CompoundTag overrides = entityData.get(OVERRIDES);
+        overrides.put(name, value);
+        entityData.set(OVERRIDES, overrides);
+    }
+
+    public void clearOverrideValue(String name) {
+        CompoundTag overrides = entityData.get(OVERRIDES);
+        overrides.remove(name);
+        entityData.set(OVERRIDES, overrides);
+    }
+
+    public CompoundTag getOverrideValue(String name) {
+        CompoundTag overrides = entityData.get(OVERRIDES);
+        if (overrides.contains(name)) return overrides.getCompound(name);
+        return null;
     }
 
     public void chatToNearbyPlayers(String msg) {
@@ -151,6 +173,9 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         } else {
             vehicle.partsManager.setupParts();
         }
+        for (PhysicsComponentInstance<?> phy : vehicle.getPhysicsInstances()) {
+            phy.setWindTunnel(this);
+        }
         return vehicle;
     }
 
@@ -168,6 +193,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         entityData.define(HIDE_MODEL, false);
         entityData.define(ALTITUDE, 0f);
         entityData.define(INPUTS, Vec3.ZERO);
+        entityData.define(OVERRIDES, new CompoundTag());
     }
 
     @Override

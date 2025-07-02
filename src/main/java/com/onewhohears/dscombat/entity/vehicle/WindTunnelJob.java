@@ -2,13 +2,75 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import com.onewhohears.dscombat.util.math.UtilEstimate;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
+import net.minecraft.nbt.CompoundTag;
 
 public abstract class WindTunnelJob {
 
+    /*public static class FindOptimalDragC extends WindTunnelJob {
+        private final float yaw, roll, pitch, liftC;
+        private double prevYawRate;
+        private double liftC = 0.4, prevLiftC;
+        public FindOptimalLiftC(float yaw, float roll, float pitch, float liftC) {
+            this.yaw = yaw;
+            this.roll = roll;
+            this.pitch = pitch;
+            this.liftC = liftC;
+        }
+        @Override
+        protected void init(EntityWindTunnel tunnel) {
+            tunnel.chatToNearbyPlayers("Searching for optimal Lift Coefficient...");
+            tunnel.setQ(UtilAngles.toQuaternion(yaw, pitch, roll));
+            prevYawRate = -1000;
+            prevLiftC = -1000;
+            updateLiftC(tunnel);
+        }
+        @Override
+        protected boolean isJobComplete(EntityWindTunnel tunnel) {
+            return Math.abs(turn_rate - tunnel.yawRate*20) < 0.001;
+        }
+        @Override
+        protected void run(EntityWindTunnel tunnel) {
+            double currentYawRate = (turn_rate - tunnel.yawRate*20) * 1E3;
+            double currentLiftC = liftC * 1E3;
+            //System.out.println("currentLiftC = "+liftC+" currentYawRate = "+tunnel.yawRate*20);
+            if (prevYawRate == -1000) {
+                prevYawRate = currentYawRate;
+                prevLiftC = currentLiftC;
+                liftC += 0.1;
+                updateLiftC(tunnel);
+                return;
+            }
+            try {
+                liftC = UtilEstimate.nextGuessSecantMethod(prevLiftC, currentLiftC, prevYawRate, currentYawRate) * 0.001;
+            } catch (IllegalArgumentException e) {
+                onJobComplete(tunnel);
+                this.complete = true;
+                return;
+            }
+            updateLiftC(tunnel);
+            prevYawRate = currentYawRate;
+            prevLiftC = currentLiftC;
+        }
+        @Override
+        protected void onJobComplete(EntityWindTunnel tunnel) {
+            tunnel.chatToNearbyPlayers("Optimal Lift Coefficient Found: "+liftC);
+            tunnel.clearOverrideValue("lift_coefficient");
+        }
+        public float getLiftC() {
+            return (float)liftC;
+        }
+        private void updateLiftC(EntityWindTunnel tunnel) {
+            CompoundTag tag = new CompoundTag();
+            tag.putDouble("aoa", yaw);
+            tag.putDouble("liftC", liftC);
+            tunnel.setOverrideValue("lift_coefficient", tag);
+        }
+    }*/
+
     public static class FindOptimalLiftC extends WindTunnelJob {
         private final float yaw, roll, pitch, turn_rate;
-        private double yawRate, prevYawRate;
-        private double liftC, prevLiftC;
+        private double prevYawRate;
+        private double liftC = 0.4, prevLiftC;
         public FindOptimalLiftC(float yaw, float roll, float pitch, float turn_rate) {
             this.yaw = yaw;
             this.roll = roll;
@@ -25,22 +87,22 @@ public abstract class WindTunnelJob {
         }
         @Override
         protected boolean isJobComplete(EntityWindTunnel tunnel) {
-            return Math.abs(turn_rate - yawRate) < 0.01;
+            return Math.abs(turn_rate - tunnel.yawRate*20) < 0.001;
         }
         @Override
         protected void run(EntityWindTunnel tunnel) {
-            double currentYawRate = yawRate * 1E3;
+            double currentYawRate = (turn_rate - tunnel.yawRate*20) * 1E3;
             double currentLiftC = liftC * 1E3;
-            //System.out.println("currentPitch = "+currentPitch+" currentAccY = "+currentAccY);
+            //System.out.println("currentLiftC = "+liftC+" currentYawRate = "+tunnel.yawRate*20);
             if (prevYawRate == -1000) {
                 prevYawRate = currentYawRate;
                 prevLiftC = currentLiftC;
-                liftC -= 0.1;
+                liftC += 0.1;
                 updateLiftC(tunnel);
                 return;
             }
             try {
-                liftC = UtilEstimate.nextGuessSecantMethod(prevLiftC, liftC, prevYawRate, currentYawRate) * 0.001;
+                liftC = UtilEstimate.nextGuessSecantMethod(prevLiftC, currentLiftC, prevYawRate, currentYawRate) * 0.001;
             } catch (IllegalArgumentException e) {
                 onJobComplete(tunnel);
                 this.complete = true;
@@ -53,12 +115,16 @@ public abstract class WindTunnelJob {
         @Override
         protected void onJobComplete(EntityWindTunnel tunnel) {
             tunnel.chatToNearbyPlayers("Optimal Lift Coefficient Found: "+liftC);
+            tunnel.clearOverrideValue("lift_coefficient");
         }
         public float getLiftC() {
             return (float)liftC;
         }
         private void updateLiftC(EntityWindTunnel tunnel) {
-
+            CompoundTag tag = new CompoundTag();
+            tag.putDouble("aoa", yaw);
+            tag.putDouble("liftC", liftC);
+            tunnel.setOverrideValue("lift_coefficient", tag);
         }
     }
 

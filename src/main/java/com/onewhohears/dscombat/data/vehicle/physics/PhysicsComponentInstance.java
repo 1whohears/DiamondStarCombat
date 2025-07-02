@@ -1,11 +1,14 @@
 package com.onewhohears.dscombat.data.vehicle.physics;
 
 import com.onewhohears.dscombat.entity.PhysicsBody;
+import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class PhysicsComponentInstance<D extends PhysicsComponentData> {
 
     private final D data;
+    @Nullable private EntityWindTunnel tunnel = null;
 
     public PhysicsComponentInstance(D data) {
         this.data = data;
@@ -30,4 +33,13 @@ public abstract class PhysicsComponentInstance<D extends PhysicsComponentData> {
     public abstract Vec3 getDragForce();
     public abstract Vec3 getLiftForce();
     public abstract float getAOA();
+
+    @Nullable
+    public EntityWindTunnel getWindTunnel() {
+        return tunnel;
+    }
+
+    public void setWindTunnel(EntityWindTunnel tunnel) {
+        this.tunnel = tunnel;
+    }
 }

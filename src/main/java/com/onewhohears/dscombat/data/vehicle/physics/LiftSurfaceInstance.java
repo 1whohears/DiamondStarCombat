@@ -5,6 +5,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.PhysicsBody;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
@@ -47,7 +48,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         aoa = Mth.lerp(getAOAChangeRate(body), aoa, goalAOA);
         // find liftK
         float speedScaleSqr = (float) (1 / body.getHorizontalSpeedScale() / body.getHorizontalSpeedScale());
-        float liftK = getData().getLiftKGraph().getLerpFloat(aoa) * speedScaleSqr;
+        float liftK = getLiftK(aoa) * speedScaleSqr;
         double P = body.getFluidDensity();
         // Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
         double wingLiftMag = 0.5 * liftK * P * airFoilSpeedSqr * getData().getArea();
@@ -61,7 +62,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         body.addMoment(liftMoment, true, true);
         // Drag = (drag coefficient) * (air density) * (speed)^2 * (drag area) / 2
         Vec3 windDir = u.normalize();
-        float dragK = getData().getDragGraph().getLerpFloat(aoa) * speedScaleSqr;
+        float dragK = getDragK(aoa) * speedScaleSqr;
         double dragMag = 0.5 * dragK * P * airFoilSpeedSqr * getData().getArea() * getData().getZeroLiftDrag();
         dragForce = windDir.scale(-dragMag);
         body.addDragForce(dragForce);
@@ -84,6 +85,30 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
     @Override
     public float getAOA() {
         return aoa;
+    }
+
+    protected float getLiftK(float aoa) {
+        if (getWindTunnel() != null) {
+            CompoundTag value = getWindTunnel().getOverrideValue("lift_coefficient");
+            if (value != null) {
+                double AOA = value.getDouble("aoa");
+                double liftC = value.getDouble("liftC");
+                if (Math.abs(aoa - AOA) < 0.001) return (float) liftC;
+            }
+        }
+        return getData().getLiftKGraph().getLerpFloat(aoa);
+    }
+
+    protected float getDragK(float aoa) {
+        if (getWindTunnel() != null) {
+            CompoundTag value = getWindTunnel().getOverrideValue("drag_coefficient");
+            if (value != null) {
+                double AOA = value.getDouble("aoa");
+                double dragC = value.getDouble("dragC");
+                if (aoa == AOA) return (float) dragC;
+            }
+        }
+        return getData().getDragGraph().getLerpFloat(aoa);
     }
 
     public static float calcAOA(Vec3 u, Vec3 wingNormal) {

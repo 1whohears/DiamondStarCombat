@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.data.graph.FloatFloatGraph;
 import com.onewhohears.dscombat.data.graph.TurnRatesBySpeedGraph;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
+import com.onewhohears.dscombat.data.vehicle.physics.LiftSurfaceInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.PlaneStats;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
@@ -136,7 +137,7 @@ public class EntityPlane extends EntityVehicle {
 		}
 		if (isFlapsDown()) goalAOA += getPlaneStats().flapsAOABias;
 		// change in AOA shouldn't be instant
-		aoa = Mth.lerp(DSCPhyCons.AOA_CHANGE_RATE, aoa, goalAOA);
+		aoa = Mth.lerp(LiftSurfaceInstance.getAOAChangeRate(this), aoa, goalAOA);
 		//fuselageAoa = Mth.lerp(DSCPhyCons.AOA_CHANGE_RATE, fuselageAoa, goalFuselageAOA);
 		// find liftK
 		float speedScaleSqr = (float) (1 / getHorizontalSpeedScale() / getHorizontalSpeedScale() * 400);

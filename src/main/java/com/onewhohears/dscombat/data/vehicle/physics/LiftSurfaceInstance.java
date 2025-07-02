@@ -44,7 +44,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         if (UtilGeometry.isZero(u)) goalAOA = 0;
         else goalAOA = calcAOA(u, wingNormal);
         // change in AOA shouldn't be instant
-        aoa = Mth.lerp(DSCPhyCons.AOA_CHANGE_RATE, aoa, goalAOA);
+        aoa = Mth.lerp(getAOAChangeRate(body), aoa, goalAOA);
         // find liftK
         float speedScaleSqr = (float) (1 / body.getHorizontalSpeedScale() / body.getHorizontalSpeedScale());
         float liftK = getData().getLiftKGraph().getLerpFloat(aoa) * speedScaleSqr;
@@ -88,5 +88,10 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
 
     public static float calcAOA(Vec3 u, Vec3 wingNormal) {
         return (float) UtilGeometry.angleBetweenVecPlaneDegrees(u, wingNormal);
+    }
+
+    public static float getAOAChangeRate(PhysicsBody body) {
+        if (body.isTestMode()) return 1;
+        return DSCPhyCons.AOA_CHANGE_RATE;
     }
 }

@@ -55,8 +55,10 @@ public interface PhysicsBody {
         calcMoveStatsPost(q);
         // APPLY NEW MOMENT
         calcRotAcc(q);
-        setQBySide(q);
-        updateEulerAngles();
+        if (!isTestMode()) {
+            setQBySide(q);
+            updateEulerAngles();
+        }
     }
 
     default void updateEulerAngles() {
@@ -83,11 +85,11 @@ public interface PhysicsBody {
         q.mul(Vector3f.YN.rotationDegrees((float)av.y));
         q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
 
-        if (isTestMode()) {
+        /*if (isTestMode()) {
             if (getRollInput() != 0) q.mul(Vector3f.ZP.rotationDegrees(30*getRollInput()));
             if (getPitchInput() != 0) q.mul(Vector3f.XP.rotationDegrees(30*getPitchInput()));
             if (isFlapsDown()) q.set(0, 0, 0, 1);
-        }
+        }*/
         setMomentBetweenTicks(Vec3.ZERO);
         reducePitchRateWhileRolling();
     }

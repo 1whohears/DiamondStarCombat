@@ -5,9 +5,11 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.JsonPresetEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
@@ -18,7 +20,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +42,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     public static final EntityDataAccessor<Vec3> INPUTS = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
 
     @Nullable private EntityVehicle vehicle;
+    @Nullable private WindTunnelJob job;
 
     public Vec3 totalAcc = Vec3.ZERO, weightAcc = Vec3.ZERO, thrustAcc = Vec3.ZERO, dragAcc = Vec3.ZERO, liftAcc = Vec3.ZERO, rotAcc = Vec3.ZERO;
     public double windCompAcc, centripetalAcc, yawRate, turnRadius;
@@ -48,12 +53,38 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         noPhysics = true;
     }
 
-    @Override
-    public void tick() {
-        if (getLevel().isClientSide()) clientTick();
+    public void startFindLiftDragJob(float speed, float turn_rate, float aoa, float altitude) {
+        chatToNearbyPlayers("Starting Find Lift/Drag Coefficients Job...");
+        // initialize parameters
+        setSpeed(new Vec3(0, 0, speed));
+        setQ(UtilAngles.toQuaternion(aoa, 0, 90));
+        setThrottle(1.0f);
+        setAfterBurner(true);
+        setAltitude(altitude);
+        setInputs(new Vec3(0.2, 0, 0));
+        // find optimal pitch
+        job = new WindTunnelJob.FindOptimalPitchJob(aoa, 90);
+        // find optimal lift coefficient
+
+        // find optimal drag coefficient
     }
 
-    protected void clientTick() {
+    public void chatToNearbyPlayers(String msg) {
+        AABB bb = getBoundingBox().inflate(16);
+        for(Player player : getLevel().players()) {
+            if (bb.contains(player.getX(), player.getY(), player.getZ())) {
+                player.displayClientMessage(UtilMCText.literal(msg), false);
+            }
+        }
+    }
+
+    @Override
+    public void tick() {
+        if (!getLevel().isClientSide() && job != null) job.tick(this);
+        tickSimulate();
+    }
+
+    protected void tickSimulate() {
         Vec3 speed = getSpeed();
         Quaternion q = getQ();
         EntityVehicle vehicle = getSimulatedVehicle();
@@ -68,7 +99,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         vehicle.updateEulerAngles();
         vehicle.setLandingGear(false);
         vehicle.foldLandingGearNow();
-        vehicle.clientTick();
+        if (getLevel().isClientSide()) vehicle.clientTick();
         Vec3 i = getInputs();
         vehicle.inputs.pitch = (float) i.x;
         vehicle.inputs.yaw = (float) i.y;
@@ -93,6 +124,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         Vec3 m = vehicle.getMoment();
         Vec3 I = vehicle.getTotalRotInertia();
         rotAcc = new Vec3(m.x/I.x, m.y/I.y, m.z/I.z).scale(vehicle.getAccTimeScale());
+        //System.out.println("totalACC = "+UtilPrint.printVec3SigFig(totalAcc)+" "+getLevel().isClientSide());
     }
 
     @NotNull

@@ -64,7 +64,34 @@ public class WindTunnelCommand {
                                 )
                         )
                 )
+                .then(Commands.literal("find_lift_drag")
+                        .then(Commands.argument("speed", FloatArgumentType.floatArg(0, 1000))
+                                .then(Commands.argument("turn_rate", FloatArgumentType.floatArg(0, 1000))
+                                        .then(Commands.argument("aoa", FloatArgumentType.floatArg(0, 90))
+                                                .then(Commands.argument("altitude", FloatArgumentType.floatArg(-64, 10000))
+                                                        .executes(context -> findLiftDrag(context,
+                                                                FloatArgumentType.getFloat(context, "speed"),
+                                                                FloatArgumentType.getFloat(context, "turn_rate"),
+                                                                FloatArgumentType.getFloat(context, "aoa"),
+                                                                FloatArgumentType.getFloat(context, "altitude")))
+                                                )
+                                        )
+                                )
+                        )
+                )
         );
+    }
+
+    private int findLiftDrag(CommandContext<CommandSourceStack> context, float speed, float turn_rate, float aoa, float altitude) {
+        Optional<EntityWindTunnel> opt = getWindTunnel(context);
+        if (opt.isEmpty()) {
+            context.getSource().sendFailure(UtilMCText.literal("No Wind Tunnels within "
+                    +WIND_TUNNEL_SEARCH_RANGE+" blocks found!"));
+            return 0;
+        }
+        EntityWindTunnel tunnel = opt.get();
+        tunnel.startFindLiftDragJob(speed, turn_rate, aoa, altitude);
+        return 1;
     }
 
     private int setWindTunnelCommand(CommandContext<CommandSourceStack> context, @Nullable VehicleStats preset,

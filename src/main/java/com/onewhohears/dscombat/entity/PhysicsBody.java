@@ -80,7 +80,7 @@ public interface PhysicsBody {
         }
 
         q.mul(Vector3f.XN.rotationDegrees((float)av.x));
-        q.mul(Vector3f.YP.rotationDegrees((float)av.y));
+        q.mul(Vector3f.YN.rotationDegrees((float)av.y));
         q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
 
         if (isTestMode()) {

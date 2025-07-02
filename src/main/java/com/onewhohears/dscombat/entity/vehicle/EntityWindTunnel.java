@@ -12,7 +12,11 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -54,23 +58,29 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     }
 
     public void startFindLiftDragJob(float speed, float turn_rate, float aoa, float altitude) {
-        chatToNearbyPlayers("Starting Find Lift/Drag Coefficients Job...");
+        chatToNearbyPlayers("Starting Find Lift/Drag Coefficients Job...", ChatFormatting.LIGHT_PURPLE);
+        chatToNearbyPlayers("Speed = "+speed+" | Turn Rate = "+turn_rate+" | AOA = "+aoa+" | Altitude = "+altitude, ChatFormatting.AQUA);
         // initialize parameters
         setSpeed(new Vec3(0, 0, speed));
         setQ(UtilAngles.toQuaternion(aoa, 0, 90));
         setThrottle(1.0f);
         setAfterBurner(true);
         setAltitude(altitude);
-        setInputs(new Vec3(0.2, 0, 0));
+        setInputs(new Vec3(0, 0, 0));
         // find optimal pitch
         job = new WindTunnelJob.FindOptimalPitchJob(aoa, 90) {
             @Override
             protected void onJobComplete(EntityWindTunnel tunnel) {
                 super.onJobComplete(tunnel);
-                job = new FindOptimalLiftC(aoa, 90, this.getPitch(), turn_rate);
+                job = new FindOptimalLiftC(aoa, 90, this.getPitch(), turn_rate) {
+                    @Override
+                    protected void onJobComplete(EntityWindTunnel tunnel) {
+                        super.onJobComplete(tunnel);
+                        job = new FindOptimalDragC(aoa, 90, getPitch(), getLiftC());
+                    }
+                };
             }
         };
-        // find optimal drag coefficient
     }
 
     public void setOverrideValue(String name, CompoundTag value) {
@@ -92,10 +102,20 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     }
 
     public void chatToNearbyPlayers(String msg) {
+        chatToNearbyPlayers(UtilMCText.literal(msg));
+    }
+
+    public void chatToNearbyPlayers(String msg, ChatFormatting color) {
+        MutableComponent comp = UtilMCText.literal(msg);
+        comp.setStyle(Style.EMPTY.withColor(color));
+        chatToNearbyPlayers(comp);
+    }
+
+    public void chatToNearbyPlayers(Component msg) {
         AABB bb = getBoundingBox().inflate(16);
         for(Player player : getLevel().players()) {
             if (bb.contains(player.getX(), player.getY(), player.getZ())) {
-                player.displayClientMessage(UtilMCText.literal(msg), false);
+                player.displayClientMessage(msg, false);
             }
         }
     }

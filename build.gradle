@@ -122,8 +122,9 @@ dependencies {
     implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4611938")
     implementation fg.deobf("curse.maven:open-parties-and-claims-636608:6055470")
     implementation fg.deobf("curse.maven:timeless-and-classics-zero-${tacz_version}")
-    implementation fg.deobf("curse.maven:just-zoom-561885:6290341")
-    implementation fg.deobf("curse.maven:konkrete-410295:5028409")
+
+    //implementation fg.deobf("curse.maven:just-zoom-561885:6290341")
+    //implementation fg.deobf("curse.maven:konkrete-410295:5028409")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }

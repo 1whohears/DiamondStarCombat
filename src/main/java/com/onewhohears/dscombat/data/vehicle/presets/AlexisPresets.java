@@ -25,7 +25,6 @@ public class AlexisPresets {
 			.setArmorAbsorbtionPercent(0.135f)
 			.setTurnRadius(10f)
 			.setMaxTurnRates(6f, 2.5f, 1.5f)
-			.setTurnTorques(0, 0, 0)
 			.setRotationalInertia(9086.7f, 80187.1f, 85602.3f)
 			.setHasTurnAssist(true)
 			.setDragArea(0.49f)

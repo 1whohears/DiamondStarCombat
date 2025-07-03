@@ -428,7 +428,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public boolean canTurnViaTorque() {
-		return isOperational() && !isOnGround() && physicsInstances.isEmpty();
+		return isOperational() && !isOnGround();
 	}
 
 	public Vec3 getTotalRotInertia() {
@@ -1759,11 +1759,11 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public final float getYawTorque() {
-    	return getStats().torqueyaw;
+		return getStats().torqueyaw;
     }
     
     public final float getRollTorque() {
-    	return getStats().torqueroll;
+		return getStats().torqueroll;
     }
     
     public void increaseThrottle() {
@@ -3240,5 +3240,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public boolean wasInWater() {
 		return wasInWater;
+	}
+
+	public boolean isArcadeMode() {
+		return false;
 	}
 }

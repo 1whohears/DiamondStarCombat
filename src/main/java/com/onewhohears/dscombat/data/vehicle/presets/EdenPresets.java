@@ -27,7 +27,6 @@ public class EdenPresets {
 			.setIdleHeat(5f)
 			.setTurnRadius(11f)
 			.setMaxTurnRates(5.5f, 2.25f, 1.25f)
-			.setTurnTorques(0, 0, 0)
 			.setRotationalInertia(9086.7f, 80187.1f, 85602.3f)
 			.setDragArea(0.703f)
 			.setHasTurnAssist(true)

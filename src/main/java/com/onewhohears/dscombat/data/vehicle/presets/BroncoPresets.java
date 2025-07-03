@@ -26,7 +26,6 @@ public class BroncoPresets {
 			.setTurnRadius(8f)
 			.setTurnRateGraph("bronco_plane_turn_rates")
 			.setMaxTurnRates(2.5f, 1.2f, 0.9f)
-			.setTurnTorques(1.5f, 2f, 3f)
 			.setThrottleRate(0.03f, 0.07f)
 			.setPlaneWingArea(27f)
 			.setFuselageLiftArea(9)

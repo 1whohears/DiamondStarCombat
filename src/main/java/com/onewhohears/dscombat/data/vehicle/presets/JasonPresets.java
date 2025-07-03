@@ -25,7 +25,6 @@ public class JasonPresets {
 			.setTurnRadius(10f)
 			.setTurnRateGraph("jason_plane_turn_rates")
 			.setMaxTurnRates(5f, 3f, 2f)
-			.setTurnTorques(2f, 2f, 3f)
 			.setThrottleRate(0.04f, 0.07f)
 			.setPlaneWingArea(12f)
 			.setFuselageLiftArea(6)

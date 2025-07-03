@@ -422,6 +422,7 @@ public interface PhysicsBody {
     boolean isOnGround();
     boolean isInWater();
     boolean isTestMode();
+    boolean isArcadeMode();
     boolean canUseTurnAssist();
     boolean isUsingTurnAssist();
     boolean areAllHitboxesDead(String... hitbox);

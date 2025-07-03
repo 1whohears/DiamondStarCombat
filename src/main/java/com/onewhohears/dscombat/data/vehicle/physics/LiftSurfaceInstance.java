@@ -73,6 +73,12 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
     }
 
     @Override
+    protected boolean canCalcPhysics(PhysicsBody body) {
+        if (!super.canCalcPhysics(body)) return false;
+        return !body.isArcadeMode();
+    }
+
+    @Override
     public Vec3 getDragForce() {
         return dragForce;
     }

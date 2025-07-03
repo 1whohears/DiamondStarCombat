@@ -48,15 +48,15 @@ public class EntityPlane extends EntityVehicle {
 		super.calcUniversalForces(q);
 		if (isArcadeMode) {
 			addForce(getWeightForce().scale(-getArcadeIgnoreGravityFactor()));
-			if (isOnGround() && isFlapsDown()) addForce(new Vec3(0, 200, 0));
-		} //else addForce(getLiftForce(q));
+			if (isOnGround() && isFlapsDown()) addForce(new Vec3(0, 2000, 0));
+		}
 	}
 
 	protected void calcIgnoreGravityFactor(Quaternion q) {
 		Vec3 u = getDeltaMovement();
 		Vec3 rollAxis = UtilAngles.getRollAxis(q);
 		double speed = UtilGeometry.vecCompByNormAxis(u, rollAxis).length();
-		double minTakeOffSpeed = getStats().max_speed * 0.5;
+		double minTakeOffSpeed = getStats().cruise_speed * DSCPhyCons.HORIZONTAL_SPEED_SCALE * 0.33;
 		arcadeIgnoreGravityFactor = Math.min(speed / minTakeOffSpeed, 1);
 	}
 
@@ -319,6 +319,16 @@ public class EntityPlane extends EntityVehicle {
 	@Override
 	public int getAltitudeWarningTicks() {
 		return altitudeWarningTicks;
+	}
+
+	@Override
+	public boolean isArcadeMode() {
+		return isArcadeMode;
+	}
+
+	@Override
+	public boolean canTurnViaTorque() {
+		return super.canTurnViaTorque() && (physicsInstances.isEmpty() || isArcadeMode());
 	}
 
 }

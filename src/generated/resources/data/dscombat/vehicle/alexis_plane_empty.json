@@ -572,9 +572,6 @@
     "stealth": 0.9,
     "throttledown": 0.08,
     "throttleup": 0.04,
-    "torquepitch": 0.0,
-    "torqueroll": 0.0,
-    "torqueyaw": 0.0,
     "turn_radius": 10.0,
     "use_horizontal_speed_scale": true,
     "use_vertical_speed_scale": true

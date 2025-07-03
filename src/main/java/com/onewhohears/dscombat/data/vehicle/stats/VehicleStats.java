@@ -114,12 +114,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 		maxroll = UtilParse.getFloatSafe(stats, "maxroll", 0);
 		maxpitch = UtilParse.getFloatSafe(stats, "maxpitch", 0);
 		maxyaw = UtilParse.getFloatSafe(stats, "maxyaw", 0);
-		torqueroll = UtilParse.getFloatSafe(stats, "torqueroll", 0);
-		torquepitch = UtilParse.getFloatSafe(stats, "torquepitch", 0);
-		torqueyaw = UtilParse.getFloatSafe(stats, "torqueyaw", 0);
 		Iz = UtilParse.getFloatSafe(stats, "inertiaroll", 1000);
 		Ix = UtilParse.getFloatSafe(stats, "inertiapitch", 1000);
 		Iy = UtilParse.getFloatSafe(stats, "inertiayaw", 1000);
+		torqueroll = UtilParse.getFloatSafe(stats, "torqueroll", Iz*100);
+		torquepitch = UtilParse.getFloatSafe(stats, "torquepitch", Ix*10);
+		torqueyaw = UtilParse.getFloatSafe(stats, "torqueyaw", Iy*10);
 		crashExplosionRadius = UtilParse.getFloatSafe(stats, "crashExplosionRadius", 0);
 		cameraDistance = UtilParse.getFloatSafe(stats, "cameraDistance", 4);
 		rootHitboxNoCollide = UtilParse.getBooleanSafe(stats, "rootHitboxNoCollide", false);

@@ -79,6 +79,12 @@ public class WindTunnelCommand {
                                 )
                         )
                 )
+                .then(Commands.literal("set_preset")
+                        .then(Commands.argument("preset", VehiclePresetArgument.vehiclePreset())
+                                .executes(context -> setPresetCommand(context,
+                                        VehiclePresetArgument.getVehiclePreset(context, "preset")))
+                        )
+                )
         );
     }
 
@@ -108,6 +114,18 @@ public class WindTunnelCommand {
         if (rotation != null) tunnel.setQ(UtilAngles.toQuaternion(rotation.y, rotation.x, rotation.z));
         if (throttle >= 0) tunnel.setThrottle(throttle);
         tunnel.setAfterBurner(afterburner);
+        return 1;
+    }
+
+    private int setPresetCommand(CommandContext<CommandSourceStack> context, @Nullable VehicleStats preset) {
+        Optional<EntityWindTunnel> opt = getWindTunnel(context);
+        if (opt.isEmpty()) {
+            context.getSource().sendFailure(UtilMCText.literal("No Wind Tunnels within "
+                    +WIND_TUNNEL_SEARCH_RANGE+" blocks found!"));
+            return 0;
+        }
+        EntityWindTunnel tunnel = opt.get();
+        if (preset != null) tunnel.setPreset(preset.getId());
         return 1;
     }
 

@@ -173,6 +173,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	private int missileTicks, trackedTicks;
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
+	private boolean wasInWater;
 	
 	protected boolean isDriverCameraLocked = false;
 	protected float throttle;
@@ -501,6 +502,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected void wallCollisions() {
 		if (verticalCollision) verticalCollision();
 		if (horizontalCollision && !minorHorizontalCollision) horizontalCollision();
+		if (!wasInWater() && isInWater()) waterCollision();
+		wasInWater = isInWater();
+	}
+
+	protected void waterCollision() {
+		double speed = prevMotion.length();
+		double th = DSCPhyCons.COLLIDE_SPEED;
+		if (speed > th) {
+			float amount = (float)((speed-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
+			collideHurt(amount, false);
+		}
 	}
 	
 	protected void horizontalCollision() {
@@ -3223,5 +3235,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	@Override
 	public boolean isClientSide() {
 		return getLevel().isClientSide();
+	}
+
+	public boolean wasInWater() {
+		return wasInWater;
 	}
 }

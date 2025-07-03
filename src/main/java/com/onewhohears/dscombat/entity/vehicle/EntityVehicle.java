@@ -1676,7 +1676,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (s.equals(b) && exp_entity != null) 
 			f = exp_entity.getDeltaMovement().normalize().scale(exp_factor*DSCPhyCons.EXP_MOMENT_FACTOR);
 		else f = s.subtract(b).normalize().scale(exp_factor*DSCPhyCons.EXP_MOMENT_FACTOR);
-		Vec3 moment = r.cross(f);
+
+		Vec3 moment = r.cross(UtilAngles.rotateVectorInverse(f, getQBySide()));
 		
 		addForceMomentToClient(force, moment);
 	}

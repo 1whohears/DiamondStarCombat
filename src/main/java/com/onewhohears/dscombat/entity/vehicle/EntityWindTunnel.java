@@ -36,6 +36,7 @@ import java.util.List;
 
 public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
 
+    public static final EntityDataAccessor<String> PRESET = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Vec3> SPEED = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
     public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QUATERNION);
     public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
@@ -127,6 +128,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     }
 
     protected void tickSimulate() {
+        System.out.println("preset = "+getStatsId()+" "+getLevel().isClientSide());
         Vec3 speed = getSpeed();
         Quaternion q = getQ();
         EntityVehicle vehicle = getSimulatedVehicle();
@@ -214,6 +216,21 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         entityData.define(ALTITUDE, 0f);
         entityData.define(INPUTS, Vec3.ZERO);
         entityData.define(OVERRIDES, new CompoundTag());
+        entityData.define(PRESET, "wooden_plane");
+    }
+
+    @Override
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
+        if (key.equals(PRESET)) {
+            String sync = entityData.get(PRESET);
+            if (!sync.equals(getStatsId())) setPreset(sync);
+        }
+    }
+
+    @Override
+    public void setPreset(@NotNull String preset) {
+        super.setPreset(preset);
+        entityData.set(PRESET, preset);
     }
 
     @Override
@@ -225,6 +242,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         verifyCurrentPresetId();
+        entityData.set(PRESET, getStatsId());
         setSpeed(UtilParse.readVec3(tag, "speed"));
         float qi = tag.getFloat("qi");
         float qj = tag.getFloat("qj");

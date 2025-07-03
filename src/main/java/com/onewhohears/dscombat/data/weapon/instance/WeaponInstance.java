@@ -303,7 +303,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	}
 	
 	protected Vec3 getAcc(EntityVehicle vehicle) {
-		return new Vec3(0, -DSCPhyCons.GRAVITY, 0);
+		return new Vec3(0, -DSCPhyCons.GRAVITY*DSCPhyCons.ACC_TIME_SCALE, 0);
 	}
 
 }

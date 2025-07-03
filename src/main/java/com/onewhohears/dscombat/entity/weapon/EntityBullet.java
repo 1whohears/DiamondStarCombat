@@ -32,7 +32,7 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 	
 	@Override
 	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -DSCPhyCons.GRAVITY, 0));
+		setDeltaMovement(getDeltaMovement().add(0, -DSCPhyCons.GRAVITY * DSCPhyCons.ACC_TIME_SCALE, 0));
 	}
 	
 	protected void checkExplode() {

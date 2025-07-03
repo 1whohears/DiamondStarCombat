@@ -25,11 +25,6 @@ public class EntityBomb<T extends BombStats> extends EntityBullet<T> {
 	}
 	
 	@Override
-	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -DSCPhyCons.GRAVITY, 0));
-	}
-	
-	@Override
 	protected WeaponDamageSource getImpactDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.BOMB.getSource(getOwner(), this);
 	}

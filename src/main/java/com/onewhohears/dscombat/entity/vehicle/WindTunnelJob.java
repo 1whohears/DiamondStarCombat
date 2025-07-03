@@ -10,7 +10,7 @@ public abstract class WindTunnelJob {
     public static class FindOptimalDragC extends WindTunnelJob {
         private final float yaw, roll, pitch, liftC;
         private double prevWindAcc;
-        private double dragC = 0.01, prevDragC;
+        private double dragC = 0.1, prevDragC;
         public FindOptimalDragC(float yaw, float roll, float pitch, float liftC) {
             this.yaw = yaw;
             this.roll = roll;

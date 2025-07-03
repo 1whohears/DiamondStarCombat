@@ -1,0 +1,36 @@
+{
+	"presetType": "aoaliftk",
+	"priority": 100,
+	"mirror_negative_keys": true,
+	"invert_mirrored_values": true,
+	"size": 21,
+	"map": [
+		{"key": 0.00,  "value": 0.050},
+
+		{"key": 4.60,  "value": 0.080},
+		{"key": 5.86,  "value": 0.090},
+		{"key": 7.26,  "value": 0.105},
+		{"key": 8.66,  "value": 0.117},
+		{"key": 10.06, "value": 0.138},
+		{"key": 11.46, "value": 0.165},
+		{"key": 12.16, "value": 0.183},
+		{"key": 12.88, "value": 0.204},
+		{"key": 13.63, "value": 0.236},
+		{"key": 14.45, "value": 0.262},
+		{"key": 15.18, "value": 0.301},
+		{"key": 15.94, "value": 0.350},
+		{"key": 16.83, "value": 0.414},
+		{"key": 17.83, "value": 0.500},
+		{"key": 19.01, "value": 0.620},
+		{"key": 20.54, "value": 0.790},
+
+		{"key": 25.00, "value": 0.900},
+		{"key": 30.00, "value": 1.400},
+		{"key": 35.00, "value": 1.900},
+		{"key": 40.00, "value": 2.500},
+		{"key": 45.00, "value": 3.000},
+		{"key": 50.00, "value": 3.500},
+		{"key": 55.00, "value": 4.000},
+		{"key": 60.00, "value": 4.500}
+	]
+}

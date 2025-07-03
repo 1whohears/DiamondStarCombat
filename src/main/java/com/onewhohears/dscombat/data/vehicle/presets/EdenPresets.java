@@ -27,8 +27,8 @@ public class EdenPresets {
 			.setIdleHeat(5f)
 			.setTurnRadius(11f)
 			.setMaxTurnRates(5.5f, 2.25f, 1.25f)
-			.setRotationalInertia(9086.7f, 80187.1f, 85602.3f)
-			.setDragArea(0.703f)
+			.setRotationalInertia(11000f, 90000f, 95000f)
+			.setDragArea(0.55f)
 			.setHasTurnAssist(true)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(38f)
@@ -37,45 +37,46 @@ public class EdenPresets {
 			.setPushEngineOverrideAfterburnerStats(49420, 81580,7, 0.003f)
 			.setUseSpeedScales(true, true)
 			.setPlaneSpeeds(34.03f, 16.67f, 3.91f)
+			.setBreakDeAcc(0.032f, 0.016f)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
-					14, 19, new Vec3(4.31, 0, 0), 0, 0, 0,
-					LiftSurfaceData.InputType.LEFT_FLAP, "alexis_plane",
-					"default_drag_aoa", 0.8f))
+					18, 19, new Vec3(4.31, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.LEFT_FLAP, "eden_lift_aoa",
+					"eden_drag_aoa", 0.8f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
-					14, 19, new Vec3(-4.31, 0, 0), 0, 0, 0,
-					LiftSurfaceData.InputType.RIGHT_FLAP, "alexis_plane",
-					"default_drag_aoa", 0.8f))
+					18, 19, new Vec3(-4.31, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.RIGHT_FLAP, "eden_lift_aoa",
+					"eden_drag_aoa", 0.8f))
 			// elevators
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_elevator", false,
 					20, 2, new Vec3(3.69, 0, -6.19), 0, 0, 0,
-					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane",
-					"default_drag_aoa", 0.4f))
+					LiftSurfaceData.InputType.ELEVATOR, "eden_lift_aoa",
+					"eden_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_elevator", false,
 					20, 2, new Vec3(-3.69, 0, -6.19), 0, 0, 0,
-					LiftSurfaceData.InputType.ELEVATOR, "alexis_plane",
-					"default_drag_aoa", 0.4f))
+					LiftSurfaceData.InputType.ELEVATOR, "eden_lift_aoa",
+					"eden_drag_aoa", 0.4f))
 			// tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_tail", false,
 					3, 6, new Vec3(2.13, 0, -4.25), 0, 0, 90,
-					LiftSurfaceData.InputType.STABILIZER, "alexis_plane",
-					"default_drag_aoa", 0.6f))
+					LiftSurfaceData.InputType.STABILIZER, "eden_lift_aoa",
+					"eden_drag_aoa", 0.6f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_tail", false,
 					3, 6, new Vec3(-2.13, 0, -4.25), 0, 0, 90,
-					LiftSurfaceData.InputType.STABILIZER, "alexis_plane",
-					"default_drag_aoa", 0.6f))
+					LiftSurfaceData.InputType.STABILIZER, "eden_lift_aoa",
+					"eden_drag_aoa", 0.6f))
 			// nose to counter elevators and tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
 					0, 4, new Vec3(0, 0, 6.19), 0, 0, 0,
-					LiftSurfaceData.InputType.NONE, "alexis_plane",
-					"default_drag_aoa", 0.8f))
+					LiftSurfaceData.InputType.NONE, "eden_lift_aoa",
+					"eden_drag_aoa", 0.8f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
 					0, 12, new Vec3(0, 0, 4.25), 0, 0, 90,
-					LiftSurfaceData.InputType.NONE, "alexis_plane",
-					"default_drag_aoa", 0.8f))
+					LiftSurfaceData.InputType.NONE, "eden_lift_aoa",
+					"eden_drag_aoa", 0.8f))
 			.setCrashExplosionRadius(5.5f)
 			.set3rdPersonCamDist(19)
-			.setPlaneLiftAOAGraph("alexis_plane")
+			.setPlaneLiftAOAGraph("eden_lift_aoa")
 			.setTurnRateGraph("eden_plane_turn_rates")
 			.setPlaneFlapDownAOABias(9)
 			.setPlaneNoseCanAimDown(false)

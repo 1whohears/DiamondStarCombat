@@ -128,7 +128,6 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     }
 
     protected void tickSimulate() {
-        System.out.println("preset = "+getStatsId()+" "+getLevel().isClientSide());
         Vec3 speed = getSpeed();
         Quaternion q = getQ();
         EntityVehicle vehicle = getSimulatedVehicle();
@@ -168,7 +167,6 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         Vec3 m = vehicle.getMoment();
         Vec3 I = vehicle.getTotalRotInertia();
         rotAcc = new Vec3(m.x/I.x, m.y/I.y, m.z/I.z).scale(vehicle.getAccTimeScale());
-        //System.out.println("totalACC = "+UtilPrint.printVec3SigFig(totalAcc)+" "+getLevel().isClientSide());
     }
 
     @NotNull

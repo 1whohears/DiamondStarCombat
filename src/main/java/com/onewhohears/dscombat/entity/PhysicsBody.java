@@ -4,6 +4,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
+import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.util.Mth;
@@ -187,6 +188,7 @@ public interface PhysicsBody {
 
     float getAngularDragScale();
     double getFluidDensity();
+    double getAirDensity();
     Vec3 getTotalRotInertia();
 
     void addControllingTorques(Quaternion q);
@@ -425,6 +427,7 @@ public interface PhysicsBody {
     boolean areAllHitboxesDead(String... hitbox);
     boolean isOperational();
     int getAge();
+    boolean isClientSide();
 
     float getPitchInput();
     float getYawInput();

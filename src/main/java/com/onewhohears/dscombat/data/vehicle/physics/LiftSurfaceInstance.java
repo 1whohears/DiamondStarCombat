@@ -49,7 +49,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         // find liftK
         float speedScaleSqr = (float) (1 / body.getHorizontalSpeedScale() / body.getHorizontalSpeedScale());
         float liftK = getLiftK(aoa) * speedScaleSqr;
-        double P = body.getFluidDensity();
+        double P = getAirDensity(body);
         // Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
         double wingLiftMag = 0.5 * liftK * P * airFoilSpeedSqr * getData().getArea();
         liftForce = liftDir.scale(wingLiftMag);
@@ -109,6 +109,10 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
             }
         }
         return getData().getDragGraph().getLerpFloat(aoa);
+    }
+
+    protected double getAirDensity(PhysicsBody body) {
+        return body.getAirDensity();
     }
 
     public static float calcAOA(Vec3 u, Vec3 wingNormal) {

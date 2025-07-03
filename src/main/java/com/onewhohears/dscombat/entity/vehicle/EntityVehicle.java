@@ -3015,6 +3015,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public double getFluidDensity() {
 		if (isInWater()) return DSCPhyCons.WATER_FLUID_DENSITY;
+		return getAirDensity();
+	}
+
+	public double getAirDensity() {
 		return airDensity;
 	}
 
@@ -3214,5 +3218,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	@Override
 	public int getAge() {
 		return tickCount;
+	}
+
+	@Override
+	public boolean isClientSide() {
+		return getLevel().isClientSide();
 	}
 }

@@ -6,9 +6,12 @@
 	"invert_mirrored_values": true,
 	"size": 21,
 	"map": [
-		{"key": 0.000, "value": 0.020},
-		{"key": 5.000, "value": 0.055},
-		{"key": 10.00, "value": 0.100},
+		{"key": 0.00, "value": 0.050},
+		{"key": 1.19, "value": 0.068},
+		{"key": 2.86, "value": 0.080},
+		{"key": 5.53, "value": 0.094},
+		{"key": 6.20, "value": 0.113},
+		{"key": 7.87, "value": 0.137},
 
 		{"key": 12.26, "value": 0.142},
 		{"key": 13.11, "value": 0.161},

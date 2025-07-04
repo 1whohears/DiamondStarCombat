@@ -28,7 +28,7 @@ public class EdenPresets {
 			.setTurnRadius(11f)
 			.setMaxTurnRates(5.5f, 2.25f, 1.25f)
 			.setRotationalInertia(11000f, 90000f, 95000f)
-			.setDragArea(0.55f)
+			.setDragArea(0.51f)
 			.setHasTurnAssist(true)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(38f)
@@ -36,7 +36,7 @@ public class EdenPresets {
 			.setMaxAltitude(900)
 			.setPushEngineOverrideAfterburnerStats(49420, 81580,7, 0.003f)
 			.setUseSpeedScales(true, true)
-			.setPlaneSpeeds(34.03f, 16.67f, 3.91f)
+			.setPlaneSpeeds(34.03f, 16.67f, 6.67f)
 			.setBreakDeAcc(0.032f, 0.016f)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
@@ -74,9 +74,15 @@ public class EdenPresets {
 					0, 12, new Vec3(0, 0, 4.25), 0, 0, 90,
 					LiftSurfaceData.InputType.NONE, "eden_lift_aoa",
 					"eden_drag_aoa", 0.8f))
+			// fuselage
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
+					0, 10, new Vec3(0, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "eden_lift_aoa",
+					"eden_drag_aoa", 0.8f))
 			.setCrashExplosionRadius(5.5f)
 			.set3rdPersonCamDist(19)
 			.setPlaneLiftAOAGraph("eden_lift_aoa")
+			.setDragAOAGraph("eden_drag_aoa")
 			.setTurnRateGraph("eden_plane_turn_rates")
 			.setPlaneFlapDownAOABias(9)
 			.setPlaneNoseCanAimDown(false)

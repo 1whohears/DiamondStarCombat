@@ -17,7 +17,7 @@
   ],
   "armor": 60.0,
   "displayName": "preset.dscombat.eden_plane_empty",
-  "drag_area": 0.55,
+  "drag_area": 0.51,
   "health": 100.0,
   "hitboxes": [
     {
@@ -398,6 +398,27 @@
         "z": 90.0
       },
       "zero_lift_drag": 0.800000011920929
+    },
+    {
+      "area": 10.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": true,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
     }
   ],
   "presetId": "eden_plane_empty",
@@ -598,7 +619,7 @@
     "mass": 11000.0,
     "max_afterburner_push_thrust_per_engine": 81580.0,
     "max_altitude": 900.0,
-    "max_ground_speed": 3.91,
+    "max_ground_speed": 6.67,
     "max_health": 100.0,
     "max_push_thrust_per_engine": 49420.0,
     "max_speed": 34.03,
@@ -607,6 +628,7 @@
     "maxyaw": 1.25,
     "plane": {
       "canAimDown": false,
+      "drag_aoa_graph_key": "eden_drag_aoa",
       "flapsAOABias": 9.0,
       "fuselage_lift_area": 22.0,
       "fuselage_lift_k_graph": "fuselage",

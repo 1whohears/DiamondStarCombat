@@ -76,7 +76,7 @@ public class EdenPresets {
 					"eden_drag_aoa", 0.8f))
 			// fuselage
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
-					0, 10, new Vec3(0, 0, 0), 0, 0, 0,
+					0, 12, new Vec3(0, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "eden_lift_aoa",
 					"eden_drag_aoa", 0.8f))
 			.setCrashExplosionRadius(5.5f)

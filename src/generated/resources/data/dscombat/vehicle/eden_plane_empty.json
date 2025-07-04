@@ -400,7 +400,7 @@
       "zero_lift_drag": 0.800000011920929
     },
     {
-      "area": 10.0,
+      "area": 12.0,
       "drag_graph": "eden_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",

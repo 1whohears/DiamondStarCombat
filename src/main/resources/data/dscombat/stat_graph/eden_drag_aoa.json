@@ -5,7 +5,10 @@
 	"invert_mirrored_values": true,
 	"size": 21,
 	"map": [
-		{"key": 0.00,  "value": 0.050},
+		{"key": 0.00,  "value": 0.008},
+		{"key": 1.00,  "value": 0.013},
+		{"key": 2.00,  "value": 0.020},
+		{"key": 3.00,  "value": 0.030},
 
 		{"key": 4.60,  "value": 0.080},
 		{"key": 5.86,  "value": 0.093},

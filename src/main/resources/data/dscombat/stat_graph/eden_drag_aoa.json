@@ -2,7 +2,7 @@
 	"presetType": "aoaliftk",
 	"priority": 100,
 	"mirror_negative_keys": true,
-	"invert_mirrored_values": true,
+	"invert_mirrored_values": false,
 	"size": 21,
 	"map": [
 		{"key": 0.00,  "value": 0.008},

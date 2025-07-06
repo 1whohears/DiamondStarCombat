@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.vehicle.physics;
 
+import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.PhysicsBody;
@@ -8,8 +9,11 @@ import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.slf4j.Logger;
 
 public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceData> {
+
+    protected static final Logger LOGGER = LogUtils.getLogger();
 
     private float aoa = 0;
     private Vec3 dragForce = Vec3.ZERO, liftForce = Vec3.ZERO;
@@ -63,6 +67,10 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         // Drag = (drag coefficient) * (air density) * (speed)^2 * (drag area) / 2
         Vec3 windDir = u.normalize();
         float dragK = getDragK(aoa) * speedScaleSqr;
+        if (dragK < 0) {
+            LOGGER.warn("Drag Coefficient is somehow negative. Should not happen! Is the drag graph setup correctly? " +
+                    "graph_id = {} aoa = {}", getData().getDragGraph().getId(), aoa);
+        }
         double dragMag = 0.5 * dragK * P * airFoilSpeedSqr * getData().getArea() * getData().getZeroLiftDrag();
         dragForce = windDir.scale(-dragMag);
         body.addDragForce(dragForce);

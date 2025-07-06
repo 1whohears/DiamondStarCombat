@@ -10,7 +10,7 @@ public abstract class WindTunnelJob {
     public static class FindOptimalDragC extends WindTunnelJob {
         private final float yaw, roll, pitch, liftC;
         private double prevWindAcc;
-        private double dragC = 0.1, prevDragC;
+        private double dragC = 0.02, prevDragC;
         public FindOptimalDragC(float yaw, float roll, float pitch, float liftC) {
             this.yaw = yaw;
             this.roll = roll;
@@ -31,13 +31,13 @@ public abstract class WindTunnelJob {
         }
         @Override
         protected void run(EntityWindTunnel tunnel) {
-            double currentWindAcc = tunnel.windCompAcc * 1E6;
+            double currentWindAcc = tunnel.windCompAcc * 1E3;
             double currentDragC = dragC * 1E3;
             //System.out.println("currentDragC = "+dragC+" currentWindAcc = "+tunnel.windCompAcc);
             if (prevWindAcc == -1000) {
                 prevWindAcc = currentWindAcc;
                 prevDragC = currentDragC;
-                dragC += 0.05;
+                dragC += 0.01;
                 updateDragC(tunnel);
                 return;
             }

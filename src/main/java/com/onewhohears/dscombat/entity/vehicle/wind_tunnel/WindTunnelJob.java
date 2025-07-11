@@ -4,8 +4,96 @@ import com.onewhohears.dscombat.util.math.UtilEstimate;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class WindTunnelJob {
+
+    public interface JobGen {
+        @NotNull WindTunnelJob create(EntityWindTunnel tunnel, WindTunnelJob previous_job);
+    }
+
+    public static abstract class JobArray extends WindTunnelJob {
+        private final JobGen[] job_gens;
+        protected final List<WindTunnelJob> jobs = new ArrayList<>();
+        private final int job_num;
+        @Nullable private WindTunnelJob current_job;
+        private int job_index = 0;
+        public JobArray(JobGen... job_gens) {
+            this.job_gens = job_gens;
+            this.job_num = this.job_gens.length;
+        }
+        @Override
+        protected void init(EntityWindTunnel tunnel) {
+            if (job_gens.length == 0) {
+                finishEarly(tunnel);
+                return;
+            }
+            current_job = job_gens[0].create(tunnel, null);
+            jobs.add(current_job);
+        }
+        @Override
+        protected boolean isJobComplete(EntityWindTunnel tunnel) {
+            return current_job == null || (job_index == job_num - 1 && current_job.complete);
+        }
+        @Override
+        protected void run(EntityWindTunnel tunnel) {
+            if (current_job == null) {
+                finishEarly(tunnel);
+                return;
+            }
+            if (current_job.complete) {
+                ++job_index;
+                current_job = job_gens[job_index].create(tunnel, current_job);
+                jobs.add(current_job);
+            }
+            current_job.tick(tunnel);
+        }
+        @Override
+        public int getUpdateRate() {
+            return 1;
+        }
+        public int getJobIndex() {
+            return job_index;
+        }
+    }
+
+    public static class FindLiftDragJob extends JobArray {
+        private final float yaw, turn_rate;
+        private double optimal_pitch, optimal_lift, optimal_drag;
+        public FindLiftDragJob(float yaw, float turn_rate) {
+            super(((tunnel, previous_job) ->
+                            new FindOptimalPitchJob(yaw, 90)),
+                    ((tunnel, previous_job) ->
+                            new FindOptimalLiftC(yaw, 90,
+                                    ((FindOptimalPitchJob)previous_job).getPitch(), turn_rate)),
+                    ((tunnel, previous_job) ->
+                            new FindOptimalDragC(yaw, 90,
+                                    ((FindOptimalLiftC)previous_job).getPitch(),
+                                    ((FindOptimalLiftC)previous_job).getLiftC())));
+            this.yaw = yaw;
+            this.turn_rate = turn_rate;
+        }
+        @Override
+        protected void onJobComplete(EntityWindTunnel tunnel) {
+            if (jobs.size() < 3) {
+                tunnel.chatToNearbyPlayers("FindLiftDragJob Error | Job Index "+getJobIndex()+
+                        " | Yaw "+yaw+" | Turn Rate "+turn_rate, ChatFormatting.RED);
+            }
+        }
+        public double getOptimalDrag() {
+            return optimal_drag;
+        }
+        public double getOptimalLift() {
+            return optimal_lift;
+        }
+        public double getOptimalPitch() {
+            return optimal_pitch;
+        }
+    }
 
     public static class FindOptimalDragC extends WindTunnelJob {
         private final float yaw, roll, pitch, liftC;
@@ -52,8 +140,7 @@ public abstract class WindTunnelJob {
                 dragC = UtilEstimate.nextGuessSecantMethod(prevDragC, currentDragC, prevWindAcc, currentWindAcc) * 0.001;
             } catch (IllegalArgumentException e) {
                 if (attempts >= 40) {
-                    onJobComplete(tunnel);
-                    complete = true;
+                    finishEarly(tunnel);
                     tunnel.chatToNearbyPlayers("Best Guess: "+bestGuessDragC+" | Error: "+bestGuessWindAcc, ChatFormatting.RED);
                     return;
                 }
@@ -134,8 +221,7 @@ public abstract class WindTunnelJob {
             try {
                 liftC = UtilEstimate.nextGuessSecantMethod(prevLiftC, currentLiftC, prevYawRate, currentYawRate) * 0.001;
             } catch (IllegalArgumentException e) {
-                onJobComplete(tunnel);
-                this.complete = true;
+                finishEarly(tunnel);
                 return;
             }
             updateLiftC(tunnel);
@@ -149,6 +235,9 @@ public abstract class WindTunnelJob {
         }
         public float getLiftC() {
             return (float)liftC;
+        }
+        public float getPitch() {
+            return pitch;
         }
         private void updateLiftC(EntityWindTunnel tunnel) {
             CompoundTag tag = new CompoundTag();
@@ -193,8 +282,7 @@ public abstract class WindTunnelJob {
             try {
                 pitch = UtilEstimate.nextGuessSecantMethod(prevPitch, currentPitch, prevAccY, currentAccY) * 0.001;
             } catch (IllegalArgumentException e) {
-                onJobComplete(tunnel);
-                this.complete = true;
+                finishEarly(tunnel);
                 return;
             }
             updatePitch(tunnel);
@@ -211,6 +299,9 @@ public abstract class WindTunnelJob {
         public float getPitch() {
             return (float)pitch;
         }
+        public float getYaw() {
+            return yaw;
+        }
     }
 
     private int age = -1;
@@ -220,6 +311,11 @@ public abstract class WindTunnelJob {
     protected abstract boolean isJobComplete(EntityWindTunnel tunnel);
     protected abstract void run(EntityWindTunnel tunnel);
     protected abstract void onJobComplete(EntityWindTunnel tunnel);
+
+    protected void finishEarly(EntityWindTunnel tunnel) {
+        complete = true;
+        onJobComplete(tunnel);
+    }
 
     public final void tick(EntityWindTunnel tunnel) {
         if (complete) return;

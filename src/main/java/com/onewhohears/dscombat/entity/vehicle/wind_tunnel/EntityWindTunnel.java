@@ -48,7 +48,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     public static final EntityDataAccessor<CompoundTag> OVERRIDES = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.COMPOUND_TAG);
 
     @Nullable private EntityVehicle vehicle;
-    @Nullable private WindTunnelJob job;
+    @Nullable public WindTunnelJob job;
 
     public Vec3 totalAcc = Vec3.ZERO, weightAcc = Vec3.ZERO, thrustAcc = Vec3.ZERO, dragAcc = Vec3.ZERO, liftAcc = Vec3.ZERO, rotAcc = Vec3.ZERO;
     public double windCompAcc, centripetalAcc, yawRate, turnRadius;
@@ -70,19 +70,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         setAltitude(altitude);
         setInputs(new Vec3(0, 0, 0));
         // find optimal pitch
-        job = new WindTunnelJob.FindOptimalPitchJob(aoa, 90) {
-            @Override
-            protected void onJobComplete(EntityWindTunnel tunnel) {
-                super.onJobComplete(tunnel);
-                job = new FindOptimalLiftC(aoa, 90, this.getPitch(), turn_rate) {
-                    @Override
-                    protected void onJobComplete(EntityWindTunnel tunnel) {
-                        super.onJobComplete(tunnel);
-                        job = new FindOptimalDragC(aoa, 90, getPitch(), getLiftC());
-                    }
-                };
-            }
-        };
+        job = new WindTunnelJob.FindLiftDragJob(aoa, turn_rate);
     }
 
     public void setOverrideValue(String name, CompoundTag value) {

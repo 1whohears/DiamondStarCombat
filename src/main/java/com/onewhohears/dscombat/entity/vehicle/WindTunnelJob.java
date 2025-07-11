@@ -10,7 +10,10 @@ public abstract class WindTunnelJob {
     public static class FindOptimalDragC extends WindTunnelJob {
         private final float yaw, roll, pitch, liftC;
         private double prevWindAcc;
-        private double dragC = 0.02, prevDragC;
+        private double dragC, prevDragC;
+        private double first_guess_delta = 0.01, first_guess = 0.01;
+        int attempts = 0;
+        private double bestGuessDragC, bestGuessWindAcc = 1E6;
         public FindOptimalDragC(float yaw, float roll, float pitch, float liftC) {
             this.yaw = yaw;
             this.roll = roll;
@@ -19,10 +22,14 @@ public abstract class WindTunnelJob {
         }
         @Override
         protected void init(EntityWindTunnel tunnel) {
-            tunnel.chatToNearbyPlayers("Searching for optimal Drag Coefficient...", ChatFormatting.YELLOW);
+            if (attempts == 0)
+                tunnel.chatToNearbyPlayers("Searching for optimal Drag Coefficient...", ChatFormatting.YELLOW);
+            else if (attempts == 1)
+                tunnel.chatToNearbyPlayers("First attempt failed trying again...", ChatFormatting.YELLOW);
             tunnel.setQ(UtilAngles.toQuaternion(yaw, pitch, roll));
             prevWindAcc = -1000;
             prevDragC = -1000;
+            dragC = first_guess;
             updateDragC(tunnel);
         }
         @Override
@@ -37,15 +44,31 @@ public abstract class WindTunnelJob {
             if (prevWindAcc == -1000) {
                 prevWindAcc = currentWindAcc;
                 prevDragC = currentDragC;
-                dragC += 0.01;
+                dragC += first_guess_delta;
                 updateDragC(tunnel);
                 return;
             }
             try {
                 dragC = UtilEstimate.nextGuessSecantMethod(prevDragC, currentDragC, prevWindAcc, currentWindAcc) * 0.001;
             } catch (IllegalArgumentException e) {
-                onJobComplete(tunnel);
-                this.complete = true;
+                if (attempts >= 40) {
+                    onJobComplete(tunnel);
+                    complete = true;
+                    tunnel.chatToNearbyPlayers("Best Guess: "+bestGuessDragC+" | Error: "+bestGuessWindAcc, ChatFormatting.RED);
+                    return;
+                }
+                ++attempts;
+                if (Math.abs(currentWindAcc) < Math.abs(bestGuessWindAcc)) {
+                    bestGuessWindAcc = currentWindAcc;
+                    bestGuessDragC = currentDragC * 0.001;
+                }
+                if (attempts % 10 == 0 && attempts != 0) {
+                    first_guess_delta = Math.ceil(attempts/10d) * 0.01;
+                    first_guess += 0.04;
+                } else {
+                    first_guess_delta += Math.ceil(attempts/10d) * 0.01;
+                }
+                init(tunnel);
                 return;
             }
             updateDragC(tunnel);

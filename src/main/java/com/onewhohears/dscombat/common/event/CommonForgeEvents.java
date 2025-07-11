@@ -14,7 +14,7 @@ import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitboxes;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.TickEvent;

@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity.vehicle;
+package com.onewhohears.dscombat.entity.vehicle.wind_tunnel;
 
 import java.util.ArrayList;
 import java.util.List;

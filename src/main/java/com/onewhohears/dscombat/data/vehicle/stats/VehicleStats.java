@@ -19,7 +19,7 @@ import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.util.UtilGsonMerge;
 import com.onewhohears.onewholibs.util.UtilGsonMerge.ConflictStrategy;

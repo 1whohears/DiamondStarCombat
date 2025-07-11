@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.onewholibs.client.model.obj.customanims.EntityModelTransform;
 
 import com.onewhohears.onewholibs.util.UtilParse;

@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.entity.DrivingBody;
 import com.onewhohears.dscombat.entity.parts.*;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
@@ -212,7 +213,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (isStatsHolderLoaded()) updatePhysicsInstances();
 	}
 
-	protected void updatePhysicsInstances() {
+	public void updatePhysicsInstances() {
 		physicsInstances.clear();
 		for (PhysicsComponentData data : getStats().getPhysicsComponents()) {
 			if (data == null) continue;

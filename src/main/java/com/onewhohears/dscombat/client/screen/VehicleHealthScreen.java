@@ -6,7 +6,7 @@ import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.components.VehicleStatsOverlay;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;

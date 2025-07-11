@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.entity.vehicle.*;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.entity.weapon.*;
 
@@ -50,7 +51,7 @@ public class ModEntities {
 			() -> createVehicleType((type, level) -> new EntityStationaryVehicle(type, level,
 					StationaryPresets.EWR4000.getId())));
 	
-	public static final RegistryObject<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox", 
+	public static final RegistryObject<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox",
 			() -> createEntityTypeFar(RotableHitbox::new, EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	/* 

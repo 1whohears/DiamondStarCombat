@@ -163,8 +163,8 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         windCompAcc = UtilGeometry.vecCompMagDirByAxis(totalAcc, speed);
         Vec3 cenAxis = UtilAngles.getRollAxis(0, (vehicle.getYRot()+90)*Mth.DEG_TO_RAD);
         centripetalAcc = UtilGeometry.vecCompMagDirByNormAxis(liftAcc, cenAxis);
-        yawRate = centripetalAcc / vehicle.xzSpeed * Mth.RAD_TO_DEG;
-        turnRadius = vehicle.xzSpeed / (yawRate * Mth.DEG_TO_RAD);
+        yawRate = centripetalAcc / vehicle.getXZSpeed() * Mth.RAD_TO_DEG;
+        turnRadius = vehicle.getXZSpeed() / (yawRate * Mth.DEG_TO_RAD);
         Vec3 m = vehicle.getMoment();
         Vec3 I = vehicle.getTotalRotInertia();
         rotAcc = new Vec3(m.x/I.x, m.y/I.y, m.z/I.z).scale(vehicle.getAccTimeScale());

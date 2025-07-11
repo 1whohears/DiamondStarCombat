@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.util;
 
 import com.onewhohears.dscombat.data.vehicle.physics.SeaLevels;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
+import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.core.BlockPos;

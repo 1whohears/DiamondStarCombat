@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.physics;
 
 import com.onewhohears.dscombat.entity.PhysicsBody;
-import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
+import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 

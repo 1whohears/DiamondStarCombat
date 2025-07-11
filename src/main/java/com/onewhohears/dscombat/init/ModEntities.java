@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.entity.vehicle.*;
+import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.entity.weapon.*;
 
 import net.minecraft.world.entity.Entity;

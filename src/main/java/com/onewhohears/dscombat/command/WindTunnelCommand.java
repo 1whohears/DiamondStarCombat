@@ -6,7 +6,7 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.onewhohears.dscombat.command.argument.VehiclePresetArgument;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
-import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
+import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.commands.CommandSourceStack;

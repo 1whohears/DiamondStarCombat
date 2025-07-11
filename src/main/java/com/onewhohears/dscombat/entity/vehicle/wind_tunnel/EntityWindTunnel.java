@@ -1,9 +1,10 @@
-package com.onewhohears.dscombat.entity.vehicle;
+package com.onewhohears.dscombat.entity.vehicle.wind_tunnel;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.JsonPresetEntity;

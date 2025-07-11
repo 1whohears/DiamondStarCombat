@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
-import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
+import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import net.minecraft.client.Minecraft;

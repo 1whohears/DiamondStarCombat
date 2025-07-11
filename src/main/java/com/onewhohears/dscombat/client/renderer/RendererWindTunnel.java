@@ -10,7 +10,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.EntityWindTunnel;
+import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.renderer.MultiBufferSource;

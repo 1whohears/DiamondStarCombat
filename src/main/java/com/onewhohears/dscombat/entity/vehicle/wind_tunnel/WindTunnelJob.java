@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity.vehicle;
+package com.onewhohears.dscombat.entity.vehicle.wind_tunnel;
 
 import com.onewhohears.dscombat.util.math.UtilEstimate;
 import com.onewhohears.onewholibs.util.math.UtilAngles;

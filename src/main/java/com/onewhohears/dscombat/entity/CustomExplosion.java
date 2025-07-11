@@ -1,4 +1,4 @@
-package com.onewhohears.dscombat.entity.vehicle;
+package com.onewhohears.dscombat.entity;
 
 import net.minecraft.world.level.Explosion;
 

@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.vehicle.hitbox;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
-import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
+import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.math.RotableAABB;

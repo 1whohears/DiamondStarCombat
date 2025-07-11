@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
+import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.DrivingBody;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;

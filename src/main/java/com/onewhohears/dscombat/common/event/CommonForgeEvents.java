@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
+import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitboxes;
 

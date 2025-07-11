@@ -78,6 +78,9 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
                 .cross(UtilAngles.rotateVector(dragForce, vehicleQI))
                 .multiply(-1, 1, 1);
         body.addMoment(dragMoment, false, true);
+        /*if (body.isTestMode() && body.isClientSide()) {
+            System.out.println(getData().getHitbox()+" aoa "+aoa+" move.z "+u.z+" DM "+dragMag+" DF "+dragForce);
+        }*/
     }
 
     @Override

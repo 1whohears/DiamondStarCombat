@@ -83,8 +83,11 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
 
     private void drawAcc(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
                          int[] color, float maxForceMag, Vec3 pos, Vec3 force) {
-        drawAcc(poseStack, buffer, packedLight, color, pos, force.normalize(),
-                (float)force.length()/maxForceMag*ARROW_LENGTH_SCALE);
+        float mag = (float)force.length();
+        Vec3 dir;
+        if (mag < 0.001f) dir = force.scale(1000).normalize();
+        else dir = force.normalize();
+        drawAcc(poseStack, buffer, packedLight, color, pos, dir, mag/maxForceMag*ARROW_LENGTH_SCALE);
     }
 
     private void drawAcc(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,

@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.entity.vehicle.wind_tunnel;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
@@ -15,6 +17,9 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NumericTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -57,6 +62,55 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     public EntityWindTunnel(EntityType<?> type, Level level) {
         super(type, level, "alexis_plane_unarmed");
         noPhysics = true;
+    }
+
+    public void startFindMultiLiftDragJob(float altitude) {
+        chatToNearbyPlayers("Starting Multi Find Lift/Drag Coefficients Job...", ChatFormatting.LIGHT_PURPLE);
+        // initialize parameters
+        setQ(UtilAngles.toQuaternion(0, 0, 90));
+        setThrottle(1.0f);
+        setAfterBurner(true);
+        setAltitude(altitude);
+        setInputs(new Vec3(0, 0, 0));
+        // find optimal pitch
+        JsonArray array = new JsonArray();
+        ListTag speeds = entityData.get(OVERRIDES).getList("speeds", 6);
+        ListTag aoas = entityData.get(OVERRIDES).getList("aoas", 6);
+        ListTag turn_rates = entityData.get(OVERRIDES).getList("turn_rates", 6);
+        int l = Math.min(Math.min(aoas.size(), turn_rates.size()), speeds.size());
+        for (int i = 0; i < l; ++i) {
+            JsonObject data = new JsonObject();
+            data.addProperty("speed", speeds.getDouble(i));
+            data.addProperty("aoa", aoas.getDouble(i));
+            data.addProperty("turn_rate", turn_rates.getDouble(i));
+            array.add(data);
+        }
+        job = new WindTunnelJob.MultiLiftDragJob(array);
+    }
+
+    public void setSpeedList(double[] speeds) {
+        CompoundTag overrides = entityData.get(OVERRIDES);
+        overrides.put("speeds", doubleArrayToListTag(speeds));
+        entityData.set(OVERRIDES, overrides);
+    }
+
+    public void setAOAList(double[] aoas) {
+        CompoundTag overrides = entityData.get(OVERRIDES);
+        overrides.put("aoas", doubleArrayToListTag(aoas));
+        entityData.set(OVERRIDES, overrides);
+    }
+
+    public void setTurnRateList(double[] turnRates) {
+        CompoundTag overrides = entityData.get(OVERRIDES);
+        overrides.put("turn_rates", doubleArrayToListTag(turnRates));
+        entityData.set(OVERRIDES, overrides);
+    }
+
+    public static ListTag doubleArrayToListTag(double[] a) {
+        ListTag list = new ListTag();
+        for (int i = 0; i < a.length; ++i)
+            list.addTag(i, DoubleTag.valueOf(a[i]));
+        return list;
     }
 
     public void startFindLiftDragJob(float speed, float turn_rate, float aoa, float altitude) {
@@ -241,6 +295,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         setHideModel(tag.getBoolean("hide_model"));
         setAltitude(tag.getFloat("altitude"));
         setInputs(UtilParse.readVec3(tag, "inputs"));
+        entityData.set(OVERRIDES, tag.getCompound("overrides"));
     }
 
     @Override
@@ -257,6 +312,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         tag.putBoolean("hide_model", getHideModel());
         tag.putFloat("altitude", getAltitude());
         UtilParse.writeVec3(tag, getInputs(), "inputs");
+        tag.put("overrides", entityData.get(OVERRIDES));
     }
 
     public Vec3 getSpeed() {

@@ -240,7 +240,7 @@ public abstract class WindTunnelJob {
         }
         @Override
         protected boolean isJobComplete(EntityWindTunnel tunnel) {
-            return tunnel.windCompAcc > 0 && tunnel.windCompAcc < 0.00001;
+            return Math.abs(tunnel.windCompAcc) < 0.0001;
         }
         @Override
         protected void run(EntityWindTunnel tunnel) {

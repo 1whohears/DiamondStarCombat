@@ -340,6 +340,8 @@
     "armor_damage_threshold": 6.0,
     "assetId": "eric_truck",
     "base_armor": 150.0,
+    "break_deacc_air": 0.0,
+    "break_deacc_ground": 0.1,
     "cameraDistance": 10.0,
     "car": {
       "isTank": false

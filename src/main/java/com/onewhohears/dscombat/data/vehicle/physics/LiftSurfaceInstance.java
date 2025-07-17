@@ -110,7 +110,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
             if (value != null) {
                 double AOA = value.getDouble("aoa");
                 double liftC = value.getDouble("liftC");
-                if (Math.abs(aoa - AOA) < 0.001) return (float) liftC;
+                if (Math.abs(aoa - AOA) < 0.1) return (float) liftC;
             }
         }
         return getData().getLiftKGraph().getLerpFloat(aoa);
@@ -122,7 +122,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
             if (value != null) {
                 double AOA = value.getDouble("aoa");
                 double dragC = value.getDouble("dragC");
-                if (aoa == AOA) return (float) dragC;
+                if (Math.abs(aoa - AOA) < 0.1) return (float) dragC;
             }
         }
         return getData().getDragGraph().getLerpFloat(aoa);

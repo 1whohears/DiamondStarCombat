@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.util.Mth;
@@ -42,7 +43,7 @@ public interface DrivingBody extends PhysicsBody {
         if (!isSliding()) av = av
                 .multiply(1, 0, 1)
                 .add(0, turnDeg, 0);
-        else addMomentY(turnDeg*getSlideAngleCos(), false);
+        else addMomentY(turnDeg*getSlideAngleCos()*DSCPhyCons.DRIFT_FACTOR, false);
         setAngularVel(av);
     }
 

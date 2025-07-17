@@ -4,12 +4,12 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 
-import static com.onewhohears.dscombat.data.vehicle.presets.AlexisPresets.UNARMED_ALEXIS_PLANE;
-import static com.onewhohears.dscombat.data.vehicle.presets.BroncoPresets.UNARMED_BRONCO_PLANE;
-import static com.onewhohears.dscombat.data.vehicle.presets.EdenPresets.UNARMED_EDEN_PLANE;
-import static com.onewhohears.dscombat.data.vehicle.presets.FelixPresets.UNARMED_FELIX_PLANE;
-import static com.onewhohears.dscombat.data.vehicle.presets.JaviPresets.UNARMED_JAVI_PLANE;
-import static com.onewhohears.dscombat.data.vehicle.presets.KraitChopperPresets.UNARMED_KRAIT_CHOPPER;
+import static com.onewhohears.dscombat.data.vehicle.presets.plane.AlexisPresets.UNARMED_ALEXIS_PLANE;
+import static com.onewhohears.dscombat.data.vehicle.presets.plane.BroncoPresets.UNARMED_BRONCO_PLANE;
+import static com.onewhohears.dscombat.data.vehicle.presets.plane.EdenPresets.UNARMED_EDEN_PLANE;
+import static com.onewhohears.dscombat.data.vehicle.presets.plane.FelixPresets.UNARMED_FELIX_PLANE;
+import static com.onewhohears.dscombat.data.vehicle.presets.plane.JaviPresets.UNARMED_JAVI_PLANE;
+import static com.onewhohears.dscombat.data.vehicle.presets.helicopter.KraitChopperPresets.UNARMED_KRAIT_CHOPPER;
 
 public class VillageDefenseVehiclePresetGen {
 

@@ -45,7 +45,7 @@ public class DSCPhyCons {
 
 	public static final float DRAG_SCALE = 0.125f / (float)HORIZONTAL_SPEED_SCALE;
 
-	public static final float ANGULAR_DRAG_C = 1E3f;
+	public static final float ANGULAR_DRAG_C = 4E3f;
 
 	public static final float MAX_SPEED_CHANGE_RATE = 0.01f;
 	public static final float AOA_CHANGE_RATE = 0.5f;

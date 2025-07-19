@@ -258,7 +258,7 @@
       "accForward": 0.04,
       "accSide": 0.02,
       "alwaysLandingGear": true,
-      "heliLiftFactor": 15.0
+      "heliLiftFactor": 1500.0
     },
     "hitboxes_control_pitch": [
       "tail"
@@ -284,9 +284,9 @@
     "stealth": 1.2,
     "throttledown": 0.02,
     "throttleup": 0.01,
-    "torquepitch": 1.0,
-    "torqueroll": 1.0,
-    "torqueyaw": 2.5,
+    "torquepitch": 80000.0,
+    "torqueroll": 80000.0,
+    "torqueyaw": 200000.0,
     "turn_radius": 0.0
   },
   "textures": {

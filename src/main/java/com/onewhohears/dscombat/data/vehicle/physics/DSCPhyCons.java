@@ -50,7 +50,7 @@ public class DSCPhyCons {
 	public static final float MAX_SPEED_CHANGE_RATE = 0.01f;
 	public static final float AOA_CHANGE_RATE = 0.5f;
 
-	public static final float FLOAT = 150f;
+	public static final float FLOAT = 8000f;
 
 	public static final double PART_ROT_INERTIA_SCALE = 0.5;
 

@@ -314,7 +314,7 @@
     "throttleup": 0.05,
     "torquepitch": 0.0,
     "torqueroll": 0.0,
-    "torqueyaw": 2.0,
+    "torqueyaw": 200000.0,
     "turn_radius": 0.0
   }
 }

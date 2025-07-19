@@ -29,7 +29,7 @@ public class KraitChopperPresets {
 			.setThrottleRate(0.01f, 0.02f)
 			.setHeliHoverMovement(0.04f, 0.02f)
 			.setBasicEngineSounds(ModSounds.HELI_1, ModSounds.HELI_1)
-			.setRotationalInertia(8, 6, 4)
+			.setRotationalInertia(8E3f, 6E3f, 4E3f)
 			.setCrashExplosionRadius(4)
 			.set3rdPersonCamDist(6)
 			.setHeliAlwaysLandingGear(true)

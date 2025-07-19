@@ -165,9 +165,9 @@
     "entity_size_xz": 3.0,
     "entity_size_y": 1.5,
     "idleheat": 2.0,
-    "inertiapitch": 10.0,
-    "inertiaroll": 6.0,
-    "inertiayaw": 4.0,
+    "inertiapitch": 10000.0,
+    "inertiaroll": 6000.0,
+    "inertiayaw": 4000.0,
     "mass": 1000.0,
     "max_health": 80.0,
     "max_speed": 0.85,
@@ -180,7 +180,7 @@
     "throttleup": 0.05,
     "torquepitch": 0.0,
     "torqueroll": 0.0,
-    "torqueyaw": 2.0,
+    "torqueyaw": 200000.0,
     "turn_radius": 0.0
   }
 }

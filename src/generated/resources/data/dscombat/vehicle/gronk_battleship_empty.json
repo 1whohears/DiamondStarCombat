@@ -364,7 +364,7 @@
     "throttleup": 0.05,
     "torquepitch": 0.0,
     "torqueroll": 0.0,
-    "torqueyaw": 1.0,
+    "torqueyaw": 100000.0,
     "turn_radius": 0.0
   },
   "textures": {

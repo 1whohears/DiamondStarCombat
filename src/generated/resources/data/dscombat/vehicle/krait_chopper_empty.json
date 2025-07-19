@@ -270,9 +270,9 @@
       "tail"
     ],
     "idleheat": 8.0,
-    "inertiapitch": 6.0,
-    "inertiaroll": 8.0,
-    "inertiayaw": 4.0,
+    "inertiapitch": 6000.0,
+    "inertiaroll": 8000.0,
+    "inertiayaw": 4000.0,
     "mass": 8000.0,
     "max_altitude": 430.0,
     "max_health": 120.0,

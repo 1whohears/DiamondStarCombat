@@ -7,16 +7,116 @@ import com.onewhohears.dscombat.client.screen.VehicleSubScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
+import java.nio.FloatBuffer;
 import java.util.Set;
 
 public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends ActionInput> extends VehicleSubScreen {
+
+    public static class ControllerAxis extends AxisScreen {
+        private int joystick_id, axis_id;
+        private float dead_zone;
+        private boolean invert;
+        public ControllerAxis(int page, ActionInputHolder.Axis action, boolean primary) {
+            super(page, action, primary);
+        }
+        @Override
+        protected void init() {
+            super.init();
+            ActionInput.Axis input = getActionInput();
+            if (input instanceof ActionInput.ControllerAxis data) {
+                joystick_id = data.joystick_id;
+                axis_id = data.axis_id;
+                dead_zone = data.dead_zone;
+                invert = data.invert;
+            }
+            // SET JOYSTICK ID
+            EditBox joystickIDBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+            positionWidgetGrid(joystickIDBox, ROWS, 4, 4, 2);
+            joystickIDBox.setValue(joystick_id+"");
+            joystickIDBox.setTextColor(0xFFFFFF);
+            joystickIDBox.setResponder(string -> {
+                try { joystick_id = Integer.parseInt(string); }
+                catch(NumberFormatException ignored) {}
+            });
+            // SET AXIS ID
+            EditBox axisIDBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+            positionWidgetGrid(axisIDBox, ROWS, 4, 5, 2);
+            axisIDBox.setValue(axis_id+"");
+            axisIDBox.setTextColor(0xFFFFFF);
+            axisIDBox.setResponder(string -> {
+                try { axis_id = Integer.parseInt(string); }
+                catch(NumberFormatException ignored) {}
+            });
+            // SET DEAD ZONE
+            EditBox deadZoneBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+            positionWidgetGrid(deadZoneBox, ROWS, 4, 6, 2);
+            deadZoneBox.setValue(dead_zone+"");
+            deadZoneBox.setTextColor(0xFFFFFF);
+            deadZoneBox.setResponder(string -> {
+                try { dead_zone = Float.parseFloat(string); }
+                catch(NumberFormatException ignored) {}
+            });
+            // SET INVERT
+            positionWidgetGrid(new Checkbox(0, 0, 20, 20, UtilMCText.translatable("ui.dscombat.invert"), invert) {
+                                   @Override
+                                   public void onPress() {
+                                       super.onPress();
+                                       invert = !invert;
+                                   }
+                               },
+                    ROWS, 4, 7, 2);
+        }
+        @Override
+        public void renderBackground(@NotNull PoseStack poseStack) {
+            super.renderBackground(poseStack);
+            float scale = 0.80f;
+            float startY = (guiY + top_padding + 70) / scale;
+            float startX = (guiX + left_padding) / scale;
+            poseStack.pushPose();
+            poseStack.scale(scale, scale, scale);
+            int k = 0;
+            for (int j = 0; j < 16; ++j) {
+                if (!GLFW.glfwJoystickPresent(j)) continue;
+                String name = GLFW.glfwGetJoystickName(j);
+                if (name == null) name = "N/A";
+                if (filterJoystick(name)) continue;
+                FloatBuffer axes = GLFW.glfwGetJoystickAxes(j);
+                if (axes == null) continue;
+                for (int a = 0; a < axes.limit(); ++a) {
+                    float value = axes.get(a);
+                    if (Mth.abs(value) < 0.1f) continue;
+                    String text = name+" | ID:"+j+" | Axis:"+a+" | "+value;
+                    getMinecraft().font.draw(poseStack, text, startX, startY+k*10, infoColor);
+                    ++k;
+                }
+            }
+            poseStack.popPose();
+        }
+        @Override
+        protected ActionInput.Axis createNewInput() {
+            return new ActionInput.ControllerAxis(joystick_id, axis_id, dead_zone, invert);
+        }
+    }
+
+    private static final String[] filteredNames = {"keyboard", "ducky one"};
+
+    /**
+     * this exists because linux thinks my keyboard is a joystick
+     */
+    public static boolean filterJoystick(String name) {
+        String n = name.toLowerCase();
+        for (String f : filteredNames) if (n.contains(f)) return true;
+        return false;
+    }
 
     public static class DSCKeyAxis extends AxisScreen {
         private final boolean positive;

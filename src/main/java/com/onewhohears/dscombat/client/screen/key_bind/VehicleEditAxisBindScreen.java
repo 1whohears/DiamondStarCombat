@@ -49,7 +49,6 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
                                 UtilMCText.translatable("ui.dscombat.primary"),
                                 (button, value) -> changePrimaryType(value)),
                 ROWS, 1, 1, padding);
-        changePrimaryType(action.getPrimaryAction().getAxisType());
         // DSC Key Axis
         // negative
         Button DSC_KEY_AXIS_NEG_PRI = new Button(0, 0, 20, 20,
@@ -65,8 +64,13 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
         priDSCKeyAxisButtons.add(DSC_KEY_AXIS_NEG_PRI);
         priDSCKeyAxisButtons.add(DSC_KEY_AXIS_POS_PRI);
         // Controller Axis
-
+        Button CONTROLLER_AXIS_PRI = new Button(0, 0, 20, 20,
+                UtilMCText.translatable("ui.dscombat.controller_axis"),
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerAxis(page, action, true)));
+        positionWidgetGrid(CONTROLLER_AXIS_PRI, ROWS, 1, 2, padding);
         priControllerButtons.clear();
+        priControllerButtons.add(CONTROLLER_AXIS_PRI);
+        changePrimaryType(action.getPrimaryAction().getAxisType());
         // SECONDARY
         // Action Type Cycle
         positionWidgetGrid(new CycleButton.Builder<>(ActionInput.AxisType::getTypeName)
@@ -76,7 +80,6 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
                                 UtilMCText.translatable("ui.dscombat.secondary"),
                                 (button, value) -> changeSecondaryType(value)),
                 ROWS, 1, 3, padding);
-        changeSecondaryType(action.getSecondaryAction().getAxisType());
         // DSC Key Axis
         // negative
         Button DSC_KEY_AXIS_NEG_SEC = new Button(0, 0, 20, 20,
@@ -92,8 +95,13 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
         secDSCKeyAxisButtons.add(DSC_KEY_AXIS_NEG_SEC);
         secDSCKeyAxisButtons.add(DSC_KEY_AXIS_POS_SEC);
         // Controller Axis
-
+        Button CONTROLLER_AXIS_SEC = new Button(0, 0, 20, 20,
+                UtilMCText.translatable("ui.dscombat.controller_axis"),
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerAxis(page, action, false)));
+        positionWidgetGrid(CONTROLLER_AXIS_SEC, ROWS, 1, 4, padding);
         secControllerButtons.clear();
+        secControllerButtons.add(CONTROLLER_AXIS_SEC);
+        changeSecondaryType(action.getSecondaryAction().getAxisType());
     }
 
     private void changePrimaryType(ActionInput.AxisType type) {

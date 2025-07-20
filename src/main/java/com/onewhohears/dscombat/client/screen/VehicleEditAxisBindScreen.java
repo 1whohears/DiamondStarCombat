@@ -2,6 +2,9 @@ package com.onewhohears.dscombat.client.screen;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.ActionInputHolder;
+import com.onewhohears.dscombat.client.input.ClientInputManager;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 
@@ -25,7 +28,10 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
     @Override
     protected void init() {
         super.init();
-
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("ui.dscombat.save"),
+                        onPress -> ClientInputManager.saveKeyBinds()),
+                ROWS, COLUMNS, 1, padding);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.vehicle.wind_tunnel;
 
 import com.google.gson.*;
+import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.dscombat.util.math.UtilEstimate;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.ChatFormatting;
@@ -11,17 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class WindTunnelJob {
-
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static class MultiLiftDragJob extends JobArray {
         public MultiLiftDragJob(JsonArray params) {
@@ -76,18 +72,9 @@ public abstract class WindTunnelJob {
             lift_data.add("map", lift_map);
             drag_data.add("map", drag_map);
 
-            try {
-                Writer lift_writer = new FileWriter(lift_path);
-                GSON.toJson(lift_data, lift_writer);
-                lift_writer.flush();
-                lift_writer.close();
-                Writer drag_writer = new FileWriter(drag_path);
-                GSON.toJson(drag_data, drag_writer);
-                drag_writer.flush();
-                drag_writer.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            UtilPrint.printJsonAbsoluteDirectory(lift_path, lift_data);
+            UtilPrint.printJsonAbsoluteDirectory(drag_path, drag_data);
+
             tunnel.chatToNearbyPlayers("Completed Job! Outputting data to "+lift_path+" and "+drag_path, ChatFormatting.LIGHT_PURPLE);
         }
     }

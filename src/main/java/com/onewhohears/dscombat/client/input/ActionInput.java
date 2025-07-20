@@ -1,16 +1,43 @@
 package com.onewhohears.dscombat.client.input;
 
+import com.google.gson.JsonObject;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 public interface ActionInput {
+
+    @Nullable
+    static Button getButtonByJson(JsonObject json) {
+        String type = UtilParse.getStringSafe(json, "type", "");
+        switch (type) {
+            case "dsc_key_button": return DSCKeyButton.read(json);
+            case "controller_button": return ControllerButton.read(json);
+            case "controller_axis_button": return ControllerAxisButton.read(json);
+        }
+        return null;
+    }
+
+    @Nullable
+    static Axis getAxisByJson(JsonObject json) {
+        String type = UtilParse.getStringSafe(json, "type", "");
+        switch (type) {
+            case "dsc_key_axis": return DSCKeyAxis.read(json);
+            case "controller_axis": return ControllerAxis.read(json);
+        }
+        return null;
+    }
+
     @NotNull String getId();
+    @NotNull String getType();
     void tick();
     boolean isActive();
+    @NotNull JsonObject write();
 
     abstract class Button implements ActionInput {
         private boolean isPressed, wasPressed;
@@ -55,8 +82,22 @@ public interface ActionInput {
         public @NotNull String getId() {
             return id;
         }
+        @Override
+        public @NotNull String getType() {
+            return "dsc_key_button";
+        }
+        @Override
+        public @NotNull JsonObject write() {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", getType());
+            json.addProperty("key_mapping_id", id);
+            return json;
+        }
         protected boolean checkIsPressed() {
             return DSCKeys.isKeyPressed(getId());
+        }
+        public static DSCKeyButton read(JsonObject json) {
+            return new DSCKeyButton(UtilParse.getStringSafe(json, "key_mapping_id", ""));
         }
     }
 
@@ -74,6 +115,10 @@ public interface ActionInput {
             return id;
         }
         @Override
+        public @NotNull String getType() {
+            return "dsc_key_axis";
+        }
+        @Override
         public void tick() {
             negativePressed = DSCKeys.isKeyPressed(key_mapping_id_negative);
             positivePressed = DSCKeys.isKeyPressed(key_mapping_id_positive);
@@ -88,6 +133,18 @@ public interface ActionInput {
         @Override
         public boolean isNegAndPos() {
             return negativePressed && positivePressed;
+        }
+        @Override
+        public @NotNull JsonObject write() {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", getType());
+            json.addProperty("key_mapping_id_negative", key_mapping_id_negative);
+            json.addProperty("key_mapping_id_positive", key_mapping_id_positive);
+            return json;
+        }
+        public static DSCKeyAxis read(JsonObject json) {
+            return new DSCKeyAxis(UtilParse.getStringSafe(json, "key_mapping_id_negative", ""),
+                    UtilParse.getStringSafe(json, "key_mapping_id_positive", ""));
         }
     }
 
@@ -109,6 +166,22 @@ public interface ActionInput {
         @Override
         public @NotNull String getId() {
             return id;
+        }
+        @Override
+        public @NotNull String getType() {
+            return "controller_button";
+        }
+        @Override
+        public @NotNull JsonObject write() {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", getType());
+            json.addProperty("joystick_id", joystick_id);
+            json.addProperty("button_id", button_id);
+            return json;
+        }
+        public static ControllerButton read(JsonObject json) {
+            return new ControllerButton(UtilParse.getIntSafe(json, "joystick_id", 0),
+                    UtilParse.getIntSafe(json, "button_id", 0));
         }
     }
 
@@ -151,6 +224,26 @@ public interface ActionInput {
         public @NotNull String getId() {
             return id;
         }
+        @Override
+        public @NotNull String getType() {
+            return "controller_axis";
+        }
+        @Override
+        public @NotNull JsonObject write() {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", getType());
+            json.addProperty("joystick_id", joystick_id);
+            json.addProperty("axis_id", axis_id);
+            json.addProperty("dead_zone", dead_zone);
+            json.addProperty("invert", invert);
+            return json;
+        }
+        public static ControllerAxis read(JsonObject json) {
+            return new ControllerAxis(UtilParse.getIntSafe(json, "joystick_id", 0),
+                    UtilParse.getIntSafe(json, "axis_id", 0),
+                    UtilParse.getFloatSafe(json, "dead_zone", 0),
+                    UtilParse.getBooleanSafe(json, "invert", false));
+        }
     }
 
     class ControllerAxisButton extends Button {
@@ -177,6 +270,26 @@ public interface ActionInput {
         @Override
         public @NotNull String getId() {
             return id;
+        }
+        @Override
+        public @NotNull String getType() {
+            return "controller_axis_button";
+        }
+        @Override
+        public @NotNull JsonObject write() {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", getType());
+            json.addProperty("joystick_id", joystick_id);
+            json.addProperty("axis_id", axis_id);
+            json.addProperty("dead_zone", dead_zone);
+            json.addProperty("positive", positive);
+            return json;
+        }
+        public static ControllerAxisButton read(JsonObject json) {
+            return new ControllerAxisButton(UtilParse.getIntSafe(json, "joystick_id", 0),
+                    UtilParse.getIntSafe(json, "axis_id", 0),
+                    UtilParse.getFloatSafe(json, "dead_zone", 0),
+                    UtilParse.getBooleanSafe(json, "positive", false));
         }
     }
 

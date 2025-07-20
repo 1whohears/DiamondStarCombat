@@ -1,11 +1,13 @@
 package com.onewhohears.dscombat.client.input;
 
+import com.google.gson.JsonObject;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ActionInputHolder<A extends ActionInput> {
+public abstract class ActionInputHolder<A extends ActionInput> {
     @NotNull private final String id;
     @Nullable private A primaryAction, secondaryAction;
     public ActionInputHolder(@NotNull String id, @Nullable A defaultAction) {
@@ -43,10 +45,34 @@ public class ActionInputHolder<A extends ActionInput> {
     public @NotNull Component getName() {
         return UtilMCText.translatable(getNameString());
     }
+    public abstract String getType();
+    public JsonObject write() {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", getType());
+        if (getPrimaryAction() != null) json.add("primary", getPrimaryAction().write());
+        if (getSecondaryAction() != null) json.add("secondary", getSecondaryAction().write());
+        return json;
+    }
+    public abstract void read(JsonObject json);
 
     public static class Button extends ActionInputHolder<ActionInput.Button> {
         public Button(@NotNull String id, ActionInput.@Nullable Button defaultAction) {
             super(id, defaultAction);
+        }
+        @Override
+        public String getType() {
+            return "button";
+        }
+        @Override
+        public void read(JsonObject json) {
+            if (json.has("primary")) {
+                JsonObject data = UtilParse.getJsonSafe(json, "primary");
+                setPrimaryAction(ActionInput.getButtonByJson(data));
+            }
+            if (json.has("secondary")) {
+                JsonObject data = UtilParse.getJsonSafe(json, "secondary");
+                setSecondaryAction(ActionInput.getButtonByJson(data));
+            }
         }
         public boolean isPressed() {
             ActionInput.Button action = getActiveAction();
@@ -83,6 +109,21 @@ public class ActionInputHolder<A extends ActionInput> {
             ActionInput.Axis action = getActiveAction();
             if (action == null) return false;
             return action.isNegAndPos();
+        }
+        @Override
+        public String getType() {
+            return "axis";
+        }
+        @Override
+        public void read(JsonObject json) {
+            if (json.has("primary")) {
+                JsonObject data = UtilParse.getJsonSafe(json, "primary");
+                setPrimaryAction(ActionInput.getAxisByJson(data));
+            }
+            if (json.has("secondary")) {
+                JsonObject data = UtilParse.getJsonSafe(json, "secondary");
+                setSecondaryAction(ActionInput.getAxisByJson(data));
+            }
         }
     }
 }

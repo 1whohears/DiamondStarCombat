@@ -58,6 +58,7 @@ public final class ClientInputEvents {
 	@SubscribeEvent
 	public static void clientLogin(ClientPlayerNetworkEvent.LoggingIn event) {
 		DSCClientInputs.setPreferredRadarMode(Config.CLIENT.defaultRadarMode.get());
+		ClientInputManager.loadKeyBinds();
 	}
 	
 }

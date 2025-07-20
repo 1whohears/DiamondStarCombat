@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.client.input;
 
+import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -10,8 +11,10 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.Util;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -325,5 +328,28 @@ public class ClientInputManager {
 
     public static Collection<ActionInputHolder.Axis> getAxes() {
         return axes.values();
+    }
+
+    public static void saveKeyBinds() {
+        JsonObject json = new JsonObject();
+        buttons.forEach((id, action) -> json.add(id, action.write()));
+        axes.forEach((id, action) -> json.add(id, action.write()));
+        UtilPrint.printJsonClientDirectory("dscombat/config/action_key_binds.json", json);
+    }
+
+    public static void loadKeyBinds() {
+        JsonObject json = UtilPrint.readJsonClientDirectory("dscombat/config/action_key_binds.json");
+        buttons.forEach((id, action) -> {
+            JsonObject data = UtilParse.getJsonSafe(json, id);
+            String type = UtilParse.getStringSafe(data, "type", "");
+            if (!type.equals("button")) return;
+            action.read(data);
+        });
+        axes.forEach((id, action) -> {
+            JsonObject data = UtilParse.getJsonSafe(json, id);
+            String type = UtilParse.getStringSafe(data, "type", "");
+            if (!type.equals("axis")) return;
+            action.read(data);
+        });
     }
 }

@@ -27,6 +27,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
     @Override
     protected void init() {
         super.init();
+        ClientInputManager.loadKeyBinds();
         int maxPage = ClientInputManager.getNumActions() / 12;
         // LEFT RIGHT ARROWS
         // PAGE DOWN

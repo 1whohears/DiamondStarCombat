@@ -6,7 +6,6 @@ import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.nio.ByteBuffer;
@@ -117,19 +116,19 @@ public interface ActionInput {
     }
 
     class DSCKeyButton extends Button {
-        private final String id;
+        public final String key_mapping_id;
         public DSCKeyButton(@NotNull String key_mapping_id) {
-            id = key_mapping_id;
+            this.key_mapping_id = key_mapping_id;
         }
         @Override
         public @NotNull String getId() {
-            return id;
+            return key_mapping_id;
         }
         @Override
         public @NotNull JsonObject write() {
             JsonObject json = new JsonObject();
             UtilParse.writeEnum(json, "type", getButtonType());
-            json.addProperty("key_mapping_id", id);
+            json.addProperty("key_mapping_id", key_mapping_id);
             return json;
         }
         protected boolean checkIsPressed() {
@@ -145,7 +144,7 @@ public interface ActionInput {
     }
 
     class DSCKeyAxis implements Axis {
-        @NotNull private final String key_mapping_id_negative, key_mapping_id_positive;
+        @NotNull public final String key_mapping_id_negative, key_mapping_id_positive;
         @NotNull private final String id;
         private boolean negativePressed, positivePressed;
         public DSCKeyAxis(@NotNull String key_mapping_id_negative, @NotNull String key_mapping_id_positive) {
@@ -193,7 +192,7 @@ public interface ActionInput {
 
     class ControllerButton extends Button {
         @NotNull private final String id;
-        private final int joystick_id, button_id;
+        public final int joystick_id, button_id;
         public ControllerButton(int joystick_id, int button_id) {
             this.joystick_id = joystick_id;
             this.button_id = button_id;
@@ -230,10 +229,10 @@ public interface ActionInput {
 
     class ControllerAxis implements Axis {
         @NotNull private final String id;
-        private final int joystick_id, axis_id;
-        private final float dead_zone;
-        private final boolean invert;
-        private float value;
+        public final int joystick_id, axis_id;
+        public final float dead_zone;
+        public final boolean invert;
+        public float value;
         public ControllerAxis(int joystick_id, int axis_id, float dead_zone, boolean invert) {
             this.joystick_id = joystick_id;
             this.axis_id = axis_id;
@@ -291,9 +290,9 @@ public interface ActionInput {
 
     class ControllerAxisButton extends Button {
         @NotNull private final String id;
-        private final int joystick_id, axis_id;
-        private final float dead_zone;
-        private final boolean positive;
+        public final int joystick_id, axis_id;
+        public final float dead_zone;
+        public final boolean positive;
         public ControllerAxisButton(int joystick_id, int axis_id, float dead_zone, boolean positive) {
             this.joystick_id = joystick_id;
             this.axis_id = axis_id;

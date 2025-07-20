@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public final class DSCKeys {
 	
@@ -104,6 +105,14 @@ public final class DSCKeys {
 		KeyMapping key = DSCKeys.getKey(id);
 		if (key == null) return false;
 		return key.isDown();
+	}
+
+	public static Set<String> getKeyIds() {
+		return keys.keySet();
+	}
+
+	public static boolean hasKey(String id) {
+		return keys.containsKey(id);
 	}
 	
 }

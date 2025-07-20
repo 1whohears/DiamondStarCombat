@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.data.sound.VehiclePassengerSoundPacks;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.resources.ResourceLocation;
@@ -26,16 +27,15 @@ public class VehicleOtherScreen extends VehicleSubScreen {
     protected void init() {
         super.init();
         // CUSTOM DISMOUNT
-        positionWidgetGrid(new Checkbox(0, 0, 20, 20,
-                                   UtilMCText.translatable("ui.dscombat.dismount_key",
-                                           DSCKeys.dismount.getKey().getDisplayName()),
+        positionWidgetGrid(new Checkbox(0, 0, 20, 20, UtilMCText.translatable("ui.dscombat.dismount_key",
+                                   DSCKeys.dismount.getKey().getDisplayName()),
                                    Config.CLIENT.customDismount.get()) {
-                                        @Override
-                                        public void onPress() {
-                                            super.onPress();
-                                            Config.CLIENT.customDismount.set(selected());
-                                        }
-                                        },
+                @Override
+                public void onPress() {
+                    super.onPress();
+                    Config.CLIENT.customDismount.set(selected());
+                }
+            },
                 ROWS, COLUMNS, 1, 2);
         // PASSENGER SOUND PACK FIELD
         COLUMNS = 1;
@@ -46,6 +46,11 @@ public class VehicleOtherScreen extends VehicleSubScreen {
                 .create(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.passenger_sounds"),
                         onSoundPackCycle()), ROWS, COLUMNS, 1, 2);
+        // KEYBINDS BUTTON
+        positionWidgetGrid(new Button(0, 0, 20, 20,
+                        UtilMCText.translatable("ui.dscombat.key_binds"),
+                        onPress -> getMinecraft().setScreen(new VehicleKeyBindsScreen(0))),
+                ROWS, COLUMNS, 2, 2);
     }
 
     private CycleButton.OnValueChange<String> onSoundPackCycle() {

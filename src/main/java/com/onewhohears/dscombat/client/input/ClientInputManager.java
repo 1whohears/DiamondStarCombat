@@ -23,9 +23,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ClientInputManager {
 
@@ -303,5 +305,25 @@ public class ClientInputManager {
         ActionInputHolder.Axis holder = new ActionInputHolder.Axis(id, new ActionInput.DSCKeyAxis(defaultNegKey, defaultPosKey));
         axes.put(id, holder);
         return holder;
+    }
+
+    public static int getNumButtons() {
+        return buttons.size();
+    }
+
+    public static int getNumAxes() {
+        return axes.size();
+    }
+
+    public static int getNumActions() {
+        return getNumButtons() + getNumAxes();
+    }
+
+    public static Collection<ActionInputHolder.Button> getButtons() {
+        return buttons.values();
+    }
+
+    public static Collection<ActionInputHolder.Axis> getAxes() {
+        return axes.values();
     }
 }

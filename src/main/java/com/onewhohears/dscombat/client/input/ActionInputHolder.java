@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.client.input;
 
+import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,6 +36,12 @@ public class ActionInputHolder<A extends ActionInput> {
     }
     public @NotNull String getId() {
         return id;
+    }
+    public @NotNull String getNameString() {
+        return "action.dscombat."+getId();
+    }
+    public @NotNull Component getName() {
+        return UtilMCText.translatable(getNameString());
     }
 
     public static class Button extends ActionInputHolder<ActionInput.Button> {

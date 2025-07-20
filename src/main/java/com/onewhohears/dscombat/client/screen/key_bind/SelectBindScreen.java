@@ -30,6 +30,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
         @Override
         protected void init() {
             super.init();
+            vertical_widget_shift = 18;
             ActionInput.Axis input = getActionInput();
             if (input instanceof ActionInput.ControllerButtonAxis data) {
                 joystick_id = data.joystick_id;
@@ -67,6 +68,12 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
         @Override
         public void renderBackground(@NotNull PoseStack poseStack) {
             super.renderBackground(poseStack);
+            int ix = guiX+left_padding;
+            int iy = guiY+top_padding+36;
+            int w3 = imageWidth/3;
+            getMinecraft().font.draw(poseStack, "Joystick ID", ix, iy, infoColor);
+            getMinecraft().font.draw(poseStack, "Button +", ix+w3-1, iy, infoColor);
+            getMinecraft().font.draw(poseStack, "Button -", ix+w3*2-2, iy, infoColor);
             float scale = 0.80f;
             float startY = (guiY + top_padding + 70) / scale;
             float startX = (guiX + left_padding) / scale;
@@ -106,6 +113,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
         @Override
         protected void init() {
             super.init();
+            vertical_widget_shift = 18;
             ActionInput.Axis input = getActionInput();
             if (input instanceof ActionInput.ControllerAxis data) {
                 joystick_id = data.joystick_id;
@@ -141,18 +149,23 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 catch(NumberFormatException ignored) {}
             });
             // SET INVERT
-            positionWidgetGrid(new Checkbox(0, 0, 20, 20, UtilMCText.translatable("ui.dscombat.invert"), invert) {
+            positionWidgetGrid(new Checkbox(0, 0, 20, 20, UtilMCText.literal(""), invert) {
                                    @Override
                                    public void onPress() {
                                        super.onPress();
                                        invert = !invert;
-                                   }
-                               },
-                    ROWS, 4, 7, 2);
+                                   }}, ROWS, 4, 7, 2);
         }
         @Override
         public void renderBackground(@NotNull PoseStack poseStack) {
             super.renderBackground(poseStack);
+            int ix = guiX+left_padding;
+            int iy = guiY+top_padding+36;
+            int w4 = imageWidth/4;
+            getMinecraft().font.draw(poseStack, "Joystick ID", ix, iy, infoColor);
+            getMinecraft().font.draw(poseStack, "Axis ID", ix+w4-1, iy, infoColor);
+            getMinecraft().font.draw(poseStack, "Dead Zone", ix+w4*2-2, iy, infoColor);
+            getMinecraft().font.draw(poseStack, "Invert", ix+w4*3-3, iy, infoColor);
             float scale = 0.80f;
             float startY = (guiY + top_padding + 70) / scale;
             float startX = (guiX + left_padding) / scale;
@@ -289,6 +302,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
 
     @Override
     protected void init() {
+        vertical_widget_shift = 10;
         super.init();
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.save"),

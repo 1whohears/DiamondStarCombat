@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.client.screen.key_bind;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.ActionInput;
 import com.onewhohears.dscombat.client.input.ActionInputHolder;
-import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.client.screen.VehicleSubScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.Minecraft;
@@ -28,8 +27,10 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
 
     private final List<Button> priDSCKeyAxisButtons = new ArrayList<>();
     private final List<Button> secDSCKeyAxisButtons = new ArrayList<>();
-    private final List<Button> priControllerButtons = new ArrayList<>();
-    private final List<Button> secControllerButtons = new ArrayList<>();
+    private final List<Button> priControllerJoystickAxisButtons = new ArrayList<>();
+    private final List<Button> secControllerJoystickAxisButtons = new ArrayList<>();
+    private final List<Button> priControllerButtonAxisButtons = new ArrayList<>();
+    private final List<Button> secControllerButtonAxisButtons = new ArrayList<>();
 
     public VehicleEditAxisBindScreen(int page, ActionInputHolder.Axis action) {
         super(action.getNameString(), BG_TEXTURE, imageWidth, imageHeight, textureSize, textureSize);
@@ -66,10 +67,17 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
         // Controller Axis
         Button CONTROLLER_AXIS_PRI = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.controller_axis"),
-                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerAxis(page, action, true)));
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerJoystickAxis(page, action, true)));
         positionWidgetGrid(CONTROLLER_AXIS_PRI, ROWS, 1, 2, padding);
-        priControllerButtons.clear();
-        priControllerButtons.add(CONTROLLER_AXIS_PRI);
+        priControllerJoystickAxisButtons.clear();
+        priControllerJoystickAxisButtons.add(CONTROLLER_AXIS_PRI);
+        // Controller Button Axis
+        Button CONTROLLER_BUTTON_AXIS_PRI = new Button(0, 0, 20, 20,
+                UtilMCText.translatable("ui.dscombat.controller_button_axis"),
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerButtonAxis(page, action, true)));
+        positionWidgetGrid(CONTROLLER_BUTTON_AXIS_PRI, ROWS, 1, 2, padding);
+        priControllerButtonAxisButtons.clear();
+        priControllerButtonAxisButtons.add(CONTROLLER_BUTTON_AXIS_PRI);
         changePrimaryType(action.getPrimaryAction().getAxisType());
         // SECONDARY
         // Action Type Cycle
@@ -97,10 +105,17 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
         // Controller Axis
         Button CONTROLLER_AXIS_SEC = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.controller_axis"),
-                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerAxis(page, action, false)));
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerJoystickAxis(page, action, false)));
         positionWidgetGrid(CONTROLLER_AXIS_SEC, ROWS, 1, 4, padding);
-        secControllerButtons.clear();
-        secControllerButtons.add(CONTROLLER_AXIS_SEC);
+        secControllerJoystickAxisButtons.clear();
+        secControllerJoystickAxisButtons.add(CONTROLLER_AXIS_SEC);
+        // Controller Button Axis
+        Button CONTROLLER_BUTTON_AXIS_SEC = new Button(0, 0, 20, 20,
+                UtilMCText.translatable("ui.dscombat.controller_button_axis"),
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerButtonAxis(page, action, false)));
+        positionWidgetGrid(CONTROLLER_BUTTON_AXIS_SEC, ROWS, 1, 4, padding);
+        secControllerButtonAxisButtons.clear();
+        secControllerButtonAxisButtons.add(CONTROLLER_BUTTON_AXIS_SEC);
         changeSecondaryType(action.getSecondaryAction().getAxisType());
     }
 
@@ -108,15 +123,23 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
         switch (type) {
             case UNBOUND_AXIS -> {
                 priDSCKeyAxisButtons.forEach(button -> button.visible = false);
-                priControllerButtons.forEach(button -> button.visible = false);
+                priControllerJoystickAxisButtons.forEach(button -> button.visible = false);
+                priControllerButtonAxisButtons.forEach(button -> button.visible = false);
             }
             case DSC_KEY_AXIS -> {
                 priDSCKeyAxisButtons.forEach(button -> button.visible = true);
-                priControllerButtons.forEach(button -> button.visible = false);
+                priControllerJoystickAxisButtons.forEach(button -> button.visible = false);
+                priControllerButtonAxisButtons.forEach(button -> button.visible = false);
             }
             case CONTROLLER_AXIS -> {
                 priDSCKeyAxisButtons.forEach(button -> button.visible = false);
-                priControllerButtons.forEach(button -> button.visible = true);
+                priControllerJoystickAxisButtons.forEach(button -> button.visible = true);
+                priControllerButtonAxisButtons.forEach(button -> button.visible = false);
+            }
+            case CONTROLLER_BUTTON_AXIS -> {
+                priDSCKeyAxisButtons.forEach(button -> button.visible = false);
+                priControllerJoystickAxisButtons.forEach(button -> button.visible = false);
+                priControllerButtonAxisButtons.forEach(button -> button.visible = true);
             }
         }
     }
@@ -125,15 +148,23 @@ public class VehicleEditAxisBindScreen extends VehicleSubScreen {
         switch (type) {
             case UNBOUND_AXIS -> {
                 secDSCKeyAxisButtons.forEach(button -> button.visible = false);
-                secControllerButtons.forEach(button -> button.visible = false);
+                secControllerJoystickAxisButtons.forEach(button -> button.visible = false);
+                secControllerButtonAxisButtons.forEach(button -> button.visible = false);
             }
             case DSC_KEY_AXIS -> {
                 secDSCKeyAxisButtons.forEach(button -> button.visible = true);
-                secControllerButtons.forEach(button -> button.visible = false);
+                secControllerJoystickAxisButtons.forEach(button -> button.visible = false);
+                secControllerButtonAxisButtons.forEach(button -> button.visible = false);
             }
             case CONTROLLER_AXIS -> {
                 secDSCKeyAxisButtons.forEach(button -> button.visible = false);
-                secControllerButtons.forEach(button -> button.visible = true);
+                secControllerJoystickAxisButtons.forEach(button -> button.visible = true);
+                secControllerButtonAxisButtons.forEach(button -> button.visible = false);
+            }
+            case CONTROLLER_BUTTON_AXIS -> {
+                secDSCKeyAxisButtons.forEach(button -> button.visible = false);
+                secControllerJoystickAxisButtons.forEach(button -> button.visible = false);
+                secControllerButtonAxisButtons.forEach(button -> button.visible = true);
             }
         }
     }

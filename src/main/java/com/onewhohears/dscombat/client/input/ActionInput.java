@@ -36,7 +36,8 @@ public interface ActionInput {
     enum AxisType {
         UNBOUND_AXIS("unbound_axis", json -> new UnboundAxis()),
         DSC_KEY_AXIS("dsc_key_axis", DSCKeyAxis::read),
-        CONTROLLER_AXIS("controller_axis", ControllerAxis::read);
+        CONTROLLER_AXIS("controller_axis", ControllerAxis::read),
+        CONTROLLER_BUTTON_AXIS("controller_button_axis", ControllerButtonAxis::read);
         public final String id;
         public final Function<JsonObject, Axis> gen;
         AxisType(String id, Function<JsonObject, Axis> gen) {
@@ -332,6 +333,63 @@ public interface ActionInput {
                     UtilParse.getIntSafe(json, "axis_id", 0),
                     UtilParse.getFloatSafe(json, "dead_zone", 0),
                     UtilParse.getBooleanSafe(json, "positive", false));
+        }
+    }
+
+    class ControllerButtonAxis implements Axis {
+        @NotNull private final String id;
+        public final int joystick_id, positive_button_id, negative_button_id;
+        private boolean negativePressed, positivePressed;
+        public ControllerButtonAxis(int joystickId, int positiveButtonId, int negativeButtonId) {
+            this.id = joystickId+":"+positiveButtonId+":"+negativeButtonId;
+            joystick_id = joystickId;
+            positive_button_id = positiveButtonId;
+            negative_button_id = negativeButtonId;
+        }
+        @Override
+        public void tick() {
+            negativePressed = checkIsPressed(negative_button_id);
+            positivePressed = checkIsPressed(positive_button_id);
+        }
+        protected boolean checkIsPressed(int button_id) {
+            if (!GLFW.glfwJoystickPresent(joystick_id)) return false;
+            ByteBuffer buttons = GLFW.glfwGetJoystickButtons(joystick_id);
+            if (buttons == null) return false;
+            if (button_id > buttons.limit() - 1) return false;
+            return buttons.get(button_id) == 1;
+        }
+        @Override
+        public float getValue() {
+            if (negativePressed && positivePressed) return 0;
+            else if (negativePressed) return -1;
+            else if (positivePressed) return 1;
+            return 0;
+        }
+        @Override
+        public boolean isNegAndPos() {
+            return negativePressed && positivePressed;
+        }
+        @Override
+        public AxisType getAxisType() {
+            return AxisType.CONTROLLER_BUTTON_AXIS;
+        }
+        @Override
+        public @NotNull String getId() {
+            return id;
+        }
+        @Override
+        public @NotNull JsonObject write() {
+            JsonObject json = new JsonObject();
+            UtilParse.writeEnum(json, "type", getAxisType());
+            json.addProperty("joystick_id", joystick_id);
+            json.addProperty("positive_button_id", positive_button_id);
+            json.addProperty("negative_button_id", negative_button_id);
+            return json;
+        }
+        public static ControllerButtonAxis read(JsonObject json) {
+            return new ControllerButtonAxis(UtilParse.getIntSafe(json, "joystick_id", 0),
+                    UtilParse.getIntSafe(json, "positive_button_id", 0),
+                    UtilParse.getIntSafe(json, "negative_button_id", 0));
         }
     }
 

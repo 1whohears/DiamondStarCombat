@@ -16,16 +16,91 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Set;
 
 public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends ActionInput> extends VehicleSubScreen {
 
-    public static class ControllerAxis extends AxisScreen {
+    public static class ControllerButtonAxis extends AxisScreen {
+        private int joystick_id, positive_button_id, negative_button_id;
+        public ControllerButtonAxis(int page, ActionInputHolder.Axis action, boolean primary) {
+            super(page, action, primary);
+        }
+        @Override
+        protected void init() {
+            super.init();
+            ActionInput.Axis input = getActionInput();
+            if (input instanceof ActionInput.ControllerButtonAxis data) {
+                joystick_id = data.joystick_id;
+                positive_button_id = data.positive_button_id;
+                negative_button_id = data.negative_button_id;
+            }
+            // SET JOYSTICK ID
+            EditBox joystickIDBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+            positionWidgetGrid(joystickIDBox, ROWS, 3, 3, 2);
+            joystickIDBox.setValue(joystick_id+"");
+            joystickIDBox.setTextColor(0xFFFFFF);
+            joystickIDBox.setResponder(string -> {
+                try { joystick_id = Integer.parseInt(string); }
+                catch(NumberFormatException ignored) {}
+            });
+            // SET POSITIVE BUTTON
+            EditBox positiveButtonBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+            positionWidgetGrid(positiveButtonBox, ROWS, 3, 4, 2);
+            positiveButtonBox.setValue(positive_button_id+"");
+            positiveButtonBox.setTextColor(0xFFFFFF);
+            positiveButtonBox.setResponder(string -> {
+                try { positive_button_id = Integer.parseInt(string); }
+                catch(NumberFormatException ignored) {}
+            });
+            // SET NEGATIVE BUTTON
+            EditBox negativeButtonBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+            positionWidgetGrid(negativeButtonBox, ROWS, 3, 5, 2);
+            negativeButtonBox.setValue(negative_button_id+"");
+            negativeButtonBox.setTextColor(0xFFFFFF);
+            negativeButtonBox.setResponder(string -> {
+                try { negative_button_id = Integer.parseInt(string); }
+                catch(NumberFormatException ignored) {}
+            });
+        }
+        @Override
+        public void renderBackground(@NotNull PoseStack poseStack) {
+            super.renderBackground(poseStack);
+            float scale = 0.80f;
+            float startY = (guiY + top_padding + 70) / scale;
+            float startX = (guiX + left_padding) / scale;
+            poseStack.pushPose();
+            poseStack.scale(scale, scale, scale);
+            int k = 0;
+            for (int j = 0; j < 16; ++j) {
+                if (!GLFW.glfwJoystickPresent(j)) continue;
+                String name = GLFW.glfwGetJoystickName(j);
+                if (name == null) name = "N/A";
+                if (filterJoystick(name)) continue;
+                ByteBuffer buttons = GLFW.glfwGetJoystickButtons(j);
+                if (buttons == null) continue;
+                for (int b = 0; b < buttons.limit(); ++b) {
+                    byte value = buttons.get(b);
+                    if (value == 0) continue;
+                    String text = name+" | ID:"+j+" | Button:"+b+" | ON";
+                    getMinecraft().font.draw(poseStack, text, startX, startY+k*10, infoColor);
+                    ++k;
+                }
+            }
+            poseStack.popPose();
+        }
+        @Override
+        protected ActionInput.Axis createNewInput() {
+            return new ActionInput.ControllerButtonAxis(joystick_id, positive_button_id, negative_button_id);
+        }
+    }
+
+    public static class ControllerJoystickAxis extends AxisScreen {
         private int joystick_id, axis_id;
         private float dead_zone;
         private boolean invert;
-        public ControllerAxis(int page, ActionInputHolder.Axis action, boolean primary) {
+        public ControllerJoystickAxis(int page, ActionInputHolder.Axis action, boolean primary) {
             super(page, action, primary);
         }
         @Override

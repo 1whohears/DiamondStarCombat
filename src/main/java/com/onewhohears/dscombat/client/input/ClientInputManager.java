@@ -1,0 +1,307 @@
+package com.onewhohears.dscombat.client.input;
+
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.VehicleSyncAction;
+import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
+import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.Util;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ClientInputManager {
+
+    private static final Map<String, ActionInputHolder.Button> buttons = new HashMap<>();
+    private static final Map<String, ActionInputHolder.Axis> axes = new HashMap<>();
+
+    // MOVE CONTROL
+    public static final ActionInputHolder.Axis THROTTLE = registerAxis("throttle", "throttle_down_key", "throttle_up_key");
+    public static final ActionInputHolder.Axis PITCH = registerAxis("pitch", "pitch_down_key", "pitch_up_key");
+    public static final ActionInputHolder.Axis ROLL = registerAxis("roll", "roll_left_key", "roll_right_key");
+    public static final ActionInputHolder.Axis YAW = registerAxis("yaw", "yaw_left_key", "yaw_right_key");
+
+    // CONTROL UTIL
+    public static final ActionInputHolder.Button MOUSE_MODE = registerButton("mouse_mode", "mouse_mode_key");
+    public static final ActionInputHolder.Button FLIP_CONTROLS = registerButton("flip_controls","flip_controls_key");
+    public static final ActionInputHolder.Button RESET_MOUSE = registerButton("reset_mouse","reset_mouse_key");
+    public static final ActionInputHolder.Button LEAN_LEFT = registerButton("lean_left","lean_left_key");
+    public static final ActionInputHolder.Button LEAN_RIGHT = registerButton("lean_right","lean_right_key");
+    public static final ActionInputHolder.Button TURN_ASSIST = registerButton("turn_assist","turn_assist_key");
+
+    // PASSENGER CONTROL
+    public static final ActionInputHolder.Button VEHICLE_MENU = registerButton("vehicle_menu", "plane_menu_key");
+    public static final ActionInputHolder.Button DISMOUNT = registerButton("dismount", "dismount_key");
+    public static final ActionInputHolder.Button CHANGE_SEAT = registerButton("change_seat", "change_seat_key");
+    public static final ActionInputHolder.Button LANDING_GEAR = registerButton("landing_gear", "landing_gear_key");
+    public static final ActionInputHolder.Button GIMBAL = registerButton("gimbal", "gimbal_key");
+    public static final ActionInputHolder.Button SPECIAL1 = registerButton("special1", "special_key");
+    public static final ActionInputHolder.Button SPECIAL2 = registerButton("special2", "special_2_key");
+    public static final ActionInputHolder.Button EJECT = registerButton("eject", "eject_key");
+
+    // COMBAT CONTROL
+    public static final ActionInputHolder.Button SHOOT = registerButton("shoot", "shoot_key");
+    public static final ActionInputHolder.Button WEAPON_CYCLE = registerButton("weapon_cycle","weapon_select_key");
+    public static final ActionInputHolder.Button WEAPON_CYCLE_INVERSE = registerButton("weapon_cycle_inverse","weapon_select_up_key");
+    public static final ActionInputHolder.Button FLARE = registerButton("flare","flare_key");
+    public static final ActionInputHolder.Button CHAFF = registerButton("chaff","chaff_key");
+    public static final ActionInputHolder.Button RADAR_MODE = registerButton("radar_mode","radar_mode_key");
+    public static final ActionInputHolder.Button PING_CYCLE = registerButton("ping_cycle","ping_cycle_key");
+    public static final ActionInputHolder.Button AFTERBURNER = registerButton("afterburner","afterburner_toggle_key");
+
+    private static int leftTicks = 0;
+    private static long radarModeUpdateTime = 0;
+
+    private static void pilotTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle) {
+        if (MOUSE_MODE.isInitPressed()) DSCClientInputs.cycleMouseMode();
+        if (RESET_MOUSE.isPressed()) DSCClientInputs.centerMousePos();
+        else if (mc.screen != null) DSCClientInputs.centerMousePos();
+
+        boolean flare = FLARE.isPressed();
+        boolean chaff = CHAFF.isPressed();
+        if (AFTERBURNER.isInitPressed()) DSCClientInputs.toggleAfterBurner();
+        if (TURN_ASSIST.isInitPressed()) DSCClientInputs.toggleTurnAssist();
+        boolean flip = FLIP_CONTROLS.isPressed();
+        boolean special = SPECIAL1.isPressed();
+        boolean special2 = SPECIAL2.isPressed();
+
+        // should invert pitch
+        int invertPitch = Config.CLIENT.invertY.get() ? 1 : -1;
+        if (vehicle.getStats().ignoreInvertY()) invertPitch = -1;
+        // preliminary axis input collection
+        float throttle = THROTTLE.getValue();
+        float pitch = PITCH.getValue();
+        float roll = ROLL.getValue();
+        float yaw = YAW.getValue();
+        boolean isBothRoll = ROLL.isNegAndPos();
+        // should yaw/roll flip
+        if (flip) {
+            float temp = yaw;
+            yaw = roll;
+            roll = temp;
+        }
+        // should pitch/throttle flip
+        boolean type_flip = vehicle.getStats().flipPitchThrottle();
+        boolean mode = DSCClientInputs.isCameraLockedForward();
+        // I made a truth table and this insane expression is optimal somehow.
+        // I wouldn't bother questioning it just move on...unless you are insane. - 1whohears
+        if ((!type_flip && (flip ^ mode)) || (type_flip && !flip)) {
+            float temp = throttle;
+            throttle = pitch;
+            pitch = temp;
+        }
+        // calc mouse mode controls (leaving this very ugly code here for now. will clean up later)
+        double mouseX = mc.mouseHandler.xpos() - DSCClientInputs.getMouseCenterX();
+        double mouseY = -(mc.mouseHandler.ypos() - DSCClientInputs.getMouseCenterY());
+        if (DSCClientInputs.isCameraLockedForward()) {
+            // FIXME 2.1 fix mouse control mode
+            double ya = Math.abs(mouseY);
+            double xa = Math.abs(mouseX);
+            float ys = (float) Math.signum(mouseY) * -invertPitch;
+            float xs = (float) Math.signum(mouseX);
+            double max = Config.CLIENT.mouseModeMaxRadius.get();
+            float stickStepsY = Config.CLIENT.mouseYSteps.get();
+            float stickStepsX = Config.CLIENT.mouseXSteps.get();
+            if (ya >= max) pitch = ys;
+            else {
+                int step = (int)(ya/max*stickStepsY*ys);
+                pitch = ((float)step)/stickStepsY;
+            }
+            if (xa >= max) roll = xs;
+            else {
+                int step = (int)(xa/max*stickStepsX*xs);
+                roll = ((float)step)/stickStepsX;
+            }
+            if (mc.mouseHandler.getYVelocity() == 0) {
+                DSCClientInputs.setMouseCenterY((int) Mth.approach(
+                        (float)DSCClientInputs.getMouseCenterY(),
+                        (float)mc.mouseHandler.ypos(),
+                        Config.CLIENT.mouseYReturnRate.get().floatValue()));
+            }
+            if (mc.mouseHandler.getXVelocity() == 0) {
+                DSCClientInputs.setMouseCenterX((int)Mth.approach(
+                        (float)DSCClientInputs.getMouseCenterX(),
+                        (float)mc.mouseHandler.xpos(),
+                        Config.CLIENT.mouseXReturnRate.get().floatValue()));
+            }
+        } else pitch *= invertPitch;
+
+        vehicle.inputs.clientPilotControlsToServer(vehicle,
+                throttle, pitch, roll, yaw,
+                flare, chaff, DSCClientInputs.isAfterBurner(),
+                special, special2, isBothRoll,
+                DSCClientInputs.isCameraLockedForward(), DSCClientInputs.isTurnAssist());
+
+        if (!DSCClientInputs.isCameraLockedForward()) DSCClientInputs.centerMousePos();
+        if (LANDING_GEAR.isInitPressed()) {
+            sendSyncAction(new VehicleSyncAction.LandingGearAction(vehicle.toggleLandingGear()));
+        }
+    }
+
+    private static void passengerTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle, @NotNull EntityRidablePart seat) {
+        boolean isRadarController = player.equals(vehicle.getControllingPlayerOrBot());
+        if (DSCClientInputs.disable3rdPersonVehicle) mc.options.setCameraType(CameraType.FIRST_PERSON);
+        /*
+         * THIS TELLS SERVER WHERE THE SEAT IS IN CASE LAG CAUSES VIOLENCE
+         * HOW 4 the culprit of the seat de-sync issue is net.minecraft.server.level.ChunkMap.TrackedEntity.updatePlayer
+         * sometimes when the server lags the seat position on the server side doesn't get updated with the plane and the player
+         * so the server thinks the seat is outside the player render distance and sends a discard packet to the client
+         * is there a way to fix this without the ToServerSeatPos packet?
+         */
+        if (player.tickCount % Config.CLIENT.syncSeatPosRate.get() == 0) {
+            PacketHandler.INSTANCE.sendToServer(new ToServerSeatPos(seat.position()));
+        }
+        // SWITCH SEAT
+        if (CHANGE_SEAT.isInitPressed()) {
+            sendSyncAction(new VehicleSyncAction.SwitchSeatAction());
+        }
+        // CYCLE WEAPON
+        int selectNextWeapon = 0;
+        if (WEAPON_CYCLE_INVERSE.isInitPressed()) selectNextWeapon = -1;
+        else if (WEAPON_CYCLE.isInitPressed()) selectNextWeapon = 1;
+        vehicle.weaponSystem.selectNextWeapon(selectNextWeapon);
+        // SELECT RADAR PING
+        RadarSystem radar = vehicle.radarSystem;
+        if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {
+            List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
+            if (DSCClientInputs.getRadarHoverIndex() < pings.size())
+                radar.clientSelectTarget(pings.get(DSCClientInputs.getRadarHoverIndex()));
+        }
+        // CYCLE PING
+        if (PING_CYCLE.isInitPressed()) radar.clientSelectNextTarget();
+        // SHOOT PILOT WEAPON OR TURRET
+        if (SHOOT.isPressed() && playerCanShoot(player)) {
+            sendSyncAction(new VehicleSyncAction.ShootAction(
+                    vehicle.weaponSystem.getSelectedIndex(),
+                    radar.getClientSelectedPing(),
+                    getShootPos(player, vehicle)));
+        }
+        // DISMOUNT
+        if (Config.CLIENT.customDismount.get() && DISMOUNT.isPressed()) {
+            sendSyncAction(new VehicleSyncAction.DismountAction());
+        }
+        // EJECT
+        if (EJECT.isInitPressed()) {
+            if (seat.canEject()) {
+                seat.useEject();
+                sendSyncAction(new VehicleSyncAction.DismountAction(true));
+                player.getLevel().playLocalSound(player.getX(), player.getY(), player.getZ(),
+                        ModSounds.EJECT_WIND, SoundSource.PLAYERS, 0.5f, 1, false);
+            } else {
+                sendSyncAction(new VehicleSyncAction.DismountAction(false));
+            }
+        }
+        // CYCLE RADAR MODE
+        boolean cycleRadarMode = RADAR_MODE.isInitPressed();
+        if (cycleRadarMode) {
+            DSCClientInputs.cyclePreferredRadarMode();
+            if (!isRadarController) player.displayClientMessage(UtilMCText.translatable("info.dscombat.not_radar_controller"), true);
+        }
+        if (isRadarController && DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
+            sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getPreferredRadarMode()));
+            radarModeUpdateTime = Util.getMillis();
+        }
+        // USE GIMBAL
+        if (GIMBAL.isInitPressed()) {
+            DSCClientInputs.toggleGimbalMode();
+        }
+        // OPEN VEHICLE MENU
+        if (VEHICLE_MENU.isInitPressed()) {
+            mc.setScreen(new VehicleMainScreen());
+        }
+        // CAMERA LEAN
+        boolean leanLeft = LEAN_LEFT.isInitPressed();
+        boolean leanRight = LEAN_RIGHT.isInitPressed();
+        if (leanLeft && leanRight) DSCClientInputs.leanNot();
+        else if (leanLeft) DSCClientInputs.leanLeft();
+        else if (leanRight) DSCClientInputs.leanRight();
+    }
+
+    private static void tickActions() {
+        buttons.forEach((id, action) -> action.tick());
+        axes.forEach((id, action) -> action.tick());
+    }
+
+    public static void clientTickFirst() {
+        tickActions();
+        Minecraft mc = Minecraft.getInstance();
+        final var player = mc.player;
+        if (player == null) return;
+        if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+        Entity controller = vehicle.getControllingPassenger();
+        if (controller == null || !controller.equals(player)) return;
+        pilotTick(mc, player, vehicle);
+    }
+
+    public static void clientTickSecond() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.mouseHandler.isLeftPressed()) ++leftTicks;
+        else leftTicks = 0;
+        final var player = mc.player;
+        if (player == null || !player.isPassenger()) return;
+        if (!(player.getVehicle() instanceof EntityRidablePart seat)) return;
+        EntityVehicle vehicle = seat.getParentVehicle();
+        if (vehicle == null) return;
+        passengerTick(mc, player, vehicle, seat);
+    }
+
+    public static void sendSyncAction(VehicleSyncAction action) {
+        VehicleSyncAction.sendSyncAction(action);
+    }
+
+    public static Vec3 getShootPos(Player player, EntityVehicle vehicle) {
+        switch (DSCClientInputs.getTargetMode()) {
+            case LOOK -> { return getLookPos(player, vehicle); }
+            case COORDS -> {  return Config.CLIENT.getTargetPos(); }
+            case INDICATOR -> { return Vec3.ZERO; }
+        }
+        return Vec3.ZERO;
+    }
+
+    public static Vec3 getLookPos(Player player, EntityVehicle vehicle) {
+        Entity looker = player;
+        if (DSCClientInputs.isGimbalMode()) {
+            Entity gimbal = vehicle.getGimbalForPilotCamera();
+            if (gimbal != null) {
+                looker = gimbal;
+                looker.setXRot(player.getXRot());
+                looker.setYRot(player.getYRot());
+            }
+        }
+        return UtilEntity.getLookingAtBlockPos(looker, 300);
+    }
+
+    private static boolean playerCanShoot(Player player) {
+        return (System.currentTimeMillis()-DSCClientInputs.getClientMountTime()) > DSCClientInputs.MOUNT_SHOOT_COOLDOWN
+                && (!player.isUsingItem() || player.getItemInHand(player.getUsedItemHand()).is(Items.SHIELD));
+    }
+
+    public static ActionInputHolder.Button registerButton(String id, String defaultKey) {
+        ActionInputHolder.Button holder = new ActionInputHolder.Button(id, new ActionInput.DSCKeyButton(defaultKey));
+        buttons.put(id, holder);
+        return holder;
+    }
+
+    public static ActionInputHolder.Axis registerAxis(String id, String defaultNegKey, String defaultPosKey) {
+        ActionInputHolder.Axis holder = new ActionInputHolder.Axis(id, new ActionInput.DSCKeyAxis(defaultNegKey, defaultPosKey));
+        axes.put(id, holder);
+        return holder;
+    }
+}

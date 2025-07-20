@@ -4,8 +4,14 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.onewhohears.dscombat.DSCombatMod;
 
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class DSCKeys {
 	
@@ -33,6 +39,8 @@ public final class DSCKeys {
 	public static KeyMapping afterBurnerKey, turnAssistKey;
 	
 	private static RegisterKeyMappingsEvent event;
+
+	private static final Map<String, KeyMapping> keys = new HashMap<>();
 	
 	public static void init(RegisterKeyMappingsEvent e) {
 		event = e;
@@ -76,6 +84,7 @@ public final class DSCKeys {
 		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
 				KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, keycode, category);
 		event.register(key);
+		keys.put(name, key);
 		return key;
 	}
 	
@@ -83,7 +92,18 @@ public final class DSCKeys {
 		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
 				KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE, keycode, category);
 		event.register(key);
+		keys.put(name, key);
 		return key;
+	}
+
+	public static @Nullable KeyMapping getKey(@NotNull String name) {
+		return keys.get(name);
+	}
+
+	public static boolean isKeyPressed(String id) {
+		KeyMapping key = DSCKeys.getKey(id);
+		if (key == null) return false;
+		return key.isDown();
 	}
 	
 }

@@ -1,8 +1,10 @@
-package com.onewhohears.dscombat.client.screen;
+package com.onewhohears.dscombat.client.screen.key_bind;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.ActionInputHolder;
 import com.onewhohears.dscombat.client.input.ClientInputManager;
+import com.onewhohears.dscombat.client.screen.VehicleOtherScreen;
+import com.onewhohears.dscombat.client.screen.VehicleSubScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;

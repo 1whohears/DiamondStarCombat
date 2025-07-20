@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.screen;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCKeys;
+import com.onewhohears.dscombat.client.screen.key_bind.VehicleKeyBindsScreen;
 import com.onewhohears.dscombat.data.sound.VehiclePassengerSoundPacks;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.gui.components.Button;
@@ -18,7 +19,7 @@ public class VehicleOtherScreen extends VehicleSubScreen {
     private static final int imageWidth = 240, imageHeight = 180;
     private static final int textureSize = 256;
 
-    protected VehicleOtherScreen() {
+    public VehicleOtherScreen() {
         super("screen.dscombat.vehicle_other_screen",
                 BG_TEXTURE, imageWidth, imageHeight, textureSize, textureSize);
     }

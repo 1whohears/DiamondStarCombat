@@ -5,36 +5,34 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class ActionInputHolder<A extends ActionInput> {
     @NotNull private final String id;
-    @Nullable private A primaryAction, secondaryAction;
-    public ActionInputHolder(@NotNull String id, @Nullable A defaultAction) {
+    @NotNull private A primaryAction, secondaryAction;
+    public ActionInputHolder(@NotNull String id, @NotNull A defaultAction, @NotNull A secondaryAction) {
         this.id = id;
         this.primaryAction = defaultAction;
-    }
-    public void setPrimaryAction(@Nullable A primaryAction) {
-        this.primaryAction = primaryAction;
-    }
-    public @Nullable A getPrimaryAction() {
-        return primaryAction;
-    }
-    public void setSecondaryAction(@Nullable A secondaryAction) {
         this.secondaryAction = secondaryAction;
     }
-    public @Nullable A getSecondaryAction() {
+    public void setPrimaryAction(@NotNull A primaryAction) {
+        this.primaryAction = primaryAction;
+    }
+    public @NotNull A getPrimaryAction() {
+        return primaryAction;
+    }
+    public void setSecondaryAction(@NotNull A secondaryAction) {
+        this.secondaryAction = secondaryAction;
+    }
+    public @NotNull A getSecondaryAction() {
         return secondaryAction;
     }
-    public @Nullable A getActiveAction() {
-        if (getPrimaryAction() != null && getPrimaryAction().isActive()) return getPrimaryAction();
+    public @NotNull A getActiveAction() {
+        if (getPrimaryAction().isActive()) return getPrimaryAction();
         return getSecondaryAction();
     }
     public void tick() {
-        if (getPrimaryAction() != null)
-            getPrimaryAction().tick();
-        if (getSecondaryAction() != null)
-            getSecondaryAction().tick();
+        getPrimaryAction().tick();
+        getSecondaryAction().tick();
     }
     public @NotNull String getId() {
         return id;
@@ -49,15 +47,15 @@ public abstract class ActionInputHolder<A extends ActionInput> {
     public JsonObject write() {
         JsonObject json = new JsonObject();
         json.addProperty("type", getType());
-        if (getPrimaryAction() != null) json.add("primary", getPrimaryAction().write());
-        if (getSecondaryAction() != null) json.add("secondary", getSecondaryAction().write());
+        json.add("primary", getPrimaryAction().write());
+        json.add("secondary", getSecondaryAction().write());
         return json;
     }
     public abstract void read(JsonObject json);
 
     public static class Button extends ActionInputHolder<ActionInput.Button> {
-        public Button(@NotNull String id, ActionInput.@Nullable Button defaultAction) {
-            super(id, defaultAction);
+        public Button(@NotNull String id, ActionInput.@NotNull Button defaultAction) {
+            super(id, defaultAction, new ActionInput.UnboundButton());
         }
         @Override
         public String getType() {
@@ -75,40 +73,28 @@ public abstract class ActionInputHolder<A extends ActionInput> {
             }
         }
         public boolean isPressed() {
-            ActionInput.Button action = getActiveAction();
-            if (action == null) return false;
-            return action.isPressed();
+            return getActiveAction().isPressed();
         }
         public boolean wasPressed() {
-            ActionInput.Button action = getActiveAction();
-            if (action == null) return false;
-            return action.wasPressed();
+            return getActiveAction().wasPressed();
         }
         public boolean isInitPressed() {
-            ActionInput.Button action = getActiveAction();
-            if (action == null) return false;
-            return action.isInitPressed();
+            return getActiveAction().isInitPressed();
         }
         public boolean isInitReleased() {
-            ActionInput.Button action = getActiveAction();
-            if (action == null) return false;
-            return action.isInitReleased();
+            return getActiveAction().isInitReleased();
         }
     }
 
     public static class Axis extends ActionInputHolder<ActionInput.Axis> {
-        public Axis(@NotNull String id, ActionInput.@Nullable Axis defaultAction) {
-            super(id, defaultAction);
+        public Axis(@NotNull String id, ActionInput.@NotNull Axis defaultAction) {
+            super(id, defaultAction, new ActionInput.UnboundAxis());
         }
         public float getValue() {
-            ActionInput.Axis action = getActiveAction();
-            if (action == null) return 0;
-            return action.getValue();
+            return getActiveAction().getValue();
         }
         public boolean isNegAndPos() {
-            ActionInput.Axis action = getActiveAction();
-            if (action == null) return false;
-            return action.isNegAndPos();
+            return getActiveAction().isNegAndPos();
         }
         @Override
         public String getType() {

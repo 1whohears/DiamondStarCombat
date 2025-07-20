@@ -1,7 +1,9 @@
 package com.onewhohears.dscombat.client.input;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilParse;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,28 +11,57 @@ import org.lwjgl.glfw.GLFW;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.util.function.Function;
 
 public interface ActionInput {
 
-    @Nullable
-    static Button getButtonByJson(JsonObject json) {
-        String type = UtilParse.getStringSafe(json, "type", "");
-        switch (type) {
-            case "dsc_key_button": return DSCKeyButton.read(json);
-            case "controller_button": return ControllerButton.read(json);
-            case "controller_axis_button": return ControllerAxisButton.read(json);
+    enum ButtonType {
+        UNBOUND_BUTTON("unbound_button", json -> new UnboundButton()),
+        DSC_KEY_BUTTON("dsc_key_button", DSCKeyButton::read),
+        CONTROLLER_BUTTON("controller_button", ControllerButton::read),
+        CONTROLLER_AXIS_BUTTON("controller_axis_button", ControllerAxisButton::read);
+        public final String id;
+        public final Function<JsonObject, Button> gen;
+        ButtonType(String id, Function<JsonObject, Button> gen) {
+            this.id = id;
+            this.gen = gen;
         }
-        return null;
+        public String getTypeNameString() {
+            return "action_type.dscombat."+id;
+        }
+        public Component getTypeName() {
+            return UtilMCText.translatable(getTypeNameString());
+        }
     }
 
-    @Nullable
-    static Axis getAxisByJson(JsonObject json) {
-        String type = UtilParse.getStringSafe(json, "type", "");
-        switch (type) {
-            case "dsc_key_axis": return DSCKeyAxis.read(json);
-            case "controller_axis": return ControllerAxis.read(json);
+    enum AxisType {
+        UNBOUND_AXIS("unbound_axis", json -> new UnboundAxis()),
+        DSC_KEY_AXIS("dsc_key_axis", DSCKeyAxis::read),
+        CONTROLLER_AXIS("controller_axis", ControllerAxis::read);
+        public final String id;
+        public final Function<JsonObject, Axis> gen;
+        AxisType(String id, Function<JsonObject, Axis> gen) {
+            this.id = id;
+            this.gen = gen;
         }
-        return null;
+        public String getTypeNameString() {
+            return "action_type.dscombat."+id;
+        }
+        public Component getTypeName() {
+            return UtilMCText.translatable(getTypeNameString());
+        }
+    }
+
+    @NotNull
+    static Button getButtonByJson(JsonObject json) {
+        ButtonType type = UtilParse.getEnumSafe(json, "type", ButtonType.class);
+        return type.gen.apply(json);
+    }
+
+    @NotNull
+    static Axis getAxisByJson(JsonObject json) {
+        AxisType type = UtilParse.getEnumSafe(json, "type", AxisType.class);
+        return type.gen.apply(json);
     }
 
     @NotNull String getId();
@@ -38,6 +69,9 @@ public interface ActionInput {
     void tick();
     boolean isActive();
     @NotNull JsonObject write();
+    default boolean isUnbound() {
+        return false;
+    }
 
     abstract class Button implements ActionInput {
         private boolean isPressed, wasPressed;
@@ -63,6 +97,11 @@ public interface ActionInput {
         public boolean isActive() {
             return isPressed() || wasPressed();
         }
+        public abstract ButtonType getButtonType();
+        @Override
+        public @NotNull String getType() {
+            return getButtonType().id;
+        }
     }
 
     interface Axis extends ActionInput {
@@ -70,6 +109,10 @@ public interface ActionInput {
         boolean isNegAndPos();
         default boolean isActive() {
             return getValue() != 0;
+        }
+        AxisType getAxisType();
+        default @NotNull String getType() {
+            return getAxisType().id;
         }
     }
 
@@ -83,18 +126,18 @@ public interface ActionInput {
             return id;
         }
         @Override
-        public @NotNull String getType() {
-            return "dsc_key_button";
-        }
-        @Override
         public @NotNull JsonObject write() {
             JsonObject json = new JsonObject();
-            json.addProperty("type", getType());
+            UtilParse.writeEnum(json, "type", getButtonType());
             json.addProperty("key_mapping_id", id);
             return json;
         }
         protected boolean checkIsPressed() {
             return DSCKeys.isKeyPressed(getId());
+        }
+        @Override
+        public ButtonType getButtonType() {
+            return ButtonType.DSC_KEY_BUTTON;
         }
         public static DSCKeyButton read(JsonObject json) {
             return new DSCKeyButton(UtilParse.getStringSafe(json, "key_mapping_id", ""));
@@ -115,8 +158,8 @@ public interface ActionInput {
             return id;
         }
         @Override
-        public @NotNull String getType() {
-            return "dsc_key_axis";
+        public AxisType getAxisType() {
+            return AxisType.DSC_KEY_AXIS;
         }
         @Override
         public void tick() {
@@ -137,7 +180,7 @@ public interface ActionInput {
         @Override
         public @NotNull JsonObject write() {
             JsonObject json = new JsonObject();
-            json.addProperty("type", getType());
+            UtilParse.writeEnum(json, "type", getAxisType());
             json.addProperty("key_mapping_id_negative", key_mapping_id_negative);
             json.addProperty("key_mapping_id_positive", key_mapping_id_positive);
             return json;
@@ -168,13 +211,13 @@ public interface ActionInput {
             return id;
         }
         @Override
-        public @NotNull String getType() {
-            return "controller_button";
+        public ButtonType getButtonType() {
+            return ButtonType.CONTROLLER_BUTTON;
         }
         @Override
         public @NotNull JsonObject write() {
             JsonObject json = new JsonObject();
-            json.addProperty("type", getType());
+            UtilParse.writeEnum(json, "type", getButtonType());
             json.addProperty("joystick_id", joystick_id);
             json.addProperty("button_id", button_id);
             return json;
@@ -225,13 +268,13 @@ public interface ActionInput {
             return id;
         }
         @Override
-        public @NotNull String getType() {
-            return "controller_axis";
+        public AxisType getAxisType() {
+            return AxisType.CONTROLLER_AXIS;
         }
         @Override
         public @NotNull JsonObject write() {
             JsonObject json = new JsonObject();
-            json.addProperty("type", getType());
+            UtilParse.writeEnum(json, "type", getAxisType());
             json.addProperty("joystick_id", joystick_id);
             json.addProperty("axis_id", axis_id);
             json.addProperty("dead_zone", dead_zone);
@@ -272,13 +315,13 @@ public interface ActionInput {
             return id;
         }
         @Override
-        public @NotNull String getType() {
-            return "controller_axis_button";
+        public ButtonType getButtonType() {
+            return ButtonType.CONTROLLER_AXIS_BUTTON;
         }
         @Override
         public @NotNull JsonObject write() {
             JsonObject json = new JsonObject();
-            json.addProperty("type", getType());
+            UtilParse.writeEnum(json, "type", getButtonType());
             json.addProperty("joystick_id", joystick_id);
             json.addProperty("axis_id", axis_id);
             json.addProperty("dead_zone", dead_zone);
@@ -290,6 +333,64 @@ public interface ActionInput {
                     UtilParse.getIntSafe(json, "axis_id", 0),
                     UtilParse.getFloatSafe(json, "dead_zone", 0),
                     UtilParse.getBooleanSafe(json, "positive", false));
+        }
+    }
+
+    class UnboundButton extends Button {
+        @Override
+        public boolean isUnbound() {
+            return true;
+        }
+        @Override
+        protected boolean checkIsPressed() {
+            return false;
+        }
+        @Override
+        public @NotNull String getId() {
+            return "none";
+        }
+        @Override
+        public ButtonType getButtonType() {
+            return ButtonType.UNBOUND_BUTTON;
+        }
+        @Override
+        public @NotNull JsonObject write() {
+            JsonObject json = new JsonObject();
+            UtilParse.writeEnum(json, "type", getButtonType());
+            return json;
+        }
+    }
+
+    class UnboundAxis implements Axis {
+        @Override
+        public boolean isUnbound() {
+            return true;
+        }
+        @Override
+        public float getValue() {
+            return 0;
+        }
+        @Override
+        public boolean isNegAndPos() {
+            return false;
+        }
+        @Override
+        public AxisType getAxisType() {
+            return AxisType.UNBOUND_AXIS;
+        }
+        @Override
+        public @NotNull String getId() {
+            return "none";
+        }
+        @Override
+        public void tick() {
+
+        }
+        @Override
+        public @NotNull JsonObject write() {
+            JsonObject json = new JsonObject();
+            UtilParse.writeEnum(json, "type", getAxisType());
+            return json;
         }
     }
 

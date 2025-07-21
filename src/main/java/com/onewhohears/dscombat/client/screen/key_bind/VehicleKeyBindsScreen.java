@@ -28,6 +28,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
 
     @Override
     protected void init() {
+        ROWS = 8;
         super.init();
         ClientInputManager.loadKeyBinds();
         int maxPage = ClientInputManager.getNumActions() / 12;
@@ -39,7 +40,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
             if (p < 0) p = maxPage;
             getMinecraft().setScreen(new VehicleKeyBindsScreen(p));
         });
-        positionWidgetGrid(leftButton, 7, 4, 2, 2);
+        positionWidgetGrid(leftButton, ROWS, 4, 2, 2);
         // PAGE UP
         Button rightButton = new Button(0, 0, 20, 20,
                 UtilMCText.literal("->"), onPress -> {

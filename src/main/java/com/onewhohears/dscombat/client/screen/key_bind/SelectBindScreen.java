@@ -545,7 +545,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
         Component alt;
         if (primary) alt = UtilMCText.translatable("ui.dscombat.primary");
         else alt = UtilMCText.translatable("ui.dscombat.secondary");
-        getMinecraft().font.draw(poseStack, alt, guiX+image_width-100, guiY+top_padding, infoColor);
+        getMinecraft().font.draw(poseStack, alt, guiX+image_width-60, guiY+top_padding, infoColor);
     }
 
 }

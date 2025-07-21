@@ -130,7 +130,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
             }
             // SET JOYSTICK ID
             EditBox joystickIDBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
-            positionWidgetGrid(joystickIDBox, ROWS, 3, 3, 2);
+            positionWidgetGrid(joystickIDBox, ROWS, 2, 2, 2);
             joystickIDBox.setValue(joystick_id+"");
             joystickIDBox.setTextColor(0xFFFFFF);
             joystickIDBox.setResponder(string -> {
@@ -139,7 +139,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
             });
             // SET BUTTON
             EditBox buttonBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
-            positionWidgetGrid(buttonBox, ROWS, 3, 4, 2);
+            positionWidgetGrid(buttonBox, ROWS, 2, 3, 2);
             buttonBox.setValue(button_id+"");
             buttonBox.setTextColor(0xFFFFFF);
             buttonBox.setResponder(string -> {

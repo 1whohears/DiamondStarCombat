@@ -203,7 +203,7 @@ public interface ActionInput {
             if (!GLFW.glfwJoystickPresent(joystick_id)) return false;
             ByteBuffer buttons = GLFW.glfwGetJoystickButtons(joystick_id);
             if (buttons == null) return false;
-            if (button_id > buttons.limit() - 1) return false;
+            if (button_id > buttons.limit() - 1 && button_id >= 0) return false;
             return buttons.get(button_id) == 1;
         }
         @Override
@@ -257,7 +257,7 @@ public interface ActionInput {
             if (!GLFW.glfwJoystickPresent(joystick_id)) return 0;
             FloatBuffer axes = GLFW.glfwGetJoystickAxes(joystick_id);
             if (axes == null) return 0;
-            if (axis_id > axes.limit() - 1) return 0;
+            if (axis_id > axes.limit() - 1 && axis_id >= 0) return 0;
             float axis = axes.get(axis_id);
             if (Mth.abs(axis) < dead_zone) return 0;
             if (invert) axis *= -1;
@@ -305,7 +305,7 @@ public interface ActionInput {
             if (!GLFW.glfwJoystickPresent(joystick_id)) return false;
             FloatBuffer axes = GLFW.glfwGetJoystickAxes(joystick_id);
             if (axes == null) return false;
-            if (axis_id > axes.limit() - 1) return false;
+            if (axis_id > axes.limit() - 1 && axis_id >= 0) return false;
             float axis = axes.get(axis_id);
             if (Mth.abs(axis) < dead_zone) return false;
             return (positive && axis > 0) || (!positive && axis < 0);
@@ -355,7 +355,7 @@ public interface ActionInput {
             if (!GLFW.glfwJoystickPresent(joystick_id)) return false;
             ByteBuffer buttons = GLFW.glfwGetJoystickButtons(joystick_id);
             if (buttons == null) return false;
-            if (button_id > buttons.limit() - 1) return false;
+            if (button_id > buttons.limit() - 1 && button_id >= 0) return false;
             return buttons.get(button_id) == 1;
         }
         @Override

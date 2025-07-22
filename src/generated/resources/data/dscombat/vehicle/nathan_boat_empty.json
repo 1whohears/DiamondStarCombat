@@ -164,6 +164,12 @@
     "cross_sec_area": 4.5,
     "entity_size_xz": 3.0,
     "entity_size_y": 1.5,
+    "hard_coded_rot_acc": {
+      "x": 0.0,
+      "y": 0.10000000149011612,
+      "z": 0.0
+    },
+    "hard_coded_rot_decel": 0.05,
     "idleheat": 2.0,
     "inertiapitch": 10000.0,
     "inertiaroll": 6000.0,

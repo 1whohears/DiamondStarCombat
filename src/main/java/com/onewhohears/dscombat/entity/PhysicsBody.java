@@ -86,11 +86,6 @@ public interface PhysicsBody {
         q.mul(Vector3f.YN.rotationDegrees((float)av.y));
         q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
 
-        /*if (isTestMode()) {
-            if (getRollInput() != 0) q.mul(Vector3f.ZP.rotationDegrees(30*getRollInput()));
-            if (getPitchInput() != 0) q.mul(Vector3f.XP.rotationDegrees(30*getPitchInput()));
-            if (isFlapsDown()) q.set(0, 0, 0, 1);
-        }*/
         setMomentBetweenTicks(Vec3.ZERO);
         reducePitchRateWhileRolling();
     }
@@ -170,12 +165,16 @@ public interface PhysicsBody {
                 getADComponent(av.x, dx, I.x),
                 getADComponent(av.y, dy, I.y),
                 getADComponent(av.z, dz, I.z)));
+        debug(String.format("apply angular drag before %.3g after %.3g", av.y, getAngularVel().y));
+        debug(isHardCodedRotAcc()+" "+getHardCodedRotDecel()+" "+getHardCodedRotAcc());
     }
 
     private double getADComponent(double v, float d, double I) {
         // AD needs to be scaled with speed
         double av = Math.abs(v);
-        double a = av - (d/I + av * 0.01);
+        double da = d/I + av * 0.01;
+        if (isHardCodedRotAcc()) da = d > 0 ? getHardCodedRotDecel() : 0;
+        double a = av - da;
         if (a < 0) return 0;
         return a * Math.signum(v);
     }
@@ -192,6 +191,34 @@ public interface PhysicsBody {
     Vec3 getTotalRotInertia();
 
     void addControllingTorques(Quaternion q);
+
+    default void hardCodedAccPitch() {
+        Vec3 av = getAngularVel();
+        double acc = getHardCodedRotAcc().x * getPitchInput();
+        double next = getAccComp(av.x, acc, getControlMaxDeltaPitch());
+        setAngularVel(new Vec3(next, av.y, av.z));
+    }
+
+    default void hardCodedAccYaw() {
+        Vec3 av = getAngularVel();
+        double acc = getHardCodedRotAcc().y * getYawInput();
+        double next = getAccComp(av.y, acc, getControlMaxDeltaYaw());
+        setAngularVel(new Vec3(av.x, next, av.z));
+    }
+
+    default void hardCodedAccRoll() {
+        Vec3 av = getAngularVel();
+        double acc = getHardCodedRotAcc().z * getRollInput();
+        double next = getAccComp(av.z, acc, getControlMaxDeltaRoll());
+        setAngularVel(new Vec3(av.x, av.y, next));
+    }
+
+    private double getAccComp(double current, double acc, double max) {
+        double c = Math.abs(current);
+        if (c > max) return current;
+        if (acc < 0) return Math.max(current + acc, -max);
+        else return Math.min(current + acc, max);
+    }
 
     default void calcUniversalForces(Quaternion q) {
         addForce(getWeightForce());
@@ -382,6 +409,9 @@ public interface PhysicsBody {
     double getMaxAltitude();
     double getAccGravity();
     float getGroundXTilt();
+    boolean isHardCodedRotAcc();
+    Vec3 getHardCodedRotAcc();
+    float getHardCodedRotDecel();
 
     Quaternion getQBySide();
     void setQBySide(Quaternion q);
@@ -434,4 +464,6 @@ public interface PhysicsBody {
     float getYawInput();
     float getRollInput();
     boolean isFlapsDown();
+
+    void debug(String info);
 }

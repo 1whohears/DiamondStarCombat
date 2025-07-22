@@ -174,9 +174,9 @@
       "heliLiftFactor": 1000.0
     },
     "idleheat": 8.0,
-    "inertiapitch": 6000.0,
+    "inertiapitch": 60000.0,
     "inertiaroll": 8000.0,
-    "inertiayaw": 4000.0,
+    "inertiayaw": 40000.0,
     "mass": 6000.0,
     "max_health": 80.0,
     "max_speed": 0.65,

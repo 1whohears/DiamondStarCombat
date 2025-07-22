@@ -420,11 +420,20 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	@Override
 	public void addControllingTorques(Quaternion q) {
 		if (canTurnViaTorque()) {
-			if (canControlPitch()) addMomentX(inputs.pitch * getPitchTorque(), true);
-			if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
+			if (canControlPitch()) {
+				if (isHardCodedRotAcc()) hardCodedAccPitch();
+				else addMomentX(inputs.pitch * getPitchTorque(), true);
+			}
+			if (canControlYaw()) {
+				if (isHardCodedRotAcc()) hardCodedAccYaw();
+				else addMomentY(inputs.yaw * getYawTorque(), true);
+			}
 			if (canControlRoll()) {
-				if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
-				else addMomentZ(inputs.roll * getRollTorque(), true);
+				if (isHardCodedRotAcc()) hardCodedAccRoll();
+				else{
+					if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
+					else addMomentZ(inputs.roll * getRollTorque(), true);
+				}
 			}
 		}
 	}
@@ -3246,5 +3255,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public boolean isArcadeMode() {
 		return false;
+	}
+
+	public boolean isHardCodedRotAcc() {
+		return getStats().is_hard_coded_rot_acc;
+	}
+
+	public Vec3 getHardCodedRotAcc() {
+		return getStats().hard_coded_rot_acc;
+	}
+
+	public float getHardCodedRotDecel() {
+		return getStats().hard_coded_rot_decel;
 	}
 }

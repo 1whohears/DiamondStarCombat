@@ -27,6 +27,7 @@ import com.onewhohears.onewholibs.util.UtilItem;
 
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
@@ -51,6 +52,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final float torqueroll, torquepitch, torqueyaw;
 	public final float Ix, Iy, Iz;
 	public final float groundXTilt;
+	public final boolean is_hard_coded_rot_acc;
+	public final Vec3 hard_coded_rot_acc;
+	public final float hard_coded_rot_decel;
 	// control
 	public final float throttleup, throttledown;
 	public final boolean negativeThrottle, has_turn_assist;
@@ -120,6 +124,9 @@ public abstract class VehicleStats extends JsonPresetStats {
 		torqueroll = UtilParse.getFloatSafe(stats, "torqueroll", Iz*100);
 		torquepitch = UtilParse.getFloatSafe(stats, "torquepitch", Ix*10);
 		torqueyaw = UtilParse.getFloatSafe(stats, "torqueyaw", Iy*10);
+		hard_coded_rot_acc = UtilParse.readVec3(stats, "hard_coded_rot_acc");
+		hard_coded_rot_decel = UtilParse.getFloatSafe(stats, "hard_coded_rot_decel", 0.0f);
+		is_hard_coded_rot_acc = !UtilGeometry.isZero(hard_coded_rot_acc);
 		crashExplosionRadius = UtilParse.getFloatSafe(stats, "crashExplosionRadius", 0);
 		cameraDistance = UtilParse.getFloatSafe(stats, "cameraDistance", 4);
 		rootHitboxNoCollide = UtilParse.getBooleanSafe(stats, "rootHitboxNoCollide", false);
@@ -1113,6 +1120,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 		}
 		public Builder setRootHitboxNoCollide(boolean rootHitboxNoCollide) {
 			return setStatBoolean("rootHitboxNoCollide", rootHitboxNoCollide);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setHardCodedRotAcc(float roll, float pitch, float yaw, float decel) {
+			JsonObject stats = getStats();
+			UtilParse.writeVec3(stats, "hard_coded_rot_acc", new Vec3(pitch, yaw, roll));
+			return setStatFloat("hard_coded_rot_decel", decel);
 		}
 		/**
 		 * used by planes

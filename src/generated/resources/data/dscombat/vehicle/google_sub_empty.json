@@ -246,11 +246,21 @@
     "armor_damage_threshold": 10.0,
     "assetId": "google_sub",
     "base_armor": 800.0,
+    "break_deacc_air": 0.05,
+    "break_deacc_ground": 0.0,
     "cameraDistance": 30.0,
     "crashExplosionRadius": 6.0,
-    "cross_sec_area": 18.0,
+    "cross_sec_area": 5.0,
     "entity_size_xz": 8.0,
     "entity_size_y": 8.0,
+    "fuel_consume_per_engine": 0.019,
+    "hard_coded_rot_acc": {
+      "x": 0.05000000074505806,
+      "y": 0.009999999776482582,
+      "z": 0.10000000149011612
+    },
+    "hard_coded_rot_decel": 0.025,
+    "heat_per_engine": 10.0,
     "idleheat": 10.0,
     "inertiapitch": 1000000.0,
     "inertiaroll": 60000.0,
@@ -258,6 +268,7 @@
     "mass": 180000.0,
     "max_health": 200.0,
     "max_speed": 0.4,
+    "max_spin_thrust_per_engine": 50000.0,
     "maxpitch": 2.0,
     "maxroll": 2.0,
     "maxyaw": 2.0,
@@ -268,7 +279,9 @@
     "torquepitch": 1.0,
     "torqueroll": 1.0,
     "torqueyaw": 1.0,
-    "turn_radius": 0.0
+    "turn_radius": 0.0,
+    "use_horizontal_speed_scale": false,
+    "use_vertical_speed_scale": true
   },
   "textures": {
     "baseTextureVariants": 2

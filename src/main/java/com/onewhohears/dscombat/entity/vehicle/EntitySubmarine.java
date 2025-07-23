@@ -24,7 +24,7 @@ public class EntitySubmarine extends EntityBoat {
 		Vec3 move = getDeltaMovement();
 		if (!isDriverCameraLocked() && isOperational()) {
 			if (inputs.pitch == 0) move = move.multiply(1, 0.9, 1);
-			else move = move.add(0, inputs.pitch * 0.02, 0);
+			else move = move.add(0, -inputs.pitch * 0.02, 0);
 			double max = 0.2;
 			if (Math.abs(move.y) > max) move = new Vec3(move.x, max*Math.signum(move.y), move.z);
 			flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);

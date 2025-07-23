@@ -29,7 +29,7 @@ public class NoahChopperPresets {
 			.setHeliHoverMovement(0.04f, 0.02f)
 			.setBasicEngineSounds(ModSounds.HELI_1, ModSounds.HELI_1)
 			.setRotationalInertia(8E3f, 6E4f, 4E4f)
-			.setHardCodedRotAcc(0, 0, 0.2f, 0.1f)
+			.setHardCodedRotAcc(0.1f, 0.1f, 0.1f, 0.1f)
 			.setCrashExplosionRadius(4)
 			.set3rdPersonCamDist(6)
 			.setHeliAlwaysLandingGear(true)

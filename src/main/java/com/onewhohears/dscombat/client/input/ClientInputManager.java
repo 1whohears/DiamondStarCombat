@@ -34,6 +34,8 @@ import java.util.function.BiConsumer;
 
 public class ClientInputManager {
 
+    public static final float THROTTLE_CHANGE_RATE = 0.075f;
+
     private static final Map<String, ActionInputHolder.Button> buttons = new HashMap<>();
     private static final Map<String, ActionInputHolder.Axis> axes = new HashMap<>();
 
@@ -45,11 +47,11 @@ public class ClientInputManager {
 
     // CONTROL UTIL
     public static final ActionInputHolder.Button MOUSE_MODE = registerButton("mouse_mode", "mouse_mode_key");
-    public static final ActionInputHolder.Button FLIP_CONTROLS = registerButton("flip_controls","flip_controls_key");
-    public static final ActionInputHolder.Button RESET_MOUSE = registerButton("reset_mouse","reset_mouse_key");
-    public static final ActionInputHolder.Button LEAN_LEFT = registerButton("lean_left","lean_left_key");
-    public static final ActionInputHolder.Button LEAN_RIGHT = registerButton("lean_right","lean_right_key");
-    public static final ActionInputHolder.Button TURN_ASSIST = registerButton("turn_assist","turn_assist_key");
+    public static final ActionInputHolder.Button FLIP_CONTROLS = registerButton("flip_controls", "flip_controls_key");
+    public static final ActionInputHolder.Button RESET_MOUSE = registerButton("reset_mouse", "reset_mouse_key");
+    public static final ActionInputHolder.Button LEAN_LEFT = registerButton("lean_left", "lean_left_key");
+    public static final ActionInputHolder.Button LEAN_RIGHT = registerButton("lean_right", "lean_right_key");
+    public static final ActionInputHolder.Button TURN_ASSIST = registerButton("turn_assist", "turn_assist_key");
 
     // PASSENGER CONTROL
     public static final ActionInputHolder.Button VEHICLE_MENU = registerButton("vehicle_menu", "plane_menu_key");
@@ -63,16 +65,17 @@ public class ClientInputManager {
 
     // COMBAT CONTROL
     public static final ActionInputHolder.Button SHOOT = registerButton("shoot", "shoot_key");
-    public static final ActionInputHolder.Button WEAPON_CYCLE = registerButton("weapon_cycle","weapon_select_key");
-    public static final ActionInputHolder.Button WEAPON_CYCLE_INVERSE = registerButton("weapon_cycle_inverse","weapon_select_up_key");
-    public static final ActionInputHolder.Button FLARE = registerButton("flare","flare_key");
-    public static final ActionInputHolder.Button CHAFF = registerButton("chaff","chaff_key");
-    public static final ActionInputHolder.Button RADAR_MODE = registerButton("radar_mode","radar_mode_key");
-    public static final ActionInputHolder.Button PING_CYCLE = registerButton("ping_cycle","ping_cycle_key");
-    public static final ActionInputHolder.Button AFTERBURNER = registerButton("afterburner","afterburner_toggle_key");
+    public static final ActionInputHolder.Button WEAPON_CYCLE = registerButton("weapon_cycle", "weapon_select_key");
+    public static final ActionInputHolder.Button WEAPON_CYCLE_INVERSE = registerButton("weapon_cycle_inverse", "weapon_select_up_key");
+    public static final ActionInputHolder.Button FLARE = registerButton("flare", "flare_key");
+    public static final ActionInputHolder.Button CHAFF = registerButton("chaff", "chaff_key");
+    public static final ActionInputHolder.Button RADAR_MODE = registerButton("radar_mode", "radar_mode_key");
+    public static final ActionInputHolder.Button PING_CYCLE = registerButton("ping_cycle", "ping_cycle_key");
+    public static final ActionInputHolder.Button AFTERBURNER = registerButton("afterburner", "afterburner_toggle_key");
 
     private static int leftTicks = 0;
     private static long radarModeUpdateTime = 0;
+    private static float currentThrottle = 0;
 
     private static void pilotTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle) {
         if (MOUSE_MODE.isInitPressed()) DSCClientInputs.cycleMouseMode();
@@ -107,7 +110,8 @@ public class ClientInputManager {
         boolean mode = DSCClientInputs.isCameraLockedForward();
         // I made a truth table and this insane expression is optimal somehow.
         // I wouldn't bother questioning it just move on...unless you are insane. - 1whohears
-        if ((!type_flip && (flip ^ mode)) || (type_flip && !flip)) {
+        boolean flipPitchThrottle = (!type_flip && (flip ^ mode)) || (type_flip && !flip);
+        if (flipPitchThrottle) {
             float temp = throttle;
             throttle = pitch;
             pitch = temp;
@@ -126,30 +130,44 @@ public class ClientInputManager {
             float stickStepsX = Config.CLIENT.mouseXSteps.get();
             if (ya >= max) pitch = ys;
             else {
-                int step = (int)(ya/max*stickStepsY*ys);
-                pitch = ((float)step)/stickStepsY;
+                int step = (int) (ya / max * stickStepsY * ys);
+                pitch = ((float) step) / stickStepsY;
             }
             if (xa >= max) roll = xs;
             else {
-                int step = (int)(xa/max*stickStepsX*xs);
-                roll = ((float)step)/stickStepsX;
+                int step = (int) (xa / max * stickStepsX * xs);
+                roll = ((float) step) / stickStepsX;
             }
             if (mc.mouseHandler.getYVelocity() == 0) {
                 DSCClientInputs.setMouseCenterY((int) Mth.approach(
-                        (float)DSCClientInputs.getMouseCenterY(),
-                        (float)mc.mouseHandler.ypos(),
+                        (float) DSCClientInputs.getMouseCenterY(),
+                        (float) mc.mouseHandler.ypos(),
                         Config.CLIENT.mouseYReturnRate.get().floatValue()));
             }
             if (mc.mouseHandler.getXVelocity() == 0) {
-                DSCClientInputs.setMouseCenterX((int)Mth.approach(
-                        (float)DSCClientInputs.getMouseCenterX(),
-                        (float)mc.mouseHandler.xpos(),
+                DSCClientInputs.setMouseCenterX((int) Mth.approach(
+                        (float) DSCClientInputs.getMouseCenterX(),
+                        (float) mc.mouseHandler.xpos(),
                         Config.CLIENT.mouseXReturnRate.get().floatValue()));
             }
         } else pitch *= invertPitch;
 
+        // fix throttle
+        if ((!flipPitchThrottle && THROTTLE.isJoystickController()) || (flipPitchThrottle && PITCH.isJoystickController())) {
+            currentThrottle = throttle;
+        } else if ((!flipPitchThrottle && THROTTLE.isNegAndPos()) || (flipPitchThrottle && PITCH.isNegAndPos())) {
+            currentThrottle = Mth.approach(currentThrottle, 0, THROTTLE_CHANGE_RATE);
+        } else if(throttle >0) {
+            currentThrottle =Mth.approach(currentThrottle,1,THROTTLE_CHANGE_RATE);
+        } else if (throttle < 0) {
+            currentThrottle = Mth.approach(currentThrottle, -1, THROTTLE_CHANGE_RATE);
+        }
+        float t;
+        if (vehicle.getStats().negativeThrottle) t = currentThrottle;
+        else t = (currentThrottle + 1) / 2f;
+
         vehicle.inputs.clientPilotControlsToServer(vehicle,
-                throttle, pitch, roll, yaw,
+                t, pitch, roll, yaw,
                 flare, chaff, DSCClientInputs.isAfterBurner(),
                 special, special2, isBothRoll,
                 DSCClientInputs.isCameraLockedForward(), DSCClientInputs.isTurnAssist());

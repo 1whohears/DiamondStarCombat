@@ -702,8 +702,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 				return;
 			}
 		}
-		if (inputs.throttle > 0) increaseThrottle();
-		else if (inputs.throttle < 0) decreaseThrottle();
+		throttleTowards(inputs.throttle);
 	}
 	
 	public boolean cutThrottleOnNoPilot() {

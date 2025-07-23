@@ -114,6 +114,7 @@ public interface ActionInput {
         default @NotNull String getType() {
             return getAxisType().id;
         }
+        boolean isControllerJoystick();
     }
 
     class DSCKeyButton extends Button {
@@ -160,6 +161,10 @@ public interface ActionInput {
         @Override
         public AxisType getAxisType() {
             return AxisType.DSC_KEY_AXIS;
+        }
+        @Override
+        public boolean isControllerJoystick() {
+            return false;
         }
         @Override
         public void tick() {
@@ -272,6 +277,10 @@ public interface ActionInput {
             return AxisType.CONTROLLER_AXIS;
         }
         @Override
+        public boolean isControllerJoystick() {
+            return true;
+        }
+        @Override
         public @NotNull JsonObject write() {
             JsonObject json = new JsonObject();
             UtilParse.writeEnum(json, "type", getAxisType());
@@ -374,6 +383,10 @@ public interface ActionInput {
             return AxisType.CONTROLLER_BUTTON_AXIS;
         }
         @Override
+        public boolean isControllerJoystick() {
+            return false;
+        }
+        @Override
         public @NotNull String getId() {
             return id;
         }
@@ -434,6 +447,10 @@ public interface ActionInput {
         @Override
         public AxisType getAxisType() {
             return AxisType.UNBOUND_AXIS;
+        }
+        @Override
+        public boolean isControllerJoystick() {
+            return false;
         }
         @Override
         public @NotNull String getId() {

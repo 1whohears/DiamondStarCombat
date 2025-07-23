@@ -96,6 +96,9 @@ public abstract class ActionInputHolder<A extends ActionInput> {
         public boolean isNegAndPos() {
             return getActiveAction().isNegAndPos();
         }
+        public boolean isJoystickController() {
+            return getActiveAction().isControllerJoystick();
+        }
         @Override
         public String getType() {
             return "axis";

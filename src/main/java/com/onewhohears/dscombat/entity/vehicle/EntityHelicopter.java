@@ -36,7 +36,7 @@ public class EntityHelicopter extends EntityVehicle {
 			flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 			float max_th = (float)UtilAngles.getYawAxis(q).y * getMaxPushThrust();
 			float yForceNoLift = (float)-(getWeightForce().y + addForceBetweenTicks.y);
-			if (max_th != 0) throttleTowards(yForceNoLift / max_th);
+			if (max_th != 0) inputs.throttle = yForceNoLift / max_th;
 			setDeltaMovement(getDeltaMovement().multiply(0.95, 0.95, 0.95));
 		}
 	}

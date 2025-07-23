@@ -3,7 +3,7 @@
   "fov": -1.0,
   "presetId": "ar20k",
   "presetType": "standard",
-  "range": 20000.0,
+  "range": 100000.0,
   "scanAir": true,
   "scanAircraft": true,
   "scanGround": false,

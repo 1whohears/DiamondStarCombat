@@ -3,7 +3,7 @@
   "fov": -1.0,
   "presetId": "air_scan_b",
   "presetType": "standard",
-  "range": 2400.0,
+  "range": 12000.0,
   "scanAir": true,
   "scanAircraft": true,
   "scanGround": false,

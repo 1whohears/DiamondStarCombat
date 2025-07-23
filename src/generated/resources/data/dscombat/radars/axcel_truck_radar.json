@@ -3,7 +3,7 @@
   "fov": -1.0,
   "presetId": "axcel_truck_radar",
   "presetType": "standard",
-  "range": 1400.0,
+  "range": 7000.0,
   "scanAir": true,
   "scanAircraft": true,
   "scanGround": false,

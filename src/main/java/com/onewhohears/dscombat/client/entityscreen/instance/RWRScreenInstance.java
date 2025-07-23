@@ -47,7 +47,7 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 	protected void drawWarning(RadarSystem.RWRWarning warn, EntityVehicle vehicle) {
 		Vec3 dp = warn.pos.subtract(vehicle.position());
 		double dist = dp.horizontalDistance();
-		double screen_dist = dist*0.001;
+		double screen_dist = dist*0.00025;
 		if (screen_dist > 1) screen_dist = 1;
 		else if (screen_dist < 0.1) screen_dist = 0.1;
 		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot()+180)*Mth.DEG_TO_RAD;

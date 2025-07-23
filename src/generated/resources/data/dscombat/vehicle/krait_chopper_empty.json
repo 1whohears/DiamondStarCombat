@@ -254,6 +254,12 @@
     "cross_sec_area": 8.0,
     "entity_size_xz": 2.8,
     "entity_size_y": 2.8,
+    "hard_coded_rot_acc": {
+      "x": 0.0,
+      "y": 0.20000000298023224,
+      "z": 0.0
+    },
+    "hard_coded_rot_decel": 0.1,
     "heli": {
       "accForward": 0.04,
       "accSide": 0.02,

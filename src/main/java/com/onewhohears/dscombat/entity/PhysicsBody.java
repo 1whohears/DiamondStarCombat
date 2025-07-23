@@ -165,8 +165,6 @@ public interface PhysicsBody {
                 getADComponent(av.x, dx, I.x),
                 getADComponent(av.y, dy, I.y),
                 getADComponent(av.z, dz, I.z)));
-        debug(String.format("apply angular drag before %.3g after %.3g", av.y, getAngularVel().y));
-        debug(isHardCodedRotAcc()+" "+getHardCodedRotDecel()+" "+getHardCodedRotAcc());
     }
 
     private double getADComponent(double v, float d, double I) {

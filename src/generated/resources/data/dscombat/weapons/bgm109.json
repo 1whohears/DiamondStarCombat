@@ -17,7 +17,7 @@
   "explosive": true,
   "fireRate": 25,
   "fov": -1.0,
-  "fuelTicks": 150,
+  "fuelTicks": 200,
   "fuseDist": 2.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -44,12 +44,12 @@
   ],
   "itemKey": "dscombat:missile",
   "mass": 1300.0,
-  "maxAge": 172,
+  "maxAge": 7826,
   "presetId": "bgm109",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 3,
-  "speed": 3.5,
+  "speed": 1.597,
   "targetType": "AIR",
   "turnRadius": 100.0
 }

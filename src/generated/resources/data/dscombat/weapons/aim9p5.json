@@ -17,7 +17,7 @@
   "fireRate": 20,
   "flareResistance": 1.0,
   "fov": 40.0,
-  "fuelTicks": 80,
+  "fuelTicks": 70,
   "fuseDist": 3.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -43,12 +43,12 @@
     }
   ],
   "itemKey": "dscombat:missile",
-  "mass": 85.3,
-  "maxAge": 100,
+  "mass": 86.0,
+  "maxAge": 763,
   "presetId": "aim9p5",
   "presetType": "ir_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 4,
-  "speed": 2.5,
+  "speed": 5.895,
   "turnRadius": 70.0
 }

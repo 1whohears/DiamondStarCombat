@@ -819,7 +819,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return isOnGround() && getStats().break_deacc_ground > 0 && isOperational();
 	}
 
-	public boolean canAirBreak() {
+	public boolean canAirBrake() {
 		return !isOnGround() && getStats().break_deacc_air > 0 && isOperational();
 	}
 

@@ -87,7 +87,7 @@ public interface DrivingBody extends PhysicsBody {
     boolean isGroundBraking();
     double getKineticFriction();
     double getStaticFriction();
-    boolean canAirBreak();
+    boolean canAirBrake();
     boolean isAirBreaking();
     double getGroundBreaksDeAcceleration();
     double getAirBreaksDeAcceleration();
@@ -97,7 +97,7 @@ public interface DrivingBody extends PhysicsBody {
     boolean canFlattenOnGround();
 
     default void calcAirMovement(Quaternion q) {
-        if (canAirBreak() && isAirBreaking()) applyAirBreaks();
+        if (canAirBrake() && isAirBreaking()) applyAirBreaks();
     }
 
     default void applyAirBreaks() {

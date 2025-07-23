@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -30,8 +31,27 @@ public class EntityBoat extends EntityVehicle {
 
 	@Override
 	public void applyGroundBreaks() {
+
+	}
+
+	@Override
+	public void applyAirBreaks() {
 		throttleToZero();
-		super.applyGroundBreaks();
+		super.applyAirBreaks();
+	}
+
+	@Override
+	public boolean canGroundBrake() {
+		return isInWater() && getStats().break_deacc_air > 0 && isOperational();
+	}
+
+	@Override
+	public boolean canAirBrake() {
+		return false;
+	}
+
+	public boolean canWaterBrake() {
+		return isInWater() && getStats().break_deacc_air > 0 && isOperational();
 	}
 
 	@Override
@@ -45,6 +65,7 @@ public class EntityBoat extends EntityVehicle {
 		if (!checkInWater()) return;
 		flatten(q, 2f, 2f, true);
 		tickFloat();
+		if (canWaterBrake() && isAirBreaking()) applyAirBreaks();
 	}
 	
 	protected void tickFloat() {
@@ -145,6 +166,16 @@ public class EntityBoat extends EntityVehicle {
 		if (!isInWater()) return Vec3.ZERO;
 		Vec3 direction = UtilAngles.getRollAxis(q);
         return direction.scale(getPushThrustMag());
+	}
+
+	@Override
+	public double getDragArea() {
+		double area = super.getDragArea();
+		if (isInWater()) {
+			double angle = UtilGeometry.angleBetweenDegrees(getDeltaMovement(), getLookAngle());
+			area = Math.max(area * 0.025, area * Math.sin(Mth.DEG_TO_RAD*angle));
+		}
+		return area;
 	}
 	
 	@Override

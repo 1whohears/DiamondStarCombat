@@ -31,7 +31,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
         };
     }
 	
-	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, 
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key,
 			Component mapName, boolean isUsed, String setting) {
     	int pY = 2 + 10 * index;
     	int pX = 3;
@@ -106,7 +106,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (isPilot && vehicle.canGroundBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
 				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isGroundBraking());
-		if (isPilot && vehicle.canAirBreak()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+		if (isPilot && vehicle.canAirBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
 				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isAirBreaking());
 		// FLAPS DOWN

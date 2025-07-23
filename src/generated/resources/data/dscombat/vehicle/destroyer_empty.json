@@ -246,17 +246,21 @@
     "armor_damage_threshold": 10.0,
     "assetId": "destroyer",
     "base_armor": 300.0,
+    "break_deacc_air": 0.05,
+    "break_deacc_ground": 0.0,
     "cameraDistance": 22.0,
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 6.5,
     "entity_size_xz": 10.0,
     "entity_size_y": 4.0,
+    "fuel_consume_per_engine": 0.019,
     "hard_coded_rot_acc": {
       "x": 0.0,
       "y": 0.009999999776482582,
       "z": 0.0
     },
     "hard_coded_rot_decel": 0.025,
+    "heat_per_engine": 10.0,
     "idleheat": 4.0,
     "inertiapitch": 1000000.0,
     "inertiaroll": 60000.0,
@@ -264,6 +268,7 @@
     "mass": 300000.0,
     "mastType": "NORMAL",
     "max_health": 200.0,
+    "max_push_thrust_per_engine": 50000.0,
     "max_speed": 0.8,
     "maxpitch": 0.0,
     "maxroll": 0.0,
@@ -275,6 +280,8 @@
     "torquepitch": 0.0,
     "torqueroll": 0.0,
     "torqueyaw": 200000.0,
-    "turn_radius": 0.0
+    "turn_radius": 0.0,
+    "use_horizontal_speed_scale": false,
+    "use_vertical_speed_scale": true
   }
 }

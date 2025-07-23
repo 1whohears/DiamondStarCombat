@@ -77,6 +77,10 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         ListTag speeds = entityData.get(OVERRIDES).getList("speeds", 6);
         ListTag aoas = entityData.get(OVERRIDES).getList("aoas", 6);
         ListTag turn_rates = entityData.get(OVERRIDES).getList("turn_rates", 6);
+        if (aoas.size() != turn_rates.size() || aoas.size() != speeds.size()) {
+            chatToNearbyPlayers("WARNING: Not all lists are the same length! aoas: "+aoas.size()
+                    +" speeds: "+speeds.size()+" turn_rates: "+turn_rates.size(), ChatFormatting.RED);
+        }
         int l = Math.min(Math.min(aoas.size(), turn_rates.size()), speeds.size());
         for (int i = 0; i < l; ++i) {
             JsonObject data = new JsonObject();

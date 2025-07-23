@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.screen.key_bind;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.ActionInput;
 import com.onewhohears.dscombat.client.input.ActionInputHolder;
+import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.client.screen.VehicleSubScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.Minecraft;
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,8 @@ public class VehicleEditButtonBindScreen extends VehicleSubScreen {
     private final List<Button> secControllerButtons = new ArrayList<>();
     private final List<Button> priControllerAxisButtons = new ArrayList<>();
     private final List<Button> secControllerAxisButtons = new ArrayList<>();
+    @Nullable Button priUnboundButton;
+    @Nullable Button secUnboundButton;
 
     public VehicleEditButtonBindScreen(int page, ActionInputHolder.Button action) {
         super(action.getNameString(), BG_TEXTURE, imageWidth, imageHeight, textureSize, textureSize);
@@ -50,6 +54,14 @@ public class VehicleEditButtonBindScreen extends VehicleSubScreen {
                                 UtilMCText.translatable("ui.dscombat.primary"),
                                 (button, value) -> changePrimaryType(value)),
                 ROWS, 1, 1, padding);
+        // Unbound
+        priUnboundButton = new Button(0, 0, 20, 20,
+                UtilMCText.translatable("ui.dscombat.save"),
+                onPress -> {
+                    action.setPrimaryAction(new ActionInput.UnboundButton());
+                    ClientInputManager.saveKeyBinds();
+                });
+        positionWidgetGrid(priUnboundButton, ROWS, 1, 2, padding);
         // DSC Key Button
         Button PRI_DSC_KEY = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.edit_dsc_key_button"),
@@ -81,6 +93,14 @@ public class VehicleEditButtonBindScreen extends VehicleSubScreen {
                                 UtilMCText.translatable("ui.dscombat.secondary"),
                                 (button, value) -> changeSecondaryType(value)),
                 ROWS, 1, 3, padding);
+        // Unbound
+        secUnboundButton = new Button(0, 0, 20, 20,
+                UtilMCText.translatable("ui.dscombat.save"),
+                onPress -> {
+                    action.setSecondaryAction(new ActionInput.UnboundButton());
+                    ClientInputManager.saveKeyBinds();
+                });
+        positionWidgetGrid(secUnboundButton, ROWS, 1, 4, padding);
         // DSC Key Button
         Button SEC_DSC_KEY = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.edit_dsc_key_button"),
@@ -108,21 +128,25 @@ public class VehicleEditButtonBindScreen extends VehicleSubScreen {
     private void changePrimaryType(ActionInput.ButtonType type) {
         switch (type) {
             case UNBOUND_BUTTON -> {
+                if (priUnboundButton != null) priUnboundButton.visible = true;
                 priDSCKeyButtons.forEach(button -> button.visible = false);
                 priControllerButtons.forEach(button -> button.visible = false);
                 priControllerAxisButtons.forEach(button -> button.visible = false);
             }
             case DSC_KEY_BUTTON -> {
+                if (priUnboundButton != null) priUnboundButton.visible = false;
                 priDSCKeyButtons.forEach(button -> button.visible = true);
                 priControllerButtons.forEach(button -> button.visible = false);
                 priControllerAxisButtons.forEach(button -> button.visible = false);
             }
             case CONTROLLER_BUTTON -> {
+                if (priUnboundButton != null) priUnboundButton.visible = false;
                 priDSCKeyButtons.forEach(button -> button.visible = false);
                 priControllerButtons.forEach(button -> button.visible = true);
                 priControllerAxisButtons.forEach(button -> button.visible = false);
             }
             case CONTROLLER_AXIS_BUTTON -> {
+                if (priUnboundButton != null) priUnboundButton.visible = false;
                 priDSCKeyButtons.forEach(button -> button.visible = false);
                 priControllerButtons.forEach(button -> button.visible = false);
                 priControllerAxisButtons.forEach(button -> button.visible = true);
@@ -133,21 +157,25 @@ public class VehicleEditButtonBindScreen extends VehicleSubScreen {
     private void changeSecondaryType(ActionInput.ButtonType type) {
         switch (type) {
             case UNBOUND_BUTTON -> {
+                if (secUnboundButton != null) secUnboundButton.visible = true;
                 secDSCKeyButtons.forEach(button -> button.visible = false);
                 secControllerButtons.forEach(button -> button.visible = false);
                 secControllerAxisButtons.forEach(button -> button.visible = false);
             }
             case DSC_KEY_BUTTON -> {
+                if (secUnboundButton != null) secUnboundButton.visible = false;
                 secDSCKeyButtons.forEach(button -> button.visible = true);
                 secControllerButtons.forEach(button -> button.visible = false);
                 secControllerAxisButtons.forEach(button -> button.visible = false);
             }
             case CONTROLLER_BUTTON -> {
+                if (secUnboundButton != null) secUnboundButton.visible = false;
                 secDSCKeyButtons.forEach(button -> button.visible = false);
                 secControllerButtons.forEach(button -> button.visible = true);
                 secControllerAxisButtons.forEach(button -> button.visible = false);
             }
             case CONTROLLER_AXIS_BUTTON -> {
+                if (secUnboundButton != null) secUnboundButton.visible = false;
                 secDSCKeyButtons.forEach(button -> button.visible = false);
                 secControllerButtons.forEach(button -> button.visible = false);
                 secControllerAxisButtons.forEach(button -> button.visible = true);

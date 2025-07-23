@@ -34,7 +34,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientCameraEvents {
 	
 	private static Entity prevGimbal;
-	private static float ptOld;
+	private static long prevCamSetupTime;
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
@@ -86,7 +86,7 @@ public class ClientCameraEvents {
 			event.setYaw(yi);
 		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
 			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)
-			float ptDiff = ptDiff(pt, ptOld);
+			float ptDiff = (System.currentTimeMillis()-prevCamSetupTime) / 50f; // time diff in ticks
 			float planeXRotDiff = plane.getXRot()-plane.xRotO;
 			if (planeXRotDiff != 0) {
 				float dxi = Mth.wrapDegrees(planeXRotDiff) * ptDiff;
@@ -127,7 +127,7 @@ public class ClientCameraEvents {
 			Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
 			camera.setPosition(camera.getPosition().add(pitchAxis.scale(-DSCClientInputs.getLeanAmount())));
 		}
-		ptOld = pt;
+		prevCamSetupTime = System.currentTimeMillis();
 	}
 	
 	private static float ptDiff(float pt, float ptOld) {

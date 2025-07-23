@@ -153,11 +153,13 @@ public class ClientInputManager {
         } else pitch *= invertPitch;
 
         // fix throttle
-        if ((!flipPitchThrottle && THROTTLE.isJoystickController()) || (flipPitchThrottle && PITCH.isJoystickController())) {
+        if (flipPitchThrottle && type_flip && THROTTLE.isJoystickController()) {
+            currentThrottle = THROTTLE.getValue();
+        } else if ((!flipPitchThrottle && THROTTLE.isJoystickController()) || (flipPitchThrottle && PITCH.isJoystickController())) {
             currentThrottle = throttle;
         } else if ((!flipPitchThrottle && THROTTLE.isNegAndPos()) || (flipPitchThrottle && PITCH.isNegAndPos())) {
             currentThrottle = Mth.approach(currentThrottle, 0, THROTTLE_CHANGE_RATE);
-        } else if(throttle >0) {
+        } else if (throttle > 0) {
             currentThrottle = Mth.approach(currentThrottle, 1, THROTTLE_CHANGE_RATE);
         } else if (throttle < 0) {
             currentThrottle = Mth.approach(currentThrottle, -1, THROTTLE_CHANGE_RATE);

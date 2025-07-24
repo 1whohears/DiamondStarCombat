@@ -5,6 +5,7 @@ import java.util.List;
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
@@ -89,6 +90,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			if (target != null) setTargetId(target.getId());
 			else setTargetId(-1);
 			if (target != null && distanceTo(target) <= getWeaponStats().getFuseDist()) kill();
+			TrackableEntitiesManager.addTrackableEntity(this);
 		}
 		if (level.isClientSide && !isRemoved()) {
 			tickClientGuide();
@@ -322,6 +324,12 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	public void revive() {
 		super.revive();
 		discardedButTicking = false;
+	}
+
+	@Override
+	public void remove(RemovalReason reason) {
+		super.remove(reason);
+		TrackableEntitiesManager.removeTrackableEntity(this);
 	}
 	
 	public boolean isDiscardedButTicking() {

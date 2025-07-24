@@ -41,6 +41,13 @@
     },
     {
       "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_7"
+    },
+    {
+      "data": {
         "param": "20mm",
         "part": "gsh_30_1"
       },

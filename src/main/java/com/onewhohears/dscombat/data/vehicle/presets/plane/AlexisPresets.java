@@ -107,7 +107,6 @@ public class AlexisPresets {
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.HIGH_TECH_INTERNAL)
 			.addEmptySlot("internal_5", SlotType.TECH_INTERNAL)
-			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL)
 			.addAfterBurnerSmokePos(0,0.3,-6.5)
 			.setEntityMainHitboxSize(4, 4)
 			.setRootHitboxNoCollide(true)

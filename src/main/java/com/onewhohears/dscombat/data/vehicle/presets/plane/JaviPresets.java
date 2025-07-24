@@ -94,6 +94,7 @@ public class JaviPresets {
 			.setSlotItem("internal_1", ModItems.TURBOFAN_F25.getId())
 			.setSlotItem("internal_2", ModItems.TURBOFAN_F25.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("internal_6", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.setSlotItem("internal_gun", "gau_avenger", "30mmhe", false)
 			.addIngredient(ModItems.INTERNAL_GUN.getId())
 			.addIngredient(ModItems.TURBOFAN_F25.getId(), 2)

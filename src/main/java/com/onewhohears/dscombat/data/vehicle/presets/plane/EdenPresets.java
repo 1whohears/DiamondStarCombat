@@ -151,6 +151,7 @@ public class EdenPresets {
 			.setSlotItem("internal_1", ModItems.KLIMOV_RD33.getId())
 			.setSlotItem("internal_2", ModItems.KLIMOV_RD33.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
+			.setSlotItem("internal_7", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.setSlotItem("internal_gun", "gsh_30_1", "20mm", false)
 			.addIngredient(ModItems.INTERNAL_GUN.getId())
 			.addIngredient(ModItems.KLIMOV_RD33.getId(), 2)

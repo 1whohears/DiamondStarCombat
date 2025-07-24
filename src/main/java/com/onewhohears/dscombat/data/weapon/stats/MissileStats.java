@@ -103,7 +103,7 @@ public abstract class MissileStats extends BulletStats {
 	
 	@Override
 	public double getMobTurretRange() {
-		return Math.min(20000, getSpeed() * getMaxAge() * 0.8);
+		return Math.min(20000, getSpeed() * getMaxAge() * 0.5);
 	}
 	
 	@Override

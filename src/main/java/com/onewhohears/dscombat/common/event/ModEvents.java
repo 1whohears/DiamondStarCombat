@@ -22,6 +22,7 @@ public final class ModEvents {
 		new DebugSlotPosCommand(event.getDispatcher());
 		new DebugHitboxPosCommand(event.getDispatcher());
 		new DSCAdminCommands(event.getDispatcher());
+		new WindTunnelCommand(event.getDispatcher());
 		ConfigCommand.register(event.getDispatcher());
 	}
 	

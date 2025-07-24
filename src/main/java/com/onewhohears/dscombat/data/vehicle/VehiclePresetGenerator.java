@@ -1,9 +1,17 @@
 package com.onewhohears.dscombat.data.vehicle;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.vehicle.presets.boat.BoatPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.ground_vehicle.CarPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.ground_vehicle.StationaryPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.ground_vehicle.TankPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.helicopter.KraitChopperPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.helicopter.NoahChopperPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.helicopter.WerewolfPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.plane.*;
+import com.onewhohears.dscombat.data.vehicle.presets.submarine.SubPresets;
 import com.onewhohears.dscombat.integration.minigame.gen.VillageDefenseVehiclePresetGen;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
-import com.onewhohears.dscombat.data.vehicle.presets.*;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 
 import net.minecraft.data.DataGenerator;

@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -18,7 +18,7 @@ import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;

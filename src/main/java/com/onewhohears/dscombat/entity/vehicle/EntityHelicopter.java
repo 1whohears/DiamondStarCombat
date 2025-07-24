@@ -23,56 +23,33 @@ public class EntityHelicopter extends EntityVehicle {
 	public VehicleType getVehicleType() {
 		return VehicleType.HELICOPTER;
 	}
-	
-	@Override
-	public void tickGround(Quaternion q) {
-		addFrictionForce(kineticFric);
-	}
-	
+
 	@Override
 	public double getDriveAcc() {
 		return 0;
 	}
 	
 	@Override
-	public void tickAir(Quaternion q) {
+	public void calcAirMovement(Quaternion q) {
+		super.calcAirMovement(q);
 		if (inputs.special && isOperational()) {
+			flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 			float max_th = (float)UtilAngles.getYawAxis(q).y * getMaxPushThrust();
 			float yForceNoLift = (float)-(getWeightForce().y + addForceBetweenTicks.y);
-			if (max_th != 0) throttleTowards(yForceNoLift / max_th);
+			if (max_th != 0) inputs.throttle = yForceNoLift / max_th;
 			setDeltaMovement(getDeltaMovement().multiply(0.95, 0.95, 0.95));
-		}
-		super.tickAir(q);
-	}
-	
-	@Override
-	public void directionGround(Quaternion q) {
-		if (!isOperational()) return;
-		flatten(q, 4f, 4f, true);
-	}
-	
-	@Override
-	public void directionAir(Quaternion q) {
-		super.directionAir(q);
-		if (!isOperational()) return;
-		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
-		if (inputs.special) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
-		else {
-			addMomentX(inputs.pitch * getPitchTorque(), true);
-			addMomentZ(inputs.roll * getRollTorque(), true);
 		}
 	}
 
 	@Override
 	public Vec3 getThrustForce(Quaternion q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
-		Vec3 thrustForce = direction.scale(getPushThrustMag());
-		return thrustForce;
+        return direction.scale(getPushThrustMag());
 	}
 	
 	@Override
 	public float getMaxPushThrust() {
-		return getMaxSpinThrust() * (float)airPressure * getStats().asHeli().heliLiftFactor;
+		return getMaxSpinThrust() * (float) getFluidDensity() * getStats().asHeli().heliLiftFactor;
 	}
 	
 	@Override
@@ -93,11 +70,6 @@ public class EntityHelicopter extends EntityVehicle {
 	public boolean isCustomBoundingBox() {
     	return true;
     }
-
-	@Override
-	public boolean canBrake() {
-		return false;
-	}
 
 	@Override
 	public boolean canToggleLandingGear() {
@@ -130,9 +102,14 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 
 	@Override
-	protected void calcMoveStatsPre(Quaternion q) {
+	public void calcMoveStatsPre(Quaternion q) {
 		super.calcMoveStatsPre(q);
 		if (getDeltaMovement().y < 0 && getAltitude() < 40) ++altitudeWarningTicks;
 		else altitudeWarningTicks = 0;
+	}
+
+	@Override
+	public boolean canDriveOnGround() {
+		return false;
 	}
 }

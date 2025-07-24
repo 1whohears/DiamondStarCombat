@@ -388,9 +388,6 @@
     "stealth": 1.0,
     "throttledown": 0.08,
     "throttleup": 0.04,
-    "torquepitch": 2.5,
-    "torqueroll": 1.5,
-    "torqueyaw": 4.5,
     "turn_radius": 12.0
   },
   "textures": {

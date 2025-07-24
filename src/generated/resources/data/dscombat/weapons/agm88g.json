@@ -38,6 +38,7 @@
     }
   ],
   "itemKey": "dscombat:missile",
+  "mass": 361.0,
   "maxAge": 700,
   "presetId": "agm88g",
   "presetType": "anti_radar_missile",

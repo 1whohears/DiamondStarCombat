@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
 
 import com.onewhohears.onewholibs.util.UtilParse;
+import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -45,6 +46,7 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private final int maxAge;
 	private final int fireRate;
 	private final boolean canShootOnGround;
+	private final float mass;
 	private final String entityTypeKey;
 	private final String shootSoundKey;
 	private final String[] compatibleWeaponPart;
@@ -62,6 +64,7 @@ public abstract class WeaponStats extends JsonPresetStats {
 		this.maxAge = UtilParse.getIntSafe(json, "maxAge", 0);
 		this.fireRate = UtilParse.getIntSafe(json, "fireRate", 0);
 		this.canShootOnGround = UtilParse.getBooleanSafe(json, "canShootOnGround", false);
+		this.mass = UtilParse.getFloatSafe(json, "mass", 1);
 		this.entityTypeKey = UtilParse.getStringSafe(json, "entityTypeKey", "");
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringArraySafe(json, "compatibleWeaponPart");
@@ -220,6 +223,10 @@ public abstract class WeaponStats extends JsonPresetStats {
 
 	public boolean isPosGuided() {
 		return false;
+	}
+
+	public float getMass() {
+		return mass;
 	}
 	
 	public enum WeaponClientImpactType {

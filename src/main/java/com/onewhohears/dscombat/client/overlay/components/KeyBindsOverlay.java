@@ -31,7 +31,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
         };
     }
 	
-	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, 
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key,
 			Component mapName, boolean isUsed, String setting) {
     	int pY = 2 + 10 * index;
     	int pX = 3;
@@ -47,6 +47,10 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	
 	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, boolean isUsed, String setting) {
 		displayMapping(poseStack, screenWidth, screenHeight, index, key, UtilMCText.translatable(key.getName()), isUsed, setting);
+	}
+
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, boolean isUsed) {
+		displayMapping(poseStack, screenWidth, screenHeight, index, key, UtilMCText.translatable(key.getName()), isUsed, null);
 	}
     
     protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key) {
@@ -83,7 +87,6 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		assert vehicle != null;
 
 		boolean isPilot = seat.isPilotSeat(), isCoPilot = seat.isCoPilotSeat();
-		// TODO 0.1 until a better way is made, these controls and other info need to be displayed somewhere
 		int index = 0;
 		// MOUSE MODE
 		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.mouseModeKey,
@@ -100,9 +103,12 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (isPilot && vehicle.canToggleLandingGear()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.landingGear,
 				vehicle.isLandingGear(), vehicle.isLandingGear() ? "OUT"  : "IN");
 		// BREAKS
-		if (isPilot && vehicle.canBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+		if (isPilot && vehicle.canGroundBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
-				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isBraking());
+				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isGroundBraking());
+		if (isPilot && vehicle.canAirBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
+				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isAirBreaking());
 		// FLAPS DOWN
 		if (isPilot && vehicle.canFlapsDown()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				DSCKeys.specialKey, UtilMCText.translatable("info.dscombat.flaps_down"));
@@ -115,6 +121,9 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// FLARES
 		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				DSCKeys.flareKey, vehicle.getFlareNum()+"");
+		// CHAFF
+		//if (isPilot && vehicle.hasChaff()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+		//		DSCKeys.chaffKey, vehicle.getChaffNum()+"");
 		// CYCLE WEAPON
 		if (isPilot || isCoPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.weaponSelectKey);
 		// RADAR MODE
@@ -129,6 +138,12 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (vehicle.getGimbalForPilotCamera() != null || seat.getCameraYOffset() != 0) displayMapping(poseStack,
 				screenWidth, screenHeight, index++, DSCKeys.gimbalKey,
 				DSCClientInputs.isGimbalMode(), DSCClientInputs.isGimbalMode() ? "ON" : "OFF");
+		// AFTERBURNER
+		if (vehicle.canUseAfterburner()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+				DSCKeys.afterBurnerKey, DSCClientInputs.isAfterBurner(), DSCClientInputs.isAfterBurner() ? "ON" : "OFF");
+		// AFTERBURNER
+		if (vehicle.canUseTurnAssist()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+				DSCKeys.turnAssistKey, DSCClientInputs.isTurnAssist(), DSCClientInputs.isTurnAssist() ? "ON" : "OFF");
 	}
 
 	@Override

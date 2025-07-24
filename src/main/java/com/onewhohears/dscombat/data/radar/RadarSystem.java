@@ -46,19 +46,19 @@ public class RadarSystem {
 	private final EntityVehicle parent;
 	private boolean readData = false;
 	
-	private List<RadarInstance<?>> radars = new ArrayList<>();
-	private List<EntityMissile<?>> rockets = new ArrayList<>();
+	private final List<RadarInstance<?>> radars = new ArrayList<>();
+	private final List<EntityMissile<?>> rockets = new ArrayList<>();
 	
-	private List<RadarPing> targets = new ArrayList<>();
+	private final List<RadarPing> targets = new ArrayList<>();
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<>();
 	private int clientSelectedIndex = -1, clientSelectedTime = -21;
 	public int clientPingRefreshTime = 0;
 	public int clientRwrRefreshTime = 0;
 	
-	private List<RadarPing> dataLinkBuffer = new ArrayList<>();
+	private final List<RadarPing> dataLinkBuffer = new ArrayList<>();
 	
-	private Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
+	private final Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
 	private boolean rwrMissile, rwrRadar;
 	
 	public boolean dataLink = false;
@@ -109,6 +109,14 @@ public class RadarSystem {
 			if (parent.isStationaryRadar()) parent.toTrackers(new ToClientRadarPings(parent.getId(), targets));
 			else parent.toClientPassengers(new ToClientRadarPings(parent.getId(), targets));
 		}
+		// ADD RADAR TO EXTRA TRACKABLE ENTITIES MANAGER
+		if (!parent.isPlayerRiding()) TrackableEntitiesManager.addTrackableEntity(parent);
+		else TrackableEntitiesManager.removeTrackableEntity(parent);
+	}
+
+	public void onParentRemove() {
+		if (parent.getLevel().isClientSide()) return;
+		TrackableEntitiesManager.removeTrackableEntity(parent);
 	}
 	
 	protected void updateDataLink() {

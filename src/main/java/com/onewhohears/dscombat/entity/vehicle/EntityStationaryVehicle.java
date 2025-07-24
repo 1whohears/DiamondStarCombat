@@ -2,11 +2,14 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.init.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class EntityStationaryVehicle extends EntityVehicle {
 
@@ -27,7 +30,17 @@ public class EntityStationaryVehicle extends EntityVehicle {
     }
 
     @Override
-    public boolean canBrake() {
+    public boolean canGroundBrake() {
+        return false;
+    }
+
+    @Override
+    public boolean canToggleLandingGear() {
+        return false;
+    }
+
+    @Override
+    public boolean canDriveOnGround() {
         return false;
     }
 
@@ -36,8 +49,4 @@ public class EntityStationaryVehicle extends EntityVehicle {
         return Vec3.ZERO;
     }
 
-    @Override
-    public boolean canToggleLandingGear() {
-        return false;
-    }
 }

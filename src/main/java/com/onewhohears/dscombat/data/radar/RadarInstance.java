@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.radar;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.onewhohears.dscombat.Config;
@@ -18,6 +19,8 @@ import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
@@ -29,7 +32,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private Vec3 pos = Vec3.ZERO;
 	private boolean freshTargets;
 	private int scanTicks;
-	private List<RadarPing> pings = new ArrayList<>();
+	private final List<RadarPing> pings = new ArrayList<>();
 	
 	public RadarInstance(T stats) {
 		super(stats);
@@ -55,6 +58,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	}
 	
 	public void tickUpdateTargets(EntityVehicle radar, List<RadarPing> vehiclePings) {
+		if (radar.getLevel().isClientSide()) return;
 		if (scanTicks > getStats().getScanRate()) scanTicks = 0;
 		else {
 			++scanTicks;
@@ -68,11 +72,16 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		RadarMode mode = radar.getRadarMode();
 		if (mode.isOff()) return;
 		AABB radarArea = getRadarBoundingBox(radar);
-		if (getStats().isScanAircraft() && (mode.canScan(RadarMode.VEHICLES) || mode.isPlayersOrBots())) {
+		/*if (getStats().isScanAircraft() && (mode.canScan(RadarMode.VEHICLES) || mode.isPlayersOrBots())) {
 			scanAircraft(radar, controller, vehiclePings, radarArea, mode.isPlayersOnly(), mode.isPlayersOrBots());
 		}
 		if (getStats().isScanPlayers() && (mode.canScan(RadarMode.PLAYERS) || mode.isPlayersOrBots())) {
 			scanPlayers(radar, controller, vehiclePings, radarArea);
+		}*/
+		if (getStats().isScanPlayers() && (mode.isPlayersOrBots() || mode.canScan(RadarMode.VEHICLES))) {
+			double rangeSqr = getStats().getRange()*getStats().getRange();
+			scanPlayersVehicles(radar, controller, vehiclePings, rangeSqr,
+					mode.isPlayersOnly(), mode.isPlayersOrBots(), mode.isVehiclesOnly());
 		}
 		if (getStats().isScanMobs() && mode.canScan(RadarMode.MOBS)) {
 			scanMobs(radar, controller, vehiclePings, radarArea);
@@ -81,7 +90,67 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 			scanMissiles(radar, controller, vehiclePings, radarArea);
 		}
 	}
-	
+
+	private void scanPlayersVehicles(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
+									 double rangeSqr, boolean playersOnly, boolean isPlayersOrBots, boolean vehiclesOnly) {
+		MinecraftServer server = radar.getLevel().getServer();
+		if (server == null) return;
+		List<ServerPlayer> players = server.getPlayerList().getPlayers();
+		for (ServerPlayer player : players) {
+			handleScanEntity(radar, controller, vehiclePings, rangeSqr, playersOnly,
+					isPlayersOrBots, vehiclesOnly, player, true);
+		}
+		Collection<Entity> entities = TrackableEntitiesManager.getTrackableEntities();
+		for (Entity entity : entities) {
+			handleScanEntity(radar, controller, vehiclePings, rangeSqr, playersOnly,
+					isPlayersOrBots, vehiclesOnly, entity, false);
+		}
+	}
+
+	private void handleScanEntity(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
+								  double rangeSqr, boolean playersOnly, boolean isPlayersOrBots, boolean vehiclesOnly,
+								  Entity entity, boolean player) {
+		if (playersOnly && !player) return;
+
+		if (entity.distanceToSqr(radar) > rangeSqr) return;
+		if (!entity.getLevel().dimension().equals(radar.getLevel().dimension())) return;
+
+		EntityVehicle vehicle = null;
+		if (!player && entity instanceof EntityVehicle ev) vehicle = ev;
+		else if (entity.getVehicle() instanceof EntityVehicle ev) vehicle = ev;
+		if (vehiclesOnly && vehicle == null) return;
+
+		Entity pingEntity = vehicle != null ? vehicle : entity;
+		if (!player && alreadyScanned(vehiclePings, pingEntity)) return;
+
+		double stealth = 1;
+		if (vehicle != null) stealth = vehicle.getStealth();
+		if (!basicCheck(radar, entity, stealth)) return;
+
+		PingEntityType pingEntityType;
+		if (player) {
+			if (vehicle != null) pingEntityType = PingEntityType.VEHICLE_PLAYER;
+			else pingEntityType = PingEntityType.PLAYER;
+		} else {
+			if (vehicle != null) pingEntityType = PingEntityType.VEHICLE_BOT;
+			else pingEntityType = PingEntityType.HOSTILE_MOB;
+		}
+
+		RadarPing p = new RadarPing(pingEntity, checkFriendly(controller, pingEntity), pingEntityType);
+		vehiclePings.add(p);
+		pings.add(p);
+
+		if (vehicle != null && !radar.isAlliedTo(vehicle)) vehicle.lockedOnto(radar);
+	}
+
+	private boolean alreadyScanned(List<RadarPing> vehiclePings, Entity entity) {
+		for (RadarPing ping : vehiclePings)
+			if (ping.id == entity.getId())
+				return true;
+		return false;
+	}
+
+	@Deprecated
 	private void scanAircraft(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea, 
 			boolean playersOnly, boolean isPlayersOrBots) {
 		//System.out.println("SCANNING VEHICLES");
@@ -113,7 +182,8 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
             if (ev != null && !radar.isAlliedTo(ev)) ev.lockedOnto(radar);
         }
 	}
-	
+
+	@Deprecated
 	private void scanPlayers(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea) {
 		//System.out.println("SCANNING PLAYERS");
 		List<Player> list = radar.level.getEntitiesOfClass(Player.class, radarArea);
@@ -212,7 +282,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 			return false;
 		}
 		if (stealth == -1) return true;
-		double area = UtilVehicleEntity.getCrossSectionalArea(target) * stealth;
+		double area = UtilVehicleEntity.getRadarCrossSectionalArea(target, radar.position()) * stealth;
 		double areaMin = (1-Math.pow(getStats().getRange(),-2)*Math.pow(dist-getStats().getRange(),2))*getStats().getSensitivity();
 		//System.out.println("area = "+area+" min = "+areaMin);
 		return area >= areaMin;

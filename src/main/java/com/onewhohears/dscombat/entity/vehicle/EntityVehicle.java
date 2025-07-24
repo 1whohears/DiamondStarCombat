@@ -3,12 +3,16 @@ package com.onewhohears.dscombat.entity.vehicle;
 import java.util.*;
 import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
+import com.onewhohears.dscombat.entity.CustomExplosion;
+import com.onewhohears.dscombat.entity.DrivingBody;
 import com.onewhohears.dscombat.entity.parts.*;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
@@ -18,7 +22,6 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
@@ -39,7 +42,7 @@ import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager;
@@ -61,7 +64,6 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilServerPacket;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
-import com.onewhohears.onewholibs.util.math.UtilAngles.EulerAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import com.onewhohears.dscombat.util.math.UtilRandom;
 
@@ -113,7 +115,7 @@ import net.minecraftforge.network.PacketDistributor;
  * @author 1whohears
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
-public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion {
+public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion, DrivingBody {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -128,7 +130,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<PermMode> PERM_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.PERM_MODE);
-	
+
 	public static final int HITBOX_PUSH_COOLDOWN = 4;
 
 	public final VehicleInputManager inputs;
@@ -142,6 +144,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	private final Set<Integer> collidedEntityIds = new HashSet<>();
 	private final Map<Integer, Integer> hitboxEntityCoolDown = new HashMap<>();
 	private final Map<Integer, EntityCollideInfo> entityCollideInfo = new HashMap<>();
+	protected final List<PhysicsComponentInstance<?>> physicsInstances = new ArrayList<>();
 	
 	private final Map<Integer, Integer> formerPassengersServer = new HashMap<>();
 	
@@ -158,19 +161,21 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public Vec3 prevMotion = Vec3.ZERO;
 	public Vec3 forces = Vec3.ZERO, forcesO = Vec3.ZERO, addForceBetweenTicks = Vec3.ZERO;
 	public Vec3 moment = Vec3.ZERO, momentO = Vec3.ZERO, addMomentBetweenTicks = Vec3.ZERO;
+	protected Vec3 controlMoment = Vec3.ZERO, additionalRotInertia = Vec3.ZERO;
 	
 	public boolean nightVisionHud = false, hasRadio = false;
 	
 	protected boolean hasFlares;
 	protected int xzSpeedDir, hurtByFireTime, flareTicks;
 	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
-	protected double staticFric, kineticFric, airPressure, currentAltitude;
+	protected double staticFric, kineticFric, airDensity, currentAltitude, maxXZ;
 	
 	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
 	private int groundTicks, hitboxRefreshAttempts, numFlares, hydraulicsFailureTicks;
 	private int missileTicks, trackedTicks;
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
+	private boolean wasInWater;
 	
 	protected boolean isDriverCameraLocked = false;
 	protected float throttle;
@@ -200,8 +205,23 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
+		updatePhysicsInstances();
 	}
-	
+
+	@Override
+	public void updateStatsHolder(@NotNull String preset) {
+		super.updateStatsHolder(preset);
+		if (isStatsHolderLoaded()) updatePhysicsInstances();
+	}
+
+	public void updatePhysicsInstances() {
+		physicsInstances.clear();
+		for (PhysicsComponentData data : getStats().getPhysicsComponents()) {
+			if (data == null) continue;
+			physicsInstances.add(data.createInstance());
+		}
+	}
+
 	@Override
 	protected void defineSynchedData() {
         entityData.define(HEALTH, 100f);
@@ -218,7 +238,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	@Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
         if (!level.isClientSide()) return;
@@ -242,7 +262,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * you could summon a vehicle with nbt {preset:"some preset name"} to override the {@link CustomAnimEntity#getDefaultStatsId()}
  	 */
 	@Override
-	public void readAdditionalSaveData(CompoundTag nbt) {
+	public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		// ORDER MATTERS
 		setTestMode(nbt.getBoolean("test_mode"));
@@ -260,8 +280,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
 		setXRotNoQ(nbt.getFloat("xRot"));
 		setYRotNoQ(nbt.getFloat("yRot"));
-		zRot = nbt.getFloat("zRot");
-		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
+		setZRot(nbt.getFloat("zRot"));
+		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), getZRot());
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
@@ -271,10 +291,11 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (nbt.contains("ingredientDropIndex")) ingredientDropIndex = nbt.getInt("ingredientDropIndex");
 		if (nbt.contains("owner_id")) owner_uuid = nbt.getUUID("owner_id");
 		setPermMode(PermMode.values()[nbt.getInt("perm_mode")]);
+		maxXZ = nbt.getDouble("maxXZ");
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag nbt) {
+	public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		nbt.putBoolean("test_mode", isTestMode());
 		nbt.putBoolean("no_consume", isNoConsume());
@@ -289,6 +310,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		nbt.putFloat("xRot", getXRot());
 		nbt.putFloat("yRot", getYRot());
 		nbt.putFloat("zRot", zRot);
+		nbt.putDouble("maxXZ", maxXZ);
 		nbt.putInt("radar_mode", getRadarMode().ordinal());
 		nbt.putString("radio_song", getRadioSong());
 		Entity own = getOwner();
@@ -315,6 +337,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		boolean gear = buffer.readBoolean();
 		boolean freeLook = buffer.readBoolean();
 		float throttle = buffer.readFloat();
+		maxXZ = buffer.readDouble();
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
 		// ORDER MATTERS
 		textureManager.read(buffer);
@@ -336,19 +359,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		buffer.writeBoolean(isLandingGear());
 		buffer.writeBoolean(isDriverCameraLocked());
 		buffer.writeFloat(getCurrentThrottle());
+		buffer.writeDouble(maxXZ);
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 		textureManager.write(buffer);
 		soundManager.write(buffer);
-	}
-	
-	@Override
-	public void onRemovedFromWorld() {
-		super.onRemovedFromWorld();
-	}
-	
-	@Override
-	public void onAddedToWorld() {
-		super.onAddedToWorld();
 	}
 	
 	public abstract VehicleType getVehicleType();
@@ -371,46 +385,69 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (UtilGeometry.vec3NAN(getDeltaMovement())) setDeltaMovement(Vec3.ZERO);
 		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
 		super.tick();
-		// SET PREV/OLD
-		prevMotion = getDeltaMovement();
-		forcesO = getForces();
-		momentO = getMoment();
-		setForces(Vec3.ZERO);
-		setMoment(Vec3.ZERO);
-		// SET DIRECTION
-		zRotO = zRot;
-		Quaternion q = getQBySide();
-		setPrevQ(q);
-		controlDirection(q);
-		//q.normalize(); // this was causing horrendous precision errors in the hitbox colliders
-		setQBySide(q);
-		EulerAngles angles = UtilAngles.toDegrees(q);
-		setXRotNoQ((float)angles.pitch);
-		setYRotNoQ((float)angles.yaw);
-		zRot = (float)angles.roll;
-		// MOVEMENT
-		tickThrottle();
-		if (!isTestMode()) {
-			calcMoveStatsPre(q);
-			tickMovement(q);
-			calcAcc();
-			motionClamp();
-			if (!getLevel().isClientSide() && canTrample()) tickTrample();
-			move(MoverType.SELF, getDeltaMovement());
-			calcMoveStatsPost(q);
-			tickCollisions();
-		}
+		// HANDLE SPECIAL INPUTS
+		controlSystem();
+		// PHYSICS
+		tickPhysics();
+		tickCollisions();
+		if (!getLevel().isClientSide() && canTrample()) tickTrample();
 		tickLerp();
 		// HITBOXES
 		tickHitboxes();
         // OTHER
-		controlSystem();
         tickParts();
         tickWarnings();
 		soundManager.onTick();
 		textureManager.onTick();
 		if (level.isClientSide) clientTick();
 		else serverTick();
+	}
+
+	@Override
+	public void calcAirMovement(Quaternion q) {
+		DrivingBody.super.calcAirMovement(q);
+		resetFallDistance();
+	}
+
+	public boolean canDriveOnGround() {
+		return !canToggleLandingGear() || isLandingGear();
+	}
+
+	public void calcWaterMovement(Quaternion q) {
+
+	}
+
+	@Override
+	public void addControllingTorques(Quaternion q) {
+		if (canTurnViaTorque()) {
+			if (canControlPitch()) {
+				if (isHardCodedRotAcc()) hardCodedAccPitch();
+				else addMomentX(inputs.pitch * getPitchTorque(), true);
+			}
+			if (canControlYaw()) {
+				if (isHardCodedRotAcc()) hardCodedAccYaw();
+				else addMomentY(inputs.yaw * getYawTorque(), true);
+			}
+			if (canControlRoll()) {
+				if (isHardCodedRotAcc()) hardCodedAccRoll();
+				else{
+					if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
+					else addMomentZ(inputs.roll * getRollTorque(), true);
+				}
+			}
+		}
+	}
+
+	public boolean canTurnViaTorque() {
+		return isOperational() && !isOnGround();
+	}
+
+	public Vec3 getTotalRotInertia() {
+		return new Vec3(getStats().Ix, getStats().Iy, getStats().Iz).add(getAdditionalRotInertia());
+	}
+
+	protected Vec3 getAdditionalRotInertia() {
+		return additionalRotInertia;
 	}
 	
 	/**
@@ -476,6 +513,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected void wallCollisions() {
 		if (verticalCollision) verticalCollision();
 		if (horizontalCollision && !minorHorizontalCollision) horizontalCollision();
+		if (!wasInWater() && isInWater()) waterCollision();
+		wasInWater = isInWater();
+	}
+
+	protected void waterCollision() {
+		double speed = prevMotion.length();
+		double th = DSCPhyCons.COLLIDE_SPEED;
+		if (speed > th) {
+			float amount = (float)((speed-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
+			collideHurt(amount, false);
+		}
 	}
 	
 	protected void horizontalCollision() {
@@ -505,7 +553,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	@Override
-	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
+	public boolean causeFallDamage(float dist, float mult, @NotNull DamageSource source) {
 		verticalCollision();
 		return true;
 	}
@@ -531,9 +579,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			if (this.equals(entity.getRootVehicle())) return false;
 			if (!(entity instanceof LivingEntity)) return false;
 			if (entity instanceof Player p && p.isCreative()) return false;
-			if (isFormerPassenger(entity)) return false;
- 			return true;
-		});
+            return !isFormerPassenger(entity);
+        });
 	}
 	
 	private void tickDismountSafety() {
@@ -609,37 +656,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		UtilParticles.vehicleParticles(this);
 		tickClientLandingGear();
 	}
-	
-	/**
-	 * called every tick after movement is calculated.
-	 * restricts the motion of the craft based on max horizontal speed and max vertical speed.
-	 */
-	public void motionClamp() {
-		Vec3 move = getDeltaMovement();
-		double maxXZ = getMaxSpeedForMotion();
-		
-		Vec3 motionXZ = new Vec3(move.x, 0, move.z);
-		double velXZ = motionXZ.length();
-		if (velXZ > maxXZ) motionXZ = motionXZ.scale(maxXZ / velXZ);
-		
-		double my = move.y;
-		if (my > getMaxClimbSpeed()) my = getMaxClimbSpeed();
-		else if (my < -getMaxFallSpeed()) my = -getMaxFallSpeed();
-		else if (Math.abs(my) < 0.001) my = 0;
 
-		double decreaseSpeedPos = 100;
-		double altitude = getAltitude();
-		double nextY = altitude + my;
-		if (nextY > getMaxAltitude()) my = getMaxAltitude() - altitude;
-		else if (altitude > getMaxAltitude() - decreaseSpeedPos) {
-			double maxY = 1 - (altitude - getMaxAltitude() + decreaseSpeedPos) / decreaseSpeedPos;
-			if (my > maxY) my = maxY;
-		}
-
-		if (onGround && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
-		setDeltaMovement(motionXZ.x, my, motionXZ.z);
-	}
-	
 	public double getMaxClimbSpeed() {
 		return DSCPhyCons.MAX_CLIMB_SPEED;
 	}
@@ -652,11 +669,19 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * @return the max speed {@link EntityVehicle#motionClamp} tests for.
 	 */
 	public double getMaxSpeedForMotion() {
-		return getMaxSpeed() * getMaxSpeedFactor();
+		double max;
+		if (isOnGround()) max = getMaxGroundSpeed();
+		else max = getMaxSpeed();
+		if (applyHorizontalSpeedScale()) max *= getHorizontalSpeedScale();
+		return max * getMaxSpeedFactor();
 	}
 
 	public double getMaxSpeedFactor() {
 		return Config.SERVER.vehicleSpeedFactor.get();
+	}
+
+	public double getMaxGroundSpeed() {
+		return getStats().max_ground_speed;
 	}
 	
 	/**
@@ -677,8 +702,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 				return;
 			}
 		}
-		if (inputs.throttle > 0) increaseThrottle();
-		else if (inputs.throttle < 0) decreaseThrottle();
+		throttleTowards(inputs.throttle);
 	}
 	
 	public boolean cutThrottleOnNoPilot() {
@@ -688,162 +712,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public boolean cutThrottleOnNoPassengers() {
 		return true;
 	}
-	
-	/**
-	 * called every tick.
-	 * reads player input to change the direction of the craft.
-	 * also calls {@link EntityVehicle#directionGround(Quaternion)}, {@link EntityVehicle#directionWater(Quaternion)},
-	 * and {@link EntityVehicle#directionAir(Quaternion)} to change direction based on the named conditions.
-	 * @param q the current direction of the vehicle
-	 */
-	public void controlDirection(Quaternion q) {
-		if (onGround) directionGround(q);
-		else if (isInWater()) directionWater(q);
-		else directionAir(q);
-		Vec3 m = getMoment().add(addMomentBetweenTicks), av = getAngularVel();
-		if (!UtilGeometry.isZero(m)) {
-			av = av.add(m.x/getStats().Ix, m.y/getStats().Iy, m.z/getStats().Iz);
-			setAngularVel(av);
-		}
-		q.mul(Vector3f.XN.rotationDegrees((float)av.x));
-		q.mul(Vector3f.YN.rotationDegrees((float)av.y));
-		q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
-		applyAngularDrag();
-		addMomentBetweenTicks = Vec3.ZERO;
-	}
-	
-	public void applyAngularDrag() {
-		Vec3 av = getAngularVel();
-		float d = getAngularDrag();
-		float dx = d, dy = d, dz = d;
-		if (!onGround) {
-			if (inputs.pitch != 0 && Math.abs(av.x) <= getControlMaxDeltaPitch()) dx = 0;
-			if (inputs.yaw != 0 && Math.abs(av.y) <= getControlMaxDeltaYaw()) dy = 0;
-			if (inputs.roll != 0 && Math.abs(av.z) <= getControlMaxDeltaRoll()) dz = 0;
-		}
-		setAngularVel(new Vec3(
-				getADComponent(av.x, dx, getStats().Ix),
-				getADComponent(av.y, dy, getStats().Iy),
-				getADComponent(av.z, dz, getStats().Iz)));
-	}
-	
-	private double getADComponent(double v, float d, float I) {
-		double a = Math.abs(v) - d/I;
-		if (a < 0) return 0;
-		return a * Math.signum(v);
-	}
-	
-	protected float getAngularDrag() {
-		if (onGround) return 2.5f;
-		else if (isInWater()) return 1.5f;
-		else return 1.0f;
- 	}
-	
-	/**
-	 * called every tick to change the vehicle direction if on the ground. 
-	 * @param q the current direction of the vehicle
-	 */
-	public void directionGround(Quaternion q) {
-		if (!isOperational()) return;
-		flatten(q, 4f, 4f, true);
-		float max_tr = getTurnRadius();
-		Vec3 av = getAngularVel();
-		if (inputs.yaw == 0 || max_tr == 0) {
-			if (!isSliding()) setAngularVel(av.multiply(1, 0, 1));
-			return;
-		}
-		float tr = 1 / inputs.yaw * max_tr;
-		float turn = xzSpeed / tr * xzSpeedDir;
-		float turnDeg = turn * Mth.RAD_TO_DEG;
-		if (!isSliding()) av = av
-				.multiply(1, 0, 1)
-				.add(0, turnDeg, 0);
-		else addMomentY(turnDeg*slideAngleCos, false);
-		setAngularVel(av);
-	}
-	
-	/**
-	 * called every tick to change the vehicle direction if in the air.
-	 * @param q the current direction of the vehicle
-	 */
-	public void directionAir(Quaternion q) {
-		
-	}
-	
-	/**
-	 * called every tick to change the vehicle direction if in the water.
-	 * @param q the current direction of the vehicle
-	 */
-	public void directionWater(Quaternion q) {
-		directionAir(q);
-	}
-	
-	/**
-	 * used to make the vehicle level with the ground or water.
-	 * @param q the current direction of the vehicle
-	 * @param dPitch
-	 * @param dRoll
-	 * @param forced
-	 */
-	public void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {
-		Vec3 av = getAngularVel();
-		float x = (float)av.x, z = (float)av.z;
-		if (!forced) {
-			if (Math.abs(av.x) <= dPitch) x = 0;
-			if (Math.abs(av.z) <= dRoll) z = 0;
-		} else x = z = 0;
-		EulerAngles angles = UtilAngles.toDegrees(q);
-		float roll, pitch;
-		if (dRoll != 0) {
-			if (Math.abs(angles.roll) < dRoll) roll = (float) -angles.roll;
-			else roll = -(float)Math.signum(angles.roll) * dRoll;
-			z += roll;
-		}
-		if (dPitch != 0) {
-			float goalPitch = 0;
-			if (isOnGround()) goalPitch = -getStats().groundXTilt;
-			float diff = (float)angles.pitch - goalPitch;
-			if (Math.abs(diff) < dPitch) pitch = diff;
-			else pitch = Math.signum(diff) * dPitch;
-			x += pitch;
-		}
-		setAngularVel(new Vec3(x, av.y, z));
-	}
-	
-	public void addMoment(Vec3 moment, boolean control) {
-		Vec3 m = getMoment();
-		double x = moment.x, y = moment.y, z = moment.z;
-		if (control) {
-			Vec3 av = getAngularVel();
-			if (moment.x != 0) x = getControlMomentComponent(m.x, moment.x, av.x, getControlMaxDeltaPitch(), getStats().Ix);
-			if (moment.y != 0) y = getControlMomentComponent(m.y, moment.y, av.y, getControlMaxDeltaYaw(), getStats().Iy);
-			if (moment.z != 0) z = getControlMomentComponent(m.z, moment.z, av.z, getControlMaxDeltaRoll(), getStats().Iz);
-		}
-		setMoment(m.add(x, y, z));
-	}
-	
-	private double getControlMomentComponent(double cm, double m, double v, float max, float I) {
-		if (Math.abs(v) > max && Math.signum(v) == Math.signum(m)) return 0;
-		double m2 = cm + m;
-		double a2 = m2 / I;
-		double v2 = v + a2;
-		double vd = Math.abs(v2) - max;
-		if (vd > 0) m -= vd * Math.signum(v2) * I;
-		return m;
-	}
-	
-	public void addMomentX(float moment, boolean control) {
-		addMoment(Vec3.ZERO.add(moment, 0, 0), control);
-	}
-	
-	public void addMomentY(float moment, boolean control) {
-		addMoment(Vec3.ZERO.add(0, moment, 0), control);
-	}
-	
-	public void addMomentZ(float moment, boolean control) {
-		addMoment(Vec3.ZERO.add(0, 0, moment), control);
-	}
-	
+
 	public float getControlMaxDeltaPitch() {
 		return getMaxDeltaPitch() * Mth.abs(inputs.pitch);
 	}
@@ -861,7 +730,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * instead of calculating values multiple times per tick.
 	 * @param q the current direction of the vehicle
 	 */
-	protected void calcMoveStatsPre(Quaternion q) {
+	public void calcMoveStatsPre(Quaternion q) {
 		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
 		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION;
 		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION;
@@ -871,9 +740,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		maxFuel = partsManager.getMaxFuel();
 		hasFlares = !partsManager.getFlares().isEmpty();
 		numFlares = partsManager.getNumFlares();
-		airPressure = UtilVehicleEntity.getAirPressure(this);
+		airDensity = UtilVehicleEntity.getAirDensity(this);
 		if (isOnGround()) ++groundTicks;
 		else groundTicks = 0;
+		additionalRotInertia = partsManager.calcRotInertialFromParts();
 	}
 	
 	/**
@@ -881,20 +751,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * instead of calculating values multiple times per tick.
 	 * @param q the current direction of the vehicle
 	 */
-	protected void calcMoveStatsPost(Quaternion q) {
-		Vec3 m = getDeltaMovement();
-		float y = getYRot();
-		xzSpeed = (float) Math.sqrt(m.x*m.x + m.z*m.z);
-		if (xzSpeed == 0) {
-			xzYaw = y;
-			slideAngle = 0;
-		} else {
-			xzYaw = UtilAngles.getYaw(m);
-			slideAngle = Mth.degreesDifference(xzYaw, y);
-			slideAngleCos = (float) Math.abs(Math.cos(Math.toRadians(slideAngle)));
-		}
-		xzSpeedDir = 1;
-		if (Math.abs(slideAngle) > 90) xzSpeedDir = -1;
+	public void calcMoveStatsPost(Quaternion q) {
+		DrivingBody.super.calcMoveStatsPost(q);
 		currentAltitude = UtilEntity.getDistFromSeaLevel(this);
 	}
 	
@@ -905,22 +763,26 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public int getXZSpeedDir() {
 		return xzSpeedDir;
 	}
-	
-	/**
-	 * called every tick on server and client side.
-	 * after forces are calculated. see {@link EntityVehicle#tickMovement(Quaternion)}.
-	 * F=M*A -> A=F/M then A is added to current velocity
-	 */
-	public void calcAcc() {
-		//if (!addForceBetweenTicks.equals(Vec3.ZERO)) System.out.println("add force "+addForceBetweenTicks+" "+this);
-		Vec3 f = getForces().add(addForceBetweenTicks);
-		double s = 1/getTotalMass();
-		setDeltaMovement(getDeltaMovement().add(f.scale(s)));
-		addForceBetweenTicks = Vec3.ZERO;
+
+	public boolean applyHorizontalSpeedScale() {
+		return getStats().use_horizontal_speed_scale;
+	}
+
+	public double getHorizontalSpeedScale() {
+		return DSCPhyCons.HORIZONTAL_SPEED_SCALE;
+	}
+
+	public boolean applyVerticalAccScale() {
+		return getStats().use_vertical_speed_scale;
+	}
+
+	public double getVerticalAccScale(double verticalForce) {
+		if (verticalForce < 0) return DSCPhyCons.VERTICAL_DOWN_ACC_SCALE;
+		return DSCPhyCons.VERTICAL_UP_ACC_SCALE;
 	}
 	
 	@Override
-	public void move(MoverType type, Vec3 move) {
+	public void move(@NotNull MoverType type, @NotNull Vec3 move) {
 		super.move(type, move);
 		if (!noPhysics && isOnGround() && getDeltaMovement().y == 0) stepDown(move);
 	}
@@ -942,144 +804,27 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	/**
-	 * called on both client and server side every tick to calculate the vehicle's forces this tick.
-	 * calls the following based on entity's current state: 
-	 * {@link EntityVehicle#tickAlways(Quaternion)},
-	 * {@link EntityVehicle#tickGround(Quaternion)},
-	 * {@link EntityVehicle#tickGroundWater(Quaternion)},
-	 * {@link EntityVehicle#tickWater(Quaternion)},
-	 * {@link EntityVehicle#tickAir(Quaternion)}.
-	 * @param q the plane's current rotation
-	 */
-	public void tickMovement(Quaternion q) {
-		tickAlways(q);
-		if (onGround && isInWater()) tickGroundWater(q);
-		else if (onGround) tickGround(q);
-		else if (isInWater()) tickWater(q);
-		else tickAir(q);
-	}
-	
-	/**
-	 * called on both client and server side every tick to calculate the vehicle's forces in any context.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
-	 * @param q the plane's current rotation
-	 */
-	public void tickAlways(Quaternion q) {
-		Vec3 f = getForces();
-		f = f.add(getWeightForce());
-		f = f.add(getThrustForce(q));
-		setForces(f);
-	}
-	
-	/**
-	 * called on both client and server side every tick to calculate the vehicle's forces when on the ground.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
-	 * @param q the plane's current rotation
-	 */
-	public void tickGround(Quaternion q) {
-		Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
-		if (isSliding() || willSlideFromTurn()) {
-			setDeltaMovement(getDeltaMovement().add(n.scale(getDriveAcc() * slideAngleCos)));
-			addFrictionForce(kineticFric);
-			//debug("SLIDING");
-		} else {
-			setDeltaMovement(n.scale(xzSpeed*xzSpeedDir + getDriveAcc()));
-			if (getCurrentThrottle() == 0 && xzSpeed != 0) 
-				addFrictionForce(DSCPhyCons.DRIVE_FRICTION);
-		}
-		if (isBraking() && isOperational()) applyBreaks();
-	}
-	
-	/**
 	 * @return the acceleration while driving 
 	 */
 	public double getDriveAcc() {
 		return getSpinThrustMag()/getTotalMass();
 	}
 	
-	public boolean isBraking() {
+	public boolean isGroundBraking() {
 		return false;
 	}
 	
-	public abstract boolean canBrake();
-	
-	public void applyBreaks() {
-		addFrictionForce(kineticFric);
+	public boolean canGroundBrake() {
+		return isOnGround() && getStats().break_deacc_ground > 0 && isOperational();
 	}
-	
-	protected void addFrictionForce(double f) {
-		Vec3 m = getDeltaMovement();
-		if (m.x == 0 && m.z == 0) return;
-		Vec3 mn = m.normalize();
- 		Vec3 force = mn.scale(-f);
-		Vec3 acc = force.scale(1/getTotalMass());
-		if (m.x != 0 && Math.signum(m.x+acc.x) != Math.signum(m.x)) {
-			force = force.multiply(0, 1, 1);
-			m = m.multiply(0, 1, 1);
-		}
-		if (m.z != 0 && Math.signum(m.z+acc.z) != Math.signum(m.z)) {
-			force = force.multiply(1, 1, 0);
-			m = m.multiply(1, 1, 0);
-		}
-		setDeltaMovement(m);
-		setForces(getForces().add(force));
+
+	public boolean canAirBrake() {
+		return !isOnGround() && getStats().break_deacc_air > 0 && isOperational();
 	}
-	
-	protected boolean willSlideFromTurn() {
-		double max_tr = getTurnRadius();
-		if (inputs.yaw != 0 && max_tr != 0) { // IF TURNING
-			double tr = max_tr * 1 / Math.abs(inputs.yaw); // inputed turn radius
-			double cen_acc = xzSpeed * xzSpeed / tr; // cen_acc needed to complete turn
-			double cen_force = cen_acc * getTotalMass(); // friction force needed to not slide
-			//debug(cen_force+" >? "+staticFric);
-			if (cen_force >= staticFric) return true; // if cen_force >= static-friction-threshold slide
-		}
-		return false;
+
+	public boolean isAirBreaking() {
+		return isGroundBraking();
 	}
-	
-	public boolean isSlideAngleNearZero() {
-		if (xzSpeedDir == -1) return Mth.abs(Mth.abs(slideAngle)-180) < 2;
-		return Mth.abs(slideAngle) < 2;
-	}
-	
-	public boolean isSliding() {
-		return !isLandingGear() || !isSlideAngleNearZero();
-	}
-	
-	/**
-	 * called on both client and server side every tick to calculate the vehicle's forces when in air.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
-	 * @param q the plane's current rotation
-	 */
-	public void tickAir(Quaternion q) {
-		setForces(getForces().add(getDragForce(q)));
-		resetFallDistance();
-	}
-	
-	/**
-	 * called on both client and server side every tick to calculate the vehicle's forces in when floating in water.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
-	 * @param q the plane's current rotation
-	 */
-	public void tickWater(Quaternion q) {
-		setForces(getForces().add(getDragForce(q)));
-	}
-	
-	/**
-	 * called on both client and server side every tick to calculate the vehicle's forces when at the bottom of water.
-	 * called by {@link EntityVehicle#tickMovement(Quaternion)}.
-	 * @param q the plane's current rotation
-	 */
-	public void tickGroundWater(Quaternion q) {
-		tickGround(q);
-		tickWater(q);
-	}
-	
-	/**
-	 * @param q the plane's current rotation
-	 * @return a force vector as the plane's thrust force this tick
-	 */
-	public abstract Vec3 getThrustForce(Quaternion q);
 	
 	/**
 	 * @return the magnitude of the thrust force based on the engines, throttle, and 0 if no fuel
@@ -1110,46 +855,24 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public float getMaxSpinThrust() {
 		return maxSpinThrust;
 	}
-	
-	/**
-	 * will be the inverse of some proportion of the plane's current movement
-	 * @param q the plane's current rotation
-	 * @return a force vector as the plane's drag this tick
-	 */
-	public Vec3 getDragForce(Quaternion q) {
-		Vec3 direction = getDeltaMovement().normalize().scale(-1);
-		Vec3 dragForce = direction.scale(getDragMag());
-		return dragForce;
-	}
-	
-	/**
-	 * @return the magnitude of the drag force
-	 */
-	public double getDragMag() {
-		// Drag = (drag coefficient) * (air pressure) * (speed)^2 * (wing surface area) / 2
-		double speedSqr = getDeltaMovement().lengthSqr();
-		double d = airPressure * speedSqr * getCrossSectionArea();
-		if (isInWater()) d *= DSCPhyCons.DRAG_WATER;
-		else d *= DSCPhyCons.DRAG;
-		return d;
-	}
-	
-	/**
-	 * modifies {@link EntityVehicle#getBaseCrossSecArea()} for physics.
-	 * this function returns a larger value if a plane's flaps are down for example.
-	 * @return this vehicle's cross sectional area for drag and radar.
-	 */
-	public double getCrossSectionArea() {
-		double a = getBaseCrossSecArea();
-		if (!isOperational()) a += 4;
+
+	public double getDragArea() {
+		double a = getStats().drag_area;
+		if (canToggleLandingGear() && isLandingGear())
+			a += DSCPhyCons.INCREASED_DRAG_AREA_LANDING_GEAR;
+		if (!isOperational())
+			a += DSCPhyCons.INCREASED_DRAG_AREA_DESTROYED;
 		return a;
 	}
-	
-	/**
-	 * @return srly bro you dont know what this is?
-	 */
-	public Vec3 getWeightForce() {
-		return new Vec3(0, -getTotalMass() * DSCPhyCons.GRAVITY, 0);
+
+	public double getDragCoefficient() {
+		return DSCPhyCons.DRAG_SCALE;
+	}
+
+	public double getRadarArea(Vec3 radarPos) {
+		double a = getBaseCrossSecArea();
+		if (canToggleLandingGear() && isLandingGear()) a += 1;
+		return a;
 	}
 	
 	/**
@@ -1157,10 +880,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public float getTotalMass() {
 		if (Float.isNaN(totalMass)) {
-			LOGGER.warn("ERROR: NAN MASS? setting to 10000 | "+this);
+            LOGGER.warn("ERROR: NAN MASS? setting to 10000 | {}", this);
 			totalMass = 10000;
 		} else if (totalMass == 0) {
-			LOGGER.warn("ERROR: 0 MASS? setting to 10000 | "+this);
+            LOGGER.warn("ERROR: 0 MASS? setting to 10000 | {}", this);
 			totalMass = 10000;
 		}
 		return totalMass;
@@ -1179,6 +902,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * fired on both client and server side to control the plane's weapons, flares, open menu
 	 */
 	public void controlSystem() {
+		tickThrottle();
 		if (!isOperational()) return;
 		radarSystem.tick();
 		Entity controller = getControllingPassenger();
@@ -1339,12 +1063,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public @NotNull Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
 	@Override
-	public InteractionResult interact(Player player, InteractionHand hand) {
+	public @NotNull InteractionResult interact(@NotNull Player player, @NotNull InteractionHand hand) {
 		if (xzSpeed > 0.2) return InteractionResult.PASS;
 		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
 		if (player.getRootVehicle().equals(this)) return InteractionResult.PASS;
@@ -1357,7 +1081,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (!level.isClientSide) return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		else {
 			Minecraft m = Minecraft.getInstance();
-			if (m.player.equals(player)) DSCClientInputs.centerMousePos();
+			if (m.player != null && m.player.equals(player)) DSCClientInputs.centerMousePos();
 		}
 		return InteractionResult.SUCCESS;
 	}
@@ -1595,7 +1319,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * the part's position is set based on the vehicle's rotation.
 	 */
 	@Override
-    public void positionRider(Entity passenger) {
+    public void positionRider(@NotNull Entity passenger) {
 		if (passenger instanceof EntityPart part) {
 			passenger.setPos(convertRelPos(part.getRelativePos()));
 			return;
@@ -1658,17 +1382,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	@Override
-    protected void addPassenger(Entity passenger) {
+    protected void addPassenger(@NotNull Entity passenger) {
         super.addPassenger(passenger);
 	}
 	
 	@Override
-    protected boolean canAddPassenger(Entity passenger) {
+    protected boolean canAddPassenger(@NotNull Entity passenger) {
 		return passenger instanceof EntityPart;
 	}
 	
 	@Override
-    protected boolean canRide(Entity entityIn) {
+    protected boolean canRide(@NotNull Entity entityIn) {
         return false;
     }
 	
@@ -1680,7 +1404,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return null;
 	}
 
-	// TODO: explore potential override of #getPassengers and just do this there (or even just rename this method)
 	public boolean isVehicleOf(Entity e) {
 		if (e == null) return false;
 		List<Entity> list = getPassengers();
@@ -1743,15 +1466,14 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     @Override
-    public boolean canCollideWith(Entity entity) {
+    public boolean canCollideWith(@NotNull Entity entity) {
     	if (!super.canCollideWith(entity)) return false;
     	if (entity.isPushable()) return false;
-    	if (isHitboxParent(entity)) return false;
-    	return true;
+        return !isHitboxParent(entity);
     }
     
 	@Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurt(@NotNull DamageSource source, float amount) {
 		return hurtLogic(source, amount, null);
 	}
 	
@@ -1843,7 +1565,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	private boolean shouldDebug(DamageSource source) {
-		//return source.getMsgId().equals("flyIntoWall");
 		return !source.isFire();
 	}
 	
@@ -1856,7 +1577,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	@Override
-	public boolean isInvulnerableTo(DamageSource source) {
+	public boolean isInvulnerableTo(@NotNull DamageSource source) {
 		if (isTestMode()) return true;
 		if (super.isInvulnerableTo(source)) return true;
 		if (source.isFire() && (tickCount-hurtByFireTime) < 10) return true;
@@ -1873,6 +1594,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		float healthPercent;
 		if (damageRoot) healthPercent = getHealth() / getMaxHealth();
 		else {
+			if (hitbox == null) return;
 			if (!hitbox.getHitboxData().isDamageParts()) return;
 			healthPercent = hitbox.getHealth() / hitbox.getMaxHealth();
 		}
@@ -1957,8 +1679,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         
         if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
         else hurtLogic(exp.getDamageSource(), amount, null);
-
-		System.out.println("explode damage = "+amount+" health "+getHealth()+" armor "+getArmor());
         
         Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(DSCPhyCons.EXP_FORCE_FACTOR);
         
@@ -1966,7 +1686,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (s.equals(b) && exp_entity != null) 
 			f = exp_entity.getDeltaMovement().normalize().scale(exp_factor*DSCPhyCons.EXP_MOMENT_FACTOR);
 		else f = s.subtract(b).normalize().scale(exp_factor*DSCPhyCons.EXP_MOMENT_FACTOR);
-		Vec3 moment = r.cross(f);
+
+		Vec3 moment = r.cross(UtilAngles.rotateVectorInverse(f, getQBySide()));
 		
 		addForceMomentToClient(force, moment);
 	}
@@ -1979,14 +1700,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	private Vec3 getClosest(Vec3 pos, @Nullable RotableHitbox hitbox) {
 		if (hitbox == null) return UtilGeometry.getClosestPointOnAABB(pos, getBoundingBox());
 		Optional<Vec3> clip = hitbox.getHitbox().clip(pos, hitbox.position());
-		return clip.orElseGet(() -> hitbox.position());
+		return clip.orElseGet(hitbox::position);
 	}
 	
 	/**
 	 * @return the max speed of the craft along the x and z axis
 	 */
     public final float getMaxSpeed() {
-    	return getStats().max_speed;
+		if (isUsingAfterburner()) return getStats().max_speed;
+		return getStats().cruise_speed;
     }
     
     /**
@@ -2047,11 +1769,11 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public final float getYawTorque() {
-    	return getStats().torqueyaw;
+		return getStats().torqueyaw;
     }
     
     public final float getRollTorque() {
-    	return getStats().torqueroll;
+		return getStats().torqueroll;
     }
     
     public void increaseThrottle() {
@@ -2411,7 +2133,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     
     protected void findGimbalForPilotCamera() {
     	List<EntityGimbal> gimbals = getGimbals();
-    	if (gimbals.size() == 0) pilotGimbal = null;
+    	if (gimbals.isEmpty()) pilotGimbal = null;
     	else pilotGimbal = gimbals.get(0);
     }
     
@@ -2464,13 +2186,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     @Override
-    public EntityDimensions getDimensions(Pose pose) {
+    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
     	if (!isStatsHolderLoaded()) return super.getDimensions(pose);
     	return getStats().dimensions;
     }
     
     @Override
-    protected AABB makeBoundingBox() {
+    protected @NotNull AABB makeBoundingBox() {
     	if (isCustomBoundingBox()) return makeCustomBoundingBox();
 		return getDimensions(getPose()).makeBoundingBox(position());
     }
@@ -2493,12 +2215,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     @Override
-    protected AABB getBoundingBoxForPose(Pose pose) {
+    protected @NotNull AABB getBoundingBoxForPose(@NotNull Pose pose) {
     	return makeBoundingBox();
     }
     
     @Override
-    public AABB getBoundingBoxForCulling() {
+    public @NotNull AABB getBoundingBoxForCulling() {
     	return getBoundingBox().inflate(getStats().cameraDistance);
     }
     
@@ -2617,11 +2339,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     /**
-     * @param partialTicks
      * @return 0 (landing gear out) 1 (landing gear folded)
      */
     public float getLandingGearPos(float partialTicks) {
 		return Mth.lerp(partialTicks, landingGearPosOld, landingGearPos);
+	}
+
+	public void foldLandingGearNow() {
+		landingGearPos = 1;
+		landingGearPosOld = 1;
 	}
     
     @Override
@@ -2653,7 +2379,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
+    public @NotNull Vec3 getDismountLocationForPassenger(@NotNull LivingEntity livingEntity) {
 		return super.getDismountLocationForPassenger(livingEntity);
 	}
     
@@ -2670,7 +2396,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public void debug(String debug, boolean passengerCheck) {
-    	if (!passengerCheck || (passengerCheck && hasControllingPassenger())) 
+    	if (!passengerCheck || hasControllingPassenger())
     		System.out.println(debug);
     }
     
@@ -2724,20 +2450,20 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     @Override
-    public boolean canTrample(BlockState state, BlockPos pos, float fallDistance) {
+    public boolean canTrample(@NotNull BlockState state, @NotNull BlockPos pos, float fallDistance) {
     	return true;
     }
     
     @Override
-    public boolean isAlliedTo(Entity entity) {
+    public boolean isAlliedTo(@NotNull Entity entity) {
     	if (entity == null) return false;
     	Entity c = entity.getControllingPassenger();
-    	if (c != null) return isAlliedTo(c.getTeam());
+    	if (c != null && c.getTeam() != null) return isAlliedTo(c.getTeam());
     	return super.isAlliedTo(entity);
     }
     
     @Override
-    public boolean isAlliedTo(Team team) {
+    public boolean isAlliedTo(@NotNull Team team) {
     	if (team == null) return false;
     	Entity c = getControllingPlayerOrBot();
 		if (c != null) return team.isAlliedTo(c.getTeam());
@@ -2750,24 +2476,24 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	@Nullable
 	public RotableHitbox getHitboxByName(String name) {
-		for (int i = 0; i < hitboxes.size(); ++i) 
-			if (hitboxes.get(i).getHitboxName().equals(name)) 
-				return hitboxes.get(i);
+        for (RotableHitbox hitbox : hitboxes)
+            if (hitbox.getHitboxName().equals(name))
+                return hitbox;
 		return null;
 	}
 	
 	@Nullable
 	public RotableHitbox getHitboxById(int id) {
-		for (int i = 0; i < hitboxes.size(); ++i) 
-			if (hitboxes.get(i).getId() == id) 
-				return hitboxes.get(i);
+        for (RotableHitbox hitbox : hitboxes)
+            if (hitbox.getId() == id)
+                return hitbox;
 		return null;
 	}
 	
 	public boolean isHitboxParent(Entity hitbox) {
-		for (int i = 0; i < hitboxes.size(); ++i) 
-			if (hitboxes.get(i).equals(hitbox)) 
-				return true;
+        for (RotableHitbox rotableHitbox : hitboxes)
+            if (rotableHitbox.equals(hitbox))
+                return true;
 		return false;
 	}
 	
@@ -2775,19 +2501,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		CompoundTag hitbox_data = nbt.getCompound("hitbox_data");
 		hitboxes.clear();
 		hitboxes.addAll(getStats().createRotableHitboxes(this));
-		for (int i = 0; i < hitboxes.size(); ++i) {
-			RotableHitbox hitbox = hitboxes.get(i); 
-			hitbox.setPos(position());
-			hitbox.readNbt(hitbox_data);
-			hitbox.setId(ENTITY_COUNTER.incrementAndGet());
-			level.addFreshEntity(hitbox);
-		}
+        for (RotableHitbox hitbox : hitboxes) {
+            hitbox.setPos(position());
+            hitbox.readNbt(hitbox_data);
+            hitbox.setId(ENTITY_COUNTER.incrementAndGet());
+            level.addFreshEntity(hitbox);
+        }
 	}
 	
 	protected void saveRotableHitboxes(CompoundTag nbt) {
 		CompoundTag hitbox_data = new CompoundTag();
-		for (int i = 0; i < hitboxes.size(); ++i) 
-			hitboxes.get(i).writeNbt(hitbox_data);
+        for (RotableHitbox hitbox : hitboxes) hitbox.writeNbt(hitbox_data);
 		nbt.put("hitbox_data", hitbox_data);
 	}
 	
@@ -2795,8 +2519,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (level.isClientSide) return;
 		CompoundTag nbt = new CompoundTag();
 		saveRotableHitboxes(nbt);
-		for (int i = 0; i < hitboxes.size(); ++i) 
-			hitboxes.get(i).discard();
+        for (RotableHitbox hitbox : hitboxes) hitbox.discard();
 		createRotableHitboxes(nbt);
 	}
 	
@@ -2857,26 +2580,31 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			if (!multiCollideSameTick) {
 				if (push.time == tickCount && push.hitboxId != currentPush.hitboxId) multiCollideSameTick = true;
 				else return false;
-			} 
-			if (multiCollideSameTick) {
-				if (push.time == prevTime && push.hitboxId == currentPush.hitboxId) {
-					if (UtilGeometry.isEqual(push.pos,  currentPush.pos, 0.001)) return true;
-					else return false;
-				}
 			}
-		}
+            if (push.time == prevTime && push.hitboxId == currentPush.hitboxId) {
+                return UtilGeometry.isEqual(push.pos, currentPush.pos, 0.001);
+            }
+        }
 		return false;
 	}
 	
 	public double getMaxHitboxY() {
 		double max = getY();
-		for (int i = 0; i < hitboxes.size(); ++i) {
-			double y = hitboxes.get(i).getMaxY();
-			if (y > max) max = y;
-		}
+        for (RotableHitbox hitbox : hitboxes) {
+            double y = hitbox.getMaxY();
+            if (y > max) max = y;
+        }
 		return max;
 	}
-	
+
+	public boolean canUseTurnAssist() {
+		return getStats().has_turn_assist;
+	}
+
+	public boolean isUsingTurnAssist() {
+		return canUseTurnAssist() && inputs.turnAssist;
+	}
+
 	private static class EntityCollideInfo {
 		private final List<CollideInfo> collides = new ArrayList<>();
 		EntityCollideInfo() {}
@@ -2958,7 +2686,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public boolean showAfterBurnerParticles() {
-    	return getCurrentThrottle() > 0.5;
+    	return isUsingAfterburner();
     }
     
     public boolean showMoreAfterBurnerParticles() {
@@ -3061,15 +2789,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     @Override
     public void setYRot(float yRot) {
         super.setYRot(yRot);
-        Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
-        setQBySide(q);
+        DrivingBody.super.setYRot(yRot);
     }
     
     @Override
     public void setXRot(float xRot) {
         super.setXRot(xRot);
-        Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), zRot);
-        setQBySide(q);
+		DrivingBody.super.setXRot(xRot);
     }
     
     @Override
@@ -3099,15 +2825,27 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public boolean canControlPitch() {
-		return !areAllHitboxesDead(getStats().controllPitchHitboxNames);
+		return isPitchControllable() && !areAllHitboxesDead(getStats().controllPitchHitboxNames);
 	}
 	
 	public boolean canControlYaw() {
-		return !areAllHitboxesDead(getStats().controllYawHitboxNames);
+		return isYawControllable() && !areAllHitboxesDead(getStats().controllYawHitboxNames);
 	}
 	
 	public boolean canControlRoll() {
-		return !areAllHitboxesDead(getStats().controllRollHitboxNames);
+		return isRollControllable() && !areAllHitboxesDead(getStats().controllRollHitboxNames);
+	}
+
+	public boolean isPitchControllable() {
+		return true;
+	}
+
+	public boolean isYawControllable() {
+		return true;
+	}
+
+	public boolean isRollControllable() {
+		return true;
 	}
 
 	public float getYawRate() {
@@ -3193,7 +2931,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	/**
 	 * SERVER SIDE ONLY
 	 */
-	public boolean hasPermission(@Nonnull Entity entity) {
+	public boolean hasPermission(@NotNull Entity entity) {
 		if (getLevel().isClientSide()) return false;
 		if (DSCGameRules.isForcePublicPerm(getLevel())) return true;
 		if (getPermMode() == PermMode.PUBLIC) return true;
@@ -3278,5 +3016,261 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public int getTrackedTicks() {
 		return trackedTicks;
+	}
+
+	public boolean isAfterBurnerEnabled() {
+		return inputs.afterburner;
+	}
+
+	public boolean canUseAfterburner() {
+		return getStats().canUseAfterBurner();
+	}
+
+	private boolean afterBurnerOverride = false;
+
+	public boolean isUsingAfterburner() {
+		return afterBurnerOverride || (canUseAfterburner() && isAfterBurnerEnabled() && getCurrentThrottle() > 0.8);
+	}
+
+	public void setUseAfterBurnerOverride(boolean enable) {
+		afterBurnerOverride = enable;
+	}
+
+	public double getFluidDensity() {
+		if (isInWater()) return DSCPhyCons.WATER_FLUID_DENSITY;
+		return getAirDensity();
+	}
+
+	public double getAirDensity() {
+		return airDensity;
+	}
+
+	@Override
+	public float getAngularDragScale() {
+		return DSCPhyCons.ANGULAR_DRAG_C;
+	}
+
+	@Override
+	public List<PhysicsComponentInstance<?>> getPhysicsInstances() {
+		return physicsInstances;
+	}
+
+	@Override
+	public double getAccTimeScale() {
+		return DSCPhyCons.ACC_TIME_SCALE;
+	}
+
+	@Override
+	public double getLerpMaxXZ() {
+		return maxXZ;
+	}
+
+	@Override
+	public void setLerpMaxXZ(double maxXZ) {
+		this.maxXZ = maxXZ;
+	}
+
+	@Override
+	public double getAccGravity() {
+		return DSCPhyCons.GRAVITY;
+	}
+
+	@Override
+	public float getZRot() {
+		return zRot;
+	}
+
+	@Override
+	public void setZRot(float rot) {
+		this.zRot = rot;
+	}
+
+	@Override
+	public float getPrevZRot() {
+		return zRotO;
+	}
+
+	@Override
+	public void setPrevZRot(float rot) {
+		this.zRotO = rot;
+	}
+
+	@Override
+	public Vec3 getPrevDeltaMove() {
+		return prevMotion;
+	}
+
+	@Override
+	public void setPrevDeltaMove(Vec3 move) {
+		this.prevMotion = move;
+	}
+
+	@Override
+	public Vec3 getForcesBetweenTicks() {
+		return addForceBetweenTicks;
+	}
+
+	@Override
+	public void setForcesBetweenTicks(Vec3 forces) {
+		this.addForceBetweenTicks = forces;
+	}
+
+	@Override
+	public Vec3 getPrevForces() {
+		return forcesO;
+	}
+
+	@Override
+	public void setPrevForces(Vec3 forces) {
+		this.forcesO = forces;
+	}
+
+	@Override
+	public Vec3 getPrevMoment() {
+		return momentO;
+	}
+
+	@Override
+	public void setPrevMoment(Vec3 moment) {
+		this.momentO = moment;
+	}
+
+	@Override
+	public Vec3 getControlMoment() {
+		return controlMoment;
+	}
+
+	@Override
+	public void setControlMoment(Vec3 moment) {
+		this.controlMoment = moment;
+	}
+
+	@Override
+	public Vec3 getMomentBetweenTicks() {
+		return addMomentBetweenTicks;
+	}
+
+	@Override
+	public void setMomentBetweenTicks(Vec3 moment) {
+		this.addMomentBetweenTicks = moment;
+	}
+
+	@Override
+	public float getPitchInput() {
+		return inputs.pitch;
+	}
+
+	@Override
+	public float getYawInput() {
+		return inputs.yaw;
+	}
+
+	@Override
+	public float getRollInput() {
+		return inputs.roll;
+	}
+
+	@Override
+	public double getKineticFriction() {
+		return kineticFric;
+	}
+
+	@Override
+	public double getStaticFriction() {
+		return staticFric;
+	}
+
+	@Override
+	public double getGroundBreaksDeAcceleration() {
+		return getStats().break_deacc_ground * DSCPhyCons.HORIZONTAL_SPEED_SCALE;
+	}
+
+	@Override
+	public double getAirBreaksDeAcceleration() {
+		return getStats().break_deacc_air * DSCPhyCons.HORIZONTAL_SPEED_SCALE;
+	}
+
+	@Override
+	public void setXZSpeed(float speed) {
+		xzSpeed = speed;
+	}
+
+	@Override
+	public void setXZSpeedDir(int direction) {
+		xzSpeedDir = direction;
+	}
+
+	@Override
+	public float getXZYaw() {
+		return xzYaw;
+	}
+
+	@Override
+	public void setXZYaw(float angle) {
+		xzYaw = angle;
+	}
+
+	@Override
+	public float getSlideAngle() {
+		return slideAngle;
+	}
+
+	@Override
+	public void setSlideAngle(float angle) {
+		slideAngle = angle;
+	}
+
+	@Override
+	public float getSlideAngleCos() {
+		return slideAngleCos;
+	}
+
+	@Override
+	public void setSlideAngleCos(float angle) {
+		slideAngleCos = angle;
+	}
+
+	public float getGroundXTilt() {
+		return getStats().groundXTilt;
+	}
+
+	public boolean canFlattenOnGround() {
+		return isOperational();
+	}
+
+	@Override
+	public int getAge() {
+		return tickCount;
+	}
+
+	@Override
+	public boolean isClientSide() {
+		return getLevel().isClientSide();
+	}
+
+	public boolean wasInWater() {
+		return wasInWater;
+	}
+
+	public boolean isArcadeMode() {
+		return false;
+	}
+
+	public boolean isHardCodedRotAcc() {
+		return getStats().is_hard_coded_rot_acc;
+	}
+
+	public Vec3 getHardCodedRotAcc() {
+		return getStats().hard_coded_rot_acc;
+	}
+
+	public float getHardCodedRotDecel() {
+		return getStats().hard_coded_rot_decel;
+	}
+
+	@Override
+	public void remove(@NotNull RemovalReason reason) {
+		radarSystem.onParentRemove();
+		super.remove(reason);
 	}
 }

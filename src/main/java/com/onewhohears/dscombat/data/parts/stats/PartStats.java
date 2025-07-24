@@ -61,7 +61,9 @@ public abstract class PartStats extends JsonPresetStats {
 		filled.setFilled(param);
 		return filled;
 	}
-	
+	/**
+	 * this is actually mass, but refactoring would cause additional confusion
+	 */
 	public float getWeight() {
 		return weight;
 	}

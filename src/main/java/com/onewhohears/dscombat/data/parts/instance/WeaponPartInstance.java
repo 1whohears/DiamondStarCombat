@@ -114,10 +114,11 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	
 	@Override
 	public float getWeight() {
-		int max = getStats().getMaxAmmo();
-		if (max == 0) return 0;
-		float w = super.getWeight();
-		return w * (float)ammo / (float)max;
+		float mass = super.getWeight();
+		if (getParent() == null) return mass;
+		WeaponInstance<?> data = getParent().weaponSystem.get(weapon, getSlotId());
+		if (data == null) return mass;
+		return mass + data.getStats().getMass() * ammo;
 	}
 
 	@Override

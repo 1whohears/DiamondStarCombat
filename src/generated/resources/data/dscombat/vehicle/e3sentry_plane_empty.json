@@ -361,9 +361,6 @@
     "stealth": 1.3,
     "throttledown": 0.04,
     "throttleup": 0.01,
-    "torquepitch": 2.0,
-    "torqueroll": 2.0,
-    "torqueyaw": 2.0,
     "turn_radius": 30.0
   }
 }

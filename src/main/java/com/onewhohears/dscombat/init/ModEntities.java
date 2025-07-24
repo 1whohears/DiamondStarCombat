@@ -2,10 +2,17 @@ package com.onewhohears.dscombat.init;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.vehicle.presets.*;
+import com.onewhohears.dscombat.data.vehicle.presets.boat.BoatPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.ground_vehicle.CarPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.ground_vehicle.StationaryPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.helicopter.NoahChopperPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.plane.PlanePresets;
+import com.onewhohears.dscombat.data.vehicle.presets.submarine.SubPresets;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.entity.vehicle.*;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.entity.weapon.*;
 
 import net.minecraft.world.entity.Entity;
@@ -24,7 +31,10 @@ public class ModEntities {
 	public static void register(IEventBus eventBus) {
 		ENTITIES.register(eventBus);
 	}
-	
+
+	public static final RegistryObject<EntityType<EntityWindTunnel>> WIND_TUNNEL = ENTITIES.register("wind_tunnel",
+			() -> createEntityType(EntityWindTunnel::new, EntityDimensions.fixed(16, 8)));
+
 	// VEHICLES
 	
 	public static final RegistryObject<EntityType<EntityPlane>> PLANE = ENTITIES.register("plane", 
@@ -46,7 +56,7 @@ public class ModEntities {
 			() -> createVehicleType((type, level) -> new EntityStationaryVehicle(type, level,
 					StationaryPresets.EWR4000.getId())));
 	
-	public static final RegistryObject<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox", 
+	public static final RegistryObject<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox",
 			() -> createEntityTypeFar(RotableHitbox::new, EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	/* 

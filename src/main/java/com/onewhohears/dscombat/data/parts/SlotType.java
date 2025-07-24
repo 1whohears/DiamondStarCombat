@@ -20,21 +20,21 @@ public class SlotType {
 	
 	private static final Map<String, SlotType> slotTypes = new HashMap<>();
 	
-	public static SlotType EXTERNAL = registerSlotType("external");
-	public static SlotType EXTERNAL_TOUGH = registerSlotType("external_tough", EXTERNAL);
+	public static SlotType EXTERNAL = registerExternalSlotType("external");
+	public static SlotType EXTERNAL_TOUGH = registerExternalSlotType("external_tough", EXTERNAL);
 	
 	public static SlotType SEAT = registerSlotType("seat", EXTERNAL);
 	
-	public static SlotType MOUNT_LIGHT = registerSlotType("mount_light", SEAT);
-	public static SlotType MOUNT_MED = registerSlotType("mount_med", MOUNT_LIGHT, EXTERNAL_TOUGH);
-	public static SlotType MOUNT_HEAVY = registerSlotType("mount_heavy", MOUNT_MED);
-	public static SlotType MOUNT_SUPER_HEAVY = registerSlotType("mount_super_heavy", MOUNT_HEAVY);
+	public static SlotType MOUNT_LIGHT = registerExternalSlotType("mount_light", SEAT);
+	public static SlotType MOUNT_MED = registerExternalSlotType("mount_med", MOUNT_LIGHT, EXTERNAL_TOUGH);
+	public static SlotType MOUNT_HEAVY = registerExternalSlotType("mount_heavy", MOUNT_MED);
+	public static SlotType MOUNT_SUPER_HEAVY = registerExternalSlotType("mount_super_heavy", MOUNT_HEAVY);
 	
-	public static SlotType MOUNT_TECH = registerSlotType("mount_tech", MOUNT_LIGHT);
+	public static SlotType MOUNT_TECH = registerExternalSlotType("mount_tech", MOUNT_LIGHT);
 	
-	public static SlotType PYLON_LIGHT = registerSlotType("pylon_light", EXTERNAL);
-	public static SlotType PYLON_MED = registerSlotType("pylon_med", PYLON_LIGHT);
-	public static SlotType PYLON_HEAVY = registerSlotType("pylon_heavy", PYLON_MED, EXTERNAL_TOUGH);
+	public static SlotType PYLON_LIGHT = registerExternalSlotType("pylon_light", EXTERNAL);
+	public static SlotType PYLON_MED = registerExternalSlotType("pylon_med", PYLON_LIGHT);
+	public static SlotType PYLON_HEAVY = registerExternalSlotType("pylon_heavy", PYLON_MED, EXTERNAL_TOUGH);
 	
 	public static SlotType INTERNAL = registerSlotType("internal");
 	public static SlotType TECH_INTERNAL = registerSlotType("tech_internal", INTERNAL);
@@ -51,11 +51,19 @@ public class SlotType {
 	}
 	
 	public static SlotType registerSlotType(String name, SlotType... parents) {
-		return registerSlotType(new SlotType(name, parents));
+		return registerSlotType(new SlotType(name, false, parents));
 	}
 	
 	public static SlotType registerSlotType(String name) {
 		return registerSlotType(new SlotType(name));
+	}
+
+	public static SlotType registerExternalSlotType(String name, SlotType... parents) {
+		return registerSlotType(new SlotType(name, true, parents));
+	}
+
+	public static SlotType registerExternalSlotType(String name) {
+		return registerSlotType(new SlotType(name, true));
 	}
 	
 	@Nullable
@@ -114,18 +122,18 @@ public class SlotType {
 	private final String slotTypeName;
 	private final SlotType[] parents;
 	private final ResourceLocation bg_texture;
+	private final boolean isExternal;
 	private String[] children = new String[0];
 	
-	public SlotType(String slotTypeName, SlotType... parents) {
+	public SlotType(String slotTypeName, boolean isExternal, SlotType... parents) {
 		this.slotTypeName = slotTypeName;
 		this.parents = parents;
+		this.isExternal = isExternal;
 		this.bg_texture = new ResourceLocation("dscombat:textures/ui/slots/"+slotTypeName+".png");
 	}
 	
 	public SlotType(String slotTypeName) {
-		this.slotTypeName = slotTypeName;
-		this.parents = new SlotType[0];
-		this.bg_texture = new ResourceLocation("dscombat:textures/ui/slots/"+slotTypeName+".png");
+		this(slotTypeName, false);
 	}
 	
 	public String getSlotTypeName() {
@@ -173,6 +181,10 @@ public class SlotType {
 	public boolean equals(Object o) {
 		if (o instanceof SlotType type) return this.is(type);
 		return false;
+	}
+
+	public boolean isExternal() {
+		return isExternal;
 	}
 	
 }

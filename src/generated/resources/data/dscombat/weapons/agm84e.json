@@ -40,6 +40,7 @@
     }
   ],
   "itemKey": "dscombat:missile",
+  "mass": 627.0,
   "maxAge": 300,
   "presetId": "agm84e",
   "presetType": "track_missile",

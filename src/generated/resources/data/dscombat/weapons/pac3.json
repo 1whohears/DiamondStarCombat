@@ -17,7 +17,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": 40.0,
-  "fuelTicks": 200,
+  "fuelTicks": 320,
   "fuseDist": 3.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -43,12 +43,13 @@
     }
   ],
   "itemKey": "dscombat:missile",
-  "maxAge": 400,
+  "mass": 318.0,
+  "maxAge": 1867,
   "presetId": "pac3",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 9,
-  "speed": 4.0,
+  "speed": 10.712,
   "targetType": "AIR",
   "turnRadius": 190.0
 }

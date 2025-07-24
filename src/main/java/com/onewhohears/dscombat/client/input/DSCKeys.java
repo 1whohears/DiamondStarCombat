@@ -4,8 +4,15 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.onewhohears.dscombat.DSCombatMod;
 
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public final class DSCKeys {
 	
@@ -23,16 +30,18 @@ public final class DSCKeys {
 	public static KeyMapping yawLeftKey, yawRightKey;
 	public static KeyMapping weaponSelectKey, weaponSelect2Key;
 	public static KeyMapping mouseModeKey, resetMouseKey, gimbalKey;
-	public static KeyMapping shootKey, landingGear, flareKey;
+	public static KeyMapping shootKey, landingGear, flareKey, chaffKey;
 	public static KeyMapping vehicleMenuKey;
 	public static KeyMapping pingCycleKey, radarModeKey;
 	public static KeyMapping changeSeat, dismount, eject;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
 	public static KeyMapping leanLeftKey, leanRightKey;
-	// IDEA 4.2 temp burner boost key
+	public static KeyMapping afterBurnerKey, turnAssistKey;
 	
 	private static RegisterKeyMappingsEvent event;
+
+	private static final Map<String, KeyMapping> keys = new HashMap<>();
 	
 	public static void init(RegisterKeyMappingsEvent e) {
 		event = e;
@@ -48,9 +57,10 @@ public final class DSCKeys {
 		// CONTROL UTIL
 		mouseModeKey = registerKey("mouse_mode_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LCONTROL);
 		flipControlsKey = registerKey("flip_controls_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LSHIFT);
-		resetMouseKey = registerKey("reset_mouse_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);
+		resetMouseKey = registerKey("reset_mouse_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RCONTROL);
 		leanLeftKey = registerKey("lean_left_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
 		leanRightKey = registerKey("lean_right_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
+		turnAssistKey = registerKey("turn_assist_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);
 		// PASSENGER CONTROL
 		vehicleMenuKey = registerKey("plane_menu_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_U);
 		dismount = registerKey("dismount_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_H);
@@ -65,14 +75,17 @@ public final class DSCKeys {
 		weaponSelectKey = registerKey("weapon_select_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_G);
 		weaponSelect2Key = registerKey("weapon_select_up_key", VEHICLE_COMBAT_CONTROL, InputConstants.UNKNOWN.getValue());
 		flareKey = registerKey("flare_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_V);
+		chaffKey = registerKey("chaff_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_V);
 		radarModeKey = registerKey("radar_mode_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_O);
 		pingCycleKey = registerKey("ping_cycle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_I);
+		afterBurnerKey = registerKey("afterburner_toggle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_B);
 	}
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {
 		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
 				KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, keycode, category);
 		event.register(key);
+		keys.put(name, key);
 		return key;
 	}
 	
@@ -80,7 +93,26 @@ public final class DSCKeys {
 		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
 				KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE, keycode, category);
 		event.register(key);
+		keys.put(name, key);
 		return key;
+	}
+
+	public static @Nullable KeyMapping getKey(@NotNull String name) {
+		return keys.get(name);
+	}
+
+	public static boolean isKeyPressed(String id) {
+		KeyMapping key = DSCKeys.getKey(id);
+		if (key == null) return false;
+		return key.isDown();
+	}
+
+	public static Set<String> getKeyIds() {
+		return keys.keySet();
+	}
+
+	public static boolean hasKey(String id) {
+		return keys.containsKey(id);
 	}
 	
 }

@@ -13,6 +13,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
+import static com.onewhohears.dscombat.util.UtilRender.drawText;
+
 public class GroundRadarScreenInstance extends RadarScreenInstance {
 	
 	public static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,

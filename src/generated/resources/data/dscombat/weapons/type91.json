@@ -33,6 +33,7 @@
     }
   ],
   "itemKey": "dscombat:missile",
+  "mass": 848.0,
   "maxAge": 600,
   "presetId": "type91",
   "presetType": "dumb_torpedo",

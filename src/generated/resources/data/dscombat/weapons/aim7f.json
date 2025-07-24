@@ -17,7 +17,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": -1.0,
-  "fuelTicks": 100,
+  "fuelTicks": 80,
   "fuseDist": 3.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -43,12 +43,13 @@
     }
   ],
   "itemKey": "dscombat:missile",
-  "maxAge": 200,
+  "mass": 230.0,
+  "maxAge": 729,
   "presetId": "aim7f",
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 4,
-  "speed": 3.0,
+  "speed": 8.575,
   "targetType": "AIR",
   "turnRadius": 200.0
 }

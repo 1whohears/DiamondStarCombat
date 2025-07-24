@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -303,7 +303,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	}
 	
 	protected Vec3 getAcc(EntityVehicle vehicle) {
-		return new Vec3(0, -DSCPhyCons.GRAVITY, 0);
+		return new Vec3(0, -DSCPhyCons.GRAVITY*DSCPhyCons.ACC_TIME_SCALE, 0);
 	}
 
 }

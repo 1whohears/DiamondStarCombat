@@ -216,10 +216,11 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	@Override
 	protected void tickSetMove() {
 		Vec3 cm = getDeltaMovement();
+		double cv = cm.length();
 		double max = getSpeed();
 		double B = getBleed() * UtilEntity.getAirPressure(this);
-		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
-		double vel = cm.length() - bleed;
+		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO)) + B * cv * 0.02;
+		double vel = cv - bleed;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
 		if (vel > max) vel = max;
 		else if (vel < 0.1) vel = 0.1;

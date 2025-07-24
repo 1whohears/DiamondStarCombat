@@ -2,7 +2,7 @@
   "acceleration": 0.1,
   "activeTrack": false,
   "assetId": "aim7f",
-  "bleed": 0.03,
+  "bleed": 0.16,
   "canShootOnGround": true,
   "causesFire": true,
   "compatibleWeaponPart": [

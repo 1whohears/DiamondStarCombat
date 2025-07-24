@@ -1,6 +1,6 @@
 {
   "acceleration": 0.04,
-  "bleed": 0.02,
+  "bleed": 0.09,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [

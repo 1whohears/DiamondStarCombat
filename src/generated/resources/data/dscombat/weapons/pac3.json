@@ -1,7 +1,7 @@
 {
   "acceleration": 0.08,
   "activeTrack": true,
-  "bleed": 0.07,
+  "bleed": 0.2,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [

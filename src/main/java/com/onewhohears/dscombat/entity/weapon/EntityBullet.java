@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
@@ -40,7 +41,8 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
 		if (!level.isClientSide && getExplosive()) {
 			Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
-			if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
+			if (getTerrain() && !getLevel().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS))
+				interact = Explosion.BlockInteraction.BREAK;
 			for (int i = 0; i < getExplodeNum(); ++i) {
 				level.explode(this, getExplosionDamageSource(),
 					null, getX(), getY(), getZ(), 

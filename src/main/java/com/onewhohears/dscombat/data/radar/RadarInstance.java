@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.radar;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.onewhohears.dscombat.Config;
@@ -96,28 +97,57 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		if (server == null) return;
 		List<ServerPlayer> players = server.getPlayerList().getPlayers();
 		for (ServerPlayer player : players) {
-			if (player.distanceToSqr(radar) > rangeSqr) continue;
-			if (!player.getLevel().dimension().equals(radar.getLevel().dimension())) continue;
+			handleScanEntity(radar, controller, vehiclePings, rangeSqr, playersOnly,
+					isPlayersOrBots, vehiclesOnly, player, true);
+		}
+		Collection<Entity> entities = TrackableEntitiesManager.getTrackableEntities();
+		for (Entity entity : entities) {
+			handleScanEntity(radar, controller, vehiclePings, rangeSqr, playersOnly,
+					isPlayersOrBots, vehiclesOnly, entity, false);
+		}
+	}
 
-			EntityVehicle vehicle = null;
-			if (player.getVehicle() instanceof EntityVehicle ev) vehicle = ev;
-			if (vehiclesOnly && vehicle == null) continue;
+	private void handleScanEntity(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
+								  double rangeSqr, boolean playersOnly, boolean isPlayersOrBots, boolean vehiclesOnly,
+								  Entity entity, boolean player) {
+		if (playersOnly && !player) return;
 
-			double stealth = 1;
-			if (vehicle != null) stealth = vehicle.getStealth();
-			if (!basicCheck(radar, player, stealth)) continue;
+		if (entity.distanceToSqr(radar) > rangeSqr) return;
+		if (!entity.getLevel().dimension().equals(radar.getLevel().dimension())) return;
 
-			PingEntityType pingEntityType;
+		EntityVehicle vehicle = null;
+		if (!player && entity instanceof EntityVehicle ev) vehicle = ev;
+		else if (entity.getVehicle() instanceof EntityVehicle ev) vehicle = ev;
+		if (vehiclesOnly && vehicle == null) return;
+
+		Entity pingEntity = vehicle != null ? vehicle : entity;
+		if (!player && alreadyScanned(vehiclePings, pingEntity)) return;
+
+		double stealth = 1;
+		if (vehicle != null) stealth = vehicle.getStealth();
+		if (!basicCheck(radar, entity, stealth)) return;
+
+		PingEntityType pingEntityType;
+		if (player) {
 			if (vehicle != null) pingEntityType = PingEntityType.VEHICLE_PLAYER;
 			else pingEntityType = PingEntityType.PLAYER;
-
-			RadarPing p = new RadarPing(player, checkFriendly(controller, player), pingEntityType);
-			vehiclePings.add(p);
-			pings.add(p);
-
-			if (vehicle != null && !radar.isAlliedTo(vehicle)) vehicle.lockedOnto(radar);
+		} else {
+			if (vehicle != null) pingEntityType = PingEntityType.VEHICLE_BOT;
+			else pingEntityType = PingEntityType.HOSTILE_MOB;
 		}
-		// TODO loop through AI vehicles
+
+		RadarPing p = new RadarPing(pingEntity, checkFriendly(controller, pingEntity), pingEntityType);
+		vehiclePings.add(p);
+		pings.add(p);
+
+		if (vehicle != null && !radar.isAlliedTo(vehicle)) vehicle.lockedOnto(radar);
+	}
+
+	private boolean alreadyScanned(List<RadarPing> vehiclePings, Entity entity) {
+		for (RadarPing ping : vehiclePings)
+			if (ping.id == entity.getId())
+				return true;
+		return false;
 	}
 
 	@Deprecated

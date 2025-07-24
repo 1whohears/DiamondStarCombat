@@ -3267,4 +3267,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public float getHardCodedRotDecel() {
 		return getStats().hard_coded_rot_decel;
 	}
+
+	@Override
+	public void remove(@NotNull RemovalReason reason) {
+		radarSystem.onParentRemove();
+		super.remove(reason);
+	}
 }

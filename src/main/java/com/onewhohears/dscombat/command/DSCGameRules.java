@@ -35,32 +35,32 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> CAN_ITEM_WHILE_MOVING;
 	
 	public static void registerAll() {
-		CONSUME_FULE = CustomGameRules.registerBoolean("consumeFuel", true, GameRules.Category.PLAYER);
-		CONSUME_AMMO = CustomGameRules.registerBoolean("consumeAmmo", true, GameRules.Category.PLAYER);
-		CONSUME_FLARES = CustomGameRules.registerBoolean("consumeFlares", true, GameRules.Category.PLAYER);
-		FUEL_PER_OIL_BLOCK = CustomGameRules.registerInteger("fuelPerOilBlock", 50, GameRules.Category.PLAYER);
-		DATA_LINK_ALWAYS_ON = CustomGameRules.registerBoolean("dataLinkAlwaysOn", false, GameRules.Category.PLAYER);
-		DISABLE_ELYTRA_FLYING = CustomGameRules.registerBoolean("disableElytraFlying", false, GameRules.Category.PLAYER);
-		ITEM_COOLDOWN_VEHICLE_FRESH = CustomGameRules.registerInteger("itemCooldownVehicleFresh", 0, GameRules.Category.PLAYER);
-		ITEM_COOLDOWN_VEHICLE_SHOOT = CustomGameRules.registerInteger("itemCooldownVehicleShoot", 30, GameRules.Category.PLAYER);
-		BROADCAST_MISSILE_HIT = CustomGameRules.registerBoolean("broadcastMissileHit", true, GameRules.Category.CHAT);
-		BROADCAST_MISSILE_HIT_TEAM_ONLY = CustomGameRules.registerBoolean("broadcastMissileHitTeamOnly", false, GameRules.Category.CHAT);
-		MOBS_USE_TURRETS = CustomGameRules.registerBoolean("mobsUseTurrets", true, GameRules.Category.MOBS);
-		MOB_TURRET_VERTICAL_RANGE = CustomGameRules.registerInteger("mobTurretVerticalRange", 500, GameRules.Category.MOBS);
-		MOBS_TICK_RADAR = CustomGameRules.registerBoolean("mobsTickRadar", true, GameRules.Category.MOBS);
-		MOBS_RIDE_VEHICLES = CustomGameRules.registerBoolean("mobsRideVehicles", true, GameRules.Category.MOBS);
-		VEHICLE_ARMOR_PERCENT = CustomGameRules.registerInteger("vehicleArmorStrengthPercent", 100, GameRules.Category.PLAYER);
-		BULLET_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("bulletDamageVehiclePercent", 50, GameRules.Category.PLAYER);
-		EXPLO_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("explosionDamageVehiclePercent", 300, GameRules.Category.PLAYER);
-		BULLET_DAMAGE_PLANE_PER = CustomGameRules.registerInteger("bulletDamagePlanePercent", 100, GameRules.Category.PLAYER);
-		BULLET_DAMAGE_HELI_PER = CustomGameRules.registerInteger("bulletDamageHeliPercent", 100, GameRules.Category.PLAYER);
-		DISABLE_3RD_PERSON_VEHICLE = CustomGameRules.registerSyncBoolean("disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
-		PLANE_ARCADE_MODE = CustomGameRules.registerSyncBoolean("planeArcadeMode", false, GameRules.Category.PLAYER);
-		REMOVE_DEAD_VEHICLES_TIME = CustomGameRules.registerInteger("removeDeadVehiclesTime", -1, GameRules.Category.PLAYER);
-		WEAPONS_BREAK_BLOCKS = CustomGameRules.registerSyncBoolean("weaponsBreakBlocks", true, GameRules.Category.PLAYER);
-		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("vehicleTrample", true, GameRules.Category.PLAYER);
-		FORCE_PUBLIC_PERM = CustomGameRules.registerSyncBoolean("vehicleForcePublicPerm", false, GameRules.Category.PLAYER);
-		CAN_ITEM_WHILE_MOVING = CustomGameRules.registerBoolean("canVehicleItemWhileMoving", false, GameRules.Category.PLAYER);
+		CONSUME_FULE = CustomGameRules.registerBoolean("dscombat:consumeFuel", true, GameRules.Category.PLAYER);
+		CONSUME_AMMO = CustomGameRules.registerBoolean("dscombat:consumeAmmo", true, GameRules.Category.PLAYER);
+		CONSUME_FLARES = CustomGameRules.registerBoolean("dscombat:consumeFlares", true, GameRules.Category.PLAYER);
+		FUEL_PER_OIL_BLOCK = CustomGameRules.registerInteger("dscombat:fuelPerOilBlock", 50, GameRules.Category.PLAYER);
+		DATA_LINK_ALWAYS_ON = CustomGameRules.registerBoolean("dscombat:dataLinkAlwaysOn", false, GameRules.Category.PLAYER);
+		DISABLE_ELYTRA_FLYING = CustomGameRules.registerBoolean("dscombat:disableElytraFlying", false, GameRules.Category.PLAYER);
+		ITEM_COOLDOWN_VEHICLE_FRESH = CustomGameRules.registerInteger("dscombat:itemCooldownVehicleFresh", 0, GameRules.Category.PLAYER);
+		ITEM_COOLDOWN_VEHICLE_SHOOT = CustomGameRules.registerInteger("dscombat:itemCooldownVehicleShoot", 30, GameRules.Category.PLAYER);
+		BROADCAST_MISSILE_HIT = CustomGameRules.registerBoolean("dscombat:broadcastMissileHit", true, GameRules.Category.CHAT);
+		BROADCAST_MISSILE_HIT_TEAM_ONLY = CustomGameRules.registerBoolean("dscombat:broadcastMissileHitTeamOnly", false, GameRules.Category.CHAT);
+		MOBS_USE_TURRETS = CustomGameRules.registerBoolean("dscombat:mobsUseTurrets", true, GameRules.Category.MOBS);
+		MOB_TURRET_VERTICAL_RANGE = CustomGameRules.registerInteger("dscombat:mobTurretVerticalRange", 500, GameRules.Category.MOBS);
+		MOBS_TICK_RADAR = CustomGameRules.registerBoolean("dscombat:mobsTickRadar", true, GameRules.Category.MOBS);
+		MOBS_RIDE_VEHICLES = CustomGameRules.registerBoolean("dscombat:mobsRideVehicles", true, GameRules.Category.MOBS);
+		VEHICLE_ARMOR_PERCENT = CustomGameRules.registerInteger("dscombat:vehicleArmorStrengthPercent", 100, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("dscombat:bulletDamageVehiclePercent", 50, GameRules.Category.PLAYER);
+		EXPLO_DAMAGE_VEHICLE_PER = CustomGameRules.registerInteger("dscombat:explosionDamageVehiclePercent", 300, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_PLANE_PER = CustomGameRules.registerInteger("dscombat:bulletDamagePlanePercent", 100, GameRules.Category.PLAYER);
+		BULLET_DAMAGE_HELI_PER = CustomGameRules.registerInteger("dscombat:bulletDamageHeliPercent", 100, GameRules.Category.PLAYER);
+		DISABLE_3RD_PERSON_VEHICLE = CustomGameRules.registerSyncBoolean("dscombat:disable3rdPersonVehicle", false, GameRules.Category.PLAYER);
+		PLANE_ARCADE_MODE = CustomGameRules.registerSyncBoolean("dscombat:planeArcadeMode", false, GameRules.Category.PLAYER);
+		REMOVE_DEAD_VEHICLES_TIME = CustomGameRules.registerInteger("dscombat:removeDeadVehiclesTime", -1, GameRules.Category.PLAYER);
+		WEAPONS_BREAK_BLOCKS = CustomGameRules.registerSyncBoolean("dscombat:weaponsBreakBlocks", true, GameRules.Category.PLAYER);
+		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("dscombat:vehicleTrample", true, GameRules.Category.PLAYER);
+		FORCE_PUBLIC_PERM = CustomGameRules.registerSyncBoolean("dscombat:vehicleForcePublicPerm", false, GameRules.Category.PLAYER);
+		CAN_ITEM_WHILE_MOVING = CustomGameRules.registerBoolean("dscombat:canVehicleItemWhileMoving", false, GameRules.Category.PLAYER);
 	}
 
 	public static boolean isPlaneArcadeMode(Level level) {

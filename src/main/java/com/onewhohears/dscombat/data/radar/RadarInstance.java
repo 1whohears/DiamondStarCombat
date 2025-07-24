@@ -125,7 +125,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
 		double stealth = 1;
 		if (vehicle != null) stealth = vehicle.getStealth();
-		if (!basicCheck(radar, entity, stealth)) return;
+		if (!basicCheck(radar, pingEntity, stealth)) return;
 
 		PingEntityType pingEntityType;
 		if (player) {

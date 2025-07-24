@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.data.vehicle.presets.plane;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.vehicle.physics.LiftSurfaceData;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
+import net.minecraft.world.phys.Vec3;
 
 public class FelixPresets {
 	
@@ -17,27 +19,70 @@ public class FelixPresets {
 			.setBaseArmor(20f)
 			.setArmorDamageThreshold(2f)
 			.setArmorAbsorbtionPercent(0.08f)
-			.setMass(5200f)
-			.setMaxSpeed(1.25f)
+			.setMass(7200f)
 			.setStealth(0.95f)
 			.setCrossSecArea(4f)
 			.setIdleHeat(6f)
 			.setTurnRadius(12f)
-			.setTurnRateGraph("felix_plane_turn_rates")
 			.setMaxTurnRates(5f, 2.15f, 1.15f)
+			.setRotationalInertia(8000f, 70000f, 75000f)
+			.setHasTurnAssist(true)
 			.setThrottleRate(0.04f, 0.08f)
 			.setPlaneWingArea(23f)
-			.setFuselageLiftArea(14)
-			.setMaxAltitude(530)
+			.setFuselageLiftArea(11.44f)
+			.setMaxAltitude(875)
+			.setDragArea(0.46f)
+			.setPlaneLiftAOAGraph("felix_lift_aoa")
+			.setDragAOAGraph("felix_drag_aoa")
+			.setTurnRateGraph("felix_plane_turn_rates")
+			.setPlaneFlapDownAOABias(18)
+			.setUseSpeedScales(true, true)
+			.setPushEngineOverrideAfterburnerStats(40180, 69580,15, 0.006f)
+			.setPlaneSpeeds(30.21f, 18.06f, 5.84f)
+			.setBreakDeAcc(0.032f, 0.016f)
+			// wings
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
+					18, 11.5, new Vec3(3.6, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.LEFT_FLAP, "felix_lift_aoa",
+					"felix_drag_aoa", 0.8f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
+					18, 11.5, new Vec3(-3.6, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.RIGHT_FLAP, "felix_lift_aoa",
+					"felix_drag_aoa", 0.8f))
+			// elevators
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_elevator", false,
+					20, 2.5, new Vec3(2, 0, -6), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "felix_lift_aoa",
+					"felix_drag_aoa", 0.4f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_elevator", false,
+					20, 2.5, new Vec3(-2, 0, -6), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "felix_lift_aoa",
+					"felix_drag_aoa", 0.4f))
+			// tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
+					4, 8, new Vec3(0, 0, -5), 0, 0, 90,
+					LiftSurfaceData.InputType.STABILIZER, "felix_lift_aoa",
+					"felix_drag_aoa", 0.6f))
+			// nose to counter elevators and tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					0, 5, new Vec3(0, 0, 6), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "felix_lift_aoa",
+					"felix_drag_aoa", 0.8f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					0, 8, new Vec3(0, 0, 5), 0, 0, 90,
+					LiftSurfaceData.InputType.NONE, "felix_lift_aoa",
+					"felix_drag_aoa", 0.8f))
+			// fuselage
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
+					0, 9, new Vec3(0, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "felix_lift_aoa",
+					"felix_drag_aoa", 0.8f))
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
 					ModSounds.ALEXIS_CP_WIND_FAST)
-			.setRotationalInertia(4.5f, 9, 3)
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(17)
-			.setPlaneLiftAOAGraph("alexis_plane")
-			.setPlaneFlapDownAOABias(8)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(2)
 			.setLayerTextureNum(3)

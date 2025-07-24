@@ -96,6 +96,10 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		}
 		super.tick();
 		tickLerp();
+		if (!getLevel().isClientSide() && tickCount > 100 && getDeltaMovement().length() < 0.1) {
+			kill();
+			return;
+		}
 	}
 	
 	protected void clientTickParticles() {
@@ -200,6 +204,10 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			kill();
 			return;
 		}
+		if (tickCount > 100 && getDeltaMovement().length() < 0.1) {
+			kill();
+			return;
+		}
 		//System.out.println("starting tick guide");
 		tickGuide();
 		//System.out.println("starting motion");
@@ -219,7 +227,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		double cv = cm.length();
 		double max = getSpeed();
 		double B = getBleed() * UtilEntity.getAirPressure(this);
-		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO)) + B * cv * 0.02;
+		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO)) + B*cv*0.02;
 		double vel = cv - bleed;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
 		if (vel > max) vel = max;

@@ -117,7 +117,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
 		EntityVehicle vehicle = null;
 		if (!player && entity instanceof EntityVehicle ev) vehicle = ev;
-		else if (entity.getVehicle() instanceof EntityVehicle ev) vehicle = ev;
+		else if (entity.getRootVehicle() instanceof EntityVehicle ev) vehicle = ev;
 		if (vehiclesOnly && vehicle == null) return;
 
 		Entity pingEntity = vehicle != null ? vehicle : entity;

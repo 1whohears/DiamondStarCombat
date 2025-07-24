@@ -1,6 +1,6 @@
 {
   "acceleration": 0.04,
-  "bleed": 0.02,
+  "bleed": 0.1,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -16,7 +16,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": 80.0,
-  "fuelTicks": 500,
+  "fuelTicks": 300,
   "fuseDist": 2.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -39,12 +39,12 @@
   ],
   "itemKey": "dscombat:missile",
   "mass": 361.0,
-  "maxAge": 700,
+  "maxAge": 2976,
   "presetId": "agm88g",
   "presetType": "anti_radar_missile",
-  "scan_range": 3000.0,
+  "scan_range": 20000.0,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 10,
-  "speed": 3.0,
+  "speed": 6.217,
   "turnRadius": 160.0
 }

@@ -41,7 +41,11 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	/**
 	 * only used on server side
 	 */
-	private int newRiderCoolDown;
+	private int newRiderCoolDown, overrideAnglesTime = -100;
+	/**
+	 * only used on server side
+	 */
+	private float overrideRotX, overrideRotY;
 	protected int lastShootTick;
 	
 	public EntityTurret(EntityType<?> type, Level level, String defaultPreset) {
@@ -76,51 +80,63 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	@Override
 	public void tick() {
 		super.tick();
+		tickRotate();
+	}
+
+	public void setOverrideLookAngles(float overrideRotX, float overrideRotY) {
+		overrideAnglesTime = tickCount;
+		this.overrideRotX = overrideRotX;
+		this.overrideRotY = overrideRotY;
+	}
+
+	protected void tickRotate() {
 		xRotRelO = getRelRotX();
 		yRotRelO = getRelRotY();
+		float goalRotX = 0, goalRotY = 0;
 		LivingEntity gunner = getPassenger();
-		if (gunner == null) return;
+		if (tickCount - overrideAnglesTime < 100) {
+			goalRotX = overrideRotX;
+			goalRotY = overrideRotY;
+		} else if (gunner != null) {
+			goalRotX = gunner.getXRot();
+			goalRotY = gunner.getYHeadRot();
+		}
+		rotateTowards(goalRotX, goalRotY);
+	}
+
+	protected void rotateTowards(float goalRotX, float goalRotY) {
 		Quaternion ra = Quaternion.ONE;
-		if (!level.isClientSide) {
+		EntityVehicle vehicle = getParentVehicle();
+		if (vehicle != null) ra = vehicle.getQBySide();
+		if (!getLevel().isClientSide()) {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
 			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
-			EntityVehicle ea = null;
-			if (getVehicle() instanceof EntityVehicle plane) {
-				ra = plane.getQ();
-				ea = plane;
-			}
+
 			WeaponInstance<?> data = getWeaponData();
-			if (data != null) data.tick(ea, true);
-			float[] relangles = UtilAngles.globalToRelativeDegrees(gunner.getXRot(), gunner.getYHeadRot(), ra);
-			
+			if (data != null) data.tick(vehicle, true);
+			float[] relangles = UtilAngles.globalToRelativeDegrees(goalRotX, goalRotY, ra);
+
 			float rg1 = relangles[1] + 360, rg2 = relangles[1] - 360;
 			float d1 = Math.abs(rg1-rely), d2 = Math.abs(rg2-rely), d3 =  Math.abs(relangles[1]-rely);
 			if (d1 < d2 && d1 < d3) relangles[1] += 360;
 			else if (d2 < d1 && d2 < d3) relangles[1] -= 360;
-			
+
 			if (relangles[0] > maxrotx) relangles[0] = maxrotx;
 			else if (relangles[0] < minrotx) relangles[0] = minrotx;
-			
+
 			float rotdiffx = relangles[0]-relx, rotdiffy = relangles[1]-rely;
-			
+
 			float dx, dy;
-			
+
 			if (Math.abs(rotdiffx) < rotrate) dx = rotdiffx;
 			else dx = rotrate*Math.signum(rotdiffx);
-			
+
 			if (Math.abs(rotdiffy) < rotrate) dy = rotdiffy;
 			else dy = rotrate*Math.signum(rotdiffy);
-			
+
 			setRelRotX(Mth.wrapDegrees(relx+dx));
 			setRelRotY(Mth.wrapDegrees(rely+dy));
-			
-			// HOW 7 sometimes even in force loaded chunks the mob gunner stops ticking
-			/*if (gunner instanceof Mob gunMob) {
-				//gunMob.targetSelector.enableControlFlag(Goal.Flag.TARGET);
-				System.out.println(gunMob.tickCount+" "+gunMob+" "+gunMob.getVehicle());
-				//((ServerLevel)level).entityTickList;
-			}*/
 		}
 		float[] global = UtilAngles.relativeToGlobalDegrees(getRelRotX(), getRelRotY(), ra);
 		setXRot(global[0]);

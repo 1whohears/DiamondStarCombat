@@ -140,6 +140,7 @@ public class Config {
 	public static class Common {
 		
 		public final ForgeConfigSpec.IntValue maxBlockCheckDepth;
+		public final ForgeConfigSpec.BooleanValue logTurretAIDebug;
 		public final ForgeConfigSpec.DoubleValue gasCanXpRepairRate;
 		public final ForgeConfigSpec.DoubleValue recoverPartWeight;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> radarMobs;
@@ -148,7 +149,10 @@ public class Config {
 			builder.push("performance");
 			maxBlockCheckDepth = builder
 					.comment("The number of blocks between 2 entities to check if they can see eachother.")
-					.defineInRange("maxBlockCheckDepth", 250, 10, 400);
+					.defineInRange("maxBlockCheckDepth", 256, 10, 400);
+			builder.pop();
+			builder.push("debug");
+			logTurretAIDebug = builder.define("logTurretAIDebug", false);
 			builder.pop();
 			builder.push("gameplay");
 			gasCanXpRepairRate = builder

@@ -1455,11 +1455,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return rootHitboxEntityInteract();
 	}
 
-	@Override
-	public boolean isAlive() {
-		return super.isAlive();
-	}
-
     @Override
     public boolean canBeCollidedWith() {
     	return rootHitboxEntityInteract();

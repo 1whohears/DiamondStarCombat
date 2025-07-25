@@ -5,6 +5,8 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mojang.logging.LogUtils;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -14,22 +16,28 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
+import org.slf4j.Logger;
 
 public class TurretShootGoal extends Goal {
-	
+
+	public static final Logger LOGGER = LogUtils.getLogger();
+
+	public static boolean debugTurretAI() {
+		return Config.COMMON.logTurretAIDebug.get();
+	}
+
 	public static final Random RANDOM = new Random();
 	/**
 	 * the mob will never shoot from the turret
 	 */
-	public static final ShootFunction CANT_SHOOT = (mob, turret, target, prevTargetPos) -> {
-		return prevTargetPos;
-	};
+	public static final ShootFunction CANT_SHOOT = (mob, turret, target, prevTargetPos) -> Vec3.ZERO;
 	/**
 	 * the mob shoots in a %100 random direction every 1.5 seconds
 	 */
@@ -38,7 +46,7 @@ public class TurretShootGoal extends Goal {
 			prevTargetPos = mob.getEyePosition()
 				.add((RANDOM.nextDouble()-0.5)*100, (RANDOM.nextDouble()-0.25)*30, (RANDOM.nextDouble()-0.5)*100);
 		}
-		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
+		lookAtPos(mob, prevTargetPos, turret);
 		turret.shoot(mob);
 		return prevTargetPos;
 	};
@@ -47,8 +55,8 @@ public class TurretShootGoal extends Goal {
 	 */
 	public static final ShootFunction DUMBASS_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 20, 25, false);
-		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (shouldShootTurret(mob, turret, target, prevTargetPos, 360, false, false)) turret.shoot(mob);
+		lookAtPos(mob, prevTargetPos, turret);
+		if (shouldShootTurret(turret, target, prevTargetPos, 360, false, false)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	/**
@@ -56,8 +64,8 @@ public class TurretShootGoal extends Goal {
 	 */
 	public static final ShootFunction STUPID_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 10, 10, false);
-		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (shouldShootTurret(mob, turret, target, prevTargetPos, 20, true, false)) turret.shoot(mob);
+		lookAtPos(mob, prevTargetPos, turret);
+		if (shouldShootTurret(turret, target, prevTargetPos, 20, true, false)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	/**
@@ -65,8 +73,8 @@ public class TurretShootGoal extends Goal {
 	 */
 	public static final ShootFunction NORMAL_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 10, 5, true);
-		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (shouldShootTurret(mob, turret, target, prevTargetPos, 10, true, true)) turret.shoot(mob);
+		lookAtPos(mob, prevTargetPos, turret);
+		if (shouldShootTurret(turret, target, prevTargetPos, 10, true, true)) turret.shoot(mob);
 		return prevTargetPos;
 	};
 	/**
@@ -75,10 +83,18 @@ public class TurretShootGoal extends Goal {
 	 */
 	public static final ShootFunction SMART_SHOOT = (mob, turret, target, prevTargetPos) -> {
 		prevTargetPos = inaccurateShootPos(mob, turret, target, prevTargetPos, 8, 2, true);
-		UtilEntity.mobLookAtPos(mob, prevTargetPos, mob.getHeadRotSpeed());
-		if (shouldShootTurret(mob, turret, target, prevTargetPos, 5, true, true)) turret.shoot(mob);
+		lookAtPos(mob, prevTargetPos, turret);
+		if (shouldShootTurret(turret, target, prevTargetPos, 5, true, true)) turret.shoot(mob);
 		return prevTargetPos;
 	};
+
+	public static void lookAtPos(Mob mob, Vec3 pos, EntityTurret turret) {
+		UtilEntity.mobLookAtPos(mob, pos, mob.getHeadRotSpeed());
+		Vec3 diff = pos.subtract(mob.getEyePosition());
+		float goalRotX = UtilAngles.getPitch(diff);
+		float goalRotY = UtilAngles.getYaw(diff);
+		turret.setOverrideLookAngles(goalRotX, goalRotY);
+	}
 	
 	public static Vec3 inaccurateShootPos(Mob mob, EntityTurret turret, LivingEntity target, 
 			Vec3 prevTargetPos, int updateRate, float inaccuracy, boolean accountGravity) {
@@ -106,28 +122,49 @@ public class TurretShootGoal extends Goal {
 		return prevTargetPos;
 	}
 	
-	public static boolean shouldShootTurret(Mob mob, EntityTurret turret, LivingEntity target, 
+	public static boolean shouldShootTurret(EntityTurret turret, LivingEntity target,
 			Vec3 targetPos, float aimError, boolean useIRMis, boolean useTrackMis) {
 		WeaponInstance<?> wd = turret.getWeaponData();
-		if (wd == null) return false;
+		if (wd == null) {
+			if (debugTurretAI()) LOGGER.info("NO SHOOT weapon data null");
+			return false;
+		}
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
 		if (useIRMis && wd.getStats().isIRMissile()) {
 			if (turret.tickCount-turret.getLastShootTick() < wd.getStats().getMaxAge()*0.5) return false;
 			if (UtilVehicleEntity.isOnGroundOrWater(target)) return false;
 			aimError += 6;
 		} else if (useTrackMis && wd.getStats().requiresRadar()) {
-			if (turret.tickCount-turret.getLastShootTick() < wd.getStats().getMaxAge()*0.5) return false;
+			int shootTimeDiff = turret.tickCount-turret.getLastShootTick();
+			double nextShootTime = wd.getStats().getMaxAge()*0.5;
+			if (shootTimeDiff < nextShootTime) {
+				if (debugTurretAI()) LOGGER.info("NO SHOOT already shoot recently {} < {}", shootTimeDiff, nextShootTime);
+				return false;
+			}
 			EntityVehicle vehicle = turret.getParentVehicle();
-			if (vehicle == null) return false;
-			if (!vehicle.radarSystem.hasRadar()) return false;
-			if (!vehicle.radarSystem.hasTarget(target)) return false;
+			if (vehicle == null) {
+				if (debugTurretAI()) LOGGER.info("NO SHOOT parent vehicle null");
+				return false;
+			}
+			if (!vehicle.radarSystem.hasRadar()) {
+				if (debugTurretAI()) LOGGER.info("NO SHOOT no radar");
+				return false;
+			}
+			if (!vehicle.radarSystem.hasTarget(target)) {
+				if (debugTurretAI()) LOGGER.info("NO SHOOT does not have radar target");
+				return false;
+			}
 			vehicle.radarSystem.selectTarget(target);
 			aimError += 3;
 		}
 		Vec3 turretLook = turret.getLookAngle();
 		Vec3 diff = targetPos.subtract(turret.getEyePosition());
 		double angle = UtilGeometry.angleBetweenDegrees(diff, turretLook);
-		if (angle > aimError) return false;
+		if (angle > aimError) {
+			if (debugTurretAI()) LOGGER.info("NO SHOOT not looking close enough {} > {}", angle, aimError);
+			return false;
+		}
+		if (debugTurretAI()) LOGGER.info("SHOULD SHOOT");
 		return true;
 	}
 	
@@ -169,6 +206,7 @@ public class TurretShootGoal extends Goal {
 	public void tick() {
 		super.tick();
 		LivingEntity target = mob.getTarget();
+		if (debugTurretAI()) LOGGER.info("shoot goal tick {}", target);
 		if (target == null) {
 			prevTargetPos = null;
 			return;

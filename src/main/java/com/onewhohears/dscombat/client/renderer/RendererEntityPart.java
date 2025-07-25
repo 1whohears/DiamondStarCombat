@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
+@Deprecated
 public class RendererEntityPart<T extends EntityPart> extends EntityRenderer<T> {
 	
 	protected final EntityControllableModel<T> model;

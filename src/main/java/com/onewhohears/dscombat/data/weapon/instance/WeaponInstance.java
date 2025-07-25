@@ -36,6 +36,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	private String slotId = "";
 	private boolean overrideGroundCheck = false;
 	protected float changeLaunchPitch = 0;
+	@Nullable protected EntityWeapon<?> firedWeapon;
 	
 	public WeaponInstance(T stats) {
 		super(stats);
@@ -121,6 +122,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			rack.lastShootTime = rack.tickCount;
 			ToClientOnShoot.onShootWeaponRack(rack);
 		}
+		firedWeapon = w;
 		return true;
 	}
 	
@@ -143,7 +145,13 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 				ToClientOnShoot.onShootTurret(turret);
 			}
 		}
+		firedWeapon = w;
 		return true;
+	}
+
+	@Nullable
+	public EntityWeapon<?> getFiredWeapon() {
+		return firedWeapon;
 	}
 	
 	public void playShootSound(Level level, Vec3 pos) {

@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.ai.goal.TurretShootGoal;
 import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -295,6 +296,13 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 			TurretInstance<TurretStats> instance = getPartInstance();
 			if (instance != null) instance.setCurrentAmmo(data.getCurrentAmmo());
 		}
+	}
+
+	@Nullable
+	public EntityWeapon<?> getFiredWeapon() {
+		WeaponInstance<?> data = getWeaponData();
+		if (data == null) return null;
+		return data.getFiredWeapon();
 	}
 	
 	protected void specialShoot(Entity shooter, Vec3 pos, EntityVehicle parent, boolean consume, WeaponInstance<?> data) {

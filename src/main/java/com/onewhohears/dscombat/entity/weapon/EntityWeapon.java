@@ -388,4 +388,8 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	public @NotNull JsonPresetReloadListener<T> getPresets() {
 		return (JsonPresetReloadListener<T>) WeaponPresets.get();
 	}
+
+	public boolean isDiscardedButTicking() {
+		return false;
+	}
 }

@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -130,17 +131,28 @@ public class TurretShootGoal extends Goal {
 			return false;
 		}
 		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
-		if (useIRMis && wd.getStats().isIRMissile()) {
-			if (turret.tickCount-turret.getLastShootTick() < wd.getStats().getMaxAge()*0.5) return false;
-			if (UtilVehicleEntity.isOnGroundOrWater(target)) return false;
-			aimError += 6;
-		} else if (useTrackMis && wd.getStats().requiresRadar()) {
+		boolean irMissile = useIRMis && wd.getStats().isIRMissile();
+		boolean trackMissile = useTrackMis && wd.getStats().requiresRadar();
+		if (irMissile || trackMissile) {
 			int shootTimeDiff = turret.tickCount-turret.getLastShootTick();
-			double nextShootTime = wd.getStats().getMaxAge()*0.5;
+			double nextShootTime = Math.min(wd.getStats().getMaxAge()*0.1, 120);
 			if (shootTimeDiff < nextShootTime) {
 				if (debugTurretAI()) LOGGER.info("NO SHOOT already shoot recently {} < {}", shootTimeDiff, nextShootTime);
 				return false;
 			}
+			EntityWeapon<?> weapon = turret.getFiredWeapon();
+			if (weapon != null && (!weapon.isRemoved() || weapon.isDiscardedButTicking())) {
+				if (debugTurretAI()) LOGGER.info("NO SHOOT weapon still alive {}", weapon);
+				return false;
+			}
+		}
+		if (irMissile) {
+			if (UtilVehicleEntity.isOnGroundOrWater(target)) {
+				if (debugTurretAI()) LOGGER.info("NO SHOOT target in on ground or in water");
+				return false;
+			}
+			aimError += 6;
+		} else if (trackMissile) {
 			EntityVehicle vehicle = turret.getParentVehicle();
 			if (vehicle == null) {
 				if (debugTurretAI()) LOGGER.info("NO SHOOT parent vehicle null");

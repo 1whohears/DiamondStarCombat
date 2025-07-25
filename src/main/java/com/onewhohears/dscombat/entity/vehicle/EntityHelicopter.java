@@ -4,6 +4,7 @@ import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.world.damagesource.DamageSource;
@@ -111,5 +112,10 @@ public class EntityHelicopter extends EntityVehicle {
 	@Override
 	public boolean canDriveOnGround() {
 		return false;
+	}
+
+	@Override
+	public double getMaxClimbSpeed() {
+		return DSCPhyCons.MAX_HELICOPTER_CLIMB_SPEED;
 	}
 }

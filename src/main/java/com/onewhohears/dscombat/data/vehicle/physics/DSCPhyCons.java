@@ -65,6 +65,7 @@ public class DSCPhyCons {
 	
 	public static final double MAX_FALL_SPEED = 2.5;
 	public static final double MAX_CLIMB_SPEED = 2.5;
+	public static final double MAX_HELICOPTER_CLIMB_SPEED = 1.0;
 	
 	public static final float VEL_SOUND = (float) (17.5 * HORIZONTAL_SPEED_SCALE); // m/t
 	

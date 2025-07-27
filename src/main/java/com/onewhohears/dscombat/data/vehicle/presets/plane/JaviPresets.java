@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.data.vehicle.presets.plane;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.vehicle.physics.LiftSurfaceData;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
+import net.minecraft.world.phys.Vec3;
 
 public class JaviPresets {
 	
@@ -17,27 +19,77 @@ public class JaviPresets {
 			.setBaseArmor(100f)
 			.setArmorDamageThreshold(5f)
 			.setArmorAbsorbtionPercent(0.30f)
-			.setMass(11300f)
-			.setMaxSpeed(1.05f)
 			.setStealth(1.0f)
 			.setCrossSecArea(7f)
 			.setIdleHeat(5f)
 			.setTurnRadius(12f)
+
+			.setMass(11321f)
+			.setPlaneLiftAOAGraph("javi_lift_aoa")
+			.setDragAOAGraph("javi_drag_aoa")
+			.setPlaneFlapDownAOABias(18)
 			.setTurnRateGraph("javi_plane_turn_rates")
 			.setMaxTurnRates(4f, 2.1f, 1.1f)
+			.setRotationalInertia(12000f, 100000f, 105000f)
 			.setThrottleRate(0.04f, 0.08f)
-			.setPlaneWingArea(50)
-			.setFuselageLiftArea(30)
-			.setMaxAltitude(480)
+			.setPlaneWingArea(47)
+			.setFuselageLiftArea(26)
+			.setMaxAltitude(685)
+			.setDragArea(0.70f)
+			.setPushEngineOverrideStats(40320, 10f, 0.004f)
+			//.setPlaneSpeeds(11.57f, 7.76f, 5.93f)
+			.setPlaneSpeeds(11.57f, 11.57f, 5.93f)
+			.setBreakDeAcc(0.032f, 0.016f)
+			.setUseSpeedScales(true, true)
+			.setHasTurnAssist(true)
+			// wings
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
+					18, 23.5, new Vec3(5.3, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.LEFT_FLAP, "javi_lift_aoa",
+					"javi_drag_aoa", 0.8f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
+					18, 23.5, new Vec3(-5.3, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.RIGHT_FLAP, "javi_lift_aoa",
+					"javi_drag_aoa", 0.8f))
+			// elevators
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
+					20, 7, new Vec3(2, 0, -6.85), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "javi_lift_aoa",
+					"javi_drag_aoa", 0.4f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
+					20, 7, new Vec3(-2, 0, -6.85), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "javi_lift_aoa",
+					"javi_drag_aoa", 0.4f))
+			// tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
+					3, 7, new Vec3(4, 0, -6.85), 0, 0, 90,
+					LiftSurfaceData.InputType.STABILIZER, "javi_lift_aoa",
+					"javi_drag_aoa", 0.6f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
+					3, 7, new Vec3(-4, 0, -6.85), 0, 0, 90,
+					LiftSurfaceData.InputType.STABILIZER, "javi_lift_aoa",
+					"javi_drag_aoa", 0.6f))
+			// nose to counter elevators and tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					0, 14, new Vec3(0, 0, 6.85), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
+					"javi_drag_aoa", 0.4f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					0, 14, new Vec3(0, 0, 6.85), 0, 0, 90,
+					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
+					"javi_drag_aoa", 0.6f))
+			// fuselage
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
+					0, 20, new Vec3(0, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
+					"javi_drag_aoa", 0.8f))
+
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,
 					ModSounds.ALEXIS_EXT_RPM, ModSounds.ALEXIS_EXT_WIND_CLOSE, ModSounds.ALEXIS_EXT_WIND_FAR,
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
 					ModSounds.ALEXIS_CP_WIND_FAST)
-			.setRotationalInertia(6, 10, 4)
 			.setCrashExplosionRadius(5)
 			.set3rdPersonCamDist(16)
-			.setPlaneLiftAOAGraph("javi_plane")
-			.setPlaneFlapDownAOABias(10)
 			.setPlaneNoseCanAimDown(true)
 			.setBaseTextureNum(2)
 			.setLayerTextureNum(2)

@@ -189,11 +189,6 @@ public class EntityPlane extends EntityVehicle {
 		return UtilAngles.getRollAxis(q).scale(getPushThrustMag());
 	}
 
-	/*@Override
-	public double getDragCoefficient() {
-		return dragC;
-	}*/
-
 	public float getAOA() {
 		return aoa;
 	}

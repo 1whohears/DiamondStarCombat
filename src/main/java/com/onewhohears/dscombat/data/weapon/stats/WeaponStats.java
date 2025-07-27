@@ -193,6 +193,8 @@ public abstract class WeaponStats extends JsonPresetStats {
 		}
 		tips.add(UtilMCText.translatable("info.dscombat.fire_rate").append(": "+getFireRate())
 				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		tips.add(UtilMCText.translatable("info.dscombat.mass").append(": "+getMass())
+				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (advanced) {
 			tips.add(UtilMCText.translatable("info.dscombat.max_age").append(": "+getMaxAge())
 					.setStyle(Style.EMPTY.withColor(INFO_COLOR)));

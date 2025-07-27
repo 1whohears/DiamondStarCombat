@@ -93,7 +93,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	protected void tickRotate() {
 		xRotRelO = getRelRotX();
 		yRotRelO = getRelRotY();
-		float goalRotX = 0, goalRotY = 0;
+		float goalRotX, goalRotY;
 		LivingEntity gunner = getPassenger();
 		if (tickCount - overrideAnglesTime < 100) {
 			goalRotX = overrideRotX;
@@ -101,7 +101,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 		} else if (gunner != null) {
 			goalRotX = gunner.getXRot();
 			goalRotY = gunner.getYHeadRot();
-		}
+		} else return;
 		rotateTowards(goalRotX, goalRotY);
 	}
 

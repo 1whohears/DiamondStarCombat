@@ -45,6 +45,10 @@ public interface PhysicsBody {
         setForces(Vec3.ZERO);
         setMoment(Vec3.ZERO);
         setControlMoment(Vec3.ZERO);
+        // SET SPEED IF IN TEST MODE BUT NOT WIND TUNNEL
+        boolean testMode = isTestMode();
+        boolean windTunnel = isInWindTunnel();
+        if (testMode && !windTunnel) setDeltaMovement(getLookAngle());
         // CALC NEW FORCE MOMENTS
         calcMoveStatsPre(q);
         calcForceMoment(q);
@@ -52,14 +56,18 @@ public interface PhysicsBody {
         // APPLY NEW FORCES
         calcAcc();
         motionClamp();
-        if (!isTestMode()) move(MoverType.SELF, getDeltaMovement());
+        if (!testMode) move(MoverType.SELF, getDeltaMovement());
         calcMoveStatsPost(q);
         // APPLY NEW MOMENT
         calcRotAcc(q);
-        if (!isTestMode()) {
+        if (!testMode || !windTunnel) {
             setQBySide(q);
             updateEulerAngles();
         }
+    }
+
+    default boolean isInWindTunnel() {
+        return !getPhysicsInstances().isEmpty() && getPhysicsInstances().get(0).getWindTunnel() != null;
     }
 
     default void updateEulerAngles() {
@@ -82,12 +90,19 @@ public interface PhysicsBody {
             setAngularVel(av);
         }
 
-        q.mul(Vector3f.XN.rotationDegrees((float)av.x));
-        q.mul(Vector3f.YN.rotationDegrees((float)av.y));
-        q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
+        q.mul(rotateAngularVel(av));
 
         setMomentBetweenTicks(Vec3.ZERO);
         reducePitchRateWhileRolling();
+    }
+
+    static Quaternion rotateAngularVel(Vec3 av) {
+        /*Quaternion q = Quaternion.ONE;
+        q.mul(Vector3f.XN.rotationDegrees((float)av.x));
+        q.mul(Vector3f.YN.rotationDegrees((float)av.y));
+        q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
+        return q;*/
+        return new Quaternion((float)-av.x, (float)-av.y, (float)av.z, true);
     }
 
     default void reducePitchRateWhileRolling() {
@@ -446,6 +461,7 @@ public interface PhysicsBody {
     void setMomentBetweenTicks(Vec3 moment);
     Vec3 getAngularVel();
     void setAngularVel(Vec3 av);
+    Vec3 getLookAngle();
 
     boolean isOnGround();
     boolean isInWater();

@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.event.forgebus;
 
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.mixin.CameraAccess;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
@@ -16,7 +17,6 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
@@ -30,11 +30,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+import javax.annotation.Nullable;
+
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ClientCameraEvents {
 	
 	private static Entity prevGimbal;
 	private static long prevCamSetupTime;
+	@Nullable static private Quaternion prevQ;
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
@@ -46,7 +49,7 @@ public class ClientCameraEvents {
 			prevGimbal = null;
 			return;
 		}
-		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
+		if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
 		float pt = (float)event.getPartialTick();
 		boolean detached = !m.options.getCameraType().isFirstPerson();
 		boolean mirrored = m.options.getCameraType().isMirrored();
@@ -63,8 +66,8 @@ public class ClientCameraEvents {
 			prevGimbal = null;
 		}
 		if (DSCClientInputs.isGimbalMode() && (isPilot || isCopilot || camYOffset == 0) 
-				&& plane.getGimbalForPilotCamera() != null) {
-			EntityGimbal gimbal = plane.getGimbalForPilotCamera();
+				&& vehicle.getGimbalForPilotCamera() != null) {
+			EntityGimbal gimbal = vehicle.getGimbalForPilotCamera();
 			if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
 			gimbal.setXRot(player.getViewXRot(pt));
 			gimbal.setYRot(player.getViewYRot(pt));
@@ -72,8 +75,8 @@ public class ClientCameraEvents {
 			camYOffset = -0.2f;
 		} 
 		if (isPilot && DSCClientInputs.isCameraLockedForward()) {
-			float xi = UtilAngles.lerpAngle(pt, plane.xRotO, plane.getXRot());
-			float yi = UtilAngles.lerpAngle180(pt, plane.yRotO, plane.getYRot());
+			float xi = UtilAngles.lerpAngle(pt, vehicle.xRotO, vehicle.getXRot());
+			float yi = UtilAngles.lerpAngle180(pt, vehicle.yRotO, vehicle.getYRot());
 			player.setXRot(xi);
 			player.setYRot(yi);
 			player.xRotO = xi;
@@ -85,9 +88,41 @@ public class ClientCameraEvents {
 			event.setPitch(xi);
 			event.setYaw(yi);
 		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
+			double ptDiff = (System.currentTimeMillis()-prevCamSetupTime) / 50.0d; // time diff in ticks
+			Vec3 vehicleAngVel = vehicle.getAngularVel().scale(ptDiff);
+			Quaternion qPT = vehicle.getClientQ(pt);
+			if (!UtilGeometry.isZero(vehicleAngVel) && prevQ != null) {
+				/*Vec3 playerLookDir = player.getLookAngle();
+				Quaternion qV = vehicle.getClientQ();
+				qV.normalize();
+				Quaternion qVi = new Quaternion(qV); qVi.conj();
+				Quaternion dQ = PhysicsBody.rotateAngularVel(vehicleAngVel);
+				dQ.normalize();
+				Quaternion qR = new Quaternion(qV);
+				qR.mul(dQ); qR.mul(qVi);
+				qR.normalize();
+				Vec3 rotLookDir = UtilAngles.rotateVector(playerLookDir, qR);
+				float x = UtilAngles.getPitch(rotLookDir);
+				float y = UtilAngles.getYaw(rotLookDir);*/
+				float[] relativeAngles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), prevQ);
+				float[] globalAngles = UtilAngles.relativeToGlobalDegrees(relativeAngles[0], relativeAngles[1], qPT);
+				float x = globalAngles[0];
+				float y = globalAngles[1];
+				player.setXRot(x);
+				player.xRotO = x;
+				player.setYRot(y);
+				player.yRotO = y;
+				if (mirrored) {
+					x *= -1;
+					y += 180;
+				}
+				event.setPitch(x);
+				event.setYaw(y);
+			}
+			prevQ = qPT;
 			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)
-			float ptDiff = (System.currentTimeMillis()-prevCamSetupTime) / 50f; // time diff in ticks
-			float planeXRotDiff = plane.getXRot()-plane.xRotO;
+			/*float ptDiff = (System.currentTimeMillis()-prevCamSetupTime) / 50f; // time diff in ticks
+			float planeXRotDiff = vehicle.getXRot()-vehicle.xRotO;
 			if (planeXRotDiff != 0) {
 				float dxi = Mth.wrapDegrees(planeXRotDiff) * ptDiff;
 				float x = player.getXRot() + dxi;
@@ -96,7 +131,7 @@ public class ClientCameraEvents {
 				if (mirrored) x *= -1;
 				event.setPitch(x);
 			}
-			float planeYRotDiff = plane.getYRot()-plane.yRotO;
+			float planeYRotDiff = vehicle.getYRot()-vehicle.yRotO;
 			if (planeYRotDiff != 0) {
 				float dyi = Mth.wrapDegrees(planeYRotDiff) * ptDiff;
 				float y = player.getYRot() + dyi;
@@ -104,12 +139,14 @@ public class ClientCameraEvents {
 				player.yRotO = y;
 				if (mirrored) y += 180;
 				event.setYaw(y);
-			}
+			}*/
+			System.out.printf("player x=%.2f y=%.2f vehicle x=%.2f y=%.2f%n",
+					event.getPitch(), event.getYaw(), vehicle.getXRot(), vehicle.getYRot());
 		}
-		float zi = UtilAngles.lerpAngle(pt, plane.zRotO, plane.zRot);
+		float zi = UtilAngles.lerpAngle(pt, vehicle.zRotO, vehicle.zRot);
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
-		double camDist = plane.getStats().cameraDistance;
+		double camDist = vehicle.getStats().cameraDistance;
 		Camera camera = event.getCamera();
 		if (detached && isPilot && camDist > 4) {
 			double vehicleCamDist = Math.min(0, 4-getMaxDist(camera, player, camDist));
@@ -118,22 +155,16 @@ public class ClientCameraEvents {
 		}
 		Quaternion q = null;
 		if (camYOffset != 0) {
-			q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
+			q = UtilAngles.lerpQ(pt, vehicle.getPrevQ(), vehicle.getClientQ());
 			Vec3 yawAxis = UtilAngles.getYawAxis(q);
 			camera.setPosition(camera.getPosition().add(yawAxis.scale(camYOffset)));
 		}
 		if (DSCClientInputs.getLeanAmount() != 0) {
-			if (q == null) q = UtilAngles.lerpQ(pt, plane.getPrevQ(), plane.getClientQ());
+			if (q == null) q = UtilAngles.lerpQ(pt, vehicle.getPrevQ(), vehicle.getClientQ());
 			Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
 			camera.setPosition(camera.getPosition().add(pitchAxis.scale(-DSCClientInputs.getLeanAmount())));
 		}
 		prevCamSetupTime = System.currentTimeMillis();
-	}
-	
-	private static float ptDiff(float pt, float ptOld) {
-		if (pt == ptOld) return 0;
-		else if (pt > ptOld) return pt - ptOld;
-		return pt+1f - ptOld;
 	}
 	
 	public static double getMaxDist(Camera cam, Player player, double dist) {

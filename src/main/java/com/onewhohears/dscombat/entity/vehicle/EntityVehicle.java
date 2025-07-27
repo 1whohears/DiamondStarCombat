@@ -1069,7 +1069,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	@Override
 	public @NotNull InteractionResult interact(@NotNull Player player, @NotNull InteractionHand hand) {
-		if (xzSpeed > 0.2) return InteractionResult.PASS;
+		if (xzSpeed > 0.2 && !isTestMode()) return InteractionResult.PASS;
 		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
 		if (player.getRootVehicle().equals(this)) return InteractionResult.PASS;
 		ItemStack stack = player.getInventory().getSelected();

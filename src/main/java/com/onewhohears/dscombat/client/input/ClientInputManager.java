@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.input;
 
 import com.google.gson.JsonObject;
+import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -79,7 +80,14 @@ public class ClientInputManager {
 
     private static void pilotTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle) {
         if (MOUSE_MODE.isInitPressed()) DSCClientInputs.cycleMouseMode();
-        if (RESET_MOUSE.isPressed()) DSCClientInputs.centerMousePos();
+        if (RESET_MOUSE.isPressed()) {
+            DSCClientInputs.centerMousePos();
+            if (vehicle.isTestMode()) {
+                player.setXRot(0);
+                player.setYRot(0);
+                vehicle.setClientQ(Quaternion.ONE);
+            }
+        }
         else if (mc.screen != null) DSCClientInputs.centerMousePos();
 
         boolean flare = FLARE.isPressed();

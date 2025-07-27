@@ -80,4 +80,8 @@ public class EntityGroundVehicle extends EntityVehicle {
 		return true;
 	}
 
+	@Override
+	public boolean dontUseDriveTurnPhysics() {
+		return getStats().asCar().isTank;
+	}
 }

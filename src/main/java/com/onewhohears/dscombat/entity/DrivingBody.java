@@ -31,6 +31,7 @@ public interface DrivingBody extends PhysicsBody {
             if (getCurrentThrottle() == 0 && getXZSpeed() != 0) driveSlowDown(0.0002);
         }
         // turn physics
+        if (dontUseDriveTurnPhysics()) return;
         float max_tr = getTurnRadius();
         Vec3 av = getAngularVel();
         if (getYawInput() == 0 || max_tr == 0) {

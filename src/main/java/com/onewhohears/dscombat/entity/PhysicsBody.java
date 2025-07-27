@@ -1,10 +1,8 @@
 package com.onewhohears.dscombat.entity;
 
 import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
-import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.util.Mth;
@@ -97,11 +95,6 @@ public interface PhysicsBody {
     }
 
     static Quaternion rotateAngularVel(Vec3 av) {
-        /*Quaternion q = Quaternion.ONE;
-        q.mul(Vector3f.XN.rotationDegrees((float)av.x));
-        q.mul(Vector3f.YN.rotationDegrees((float)av.y));
-        q.mul(Vector3f.ZP.rotationDegrees((float)av.z));
-        return q;*/
         return new Quaternion((float)-av.x, (float)-av.y, (float)av.z, true);
     }
 
@@ -170,7 +163,7 @@ public interface PhysicsBody {
         Vec3 av = getAngularVel();
         float d = getAngularDrag();
         float dx = d, dy = d, dz = d;
-        if (!isOnGround()) {
+        if (!isOnGround() || dontUseDriveTurnPhysics()) {
             if (getPitchInput() != 0 && Math.abs(av.x) <= getControlMaxDeltaPitch()) dx = 0;
             if (getYawInput() != 0 && Math.abs(av.y) <= getControlMaxDeltaYaw()) dy = 0;
             if (getRollInput() != 0 && Math.abs(av.z) <= getControlMaxDeltaRoll()) dz = 0;
@@ -180,6 +173,10 @@ public interface PhysicsBody {
                 getADComponent(av.x, dx, I.x),
                 getADComponent(av.y, dy, I.y),
                 getADComponent(av.z, dz, I.z)));
+    }
+
+    default boolean dontUseDriveTurnPhysics() {
+        return false;
     }
 
     private double getADComponent(double v, float d, double I) {

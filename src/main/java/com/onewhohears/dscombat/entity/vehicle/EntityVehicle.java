@@ -1901,7 +1901,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	@Nullable
 	public Component getCantBecomeItemReason(Player player) {
 		boolean canItemWhileMoving = getLevel().getGameRules().getBoolean(DSCGameRules.CAN_ITEM_WHILE_MOVING);
-		if (!canItemWhileMoving && !isOnGround())
+		if (!canItemWhileMoving && !isOnGround() && !ignoreToItemFlyCheck())
 			return UtilMCText.translatable("error.dscombat.cant_item_while_flying");
 		if (!canItemWhileMoving && getDeltaMovement().lengthSqr() > 0.01)
 			return UtilMCText.translatable("error.dscombat.cant_item_while_moving");
@@ -1963,7 +1963,11 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public boolean shouldRenderAtSqrDistance(double dist) {
 		return dist < 102400;
 	}
-    
+
+	public boolean ignoreToItemFlyCheck() {
+		return false;
+	}
+
     public final float getArmor() {
     	return entityData.get(ARMOR);
     }

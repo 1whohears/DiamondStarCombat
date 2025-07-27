@@ -223,4 +223,9 @@ public class EntityBoat extends EntityVehicle {
 		return false;
 	}
 
+	@Override
+	public boolean ignoreToItemFlyCheck() {
+		return true;
+	}
+
 }

@@ -88,22 +88,8 @@ public class ClientCameraEvents {
 			event.setPitch(xi);
 			event.setYaw(yi);
 		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
-			double ptDiff = (System.currentTimeMillis()-prevCamSetupTime) / 50.0d; // time diff in ticks
-			Vec3 vehicleAngVel = vehicle.getAngularVel().scale(ptDiff);
 			Quaternion qPT = vehicle.getClientQ(pt);
-			if (!UtilGeometry.isZero(vehicleAngVel) && prevQ != null) {
-				/*Vec3 playerLookDir = player.getLookAngle();
-				Quaternion qV = vehicle.getClientQ();
-				qV.normalize();
-				Quaternion qVi = new Quaternion(qV); qVi.conj();
-				Quaternion dQ = PhysicsBody.rotateAngularVel(vehicleAngVel);
-				dQ.normalize();
-				Quaternion qR = new Quaternion(qV);
-				qR.mul(dQ); qR.mul(qVi);
-				qR.normalize();
-				Vec3 rotLookDir = UtilAngles.rotateVector(playerLookDir, qR);
-				float x = UtilAngles.getPitch(rotLookDir);
-				float y = UtilAngles.getYaw(rotLookDir);*/
+			if (prevQ != null) {
 				float[] relativeAngles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), prevQ);
 				float[] globalAngles = UtilAngles.relativeToGlobalDegrees(relativeAngles[0], relativeAngles[1], qPT);
 				float x = globalAngles[0];
@@ -120,28 +106,6 @@ public class ClientCameraEvents {
 				event.setYaw(y);
 			}
 			prevQ = qPT;
-			// TODO 4.1 making third person work in mouse mode (again, àla garry's mod WAC planes)
-			/*float ptDiff = (System.currentTimeMillis()-prevCamSetupTime) / 50f; // time diff in ticks
-			float planeXRotDiff = vehicle.getXRot()-vehicle.xRotO;
-			if (planeXRotDiff != 0) {
-				float dxi = Mth.wrapDegrees(planeXRotDiff) * ptDiff;
-				float x = player.getXRot() + dxi;
-				player.setXRot(x);
-				player.xRotO = x;
-				if (mirrored) x *= -1;
-				event.setPitch(x);
-			}
-			float planeYRotDiff = vehicle.getYRot()-vehicle.yRotO;
-			if (planeYRotDiff != 0) {
-				float dyi = Mth.wrapDegrees(planeYRotDiff) * ptDiff;
-				float y = player.getYRot() + dyi;
-				player.setYRot(y);
-				player.yRotO = y;
-				if (mirrored) y += 180;
-				event.setYaw(y);
-			}*/
-			System.out.printf("player x=%.2f y=%.2f vehicle x=%.2f y=%.2f%n",
-					event.getPitch(), event.getYaw(), vehicle.getXRot(), vehicle.getYRot());
 		}
 		float zi = UtilAngles.lerpAngle(pt, vehicle.zRotO, vehicle.zRot);
 		if (detached && mirrored) zi *= -1;

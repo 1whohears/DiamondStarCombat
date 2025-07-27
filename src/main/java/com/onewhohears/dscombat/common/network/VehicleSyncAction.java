@@ -445,20 +445,16 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
-                if (all) {
-                    for (PartSlot slot : vehicle.partsManager.getReloadableParts()) {
-                        ReloadablePartInstance part = (ReloadablePartInstance) slot.getPartData();
-                        if (part == null) continue;
-                        if (unload && part.canUnload()) part.unloadPartToInventory(player);
-                        else if (!unload) part.loadPartFromInventory(player);
-                    }
-                } else {
-                    ReloadablePartInstance part = vehicle.partsManager.getReloadablePart(slotId);
-                    if (part == null) return;
-                    if (unload) part.unloadPartToInventory(player);
-                    else part.loadPartFromInventory(player);
-                }
+                if (all) for (PartSlot slot : vehicle.partsManager.getReloadableParts())
+                    handleSlot(player, (ReloadablePartInstance) slot.getPartData());
+                else handleSlot(player, vehicle.partsManager.getReloadablePart(slotId));
             };
+        }
+        private void handleSlot(ServerPlayer player, @Nullable ReloadablePartInstance part) {
+            if (part == null) return;
+            if (unload && (!all || part.canUnload())) 
+                part.unloadPartToInventory(player);
+            else part.loadPartFromInventory(player);
         }
         @Override
         protected Consumer<FriendlyByteBuf> getWriteData() {

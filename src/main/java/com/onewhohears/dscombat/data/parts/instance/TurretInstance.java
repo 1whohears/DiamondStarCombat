@@ -123,6 +123,7 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 	@Override
 	public void setCurrentAmmo(float ammo) {
 		this.ammo = (int)ammo;
+		if (data != null) data.setCurrentAmmo((int) ammo);
 		setDirty();
 	}
 

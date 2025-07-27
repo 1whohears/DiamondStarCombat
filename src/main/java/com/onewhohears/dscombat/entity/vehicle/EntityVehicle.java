@@ -547,8 +547,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			float amount = (float)((my-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
 			collideHurt(amount, true);
 		}
-		if (isOperational() && isOnGround() && !isLandingGear() && getXZSpeed() > DSCPhyCons.COLLIDE_SPEED) {
-			collideHurt(1, false);
+		if (isOperational() && isOnGround() && !isLandingGear()
+				&& getXZSpeed() > DSCPhyCons.COLLIDE_SPEED && tickCount % 8 == 0 ) {
+			collideHurt(10, false);
 		}
 	}
 	

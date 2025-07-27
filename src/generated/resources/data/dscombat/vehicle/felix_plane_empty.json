@@ -205,7 +205,7 @@
       "zero_lift_drag": 0.800000011920929
     },
     {
-      "area": 2.5,
+      "area": 3.0,
       "drag_graph": "felix_drag_aoa",
       "hitbox": "left_elevator",
       "id": "lift_surface",
@@ -226,7 +226,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 2.5,
+      "area": 3.0,
       "drag_graph": "felix_drag_aoa",
       "hitbox": "right_elevator",
       "id": "lift_surface",
@@ -268,9 +268,9 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 5.0,
+      "area": 6.0,
       "drag_graph": "felix_drag_aoa",
-      "hitbox": "nose",
+      "hitbox": "NONE",
       "id": "lift_surface",
       "ignore_roll": false,
       "input_rotation_max": 0.0,
@@ -286,12 +286,12 @@
         "y": 0.0,
         "z": 0.0
       },
-      "zero_lift_drag": 0.800000011920929
+      "zero_lift_drag": 0.4000000059604645
     },
     {
       "area": 8.0,
       "drag_graph": "felix_drag_aoa",
-      "hitbox": "nose",
+      "hitbox": "NONE",
       "id": "lift_surface",
       "ignore_roll": false,
       "input_rotation_max": 0.0,
@@ -307,10 +307,10 @@
         "y": 0.0,
         "z": 90.0
       },
-      "zero_lift_drag": 0.800000011920929
+      "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 9.0,
+      "area": 10.0,
       "drag_graph": "felix_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",

@@ -69,11 +69,11 @@ public class EdenPresets {
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
 					0, 4, new Vec3(0, 0, 6.19), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "eden_lift_aoa",
-					"eden_drag_aoa", 0.8f))
+					"eden_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
 					0, 12, new Vec3(0, 0, 4.25), 0, 0, 90,
 					LiftSurfaceData.InputType.NONE, "eden_lift_aoa",
-					"eden_drag_aoa", 0.8f))
+					"eden_drag_aoa", 0.6f))
 			// fuselage
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
 					0, 12, new Vec3(0, 0, 0), 0, 0, 0,

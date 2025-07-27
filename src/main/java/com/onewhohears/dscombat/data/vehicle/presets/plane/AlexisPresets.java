@@ -67,11 +67,11 @@ public class AlexisPresets {
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
 					0, 4, new Vec3(0, 0, 6.10), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "alexis_plane",
-					"alexis_drag_aoa", 0.8f))
+					"alexis_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
 					0, 6, new Vec3(0, 0, 5.07), 0, 0, 90,
 					LiftSurfaceData.InputType.NONE, "alexis_plane",
-					"alexis_drag_aoa", 0.8f))
+					"alexis_drag_aoa", 0.6f))
 			// fuselage
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
 					0, 10, new Vec3(0, 0, 0), 0, 0, 0,

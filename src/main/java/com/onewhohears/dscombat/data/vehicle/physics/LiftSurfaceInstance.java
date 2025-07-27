@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.entity.PhysicsBody;
+import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.nbt.CompoundTag;
@@ -78,8 +79,11 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
                 .cross(UtilAngles.rotateVector(dragForce, vehicleQI))
                 .multiply(-1, 1, 1);
         body.addMoment(dragMoment, false, true);
-        /*if (body.isTestMode() && body.isClientSide()) {
-            System.out.println(getData().getHitbox()+" aoa "+aoa+" move.z "+u.z+" DM "+dragMag+" DF "+dragForce);
+        /*if (body.isClientSide() && body.hasControllingPassenger()) {
+            System.out.println(getData().getHitbox()+" aoa "+aoa+" lift force "+ UtilPrint.printVec3SigFig(liftForce)
+                    +" lift moment "+ UtilPrint.printVec3SigFig(liftMoment)
+                    +" drag force "+ UtilPrint.printVec3SigFig(dragForce)
+                    +" drag moment "+ UtilPrint.printVec3SigFig(dragMoment));
         }*/
     }
 

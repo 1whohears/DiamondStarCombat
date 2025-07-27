@@ -185,7 +185,7 @@ public interface PhysicsBody {
         double da = d/I + av * 0.01;
         if (isHardCodedRotAcc()) da = d > 0 ? getHardCodedRotDecel() : 0;
         double a = av - da;
-        if (a < 0) return 0;
+        if (a < 0.001) return 0;
         return a * Math.signum(v);
     }
 
@@ -470,6 +470,7 @@ public interface PhysicsBody {
     boolean isOperational();
     int getAge();
     boolean isClientSide();
+    boolean hasControllingPassenger();
 
     float getPitchInput();
     float getYawInput();

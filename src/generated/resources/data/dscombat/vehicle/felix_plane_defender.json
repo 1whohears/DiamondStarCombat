@@ -25,7 +25,7 @@
     {
       "data": {
         "filled": true,
-        "param": "aim7f",
+        "param": "aim7mh",
         "part": "heavy_missile_rack"
       },
       "name": "right_wing_1"
@@ -37,14 +37,6 @@
         "part": "light_missile_rack"
       },
       "name": "right_wing_2"
-    },
-    {
-      "data": {
-        "filled": true,
-        "param": "aim7mh",
-        "part": "heavy_missile_rack"
-      },
-      "name": "frame_1"
     },
     {
       "data": {

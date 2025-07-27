@@ -51,11 +51,11 @@ public class FelixPresets {
 					"felix_drag_aoa", 0.8f))
 			// elevators
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_elevator", false,
-					20, 2.5, new Vec3(2, 0, -6), 0, 0, 0,
+					20, 3, new Vec3(2, 0, -6), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "felix_lift_aoa",
 					"felix_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_elevator", false,
-					20, 2.5, new Vec3(-2, 0, -6), 0, 0, 0,
+					20, 3, new Vec3(-2, 0, -6), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "felix_lift_aoa",
 					"felix_drag_aoa", 0.4f))
 			// tail
@@ -64,17 +64,17 @@ public class FelixPresets {
 					LiftSurfaceData.InputType.STABILIZER, "felix_lift_aoa",
 					"felix_drag_aoa", 0.6f))
 			// nose to counter elevators and tail
-			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
-					0, 5, new Vec3(0, 0, 6), 0, 0, 0,
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					0, 6, new Vec3(0, 0, 6), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "felix_lift_aoa",
-					"felix_drag_aoa", 0.8f))
-			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
+					"felix_drag_aoa", 0.4f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
 					0, 8, new Vec3(0, 0, 5), 0, 0, 90,
 					LiftSurfaceData.InputType.NONE, "felix_lift_aoa",
-					"felix_drag_aoa", 0.8f))
+					"felix_drag_aoa", 0.6f))
 			// fuselage
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
-					0, 9, new Vec3(0, 0, 0), 0, 0, 0,
+					0, 10, new Vec3(0, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "felix_lift_aoa",
 					"felix_drag_aoa", 0.8f))
 			.setFighterJetSounds(ModSounds.ALEXIS_EXT_AFTERBURNER_CLOSE, ModSounds.ALEXIS_EXT_AFTERBURNER_FAR,

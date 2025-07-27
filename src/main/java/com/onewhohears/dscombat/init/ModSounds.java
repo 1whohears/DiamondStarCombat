@@ -19,6 +19,7 @@ public class ModSounds {
 	public static final SoundEvent MISSILE_WARNING = registerSoundEvent("missile_warning", "cockpit/radar/missile_warning", "sounds.dscombat.missile_warning");
 	public static final SoundEvent GETTING_LOCKED = registerSoundEvent("getting_locked", "cockpit/radar/getting_locked", "sounds.dscombat.rocket_launch_1");
 	public static final SoundEvent FOX2_TONE_1 = registerSoundEvent("fox2_tone_1", "cockpit/radar/fox2_tone_1", "sounds.dscombat.fox2_tone_1");
+	public static final SoundEvent FOX2_TONE_2 = registerSoundEvent("fox2_tone_2", "cockpit/radar/fox2_tone_2", "sounds.dscombat.fox2_tone_2");
 	public static final SoundEvent TARGETS_FOUND = registerSoundEvent("targets_found", "cockpit/radar/targets_found", "sounds.dscombat.targets_found");
 
 	public static final SoundEvent MISSILE_LAUNCH_1 = registerSoundEvent("rocket_launch_1", "weapon/rocket_launch_1", "sounds.dscombat.rocket_launch_1");

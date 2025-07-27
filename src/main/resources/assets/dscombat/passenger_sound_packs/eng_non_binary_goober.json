@@ -28,7 +28,7 @@
     },
     {
       "trigger": "ir_tone_high",
-      "sound": "dscombat:fox2_tone_1",
+      "sound": "dscombat:fox2_tone_2",
       "repeat_rate": 10,
       "skip_queue": true
     },

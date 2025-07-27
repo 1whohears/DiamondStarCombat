@@ -197,6 +197,12 @@
     ],
     "subtitle": "sounds.dscombat.fox2_tone_1"
   },
+  "fox2_tone_2": {
+    "sounds": [
+      "dscombat:cockpit/radar/fox2_tone_2"
+    ],
+    "subtitle": "sounds.dscombat.fox2_tone_2"
+  },
   "fuel_leak_gm1": {
     "sounds": [
       "dscombat:cockpit/warnings/generic_male_1/fuel_leak"

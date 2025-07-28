@@ -38,7 +38,7 @@
       "hitbox": "NONE",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 13.0,
+      "input_rotation_max": 10.0,
       "input_type": "LEFT_FLAP",
       "lift_k_graph": "jason_lift_aoa",
       "pos": {
@@ -59,7 +59,7 @@
       "hitbox": "NONE",
       "id": "lift_surface",
       "ignore_roll": false,
-      "input_rotation_max": 13.0,
+      "input_rotation_max": 10.0,
       "input_type": "RIGHT_FLAP",
       "lift_k_graph": "jason_lift_aoa",
       "pos": {
@@ -180,7 +180,7 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 8.0,
+      "area": 11.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -322,7 +322,7 @@
     "plane": {
       "canAimDown": false,
       "drag_aoa_graph_key": "jason_drag_aoa",
-      "flapsAOABias": 13.0,
+      "flapsAOABias": 10.0,
       "fuselage_lift_area": 8.0,
       "fuselage_lift_k_graph": "fuselage",
       "turn_rates_graph": "jason_plane_turn_rates",

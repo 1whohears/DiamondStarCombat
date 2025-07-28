@@ -27,7 +27,7 @@ public class JasonPresets {
 			.setMass(3463)
 			.setPlaneLiftAOAGraph("jason_lift_aoa")
 			.setDragAOAGraph("jason_drag_aoa")
-			.setPlaneFlapDownAOABias(13)
+			.setPlaneFlapDownAOABias(10)
 			.setTurnRateGraph("jason_plane_turn_rates")
 			.setMaxTurnRates(5f, 3f, 2f)
 			.setThrottleRate(0.04f, 0.07f)
@@ -43,11 +43,11 @@ public class JasonPresets {
 			.setHasTurnAssist(false)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					13, 10.9, new Vec3(2.5, 0, 0), 0, 0, 0,
+					10, 10.9, new Vec3(2.5, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.LEFT_FLAP, "jason_lift_aoa",
 					"jason_drag_aoa", 0.8f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					13, 10.9, new Vec3(-2.5, 0, 0), 0, 0, 0,
+					10, 10.9, new Vec3(-2.5, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.RIGHT_FLAP, "jason_lift_aoa",
 					"jason_drag_aoa", 0.8f))
 			// elevators

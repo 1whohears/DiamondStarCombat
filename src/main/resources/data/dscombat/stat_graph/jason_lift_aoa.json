@@ -1,0 +1,40 @@
+{
+	"presetType": "aoaliftk",
+	"priority": 100,
+	"mirror_negative_keys": true,
+	"invert_mirrored_values": true,
+	"map": [
+		{"key": 0.00, "value": 0.0},
+		{"key": 1.00, "value": 0.1},
+
+		{
+			"key": 2.0,
+			"value": 0.13563378155231476
+		},
+		{
+			"key": 4.0,
+			"value": 0.2195839285850525
+		},
+		{
+			"key": 6.0,
+			"value": 0.33628639578819275
+		},
+		{
+			"key": 9.0,
+			"value": 0.4761556088924408
+		},
+		{
+			"key": 12.0,
+			"value": 0.5780338644981384
+		},
+		{
+			"key": 16.0,
+			"value": 0.7333444356918335
+		},
+
+		{"key": 25.00, "value": 1.00},
+		{"key": 30.00, "value": 0.80},
+		{"key": 35.00, "value": 0.20},
+		{"key": 40.00, "value": 0.0}
+	]
+}

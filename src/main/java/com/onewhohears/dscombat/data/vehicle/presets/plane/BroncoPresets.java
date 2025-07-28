@@ -3,9 +3,11 @@ package com.onewhohears.dscombat.data.vehicle.presets.plane;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.vehicle.physics.LiftSurfaceData;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
+import net.minecraft.world.phys.Vec3;
 
 public class BroncoPresets {
 	
@@ -18,23 +20,71 @@ public class BroncoPresets {
 			.setBaseArmor(10f)
 			.setArmorDamageThreshold(1f)
 			.setArmorAbsorbtionPercent(0.05f)
-			.setMass(3100f)
-			.setMaxSpeed(0.85f)
 			.setStealth(1f)
 			.setCrossSecArea(5f)
 			.setIdleHeat(3f)
 			.setTurnRadius(8f)
+			.setPlaneWingArea(27f)
+			.setFuselageLiftArea(9)
+
+			.setMass(3127)
+			.setPlaneLiftAOAGraph("javi_lift_aoa")
+			.setDragAOAGraph("javi_drag_aoa")
+			.setPlaneFlapDownAOABias(18)
 			.setTurnRateGraph("bronco_plane_turn_rates")
 			.setMaxTurnRates(2.5f, 1.2f, 0.9f)
 			.setThrottleRate(0.03f, 0.07f)
-			.setPlaneWingArea(27f)
+			.setRotationalInertia(7000, 60000f, 65000f)
+			.setPlaneWingArea(27)
 			.setFuselageLiftArea(9)
+			.setMaxAltitude(455)
+			.setDragArea(0.50f)
+			.setPushEngineOverrideStats(12000, 5f, 0.003f)
+			.setPlaneSpeeds(6.39f, 6.39f, 3.43f)
+			.setBreakDeAcc(0.032f, 0.016f)
+			.setUseSpeedScales(true, true)
+			.setHasTurnAssist(true)
+			// wings
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					18, 13.5, new Vec3(4, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.LEFT_FLAP, "javi_lift_aoa",
+					"javi_drag_aoa", 0.8f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					18, 13.5, new Vec3(-4, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.RIGHT_FLAP, "javi_lift_aoa",
+					"javi_drag_aoa", 0.8f))
+			// elevators
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					20, 10, new Vec3(0, 0, -5.5), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "javi_lift_aoa",
+					"javi_drag_aoa", 0.4f))
+			// tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					3, 5, new Vec3(3, 0, -4), 0, 0, 90,
+					LiftSurfaceData.InputType.STABILIZER, "javi_lift_aoa",
+					"javi_drag_aoa", 0.6f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					3, 5, new Vec3(-3, 0, -4), 0, 0, 90,
+					LiftSurfaceData.InputType.STABILIZER, "javi_lift_aoa",
+					"javi_drag_aoa", 0.6f))
+			// nose to counter elevators and tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					0, 10, new Vec3(0, 0, 5.5), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
+					"javi_drag_aoa", 0.4f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					0, 10, new Vec3(0, 0, 4), 0, 0, 90,
+					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
+					"javi_drag_aoa", 0.6f))
+			// fuselage
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
+					0, 9, new Vec3(0, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
+					"javi_drag_aoa", 0.8f))
+
 			.setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
-			.setRotationalInertia(6, 10, 5)
 			.setCrashExplosionRadius(4)
 			.set3rdPersonCamDist(14)
-			.setPlaneLiftAOAGraph("javi_plane")
-			.setPlaneFlapDownAOABias(9)
 			.setPlaneNoseCanAimDown(false)
 			.setBaseTextureNum(2)
 			.setLayerTextureNum(2)

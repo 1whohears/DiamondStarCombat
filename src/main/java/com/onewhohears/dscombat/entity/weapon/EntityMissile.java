@@ -1,9 +1,11 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
@@ -83,18 +85,20 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
-		if (!level.isClientSide && !isRemoved()) {
-			tickGuide();
-			if (targetPos != null) setTargetPos(targetPos);
-			else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
-			if (target != null) setTargetId(target.getId());
-			else setTargetId(-1);
-			if (target != null && distanceTo(target) <= getWeaponStats().getFuseDist()) kill();
-			TrackableEntitiesManager.addTrackableEntity(this);
-		}
-		if (level.isClientSide && !isRemoved()) {
-			tickClientGuide();
-			if (firstTick) engineSound();
+		if (!isRemoved()) {
+			if (!getLevel().isClientSide()) {
+				tickGuide();
+				if (targetPos != null) setTargetPos(targetPos);
+				else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
+				if (target != null) setTargetId(target.getId());
+				else setTargetId(-1);
+				if (target != null && distanceTo(target) <= getWeaponStats().getFuseDist()) kill();
+				TrackableEntitiesManager.addTrackableEntity(this);
+				DependencySafety.addExtraEntityToRDP(Objects.requireNonNull(getServer()), this);
+			} else {
+				tickClientGuide();
+				if (firstTick) engineSound();
+			}
 		}
 		super.tick();
 		tickLerp();
@@ -104,7 +108,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		}
 	}
 	
-	protected void clientTickParticles() {
+	public void clientTickParticles() {
 		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(level, position(), getLookAngle().scale(-1));
 		UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
 	}

@@ -6,6 +6,10 @@ import com.onewhohears.dscombat.integration.minigame.gen.DSCKitGenerator;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCShopGenerator;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 
 public class DependencySafety {
 	
@@ -19,6 +23,10 @@ public class DependencySafety {
 			DSCKitGenerator.register(generator);
 			DSCShopGenerator.register(generator);
 		}
+	}
+
+	public static void addExtraEntityToRDP(@NotNull MinecraftServer server, @NotNull Entity entity, @NotNull ServerPlayer... visibleTo) {
+		if (DSCombatMod.distantPlayersLoaded) DSCDistantPlayers.addExtraEntity(server, entity, visibleTo);
 	}
 	
 }

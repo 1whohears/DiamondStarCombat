@@ -12,7 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public class DSCExtraRenderInfo implements ExtraRenderTargetInfo {
+public class DSCVehicleRenderInfo implements ExtraRenderTargetInfo {
 
     private String preset = "wooden_plane";
     private Quaternion q = Quaternion.ONE;

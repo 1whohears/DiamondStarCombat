@@ -1,15 +1,11 @@
 package com.onewhohears.dscombat.data.radar;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -109,8 +105,14 @@ public class RadarSystem {
 			if (parent.isStationaryRadar()) parent.toTrackers(new ToClientRadarPings(parent.getId(), targets));
 			else parent.toClientPassengers(new ToClientRadarPings(parent.getId(), targets));
 		}
-		// ADD RADAR TO EXTRA TRACKABLE ENTITIES MANAGER
-		if (!parent.isPlayerRiding()) TrackableEntitiesManager.addTrackableEntity(parent);
+	}
+
+	protected void updateVisibility() {
+		if (parent.getLevel().isClientSide()) return;
+		if (!parent.isPlayerRiding()) {
+			TrackableEntitiesManager.addTrackableEntity(parent);
+			DependencySafety.addExtraEntityToRDP(Objects.requireNonNull(parent.getServer()), parent);
+		}
 		else TrackableEntitiesManager.removeTrackableEntity(parent);
 	}
 
@@ -434,6 +436,7 @@ public class RadarSystem {
 	
 	public void serverTick() {
 		tickUpdateTargets();
+		updateVisibility();
 	}
 	
 	public void clientTick() {

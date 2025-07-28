@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.integration.distant_players;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.distant_players.common.core.ExtraRenderTargetInfo;
+import com.onewhohears.distant_players.common.core.extra_render_info.ExtraRenderTargetInfo;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -2,9 +2,11 @@ package com.onewhohears.dscombat.data.vehicle.presets.plane;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.vehicle.physics.LiftSurfaceData;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
+import net.minecraft.world.phys.Vec3;
 
 public class JamesPresets {
 
@@ -17,23 +19,77 @@ public class JamesPresets {
             .setBaseArmor(0f)
             .setArmorDamageThreshold(0.5f)
             .setArmorAbsorbtionPercent(0)
-            .setMass(1800)
-            .setMaxSpeed(0.75f)
             .setStealth(1.0f)
             .setCrossSecArea(4f)
             .setIdleHeat(1f)
             .setTurnRadius(20f)
+
+            .setMass(2000)
+            .setPlaneLiftAOAGraph("jason_lift_aoa")
+            .setDragAOAGraph("jason_drag_aoa")
+            .setPlaneFlapDownAOABias(8)
             .setTurnRateGraph("james_plane_turn_rates")
             .setMaxTurnRates(4f, 2.0f, 1.5f)
             .setThrottleRate(0.02f, 0.06f)
+            .setRotationalInertia(4000, 30000f, 35000f)
             .setPlaneWingArea(18)
             .setFuselageLiftArea(10)
+            .setMaxAltitude(400)
+            .setDragArea(0.3f)
+            .setPushEngineOverrideStats(18000, 5f, 0.003f)
+            .setPlaneSpeeds(8, 8, 4)
+            .setBreakDeAcc(0.032f, 0.016f)
+            .setUseSpeedScales(true, true)
+            .setHasTurnAssist(false)
+            // wings
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing_bottom", false,
+                    10, 4.5, new Vec3(2.5, -0.5, 0), 0, 0, 0,
+                    LiftSurfaceData.InputType.LEFT_FLAP, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.8f))
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing_bottom", false,
+                    10, 4.5, new Vec3(-2.5, -0.5, 0), 0, 0, 0,
+                    LiftSurfaceData.InputType.RIGHT_FLAP, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.8f))
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing_top", false,
+                    10, 4.5, new Vec3(2.5, 0.5, 0), 0, 0, 0,
+                    LiftSurfaceData.InputType.LEFT_FLAP, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.8f))
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing_top", false,
+                    10, 4.5, new Vec3(-2.5, 0.5, 0), 0, 0, 0,
+                    LiftSurfaceData.InputType.RIGHT_FLAP, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.8f))
+            // elevators
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("tail_flaps", false,
+                    20, 1, new Vec3(1, 0, -4.0), 0, 0, 0,
+                    LiftSurfaceData.InputType.ELEVATOR, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.4f))
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("tail_flaps", false,
+                    20, 1, new Vec3(-1, 0, -4.0), 0, 0, 0,
+                    LiftSurfaceData.InputType.ELEVATOR, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.4f))
+            // tail
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
+                    5, 2, new Vec3(0, 0, -4.0), 0, 0, 90,
+                    LiftSurfaceData.InputType.STABILIZER, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.6f))
+            // nose to counter elevators and tail
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("base", false,
+                    0, 2, new Vec3(0, 0, 4.0), 0, 0, 0,
+                    LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.4f))
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("base", false,
+                    0, 2, new Vec3(0, 0, 4.0), 0, 0, 90,
+                    LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.6f))
+            // fuselage
+            .addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
+                    0, 11, new Vec3(0, 0, 0), 0, 0, 0,
+                    LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
+                    "jason_drag_aoa", 0.8f))
+
             .setBasicEngineSounds(ModSounds.BIPLANE_1, ModSounds.BIPLANE_1)
-            .setRotationalInertia(4, 7, 3)
             .setCrashExplosionRadius(3.5f)
             .set3rdPersonCamDist(8)
-            .setPlaneLiftAOAGraph("wooden_plane")
-            .setPlaneFlapDownAOABias(8)
             .setPlaneNoseCanAimDown(false)
             .addIngredientTag("minecraft:planks", 60)
             .addIngredient(ModItems.SEAT.getId())

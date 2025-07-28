@@ -3,9 +3,11 @@ package com.onewhohears.dscombat.data.vehicle.presets.plane;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.data.parts.SlotType;
+import com.onewhohears.dscombat.data.vehicle.physics.LiftSurfaceData;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
+import net.minecraft.world.phys.Vec3;
 
 public class PlanePresets {
 	
@@ -84,24 +86,70 @@ public class PlanePresets {
 			.setBaseArmor(100)
 			.setArmorDamageThreshold(3f)
 			.setArmorAbsorbtionPercent(0.05f)
-			.setMass(83900f)
-			.setMaxSpeed(1.0f)
 			.setStealth(1.3f)
 			.setCrossSecArea(16f)
 			.setIdleHeat(20f)
-			.setMaxAltitude(600)
 			.setTurnRadius(30f)
 			.setTurnRateGraph("e3sentry_turn_rates")
+
+			.setMass(83915f)
+			.setPlaneLiftAOAGraph("e3sentry_lift_aoa")
+			.setDragAOAGraph("e3sentry_drag_aoa")
+			.setPlaneFlapDownAOABias(10)
+			.setTurnRateGraph("e3sentry_turn_rates")
 			.setMaxTurnRates(3f, 2.0f, 2.0f)
+			.setRotationalInertia(24000f, 200000f, 210000f)
 			.setThrottleRate(0.01f, 0.04f)
-			.setPlaneWingArea(283f)
+			.setPlaneWingArea(283)
 			.setFuselageLiftArea(80)
+			.setMaxAltitude(440)
+			.setDragArea(1.70f)
+			.setPushEngineOverrideStats(96000, 20f, 0.006f)
+			.setPlaneSpeeds(11.86f, 11.86f, 5.93f)
+			.setBreakDeAcc(0.016f, 0.010f)
+			.setUseSpeedScales(true, true)
+			.setHasTurnAssist(true)
+			// wings
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					10, 141.5, new Vec3(12, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.LEFT_FLAP, "e3sentry_lift_aoa",
+					"e3sentry_drag_aoa", 0.8f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					10, 141.5, new Vec3(-12, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.RIGHT_FLAP, "e3sentry_lift_aoa",
+					"e3sentry_drag_aoa", 0.8f))
+			// elevators
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					10, 20, new Vec3(4, 0, -15), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "e3sentry_lift_aoa",
+					"e3sentry_drag_aoa", 0.4f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					10, 20, new Vec3(-4, 0, -15), 0, 0, 0,
+					LiftSurfaceData.InputType.ELEVATOR, "e3sentry_lift_aoa",
+					"e3sentry_drag_aoa", 0.4f))
+			// tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					4, 30, new Vec3(0, 0, -14), 0, 0, 90,
+					LiftSurfaceData.InputType.STABILIZER, "alexis_plane",
+					"e3sentry_drag_aoa", 0.6f))
+			// nose to counter elevators and tail
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					0, 40, new Vec3(0, 0, 15), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "e3sentry_lift_aoa",
+					"e3sentry_drag_aoa", 0.4f))
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
+					0, 60, new Vec3(0, 0, 14), 0, 0, 90,
+					LiftSurfaceData.InputType.NONE, "alexis_plane",
+					"e3sentry_drag_aoa", 0.6f))
+			// fuselage
+			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
+					0, 80, new Vec3(0, 0, 0), 0, 0, 0,
+					LiftSurfaceData.InputType.NONE, "e3sentry_lift_aoa",
+					"e3sentry_drag_aoa", 0.8f))
+
 			.setBasicEngineSounds(ModSounds.JET_1, ModSounds.JET_1)
-			.setRotationalInertia(10, 12, 8)
 			.setCrashExplosionRadius(8)
 			.set3rdPersonCamDist(12)
-			.setPlaneLiftAOAGraph("e3sentry_plane")
-			.setPlaneFlapDownAOABias(10)
 			.setPlaneNoseCanAimDown(false)
 			.addIngredient(ModItems.ADVANCED_COCKPIT.getId())
 			.addIngredient(ModItems.SEAT.getId(), 11)
@@ -144,12 +192,14 @@ public class PlanePresets {
 	public static final VehicleStats DEFAULT_E3SENTRY_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "e3sentry_plane", EMPTY_E3SENTRY_PLANE)
 			.setCraftable()
-			.addIngredient(ModItems.CFM56.getId(), 2)
+			.addIngredient(ModItems.CFM56.getId(), 4)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId(), 2)
 			.addIngredient(ModItems.AR20K.getId())
 			.addIngredient(ModItems.DATA_LINK.getId())
 			.setSlotItem("left_wing_1", ModItems.CFM56.getId())
 			.setSlotItem("right_wing_1", ModItems.CFM56.getId())
+			.setSlotItem("left_wing_2", ModItems.CFM56.getId())
+			.setSlotItem("right_wing_2", ModItems.CFM56.getId())
 			.setSlotItem("frame_1", ModItems.AR20K.getId())
 			.setSlotItem("internal_1", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.setSlotItem("internal_2", ModItems.HEAVY_FUEL_TANK.getId(), true)

@@ -37,7 +37,6 @@ public class JaviPresets {
 			.setMaxAltitude(685)
 			.setDragArea(0.70f)
 			.setPushEngineOverrideStats(40320, 10f, 0.004f)
-			//.setPlaneSpeeds(11.57f, 7.76f, 5.93f)
 			.setPlaneSpeeds(11.57f, 11.57f, 5.93f)
 			.setBreakDeAcc(0.032f, 0.016f)
 			.setUseSpeedScales(true, true)

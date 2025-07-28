@@ -1,6 +1,7 @@
 {
   "armor": 100.0,
   "displayName": "preset.dscombat.e3sentry_plane_empty",
+  "drag_area": 1.7,
   "health": 200.0,
   "ingredients": [
     {
@@ -35,6 +36,176 @@
   "is_craftable": false,
   "item": "dscombat:vehicle",
   "landing_gear": true,
+  "physics_components": [
+    {
+      "area": 141.5,
+      "drag_graph": "e3sentry_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 10.0,
+      "input_type": "LEFT_FLAP",
+      "lift_k_graph": "e3sentry_lift_aoa",
+      "pos": {
+        "x": 12.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    },
+    {
+      "area": 141.5,
+      "drag_graph": "e3sentry_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 10.0,
+      "input_type": "RIGHT_FLAP",
+      "lift_k_graph": "e3sentry_lift_aoa",
+      "pos": {
+        "x": -12.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    },
+    {
+      "area": 20.0,
+      "drag_graph": "e3sentry_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 10.0,
+      "input_type": "ELEVATOR",
+      "lift_k_graph": "e3sentry_lift_aoa",
+      "pos": {
+        "x": 4.0,
+        "y": 0.0,
+        "z": -15.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 20.0,
+      "drag_graph": "e3sentry_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 10.0,
+      "input_type": "ELEVATOR",
+      "lift_k_graph": "e3sentry_lift_aoa",
+      "pos": {
+        "x": -4.0,
+        "y": 0.0,
+        "z": -15.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 30.0,
+      "drag_graph": "e3sentry_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 4.0,
+      "input_type": "STABILIZER",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -14.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 90.0
+      },
+      "zero_lift_drag": 0.6000000238418579
+    },
+    {
+      "area": 40.0,
+      "drag_graph": "e3sentry_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "e3sentry_lift_aoa",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 15.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 60.0,
+      "drag_graph": "e3sentry_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 14.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 90.0
+      },
+      "zero_lift_drag": 0.6000000238418579
+    },
+    {
+      "area": 80.0,
+      "drag_graph": "e3sentry_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": true,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "e3sentry_lift_aoa",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    }
+  ],
   "presetId": "e3sentry_plane_empty",
   "presetType": "plane",
   "screens": [
@@ -333,34 +504,45 @@
     "armor_damage_threshold": 3.0,
     "assetId": "e3sentry_plane",
     "base_armor": 100.0,
+    "break_deacc_air": 0.01,
+    "break_deacc_ground": 0.016,
     "cameraDistance": 12.0,
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 16.0,
+    "cruise_speed": 11.86,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
+    "fuel_consume_per_engine": 0.006,
+    "has_turn_assist": true,
+    "heat_per_engine": 20.0,
     "idleheat": 20.0,
-    "inertiapitch": 12.0,
-    "inertiaroll": 10.0,
-    "inertiayaw": 8.0,
-    "mass": 83900.0,
-    "max_altitude": 600.0,
+    "inertiapitch": 200000.0,
+    "inertiaroll": 24000.0,
+    "inertiayaw": 210000.0,
+    "mass": 83915.0,
+    "max_altitude": 440.0,
+    "max_ground_speed": 5.93,
     "max_health": 200.0,
-    "max_speed": 1.0,
+    "max_push_thrust_per_engine": 96000.0,
+    "max_speed": 11.86,
     "maxpitch": 2.0,
     "maxroll": 3.0,
     "maxyaw": 2.0,
     "plane": {
       "canAimDown": false,
+      "drag_aoa_graph_key": "e3sentry_drag_aoa",
       "flapsAOABias": 10.0,
       "fuselage_lift_area": 80.0,
       "fuselage_lift_k_graph": "fuselage",
       "turn_rates_graph": "e3sentry_turn_rates",
       "wing_area": 283.0,
-      "wing_lift_k_graph": "e3sentry_plane"
+      "wing_lift_k_graph": "e3sentry_lift_aoa"
     },
     "stealth": 1.3,
     "throttledown": 0.04,
     "throttleup": 0.01,
-    "turn_radius": 30.0
+    "turn_radius": 30.0,
+    "use_horizontal_speed_scale": true,
+    "use_vertical_speed_scale": true
   }
 }

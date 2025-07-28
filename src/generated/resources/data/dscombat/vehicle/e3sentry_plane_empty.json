@@ -1,7 +1,6 @@
 {
   "armor": 100.0,
   "displayName": "preset.dscombat.e3sentry_plane_empty",
-  "drag_area": 1.7,
   "health": 200.0,
   "ingredients": [
     {
@@ -510,6 +509,7 @@
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 16.0,
     "cruise_speed": 11.86,
+    "drag_area": 1.7,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
     "fuel_consume_per_engine": 0.006,

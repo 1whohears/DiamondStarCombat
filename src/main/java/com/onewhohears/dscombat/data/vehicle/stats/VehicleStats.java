@@ -1268,7 +1268,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		}
 
 		public Builder setDragArea(float drag_area) {
-			return setFloat("drag_area", drag_area);
+			return setStatFloat("drag_area", drag_area);
 		}
 
 		public Builder setBreakDeAcc(float break_deacc_ground, float break_deacc_air) {

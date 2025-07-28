@@ -1,7 +1,6 @@
 {
   "armor": 10.0,
   "displayName": "preset.dscombat.bronco_plane_empty",
-  "drag_area": 0.5,
   "health": 80.0,
   "ingredients": [
     {
@@ -347,6 +346,7 @@
     "crashExplosionRadius": 4.0,
     "cross_sec_area": 5.0,
     "cruise_speed": 6.39,
+    "drag_area": 0.5,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
     "fuel_consume_per_engine": 0.003,

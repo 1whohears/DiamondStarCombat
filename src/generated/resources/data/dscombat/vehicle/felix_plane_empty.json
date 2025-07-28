@@ -10,7 +10,6 @@
   ],
   "armor": 20.0,
   "displayName": "preset.dscombat.felix_plane_empty",
-  "drag_area": 0.46,
   "health": 100.0,
   "hitboxes": [
     {
@@ -473,6 +472,7 @@
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 4.0,
     "cruise_speed": 18.06,
+    "drag_area": 0.46,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
     "fuel_consume_per_engine": 0.006,

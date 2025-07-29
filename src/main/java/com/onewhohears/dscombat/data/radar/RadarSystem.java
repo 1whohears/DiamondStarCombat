@@ -77,8 +77,8 @@ public class RadarSystem {
 	}
 	
 	public boolean canServerTick() {
-		return parent.isStationaryRadar() || parent.isPlayerRiding()
-				|| (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar());
+		return parent.isOperational() && (parent.isStationaryRadar() || parent.isPlayerRiding()
+				|| (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar()));
 	}
 	
 	public void tickUpdateTargets() {

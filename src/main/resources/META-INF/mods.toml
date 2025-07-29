@@ -54,7 +54,7 @@ showAsResourcePack=false
 [[dependencies."${mod_id}"]]
     modId="distant_players"
     mandatory=false
-    versionRange="[0.0.7,)"
+    versionRange="[0.1.11,)"
     ordering="NONE"
     side="BOTH"
 

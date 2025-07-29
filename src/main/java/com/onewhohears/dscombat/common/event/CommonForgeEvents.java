@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.onewholibs.common.event.GetJsonPresetListenersEvent;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.data.parts.PartPresets;
@@ -69,6 +70,7 @@ public final class CommonForgeEvents {
 	public static void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.phase != Phase.END) return;
 		NonTickingMissileManager.serverTick(event.getServer());
+		TrackableEntitiesManager.serverTick(event.getServer());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

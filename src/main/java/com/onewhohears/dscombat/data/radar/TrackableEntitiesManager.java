@@ -1,6 +1,8 @@
 package com.onewhohears.dscombat.data.radar;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,14 +16,19 @@ public class TrackableEntitiesManager {
         return trackMap.values();
     }
 
-    public static void addTrackableEntity(Entity entity) {
+    public static void addTrackableEntity(@NotNull Entity entity) {
         if (entity.getLevel().isClientSide()) return;
         trackMap.put(entity.getId(), entity);
     }
 
-    public static void removeTrackableEntity(Entity entity) {
+    public static void removeTrackableEntity(@NotNull Entity entity) {
         if (entity.getLevel().isClientSide()) return;
         trackMap.remove(entity.getId());
+    }
+
+    public static void serverTick(MinecraftServer server) {
+        if (server.getTickCount() % 20 == 0)
+            trackMap.entrySet().removeIf(entry -> entry.getValue().isRemoved());
     }
 
 }

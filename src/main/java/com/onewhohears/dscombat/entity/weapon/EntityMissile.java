@@ -332,12 +332,6 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 
 	@Override
-	public void remove(RemovalReason reason) {
-		super.remove(reason);
-		TrackableEntitiesManager.removeTrackableEntity(this);
-	}
-
-	@Override
 	public boolean isDiscardedButTicking() {
 		return discardedButTicking;
 	}

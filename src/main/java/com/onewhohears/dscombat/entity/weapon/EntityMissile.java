@@ -232,15 +232,22 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		Vec3 cm = getDeltaMovement();
 		double cv = cm.length();
 		double max = getSpeed();
-		double B = getBleed() * UtilEntity.getAirPressure(this) * 0.5;
+		double B = getBleed() * UtilEntity.getAirPressure(this) * 0.4;
 		double turnBleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
 		double airRes = B * cv * 0.01;
 		double vel = cv - turnBleed - airRes;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
+		double gravityAcc = Mth.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm)) * getGravityAcc() * 0.1;
+		vel += gravityAcc;
 		if (vel > max) vel = max;
 		else if (vel < 0.1) vel = 0.1;
 		Vec3 nm = getLookAngle().scale(vel);
 		setDeltaMovement(nm);
+	}
+
+	@Override
+	protected void tickSetAngle() {
+
 	}
 	
 	public void guideToPosition() {

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
@@ -20,6 +21,7 @@ import com.onewhohears.onewholibs.entity.CustomAnimProjectile;
 import com.onewhohears.onewholibs.util.UtilEntity;
 
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -28,6 +30,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -109,6 +112,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		super.tick();
 		tickCheckCollide();
 		tickSetMove();
+		tickSetAngle();
 		setPos(position().add(getDeltaMovement()));
 		checkInsideBlocks();
 		tickAge();
@@ -263,7 +267,18 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 	
 	protected void tickSetMove() {
-		
+		setDeltaMovement(getDeltaMovement().add(0, -getGravityAcc(), 0));
+	}
+
+	protected double getGravityAcc() {
+		return DSCPhyCons.GRAVITY * DSCPhyCons.ACC_TIME_SCALE;
+	}
+
+	protected void tickSetAngle() {
+		float goalPitch = UtilAngles.getPitch(getDeltaMovement());
+		float goalYaw = UtilAngles.getYaw(getDeltaMovement());
+		setXRot(Mth.rotLerp(0.5f, getXRot(), goalPitch));
+		setYRot(Mth.rotLerp(0.5f, getYRot(), goalYaw));
 	}
 	
 	@Override

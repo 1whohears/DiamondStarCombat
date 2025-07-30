@@ -73,4 +73,8 @@ public class DSCPhyCons {
 	
 	public static final double EXP_FORCE_FACTOR = 1E7;
 	public static final double EXP_MOMENT_FACTOR = 1E8;
+
+	public static final double MISSILE_BLEED_SCALE = 0.4;
+	public static final double MISSILE_AIR_RES_SCALE = 0.01;
+	public static final double MISSILE_GRAV_ACC_SCALE = 0.05;
 }

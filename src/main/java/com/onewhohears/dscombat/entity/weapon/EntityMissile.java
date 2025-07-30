@@ -232,12 +232,13 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		Vec3 cm = getDeltaMovement();
 		double cv = cm.length();
 		double max = getSpeed();
-		double B = getBleed() * UtilEntity.getAirPressure(this) * 0.4;
+		double B = getBleed() * UtilEntity.getAirPressure(this) * DSCPhyCons.MISSILE_BLEED_SCALE;
 		double turnBleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
-		double airRes = B * cv * 0.01;
+		double airRes = B * cv * DSCPhyCons.MISSILE_AIR_RES_SCALE;
 		double vel = cv - turnBleed - airRes;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
-		double gravityAcc = Mth.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm)) * getGravityAcc() * 0.1;
+		double ga = Math.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm))*getGravityAcc()*DSCPhyCons.MISSILE_GRAV_ACC_SCALE;
+		double gravityAcc = Math.max(0, ga);
 		vel += gravityAcc;
 		if (vel > max) vel = max;
 		else if (vel < 0.1) vel = 0.1;

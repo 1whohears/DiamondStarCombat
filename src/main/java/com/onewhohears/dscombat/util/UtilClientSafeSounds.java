@@ -180,10 +180,12 @@ public class UtilClientSafeSounds {
 		float pitch = getSonicBoomPitch(m.player, entity, DSCPhyCons.VEL_SOUND, size);
 		if (pitch <= 0) return false;
 		Vec3 diff = entity.position().subtract(m.player.position());
-		double scale = Math.max(1, Math.min(32, diff.length() * 0.08)); // 32 / 400
+		double distance = diff.length();
+		double scale = Math.max(1, Math.min(32, distance * 0.08)); // 32 / 400
 		Vec3 pos = m.player.position().add(diff.normalize().scale(scale));
-		m.player.getLevel().playLocalSound(pos.x(), pos.y(), pos.z(),
-				ModSounds.SONIC_BOOM, SoundSource.PLAYERS, 1, pitch, true);
+		float volume = Math.max(0f, Math.min(1f, 400f / (float) distance));
+		m.player.getLevel().playLocalSound(pos.x(), pos.y(), pos.z(), ModSounds.SONIC_BOOM,
+				SoundSource.PLAYERS, volume, pitch, false);
 		//System.out.println("played sonic boom pitch "+pitch);
 		return true;
 	}
@@ -216,7 +218,7 @@ public class UtilClientSafeSounds {
 		double normalizedSize = Math.max(aircraftSize, 0.01);
 		double pitch = 1.0 / normalizedSize;
 
-		pitch = Math.max(0.3, Math.min(pitch, 4.0));
+		pitch = Math.max(0.9, Math.min(pitch, 4.0));
 		return (float) pitch;
 	}
 	

@@ -229,7 +229,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 	
 	public boolean dieIfNoTargetOutsideTickRange() {
-		return false;
+		return true;
 	}
 	
 	@Override

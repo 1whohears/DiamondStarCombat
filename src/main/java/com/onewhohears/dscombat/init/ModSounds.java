@@ -86,6 +86,7 @@ public class ModSounds {
 
 	public static final SoundEvent EJECT = registerSoundEvent("eject", "cockpit/eject/eject", "sounds.dscombat.eject");
 	public static final SoundEvent EJECT_WIND = registerSoundEvent("eject_wind", "cockpit/eject/eject_wind", "sounds.dscombat.eject_wind");
+	public static final SoundEvent SONIC_BOOM = registerSoundEvent("sonic_boom", "vehicle/other/sonic_boom", "sounds.dscombat.sonic_boom");
 
 	public static void register(IEventBus eventBus) {
 		SOUND_EVENTS.register(eventBus);

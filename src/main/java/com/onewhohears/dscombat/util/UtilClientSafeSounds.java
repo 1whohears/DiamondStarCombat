@@ -2,6 +2,11 @@ package com.onewhohears.dscombat.util;
 
 import java.util.NoSuchElementException;
 
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -33,7 +38,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		int delay = 0;
-		if (delayed) delay = (int)(p.distanceTo(entity) / DSCPhyCons.VEL_SOUND);
+		if (delayed) delay = (int)(p.distanceTo(entity) / velSound);
 		m.getSoundManager().playDelayed(new DopplerSoundInstance(sound, 
 				p, entity, initVolume, initPitch, velSound), delay);
 	}
@@ -157,6 +162,62 @@ public class UtilClientSafeSounds {
 		Minecraft m = Minecraft.getInstance();
 		if (m.player == null) return false;
 		return m.player.getRootVehicle().equals(vehicle);
+	}
+
+	public static boolean missileSonicBoom(@NotNull EntityMissile<?> missile) {
+		return entitySonicBoom(missile, missile.getStats().getMass());
+	}
+
+	public static boolean vehicleSonicBoom(@NotNull EntityVehicle vehicle) {
+		return entitySonicBoom(vehicle, vehicle.getStats().mass);
+	}
+
+	public static boolean entitySonicBoom(@NotNull Entity entity, float mass) {
+		if (UtilGeometry.isZero(entity.getDeltaMovement())) return false;
+		Minecraft m = Minecraft.getInstance();
+		if (m.player == null) return false;
+		float size = mass / 8573f;
+		float pitch = getSonicBoomPitch(m.player, entity, DSCPhyCons.VEL_SOUND, size);
+		if (pitch <= 0) return false;
+		Vec3 diff = entity.position().subtract(m.player.position());
+		double scale = Math.max(1, Math.min(32, diff.length() * 0.08)); // 32 / 400
+		Vec3 pos = m.player.position().add(diff.normalize().scale(scale));
+		m.player.getLevel().playLocalSound(pos.x(), pos.y(), pos.z(),
+				ModSounds.SONIC_BOOM, SoundSource.PLAYERS, 1, pitch, true);
+		//System.out.println("played sonic boom pitch "+pitch);
+		return true;
+	}
+
+	public static float getSonicBoomPitch(@NotNull Entity observer, @NotNull Entity aircraft,
+										  double speedOfSound, double aircraftSize) {
+		Vec3 aircraftPos = aircraft.position();
+		Vec3 observerPos = observer.position();
+
+		Vec3 velocity = aircraft.getDeltaMovement();
+		double aircraftSpeed = velocity.length();
+		if (aircraftSpeed <= speedOfSound) {
+			//System.out.println("NO BOOM sub sonic "+aircraftSpeed+" "+speedOfSound);
+			return -1;
+		}
+
+		Vec3 toObserver = observerPos.subtract(aircraftPos);
+		if (toObserver.dot(velocity) >= 0) {
+			//System.out.println("NO BOOM aircraft in front");
+			return -1;
+		}
+
+        /*double machConeAngle = Math.asin(speedOfSound / aircraftSpeed);
+        double cosPhi = -toObserver.normalize().dot(velocity.normalize());
+        if (cosPhi < Math.cos(machConeAngle)) {
+            System.out.println("NO BOOM not in cone "+cosPhi+" goal "+machConeAngle);
+            return -1;
+        }*/
+
+		double normalizedSize = Math.max(aircraftSize, 0.01);
+		double pitch = 1.0 / normalizedSize;
+
+		pitch = Math.max(0.3, Math.min(pitch, 4.0));
+		return (float) pitch;
 	}
 	
 }

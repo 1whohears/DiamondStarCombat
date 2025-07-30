@@ -47,7 +47,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	public Entity target;
 	public Vec3 targetPos;
 	
-	private boolean discardedButTicking;
+	private boolean discardedButTicking, didSonicBoom;
 	private int prevTickCount, tickCountRepeats, repeatCoolDown, lerpSteps;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	
@@ -98,6 +98,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			} else {
 				tickClientGuide();
 				if (firstTick) engineSound();
+				if (!didSonicBoom) sonicBoomSound();
 			}
 		}
 		super.tick();
@@ -188,7 +189,11 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	private void engineSound() {
 		UtilClientSafeSounds.dopplerSound(this, 
 				ModSounds.MISSILE_ENGINE_1, 0.8F, 1.0F, 
-				DSCPhyCons.VEL_SOUND, true);
+				DSCPhyCons.VEL_SOUND, false);
+	}
+
+	private void sonicBoomSound() {
+		didSonicBoom = UtilClientSafeSounds.missileSonicBoom(this);
 	}
 	
 	@Override
@@ -224,7 +229,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 	
 	public boolean dieIfNoTargetOutsideTickRange() {
-		return true;
+		return false;
 	}
 	
 	@Override

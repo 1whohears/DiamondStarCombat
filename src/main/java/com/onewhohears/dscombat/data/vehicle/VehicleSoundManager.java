@@ -24,6 +24,8 @@ public class VehicleSoundManager {
 	public final EntityVehicle parent;
 	
 	private VehicleLoopingSounds loopManager;
+	private int prevSonicBoomTime = -1;
+	private boolean didSonicBoom;
 	
 	public VehicleSoundManager(EntityVehicle parent) {
 		this.parent = parent;
@@ -64,6 +66,8 @@ public class VehicleSoundManager {
 		if (UtilClientSafeSounds.isClientRidingVehicle(parent)) {
 			PassengerSoundPack pack = getPassengerSoundPack();
 			if (pack != null) pack.clientTickPassengerSounds(parent);
+		} else {
+			if (!didSonicBoom) didSonicBoom = UtilClientSafeSounds.vehicleSonicBoom(parent);
 		}
 		tickLoopingSounds();
 	}

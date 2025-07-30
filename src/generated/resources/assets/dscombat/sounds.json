@@ -335,6 +335,12 @@
     ],
     "subtitle": "sounds.dscombat.rocket_launch_1"
   },
+  "sonic_boom": {
+    "sounds": [
+      "dscombat:vehicle/other/sonic_boom"
+    ],
+    "subtitle": "sounds.dscombat.sonic_boom"
+  },
   "stall_alert_gm1": {
     "sounds": [
       "dscombat:cockpit/warnings/generic_male_1/stall_alert"

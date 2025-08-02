@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity;
 
 import com.mojang.math.Quaternion;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -277,7 +278,7 @@ public interface PhysicsBody {
 
     default void motionClamp() {
         Vec3 move = getDeltaMovement();
-        double goalMaxXZ = getMaxSpeedForMotion();
+        double goalMaxXZ = Math.min(getMaxSpeedForMotion(), Config.SERVER.universalTopSpeed.get() / 20d);
         setLerpMaxXZ(Mth.lerp(DSCPhyCons.MAX_SPEED_CHANGE_RATE, getLerpMaxXZ(), goalMaxXZ));
 
         Vec3 motionXZ = new Vec3(move.x, 0, move.z);

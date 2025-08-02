@@ -170,6 +170,7 @@ public class Config {
 	}
 
 	public static class Server {
+		public final ForgeConfigSpec.DoubleValue universalTopSpeed;
 		public final ForgeConfigSpec.DoubleValue vehicleSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue planeSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue heliSpeedFactor;
@@ -177,6 +178,9 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue boatSpeedFactor;
 		public Server(ForgeConfigSpec.Builder builder) {
 			builder.push("speed_factors");
+			universalTopSpeed = builder.comment("The absolute max horizontal speed for all vehicles in blocks/second. ",
+							"Lower this value if your playing on a server that doesn't have pre-generated chunks.")
+					.defineInRange("universalTopSpeed", 200.0, 1, 1000);
 			vehicleSpeedFactor = builder.defineInRange("vehicleSpeedFactor", 1.0, 0, 10);
 			planeSpeedFactor = builder.defineInRange("planeSpeedFactor", 1.0, 0, 10);
 			heliSpeedFactor = builder.defineInRange("heliSpeedFactor", 1.0, 0, 10);

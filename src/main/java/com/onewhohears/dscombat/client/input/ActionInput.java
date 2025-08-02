@@ -73,6 +73,10 @@ public interface ActionInput {
     default boolean isUnbound() {
         return false;
     }
+    default boolean isWindowActive() {
+        Minecraft m = Minecraft.getInstance();
+        return m.isWindowActive() && m.screen == null;
+    }
 
     abstract class Button implements ActionInput {
         private boolean isPressed, wasPressed;
@@ -206,7 +210,7 @@ public interface ActionInput {
             this.id = joystick_id+":"+button_id;
         }
         protected boolean checkIsPressed() {
-            if (!Minecraft.getInstance().isWindowActive()) return false;
+            if (!isWindowActive()) return false;
             if (!GLFW.glfwJoystickPresent(joystick_id)) return false;
             ByteBuffer buttons = GLFW.glfwGetJoystickButtons(joystick_id);
             if (buttons == null) return false;
@@ -261,7 +265,7 @@ public interface ActionInput {
             return false;
         }
         private float checkValue() {
-            if (!Minecraft.getInstance().isWindowActive()) return value;
+            if (!isWindowActive()) return value;
             if (!GLFW.glfwJoystickPresent(joystick_id)) return 0;
             FloatBuffer axes = GLFW.glfwGetJoystickAxes(joystick_id);
             if (axes == null) return 0;
@@ -314,7 +318,7 @@ public interface ActionInput {
             this.id = joystick_id+":"+axis_id+":"+positive;
         }
         protected boolean checkIsPressed() {
-            if (!Minecraft.getInstance().isWindowActive()) return false;
+            if (!isWindowActive()) return false;
             if (!GLFW.glfwJoystickPresent(joystick_id)) return false;
             FloatBuffer axes = GLFW.glfwGetJoystickAxes(joystick_id);
             if (axes == null) return false;
@@ -365,7 +369,7 @@ public interface ActionInput {
             positivePressed = checkIsPressed(positive_button_id);
         }
         protected boolean checkIsPressed(int button_id) {
-            if (!Minecraft.getInstance().isWindowActive()) return false;
+            if (!isWindowActive()) return false;
             if (!GLFW.glfwJoystickPresent(joystick_id)) return false;
             ByteBuffer buttons = GLFW.glfwGetJoystickButtons(joystick_id);
             if (buttons == null) return false;

@@ -3,6 +3,8 @@
 !src/**/build/
 **/src/generated/resources/.cache
 **/libs/
+*.xlsx#
+*.ods#
 
 # Ignore Gradle GUI config
 gradle-app.setting

@@ -65,6 +65,11 @@ public interface ActionInput {
         return type.gen.apply(json);
     }
 
+    static boolean isWindowActive() {
+        Minecraft m = Minecraft.getInstance();
+        return m.isWindowActive() && m.screen == null;
+    }
+
     @NotNull String getId();
     @NotNull String getType();
     void tick();
@@ -72,10 +77,6 @@ public interface ActionInput {
     @NotNull JsonObject write();
     default boolean isUnbound() {
         return false;
-    }
-    default boolean isWindowActive() {
-        Minecraft m = Minecraft.getInstance();
-        return m.isWindowActive() && m.screen == null;
     }
 
     abstract class Button implements ActionInput {

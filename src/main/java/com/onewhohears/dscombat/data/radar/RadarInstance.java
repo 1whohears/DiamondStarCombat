@@ -218,7 +218,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		if (getStats().getThroWaterRange() > 0 && ping.isInWater()) return true;
 		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(ping);
 		if (getStats().isScanGround() && groundWater) return true;
-		return getStats().isScanAir() && !groundWater && UtilVehicleEntity.getDistFromGround(ping, 6) >= 6;
+		return getStats().isScanAir() && !groundWater && UtilVehicleEntity.getDistFromGround(ping, 6, false) >= 6;
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double stealth) {

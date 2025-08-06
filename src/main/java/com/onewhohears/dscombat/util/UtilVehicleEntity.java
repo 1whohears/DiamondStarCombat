@@ -85,14 +85,14 @@ public class UtilVehicleEntity {
         return tunnels.stream().min((tunnel1, tunnel2) -> (int) (tunnel2.distanceToSqr(pos) - tunnel1.distanceToSqr(pos)));
     }
 
-    public static int getDistFromGround(Entity entity, int limit) {
+    public static int getDistFromGround(Entity entity, int limit, boolean ignoreWater) {
         Level l = entity.getLevel();
         int[] pos = new int[]{entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()};
 
         int dist;
         for(dist = 0; pos[1] >= l.getMinBuildHeight() && dist <= limit; ++dist) {
             BlockState block = l.getBlockState(new BlockPos(pos[0], pos[1], pos[2]));
-            if (block != null && !block.isAir()) {
+            if (block != null && !block.isAir() && (!ignoreWater || block.getMaterial().blocksMotion())) {
                 break;
             }
             pos[1]--;

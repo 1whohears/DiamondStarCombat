@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
+import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.mixin.CameraAccess;
-import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
@@ -36,7 +36,6 @@ import javax.annotation.Nullable;
 public class ClientCameraEvents {
 	
 	private static Entity prevGimbal;
-	private static long prevCamSetupTime;
 	@Nullable static private Quaternion prevQ;
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -45,7 +44,7 @@ public class ClientCameraEvents {
 		final var player = m.player;
 		if (player == null) return;
 		if (!player.isPassenger()) {
-			if (m.getCameraEntity().equals(prevGimbal)) m.setCameraEntity(player);
+			if (isCameraEntityEqual(m, prevGimbal)) m.setCameraEntity(player);
 			prevGimbal = null;
 			return;
 		}
@@ -61,49 +60,35 @@ public class ClientCameraEvents {
 			if (DSCClientInputs.isGimbalMode()) camYOffset = seat.getCameraYOffset();
 		}
 		if ((prevGimbal != null && prevGimbal.isRemoved())
-				|| (!DSCClientInputs.isGimbalMode() && !m.getCameraEntity().equals(player))) {
+				|| (!DSCClientInputs.isGimbalMode() && !isCameraEntityEqual(m, player))) {
 			m.setCameraEntity(player);
 			prevGimbal = null;
 		}
 		if (DSCClientInputs.isGimbalMode() && (isPilot || isCopilot || camYOffset == 0) 
 				&& vehicle.getGimbalForPilotCamera() != null) {
 			EntityGimbal gimbal = vehicle.getGimbalForPilotCamera();
-			if (!m.getCameraEntity().equals(gimbal)) m.setCameraEntity(gimbal);
+			if (!isCameraEntityEqual(m, gimbal)) m.setCameraEntity(gimbal);
 			gimbal.setXRot(player.getViewXRot(pt));
 			gimbal.setYRot(player.getViewYRot(pt));
 			prevGimbal = gimbal;
 			camYOffset = -0.2f;
 		} 
 		if (isPilot && DSCClientInputs.isCameraLockedForward()) {
-			float xi = UtilAngles.lerpAngle(pt, vehicle.xRotO, vehicle.getXRot());
-			float yi = UtilAngles.lerpAngle180(pt, vehicle.yRotO, vehicle.getYRot());
-			player.setXRot(xi);
-			player.setYRot(yi);
-			player.xRotO = xi;
-			player.yRotO = yi;
-			if (mirrored) {
-				xi *= -1;
-				yi += 180;
-			}
-			event.setPitch(xi);
-			event.setYaw(yi);
+			float x = UtilAngles.lerpAngle(pt, vehicle.xRotO, vehicle.getXRot());
+			float y = UtilAngles.lerpAngle180(pt, vehicle.yRotO, vehicle.getYRot());
+			setAngles(event, player, x, y, mirrored);
 		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
 			Quaternion qPT = vehicle.getClientQ(pt);
-			if (prevQ != null) {
+			if (ClientInputManager.RESET_MOUSE.isPressed()) {
+				float x = UtilAngles.lerpAngle(pt, vehicle.xRotO, vehicle.getXRot());
+				float y = UtilAngles.lerpAngle180(pt, vehicle.yRotO, vehicle.getYRot());
+				setAngles(event, player, x, y, mirrored);
+			} else if (prevQ != null) {
 				float[] relativeAngles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), prevQ);
 				float[] globalAngles = UtilAngles.relativeToGlobalDegrees(relativeAngles[0], relativeAngles[1], qPT);
 				float x = globalAngles[0];
 				float y = globalAngles[1];
-				player.setXRot(x);
-				player.xRotO = x;
-				player.setYRot(y);
-				player.yRotO = y;
-				if (mirrored) {
-					x *= -1;
-					y += 180;
-				}
-				event.setPitch(x);
-				event.setYaw(y);
+				setAngles(event, player, x, y, mirrored);
 			}
 			prevQ = qPT;
 		}
@@ -128,7 +113,24 @@ public class ClientCameraEvents {
 			Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
 			camera.setPosition(camera.getPosition().add(pitchAxis.scale(-DSCClientInputs.getLeanAmount())));
 		}
-		prevCamSetupTime = System.currentTimeMillis();
+	}
+
+	private static boolean isCameraEntityEqual(Minecraft m, @Nullable Entity e) {
+		if (e == null || m.getCameraEntity() == null) return false;
+		return m.getCameraEntity().equals(e);
+	}
+
+	private static void setAngles(ViewportEvent.ComputeCameraAngles event, Player player, float x, float y, boolean mirrored) {
+		player.setXRot(x);
+		player.xRotO = x;
+		player.setYRot(y);
+		player.yRotO = y;
+		if (mirrored) {
+			x *= -1;
+			y += 180;
+		}
+		event.setPitch(x);
+		event.setYaw(y);
 	}
 	
 	public static double getMaxDist(Camera cam, Player player, double dist) {

@@ -68,6 +68,7 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 	}
 
 	protected void checkEntity(Entity entity, double rangeSqr) {
+		if (entity.isSpectator()) return;
 		if (distanceToSqr(entity) > rangeSqr) return;
 		if (!entity.getLevel().dimension().equals(getLevel().dimension())) return;
 		EntityVehicle vehicle;

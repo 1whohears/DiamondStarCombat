@@ -105,6 +105,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private void handleScanPlayerVehicle(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 										 double rangeSqr, boolean playersOnly, boolean vehiclesOnly,
 										 Entity entity, boolean player) {
+		if (entity.isSpectator()) return;
 		if (playersOnly && !player) return;
 
 		if (entity.distanceToSqr(radar) > rangeSqr) return;

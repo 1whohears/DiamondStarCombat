@@ -278,19 +278,19 @@ public class EntityPlane extends EntityVehicle {
 
 	@Override
 	public float getControlMaxDeltaPitch() {
-		if (isArcadeMode || isTestMode()) return super.getControlMaxDeltaPitch();
+		if (isArcadeMode || isTestMode() || !isUsingTurnAssist()) return super.getControlMaxDeltaPitch();
 		return getTurnRateGraph().getMaxPitchRate(airSpeed) * aoaTurnRateMod;
 	}
 
 	@Override
 	public float getControlMaxDeltaYaw() {
-		if (isArcadeMode || isTestMode()) return super.getControlMaxDeltaYaw();
+		if (isArcadeMode || isTestMode() || !isUsingTurnAssist()) return super.getControlMaxDeltaYaw();
 		return getTurnRateGraph().getMaxYawRate(airSpeed) * aoaTurnRateMod;
 	}
 
 	@Override
 	public float getControlMaxDeltaRoll() {
-		if (isArcadeMode || isTestMode()) return super.getControlMaxDeltaRoll();
+		if (isArcadeMode || isTestMode() || !isUsingTurnAssist()) return super.getControlMaxDeltaRoll();
 		return getTurnRateGraph().getMaxRollRate(airSpeed) * aoaTurnRateMod;
 	}
 

@@ -120,7 +120,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		vehicle.lastShootTime = vehicle.tickCount;
 		if (vehicle.getPartBySlotId(getSlotId()) instanceof EntityWeaponRack rack) {
 			rack.lastShootTime = rack.tickCount;
-			ToClientOnShoot.onShootWeaponRack(rack);
+			ToClientOnShoot.onShootWeaponRack(rack, owner);
 		}
 		firedWeapon = w;
 		return true;
@@ -142,7 +142,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			vehicle.lastShootTime = vehicle.tickCount;
 			if (vehicle.getPartBySlotId(getSlotId()) instanceof EntityTurret turret) {
 				turret.setLastShootTick(turret.tickCount);
-				ToClientOnShoot.onShootTurret(turret);
+				ToClientOnShoot.onShootTurret(turret, owner);
 			}
 		}
 		firedWeapon = w;

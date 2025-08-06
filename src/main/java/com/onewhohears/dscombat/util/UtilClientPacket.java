@@ -172,23 +172,29 @@ public class UtilClientPacket {
 		EntityVehicle vehicle = null;
 		EntityChainHook hook = null;
 		Player player = null;
+		if (m.level == null) return;
 		if (m.level.getEntity(vehicleId) instanceof EntityVehicle v) vehicle = v;
 		if (m.level.getEntity(hookId) instanceof EntityChainHook c) hook = c;
 		if (m.level.getEntity(playerId) instanceof Player p) player = p;
 		switch (type) {
 		case CHAIN_ADD_PLAYER:
+			if (hook == null) return;
 			hook.addPlayerConnection(player);
 			return;
 		case CHAIN_ADD_VEHICLE:
+			if (hook == null) return;
 			hook.addVehicleConnection(player, vehicle);
 			return;
 		case CHAIN_DISCONNECT_PLAYER:
+			if (hook == null) return;
 			hook.disconnectPlayer(player);
 			return;
 		case CHAIN_DISCONNECT_VEHICLE:
+			if (hook == null) return;
 			hook.disconnectVehicle(vehicle);
 			return;
 		case VEHICLE_ADD_PLAYER:
+			if (vehicle == null) return;
 			vehicle.chainToPlayer(player);
 			return;		
 		}
@@ -197,6 +203,7 @@ public class UtilClientPacket {
 	public static void debugHitboxPos(int id, String hitbox_name, Vec3 pos, Vec3 size) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
+		if (world == null) return;
 		if (!(world.getEntity(id) instanceof EntityVehicle vehicle)) return;
 		RotableHitbox hitbox = vehicle.getHitboxByName(hitbox_name);
 		if (hitbox == null) return;
@@ -204,21 +211,23 @@ public class UtilClientPacket {
 		hitbox.setTestSize(size);
 	}
 
-	public static void onShoot(int id, ShootType type) {
+	public static void onShoot(int vehicleId, int shooterId, ShootType type) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world == null) return;
 		if (type == ShootType.WEAPON_RACK) {
-			if (!(world.getEntity(id) instanceof EntityWeaponRack rack)) return;
+			if (!(world.getEntity(vehicleId) instanceof EntityWeaponRack rack)) return;
 			rack.onClientShoot();
 		} else if (type == ShootType.TURRET) {
-			if (!(world.getEntity(id) instanceof EntityTurret turret)) return;
+			if (!(world.getEntity(vehicleId) instanceof EntityTurret turret)) return;
 			turret.onClientShoot();
 		} else if (type == ShootType.FLARE) {
-			if (!(world.getEntity(id) instanceof EntityVehicle vehicle)) return;
+			if (m.player == null || m.player.getRootVehicle().getId() != vehicleId) return;
+			if (!(world.getEntity(vehicleId) instanceof EntityVehicle vehicle)) return;
 			vehicle.soundManager.playPassengerFlareSound();
 		} else if (type == ShootType.CHAFF) {
-			if (!(world.getEntity(id) instanceof EntityVehicle vehicle)) return;
+			if (m.player == null || m.player.getRootVehicle().getId() != vehicleId) return;
+			if (!(world.getEntity(vehicleId) instanceof EntityVehicle vehicle)) return;
 			vehicle.soundManager.playPassengerChaffSound();
 		}
 	}

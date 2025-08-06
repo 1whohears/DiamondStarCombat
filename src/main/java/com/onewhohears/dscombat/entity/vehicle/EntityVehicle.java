@@ -952,7 +952,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public void flare(Entity controller, boolean consume) {
 		if (partsManager.useFlares(consume)) {
-			ToClientOnShoot.onShootFlareRack(this);
+			ToClientOnShoot.onShootFlareRack(this, controller);
 			flareTicks = tickCount;
 		}
 	}

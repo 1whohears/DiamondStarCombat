@@ -40,14 +40,14 @@ showAsResourcePack=false
 [[dependencies."${mod_id}"]]
     modId="onewholibs"
     mandatory=true
-    versionRange="[1.6.6,)"
+    versionRange="[1.6.7,)"
     ordering="NONE"
     side="BOTH"
     
 [[dependencies."${mod_id}"]]
     modId="minigames"
     mandatory=false
-    versionRange="[0.3.6,)"
+    versionRange="[0.3.7,)"
     ordering="NONE"
     side="BOTH"
 

@@ -76,6 +76,7 @@ public class ClientInputManager {
     private static int leftTicks = 0;
     private static long radarModeUpdateTime = 0;
     private static float currentThrottle = 0;
+    private static boolean wasPilot = false;
 
     private static void pilotTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle) {
         if (MOUSE_MODE.isInitPressed()) DSCClientInputs.cycleMouseMode();
@@ -160,13 +161,21 @@ public class ClientInputManager {
         } else pitch *= invertPitch;
 
         // fix throttle
+        float zeroThrottle;
+        if (vehicle.getStats().negativeThrottle) zeroThrottle = 0;
+        else zeroThrottle = -1;
+        if (!wasPilot) currentThrottle = zeroThrottle;
         if (ActionInput.isWindowActive()) {
-            if (flipPitchThrottle && type_flip && THROTTLE.isJoystickController()) {
+            if (vehicle.inputs.isThrottleOverride(vehicle)) {
+                float goal = vehicle.inputs.getGoalThrottle(vehicle);
+                if (!vehicle.getStats().negativeThrottle) goal = goal * 2 - 1;
+                currentThrottle = goal;
+            } else if (flipPitchThrottle && type_flip && THROTTLE.isJoystickController()) {
                 currentThrottle = THROTTLE.getValue();
+            } else if ((!flipPitchThrottle && THROTTLE.isNegAndPos()) || (flipPitchThrottle && PITCH.isNegAndPos())) {
+                currentThrottle = Mth.approach(currentThrottle, zeroThrottle, THROTTLE_CHANGE_RATE);
             } else if ((!flipPitchThrottle && THROTTLE.isJoystickController()) || (flipPitchThrottle && PITCH.isJoystickController())) {
                 currentThrottle = throttle;
-            } else if ((!flipPitchThrottle && THROTTLE.isNegAndPos()) || (flipPitchThrottle && PITCH.isNegAndPos())) {
-                currentThrottle = Mth.approach(currentThrottle, 0, THROTTLE_CHANGE_RATE);
             } else if (throttle > 0) {
                 currentThrottle = Mth.approach(currentThrottle, 1, THROTTLE_CHANGE_RATE);
             } else if (throttle < 0) {
@@ -277,11 +286,21 @@ public class ClientInputManager {
         tickActions();
         Minecraft mc = Minecraft.getInstance();
         final var player = mc.player;
-        if (player == null) return;
-        if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+        if (player == null) {
+            wasPilot = false;
+            return;
+        }
+        if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle vehicle)) {
+            wasPilot = false;
+            return;
+        }
         Entity controller = vehicle.getControllingPassenger();
-        if (controller == null || !controller.equals(player)) return;
+        if (controller == null || !controller.equals(player)) {
+            wasPilot = false;
+            return;
+        }
         pilotTick(mc, player, vehicle);
+        wasPilot = true;
     }
 
     public static void clientTickSecond() {

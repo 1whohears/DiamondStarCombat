@@ -21,6 +21,9 @@ public class VehicleInputManager {
 	protected boolean isDriverCameraLocked;
 	protected int weaponIndex;
 	protected float currentThrottle;
+
+	private float throttleOverride;
+	private int throttleOverrideTime;
 	
 	public VehicleInputManager() {
 		reset();
@@ -51,6 +54,20 @@ public class VehicleInputManager {
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
 		currentThrottle = parent.getCurrentThrottle();
 		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleControl(parent));
+	}
+
+	public void setThrottleOverride(float t, EntityVehicle parent) {
+		throttleOverride = t;
+		throttleOverrideTime = parent.tickCount;
+	}
+
+	public float getGoalThrottle(EntityVehicle parent) {
+		if (isThrottleOverride(parent)) return throttleOverride;
+		return throttle;
+	}
+
+	public boolean isThrottleOverride(EntityVehicle parent) {
+		return parent.tickCount - throttleOverrideTime <= 1;
 	}
 	
 	public void updateInputsFromPacket(VehicleInputManager other, EntityVehicle parent) {

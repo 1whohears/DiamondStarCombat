@@ -26,11 +26,6 @@ public final class ClientInputEvents {
 	public static void clientTickPilotControl(TickEvent.ClientTickEvent event) {
 		if (event.phase != Phase.START) return;
 		ClientInputManager.clientTickFirst();
-	}
-	
-	@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void clientTickPassengerControl(TickEvent.ClientTickEvent event) {
-		if (event.phase != Phase.START) return;
 		ClientInputManager.clientTickSecond();
 	}
 	

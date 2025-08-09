@@ -227,8 +227,199 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:eden_plane",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
+  "physics_components": [
+    {
+      "area": 19.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "left_wing",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 18.0,
+      "input_type": "LEFT_FLAP",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": 4.31,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    },
+    {
+      "area": 19.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "right_wing",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 18.0,
+      "input_type": "RIGHT_FLAP",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": -4.31,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    },
+    {
+      "area": 2.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "left_elevator",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 20.0,
+      "input_type": "ELEVATOR",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": 3.69,
+        "y": 0.0,
+        "z": -6.19
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 2.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "right_elevator",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 20.0,
+      "input_type": "ELEVATOR",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": -3.69,
+        "y": 0.0,
+        "z": -6.19
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 6.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "left_tail",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 3.0,
+      "input_type": "STABILIZER",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": 2.13,
+        "y": 0.0,
+        "z": -4.25
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 90.0
+      },
+      "zero_lift_drag": 0.6000000238418579
+    },
+    {
+      "area": 6.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "right_tail",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 3.0,
+      "input_type": "STABILIZER",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": -2.13,
+        "y": 0.0,
+        "z": -4.25
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 90.0
+      },
+      "zero_lift_drag": 0.6000000238418579
+    },
+    {
+      "area": 4.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "nose",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 6.19
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 12.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "nose",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 4.25
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 90.0
+      },
+      "zero_lift_drag": 0.6000000238418579
+    },
+    {
+      "area": 12.0,
+      "drag_graph": "eden_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": true,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "eden_lift_aoa",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    }
+  ],
   "presetId": "eden_plane_empty",
   "presetType": "plane",
   "slots": [
@@ -271,7 +462,7 @@
       "slot_posx": 4.0,
       "slot_posy": 0.05,
       "slot_posz": -0.4,
-      "slot_type": "pylon_light",
+      "slot_type": "pylon_med",
       "zRot": 180.0
     },
     {
@@ -289,7 +480,7 @@
       "slot_posx": -3.0,
       "slot_posy": 0.05,
       "slot_posz": 0.4,
-      "slot_type": "pylon_light",
+      "slot_type": "pylon_med",
       "zRot": 180.0
     },
     {
@@ -298,7 +489,7 @@
       "slot_posx": -4.0,
       "slot_posy": 0.05,
       "slot_posz": -0.4,
-      "slot_type": "pylon_light",
+      "slot_type": "pylon_med",
       "zRot": 180.0
     },
     {
@@ -390,19 +581,25 @@
     "externalRPM": "dscombat:alexis_ext_rpm",
     "externalWindClose": "dscombat:alexis_ext_wind_close",
     "externalWindFar": "dscombat:alexis_ext_wind_far",
-    "loopSoundType": "fighter_jet",
-    "passengerSoundPack": "eng_non_binary_goober"
+    "loopSoundType": "fighter_jet"
   },
   "stats": {
     "armor_damage_absorbtion": 0.15,
     "armor_damage_threshold": 3.0,
     "assetId": "eden_plane",
     "base_armor": 60.0,
+    "break_deacc_air": 0.016,
+    "break_deacc_ground": 0.032,
     "cameraDistance": 19.0,
     "crashExplosionRadius": 5.5,
     "cross_sec_area": 4.5,
+    "cruise_speed": 16.67,
+    "drag_area": 0.51,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
+    "fuel_consume_per_engine": 0.003,
+    "has_turn_assist": true,
+    "heat_per_engine": 7.0,
     "hitboxes_control_pitch": [
       "left_elevator",
       "right_elevator"
@@ -416,18 +613,22 @@
       "right_tail"
     ],
     "idleheat": 5.0,
-    "inertiapitch": 8.5,
-    "inertiaroll": 4.5,
-    "inertiayaw": 2.5,
+    "inertiapitch": 90000.0,
+    "inertiaroll": 11000.0,
+    "inertiayaw": 95000.0,
     "mass": 11000.0,
-    "max_altitude": 730.0,
+    "max_afterburner_push_thrust_per_engine": 81580.0,
+    "max_altitude": 900.0,
+    "max_ground_speed": 6.67,
     "max_health": 100.0,
-    "max_speed": 1.5,
+    "max_push_thrust_per_engine": 49420.0,
+    "max_speed": 34.03,
     "maxpitch": 2.25,
     "maxroll": 5.5,
     "maxyaw": 1.25,
     "plane": {
       "canAimDown": false,
+      "drag_aoa_graph_key": "eden_drag_aoa",
       "flapsAOABias": 9.0,
       "fuselage_lift_area": 22.0,
       "fuselage_lift_k_graph": "fuselage",
@@ -437,16 +638,15 @@
         "left_wing",
         "right_wing"
       ],
-      "wing_lift_k_graph": "alexis_plane"
+      "wing_lift_k_graph": "eden_lift_aoa"
     },
     "rootHitboxNoCollide": true,
     "stealth": 0.95,
     "throttledown": 0.08,
     "throttleup": 0.04,
-    "torquepitch": 2.0,
-    "torqueroll": 1.5,
-    "torqueyaw": 4.0,
-    "turn_radius": 11.0
+    "turn_radius": 11.0,
+    "use_horizontal_speed_scale": true,
+    "use_vertical_speed_scale": true
   },
   "textures": {
     "baseTextureVariants": 8,

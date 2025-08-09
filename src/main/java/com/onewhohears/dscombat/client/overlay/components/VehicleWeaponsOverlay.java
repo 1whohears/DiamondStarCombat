@@ -4,6 +4,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -16,7 +17,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -54,12 +54,12 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     @Override
     protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
-        return getPlayerVehicle() instanceof EntitySeat;
+        return getPlayerVehicle() instanceof EntityRidablePart;
     }
 
     @Override
     protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
-        EntitySeat seat = (EntitySeat) getPlayerVehicle();
+        EntityRidablePart seat = (EntityRidablePart) getPlayerVehicle();
         assert seat != null;
 
         double yPlacement = screenHeight - TAB_HEIGHT - 13;

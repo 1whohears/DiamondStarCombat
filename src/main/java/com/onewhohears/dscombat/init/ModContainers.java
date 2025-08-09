@@ -2,11 +2,9 @@ package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.block.entity.VehicleBlock;
+import com.onewhohears.dscombat.block.entity.WeaponPartsBlockEntity;
 import com.onewhohears.dscombat.block.entity.WeaponsBlockEntity;
-import com.onewhohears.dscombat.common.container.menu.StorageBoxContainerMenu;
-import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
-import com.onewhohears.dscombat.common.container.menu.VehiclePartsMenu;
-import com.onewhohears.dscombat.common.container.menu.WeaponsBlockContainerMenu;
+import com.onewhohears.dscombat.common.container.menu.*;
 
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -38,6 +36,11 @@ public class ModContainers {
 			register("aircraft_block_menu", (IContainerFactory<VehicleBlockContainerMenu>) (windowId, playerInv, data) -> {
 				VehicleBlock aircraftBlock = (VehicleBlock)playerInv.player.level.getBlockEntity(data.readBlockPos());
 				return new VehicleBlockContainerMenu(windowId, playerInv, aircraftBlock);
+			});
+	public static final RegistryObject<MenuType<WeaponPartsBlockContainerMenu>> WEAPON_PARTS_BLOCK_MENU =
+			register("weapon_parts_block_menu", (IContainerFactory<WeaponPartsBlockContainerMenu>) (windowId, playerInv, data) -> {
+				WeaponPartsBlockEntity weaponsBlock = (WeaponPartsBlockEntity)playerInv.player.level.getBlockEntity(data.readBlockPos());
+				return new WeaponPartsBlockContainerMenu(windowId, playerInv, weaponsBlock);
 			});
 	public static final IContainerFactory<ChestMenu> VEHICLE_STORAGE_MENU_FACTORY = (windowId, playerInv, data) -> {
 		int storageId = data.readInt();

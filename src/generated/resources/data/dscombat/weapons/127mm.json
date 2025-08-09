@@ -1,4 +1,5 @@
 {
+  "assetId": "120mmhe",
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": [
@@ -12,6 +13,7 @@
   "explosionRadius": 1.5,
   "explosive": true,
   "fireRate": 12,
+  "inaccuracy": 0.3,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
@@ -22,13 +24,11 @@
       "num": 2
     }
   ],
-  "innacuracy": 0.3,
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
-  "modelId": "120mmhe",
   "presetId": "127mm",
   "presetType": "bullet",
-  "rackTypeKey": "",
   "shootSoundKey": "dscombat:cannon_shoot_2",
+  "sort_factor": 8,
   "speed": 7.0
 }

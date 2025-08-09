@@ -92,7 +92,7 @@ public class VehicleRecipe implements Recipe<Inventory> {
 	public int compare(VehicleRecipe other) {
 		if (this.getSortFactor() != other.getSortFactor()) 
 			return this.getSortFactor() - other.getSortFactor();
-		return this.presetId.compareToIgnoreCase(presetId);
+		return this.presetId.compareToIgnoreCase(other.presetId);
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {

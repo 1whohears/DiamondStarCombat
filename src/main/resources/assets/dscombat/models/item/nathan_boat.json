@@ -1,6 +1,4 @@
 {
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "dscombat:item/nathan_boat"
-	}
+	"parent": "builtin/entity",
+	"gui_light": "front"
 }

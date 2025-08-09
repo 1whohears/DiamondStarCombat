@@ -1,4 +1,5 @@
 {
+  "assetId": "20mm",
   "canShootOnGround": true,
   "causesFire": false,
   "compatibleWeaponPart": [
@@ -13,19 +14,18 @@
   "explosionRadius": 0.0,
   "explosive": false,
   "fireRate": 2,
+  "inaccuracy": 1.8,
   "ingredients": [
     {
       "item": "minecraft:copper_ingot",
       "num": 4
     }
   ],
-  "innacuracy": 1.8,
   "itemKey": "dscombat:bullet",
   "maxAge": 40,
-  "modelId": "20mm",
   "presetId": "15mm",
   "presetType": "bullet",
-  "rackTypeKey": "dscombat:xm12",
   "shootSoundKey": "dscombat:bullet_shoot_1",
+  "sort_factor": 2,
   "speed": 11.0
 }

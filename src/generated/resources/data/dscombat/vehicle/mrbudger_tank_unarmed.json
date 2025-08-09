@@ -3,10 +3,6 @@
   "displayName": "preset.dscombat.mrbudger_tank_unarmed",
   "ingredients": [
     {
-      "item": "dscombat:heavy_tank_turret",
-      "num": 1
-    },
-    {
       "item": "dscombat:c12_engine",
       "num": 1
     },

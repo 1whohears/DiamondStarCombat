@@ -42,7 +42,8 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
         RenderSystem.setShaderTexture(0, THROTTLE_HANDLE);
         int throttleYPos = yOrigin+ THROTTLE_RAIL_LENGTH - THROTTLE_KNOB_HEIGHT;
         int throttleLength = THROTTLE_RAIL_LENGTH - THROTTLE_KNOB_HEIGHT;
-        float throttle = vehicle.getCurrentThrottle();
+        //float throttle = vehicle.getCurrentThrottle();
+        float throttle = vehicle.inputs.getGoalThrottle(vehicle);
         if (vehicle.getStats().negativeThrottle) throttleYPos = throttleYPos-throttleLength/2-(int)(throttle*throttleLength/2);
         else throttleYPos = throttleYPos-(int)(throttle*throttleLength);
         blit(poseStack,

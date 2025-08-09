@@ -180,8 +180,178 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:alexis_plane",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
+  "physics_components": [
+    {
+      "area": 14.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "left_wing",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 13.0,
+      "input_type": "LEFT_FLAP",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 4.43,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    },
+    {
+      "area": 14.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "right_wing",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 13.0,
+      "input_type": "RIGHT_FLAP",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": -4.43,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    },
+    {
+      "area": 2.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "left_elevator",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 20.0,
+      "input_type": "ELEVATOR",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 2.61,
+        "y": 0.0,
+        "z": -6.1
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 2.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "right_elevator",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 20.0,
+      "input_type": "ELEVATOR",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": -2.61,
+        "y": 0.0,
+        "z": -6.1
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 6.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "tail",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 4.0,
+      "input_type": "STABILIZER",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -5.07
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 90.0
+      },
+      "zero_lift_drag": 0.6000000238418579
+    },
+    {
+      "area": 4.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "nose",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 6.1
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.4000000059604645
+    },
+    {
+      "area": 6.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "nose",
+      "id": "lift_surface",
+      "ignore_roll": false,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 5.07
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 90.0
+      },
+      "zero_lift_drag": 0.6000000238418579
+    },
+    {
+      "area": 10.0,
+      "drag_graph": "alexis_drag_aoa",
+      "hitbox": "NONE",
+      "id": "lift_surface",
+      "ignore_roll": true,
+      "input_rotation_max": 0.0,
+      "input_type": "NONE",
+      "lift_k_graph": "alexis_plane",
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "zero_lift_drag": 0.800000011920929
+    }
+  ],
   "presetId": "alexis_plane_empty",
   "presetType": "plane",
   "slots": [
@@ -319,14 +489,6 @@
       "slot_posz": 0.0,
       "slot_type": "tech_internal",
       "zRot": 0.0
-    },
-    {
-      "name": "internal_6",
-      "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "tech_internal",
-      "zRot": 0.0
     }
   ],
   "sort_factor": 10,
@@ -340,19 +502,25 @@
     "externalRPM": "dscombat:alexis_ext_rpm",
     "externalWindClose": "dscombat:alexis_ext_wind_close",
     "externalWindFar": "dscombat:alexis_ext_wind_far",
-    "loopSoundType": "fighter_jet",
-    "passengerSoundPack": "eng_non_binary_goober"
+    "loopSoundType": "fighter_jet"
   },
   "stats": {
     "armor_damage_absorbtion": 0.135,
     "armor_damage_threshold": 2.0,
     "assetId": "alexis_plane",
     "base_armor": 40.0,
+    "break_deacc_air": 0.016,
+    "break_deacc_ground": 0.032,
     "cameraDistance": 17.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 4.0,
+    "cruise_speed": 12.96,
+    "drag_area": 0.49,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
+    "fuel_consume_per_engine": 0.005,
+    "has_turn_assist": true,
+    "heat_per_engine": 10.0,
     "hitboxes_control_pitch": [
       "left_elevator",
       "right_elevator"
@@ -365,20 +533,24 @@
       "tail"
     ],
     "idleheat": 4.0,
-    "inertiapitch": 8.0,
-    "inertiaroll": 4.0,
-    "inertiayaw": 2.0,
-    "mass": 8500.0,
-    "max_altitude": 630.0,
+    "inertiapitch": 80187.1,
+    "inertiaroll": 9086.7,
+    "inertiayaw": 85602.3,
+    "mass": 8573.0,
+    "max_afterburner_push_thrust_per_engine": 131000.0,
+    "max_altitude": 750.0,
+    "max_ground_speed": 5.19,
     "max_health": 100.0,
-    "max_speed": 1.4,
+    "max_push_thrust_per_engine": 76310.0,
+    "max_speed": 30.25,
     "maxpitch": 2.5,
     "maxroll": 6.0,
     "maxyaw": 1.5,
     "plane": {
       "canAimDown": false,
-      "flapsAOABias": 8.0,
-      "fuselage_lift_area": 18.0,
+      "drag_aoa_graph_key": "alexis_drag_aoa",
+      "flapsAOABias": 13.0,
+      "fuselage_lift_area": 18.67,
       "fuselage_lift_k_graph": "fuselage",
       "turn_rates_graph": "alexis_plane_turn_rates",
       "wing_area": 28.0,
@@ -392,10 +564,9 @@
     "stealth": 0.9,
     "throttledown": 0.08,
     "throttleup": 0.04,
-    "torquepitch": 2.0,
-    "torqueroll": 1.5,
-    "torqueyaw": 4.0,
-    "turn_radius": 10.0
+    "turn_radius": 10.0,
+    "use_horizontal_speed_scale": true,
+    "use_vertical_speed_scale": true
   },
   "textures": {
     "baseTextureVariants": 2,

@@ -14,13 +14,16 @@ import net.minecraft.network.FriendlyByteBuf;
  */
 public class VehicleInputManager {
 	
-	public boolean flare, chaff;
+	public boolean flare, chaff, afterburner, turnAssist = true;
 	public boolean special, special2, bothRoll;
 	public float throttle, pitch, roll, yaw;
 	
 	protected boolean isDriverCameraLocked;
 	protected int weaponIndex;
 	protected float currentThrottle;
+
+	private float throttleOverride;
+	private int throttleOverrideTime;
 	
 	public VehicleInputManager() {
 		reset();
@@ -32,29 +35,46 @@ public class VehicleInputManager {
 	
 	public void clientPilotControlsToServer(EntityVehicle parent, 
 			float throttle, float pitch, float roll, float yaw,
-			boolean flare, boolean chaff,
+			boolean flare, boolean chaff, boolean afterburner,
 			boolean special, boolean special2, boolean bothRoll,
-			boolean isDriverCameraLocked) {
+			boolean isDriverCameraLocked, boolean turnAssist) {
 		this.throttle = throttle;
 		this.pitch = pitch;
 		this.roll = roll;
 		this.yaw = yaw;
 		this.flare = flare;
 		this.chaff = chaff;
+		this.afterburner = afterburner;
 		this.special = special;
 		this.special2 = special2;
 		this.bothRoll = bothRoll;
 		this.isDriverCameraLocked = isDriverCameraLocked;
+		this.turnAssist = turnAssist;
 		parent.setDriverCameraLocked(isDriverCameraLocked);
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
 		currentThrottle = parent.getCurrentThrottle();
 		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleControl(parent));
+	}
+
+	public void setThrottleOverride(float t, EntityVehicle parent) {
+		throttleOverride = t;
+		throttleOverrideTime = parent.tickCount;
+	}
+
+	public float getGoalThrottle(EntityVehicle parent) {
+		if (isThrottleOverride(parent)) return throttleOverride;
+		return throttle;
+	}
+
+	public boolean isThrottleOverride(EntityVehicle parent) {
+		return parent.tickCount - throttleOverrideTime <= 1;
 	}
 	
 	public void updateInputsFromPacket(VehicleInputManager other, EntityVehicle parent) {
 		// raw inputs
 		this.flare = other.flare;
 		this.chaff = other.chaff;
+		this.afterburner = other.afterburner;
 		this.special = other.special;
 		this.special2 = other.special2;
 		this.throttle = other.throttle;
@@ -65,6 +85,7 @@ public class VehicleInputManager {
 		this.weaponIndex = other.weaponIndex;
 		this.currentThrottle = other.currentThrottle;
 		this.isDriverCameraLocked = other.isDriverCameraLocked;
+		this.turnAssist = other.turnAssist;
 		// special inputs
 		parent.setCurrentThrottle(currentThrottle);
 		parent.weaponSystem.setSelected(weaponIndex);
@@ -78,10 +99,12 @@ public class VehicleInputManager {
 		this.yaw = 0;
 		this.flare = false;
 		this.chaff = false;
+		this.afterburner = false;
 		this.special = false;
 		this.special2 = false;
 		this.bothRoll = false;
 		this.isDriverCameraLocked = false;
+		this.turnAssist = true;
 	}
 	
 	public void write(FriendlyByteBuf buffer) {
@@ -92,9 +115,11 @@ public class VehicleInputManager {
 		buffer.writeFloat(yaw);
 		buffer.writeBoolean(flare);
 		buffer.writeBoolean(chaff);
+		buffer.writeBoolean(afterburner);
 		buffer.writeBoolean(special);
 		buffer.writeBoolean(special2);
 		buffer.writeBoolean(bothRoll);
+		buffer.writeBoolean(turnAssist);
 		// special vehicle system inputs
 		buffer.writeShort(weaponIndex);
 		buffer.writeFloat(currentThrottle);
@@ -109,9 +134,11 @@ public class VehicleInputManager {
 		yaw = buffer.readFloat();
 		flare = buffer.readBoolean();
 		chaff = buffer.readBoolean();
+		afterburner = buffer.readBoolean();
 		special = buffer.readBoolean();
 		special2 = buffer.readBoolean();
 		bothRoll = buffer.readBoolean();
+		turnAssist = buffer.readBoolean();
 		// special vehicle system inputs
 		weaponIndex = buffer.readShort();
 		currentThrottle = buffer.readFloat();

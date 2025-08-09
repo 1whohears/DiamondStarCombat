@@ -8,12 +8,13 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
-import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilItem;
@@ -22,6 +23,7 @@ import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
 
 import com.onewhohears.onewholibs.util.UtilParse;
+import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,18 +46,17 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private final int maxAge;
 	private final int fireRate;
 	private final boolean canShootOnGround;
+	private final float mass;
 	private final String entityTypeKey;
 	private final String shootSoundKey;
-	private final String rackTypeKey;
 	private final String[] compatibleWeaponPart;
 	private final String itemKey;
-	private final String modelId;
+	private final String assetId;
 	private final ResourceLocation icon;
 	
 	private NonNullList<Ingredient> ingredients;
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
-	private EntityType<?> rackType;
 	
 	public WeaponStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -63,12 +64,14 @@ public abstract class WeaponStats extends JsonPresetStats {
 		this.maxAge = UtilParse.getIntSafe(json, "maxAge", 0);
 		this.fireRate = UtilParse.getIntSafe(json, "fireRate", 0);
 		this.canShootOnGround = UtilParse.getBooleanSafe(json, "canShootOnGround", false);
+		this.mass = UtilParse.getFloatSafe(json, "mass", 1);
 		this.entityTypeKey = UtilParse.getStringSafe(json, "entityTypeKey", "");
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
-		this.rackTypeKey = UtilParse.getStringSafe(json, "rackTypeKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringArraySafe(json, "compatibleWeaponPart");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
-		this.modelId = UtilParse.getStringSafe(json, "modelId", getId());
+		if (json.has("assetId")) this.assetId = json.get("assetId").getAsString();
+		else if (json.has("modelId")) this.assetId = json.get("modelId").getAsString();
+		else this.assetId = getId();
 		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
 	}
 	
@@ -112,7 +115,7 @@ public abstract class WeaponStats extends JsonPresetStats {
 	
 	public EntityType<?> getEntityType() {
 		if (entityType == null) {
-			entityType = UtilEntity.getEntityType(entityTypeKey, ModEntities.BULLET.get());
+			entityType = UtilEntity.getEntityType(entityTypeKey, getWeaponType().getDefaultEntityType());
 		}
 		return entityType;
 	}
@@ -124,19 +127,12 @@ public abstract class WeaponStats extends JsonPresetStats {
 		return shootSound;
 	}
 	
-	public EntityType<?> getRackEntityType() {
-		if (rackType == null) {
-			rackType = UtilEntity.getEntityType(rackTypeKey, ModEntities.XM12.get());
-		}
-		return rackType;
-	}
-	
 	private Item item;
 	private ItemStack stack;
 	
 	private Item getItem() {
 		if (item == null) {
-			item = UtilItem.getItem(itemKey);
+			item = UtilItem.getItem(itemKey, ModItems.AMMO.get());
 		}
 		return item;
 	}
@@ -164,8 +160,8 @@ public abstract class WeaponStats extends JsonPresetStats {
 		return compatibleWeaponPart;
 	}
 	
-	public String getModelId() {
-		return modelId;
+	public String getAssetId() {
+		return assetId;
 	}
 	
 	public ResourceLocation getWeaponIcon() {
@@ -177,6 +173,10 @@ public abstract class WeaponStats extends JsonPresetStats {
 	}
 	
 	public abstract String getWeaponTypeCode();
+
+	public WeaponType getWeaponType() {
+		return (WeaponType) getType();
+	}
 	
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		tips.add(getType().getDisplayNameComponent().setStyle(Style.EMPTY.withColor(TYPE_COLOR)));
@@ -192,6 +192,8 @@ public abstract class WeaponStats extends JsonPresetStats {
 			tips.add(weapons);
 		}
 		tips.add(UtilMCText.translatable("info.dscombat.fire_rate").append(": "+getFireRate())
+				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
+		tips.add(UtilMCText.translatable("info.dscombat.mass").append(": "+getMass())
 				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 		if (advanced) {
 			tips.add(UtilMCText.translatable("info.dscombat.max_age").append(": "+getMaxAge())
@@ -223,6 +225,10 @@ public abstract class WeaponStats extends JsonPresetStats {
 
 	public boolean isPosGuided() {
 		return false;
+	}
+
+	public float getMass() {
+		return mass;
 	}
 	
 	public enum WeaponClientImpactType {

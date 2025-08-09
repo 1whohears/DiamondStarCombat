@@ -2,10 +2,11 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -27,43 +28,44 @@ public class EntityBoat extends EntityVehicle {
 	public VehicleType getVehicleType() {
 		return VehicleType.BOAT;
 	}
-	
+
 	@Override
-	public void directionGround(Quaternion q) {
-		flatten(q, 4f, 4f, true);
-		if (!isOperational()) return;
-		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque() * 0.1f, true);
+	public void applyGroundBreaks() {
+
 	}
-	
+
 	@Override
-	public void directionWater(Quaternion q) {
-		if (!isOperational()) return;
-		flatten(q, 2f, 2f, true);
-		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
+	public void applyAirBreaks() {
+		throttleToZero();
+		super.applyAirBreaks();
 	}
-	
+
 	@Override
-	public void tickMovement(Quaternion q) {
-		if (inputs.special) throttleToZero();
-		super.tickMovement(q);
+	public boolean canGroundBrake() {
+		return isInWater() && getStats().break_deacc_air > 0 && isOperational();
 	}
-	
+
 	@Override
-	public void tickGround(Quaternion q) {
-		addFrictionForce(kineticFric);
+	public boolean canAirBrake() {
+		return false;
 	}
-	
+
+	public boolean canWaterBrake() {
+		return isInWater() && getStats().break_deacc_air > 0 && isOperational();
+	}
+
 	@Override
 	public double getDriveAcc() {
 		return 0;
 	}
 	
 	@Override
-	public void tickWater(Quaternion q) {
-		super.tickWater(q);
+	public void calcWaterMovement(Quaternion q) {
+		super.calcWaterMovement(q);
 		if (!checkInWater()) return;
-		if (canBrake() && isBraking()) addFrictionForce(2000);
+		flatten(q, 2f, 2f, true);
 		tickFloat();
+		if (canWaterBrake() && isAirBreaking()) applyAirBreaks();
 	}
 	
 	protected void tickFloat() {
@@ -110,21 +112,12 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public boolean isBraking() {
+	public boolean isGroundBraking() {
 		return inputs.special;
 	}
 	
 	public boolean couldFloat() {
 		return isOperational();
-	}
-	
-	@Override
-	public void tickGroundWater(Quaternion q) {
-		tickWater(q);
-		Vec3 motion = getDeltaMovement();
-		if (motion.y < 0) motion = motion.multiply(1, 0, 1);
-		motion = motion.multiply(0.5, 1, 0.5);
-		setDeltaMovement(motion);
 	}
 	
 	protected boolean checkInWater() {
@@ -160,7 +153,7 @@ public class EntityBoat extends EntityVehicle {
 
 	@Override
 	public double getMaxSpeedFactor() {
-		return super.getMaxSpeedFactor() * Config.COMMON.boatSpeedFactor.get();
+		return super.getMaxSpeedFactor() * Config.SERVER.boatSpeedFactor.get();
 	}
 	
 	@Override
@@ -172,8 +165,17 @@ public class EntityBoat extends EntityVehicle {
 	public Vec3 getThrustForce(Quaternion q) {
 		if (!isInWater()) return Vec3.ZERO;
 		Vec3 direction = UtilAngles.getRollAxis(q);
-		Vec3 thrustForce = direction.scale(getPushThrustMag());
-		return thrustForce;
+        return direction.scale(getPushThrustMag());
+	}
+
+	@Override
+	public double getDragArea() {
+		double area = super.getDragArea();
+		if (isInWater()) {
+			double angle = UtilGeometry.angleBetweenDegrees(getDeltaMovement(), getLookAngle());
+			area = Math.max(area * 0.025, area * Math.sin(Mth.DEG_TO_RAD*angle));
+		}
+		return area;
 	}
 	
 	@Override
@@ -202,13 +204,28 @@ public class EntityBoat extends EntityVehicle {
 	}
 
 	@Override
-	public boolean canBrake() {
-		return true;
+	public boolean canToggleLandingGear() {
+		return false;
 	}
 
 	@Override
-	public boolean canToggleLandingGear() {
+	public boolean isPitchControllable() {
 		return false;
+	}
+
+	@Override
+	public boolean isRollControllable() {
+		return false;
+	}
+
+	@Override
+	public boolean canDriveOnGround() {
+		return false;
+	}
+
+	@Override
+	public boolean ignoreToItemFlyCheck() {
+		return true;
 	}
 
 }

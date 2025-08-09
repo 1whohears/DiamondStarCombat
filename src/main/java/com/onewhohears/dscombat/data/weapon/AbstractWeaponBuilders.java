@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
-import com.onewhohears.dscombat.init.ModEntities;
 
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -30,6 +29,10 @@ public class AbstractWeaponBuilders {
 		public C setCanShootOnGround(boolean canShootOnGround) {
 			return setBoolean("canShootOnGround", canShootOnGround);
 		}
+
+		public C setMass(float mass) {
+			return setFloat("mass", mass);
+		}
 		
 		public C setEntityType(ResourceLocation entityTypeKey) {
 			return setString("entityTypeKey", entityTypeKey.toString());
@@ -37,14 +40,6 @@ public class AbstractWeaponBuilders {
 		
 		public C setShootSound(ResourceLocation shootSoundKey) {
 			return setString("shootSoundKey", shootSoundKey.toString());
-		}
-		
-		public C setRackEntityType(ResourceLocation rackTypeKey) {
-			return setString("rackTypeKey", rackTypeKey.toString());
-		}
-		
-		public C setNoRack() {
-			return setString("rackTypeKey", "");
 		}
 		
 		public C setCompatibleWeaponPart(String... compatibleWeaponPart) {
@@ -64,8 +59,8 @@ public class AbstractWeaponBuilders {
 			return setString("icon", weaponIcon.toString());
 		}
 		
-		public C setModelId(String modelId) {
-			return setString("modelId", modelId);
+		public C setAssetId(String assetId) {
+			return setString("assetId", assetId);
 		}
 		
 	}
@@ -74,12 +69,6 @@ public class AbstractWeaponBuilders {
 		
 		protected BulletBuilder(String namespace, String name, WeaponType type) {
 			super(namespace, name, type);
-		}
-		
-		@Override
-		protected void setupJsonData() {
-			super.setupJsonData();
-			setEntityType(ModEntities.BULLET.getId());
 		}
 		
 		public C setDamage(float damage) {
@@ -94,7 +83,7 @@ public class AbstractWeaponBuilders {
 			return setBoolean("explosive", explosive);
 		}
 		
-		public C setDestoryTerrain(boolean destroyTerrain) {
+		public C setDestroyTerrain(boolean destroyTerrain) {
 			return setBoolean("destroyTerrain", destroyTerrain);
 		}
 		
@@ -106,8 +95,8 @@ public class AbstractWeaponBuilders {
 			return setFloat("explosionRadius", explosionRadius);
 		}
 		
-		public C setInnacuracy(float innacuracy) {
-			return setFloat("innacuracy", innacuracy);
+		public C setInaccuracy(float inaccuracy) {
+			return setFloat("inaccuracy", inaccuracy);
 		}
 		
 		public C setExplodeNum(int explodeNum) {
@@ -122,12 +111,6 @@ public class AbstractWeaponBuilders {
 			super(namespace, name, type);
 		}
 		
-		@Override
-		protected void setupJsonData() {
-			super.setupJsonData();
-			setEntityType(ModEntities.BOMB.getId());
-		}
-		
 	}
 	
 	public abstract static class BunkerBusterBuilder<C extends BunkerBusterBuilder<C>> extends BombBuilder<C> {
@@ -138,12 +121,6 @@ public class AbstractWeaponBuilders {
 		
 		public C setBlockStrength(float blockStrength) {
 			return setFloat("blockStrength", blockStrength);
-		}
-		
-		@Override
-		protected void setupJsonData() {
-			super.setupJsonData();
-			setEntityType(ModEntities.BUNKER_BUSTER.getId());
 		}
 		
 	}
@@ -197,7 +174,7 @@ public class AbstractWeaponBuilders {
 		 * Track Missile only
 		 */
 		public C setTargetType(TargetType targetType) {
-			return setString("targetType", targetType.name());
+			return setEnum("targetType", targetType);
 		}
 		
 		/**

@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
+import static com.onewhohears.dscombat.util.UtilRender.drawTextureCentered;
+
 public abstract class SpinMeterScreenInstance extends EntityScreenInstance {
 	
     protected final RenderType spinRenderType;

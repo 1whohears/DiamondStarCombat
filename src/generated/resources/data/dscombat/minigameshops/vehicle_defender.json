@@ -1,0 +1,108 @@
+{
+  "displayName": "preset.dscombat.vehicle_defender",
+  "presetId": "vehicle_defender",
+  "presetType": "gameshop",
+  "products": [
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 4
+      },
+      "product": {
+        "item": "dscombat:big_gas_can",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 8
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "small_roller"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 18
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "mrbudger_tank"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 32
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "eric_truck"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 12
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "krait_chopper_door_knocker"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 12
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "krait_chopper_brawler"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 18
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "felix_plane_defender"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 24
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "eden_plane_interceptor"
+        },
+        "num": 1
+      }
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.screen;
 
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -18,7 +19,11 @@ public abstract class VehicleSubScreen extends VehicleScreen {
         super.init();
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.back"),
-                        onPress -> getMinecraft().setScreen(new VehicleMainScreen())),
+                        onPress -> getMinecraft().setScreen(getBackScreen())),
                 ROWS, COLUMNS, 0, padding);
+    }
+
+    protected Screen getBackScreen() {
+        return new VehicleMainScreen();
     }
 }

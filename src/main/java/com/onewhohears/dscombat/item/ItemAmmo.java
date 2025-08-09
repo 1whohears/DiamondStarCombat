@@ -1,15 +1,19 @@
 package com.onewhohears.dscombat.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
+import com.onewhohears.dscombat.data.weapon.client.WeaponClientStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
@@ -24,8 +28,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 
-public class ItemAmmo extends Item implements VehicleInteractItem {
+public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem {
 	
 	private final String defaultWeaponId;
 	
@@ -35,8 +41,8 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	}
 	
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() != ModItems.WEAPONS.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
+		if (group != ModItems.WEAPONS && group != CreativeModeTab.TAB_SEARCH) return;
 		String itemId = UtilItem.getItemKeyString(this);
 		for (int i = 0; i < WeaponPresets.get().getNum(); ++i) {
 			WeaponStats w = WeaponPresets.get().getAll()[i];
@@ -50,16 +56,20 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips,
+								@NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		String id = getWeaponId(stack);
 		WeaponStats wd = WeaponPresets.get().get(id);
 		if (wd == null) return;
 		wd.addToolTips(tips, isAdvanced.isAdvanced());
+		if (isAdvanced.isAdvanced()) {
+			tips.add(ItemVehicle.formatTooltip("WeaponId", id));
+		}
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
+	public @NotNull Component getName(@NotNull ItemStack stack) {
 		String id = getWeaponId(stack);
 		WeaponStats wd = WeaponPresets.get().get(id);
 		if (wd == null) return UtilMCText.translatable(getDescriptionId()).append(" ")
@@ -71,8 +81,9 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	
 	public static String getWeaponId(ItemStack stack) {
 		if (stack.getItem() instanceof ItemAmmo ia) {
-			if (!stack.getOrCreateTag().contains("weapon")) return ia.defaultWeaponId;
-			return stack.getOrCreateTag().getString("weapon");
+			if (stack.getTag() != null && stack.getTag().contains("weapon"))
+				return stack.getTag().getString("weapon");
+			return ia.defaultWeaponId;
 		}
 		return "";
 	}
@@ -86,12 +97,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 		if (!vehicle.isOperational()) return InteractionResult.FAIL;
 		String ammoId = ItemAmmo.getWeaponId(stack);
 		for (EntityTurret t : vehicle.getTurrets()) {
-			WeaponInstance<?> wd = t.getWeaponData();
-			if (wd == null) continue;
-			if (!wd.getStatsId().equals(ammoId)) continue;
-			int o = wd.addAmmo(stack.getCount());
-			t.setAmmo(wd.getCurrentAmmo());
-			t.updateDataAmmo();
+			int o = t.addAmmo(stack.getCount());
 			stack.setCount(o);
 			if (stack.getCount() == 0) return InteractionResult.SUCCESS;
 		}
@@ -101,10 +107,35 @@ public class ItemAmmo extends Item implements VehicleInteractItem {
 	}
 	
 	@Override
-	public ItemStack getDefaultInstance() {
+	public @NotNull ItemStack getDefaultInstance() {
 		ItemStack stack = super.getDefaultInstance();
 		stack.getOrCreateTag().putString("weapon", defaultWeaponId);
 		return stack;
 	}
 
+	@Override
+	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
+		ObjModelItem.super.initializeClient(consumer);
+	}
+
+	@Override
+	public @NotNull String getPreset(@NotNull ItemStack stack) {
+        return getWeaponId(stack);
+	}
+
+	@Override
+	public @NotNull String getObjModelId(@NotNull String preset) {
+		WeaponStats wd = WeaponPresets.get().get(preset);
+		if (wd == null) return "";
+        String assetId = wd.getAssetId();
+		WeaponClientStats<?> assets = WeaponAssets.get().get(assetId);
+		if (assets == null) return "";
+		return assets.getModelId();
+	}
+
+	@Override
+	public ObjEntityModels.@NotNull ModelOverrides getItemModelOverrides(@NotNull String preset) {
+		//return ObjEntityModels.get().getModelOverride("ammo_item");
+		return ObjEntityModels.NO_OVERRIDES;
+	}
 }

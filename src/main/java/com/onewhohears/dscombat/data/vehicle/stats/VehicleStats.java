@@ -9,6 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
@@ -16,18 +17,20 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.SlotType;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.util.UtilGsonMerge;
 import com.onewhohears.onewholibs.util.UtilGsonMerge.ConflictStrategy;
 import com.onewhohears.onewholibs.util.UtilItem;
 
+import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityDimensions;
@@ -39,9 +42,9 @@ import net.minecraft.world.phys.Vec3;
 public abstract class VehicleStats extends JsonPresetStats {
 	
 	// basic
-	public final float max_health, max_speed, mass;
+	public final float max_health, max_speed, mass, max_ground_speed;
 	// defense
-	public final float stealth, cross_sec_area, idleheat;
+	public final float stealth, cross_sec_area, idleheat, drag_area;
 	public final float base_armor, armor_damage_threshold, armor_damage_absorbtion;
 	// turn
 	public final float turn_radius;
@@ -49,16 +52,27 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final float torqueroll, torquepitch, torqueyaw;
 	public final float Ix, Iy, Iz;
 	public final float groundXTilt;
+	public final boolean is_hard_coded_rot_acc;
+	public final Vec3 hard_coded_rot_acc;
+	public final float hard_coded_rot_decel;
 	// control
 	public final float throttleup, throttledown;
-	public final boolean negativeThrottle;
+	public final boolean negativeThrottle, has_turn_assist;
 	public final double cameraDistance, max_altitude;
 	// physics
 	public final float crashExplosionRadius;
 	public final float max_push_thrust_per_engine;
 	public final float max_spin_thrust_per_engine;
+	public final float max_afterburner_push_thrust_per_engine;
 	public final float heat_per_engine;
 	public final float fuel_consume_per_engine;
+	public final boolean use_horizontal_speed_scale;
+	public final boolean use_vertical_speed_scale;
+	private final boolean has_afterburner;
+	public final float cruise_speed;
+	public final float break_deacc_ground;
+	public final float break_deacc_air;
+	private final PhysicsComponentData[] physics_components;
 	// appearance
 	public final int baseTextureVariants, textureLayers;
 	public final Vec3[] afterBurnerSmokePos;
@@ -71,6 +85,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	private final boolean isCraftable;
 	private final int defaultPaintJob;
 	private final String assetId;
+	private final String display_name_base;
 	
 	private CompoundTag dataNBT;
 	private NonNullList<Ingredient> ingredients;
@@ -84,9 +99,13 @@ public abstract class VehicleStats extends JsonPresetStats {
 		JsonObject stats = UtilParse.getJsonSafe(json, "stats");
 		max_health = UtilParse.getFloatSafe(stats, "max_health", 10);
 		max_speed = UtilParse.getFloatSafe(stats, "max_speed", 0.1f);
+		max_ground_speed = UtilParse.getFloatSafe(stats, "max_ground_speed", max_speed);
+		break_deacc_ground = UtilParse.getFloatSafe(stats, "break_deacc_ground", 0.005f);
+		break_deacc_air = UtilParse.getFloatSafe(stats, "break_deacc_air", 0.001f);
 		mass = UtilParse.getFloatSafe(stats, "mass", 1000);
 		stealth = UtilParse.getFloatSafe(stats, "stealth", 1);
 		cross_sec_area = UtilParse.getFloatSafe(stats, "cross_sec_area", 10);
+		drag_area = UtilParse.getFloatSafe(stats, "drag_area", cross_sec_area);
 		idleheat = UtilParse.getFloatSafe(stats, "idleheat", 10);
 		base_armor = UtilParse.getFloatSafe(stats, "base_armor", 0);
 		armor_damage_threshold = UtilParse.getFloatSafe(stats, "armor_damage_threshold", 0);
@@ -94,16 +113,20 @@ public abstract class VehicleStats extends JsonPresetStats {
 		throttleup = UtilParse.getFloatSafe(stats, "throttleup", 0.01f);
 		throttledown = UtilParse.getFloatSafe(stats, "throttledown", 0.01f);
 		negativeThrottle = UtilParse.getBooleanSafe(stats, "negativeThrottle", false);
+		has_turn_assist = UtilParse.getBooleanSafe(stats, "has_turn_assist", false);
 		turn_radius = UtilParse.getFloatSafe(stats, "turn_radius", 100);
 		maxroll = UtilParse.getFloatSafe(stats, "maxroll", 0);
 		maxpitch = UtilParse.getFloatSafe(stats, "maxpitch", 0);
 		maxyaw = UtilParse.getFloatSafe(stats, "maxyaw", 0);
-		torqueroll = UtilParse.getFloatSafe(stats, "torqueroll", 0);
-		torquepitch = UtilParse.getFloatSafe(stats, "torquepitch", 0);
-		torqueyaw = UtilParse.getFloatSafe(stats, "torqueyaw", 0);
-		Iz = UtilParse.getFloatSafe(stats, "inertiaroll", 4);
-		Ix = UtilParse.getFloatSafe(stats, "inertiapitch", 4);
-		Iy = UtilParse.getFloatSafe(stats, "inertiayaw", 4);
+		Iz = UtilParse.getFloatSafe(stats, "inertiaroll", 1000);
+		Ix = UtilParse.getFloatSafe(stats, "inertiapitch", 1000);
+		Iy = UtilParse.getFloatSafe(stats, "inertiayaw", 1000);
+		torqueroll = UtilParse.getFloatSafe(stats, "torqueroll", Iz*100);
+		torquepitch = UtilParse.getFloatSafe(stats, "torquepitch", Ix*10);
+		torqueyaw = UtilParse.getFloatSafe(stats, "torqueyaw", Iy*10);
+		hard_coded_rot_acc = UtilParse.readVec3(stats, "hard_coded_rot_acc");
+		hard_coded_rot_decel = UtilParse.getFloatSafe(stats, "hard_coded_rot_decel", 0.0f);
+		is_hard_coded_rot_acc = !UtilGeometry.isZero(hard_coded_rot_acc);
 		crashExplosionRadius = UtilParse.getFloatSafe(stats, "crashExplosionRadius", 0);
 		cameraDistance = UtilParse.getFloatSafe(stats, "cameraDistance", 4);
 		rootHitboxNoCollide = UtilParse.getBooleanSafe(stats, "rootHitboxNoCollide", false);
@@ -117,8 +140,13 @@ public abstract class VehicleStats extends JsonPresetStats {
 		groundXTilt = UtilParse.getIntSafe(stats, "groundXTilt", 0);
 		max_push_thrust_per_engine = UtilParse.getFloatSafe(stats, "max_push_thrust_per_engine", -1);
 		max_spin_thrust_per_engine = UtilParse.getFloatSafe(stats, "max_spin_thrust_per_engine", -1);
+		max_afterburner_push_thrust_per_engine = UtilParse.getFloatSafe(stats, "max_afterburner_push_thrust_per_engine", max_push_thrust_per_engine);
+		has_afterburner = max_afterburner_push_thrust_per_engine > max_push_thrust_per_engine;
 		heat_per_engine = UtilParse.getFloatSafe(stats, "heat_per_engine", -1);
 		fuel_consume_per_engine = UtilParse.getFloatSafe(stats, "fuel_consume_per_engine", -1);
+		use_horizontal_speed_scale = UtilParse.getBooleanSafe(stats, "use_horizontal_speed_scale", false);
+		use_vertical_speed_scale = UtilParse.getBooleanSafe(stats, "use_vertical_speed_scale", false);
+		cruise_speed = UtilParse.getFloatSafe(stats, "cruise_speed", max_speed);
 		if (json.has("textures")) {
 			JsonObject textures = json.get("textures").getAsJsonObject();
 			baseTextureVariants = UtilParse.getIntSafe(textures, "baseTextureVariants", 1);
@@ -140,6 +168,17 @@ public abstract class VehicleStats extends JsonPresetStats {
 		controllPitchHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_pitch");
 		controllYawHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_yaw");
 		controllRollHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_roll");
+		display_name_base = UtilParse.getStringSafe(json, "display_name_base", "item.dscombat."+getAssetId());
+		if (json.has("physics_components")) {
+			JsonArray ja = json.get("physics_components").getAsJsonArray();
+			physics_components = new PhysicsComponentData[ja.size()];
+			for (int i = 0; i < physics_components.length; ++i) {
+				JsonObject jo = ja.get(i).getAsJsonObject();
+				PhysicsComponentData data = PhysicsComponentData.getData(jo);
+				if (data == null) continue;
+				physics_components[i] = data;
+			}
+		} else physics_components = new PhysicsComponentData[0];
 	}
 	
 	public CompoundTag getDataAsNBT() {
@@ -261,6 +300,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 			}
 		}
 	}
+
+	public MutableComponent getBaseDisplayName() {
+		return UtilMCText.translatable(display_name_base);
+	}
+
+	public PhysicsComponentData[] getPhysicsComponents() {
+		return physics_components;
+	}
 	
 	@Override
 	public JsonPresetInstance<?> createPresetInstance() {
@@ -300,8 +347,11 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public boolean isStationaryRadar() {
 		return false;
 	}
-	
-	public static class Builder extends IngredientStackBuilder<Builder> {
+    public boolean canUseAfterBurner() {
+		return has_afterburner;
+    }
+
+    public static class Builder extends IngredientStackBuilder<Builder> {
 		private boolean is_craftable = false;
 		protected Builder(String namespace, String name, VehicleType type) {
 			super(namespace, name, type);
@@ -900,6 +950,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 			return setStatBoolean("negativeThrottle", negativeThrottle);
 		}
 		/**
+		 * all vehicles
+		 */
+		public Builder setHasTurnAssist(boolean has_turn_assist) {
+			return setStatBoolean("has_turn_assist", has_turn_assist);
+		}
+		/**
 		 * all vehicles 
 		 */
 		public Builder setCrashExplosionRadius(float crashExplosionRadius) {
@@ -950,6 +1006,17 @@ public abstract class VehicleStats extends JsonPresetStats {
 		public Builder setPushEngineOverrideStats(float max_push_thrust_per_engine,
 												  float heat_per_engine, float fuel_consume_per_engine) {
 			setStatFloat("max_push_thrust_per_engine", max_push_thrust_per_engine);
+			setStatFloat("heat_per_engine", heat_per_engine);
+			return setStatFloat("fuel_consume_per_engine", fuel_consume_per_engine);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setPushEngineOverrideAfterburnerStats(float max_push_thrust_per_engine,
+															 float max_afterburner_push_thrust_per_engine,
+															 float heat_per_engine, float fuel_consume_per_engine) {
+			setStatFloat("max_push_thrust_per_engine", max_push_thrust_per_engine);
+			setStatFloat("max_afterburner_push_thrust_per_engine", max_afterburner_push_thrust_per_engine);
 			setStatFloat("heat_per_engine", heat_per_engine);
 			return setStatFloat("fuel_consume_per_engine", fuel_consume_per_engine);
 		}
@@ -1043,13 +1110,6 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * all vehicles 
 		 */
-		public Builder setDefultPassengerSoundPack(PassengerSoundPack passengerSoundPack) {
-			getSounds().addProperty("passengerSoundPack", passengerSoundPack.id);
-			return this;
-		}
-		/**
-		 * all vehicles 
-		 */
 		public Builder setEntityMainHitboxSize(float width, float height) {
 			setStatFloat("entity_size_xz", width);
 			setStatFloat("entity_size_y", height);
@@ -1060,6 +1120,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 		}
 		public Builder setRootHitboxNoCollide(boolean rootHitboxNoCollide) {
 			return setStatBoolean("rootHitboxNoCollide", rootHitboxNoCollide);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setHardCodedRotAcc(float roll, float pitch, float yaw, float decel) {
+			JsonObject stats = getStats();
+			UtilParse.writeVec3(stats, "hard_coded_rot_acc", new Vec3(pitch, yaw, roll));
+			return setStatFloat("hard_coded_rot_decel", decel);
 		}
 		/**
 		 * used by planes
@@ -1119,6 +1187,12 @@ public abstract class VehicleStats extends JsonPresetStats {
 		/**
 		 * used by planes
 		 */
+		public Builder setDragAOAGraph(String drag_aoa_graph_key) {
+			return setTypedStatString("drag_aoa_graph_key", drag_aoa_graph_key, "plane");
+		}
+		/**
+		 * used by planes
+		 */
 		public Builder setWingLiftHitboxNames(String... wing_lift_hitbox_names) {
 			getStatsByType("plane").add("wing_lift_hitbox_names", UtilParse.stringArrayToJsonArray(wing_lift_hitbox_names));
 			return this;
@@ -1148,12 +1222,58 @@ public abstract class VehicleStats extends JsonPresetStats {
 		public Builder setCarIsTank(boolean isTank) {
 			return setTypedStatBoolean("isTank", isTank, "car");
 		}
-
 		/**
 		 * stationary vehicles only
 		 */
 		public Builder setIsStationaryRadar(boolean radar) {
 			return setTypedStatBoolean("isStationaryRadar", radar, "stationary");
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setUseSpeedScales(boolean horizontal, boolean vertical) {
+			setStatBoolean("use_vertical_speed_scale", vertical);
+			return setStatBoolean("use_horizontal_speed_scale", horizontal);
+		}
+		/**
+		 * all vehicles
+		 */
+		public Builder setMaxGroundSpeed(float speed) {
+			return setStatFloat("max_ground_speed", speed);
+		}
+		/**
+		 * planes only
+		 */
+		public Builder setCruiseSpeed(float speed) {
+			return setStatFloat("cruise_speed", speed);
+		}
+		/**
+		 * planes only
+		 */
+		public Builder setPlaneSpeeds(float max_speed, float cruise_speed, float max_takeoff_speed) {
+			setCruiseSpeed(cruise_speed);
+			setMaxGroundSpeed(max_takeoff_speed);
+			return setMaxSpeed(max_speed);
+		}
+
+		protected JsonArray getPhysicsComponents() {
+			if (!getData().has("physics_components"))
+				getData().add("physics_components", new JsonArray());
+			return getData().get("physics_components").getAsJsonArray();
+		}
+
+		public Builder addPhysicsComponent(JsonObject data) {
+			getPhysicsComponents().add(data);
+			return this;
+		}
+
+		public Builder setDragArea(float drag_area) {
+			return setStatFloat("drag_area", drag_area);
+		}
+
+		public Builder setBreakDeAcc(float break_deacc_ground, float break_deacc_air) {
+			setStatFloat("break_deacc_ground", break_deacc_ground);
+			return setStatFloat("break_deacc_air", break_deacc_air);
 		}
 
 		public Builder setBoolean(String key, boolean value) {

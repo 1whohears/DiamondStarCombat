@@ -77,6 +77,12 @@
     ],
     "subtitle": "sounds.dscombat.altitude"
   },
+  "altitude_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/altitude"
+    ],
+    "subtitle": "sounds.dscombat.altitude"
+  },
   "bingo_gm1": {
     "sounds": [
       "dscombat:cockpit/warnings/generic_male_1/bingo"
@@ -86,6 +92,12 @@
   "bingo_nbg": {
     "sounds": [
       "dscombat:cockpit/warnings/non_binary_goober/bingo"
+    ],
+    "subtitle": "sounds.dscombat.bingo"
+  },
+  "bingo_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/bingo"
     ],
     "subtitle": "sounds.dscombat.bingo"
   },
@@ -155,6 +167,12 @@
     ],
     "subtitle": "sounds.dscombat.engine_fire"
   },
+  "engine_fire_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/engine_fire"
+    ],
+    "subtitle": "sounds.dscombat.engine_fire"
+  },
   "flare_gm1": {
     "sounds": [
       "dscombat:cockpit/warnings/generic_male_1/flare"
@@ -167,11 +185,23 @@
     ],
     "subtitle": "sounds.dscombat.flare"
   },
+  "flare_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/flare"
+    ],
+    "subtitle": "sounds.dscombat.flare"
+  },
   "fox2_tone_1": {
     "sounds": [
       "dscombat:cockpit/radar/fox2_tone_1"
     ],
     "subtitle": "sounds.dscombat.fox2_tone_1"
+  },
+  "fox2_tone_2": {
+    "sounds": [
+      "dscombat:cockpit/radar/fox2_tone_2"
+    ],
+    "subtitle": "sounds.dscombat.fox2_tone_2"
   },
   "fuel_leak_gm1": {
     "sounds": [
@@ -182,6 +212,12 @@
   "fuel_leak_nbg": {
     "sounds": [
       "dscombat:cockpit/warnings/non_binary_goober/fuel_leak"
+    ],
+    "subtitle": "sounds.dscombat.fuel_leak"
+  },
+  "fuel_leak_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/fuel_leak"
     ],
     "subtitle": "sounds.dscombat.fuel_leak"
   },
@@ -196,6 +232,18 @@
       "dscombat:vehicle/engine/heli_1"
     ],
     "subtitle": "sounds.dscombat.heli_1"
+  },
+  "ir_tone_high_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/ir_tone_high"
+    ],
+    "subtitle": "sounds.dscombat.fox2_tone_1"
+  },
+  "ir_tone_low_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/ir_tone_low"
+    ],
+    "subtitle": "sounds.dscombat.fox2_tone_1"
   },
   "jet_1": {
     "sounds": [
@@ -214,6 +262,21 @@
       "dscombat:cockpit/warnings/non_binary_goober/lock"
     ],
     "subtitle": "sounds.dscombat.lock"
+  },
+  "lock_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/lock"
+    ],
+    "subtitle": "sounds.dscombat.lock"
+  },
+  "missile_alert_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/missile_alert",
+      "dscombat:cockpit/warnings/valorant_vc/missile_alert",
+      "dscombat:cockpit/warnings/valorant_vc/missile_alert",
+      "dscombat:cockpit/warnings/valorant_vc/scream"
+    ],
+    "subtitle": "sounds.dscombat.missile_warning"
   },
   "missile_knows_where": {
     "sounds": [
@@ -251,6 +314,15 @@
     ],
     "subtitle": "sounds.dscombat.pull_up"
   },
+  "pull_up_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/pull_up",
+      "dscombat:cockpit/warnings/valorant_vc/pull_up",
+      "dscombat:cockpit/warnings/valorant_vc/pull_up",
+      "dscombat:cockpit/warnings/valorant_vc/your_gunna_crash"
+    ],
+    "subtitle": "sounds.dscombat.pull_up"
+  },
   "rocket_engine_1": {
     "sounds": [
       "dscombat:weapon/rocket_engine_1"
@@ -262,6 +334,12 @@
       "dscombat:weapon/rocket_launch_1"
     ],
     "subtitle": "sounds.dscombat.rocket_launch_1"
+  },
+  "sonic_boom": {
+    "sounds": [
+      "dscombat:vehicle/other/sonic_boom"
+    ],
+    "subtitle": "sounds.dscombat.sonic_boom"
   },
   "stall_alert_gm1": {
     "sounds": [
@@ -275,6 +353,12 @@
     ],
     "subtitle": "sounds.dscombat.stall_alert"
   },
+  "stall_alert_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/stall_alert"
+    ],
+    "subtitle": "sounds.dscombat.stall_alert"
+  },
   "stall_warning_gm1": {
     "sounds": [
       "dscombat:cockpit/warnings/generic_male_1/stall_warn"
@@ -284,6 +368,12 @@
   "stall_warning_nbg": {
     "sounds": [
       "dscombat:cockpit/warnings/non_binary_goober/stall_warn"
+    ],
+    "subtitle": "sounds.dscombat.stall_warn"
+  },
+  "stall_warning_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/stall_warn"
     ],
     "subtitle": "sounds.dscombat.stall_warn"
   },
@@ -304,6 +394,12 @@
       "dscombat:cockpit/radar/targets_found"
     ],
     "subtitle": "sounds.dscombat.targets_found"
+  },
+  "tracked_alert_valvc": {
+    "sounds": [
+      "dscombat:cockpit/warnings/valorant_vc/tracked_alert"
+    ],
+    "subtitle": "sounds.dscombat.getting_locked"
   },
   "vehicle_hurt_collision_metal": {
     "sounds": [

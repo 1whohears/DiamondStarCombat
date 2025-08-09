@@ -2,19 +2,21 @@ package com.onewhohears.dscombat.util;
 
 import java.util.NoSuchElementException;
 
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.sounds.AfterBurnerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.DopplerSoundInstance;
 import com.onewhohears.dscombat.client.sounds.PlaneMusicSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleEngineSoundInstance;
 import com.onewhohears.dscombat.client.sounds.VehicleWindSoundInstance;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
-import com.onewhohears.dscombat.data.vehicle.VehicleSoundManager.PassengerSoundPack;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.util.UtilEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -36,7 +38,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		int delay = 0;
-		if (delayed) delay = (int)(p.distanceTo(entity) / DSCPhyCons.VEL_SOUND);
+		if (delayed) delay = (int)(p.distanceTo(entity) / velSound);
 		m.getSoundManager().playDelayed(new DopplerSoundInstance(sound, 
 				p, entity, initVolume, initPitch, velSound), delay);
 	}
@@ -114,57 +116,6 @@ public class UtilClientSafeSounds {
 		}
 	}
 	
-	public static void tickPassengerSounds(EntityVehicle vehicle, PassengerSoundPack passengerSoundPack) {
-		if (!vehicle.isOperational()) return;
-		Minecraft m = Minecraft.getInstance();
-		if (!vehicle.equals(m.player.getRootVehicle())) return;
- 		// RWR WARNINGS
-		if (vehicle.tickCount%4==0 && vehicle.radarSystem.isTrackedByMissile()) {
-			playCockpitSound(passengerSoundPack.missileAlert, 
-				1f, Config.CLIENT.missileWarningVol.get().floatValue());
-		} else if (vehicle.tickCount%8==0 && vehicle.radarSystem.isTrackedByRadar()) {
-			playCockpitSound(passengerSoundPack.rwrWarn, 
-				1f, Config.CLIENT.rwrWarningVol.get().floatValue());
-		}
-		// IR LOCK TONE
-		if (vehicle.tickCount%10==0 && vehicle.shouldPlayIRTone())  {
-			playCockpitSound(passengerSoundPack.irLockTone, 
-	    		1f, Config.CLIENT.irTargetToneVol.get().floatValue());
-		}
-		if (vehicle.getStats().isPlane()) {
-			// STALL
-			if (vehicle.isStalling()) { if (vehicle.getStallTicks() % 24 == 1) {
-				playCockpitSound(passengerSoundPack.stallAlert, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
-			} }
-			else if (vehicle.isAboutToStall()) { if (vehicle.getAboutToStallTicks() % 40 == 1) {
-				playCockpitSound(passengerSoundPack.stallWarn, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
-			} }
-			// PULL UP
-			if (vehicle.getDeltaMovement().y <= -DSCPhyCons.COLLIDE_SPEED 
-					&& vehicle.tickCount % 13 == 0
-					&& UtilEntity.getDistFromGround(vehicle) / -vehicle.getDeltaMovement().y <= 80) {
-				playCockpitSound(passengerSoundPack.pullUp, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue());
-			}
-		}
-		if (vehicle.getStats().isAircraft()) {
-			// ENGINE FIRE
-			if (vehicle.getEngineFireTicks() % 160 == 1) 
-				queueCockpitSound(passengerSoundPack.engineFire, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 30);
-			// FUEL LEAK
-			if (vehicle.getFuelLeakTicks() % 200 <= 60 && vehicle.getFuelLeakTicks() % 30 == 1) 
-				queueCockpitSound(passengerSoundPack.fuelLeak, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 29);
-			// BINGO FUEL
-			if (vehicle.getBingoTicks() % 240 <= 60 && vehicle.getBingoTicks() % 20 == 1) 
-				queueCockpitSound(passengerSoundPack.bingoFuel, 1f, 
-					Config.CLIENT.cockpitVoiceLineVol.get().floatValue(), 19);
-		}
-	}
-	
 	public static void playCockpitSound(RegistryObject<SoundEvent> sound, float pitch, float volume) {
 		if (sound == null) return;
 		playCockpitSound(sound.get(), pitch, volume);
@@ -193,9 +144,82 @@ public class UtilClientSafeSounds {
 	
 	public static SimpleSoundInstance forCockpit(SoundEvent sound, float pitch, float volume) {
 		if (sound == null) sound = SoundEvents.VILLAGER_YES;
+		Minecraft m = Minecraft.getInstance();
+		final int vehicleId = m.player.getRootVehicle().getId();
 		return new SimpleSoundInstance(sound.getLocation(), SoundSource.PLAYERS, volume, pitch, 
 				SoundInstance.createUnseededRandom(), false, 0, 
-				SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D, true);
+				SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D, true) {
+			@Override
+			public float getVolume() {
+				if (m.player != null && m.player.isPassenger() && m.player.getRootVehicle().getId() == vehicleId)
+					return super.getVolume();
+				return 0;
+			}
+		};
+	}
+
+	public static boolean isClientRidingVehicle(EntityVehicle vehicle) {
+		Minecraft m = Minecraft.getInstance();
+		if (m.player == null) return false;
+		return m.player.getRootVehicle().equals(vehicle);
+	}
+
+	public static boolean missileSonicBoom(@NotNull EntityMissile<?> missile) {
+		return entitySonicBoom(missile, missile.getStats().getMass());
+	}
+
+	public static boolean vehicleSonicBoom(@NotNull EntityVehicle vehicle) {
+		return entitySonicBoom(vehicle, vehicle.getStats().mass);
+	}
+
+	public static boolean entitySonicBoom(@NotNull Entity entity, float mass) {
+		if (UtilGeometry.isZero(entity.getDeltaMovement())) return false;
+		Minecraft m = Minecraft.getInstance();
+		if (m.player == null) return false;
+		float size = mass / 8573f;
+		float pitch = getSonicBoomPitch(m.player, entity, DSCPhyCons.VEL_SOUND, size);
+		if (pitch <= 0) return false;
+		Vec3 diff = entity.position().subtract(m.player.position());
+		double distance = diff.length();
+		double scale = Math.max(1, Math.min(32, distance * 0.08)); // 32 / 400
+		Vec3 pos = m.player.position().add(diff.normalize().scale(scale));
+		float volume = Math.max(0f, Math.min(1f, 400f / (float) distance));
+		m.player.getLevel().playLocalSound(pos.x(), pos.y(), pos.z(), ModSounds.SONIC_BOOM,
+				SoundSource.PLAYERS, volume, pitch, false);
+		//System.out.println("played sonic boom pitch "+pitch);
+		return true;
+	}
+
+	public static float getSonicBoomPitch(@NotNull Entity observer, @NotNull Entity aircraft,
+										  double speedOfSound, double aircraftSize) {
+		Vec3 aircraftPos = aircraft.position();
+		Vec3 observerPos = observer.position();
+
+		Vec3 velocity = aircraft.getDeltaMovement();
+		double aircraftSpeed = velocity.length();
+		if (aircraftSpeed <= speedOfSound) {
+			//System.out.println("NO BOOM sub sonic "+aircraftSpeed+" "+speedOfSound);
+			return -1;
+		}
+
+		Vec3 toObserver = observerPos.subtract(aircraftPos);
+		if (toObserver.dot(velocity) >= 0) {
+			//System.out.println("NO BOOM aircraft in front");
+			return -1;
+		}
+
+        /*double machConeAngle = Math.asin(speedOfSound / aircraftSpeed);
+        double cosPhi = -toObserver.normalize().dot(velocity.normalize());
+        if (cosPhi < Math.cos(machConeAngle)) {
+            System.out.println("NO BOOM not in cone "+cosPhi+" goal "+machConeAngle);
+            return -1;
+        }*/
+
+		double normalizedSize = Math.max(aircraftSize, 0.01);
+		double pitch = 1.0 / normalizedSize;
+
+		pitch = Math.max(0.9, Math.min(pitch, 4.0));
+		return (float) pitch;
 	}
 	
 }

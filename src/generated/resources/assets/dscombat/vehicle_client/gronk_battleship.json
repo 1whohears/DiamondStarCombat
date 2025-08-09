@@ -129,7 +129,7 @@
     }
   ],
   "model_data": {
-    "hard_coded_model_anims": "gronk_battleship"
+    "model_id": "battleship"
   },
   "presetId": "gronk_battleship",
   "presetType": "standard"

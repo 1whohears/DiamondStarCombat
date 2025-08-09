@@ -36,7 +36,9 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addOptional(new ResourceLocation("cgm:projectile"))
 			.addOptional(new ResourceLocation("moguns:taki"))
 			.addOptional(new ResourceLocation("moguns:magma_cream"))
-			.addOptional(new ResourceLocation("moguns:flare"));
+			.addOptional(new ResourceLocation("moguns:flare"))
+				.addOptional(new ResourceLocation("tacz:bullet"))
+				.addOptional(new ResourceLocation("smallships:cannon_ball"));
 		tag(ModTags.EntityTypes.BOMB)
 			.add(ModEntities.BOMB.get(), ModEntities.BUNKER_BUSTER.get())
 			.addOptional(new ResourceLocation("cgm:grenade"))
@@ -71,9 +73,12 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 		tag(ModTags.EntityTypes.CAR)
 			.add(ModEntities.CAR.get());
 		tag(ModTags.EntityTypes.TANK)
-			.add(ModEntities.CAR.get());
+			.add(ModEntities.CAR.get())
+				.addOptional(new ResourceLocation("car:car"));
 		tag(ModTags.EntityTypes.BOAT)
-			.add(ModEntities.BOAT.get());
+			.add(ModEntities.BOAT.get())
+				.addOptional(new ResourceLocation("smallships:cog"))
+				.addOptional(new ResourceLocation("smallships:brigg"));
 		tag(ModTags.EntityTypes.SUBMARINE)
 			.add(ModEntities.SUBMARINE.get());
 		// TURRET
@@ -128,7 +133,9 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addOptional(new ResourceLocation("iceandfire:fire_dragon"))
 			.addOptional(new ResourceLocation("iceandfire:lightning_dragon"));
 		// OTHER
-		tag(ModTags.EntityTypes.ALWAYS_GROUNDED).add(EntityType.BOAT, EntityType.MINECART);
+		tag(ModTags.EntityTypes.ALWAYS_GROUNDED).add(EntityType.BOAT, EntityType.MINECART)
+				.addOptional(new ResourceLocation("minigames:flag"));
+		tag(ModTags.EntityTypes.TICKET_BOOKER).add(EntityType.VILLAGER);
 	}
 	
 }

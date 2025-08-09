@@ -1,6 +1,143 @@
 {
   "displayName": "preset.dscombat.sniper",
-  "kitItems": [],
+  "kitItems": [
+    {
+      "distinguishByNBT": "GunId",
+      "item": "tacz:modern_kinetic_gun",
+      "keep": true,
+      "nbt": {
+        "AttachmentSCOPE": {
+          "Count": true,
+          "id": "tacz:attachment",
+          "tag": {
+            "AttachmentId": "tacz:scope_standard_8x"
+          }
+        },
+        "GunCurrentAmmoCount": 5,
+        "GunFireMode": "SEMI",
+        "GunId": "tacz:ai_awp",
+        "HasBulletInBarrel": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "distinguishByNBT": "GunId",
+      "item": "tacz:modern_kinetic_gun",
+      "keep": true,
+      "nbt": {
+        "GunCurrentAmmoCount": 15,
+        "GunFireMode": "AUTO",
+        "GunId": "tacz:m1911",
+        "HasBulletInBarrel": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_axe",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_pickaxe",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_shovel",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:bread",
+      "keep": true,
+      "num": 32,
+      "refill": true
+    },
+    {
+      "item": "minecraft:leather_helmet",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:leather_chestplate",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:leather_leggings",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:leather_boots",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "sniper"
+      },
+      "num": 1
+    },
+    {
+      "item": "dscombat:parachute",
+      "keep": true,
+      "num": 1,
+      "refill": true
+    },
+    {
+      "checkCountByNBT": "AmmoCount",
+      "distinguishByNBT": "AmmoId",
+      "item": "tacz:ammo_box",
+      "keep": true,
+      "nbt": {
+        "AmmoCount": 90,
+        "AmmoId": "tacz:338",
+        "Level": 0,
+        "kitOnly": "sniper"
+      },
+      "num": 1,
+      "refill": true
+    },
+    {
+      "checkCountByNBT": "AmmoCount",
+      "distinguishByNBT": "AmmoId",
+      "item": "tacz:ammo_box",
+      "keep": true,
+      "nbt": {
+        "AmmoCount": 180,
+        "AmmoId": "tacz:45acp",
+        "Level": 0,
+        "kitOnly": "sniper"
+      },
+      "num": 1,
+      "refill": true
+    }
+  ],
   "presetId": "sniper",
   "presetType": "gamekit"
 }

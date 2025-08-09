@@ -19,8 +19,7 @@ public class UtilPresetParse {
     public static PartStats getPartStatsFromItem(ItemStack stack) {
         if (stack.hasTag()) return getPartStatsFromCompound(stack.getTag());
         if (!(stack.getItem() instanceof ItemPart part)) return null;
-        String presetId = part.getDefaultPartPresetId();
-        return PartPresets.get().get(presetId);
+        return part.getDefaultPartStats();
     }
 
     @Nullable

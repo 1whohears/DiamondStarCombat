@@ -17,7 +17,6 @@ public final class PacketHandler {
 	
 	public static SimpleChannel INSTANCE;
 
-	// FIXME: find cause of error spam thrown by L900 in ClientPacketListener
 	public static void register() {
 		SimpleChannel net = NetworkRegistry.ChannelBuilder
 				.named(new ResourceLocation(DSCombatMod.MODID, "messages"))
@@ -56,11 +55,6 @@ public final class PacketHandler {
 			.encoder(ToClientAddPart::encode)
 			.decoder(ToClientAddPart::new)
 			.consumerMainThread(ToClientAddPart::handle)
-			.add();
-		net.messageBuilder(ToClientVehicleFuel.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientVehicleFuel::encode)
-			.decoder(ToClientVehicleFuel::new)
-			.consumerMainThread(ToClientVehicleFuel::handle)
 			.add();
 		net.messageBuilder(ToServerCraftWeapon.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerCraftWeapon::encode)
@@ -132,10 +126,10 @@ public final class PacketHandler {
 			.decoder(ToServerGetHookChains::new)
 			.consumerMainThread(ToServerGetHookChains::handle)
 			.add();
-		net.messageBuilder(ToClientDamagePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientDamagePart::encode)
-			.decoder(ToClientDamagePart::new)
-			.consumerMainThread(ToClientDamagePart::handle)
+		net.messageBuilder(ToClientSyncPart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+			.encoder(ToClientSyncPart::encode)
+			.decoder(ToClientSyncPart::new)
+			.consumerMainThread(ToClientSyncPart::handle)
 			.add();
 		net.messageBuilder(ToServerSyncRotBoxPassengerPos.class, index++, NetworkDirection.PLAY_TO_SERVER)
 			.encoder(ToServerSyncRotBoxPassengerPos::encode)
@@ -161,6 +155,11 @@ public final class PacketHandler {
 				.encoder(ToClientOnShoot::encode)
 				.decoder(ToClientOnShoot::new)
 				.consumerMainThread(ToClientOnShoot::handle)
+				.add();
+		net.messageBuilder(ToServerCraftWeaponPart.class, index++, NetworkDirection.PLAY_TO_SERVER)
+				.encoder(ToServerCraftWeaponPart::encode)
+				.decoder(ToServerCraftWeaponPart::new)
+				.consumerMainThread(ToServerCraftWeaponPart::handle)
 				.add();
 	}
 	

@@ -1,0 +1,14 @@
+{
+  "displayName": "preset.dscombat.dogfight_felix",
+  "kitItems": [
+    {
+      "item": "dscombat:vehicle",
+      "nbt": {
+        "preset": "felix_plane"
+      },
+      "num": 1
+    }
+  ],
+  "presetId": "dogfight_felix",
+  "presetType": "gamekit"
+}

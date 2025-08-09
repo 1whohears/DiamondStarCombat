@@ -1,7 +1,8 @@
 {
   "acceleration": 0.1,
   "activeTrack": false,
-  "bleed": 0.03,
+  "assetId": "aim7f",
+  "bleed": 0.16,
   "canShootOnGround": true,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -16,8 +17,9 @@
   "explosive": true,
   "fireRate": 25,
   "fov": -1.0,
-  "fuelTicks": 150,
+  "fuelTicks": 200,
   "fuseDist": 2.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 10,
@@ -40,14 +42,14 @@
       "num": 2
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:track_air_missile",
-  "maxAge": 172,
+  "itemKey": "dscombat:missile",
+  "mass": 1300.0,
+  "maxAge": 7826,
   "presetId": "bgm109",
   "presetType": "track_missile",
-  "rackTypeKey": "dscombat:vls",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 3.5,
+  "sort_factor": 3,
+  "speed": 1.597,
   "targetType": "AIR",
   "turnRadius": 100.0
 }

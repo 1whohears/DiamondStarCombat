@@ -31,8 +31,8 @@ public class BulletInstance<T extends BulletStats> extends WeaponInstance<T> {
 		float pitch = UtilAngles.getPitch(direction);
 		float yaw = UtilAngles.getYaw(direction);
 		Random r = new Random();
-		pitch = pitch + (r.nextFloat()-0.5f) * 2f * getStats().getInnacuracy();
-		yaw = yaw + (r.nextFloat()-0.5f) * 2f * getStats().getInnacuracy();
+		pitch = pitch + (r.nextFloat()-0.5f) * 2f * getStats().getInaccuracy();
+		yaw = yaw + (r.nextFloat()-0.5f) * 2f * getStats().getInaccuracy();
 		weapon.setXRot(pitch-changeLaunchPitch);
 		weapon.setYRot(yaw);
 	}

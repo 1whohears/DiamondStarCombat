@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -18,11 +18,12 @@ import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitbox;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -86,23 +87,15 @@ public class UtilClientPacket {
 		}
 	}
 	
-	public static void damagePartPacket(int id, String slotId, boolean damaged) {
+	public static void syncPartPacket(int id, String slotId, FriendlyByteBuf buffer) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(slotId);
-			if (slot != null) {
-				if (damaged) slot.setPartDamaged(plane);
-				else slot.setPartRepaired(plane);
+			if (slot != null && slot.getPartData() != null) {
+				slot.getPartData().readBuffer(buffer);
+				slot.getPartData().onReceiveClientSync();
 			}
-		}
-	}
-	
-	public static void setAircraftFuel(int id, float[] fuels) {
-		Minecraft m = Minecraft.getInstance();
-		Level world = m.level;
-		if (world.getEntity(id) instanceof EntityVehicle plane) {
-			plane.partsManager.readFuelsForClient(fuels);
 		}
 	}
 	
@@ -179,23 +172,29 @@ public class UtilClientPacket {
 		EntityVehicle vehicle = null;
 		EntityChainHook hook = null;
 		Player player = null;
+		if (m.level == null) return;
 		if (m.level.getEntity(vehicleId) instanceof EntityVehicle v) vehicle = v;
 		if (m.level.getEntity(hookId) instanceof EntityChainHook c) hook = c;
 		if (m.level.getEntity(playerId) instanceof Player p) player = p;
 		switch (type) {
 		case CHAIN_ADD_PLAYER:
+			if (hook == null) return;
 			hook.addPlayerConnection(player);
 			return;
 		case CHAIN_ADD_VEHICLE:
+			if (hook == null) return;
 			hook.addVehicleConnection(player, vehicle);
 			return;
 		case CHAIN_DISCONNECT_PLAYER:
+			if (hook == null) return;
 			hook.disconnectPlayer(player);
 			return;
 		case CHAIN_DISCONNECT_VEHICLE:
+			if (hook == null) return;
 			hook.disconnectVehicle(vehicle);
 			return;
 		case VEHICLE_ADD_PLAYER:
+			if (vehicle == null) return;
 			vehicle.chainToPlayer(player);
 			return;		
 		}
@@ -204,6 +203,7 @@ public class UtilClientPacket {
 	public static void debugHitboxPos(int id, String hitbox_name, Vec3 pos, Vec3 size) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
+		if (world == null) return;
 		if (!(world.getEntity(id) instanceof EntityVehicle vehicle)) return;
 		RotableHitbox hitbox = vehicle.getHitboxByName(hitbox_name);
 		if (hitbox == null) return;
@@ -211,22 +211,32 @@ public class UtilClientPacket {
 		hitbox.setTestSize(size);
 	}
 
-	public static void onShoot(int id, ShootType type) {
+	public static void onShoot(int vehicleId, int shooterId, ShootType type) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world == null) return;
 		if (type == ShootType.WEAPON_RACK) {
-			if (!(world.getEntity(id) instanceof EntityWeaponRack rack)) return;
+			if (!(world.getEntity(vehicleId) instanceof EntityWeaponRack rack)) return;
 			rack.onClientShoot();
 		} else if (type == ShootType.TURRET) {
-			if (!(world.getEntity(id) instanceof EntityTurret turret)) return;
+			if (!(world.getEntity(vehicleId) instanceof EntityTurret turret)) return;
 			turret.onClientShoot();
+		} else if (type == ShootType.FLARE) {
+			if (m.player == null || m.player.getRootVehicle().getId() != vehicleId) return;
+			if (!(world.getEntity(vehicleId) instanceof EntityVehicle vehicle)) return;
+			vehicle.soundManager.playPassengerFlareSound();
+		} else if (type == ShootType.CHAFF) {
+			if (m.player == null || m.player.getRootVehicle().getId() != vehicleId) return;
+			if (!(world.getEntity(vehicleId) instanceof EntityVehicle vehicle)) return;
+			vehicle.soundManager.playPassengerChaffSound();
 		}
 	}
 
 	public enum ShootType {
 		TURRET,
-		WEAPON_RACK
+		WEAPON_RACK,
+		FLARE,
+		CHAFF
 	}
 	
 }

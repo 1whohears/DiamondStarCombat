@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.parts.stats;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.PartType;
@@ -22,6 +23,9 @@ public class TurretStats extends SeatStats {
 	private final String[] compatible;
 	private final float maxHealth;
 	private final int maxAmmo;
+	private final double weaponOffset;
+	private final EntityTurret.ShootType shootType;
+	private final RotBounds rotBounds;
 	
 	public TurretStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -29,6 +33,9 @@ public class TurretStats extends SeatStats {
 		compatible = list.toArray(new String[list.size()]);
 		maxHealth = UtilParse.getFloatSafe(json, "maxHealth", 0);
 		maxAmmo = UtilParse.getIntSafe(json, "maxAmmo", 0);
+		weaponOffset = UtilParse.getFloatSafe(json, "weaponOffset", 0);
+		shootType = UtilParse.getEnumSafe(json, "shootType", EntityTurret.ShootType.class);
+		rotBounds = RotBounds.getFromJson(json);
 	}
 
 	@Override
@@ -59,15 +66,27 @@ public class TurretStats extends SeatStats {
 	
 	@Override
 	public EntityType<?> getDefaultExternalEntity() {
-		return ModEntities.AA_TURRET.get();
+		return ModEntities.TURRET.get();
 	}
 	
 	@Override
 	public float getExternalEntityDefaultHealth() {
 		return getMaxHealth();
 	}
-	
-	public static class RotBounds {
+
+    public double getWeaponOffset() {
+        return weaponOffset;
+    }
+
+    public EntityTurret.ShootType getShootType() {
+        return shootType;
+    }
+
+    public RotBounds getRotBounds() {
+        return rotBounds;
+    }
+
+    public static class RotBounds {
 		public final float minRotX, maxRotX;
 		public final float rotRate;
 		public static RotBounds create(float rotRate, float maxLookUpAngle, float maxLookDownAngle) {
@@ -98,6 +117,24 @@ public class TurretStats extends SeatStats {
 			buffer.writeFloat(maxRotX);
 			buffer.writeFloat(rotRate);
 		}
+		public static RotBounds getFromJson(JsonObject json) {
+			JsonObject rotBounds = UtilParse.getJsonSafe(json, "rotBounds");
+			return new RotBounds(UtilParse.getFloatSafe(rotBounds, "rotRate", 0),
+					UtilParse.getFloatSafe(rotBounds, "minRotX", 0),
+					UtilParse.getFloatSafe(rotBounds, "maxRotX", 0));
+		}
+		public void writeToJson(JsonObject json) {
+			JsonObject rotBounds = new JsonObject();
+			rotBounds.addProperty("rotRate", rotRate);
+			rotBounds.addProperty("minRotX", minRotX);
+			rotBounds.addProperty("maxRotX", maxRotX);
+			json.add("rotBounds", rotBounds);
+		}
+	}
+
+	@Override
+	public boolean isCraftableWeaponPart() {
+		return true;
 	}
 
 }

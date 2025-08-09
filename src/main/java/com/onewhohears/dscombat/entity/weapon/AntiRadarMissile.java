@@ -1,12 +1,16 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.AntiRadarMissileStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -39,21 +43,17 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 	protected void findARTarget() {
 		// IDEA 7 make anti radar missile target entity type configurable so entities other mod entities can be targeted
 		targets.clear();
-		// planes
-		List<EntityVehicle> vehicles = level.getEntitiesOfClass(
-				EntityVehicle.class, getARBoundingBox());
-		for (int i = 0; i < vehicles.size(); ++i) {
-			EntityVehicle vehicle = vehicles.get(i);
-			if (!vehicle.radarSystem.hasRadar()) continue;
-			if (vehicle.getRadarMode().isOff()) continue;
-			if (!vehicle.radarSystem.canServerTick()) continue;
-			if (!basicCheck(vehicle)) continue;
-			float distSqr = (float)distanceToSqr(vehicle);
-			targets.add(new ARTarget(vehicle, 
-				(float)vehicle.radarSystem.getMaxAirRange() / distSqr));
-		}
+		// players
+		MinecraftServer server = getLevel().getServer();
+		if (server == null) return;
+		double rangeSqr = getWeaponStats().getScanRange() * getWeaponStats().getScanRange();
+		List<ServerPlayer> players = server.getPlayerList().getPlayers();
+		for (ServerPlayer player : players) checkEntity(player, rangeSqr);
+		// others
+		Collection<Entity> entities = TrackableEntitiesManager.getTrackableEntities();
+		for (Entity entity : entities) checkEntity(entity, rangeSqr);
 		// pick target
-		if (targets.size() == 0) {
+		if (targets.isEmpty()) {
 			this.target = null;
 			this.targetPos = null;
 			//System.out.println("NO TARGET");
@@ -65,6 +65,22 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 				max = targets.get(i);
 		this.target = max.entity;
 		this.targetPos = max.entity.position();
+	}
+
+	protected void checkEntity(Entity entity, double rangeSqr) {
+		if (entity.isSpectator()) return;
+		if (distanceToSqr(entity) > rangeSqr) return;
+		if (!entity.getLevel().dimension().equals(getLevel().dimension())) return;
+		EntityVehicle vehicle;
+		if (entity instanceof EntityVehicle ev) vehicle = ev;
+		else if (entity.getRootVehicle() instanceof EntityVehicle ev) vehicle = ev;
+		else return;
+		if (!vehicle.radarSystem.hasRadar()) return;
+		if (vehicle.getRadarMode().isOff()) return;
+		if (!vehicle.radarSystem.canServerTick()) return;
+		if (!basicCheck(vehicle)) return;
+		float distSqr = (float)distanceToSqr(vehicle);
+		targets.add(new ARTarget(vehicle, (float)vehicle.radarSystem.getMaxAirRange() / distSqr));
 	}
 	
 	protected boolean basicCheck(Entity ping) {
@@ -86,14 +102,6 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 		}
 		//System.out.println("POSSIBLE");
 		return true;
-	}
-	
-	protected AABB getARBoundingBox() {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
-		double w = getWeaponStats().getScanRange();
-		return new AABB(x+w, y+w, z+w, x-w, y-w, z-w);
 	}
 	
 	public static class ARTarget {

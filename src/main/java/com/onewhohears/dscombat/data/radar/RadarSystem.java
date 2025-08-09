@@ -1,15 +1,11 @@
 package com.onewhohears.dscombat.data.radar;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -23,7 +19,9 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -44,19 +42,19 @@ public class RadarSystem {
 	private final EntityVehicle parent;
 	private boolean readData = false;
 	
-	private List<RadarInstance<?>> radars = new ArrayList<>();
-	private List<EntityMissile<?>> rockets = new ArrayList<>();
+	private final List<RadarInstance<?>> radars = new ArrayList<>();
+	private final List<EntityMissile<?>> rockets = new ArrayList<>();
 	
-	private List<RadarPing> targets = new ArrayList<>();
+	private final List<RadarPing> targets = new ArrayList<>();
 	private int selectedIndex = -1;
 	private List<RadarPing> clientTargets = new ArrayList<>();
 	private int clientSelectedIndex = -1, clientSelectedTime = -21;
 	public int clientPingRefreshTime = 0;
 	public int clientRwrRefreshTime = 0;
 	
-	private List<RadarPing> dataLinkBuffer = new ArrayList<>();
+	private final List<RadarPing> dataLinkBuffer = new ArrayList<>();
 	
-	private Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
+	private final Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
 	private boolean rwrMissile, rwrRadar;
 	
 	public boolean dataLink = false;
@@ -79,8 +77,8 @@ public class RadarSystem {
 	}
 	
 	public boolean canServerTick() {
-		return parent.isStationaryRadar() || parent.isPlayerRiding()
-				|| (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar());
+		return parent.isOperational() && (parent.isStationaryRadar() || parent.isPlayerRiding()
+				|| (parent.level.getGameRules().getBoolean(DSCGameRules.MOBS_TICK_RADAR) && parent.isBotUsingRadar()));
 	}
 	
 	public void tickUpdateTargets() {
@@ -108,8 +106,23 @@ public class RadarSystem {
 			else parent.toClientPassengers(new ToClientRadarPings(parent.getId(), targets));
 		}
 	}
+
+	protected void updateVisibility() {
+		if (parent.getLevel().isClientSide()) return;
+		if (!parent.isPlayerRiding()) {
+			TrackableEntitiesManager.addTrackableEntity(parent);
+			DependencySafety.addExtraEntityToRDP(Objects.requireNonNull(parent.getServer()), parent);
+		}
+		else TrackableEntitiesManager.removeTrackableEntity(parent);
+	}
+
+	public void onParentRemove() {
+		if (parent.getLevel().isClientSide()) return;
+		TrackableEntitiesManager.removeTrackableEntity(parent);
+	}
 	
 	protected void updateDataLink() {
+		if (parent.getLevel().isClientSide()) return;
 		refreshDataLink();
 		if (!hasDataLink()) return;
 		Entity controller = parent.getControllingPlayerOrBot();
@@ -119,14 +132,25 @@ public class RadarSystem {
 			check_equals = false;
 		}
 		if (controller == null) return;
-		List<? extends Player> players = parent.level.players();
+		ServerPlayer playerController = null;
+		if (controller instanceof ServerPlayer sp) playerController = sp;
+		List<? extends Player> players = parent.getLevel().players();
 		for (Player p : players) {
-			if (check_equals && controller.equals(p)) continue;
-			if (!controller.isAlliedTo(p)) continue;
-			if (!controller.level.dimension().equals(p.level.dimension())) continue;
-			if (!(p.getRootVehicle() instanceof EntityVehicle plane)) continue;
-			if (!plane.radarSystem.hasDataLink()) continue;
-			if (plane.equals(parent)) continue;
+			if (check_equals && controller.equals(p))
+				continue;
+			if (playerController != null) {
+				if (!UtilEntity.arePlayersAllied(playerController, (ServerPlayer) p))
+					continue;
+			} else if (!controller.isAlliedTo(p))
+				continue;
+			if (!controller.getLevel().dimension().equals(p.getLevel().dimension()))
+				continue;
+			if (!(p.getRootVehicle() instanceof EntityVehicle plane))
+				continue;
+			if (!plane.radarSystem.hasDataLink())
+				continue;
+			if (plane.equals(parent))
+				continue;
 			for (RadarPing rp : targets) {
 				if (rp.id == plane.getId()) continue;
 				if (rp.isShared()) continue;
@@ -284,7 +308,7 @@ public class RadarSystem {
 		if (pingIndex < 0 || pingIndex >= getClientRadarPings().size()) return;
 		if (parent.tickCount-clientSelectedTime < 2) return;
 		clientSelectedIndex = pingIndex;
-		parent.soundManager.playRadarLockSound();
+		parent.soundManager.playPassengerRadarLockSound();
 		VehicleSyncAction.sendSyncAction(new VehicleSyncAction.PingSelectAction(clientTargets.get(pingIndex)));
 		clientSelectedTime = parent.tickCount;
 	}
@@ -405,9 +429,14 @@ public class RadarSystem {
 	public boolean isTrackedByRadar() {
 		return rwrRadar;
 	}
+
+	public boolean clientConsumePingWarningSound() {
+		return false;
+	}
 	
 	public void serverTick() {
 		tickUpdateTargets();
+		updateVisibility();
 	}
 	
 	public void clientTick() {
@@ -418,7 +447,7 @@ public class RadarSystem {
 	private void ageRWR() {
 		rwrRadar = false;
 		rwrMissile = false;
-		if (rwrWarnings.size() == 0) return;
+		if (rwrWarnings.isEmpty()) return;
 		Iterator<RWRWarning> it = rwrWarnings.values().iterator();
 		while (it.hasNext()) {
 			RWRWarning n = it.next();
@@ -472,6 +501,11 @@ public class RadarSystem {
 		public String toString() {
 			return "RWR["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
 		}
+	}
+
+	public int getJammedTicks() {
+		if (!hasRadar()) return 0;
+		return 0;
 	}
 	
 }

@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.data.vehicle.SeaLevels;
+import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 
 import com.onewhohears.dscombat.init.ModVillagers;
@@ -23,7 +23,6 @@ public final class CommonModEvents {
 	public static void loadModConfigEvent(ModConfigEvent.Loading event) {
 		if (event.getConfig().getType() == Type.COMMON) {
 			RadarTargetTypes.get().readConfig();
-			SeaLevels.readConfig();
 		}
 	}
 	
@@ -31,12 +30,12 @@ public final class CommonModEvents {
 	public static void reloadModConfigEvent(ModConfigEvent.Reloading event) {
 		if (event.getConfig().getType() == Type.COMMON) {
 			RadarTargetTypes.get().readConfig();
-			SeaLevels.readConfig();
 		}
 	}
 
 	@SubscribeEvent
 	public static void commonSetup(FMLCommonSetupEvent event) {
+		PhysicsComponentData.register();
 		VehicleSyncAction.register();
 		PacketHandler.register();
 		DSCGameRules.registerAll();

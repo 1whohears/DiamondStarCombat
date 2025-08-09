@@ -41,6 +41,13 @@
     },
     {
       "data": {
+        "filled": true,
+        "part": "heavy_fuel_tank"
+      },
+      "name": "internal_6"
+    },
+    {
+      "data": {
         "param": "30mmhe",
         "part": "gau_avenger"
       },

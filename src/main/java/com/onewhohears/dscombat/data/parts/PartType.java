@@ -21,6 +21,25 @@ import com.onewhohears.dscombat.data.parts.stats.WeaponExternalStats;
 import com.onewhohears.dscombat.data.parts.stats.WeaponPartStats;
 
 public abstract class PartType extends JsonPresetType {
+	public static final Weapon INTERNAL_WEAPON = Weapon.INSTANCE;
+	public static class Weapon extends PartType {
+		public static final String ID = "internal_weapon";
+		public static final Weapon INSTANCE = new Weapon();
+		public Weapon() {
+			super(ID, (key, data) -> new WeaponPartStats(key, data));
+		}
+		public Weapon(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
+			super(id, statsFactory);
+		}
+	}
+	public static final ExternalWeapon EXTERNAL_WEAPON = ExternalWeapon.INSTANCE;
+	public static class ExternalWeapon extends Weapon {
+		public static final String ID = "external_weapon";
+		public static final ExternalWeapon INSTANCE = new ExternalWeapon();
+		public ExternalWeapon() {
+			super(ID, (key, data) -> new WeaponExternalStats(key, data));
+		}
+	}
 	public static final Seat SEAT = Seat.INSTANCE;
 	public static class Seat extends PartType {
 		public static final String ID = "seat";
@@ -42,25 +61,6 @@ public abstract class PartType extends JsonPresetType {
 		public static final Turret INSTANCE = new Turret();
 		public Turret() {
 			super(ID, (key, data) -> new TurretStats(key, data));
-		}
-	}
-	public static final Weapon INTERNAL_WEAPON = Weapon.INSTANCE;
-	public static class Weapon extends PartType {
-		public static final String ID = "internal_weapon";
-		public static final Weapon INSTANCE = new Weapon();
-		public Weapon() {
-			super(ID, (key, data) -> new WeaponPartStats(key, data));
-		}
-		public Weapon(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
-			super(id, statsFactory);
-		}
-	}
-	public static final ExternalWeapon EXTERNAL_WEAPON = ExternalWeapon.INSTANCE;
-	public static class ExternalWeapon extends Weapon {
-		public static final String ID = "external_weapon";
-		public static final ExternalWeapon INSTANCE = new ExternalWeapon();
-		public ExternalWeapon() {
-			super(ID, (key, data) -> new WeaponExternalStats(key, data));
 		}
 	}
 	public static final Engine INTERNAL_ENGINE = Engine.INSTANCE;

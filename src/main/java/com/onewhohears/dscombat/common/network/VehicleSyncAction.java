@@ -2,9 +2,9 @@ package com.onewhohears.dscombat.common.network;
 
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleSyncAction;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
+import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -280,7 +280,7 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
-                if (!(player.getVehicle() instanceof EntitySeat seat)) return;
+                if (!(player.getVehicle() instanceof EntityRidablePart seat)) return;
                 if (ping != null) vehicle.radarSystem.selectTarget(ping);
                 if (targetPos != null) vehicle.weaponSystem.setTargetPos(targetPos);
                 if (seat.isTurret()) {
@@ -373,7 +373,7 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
-                if (eject && player.getVehicle() instanceof EntitySeat seat && seat.canEject()) {
+                if (eject && player.getVehicle() instanceof EntityRidablePart seat && seat.canEject()) {
                     seat.useEject();
                     player.stopRiding();
                     double EJECT_PUSH = 4, EJECT_MOVE = 1;
@@ -445,20 +445,16 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
-                if (all) {
-                    for (PartSlot slot : vehicle.partsManager.getReloadableParts()) {
-                        ReloadablePartInstance part = (ReloadablePartInstance) slot.getPartData();
-                        if (part == null) continue;
-                        if (unload && part.canUnload()) part.unloadPartToInventory(player);
-                        else if (!unload) part.loadPartFromInventory(player);
-                    }
-                } else {
-                    ReloadablePartInstance part = vehicle.partsManager.getReloadablePart(slotId);
-                    if (part == null) return;
-                    if (unload) part.unloadPartToInventory(player);
-                    else part.loadPartFromInventory(player);
-                }
+                if (all) for (PartSlot slot : vehicle.partsManager.getReloadableParts())
+                    handleSlot(player, (ReloadablePartInstance) slot.getPartData());
+                else handleSlot(player, vehicle.partsManager.getReloadablePart(slotId));
             };
+        }
+        private void handleSlot(ServerPlayer player, @Nullable ReloadablePartInstance part) {
+            if (part == null) return;
+            if (unload && (!all || part.canUnload())) 
+                part.unloadPartToInventory(player);
+            else part.loadPartFromInventory(player);
         }
         @Override
         protected Consumer<FriendlyByteBuf> getWriteData() {
@@ -544,7 +540,10 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
-            return (player, vehicle) -> vehicle.setCustomName(name);
+            return (player, vehicle) -> {
+                if (name.getString().isEmpty()) vehicle.setCustomName(null);
+                else vehicle.setCustomName(name);
+            };
         }
         @Override
         protected Consumer<FriendlyByteBuf> getWriteData() {

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.command;
 import java.util.Collection;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.onewhohears.dscombat.command.argument.WeaponArgument;
@@ -13,8 +14,10 @@ import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.AngleArgument;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.world.entity.Entity;
@@ -27,20 +30,42 @@ public class MissileCommand {
 			.then(Commands.argument("target", EntityArgument.entities())
 			.then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> {
 				return testMissile(context, EntityArgument.getEntities(context, "target"), 
-						Vec3Argument.getVec3(context, "pos"), null, null);})
+						Vec3Argument.getVec3(context, "pos"), null, null, -1, -1000, -1000);})
 			.then(Commands.argument("weapon", WeaponArgument.weapon()).executes((context) -> {
 				return testMissile(context, EntityArgument.getEntities(context, "target"), 
 						Vec3Argument.getVec3(context, "pos"), 
-						WeaponArgument.getWeapon(context, "weapon"), null);})
+						WeaponArgument.getWeapon(context, "weapon"), null, -1, -1000, -1000);})
 			.then(Commands.argument("owner", EntityArgument.entity()).executes((context) -> {
 				return testMissile(context, EntityArgument.getEntities(context, "target"), 
 						Vec3Argument.getVec3(context, "pos"), 
 						WeaponArgument.getWeapon(context, "weapon"), 
-						EntityArgument.getEntity(context, "owner"));})
-			)))));
+						EntityArgument.getEntity(context, "owner"), -1, -1000, -1000);})
+					.then(Commands.argument("speed", DoubleArgumentType.doubleArg(0, 100)).executes((context) -> {
+						return testMissile(context, EntityArgument.getEntities(context, "target"),
+								Vec3Argument.getVec3(context, "pos"),
+								WeaponArgument.getWeapon(context, "weapon"),
+								EntityArgument.getEntity(context, "owner"),
+								DoubleArgumentType.getDouble(context, "speed"), -1000, -1000);})
+							.then(Commands.argument("pitch", AngleArgument.angle()).executes((context) -> {
+								return testMissile(context, EntityArgument.getEntities(context, "target"),
+										Vec3Argument.getVec3(context, "pos"),
+										WeaponArgument.getWeapon(context, "weapon"),
+										EntityArgument.getEntity(context, "owner"),
+										DoubleArgumentType.getDouble(context, "speed"),
+										AngleArgument.getAngle(context, "pitch"), -1000);})
+									.then(Commands.argument("yaw", AngleArgument.angle()).executes((context) -> {
+										return testMissile(context, EntityArgument.getEntities(context, "target"),
+												Vec3Argument.getVec3(context, "pos"),
+												WeaponArgument.getWeapon(context, "weapon"),
+												EntityArgument.getEntity(context, "owner"),
+												DoubleArgumentType.getDouble(context, "speed"),
+												AngleArgument.getAngle(context, "pitch"),
+												AngleArgument.getAngle(context, "yaw"));})
+									))))))));
 	}
 	
-	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos, WeaponStats weaponStats, Entity owner) throws CommandSyntaxException {
+	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos,
+							WeaponStats weaponStats, Entity owner, double initSpeed, float pitch, float yaw) throws CommandSyntaxException {
 		String defaultId = "aim120b";
 		if (weaponStats == null) weaponStats = WeaponPresets.get().get(defaultId);
 		if (weaponStats == null) {
@@ -51,15 +76,20 @@ public class MissileCommand {
 		int i = 0;
 		for (Entity e : targets) {
 			Vec3 dp = e.position().subtract(pos).normalize();
+			if (pitch != -1000) {
+				if (yaw == -1000) yaw = UtilAngles.getYaw(dp);
+				dp = Vec3.directionFromRotation(pitch, yaw);
+			}
 			EntityWeapon<?> ew = weapon.getEntity(e.level);
+			if (ew == null) continue;
 			ew.setOwner(owner);
 			ew.setPos(pos);
 			weapon.setDirection(ew, dp);
+			if (initSpeed != -1) ew.setDeltaMovement(dp.scale(initSpeed));
 			if (ew instanceof EntityMissile<?> missile) {
 				Entity v = e.getRootVehicle();
-				if (v != null) e = v;
-				missile.target = e;
-				missile.targetPos = e.position();
+				missile.target = v;
+				missile.targetPos = v.position();
 			}
 			e.level.addFreshEntity(ew);
 			//ew.tick();

@@ -83,14 +83,11 @@ public class WeaponRecipe implements Recipe<Inventory> {
 		return WeaponPresets.get().get(getWeaponPresetId());
 	}
 	
-	public int getSortFactor() {
-		return getWeaponData().getType().getSortFactor();
-	}
-	
 	public int compare(WeaponRecipe other) {
-		if (this.getSortFactor() != other.getSortFactor()) 
-			return this.getSortFactor() - other.getSortFactor();
-		return this.presetId.compareToIgnoreCase(presetId);
+		WeaponStats me = this.getWeaponData();
+		WeaponStats you = other.getWeaponData();
+		if (me == null || you == null) return 0;
+		return me.compare(you);
 	}
 	
 	public NonNullList<Ingredient> getIngredients() {

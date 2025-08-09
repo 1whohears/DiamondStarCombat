@@ -1,4 +1,5 @@
 {
+  "assetId": "anm30",
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -12,6 +13,7 @@
   "explosionRadius": 2.0,
   "explosive": true,
   "fireRate": 3,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 3,
@@ -26,12 +28,12 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
   "itemKey": "dscombat:bomb",
+  "mass": 30.0,
   "maxAge": 200,
   "presetId": "napalm",
   "presetType": "bomb",
-  "rackTypeKey": "dscombat:bomb_rack",
   "shootSoundKey": "dscombat:bomb_shoot_1",
+  "sort_factor": 1,
   "speed": 0.0
 }

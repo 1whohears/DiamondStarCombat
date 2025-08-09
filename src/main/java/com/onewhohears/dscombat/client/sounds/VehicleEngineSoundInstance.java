@@ -31,6 +31,10 @@ public class VehicleEngineSoundInstance extends DopplerSoundInstance {
 	
 	@Override
 	public void tick() {
+		if (entity.isRemoved()) {
+			stop();
+			return;
+		}
 		EntityVehicle craft = (EntityVehicle)entity;
 		if (craft.getCurrentThrottle() == 0) {
 			stop();

@@ -1,7 +1,7 @@
 {
-  "armor": 300.0,
+  "armor": 200.0,
   "displayName": "preset.dscombat.mrbudger_tank_empty",
-  "health": 200.0,
+  "health": 100.0,
   "ingredients": [
     {
       "item": "dscombat:seat",
@@ -16,12 +16,16 @@
       "tag": "dscombat:aluminum_ingot"
     },
     {
+      "item": "minecraft:iron_ingot",
+      "num": 40
+    },
+    {
       "item": "minecraft:gold_ingot",
       "num": 10
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:mrbudger_tank",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "mrbudger_tank_empty",
   "presetType": "car",
@@ -121,10 +125,12 @@
     "passengerEngine": "dscombat:tank_1"
   },
   "stats": {
-    "armor_damage_absorbtion": 0.55,
+    "armor_damage_absorbtion": 0.5,
     "armor_damage_threshold": 8.0,
     "assetId": "mrbudger_tank",
-    "base_armor": 300.0,
+    "base_armor": 200.0,
+    "break_deacc_air": 0.0,
+    "break_deacc_ground": 0.1,
     "cameraDistance": 4.0,
     "car": {
       "isTank": true
@@ -133,12 +139,18 @@
     "cross_sec_area": 7.5,
     "entity_size_xz": 3.0,
     "entity_size_y": 2.5,
+    "hard_coded_rot_acc": {
+      "x": 0.0,
+      "y": 0.05000000074505806,
+      "z": 0.0
+    },
+    "hard_coded_rot_decel": 0.1,
     "idleheat": 10.0,
-    "inertiapitch": 12.0,
-    "inertiaroll": 8.0,
-    "inertiayaw": 8.0,
+    "inertiapitch": 120000.0,
+    "inertiaroll": 8000.0,
+    "inertiayaw": 80000.0,
     "mass": 15000.0,
-    "max_health": 200.0,
+    "max_health": 100.0,
     "max_speed": 0.3,
     "maxpitch": 0.0,
     "maxroll": 0.0,
@@ -149,7 +161,7 @@
     "throttleup": 0.04,
     "torquepitch": 0.0,
     "torqueroll": 0.0,
-    "torqueyaw": 8.0,
+    "torqueyaw": 75000.0,
     "turn_radius": 0.0
   },
   "textures": {

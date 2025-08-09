@@ -71,10 +71,12 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 			volume = Math.max(MIN_VOL, initVolume - d2 * volDecreaseRate);
 		}
 		// pitch
-		Vec3 v = entity.position().subtract(player.position());
-		float vp = (float)UtilGeometry.vecCompMagDirByAxis(player.getDeltaMovement(), v);
-		float vm = (float)UtilGeometry.vecCompMagDirByAxis(entity.getDeltaMovement(), v);
-		pitch = initPitch * ((velocitySound + vp)/(velocitySound + vm));
+		Vec3 dPos = entity.position().subtract(player.position());
+		float velPlayer = (float)UtilGeometry.vecCompMagDirByAxis(player.getDeltaMovement(), dPos);
+		float velEntity = (float)UtilGeometry.vecCompMagDirByAxis(entity.getDeltaMovement(), dPos);
+		pitch = initPitch * ((velocitySound + velPlayer)/(velocitySound + velEntity));
+		// if traveling faster than the speed of sound and towards the player
+		if (entity.getDeltaMovement().lengthSqr() > velocitySound*velocitySound && velEntity <= 0) volume = MIN_VOL;
 	}
 
 }

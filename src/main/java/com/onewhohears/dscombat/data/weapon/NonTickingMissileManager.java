@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 
 import net.minecraft.server.MinecraftServer;
@@ -22,11 +23,11 @@ public class NonTickingMissileManager {
 	
 	public static void serverTick(MinecraftServer server) {
 		for (int i = 0; i < missiles.size(); ++i) 
-			if (!tickMissile(missiles.get(i))) 
+			if (!tickMissile(missiles.get(i), server))
 				missiles.remove(i--);
 	}
 	
-	private static boolean tickMissile(EntityMissile<?> missile) {
+	private static boolean tickMissile(EntityMissile<?> missile, MinecraftServer server) {
 		//System.out.println("SERVER TICK MISSILE "+missile+" "+missile.tickCount);
 		if (isKilled(missile)) {
 			//System.out.println("REMOVING MISSILE FROM MANAGER");
@@ -49,6 +50,7 @@ public class NonTickingMissileManager {
 			//System.out.println("MISSILE OUT OF TICK RANGE");
 			if (!missile.isRemoved()) missile.discardButTick();
 			missile.tickOutRange();
+			DependencySafety.addExtraEntityToRDP(server, missile);
 		}
 		//System.out.println("FINISHED TICK MISSILE\n");
 		return true;

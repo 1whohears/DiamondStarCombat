@@ -1,5 +1,23 @@
 {
   "displayName": "preset.dscombat.james_wooden_plane",
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 1.1,
+    "translate": {
+      "x": -0.2,
+      "y": -0.05,
+      "z": 0.0
+    }
+  },
   "model_data": {
     "custom_anims": [
       {

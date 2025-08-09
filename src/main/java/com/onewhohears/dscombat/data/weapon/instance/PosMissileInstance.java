@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.weapon.instance;
 
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
-import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.data.weapon.stats.PosMissileStats;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;

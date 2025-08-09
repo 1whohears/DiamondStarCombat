@@ -1,0 +1,32 @@
+{
+  "displayName": "preset.dscombat.type91",
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "continuous_rotation",
+        "model_part_key": "prop1",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -3.78125
+        },
+        "rot_axis": "Z",
+        "rot_rate": -50.0
+      },
+      {
+        "anim_id": "continuous_rotation",
+        "model_part_key": "prop2",
+        "pivot": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -3.84375
+        },
+        "rot_axis": "Z",
+        "rot_rate": 50.0
+      }
+    ],
+    "model_id": "type91"
+  },
+  "presetId": "type91",
+  "presetType": "standard"
+}

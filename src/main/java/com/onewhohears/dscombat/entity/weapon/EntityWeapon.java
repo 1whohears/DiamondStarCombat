@@ -5,35 +5,38 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
+import com.onewhohears.dscombat.data.weapon.client.WeaponClientStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.entity.CustomAnimProjectile;
 import com.onewhohears.onewholibs.util.UtilEntity;
 
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -41,28 +44,21 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class EntityWeapon<T extends WeaponStats> extends Projectile implements IEntityAdditionalSpawnData { 
+public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProjectile<T, WeaponClientStats> implements IEntityAdditionalSpawnData {
 	
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Vec3> SHOOT_POS = SynchedEntityData.defineId(EntityWeapon.class, DataSerializers.VEC3);
 	
-	public String weaponId;
-	protected T weaponStats;
-	
 	public EntityWeapon(EntityType<? extends EntityWeapon<?>> type, Level level, String defaultWeaponId) {
-		super(type, level);
-		this.weaponId = defaultWeaponId;
-		updateWeaponData();
+		super(type, level, defaultWeaponId);
 	}
 
 	@Override
@@ -83,11 +79,8 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		String temp = compound.getString("weapon");
-		if (!temp.isEmpty()) weaponId = temp;
-		if (didWeaponIdChange()) updateWeaponData();
 		tickCount = compound.getInt("tickCount");
 		if (getOwner() != null) setOwnerId(getOwner().getId());
 		else setOwnerId(-1);
@@ -96,40 +89,15 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putString("weapon", weaponId);
 		compound.putInt("tickCount", tickCount);
 		compound.putBoolean("test_mode", isTestMode());
 		UtilParse.writeVec3(compound, getShootPos(), "shoot_pos");
 	}
 	
-	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
-		buffer.writeUtf(weaponId);
-	}
-
-	@Override
-	public void readSpawnData(FriendlyByteBuf buffer) {
-		weaponId = buffer.readUtf();
-		if (didWeaponIdChange()) updateWeaponData();
-	}
-	
-	public <W extends WeaponStats> void setWeaponData(W data) {
-		weaponId = data.getId();
-		weaponStats = (T) data;
-	}
-	
-	protected boolean didWeaponIdChange() {
-		return weaponStats != null && !weaponStats.getId().equals(weaponId);
-	}
-	
-	protected void updateWeaponData() {
-		weaponStats = (T) WeaponPresets.get().get(weaponId);
-	}
-	
 	public T getWeaponStats() {
-		return weaponStats;
+		return getStats();
 	}
 	
 	public void init() {
@@ -138,16 +106,13 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	@Override
 	public void tick() {
 		//System.out.println(this+" "+tickCount);
-		if (weaponStats == null) {
-			discard();
-			return;
-		}
 		if (isTestMode()) return;
 		if (firstTick) init();
 		if (!level.isClientSide && firstTick) setShootPos(position());
 		super.tick();
 		tickCheckCollide();
 		tickSetMove();
+		tickSetAngle();
 		setPos(position().add(getDeltaMovement()));
 		checkInsideBlocks();
 		tickAge();
@@ -231,7 +196,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 		if (canBreakFragileBlocks()) {
 			BlockState state = getLevel().getBlockState(result.getBlockPos());
 			if (state.is(ModTags.Blocks.FRAGILE) && getLevel().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
-					&& UtilVehicleEntity.hasPermissionToBreakBlock(result.getBlockPos(), state, getLevel(), getOwner())) {
+					&& UtilVehicleEntity.weaponHasPermissionToBreak(result.getBlockPos(), state, getLevel(), getOwner())) {
 				getLevel().destroyBlock(result.getBlockPos(), true, this);
 				return;
 			}
@@ -302,7 +267,18 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 	
 	protected void tickSetMove() {
-		
+		setDeltaMovement(getDeltaMovement().add(0, -getGravityAcc(), 0));
+	}
+
+	protected double getGravityAcc() {
+		return DSCPhyCons.GRAVITY * DSCPhyCons.ACC_TIME_SCALE;
+	}
+
+	protected void tickSetAngle() {
+		float goalPitch = UtilAngles.getPitch(getDeltaMovement());
+		float goalYaw = UtilAngles.getYaw(getDeltaMovement());
+		setXRot(Mth.rotLerp(0.5f, getXRot(), goalPitch));
+		setYRot(Mth.rotLerp(0.5f, getYRot(), goalYaw));
 	}
 	
 	@Override
@@ -379,7 +355,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 	}
 	
 	public int getMaxAge() {
-		return weaponStats.getMaxAge();
+		return getWeaponStats().getMaxAge();
 	}
 	
 	public boolean isTestMode() {
@@ -399,7 +375,8 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
     }
     
     public String getModelId() {
-    	return getWeaponStats().getModelId();
+		if (getAssets() == null) return getAssetId();
+    	return getAssets().getModelId();
     }
     
     public abstract WeaponType getWeaponType();
@@ -411,4 +388,23 @@ public abstract class EntityWeapon<T extends WeaponStats> extends Projectile imp
 		return true;
 	}
 
+	@Override
+	public @Nullable String getAssetId() {
+		return getStats().getAssetId();
+	}
+
+	@Override
+	public @Nullable JsonPresetAssetReader<WeaponClientStats> getClientPresets() {
+		if (!getLevel().isClientSide()) return null;
+		return WeaponAssets.get();
+	}
+
+	@Override
+	public @NotNull JsonPresetReloadListener<T> getPresets() {
+		return (JsonPresetReloadListener<T>) WeaponPresets.get();
+	}
+
+	public boolean isDiscardedButTicking() {
+		return false;
+	}
 }

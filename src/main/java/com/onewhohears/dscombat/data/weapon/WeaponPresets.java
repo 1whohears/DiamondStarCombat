@@ -46,6 +46,7 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 		addPresetType(WeaponType.TORPEDO);
 		addPresetType(WeaponType.IR_MISSILE);
 		addPresetType(WeaponType.ANTI_RADAR_MISSILE);
+		addPresetType(WeaponType.DUMB_TORPEDO);
 	}
 	
 	@Override

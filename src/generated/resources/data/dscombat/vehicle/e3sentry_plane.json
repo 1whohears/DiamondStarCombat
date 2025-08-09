@@ -4,7 +4,7 @@
   "ingredients": [
     {
       "item": "dscombat:cfm56",
-      "num": 2
+      "num": 4
     },
     {
       "item": "dscombat:heavy_fuel_tank",
@@ -35,6 +35,18 @@
         "part": "cfm56"
       },
       "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "part": "cfm56"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "part": "cfm56"
+      },
+      "name": "right_wing_2"
     },
     {
       "data": {

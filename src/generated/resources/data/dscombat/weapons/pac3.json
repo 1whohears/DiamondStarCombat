@@ -1,7 +1,7 @@
 {
   "acceleration": 0.08,
   "activeTrack": true,
-  "bleed": 0.07,
+  "bleed": 0.2,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -17,8 +17,9 @@
   "explosive": true,
   "fireRate": 40,
   "fov": 40.0,
-  "fuelTicks": 200,
+  "fuelTicks": 320,
   "fuseDist": 3.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 14,
@@ -41,14 +42,14 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:track_air_missile",
-  "maxAge": 400,
+  "itemKey": "dscombat:missile",
+  "mass": 318.0,
+  "maxAge": 1867,
   "presetId": "pac3",
   "presetType": "track_missile",
-  "rackTypeKey": "",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 4.0,
+  "sort_factor": 9,
+  "speed": 10.712,
   "targetType": "AIR",
   "turnRadius": 190.0
 }

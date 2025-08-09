@@ -25,6 +25,8 @@ public class DSCClientInputs {
 	private static TargetMode TARGET_MODE = TargetMode.LOOK;
 	
 	private static boolean GIMBAL_MODE = false;
+	private static boolean AFTERBURNER = false;
+	private static boolean TURN_ASSIST = true;
 	
 	public static RadarMode getPreferredRadarMode() {
 		return PREFERRED_RADAR_MODE;
@@ -185,7 +187,15 @@ public class DSCClientInputs {
 	public static boolean isCameraFreeGlobal() {
 		return CURRENT_MOUSE_MODE.isFreeGlobal();
 	}
-	
+
+	public static boolean isTurnAssist() {
+		return TURN_ASSIST;
+	}
+
+	public static void toggleTurnAssist() {
+		TURN_ASSIST = !TURN_ASSIST;
+	}
+
 	public enum MouseMode {
 		/**
 		 * Camera can move freely but turns when the vehicle turns.
@@ -254,5 +264,13 @@ public class DSCClientInputs {
 
 	public static void leanNot() {
 		setLeanAmount(0);
+	}
+
+	public static boolean isAfterBurner() {
+		return AFTERBURNER;
+	}
+
+	public static void toggleAfterBurner() {
+		AFTERBURNER = !AFTERBURNER;
 	}
 }

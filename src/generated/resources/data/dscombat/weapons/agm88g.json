@@ -1,6 +1,6 @@
 {
   "acceleration": 0.04,
-  "bleed": 0.02,
+  "bleed": 0.1,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -15,9 +15,10 @@
   "explosionRadius": 8.0,
   "explosive": true,
   "fireRate": 40,
-  "fov": 30.0,
-  "fuelTicks": 400,
+  "fov": 80.0,
+  "fuelTicks": 300,
   "fuseDist": 2.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 12,
@@ -25,25 +26,25 @@
     },
     {
       "item": "minecraft:tnt",
-      "num": 4
+      "num": 5
     },
     {
       "item": "minecraft:coal_block",
-      "num": 4
+      "num": 5
     },
     {
       "item": "dscombat:intel_pentium",
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:agm88g",
-  "maxAge": 600,
+  "itemKey": "dscombat:missile",
+  "mass": 361.0,
+  "maxAge": 2976,
   "presetId": "agm88g",
   "presetType": "anti_radar_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
-  "scan_range": 1500.0,
+  "scan_range": 20000.0,
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 3.0,
+  "sort_factor": 10,
+  "speed": 6.217,
   "turnRadius": 160.0
 }

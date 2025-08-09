@@ -1,0 +1,26 @@
+{
+  "displayName": "preset.dscombat.ciws",
+  "item_model_overrides": {
+    "rotation": {
+      "x": 60.0,
+      "y": 180.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 0.7,
+    "translate": {
+      "x": -1.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "model_data": {
+    "hard_coded_model_anims": "ciws"
+  },
+  "presetId": "ciws",
+  "presetType": "turret"
+}

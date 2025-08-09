@@ -50,7 +50,8 @@ public class VehiclePartRepairRecipe extends CustomRecipe {
 		PartInstance<?> part = getPart(partItem);
 		partItem.setCount(0);
 		NonNullList<ItemStack> rem = UtilItem.getRemainingItemsStackIngredients(container, part.getStats().getRepairCost());
-		rem.set(repairIndex, repairTool);
+		if (repairTool.getDamageValue() < repairTool.getMaxDamage()) rem.set(repairIndex, repairTool);
+		else rem.set(repairIndex, ItemStack.EMPTY);
 		container.clearContent();
 		return rem;
 	}

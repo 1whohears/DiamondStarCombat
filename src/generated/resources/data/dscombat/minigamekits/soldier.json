@@ -1,6 +1,166 @@
 {
   "displayName": "preset.dscombat.soldier",
-  "kitItems": [],
+  "kitItems": [
+    {
+      "distinguishByNBT": "GunId",
+      "item": "tacz:modern_kinetic_gun",
+      "keep": true,
+      "nbt": {
+        "AttachmentMUZZLE": {
+          "Count": true,
+          "id": "tacz:attachment",
+          "tag": {
+            "AttachmentId": "tacz:muzzle_silencer_phantom_s1"
+          }
+        },
+        "AttachmentSCOPE": {
+          "Count": true,
+          "id": "tacz:attachment",
+          "tag": {
+            "AttachmentId": "tacz:sight_coyote"
+          }
+        },
+        "AttachmentSTOCK": {
+          "Count": true,
+          "id": "tacz:attachment",
+          "tag": {
+            "AttachmentId": "tacz:stock_tactical_ar"
+          }
+        },
+        "GunCurrentAmmoCount": 30,
+        "GunFireMode": "AUTO",
+        "GunId": "tacz:ak47",
+        "HasBulletInBarrel": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "distinguishByNBT": "GunId",
+      "item": "tacz:modern_kinetic_gun",
+      "keep": true,
+      "nbt": {
+        "GunCurrentAmmoCount": 12,
+        "GunFireMode": "SEMI",
+        "GunId": "tacz:p320",
+        "HasBulletInBarrel": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_axe",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_pickaxe",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_shovel",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:cooked_beef",
+      "keep": true,
+      "num": 32,
+      "refill": true
+    },
+    {
+      "item": "minecraft:splash_potion",
+      "keep": true,
+      "nbt": {
+        "Potion": "minecraft:strong_healing"
+      },
+      "num": 1,
+      "refill": true
+    },
+    {
+      "item": "minecraft:iron_helmet",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_chestplate",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_leggings",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_boots",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "soldier"
+      },
+      "num": 1
+    },
+    {
+      "item": "dscombat:parachute",
+      "keep": true,
+      "num": 1,
+      "refill": true
+    },
+    {
+      "checkCountByNBT": "AmmoCount",
+      "distinguishByNBT": "AmmoId",
+      "item": "tacz:ammo_box",
+      "keep": true,
+      "nbt": {
+        "AmmoCount": 360,
+        "AmmoId": "tacz:762x39",
+        "Level": 1,
+        "kitOnly": "soldier"
+      },
+      "num": 1,
+      "refill": true
+    },
+    {
+      "checkCountByNBT": "AmmoCount",
+      "distinguishByNBT": "AmmoId",
+      "item": "tacz:ammo_box",
+      "keep": true,
+      "nbt": {
+        "AmmoCount": 180,
+        "AmmoId": "tacz:45acp",
+        "Level": 0,
+        "kitOnly": "soldier"
+      },
+      "num": 1,
+      "refill": true
+    }
+  ],
   "presetId": "soldier",
   "presetType": "gamekit"
 }

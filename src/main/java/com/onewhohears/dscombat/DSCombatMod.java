@@ -1,8 +1,7 @@
 package com.onewhohears.dscombat;
 
-import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
+import com.onewhohears.dscombat.data.parts.client.PartClientPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
 import com.onewhohears.dscombat.data.recipe.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
@@ -13,6 +12,7 @@ import com.onewhohears.dscombat.data.tag.ItemTagGen;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
+import com.onewhohears.dscombat.data.weapon.client.WeaponClientPresetGenerator;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModArgumentTypes;
@@ -35,7 +35,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
@@ -57,10 +56,12 @@ public class DSCombatMod {
 	public static final String MODID = "dscombat";
 	
 	public static boolean minigamesLoaded = false;
+	public static boolean distantPlayersLoaded = false;
 
     public DSCombatMod() {
     	ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
     	ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
     	
     	IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	
@@ -79,6 +80,7 @@ public class DSCombatMod {
     	ModTags.init();
     	
     	minigamesLoaded = ModList.get().isLoaded("minigames");
+		distantPlayersLoaded = ModList.get().isLoaded("distant_players");
 
     	eventBus.addListener(this::onGatherData);
     }
@@ -101,6 +103,8 @@ public class DSCombatMod {
     	if (event.includeClient()) {
     		generator.addProvider(true, new DSCSoundDefinitionGen(generator, event.getExistingFileHelper()));
     		generator.addProvider(true, new VehicleClientPresetGenerator(generator));
+			generator.addProvider(true, new PartClientPresetGenerator(generator));
+			generator.addProvider(true, new WeaponClientPresetGenerator(generator));
     	}
     }
     

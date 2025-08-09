@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.init.DataSerializers;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,12 +31,13 @@ public class ToServerSeatPos extends IPacket {
 
 	@Override
 	public boolean handle(Supplier<Context> ctx) {
-		//System.out.println("HANDELING PACKET");
+		//System.out.println("HANDLING PACKET");
 		final var success = new AtomicBoolean(false);
 		ctx.get().enqueueWork(() -> {
 			success.set(true);
 			ServerPlayer player = ctx.get().getSender();
-			if (player.isPassenger() && player.getVehicle() instanceof EntitySeat) {
+			if (player == null) return;
+			if (player.isPassenger() && player.getVehicle() instanceof EntityRidablePart) {
 				player.getVehicle().setPosRaw(seatPos.x, seatPos.y, seatPos.z);
 			}
 			//System.out.println("ToServerSeatPos = "+seatPos);

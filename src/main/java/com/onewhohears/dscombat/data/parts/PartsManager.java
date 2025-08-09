@@ -8,17 +8,12 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.parts.instance.*;
 import com.onewhohears.dscombat.util.UtilPresetParse;
+import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
-import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleFuel;
-import com.onewhohears.dscombat.data.parts.instance.FlareDispenserInstance;
-import com.onewhohears.dscombat.data.parts.instance.FuelTankInstance;
-import com.onewhohears.dscombat.data.parts.instance.PartInstance;
-import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
-import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilEntity;
 
@@ -30,7 +25,6 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
 
 /**
  * manages the parts/inventory system for {@link EntityVehicle}.
@@ -49,6 +43,7 @@ public class PartsManager {
 	
 	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final int SLOT_VERSION = 1;
+	public static final int SYNC_PARTS_RATE = 10;
 	
 	private final EntityVehicle parent;
 	private List<PartSlot> slots = new ArrayList<>();
@@ -201,8 +196,12 @@ public class PartsManager {
 		for (PartSlot p : slots) p.clientSetup(parent);
 	}
 	
-	public void tickParts() {
-		for (PartSlot p : slots) p.tick();
+	public void serverTickParts() {
+		boolean syncParts = parent.tickCount % SYNC_PARTS_RATE == 0;
+		for (PartSlot p : slots) {
+			p.serverTick();
+			if (syncParts) p.checkDirtyToSync(parent);
+		}
 	}
 	
 	public void clientTickParts() {
@@ -347,32 +346,15 @@ public class PartsManager {
 		return names;
 	}
 	
-	public void tickFuel(boolean updateClient) {
+	public void tickFuel() {
 		float amount = -getTotalEngineFuelConsume() * Math.abs(parent.getCurrentThrottle());
 		addFuel(amount);
-		if (updateClient && parent.tickCount % 100 == 0) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-					new ToClientVehicleFuel(parent));
-		}
 	}
 	
 	public List<PartSlot> getFuelTanks() {
 		List<PartSlot> tanks = new ArrayList<PartSlot>();
 		for (PartSlot p : slots) if (p.filled() && p.getPartData().getStats().isFuelTank()) tanks.add(p);
 		return tanks;
-	}
-	
-	public float[] getFuelsForClient() {
-		List<PartSlot> tanks = getFuelTanks();
-		float[] fuels = new float[tanks.size()];
-		for (int i = 0; i < tanks.size(); ++i) fuels[i] = ((FuelTankInstance<?>)tanks.get(i).getPartData()).getFuel();
-		return fuels;
-	}
-	
-	public void readFuelsForClient(float[] fuels) {
-		List<PartSlot> tanks = getFuelTanks();
-		if (fuels.length != tanks.size()) return;
-		for (int i = 0; i < tanks.size(); ++i) ((FuelTankInstance<?>)tanks.get(i).getPartData()).setFuel(fuels[i]);
 	}
 	
 	public List<PartSlot> getSlots() {
@@ -586,10 +568,16 @@ public class PartsManager {
 	}
 	
 	public List<PartSlot> getSlotsRandomOrder() {
-		List<PartSlot> random = new ArrayList<>();
-		for (PartSlot p : slots) random.add(p);
+        List<PartSlot> random = new ArrayList<>(slots);
 		Collections.shuffle(random, UtilEntity.random);
 		return random;
 	}
-	
+
+    public Vec3 calcRotInertialFromParts() {
+		Vec3 inertia = Vec3.ZERO;
+		for (PartSlot p : slots)
+			if (p.getSlotType().isExternal() && p.getPartData() != null)
+				inertia = inertia.add(p.getPartData().getRotInertia());
+		return inertia;
+    }
 }

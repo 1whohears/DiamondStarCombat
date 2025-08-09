@@ -6,14 +6,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nullable;
 
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
+import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 
 import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -48,7 +47,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 	}
 
 	public boolean fillPart(Container container, ReloadablePartInstance lpd) {
-		List<ItemStack> ammo = getAmmoItemsContainer(container, lpd.getContinuity());
+		List<ItemStack> ammo = getAmmoItemsContainer(container, null);
 		if (!canItemsCombine(lpd, ammo)) return false;
 		if (checkAmmoContinuity()) {
 			String ammoCont = getItemAmmoContinuity(ammo.get(0));
@@ -80,7 +79,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 	}
 
 	public boolean consumeAmmoItems(Container container, ReloadablePartInstance lpd) {
-		List<ItemStack> ammo = getAmmoItemsContainer(container, lpd.getContinuity());
+		List<ItemStack> ammo = getAmmoItemsContainer(container, null);
 		if (!canItemsCombine(lpd, ammo)) return false;
 		if (checkAmmoContinuity()) {
 			String ammoCont = getItemAmmoContinuity(ammo.get(0));
@@ -157,7 +156,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 			break;
 		case ITEM_DURABILITY:
 			ammo.setDamageValue(ammo.getMaxDamage() - (int)num);
-			ammo.setCount(2);
+			if (add1) ammo.setCount(2);
 			break;
 		}
 	}
@@ -230,7 +229,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 
 	@Nullable
 	public List<ItemStack> getAmmoItemsContainer(Container container, String continuity) {
-		List<ItemStack> ammo = new ArrayList<ItemStack>();
+		List<ItemStack> ammo = new ArrayList<>();
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack  = container.getItem(i);
 			if (stack.isEmpty()) continue;
@@ -270,6 +269,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 			else if (lpd.getContinuity().equals(ammoCont)) return true;
 			return false;
 		}
+		System.out.println("can combine");
 		return true;
 	}
 	

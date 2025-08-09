@@ -4,7 +4,7 @@
   "ingredients": [
     {
       "item": "dscombat:c12_engine",
-      "num": 2
+      "num": 1
     },
     {
       "item": "dscombat:heavy_fuel_tank",
@@ -21,12 +21,6 @@
         "part": "c12_engine"
       },
       "name": "internal_1"
-    },
-    {
-      "data": {
-        "part": "c12_engine"
-      },
-      "name": "internal_2"
     },
     {
       "data": {

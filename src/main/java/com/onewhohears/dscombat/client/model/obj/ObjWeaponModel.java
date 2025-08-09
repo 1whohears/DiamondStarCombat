@@ -1,34 +1,22 @@
 package com.onewhohears.dscombat.client.model.obj;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
-import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
+import com.google.gson.JsonArray;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
-import com.onewhohears.onewholibs.client.model.obj.ObjEntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraftforge.client.model.renderable.CompositeRenderable;
+import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
 
-public class ObjWeaponModel<T extends EntityWeapon<?>> extends ObjEntityModel<T> {
-	
-	protected String weaponModelId = "";
-	
-	public ObjWeaponModel() {
-		super("");
+public class ObjWeaponModel<T extends EntityWeapon<?>> extends KeyframeAnimsEntityModel<T> {
+
+	public ObjWeaponModel(String modelId) {
+		super(modelId);
 	}
-	
-	@Override
-	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
-		weaponModelId = entity.getModelId();
-		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
+
+	public ObjWeaponModel(String modelId, String... animDataIds) {
+		super(modelId, animDataIds);
 	}
-	
-	public CompositeRenderable getModel() {
-		return ObjEntityModels.get().getBakedModel(weaponModelId);
-	}
-	
-	public ModelOverrides getModelOverride() {
-		return ObjEntityModels.get().getModelOverride(weaponModelId);
+
+	public ObjWeaponModel(String modelId, JsonArray transforms, String... animDataIds) {
+		super(modelId, transforms, animDataIds);
 	}
 
 }

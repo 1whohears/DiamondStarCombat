@@ -1,7 +1,7 @@
 {
   "acceleration": 0.05,
   "activeTrack": true,
-  "bleed": 0.04,
+  "bleed": 0.15,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -17,8 +17,9 @@
   "explosive": true,
   "fireRate": 30,
   "fov": 60.0,
-  "fuelTicks": 175,
+  "fuelTicks": 160,
   "fuseDist": 3.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 8,
@@ -41,14 +42,14 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:aim120b",
-  "maxAge": 350,
+  "itemKey": "dscombat:missile",
+  "mass": 161.5,
+  "maxAge": 1093,
   "presetId": "aim120b",
   "presetType": "track_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 4.0,
+  "sort_factor": 6,
+  "speed": 8.875,
   "targetType": "AIR",
   "turnRadius": 140.0
 }

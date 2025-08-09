@@ -1,6 +1,8 @@
 {
   "displayName": "item.dscombat.air_scan_b",
-  "externalEntity": "dscombat:air_scan_b",
+  "externalEntity": "dscombat:external_radar",
+  "hitbox_height": 1.0,
+  "hitbox_width": 1.0,
   "item": "dscombat:air_scan_b",
   "presetId": "air_scan_b",
   "presetType": "external_radar",

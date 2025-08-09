@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -16,7 +17,6 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
-import com.onewhohears.dscombat.entity.parts.EntitySeat;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -34,6 +34,9 @@ public class RadarOverlay extends VehicleOverlayComponent {
             "textures/ui/ping_hud.png");
     public static final ResourceLocation PING_DATA = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/ping_data.png");
+    public static final ResourceLocation PING_ICONS = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/ping_data_icons_color.png");
+    public static final int ICON_SIZE = 16, ICON_WIDTH = 240, DEFAULT_SIZE = 100;
     protected static final int[] HUD_PING_ANIM = new int[] {0,1,2,3,2,1};
     protected static float PARTIAL_TICK;
 
@@ -41,7 +44,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (Minecraft.getInstance().screen != null) return false;
-        if (!(getPlayerVehicle() instanceof EntitySeat seat)) return false;
+        if (!(getPlayerVehicle() instanceof EntityRidablePart seat)) return false;
         EntityVehicle vehicle = seat.getParentVehicle();
         if (vehicle == null) return false;
         RadarSystem radar = vehicle.radarSystem;
@@ -54,7 +57,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
 
     @Override
     protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
-        EntitySeat seat = (EntitySeat) getPlayerVehicle();
+        EntityRidablePart seat = (EntityRidablePart) getPlayerVehicle();
         assert seat != null;
 
         EntityVehicle vehicle = seat.getParentVehicle();
@@ -80,6 +83,12 @@ public class RadarOverlay extends VehicleOverlayComponent {
         float cursorX = screenWidth / 2F, cursorY = screenHeight / 2F;
         boolean hovering = false;
         int size = Config.CLIENT.radarPingOverlaySize.get();
+        int icon_size = ICON_SIZE * size / DEFAULT_SIZE * 7 / 4;
+        int halfSize = size / 2, halfIconSize = icon_size / 2, sizeFraction = -icon_size / 4;
+        int iconLeft = halfIconSize + sizeFraction;
+        int iconMid = halfSize - halfIconSize;
+        int iconRight = size - icon_size - halfIconSize - sizeFraction;
+        float min = 0.2f, max = 0.45f, max_dist = 1000f;
         for (int i = 0; i < pings.size(); ++i) {
             RadarStats.RadarPing ping = pings.get(i);
             // SCREEN
@@ -99,7 +108,6 @@ public class RadarOverlay extends VehicleOverlayComponent {
                     view_mat, proj_mat, screenWidth, screenHeight);
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
             float x_win = screen_pos[0], y_win = screen_pos[1];
-            float min = 0.2f, max = 0.45f, max_dist = 1000f;
             float scale = (float) Math.max(min, max-(dist/max_dist*(max-min)));
             float adj = size*scale/2f, x_pos = x_win-adj, y_pos = y_win-adj;
             poseStack.pushPose();
@@ -109,35 +117,29 @@ public class RadarOverlay extends VehicleOverlayComponent {
                 RenderSystem.setShaderTexture(0, PING_HUD);
                 blit(poseStack,
                         0, 0, 0, hud_ping_offset,
-                        size, size,
-                        size, size * 5);
+                        size, size, size, size * 5);
             }
-            RenderSystem.setShaderTexture(0, PING_DATA);
+            RenderSystem.setShaderTexture(0, PING_ICONS);
             if (ping.entityType.isMissile()) {
-                blit(poseStack,
-                        0, 0, size * 5, size,
-                        size, size,
-                        size * 6, size * 2);
+                blit(poseStack, iconMid, iconMid, icon_size, icon_size,
+                        ICON_SIZE * 5, ICON_SIZE,
+                        ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             }
-            blit(poseStack,
-                    0, 0, ping.entityType.getIconOffset(size), 0,
-                    size, size,
-                    size*6, size*2);
-            blit(poseStack,
-                    0, 0, ping.terrainType.getIconOffset(size), 100,
-                    size, size,
-                    size*6, size*2);
+            blit(poseStack, iconLeft, iconMid, icon_size, icon_size,
+                    ping.entityType.getIconIndex() * ICON_SIZE, 0,
+                    ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
+            blit(poseStack, iconRight, iconMid, icon_size, icon_size,
+                    ping.terrainType.getIconIndex() * ICON_SIZE, 0,
+                    ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             if (ping.isFriendly) {
-                blit(poseStack,
-                        0, 0, size*4, 0,
-                        size, size,
-                        size*6, size*2);
+                blit(poseStack, iconMid, iconLeft, icon_size, icon_size,
+                        ICON_SIZE * 4, 0,
+                        ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             }
             if (ping.isShared()) {
-                blit(poseStack,
-                        0, 0, size*4, size,
-                        size, size,
-                        size*6, size*2);
+                blit(poseStack, iconMid, iconRight, icon_size, icon_size,
+                        ICON_SIZE * 9, 0,
+                        ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             }
             poseStack.popPose();
             if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj

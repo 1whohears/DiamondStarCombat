@@ -1,0 +1,14 @@
+{
+  "displayName": "preset.dscombat.dogfight_eden",
+  "kitItems": [
+    {
+      "item": "dscombat:vehicle",
+      "nbt": {
+        "preset": "eden_plane"
+      },
+      "num": 1
+    }
+  ],
+  "presetId": "dogfight_eden",
+  "presetType": "gamekit"
+}

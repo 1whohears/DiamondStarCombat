@@ -37,7 +37,7 @@ public class IRMissileInstance<T extends IRMissileStats> extends MissileInstance
 				return;
 			}
 			IRMissile.updateIRTargetsList(parent, targets, getStats().getFlareResistance(), getStats().getFov());
-			if (targets.size() > 0) parent.playIRTone();
+			if (!targets.isEmpty()) parent.playIRTone();
 			else parent.stopIRTone();
 		}
 	}

@@ -60,6 +60,7 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> IR_EMITTER_MED = tag("ir_emitter/med");
 		public static final TagKey<EntityType<?>> IR_EMITTER_HIGH = tag("ir_emitter/high");
 		public static final TagKey<EntityType<?>> IR_EMITTER_EXTREME = tag("ir_emitter/extreme");
+		public static final TagKey<EntityType<?>> TICKET_BOOKER = tag("ticket_booker");
 		private static void init() {}
         public static TagKey<EntityType<?>> tag(String name) {
         	return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));

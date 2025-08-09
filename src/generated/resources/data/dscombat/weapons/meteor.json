@@ -1,7 +1,7 @@
 {
   "acceleration": 0.05,
   "activeTrack": true,
-  "bleed": 0.04,
+  "bleed": 0.17,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -19,6 +19,7 @@
   "fov": 50.0,
   "fuelTicks": 300,
   "fuseDist": 4.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 16,
@@ -45,14 +46,14 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:track_air_missile",
-  "maxAge": 500,
+  "itemKey": "dscombat:missile",
+  "mass": 190.0,
+  "maxAge": 1749,
   "presetId": "meteor",
   "presetType": "track_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 6.0,
+  "sort_factor": 10,
+  "speed": 10.719,
   "targetType": "AIR",
   "turnRadius": 160.0
 }

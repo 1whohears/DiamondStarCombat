@@ -17,7 +17,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:nathan_boat",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "nathan_boat_empty",
   "presetType": "boat",
@@ -159,17 +159,28 @@
     "armor_damage_threshold": 1.0,
     "assetId": "nathan_boat",
     "base_armor": 20.0,
+    "break_deacc_air": 0.05,
+    "break_deacc_ground": 0.0,
     "cameraDistance": 4.0,
     "crashExplosionRadius": 2.0,
     "cross_sec_area": 4.5,
     "entity_size_xz": 3.0,
     "entity_size_y": 1.5,
+    "fuel_consume_per_engine": 0.004,
+    "hard_coded_rot_acc": {
+      "x": 0.0,
+      "y": 0.10000000149011612,
+      "z": 0.0
+    },
+    "hard_coded_rot_decel": 0.05,
+    "heat_per_engine": 5.0,
     "idleheat": 2.0,
-    "inertiapitch": 10.0,
-    "inertiaroll": 6.0,
-    "inertiayaw": 4.0,
+    "inertiapitch": 10000.0,
+    "inertiaroll": 6000.0,
+    "inertiayaw": 4000.0,
     "mass": 1000.0,
     "max_health": 80.0,
+    "max_push_thrust_per_engine": 10000.0,
     "max_speed": 0.85,
     "maxpitch": 0.0,
     "maxroll": 0.0,
@@ -180,7 +191,9 @@
     "throttleup": 0.05,
     "torquepitch": 0.0,
     "torqueroll": 0.0,
-    "torqueyaw": 2.0,
-    "turn_radius": 0.0
+    "torqueyaw": 200000.0,
+    "turn_radius": 0.0,
+    "use_horizontal_speed_scale": false,
+    "use_vertical_speed_scale": true
   }
 }

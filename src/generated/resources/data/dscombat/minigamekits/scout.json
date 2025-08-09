@@ -1,6 +1,145 @@
 {
   "displayName": "preset.dscombat.scout",
-  "kitItems": [],
+  "kitItems": [
+    {
+      "distinguishByNBT": "GunId",
+      "item": "tacz:modern_kinetic_gun",
+      "keep": true,
+      "nbt": {
+        "GunCurrentAmmoCount": 5,
+        "GunFireMode": "SEMI",
+        "GunId": "tacz:m870",
+        "HasBulletInBarrel": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "distinguishByNBT": "GunId",
+      "item": "tacz:modern_kinetic_gun",
+      "keep": true,
+      "nbt": {
+        "GunCurrentAmmoCount": 7,
+        "GunFireMode": "SEMI",
+        "GunId": "tacz:deagle",
+        "HasBulletInBarrel": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_axe",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_pickaxe",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_shovel",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:cooked_beef",
+      "keep": true,
+      "num": 32,
+      "refill": true
+    },
+    {
+      "item": "minecraft:splash_potion",
+      "keep": true,
+      "nbt": {
+        "Potion": "minecraft:strong_healing"
+      },
+      "num": 3,
+      "refill": true
+    },
+    {
+      "item": "minecraft:iron_helmet",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_chestplate",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_leggings",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_boots",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "scout"
+      },
+      "num": 1
+    },
+    {
+      "item": "dscombat:parachute",
+      "keep": true,
+      "num": 1,
+      "refill": true
+    },
+    {
+      "checkCountByNBT": "AmmoCount",
+      "distinguishByNBT": "AmmoId",
+      "item": "tacz:ammo_box",
+      "keep": true,
+      "nbt": {
+        "AmmoCount": 108,
+        "AmmoId": "tacz:12g",
+        "Level": 0,
+        "kitOnly": "scout"
+      },
+      "num": 1,
+      "refill": true
+    },
+    {
+      "checkCountByNBT": "AmmoCount",
+      "distinguishByNBT": "AmmoId",
+      "item": "tacz:ammo_box",
+      "keep": true,
+      "nbt": {
+        "AmmoCount": 144,
+        "AmmoId": "tacz:50ae",
+        "Level": 0,
+        "kitOnly": "scout"
+      },
+      "num": 1,
+      "refill": true
+    }
+  ],
   "presetId": "scout",
   "presetType": "gamekit"
 }

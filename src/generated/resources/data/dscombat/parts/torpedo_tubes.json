@@ -1,9 +1,26 @@
 {
   "displayName": "item.dscombat.torpedo_tubes",
-  "externalEntity": "dscombat:torpedo_tubes",
-  "item": "dscombat:torpedo_tubes",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 2.0,
+  "hitbox_width": 2.5,
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "num": 15,
+      "tag": "dscombat:aluminum_ingot"
+    }
+  ],
+  "item": "dscombat:turret",
   "maxAmmo": 3,
   "maxHealth": 60.0,
+  "passenger_offset": {
+    "x": 0.0,
+    "y": 1.8,
+    "z": 0.0
+  },
   "presetId": "torpedo_tubes",
   "presetType": "turret",
   "repair_cost": [
@@ -12,6 +29,14 @@
       "num": 8
     }
   ],
+  "rotBounds": {
+    "maxRotX": 5.0,
+    "minRotX": -5.0,
+    "rotRate": 1.6
+  },
+  "shootType": "NORMAL",
   "slotType": "mount_med",
+  "sort_factor": 16,
+  "weaponOffset": 1.0,
   "weight": 5500.0
 }

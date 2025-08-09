@@ -3,15 +3,14 @@ package com.onewhohears.dscombat.data.parts.instance;
 import com.onewhohears.dscombat.crafting.FlareDispenserLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.FlareDispenserStats;
 import com.onewhohears.dscombat.entity.weapon.EntityFlare;
 
 import com.onewhohears.onewholibs.util.UtilMCText;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
@@ -75,6 +74,7 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 			this.flares = max;
 			return r;
 		}
+		setDirty();
 		return 0;
 	}
 	
@@ -83,6 +83,7 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 		if (flares > max) flares = max;
 		else if (flares < 0) flares = 0;
 		this.flares = flares;
+		setDirty();
 	}
 	
 	@Override

@@ -10,10 +10,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.client.entityscreen.VehicleScreenMapReader;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
-import com.onewhohears.onewholibs.data.jsonpreset.PresetBuilder;
+import com.onewhohears.onewholibs.data.jsonpreset.*;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -21,37 +18,27 @@ import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class VehicleClientStats extends JsonPresetStats {
+public class VehicleClientStats extends CustomAnimStats<ObjVehicleModel<EntityVehicle>, EntityVehicle> {
 	
 	private ResourceLocation background;
 	private HashMap<String, UIPos> slotsPos;
-	private ObjVehicleModel<EntityVehicle> model;
 	private List<EntityScreenData> screens;
 	private boolean dontCull = false;
 	
 	public VehicleClientStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 	}
-	
-	public ObjVehicleModel<EntityVehicle> getModel() {
-		if (model != null) return model;
-		if (!getJsonData().has("model_data")) {
-			model = new ObjVehicleModel<>(getId());
-			return model;
+
+	@Override
+	protected ObjVehicleModel<EntityVehicle> createModel() {
+		if (getJsonData().has("model_data")) {
+			JsonObject model_data = getJsonData().get("model_data").getAsJsonObject();
+			dontCull = UtilParse.getBooleanSafe(model_data, "dont_cull", false);
+			if (model_data.has("hard_coded_model_anims")) {
+				return HardCodedModelAnims.get(model_data.get("hard_coded_model_anims").getAsString());
+			}
 		}
-		JsonObject model_data = getJsonData().get("model_data").getAsJsonObject();
-		dontCull = UtilParse.getBooleanSafe(model_data, "dont_cull", false);
-		if (model_data.has("hard_coded_model_anims")) {
-			model = HardCodedModelAnims.get(model_data.get("hard_coded_model_anims").getAsString());
-			if (model != null) return model;
-		}
-		String model_id = getId();
-		if (model_data.has("model_id")) model_id = model_data.get("model_id").getAsString();
-		String[] animDataIds = UtilParse.getStringArraySafe(model_data, "anim_data");
-		if (model_data.has("custom_anims")) 
-			model = new ObjVehicleModel<>(model_id, model_data.get("custom_anims").getAsJsonArray(), animDataIds);
-		else model = new ObjVehicleModel<>(model_id, animDataIds);
-		return model;
+		return new ObjVehicleModel<>(getModelId(), getCustomAnims(), getKeyframeAnimIds());
 	}
 	
 	public List<EntityScreenData> getScreens() {
@@ -95,42 +82,17 @@ public class VehicleClientStats extends JsonPresetStats {
 	
 	public static UIPos getUIPosByIndex(int i, int x_start, int y_start) {
 		int x = x_start + i % 9 * 18;
-		int y = y_start + (int)(i / 9) * 18;
+		int y = y_start + (i / 9) * 18;
 		return new UIPos(x, y);
 	}
 	
-	public static class Builder extends PresetBuilder<Builder> {
-		protected JsonObject getModelData() {
-			if (!getData().has("model_data")) {
-				getData().add("model_data", new JsonObject());
-			}
-			return getData().get("model_data").getAsJsonObject();
-		}
+	public static class Builder extends CustomAnimStatsBuilder<Builder> {
 		public Builder setDontCull(boolean dontCull) {
 			getModelData().addProperty("dont_cull", dontCull);
 			return this;
 		}
-		public Builder setKFAnimDataIds(String model_id, String... animDataIds) {
-			setKFAnimsDataIds(animDataIds);
-			return setSimpleModelId(model_id);
-		}
-		public Builder setKFAnimsDataIds(String... animDataIds) {
-			getModelData().add("anim_data", UtilParse.stringArrayToJsonArray(animDataIds));
-			return this;
-		}
-		public Builder setCustomAnims(String model_id, JsonArray anims) {
-			getModelData().add("custom_anims", anims);
-			return setSimpleModelId(model_id);
-		}
-		public Builder setCustomAnims(JsonArray anims) {
-			return setCustomAnims(getPresetId(), anims);
-		}
 		public Builder setHardCodedModelAnims(String hard_coded_model_anims) {
 			getModelData().addProperty("hard_coded_model_anims", hard_coded_model_anims);
-			return this;
-		}
-		public Builder setSimpleModelId(String model_id) {
-			getModelData().addProperty("model_id", model_id);
 			return this;
 		}
 		public Builder setHardCodedModelAnims() {
@@ -167,7 +129,7 @@ public class VehicleClientStats extends JsonPresetStats {
 			super(namespace, name, type);
 		}
 		protected Builder(String namespace, String name, VehicleClientType type, VehicleClientStats copy) {
-			super(namespace, name, type, copy.getJsonData().deepCopy());
+			super(namespace, name, type, copy);
 		}
 		public static Builder create(String namespace, String name) {
 			return new Builder(namespace, name, VehicleClientType.STANDARD);

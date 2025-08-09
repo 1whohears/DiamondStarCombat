@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.onewholibs.common.event.GetJsonPresetListenersEvent;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
 import com.onewhohears.dscombat.data.parts.PartPresets;
@@ -12,9 +13,9 @@ import com.onewhohears.dscombat.data.radar.RadarPresets;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
-import com.onewhohears.dscombat.entity.vehicle.CustomExplosion;
+import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.vehicle.RotableHitboxes;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitboxes;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.TickEvent;
@@ -37,7 +38,7 @@ public final class CommonForgeEvents {
 		event.setAmount(plane.calcDamageToRider(event.getSource(), event.getAmount()));
 	}
 	
-	private static Set<Integer> explodeRepeatCheck = new HashSet<>();
+	private static final Set<Integer> explodeRepeatCheck = new HashSet<>();
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void explosionEvent(ExplosionEvent.Detonate event) {
@@ -69,6 +70,7 @@ public final class CommonForgeEvents {
 	public static void serverTickEvent(TickEvent.ServerTickEvent event) {
 		if (event.phase != Phase.END) return;
 		NonTickingMissileManager.serverTick(event.getServer());
+		TrackableEntitiesManager.serverTick(event.getServer());
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

@@ -1,10 +1,20 @@
 {
   "changeLaunchPitch": 0.0,
   "displayName": "item.dscombat.bomb_rack",
-  "item": "dscombat:bomb_rack",
+  "externalEntity": "dscombat:external_weapon_part",
+  "hitbox_height": 0.1,
+  "hitbox_width": 0.1,
+  "ingredients": [
+    {
+      "num": 15,
+      "tag": "dscombat:aluminum_ingot"
+    }
+  ],
+  "item": "dscombat:external_weapon_part",
   "max": 16,
   "presetId": "bomb_rack",
   "presetType": "external_weapon",
   "slotType": "pylon_heavy",
-  "weight": 2000.0
+  "sort_factor": 4,
+  "weight": 40.0
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.onewholibs.data.crafting.IngredientStack;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
@@ -13,6 +14,7 @@ import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -27,10 +29,13 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	public static final int PARSE_VERSION = 3;
 
+	protected boolean isSetup = false;
+
 	private String slotId = "";
 	private Vec3 relPos = Vec3.ZERO;
 	private EntityVehicle parent;
 	private boolean damaged;
+	private boolean dirty;
 	
 	public PartInstance(T stats) {
 		super(stats);
@@ -66,11 +71,29 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		buffer.writeUtf(getStats().getId());
 		buffer.writeBoolean(damaged);
 	}
+
+	public void setDirty() {
+		dirty = true;
+	}
+
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	public void onReceiveClientSync() {
+		dirty = false;
+	}
+
+	public void onSendClientSync() {
+		dirty = false;
+	}
 	
 	public int getFlares() {
 		return 0;
 	}
-	
+	/**
+	 * this is actually mass, but refactoring would cause additional confusion
+	 */
 	public float getWeight() {
 		return getStats().getWeight();
 	}
@@ -122,6 +145,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		setRelPos(pos);
 		if (craft.level.isClientSide) clientSetup(craft, slotId, pos);
 		else serverSetup(craft, slotId, pos);
+		isSetup = true;
 	}
 	
 	protected void serverRemove(String slotId) {
@@ -135,6 +159,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public void remove(EntityVehicle parent, String slotId) {
 		if (parent.level.isClientSide) clientRemove(slotId);
 		else serverRemove(slotId);
+		isSetup = false;
 	}
 	
 	public void tick(String slotId) {
@@ -179,6 +204,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	}
 	
 	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {
+		part.setPreset(getStatsId());
 		part.setSlotId(slotId);
 		part.setRelativePos(pos);
 		part.setPos(craft.position());
@@ -196,6 +222,7 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	protected void setDamaged(boolean damaged) {
 		this.damaged = damaged;
+		setDirty();
 	}
 	
 	public void onDamaged(EntityVehicle parent, String slotId) {
@@ -261,5 +288,17 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	public boolean canJetesin() {
 		return hasExternalEntity() && !getStats().isSeat();
 	}
-	
+
+	public boolean isSetup() {
+		return isSetup;
+	}
+
+    public Vec3 getRotInertia() {
+		if (parent == null || UtilGeometry.isZero(relPos)) return Vec3.ZERO;
+		return new Vec3(
+				getWeight() * (relPos.y*relPos.y + relPos.z*relPos.z),
+				getWeight() * (relPos.x*relPos.x + relPos.z*relPos.z),
+				getWeight() * (relPos.x*relPos.x + relPos.y*relPos.y)
+		).scale(DSCPhyCons.PART_ROT_INERTIA_SCALE);
+    }
 }

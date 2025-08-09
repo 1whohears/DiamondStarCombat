@@ -44,14 +44,16 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.AGM65L.get(), ModItems.AGM84E.get(), ModItems.AGM114K.get(), ModItems.AIM7F.get())
 			.add(ModItems.AIM7MH.get(), ModItems.AIM9L.get(), ModItems.AIM9P5.get(), ModItems.AIM9X.get())
 			.add(ModItems.AIM120B.get(), ModItems.AIM120C.get(), ModItems.TORPEDO1.get(), ModItems.RIFEL1.get())
-			.add(ModItems.GRUETZ_BUNKER_BUSTER.get(), ModItems.MK13.get(), ModItems.AGM88G.get());
+			.add(ModItems.GRUETZ_BUNKER_BUSTER.get(), ModItems.MK13.get(), ModItems.AGM88G.get())
+				.add(ModItems.AMMO.get(), ModItems.MISSILE.get());
 		tag(ModTags.Items.VEHICLE)
 			.add(ModItems.JAVI_PLANE.get(), ModItems.ALEXIS_PLANE.get(), ModItems.WOODEN_PLANE.get(), ModItems.E3SENTRY_PLANE.get())
 			.add(ModItems.BRONCO_PLANE.get(), ModItems.FELIX_PLANE.get(), ModItems.JASON_PLANE.get(), ModItems.EDEN_PLANE.get())
 			.add(ModItems.NOAH_CHOPPER.get(), ModItems.ORANGE_TESLA.get(), ModItems.AXCEL_TRUCK.get(), ModItems.MRBUDGER_TANK.get())
 			.add(ModItems.SMALL_ROLLER.get(), ModItems.NATHAN_BOAT.get(), ModItems.GRONK_BATTLESHIP.get(), ModItems.DESTROYER.get())
 			.add(ModItems.CRUISER.get(), ModItems.CORVETTE.get(), ModItems.AIRCRAFT_CARRIER.get(), ModItems.ANDOLF_SUB.get())
-			.add(ModItems.GOOGLE_SUB.get());
+			.add(ModItems.GOOGLE_SUB.get(), ModItems.JAMES_WOODEN_PLANE.get(), ModItems.EWR4000.get(), ModItems.ERIC_TRUCK.get())
+				.add(ModItems.VEHICLE.get());
 		tag(ModTags.Items.VEHICLE_PART)
 			.addTag(ModTags.Items.VEHICLE_PART_WEAPON)
 			.addTag(ModTags.Items.VEHICLE_PART_ENGINE)
@@ -66,11 +68,12 @@ public class ItemTagGen extends ItemTagsProvider {
 		tag(ModTags.Items.VEHICLE_PART_WEAPON)
 			.addTag(ModTags.Items.VEHICLE_TURRET)
 			.add(ModItems.XM12.get(), ModItems.LIGHT_MISSILE_RACK.get(), ModItems.HEAVY_MISSILE_RACK.get(), ModItems.BOMB_RACK.get())
-			.add(ModItems.ADL.get(), ModItems.VLS.get());
+			.add(ModItems.ADL.get(), ModItems.VLS.get(), ModItems.EXTERNAL_WEAPON_PART.get());
 		tag(ModTags.Items.VEHICLE_TURRET)
 			.add(ModItems.AA_TURRET.get(), ModItems.MINIGUN_TURRET.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get())
 			.add(ModItems.HEAVY_TANK_TURRET.get(), ModItems.MARK7_CANNON.get(), ModItems.STEVE_UP_SMASH.get(), ModItems.SAM_LAUNCHER.get())
-			.add(ModItems.TORPEDO_TUBES.get(), ModItems.MLS.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get());
+			.add(ModItems.TORPEDO_TUBES.get(), ModItems.MLS.get(), ModItems.CIWS.get(), ModItems.MARK45_CANNON.get())
+				.add(ModItems.TURRET.get(), ModItems.ARTILLERY_CANNON.get());
 		tag(ModTags.Items.VEHICLE_PART_ENGINE)
 			.addTag(ModTags.Items.VEHICLE_ENGINE_EXTERNAL_PUSH)
 			.addTag(ModTags.Items.VEHICLE_ENGINE_INTERNAL_PUSH)

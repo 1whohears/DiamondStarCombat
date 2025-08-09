@@ -1,6 +1,10 @@
 {
   "values": [
     "minecraft:boat",
-    "minecraft:minecart"
+    "minecraft:minecart",
+    {
+      "id": "minigames:flag",
+      "required": false
+    }
   ]
 }

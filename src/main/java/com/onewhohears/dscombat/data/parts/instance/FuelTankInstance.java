@@ -5,10 +5,10 @@ import java.util.List;
 import com.onewhohears.dscombat.crafting.FuelTankLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.FuelTankStats;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -83,6 +83,7 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 			this.fuel = max;
 			return r;
 		}
+		setDirty();
 		return 0;
 	}
 	
@@ -91,6 +92,7 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 		if (fuel > max) fuel = max;
 		else if (fuel < 0) fuel = 0;
 		this.fuel = fuel;
+		setDirty();
 	}
 	
 	@Override
@@ -146,8 +148,8 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 
 	@Override
 	public void addToolTips(List<Component> tips, TooltipFlag isAdvanced) {
-		tips.add(UtilMCText.literal("info.dscombat.fuel")
-				.append(" "+(int)fuel+"/"+(int)getStats().getMaxFuel())
+		tips.add(UtilMCText.translatable("info.dscombat.fuel")
+				.append(": "+(int)fuel+"/"+(int)getStats().getMaxFuel())
 				.setStyle(Style.EMPTY.withColor(0xAAAAAA)));
 		super.addToolTips(tips, isAdvanced);
 	}

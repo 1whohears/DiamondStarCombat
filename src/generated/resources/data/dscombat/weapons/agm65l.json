@@ -19,6 +19,7 @@
   "fov": -1.0,
   "fuelTicks": 300,
   "fuseDist": 1.5,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 5,
@@ -37,13 +38,13 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:agm65l",
+  "itemKey": "dscombat:missile",
+  "mass": 250.0,
   "maxAge": 300,
   "presetId": "agm65l",
   "presetType": "pos_missile",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 4,
   "speed": 2.0,
   "turnRadius": 60.0
 }

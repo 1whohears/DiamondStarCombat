@@ -33,20 +33,19 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 		if (target != null) guideToTarget();
 	}
 	
-	protected List<IrTarget> targets = new ArrayList<IrTarget>();
+	protected List<IrTarget> targets = new ArrayList<>();
 	
 	public static void updateIRTargetsList(Entity weapon, List<IrTarget> targets, float flareResistance, float fov) {
 		targets.clear();
 		List<Entity> irEmitters = weapon.level.getEntities(weapon, getIrBoundingBox(weapon), 
 				(entity) -> entity.getType().is(ModTags.EntityTypes.IR_EMITTER));
-		for (int i = 0; i < irEmitters.size(); ++i) {
-			Entity emitter = irEmitters.get(i);
-			if (emitter.isPassenger()) continue;
-			if (!basicCheck(weapon, emitter, true, fov)) continue;
-			float distSqr = (float)weapon.distanceToSqr(emitter);
-			float heat = getEntityHeat(emitter, flareResistance);
-			targets.add(new IrTarget(emitter, heat / distSqr));
-		}
+        for (Entity emitter : irEmitters) {
+            if (emitter.isPassenger()) continue;
+            if (!basicCheck(weapon, emitter, true, fov)) continue;
+            float distSqr = (float) weapon.distanceToSqr(emitter);
+            float heat = getEntityHeat(emitter, flareResistance);
+            targets.add(new IrTarget(emitter, heat / distSqr));
+        }
 	}
 	
 	public static float getEntityHeat(Entity entity, float flareResistance) {
@@ -63,7 +62,7 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 	protected void findIrTarget() {
 		updateIRTargetsList(this, targets, getWeaponStats().getFlareResistance(), getWeaponStats().getFov());
 		// pick target
-		if (targets.size() == 0) {
+		if (targets.isEmpty()) {
 			this.target = null;
 			this.targetPos = null;
 			//System.out.println("NO TARGET");
@@ -84,6 +83,10 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 			//System.out.println("same");
 			return false;
 		}
+		if (ping.isSpectator()) {
+			//System.out.println("spectator");
+			return false;
+		}
 		if (checkGround && ping.isOnGround()) {
 			//System.out.println("on ground");
 			return false;
@@ -99,14 +102,8 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 			//System.out.println("not in cone");
 			return false;
 		}
-		if (!UtilEntity.canEntitySeeEntity(weapon, ping, 
-				Config.COMMON.maxBlockCheckDepth.get(), 0, 0)) {
-			//System.out.println("can't see");
-			return false;
-		}
-		//System.out.println("POSSIBLE");
-		return true;
-	}
+        return UtilEntity.canEntitySeeEntity(weapon, ping, Config.COMMON.maxBlockCheckDepth.get(), 0, 0);
+    }
 	
 	public static final double IR_RANGE = 300d;
 	
@@ -129,13 +126,8 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 		}
 		
 	}
-	
-	@Override
-	protected WeaponDamageSource getImpactDamageSource() {
-		return WeaponDamageSource.WeaponDamageType.MISSILE_CONTACT.getSource(getOwner(), this);
-	}
 
-	@Override
+    @Override
 	protected WeaponDamageSource getExplosionDamageSource() {
 		return WeaponDamageSource.WeaponDamageType.IR_MISSILE.getSource(getOwner(), this);
 	}

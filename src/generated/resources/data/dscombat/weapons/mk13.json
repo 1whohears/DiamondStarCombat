@@ -19,6 +19,7 @@
   "fov": 40.0,
   "fuelTicks": 400,
   "fuseDist": 2.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 12,
@@ -37,14 +38,14 @@
       "num": 2
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:mk13",
+  "itemKey": "dscombat:missile",
+  "mass": 1005.0,
   "maxAge": 600,
   "presetId": "mk13",
   "presetType": "torpedo",
-  "rackTypeKey": "dscombat:heavy_missile_rack",
   "seeThroWater": 10000,
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 3,
   "speed": 2.5,
   "targetType": "WATER",
   "turnRadius": 80.0

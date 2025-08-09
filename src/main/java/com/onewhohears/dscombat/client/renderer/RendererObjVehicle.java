@@ -4,10 +4,9 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.client.renderer.RendererObjEntity;
+import com.onewhohears.onewholibs.client.renderer.RendererCustomAnimObjEntity;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.Minecraft;
@@ -15,15 +14,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.world.entity.Entity;
 
-public class RendererObjVehicle extends RendererObjEntity<EntityVehicle> implements RotableHitboxRenderer, VehicleScreenRenderer<EntityVehicle> {
+public class RendererObjVehicle extends RendererCustomAnimObjEntity<EntityVehicle> implements RotableHitboxRenderer, VehicleScreenRenderer<EntityVehicle> {
 	
 	public RendererObjVehicle(Context ctx) {
 		super(ctx);
-	}
-	
-	@Override
-	protected ObjVehicleModel<EntityVehicle> getModel(EntityVehicle entity) {
-        return entity.getClientStats().getModel();
 	}
 
 	@Override
@@ -53,7 +47,7 @@ public class RendererObjVehicle extends RendererObjEntity<EntityVehicle> impleme
 	
 	@Override
 	public boolean shouldRenderScreens(EntityVehicle vehicle) {
-		if (getScreens(vehicle).size() == 0) return false;
+		if (getScreens(vehicle).isEmpty()) return false;
 		Minecraft m = Minecraft.getInstance();
 		if (m.player == null) return false;
 		Entity seat = vehicle.getPilotSeat();
@@ -62,7 +56,7 @@ public class RendererObjVehicle extends RendererObjEntity<EntityVehicle> impleme
 	}
 	
 	protected List<EntityScreenData> getScreens(EntityVehicle vehicle) {
-		return vehicle.getClientStats().getScreens();
+		return vehicle.getAssets().getScreens();
 	}
 
 }

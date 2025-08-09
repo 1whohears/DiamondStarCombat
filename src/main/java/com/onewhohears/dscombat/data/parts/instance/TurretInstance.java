@@ -2,12 +2,13 @@ package com.onewhohears.dscombat.data.parts.instance;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.crafting.*;
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.TurretStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -19,8 +20,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class TurretInstance<T extends TurretStats> extends SeatInstance<T> implements ReloadablePartInstance {
 	
-	private String weapon = "";
+	@Nonnull private String weapon = "";
 	private int ammo = 0;
+	@Nullable private WeaponInstance<?> data;
 	
 	public TurretInstance(T stats) {
 		super(stats);
@@ -81,14 +83,16 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 	public String getWeaponId() {
 		return weapon;
 	}
-	
+
 	@Override
-	public void serverSetup(EntityVehicle craft, String slotId, Vec3 pos) {
-		super.serverSetup(craft, slotId, pos);
-		EntityTurret turret = getTurret(slotId);
-		if (turret == null) return;
-		turret.setMaxAmmo(getStats().getMaxAmmo());
-		turret.setAmmo(ammo);
+	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
+		super.setup(craft, slotId, pos);
+		if (data == null && WeaponPresets.get().has(getWeaponId()))
+			data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
+		if (data != null) {
+			data.setMaxAmmo((int)getMaxAmmo());
+			data.setCurrentAmmo(ammo);
+		}
 	}
 	
 	@Nullable
@@ -101,17 +105,6 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 				return turret;
 		return null;
 	}
-	
-	@Override
-	public void setUpPartEntity(EntityPart part, EntityVehicle craft, String slotId, Vec3 pos, float health) {
-		super.setUpPartEntity(part, craft, slotId, pos, health);
-		if (!(part instanceof EntityTurret turret)) return;
-		turret.setWeaponId(getWeaponId());
-	}
-	
-	public void setAmmo(int ammo) {
-		this.ammo = ammo;
-	}
 
 	@Override
 	public float getCurrentAmmo() {
@@ -123,12 +116,37 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 		return getStats().getMaxAmmo();
 	}
 
+	/**
+	 * this function is mostly used internally.
+	 * see {@link #setWeaponAmmo(int)}
+	 */
 	@Override
 	public void setCurrentAmmo(float ammo) {
 		this.ammo = (int)ammo;
-		EntityTurret turret = getTurret(getSlotId());
-		if (turret == null) return;
-		turret.setAmmo(this.ammo);
+		if (data != null) data.setCurrentAmmo((int) ammo);
+		setDirty();
+	}
+
+	/**
+	 * update the part's ammo and the turret entity's ammo.
+	 * @param ammo
+	 */
+	public void setWeaponAmmo(int ammo) {
+		if (data != null) {
+			data.setCurrentAmmo(ammo);
+			setCurrentAmmo(data.getCurrentAmmo());
+		}
+	}
+
+	/**
+	 * update the part's ammo and the turret entity's ammo.
+	 * @param ammo
+	 */
+	public int addWeaponAmmo(int ammo) {
+		if (data == null) return 0;
+		int r = data.addAmmo(ammo);
+		setCurrentAmmo(data.getCurrentAmmo());
+		return r;
 	}
 
 	@Override
@@ -147,10 +165,20 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 
 	@Override
 	public void setContinuity(String continuity) {
+		if (continuity == null) continuity = "";
+		if (continuity.equals(weapon)) return;
 		this.weapon = continuity;
-		EntityTurret turret = getTurret(getSlotId());
-		if (turret == null) return;
-		turret.setWeaponId(this.weapon);
+		setDirty();
+		if (!isSetup()) return;
+		if (WeaponPresets.get().has(getWeaponId())) {
+			data = WeaponPresets.get().get(getWeaponId()).createWeaponInstance();
+			if (data != null) {
+				data.setMaxAmmo((int) getMaxAmmo());
+				data.setCurrentAmmo(ammo);
+			}
+		} else {
+			data = null;
+		}
 	}
 
 	@Override
@@ -178,4 +206,15 @@ public class TurretInstance<T extends TurretStats> extends SeatInstance<T> imple
 		return UNLOAD_RECIPE;
 	}
 
+	@Nullable
+	public WeaponInstance<?> getWeaponData() {
+		return data;
+	}
+
+	@Override
+	public void onReceiveClientSync() {
+		super.onReceiveClientSync();
+		setContinuity(getWeaponId());
+		if (data != null) data.setCurrentAmmo(ammo);
+	}
 }

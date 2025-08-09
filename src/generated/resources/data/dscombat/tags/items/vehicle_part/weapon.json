@@ -6,6 +6,7 @@
     "dscombat:heavy_missile_rack",
     "dscombat:bomb_rack",
     "dscombat:adl",
-    "dscombat:vls"
+    "dscombat:vls",
+    "dscombat:external_weapon_part"
   ]
 }

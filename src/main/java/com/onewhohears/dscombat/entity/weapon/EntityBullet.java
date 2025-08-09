@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
@@ -30,17 +31,13 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 		setDeltaMovement(dir.scale(getSpeed()));
 	}
 	
-	@Override
-	protected void tickSetMove() {
-		setDeltaMovement(getDeltaMovement().add(0, -DSCPhyCons.GRAVITY, 0));
-	}
-	
 	protected void checkExplode() {
 		if (getAge() < minExplodeAge()) return;
 		if (!level.hasChunk(chunkPosition().x, chunkPosition().z)) return;
 		if (!level.isClientSide && getExplosive()) {
 			Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
-			if (getTerrain()) interact = Explosion.BlockInteraction.BREAK;
+			if (getTerrain() && !getLevel().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS))
+				interact = Explosion.BlockInteraction.BREAK;
 			for (int i = 0; i < getExplodeNum(); ++i) {
 				level.explode(this, getExplosionDamageSource(),
 					null, getX(), getY(), getZ(), 
@@ -104,5 +101,4 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 		if (getExplosive()) return WeaponStats.WeaponClientImpactType.SMALL_BULLET_EXPLODE;
 		return WeaponStats.WeaponClientImpactType.SMALL_BULLET_IMPACT;
 	}
-
 }

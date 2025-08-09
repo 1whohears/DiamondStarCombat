@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 
 public interface VehicleScreenRenderer<T extends EntityVehicle> extends EntityScreenRenderer<T> {
 	
-	public boolean shouldRenderScreens(T vehicle);
+	boolean shouldRenderScreens(T vehicle);
 	
-	public void renderVehicleScreens(T vehicle, PoseStack poseStack, MultiBufferSource buffer, int packedLight, float partialTicks);
+	void renderVehicleScreens(T vehicle, PoseStack poseStack, MultiBufferSource buffer, int packedLight, float partialTicks);
 	
 }

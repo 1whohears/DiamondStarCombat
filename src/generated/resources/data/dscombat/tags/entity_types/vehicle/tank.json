@@ -1,5 +1,9 @@
 {
   "values": [
-    "dscombat:car"
+    "dscombat:car",
+    {
+      "id": "car:car",
+      "required": false
+    }
   ]
 }

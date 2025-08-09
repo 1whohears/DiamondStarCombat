@@ -1,7 +1,14 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.vehicle.presets.*;
+import com.onewhohears.dscombat.data.vehicle.presets.boat.BoatPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.ground_vehicle.CarPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.ground_vehicle.StationaryPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.ground_vehicle.TankPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.helicopter.KraitChopperPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.helicopter.NoahChopperPresets;
+import com.onewhohears.dscombat.data.vehicle.presets.plane.*;
+import com.onewhohears.dscombat.data.vehicle.presets.submarine.SubPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.item.*;
 
@@ -121,6 +128,8 @@ public class ModItems {
             ItemParachute::new);
 	public static final RegistryObject<Item> SPRAYCAN = ITEMS.register("spraycan", 
 			() -> new Item(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1)));
+	public static final RegistryObject<Item> TICKET_BOOK = ITEMS.register("ticket_book",
+            ItemTicketBook::new);
 	
 	// CREATIVE WANDS
 	public static final RegistryObject<Item> NO_CONSUME_WAND = ITEMS.register("no_consume_wand", 
@@ -239,50 +248,54 @@ public class ModItems {
 			() -> new ItemSeat(64));
 	
 	// TURRETS
+	public static final RegistryObject<ItemPart> TURRET = ITEMS.register("turret",
+			() -> new ItemTurret(16, "aa_turret"));
 	public static final RegistryObject<ItemPart> AA_TURRET = ITEMS.register("aa_turret", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "aa_turret"));
 	public static final RegistryObject<ItemPart> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "minigun_turret"));
 	public static final RegistryObject<ItemPart> CIWS = ITEMS.register("ciws", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "ciws"));
 	public static final RegistryObject<ItemPart> MARK45_CANNON = ITEMS.register("mark45_cannon", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "mark45_cannon"));
 	public static final RegistryObject<ItemPart> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "heavy_tank_turret"));
 	public static final RegistryObject<ItemPart> MARK7_CANNON = ITEMS.register("mark7_cannon", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "mark7_cannon"));
 	public static final RegistryObject<ItemPart> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "steve_up_smash"));
 	public static final RegistryObject<ItemPart> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "sam_launcher"));
 	public static final RegistryObject<ItemPart> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "torpedo_tubes"));
 	public static final RegistryObject<ItemPart> MLS = ITEMS.register("mls", 
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "mls"));
 	public static final RegistryObject<ItemPart> MLRS = ITEMS.register("mlrs",
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "mlrs"));
 	public static final RegistryObject<ItemPart> ARTILLERY_CANNON = ITEMS.register("artillery_cannon",
-			() -> new ItemTurret(16));
+			() -> new ItemTurret(16, "artillery_cannon"));
 	
 	// FLARE DISPENSERS
 	public static final RegistryObject<ItemPart> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
 			() -> new ItemPart(16));
 	
 	// WEAPON PARTS
+	public static final RegistryObject<ItemPart> EXTERNAL_WEAPON_PART = ITEMS.register("external_weapon_part",
+			() -> new ItemWeaponPart(16, "xm12"));
 	public static final RegistryObject<ItemPart> XM12 = ITEMS.register("xm12", 
-			() -> new ItemWeaponPart(16)); 
+			() -> new ItemWeaponPart(16, "xm12"));
 	public static final RegistryObject<ItemPart> INTERNAL_GUN = ITEMS.register("internal_gun", 
-			() -> new ItemWeaponPart(16)); 
+			() -> new ItemWeaponPart(16, "internal_gun"));
 	public static final RegistryObject<ItemPart> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
-			() -> new ItemWeaponPart(16)); 
+			() -> new ItemWeaponPart(16, "light_missile_rack"));
 	public static final RegistryObject<ItemPart> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
-			() -> new ItemWeaponPart(16)); 
+			() -> new ItemWeaponPart(16, "heavy_missile_rack"));
 	public static final RegistryObject<ItemPart> BOMB_RACK = ITEMS.register("bomb_rack", 
-			() -> new ItemWeaponPart(16));
+			() -> new ItemWeaponPart(16, "bomb_rack"));
 	public static final RegistryObject<ItemPart> ADL = ITEMS.register("adl", 
-			() -> new ItemWeaponPart(16)); 
+			() -> new ItemWeaponPart(16, "adl"));
 	public static final RegistryObject<ItemPart> VLS = ITEMS.register("vls", 
-			() -> new ItemWeaponPart(16));
+			() -> new ItemWeaponPart(16, "vls"));
 	/**
 	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise
@@ -290,10 +303,14 @@ public class ModItems {
 	 */
 	
 	// AMMO
+	public static final RegistryObject<Item> AMMO = ITEMS.register("ammo",
+			() -> new ItemAmmo(64, "20mm"));
 	public static final RegistryObject<Item> BULLET = ITEMS.register("bullet", 
 			() -> new ItemAmmo(64, "20mm")); 
 	public static final RegistryObject<Item> BOMB = ITEMS.register("bomb", 
-			() -> new ItemAmmo(64, "anm57")); 
+			() -> new ItemAmmo(64, "anm57"));
+	public static final RegistryObject<Item> MISSILE = ITEMS.register("missile",
+			() -> new ItemAmmo(16, "agm114k"));
 	public static final RegistryObject<Item> TRACK_AIR_MISSILE = ITEMS.register("track_air_missile", 
 			() -> new ItemAmmo(16, "aim120b")); 
 	public static final RegistryObject<Item> TRACK_GROUND_MISSILE = ITEMS.register("track_ground_missile", 
@@ -345,7 +362,11 @@ public class ModItems {
 			() -> new ItemAmmo(16, "mk13")); 
 	public static final RegistryObject<Item> AGM88G = ITEMS.register("agm88g", 
 			() -> new ItemAmmo(16, "agm88g")); 
-	
+
+	// VEHICLE
+	public static final RegistryObject<Item> VEHICLE = ITEMS.register("vehicle",
+			() -> new ItemVehicle(TankPresets.UNARMED_SMALL_ROLLER.getId()));
+
 	// PLANES
 	public static final RegistryObject<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
 			() -> new ItemVehicle(JaviPresets.DEFAULT_JAVI_PLANE.getId()));

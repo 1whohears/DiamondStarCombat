@@ -93,6 +93,7 @@ repositories {
     maven { url "https://cursemaven.com" }
     maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }
     maven { url "https://repo.repsy.io/mvn/1whohears/1wholibs" }
+    maven { url "https://repo.repsy.io/mvn/1whohears/distant_players" }
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
@@ -109,6 +110,8 @@ dependencies {
     implementation fg.deobf("com.1whohears.minigames:minigames-${minecraft_version}:${minigames_version}")
     // https://github.com/1whohears/1wholibs
     implementation fg.deobf("com.onewhohears.onewholibs:onewholibs-${minecraft_version}:${onewholibs_version}")
+    // https://github.com/1whohears/RenderDistantPlayers
+    implementation fg.deobf("com.onewhohears.distant_players:distant_players-${minecraft_version}:${distant_players_version}")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.2")) {
@@ -117,8 +120,11 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137942")
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:4661834")
+    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4611938")
+    implementation fg.deobf("curse.maven:open-parties-and-claims-636608:6055470")
+    implementation fg.deobf("curse.maven:timeless-and-classics-zero-${tacz_version}")
 }
 
 tasks.named('processResources', ProcessResources).configure {

@@ -35,6 +35,10 @@ public class VehicleWindSoundInstance extends DopplerSoundInstance {
 	
 	@Override
 	public void tick() {
+		if (entity.isRemoved()) {
+			stop();
+			return;
+		}
 		EntityVehicle craft = (EntityVehicle)entity;
 		if (craft.getDeltaMovement().lengthSqr() <= 0.01) {
 			stop();

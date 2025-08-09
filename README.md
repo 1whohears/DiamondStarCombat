@@ -5,6 +5,16 @@
 Diamond Star Combat is a Minecraft Aircraft Combat mod inspired by Mcheli. Planes, Radars, Missiles, Explosions! Customize your vehicle's weapon loadout. You can use a radar to shoot a missile at a target beyond your render distance. 
 Shoot heat seeking missiles at nearby planes and use flares to defend yourself in dynamic dog fights. Use semi-realistic flight physics to perform epic maneuvers, or shoot laser guided bombs at enemies on the ground. 
 
+[__**SUPPORT ME ON KO-FI! ko-fi.com/1whohears**__](https://ko-fi.com/1whohears)
+
+**ONEWHOLIBS IS A REQUIRED DEPENDENCY**
+
+https://www.curseforge.com/minecraft/mc-mods/onewholibs
+
+**MODERN FIX IS A REQUIRED DEPENDENCY**
+
+https://www.curseforge.com/minecraft/mc-mods/modernfix
+
 Please go to the __**[WIKI](https://github.com/1whohears/DiamondStarCombat/wiki)**__ for ***Controls*** and other information!
 
 Join the discord for development updates. Additionally, I appreciate any and all feedback and discord is the best way to send me some! Also definetly join if you'd like to contribute to the mod!

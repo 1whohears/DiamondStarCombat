@@ -1,20 +1,27 @@
 package com.onewhohears.dscombat.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
+import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
@@ -35,8 +42,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 
-public class ItemVehicle extends Item {
+public class ItemVehicle extends Item implements ObjModelItem {
 	
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
@@ -49,13 +58,12 @@ public class ItemVehicle extends Item {
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		HitResult hitresult = getPlayerPOVHitResult(level, player, 
-				ClipContext.Fluid.ANY);
-		if (hitresult.getType() == HitResult.Type.MISS) 
+		HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
+		if (hitresult.getType() == HitResult.Type.MISS) {
 			return InteractionResultHolder.pass(itemstack);
-		else {
+		} else {
 			Vec3 vec3 = player.getViewVector(1.0F);
 			List<Entity> list = level.getEntities(player, 
 					player.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), 
@@ -63,7 +71,7 @@ public class ItemVehicle extends Item {
 			if (!list.isEmpty()) {
 				Vec3 vec31 = player.getEyePosition();
 				for(Entity entity : list) {
-					AABB aabb = entity.getBoundingBox().inflate((double)entity.getPickRadius());
+					AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
 					if (aabb.contains(vec31)) 
 						return InteractionResultHolder.pass(itemstack);
 				}
@@ -73,7 +81,7 @@ public class ItemVehicle extends Item {
 				VehicleStats vs = VehiclePresets.get().get(presetName);
 				if (vs == null) vs = VehiclePresets.get().get(defaultPreset);
 				EntityType<? extends EntityVehicle> entityType = vs.getEntityType();
-				ItemStack spawn_data_stack = spawnData(itemstack, player);
+				ItemStack spawn_data_stack = spawnData(itemstack, player, vs.getId());
 				EntityVehicle e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
@@ -94,23 +102,22 @@ public class ItemVehicle extends Item {
 					}
 				}
 				player.awardStat(Stats.ITEM_USED.get(this));
-				return InteractionResultHolder.sidedSuccess(itemstack, 
-						level.isClientSide());
+				return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
 			} else return InteractionResultHolder.pass(itemstack);
 		}
 	}
 	
-	private ItemStack spawnData(ItemStack itemstack, Player player) {
+	private ItemStack spawnData(ItemStack itemstack, Player player, String preset) {
 		ItemStack copy = itemstack.copy();
 		CompoundTag tag = copy.getOrCreateTag();
 		if (!tag.contains("EntityTag", 10)) {
 			CompoundTag et = new CompoundTag();
-			et.putString("preset", getPresetName(itemstack));
 			et.putBoolean("merged_preset", false);
 			et.putUUID("owner_id", player.getUUID());
 			tag.put("EntityTag", et);
 		}
 		CompoundTag et = tag.getCompound("EntityTag");
+		et.putString("preset", preset);
 		et.putFloat("yRot", player.getYRot());
 		et.putFloat("current_throttle", 0);
 		et.putBoolean("landing_gear", true);
@@ -126,32 +133,46 @@ public class ItemVehicle extends Item {
 	
 	public String getPresetName(ItemStack itemstack) {
 		CompoundTag tag = itemstack.getTag();
-		if (tag == null || !tag.contains("preset")) return defaultPreset;
-		return tag.getString("preset");
+		if (tag == null) return defaultPreset;
+		if (tag.contains("preset")) return tag.getString("preset");
+		if (tag.contains("EntityTag")) {
+			CompoundTag eTag = tag.getCompound("EntityTag");
+			if (eTag.contains("preset")) return eTag.getString("preset");
+		}
+		return defaultPreset;
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tips, TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips,
+								@NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		CompoundTag tag = stack.getTag();
-		if (tag == null || !tag.contains("EntityTag")) return;
-		CompoundTag et = tag.getCompound("EntityTag");
-		if (et.contains("health")) tips.add(UtilMCText.translatable("info.dscombat.health")
-				.append(": "+(int)et.getFloat("health")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("fuel")) tips.add(UtilMCText.translatable("info.dscombat.fuel")
-				.append(": "+(int)et.getFloat("fuel")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
-		if (et.contains("flares")) tips.add(UtilMCText.translatable("info.dscombat.flares")
-				.append(": "+(int)et.getFloat("flares")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		if (tag != null && tag.contains("EntityTag")) {
+			CompoundTag et = tag.getCompound("EntityTag");
+			if (et.contains("health")) tips.add(UtilMCText.translatable("info.dscombat.health")
+					.append(": " + (int) et.getFloat("health")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+			if (et.contains("fuel")) tips.add(UtilMCText.translatable("info.dscombat.fuel")
+					.append(": " + (int) et.getFloat("fuel")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+			if (et.contains("flares")) tips.add(UtilMCText.translatable("info.dscombat.flares")
+					.append(": " + (int) et.getFloat("flares")).setStyle(Style.EMPTY.withColor(0xAAAAAA)));
+		}
+		if (isAdvanced.isAdvanced()) {
+			tips.add(formatTooltip("VehicleId", getPreset(stack)));
+		}
+	}
+
+	public static Component formatTooltip(String key, String value) {
+		return Component.literal(String.format("%s: \"%s\"", key, value)).withStyle(ChatFormatting.DARK_GRAY);
 	}
 	
 	@Override
-	public Component getName(ItemStack stack) {
+	public @NotNull Component getName(ItemStack stack) {
 		CompoundTag tag = stack.getTag();
+		String presetId = getPresetName(stack);
+		VehicleStats vs = VehiclePresets.get().get(presetId);
 		if (tag == null || !tag.contains("EntityTag")) {
-			String name = getPresetName(stack);
-			VehicleStats ap = VehiclePresets.get().get(name);
-			if (ap == null) return UtilMCText.translatable(getDescriptionId()).append(" unknown preset!");
-			return ap.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
+			if (vs == null) return UtilMCText.translatable(getDescriptionId()).append(" unknown preset!");
+			return vs.getDisplayNameComponent().setStyle(Style.EMPTY.withColor(0x55FFFF));
 		}
 		CompoundTag etag = tag.getCompound("EntityTag");
 		if (etag.contains("CustomName", 8)) {
@@ -161,8 +182,10 @@ public class ItemVehicle extends Item {
 		}
 		String owner = etag.getString("owner_name");
 		if (owner.isEmpty()) owner = "Someone";
-		return UtilMCText.literal(owner+"'s ").append(super.getName(stack))
+		MutableComponent component = UtilMCText.literal(owner+"'s ")
 				.setStyle(Style.EMPTY.withColor(0xFFAA00).withBold(true));
+		if (vs == null) return component.append(super.getName(stack));
+		return component.append(vs.getBaseDisplayName());
 	}
 	
 	@Override
@@ -172,14 +195,51 @@ public class ItemVehicle extends Item {
 	}
 	
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (group.getId() != ModItems.VEHICLES.getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
+		if (group != ModItems.VEHICLES && group != CreativeModeTab.TAB_SEARCH) return;
 		VehicleStats[] presets = VehiclePresets.get().getAll();
-		for (int i = 0; i < presets.length; ++i) {
-			if (presets[i].getItem().getDescriptionId().equals(getDescriptionId())) {
-				items.add(presets[i].getItem());
-			}
-		}
+        for (VehicleStats preset : presets) {
+            if (preset.getItem().is(this)) {
+				ItemStack stack = new ItemStack(this);
+				stack.getOrCreateTag().putString("preset", preset.getId());
+				items.add(stack);
+            }
+        }
 	}
 
+	@Override
+	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
+		ObjModelItem.super.initializeClient(consumer);
+	}
+
+	@Override
+	public ObjEntityModels.@NotNull ModelOverrides getItemModelOverrides(@NotNull String preset) {
+		VehicleStats vs = VehiclePresets.get().get(preset);
+		if (vs == null) vs = VehiclePresets.get().get(getDefaultPreset());
+		if (vs == null) return ObjEntityModels.NO_OVERRIDES;
+		String assetId = vs.getAssetId();
+		VehicleClientStats vcs = VehicleClientPresets.get().get(assetId);
+		if (vcs == null) return ObjEntityModels.NO_OVERRIDES;
+		return vcs.getItemModelOverrides();
+	}
+
+	public String getDefaultPreset() {
+		return defaultPreset;
+	}
+
+	@Override
+	public @NotNull String getPreset(@NotNull ItemStack stack) {
+		return getPresetName(stack);
+	}
+
+	@Override
+	public @NotNull String getObjModelId(@NotNull String preset) {
+		VehicleStats vs = VehiclePresets.get().get(preset);
+		if (vs == null) vs = VehiclePresets.get().get(getDefaultPreset());
+		if (vs == null) return "";
+		String assetId = vs.getAssetId();
+		VehicleClientStats vcs = VehicleClientPresets.get().get(assetId);
+		if (vcs == null) return "";
+		return vcs.getModelId();
+	}
 }

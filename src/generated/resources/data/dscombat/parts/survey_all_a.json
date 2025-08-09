@@ -1,6 +1,8 @@
 {
   "displayName": "item.dscombat.survey_all_a",
-  "externalEntity": "dscombat:survey_all_a",
+  "externalEntity": "dscombat:external_radar",
+  "hitbox_height": 0.5,
+  "hitbox_width": 1.0,
   "item": "dscombat:survey_all_a",
   "presetId": "survey_all_a",
   "presetType": "external_radar",

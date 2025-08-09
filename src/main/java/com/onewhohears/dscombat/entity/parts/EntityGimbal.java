@@ -2,14 +2,16 @@ package com.onewhohears.dscombat.entity.parts;
 
 import com.onewhohears.dscombat.data.parts.PartType;
 
+import com.onewhohears.dscombat.data.parts.instance.GimbalInstance;
+import com.onewhohears.dscombat.data.parts.stats.GimbalStats;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class EntityGimbal extends EntityPart {
+public class EntityGimbal extends EntityPart<GimbalStats, GimbalInstance<GimbalStats>> {
 	
 	public EntityGimbal(EntityType<?> type, Level level) {
-		super(type, level);
+		super(type, level, "gimbal_camera");
 	}
 	
 	@Override

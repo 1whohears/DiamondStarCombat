@@ -59,7 +59,7 @@
     }
   ],
   "is_craftable": false,
-  "item": "dscombat:aircraft_carrier",
+  "item": "dscombat:vehicle",
   "landing_gear": true,
   "presetId": "aircraft_carrier_empty",
   "presetType": "boat",
@@ -292,18 +292,29 @@
     "armor_damage_threshold": 10.0,
     "assetId": "aircraft_carrier",
     "base_armor": 600.0,
+    "break_deacc_air": 0.05,
+    "break_deacc_ground": 0.0,
     "cameraDistance": 34.0,
     "crashExplosionRadius": 10.0,
     "cross_sec_area": 10.5,
     "entity_size_xz": 25.0,
     "entity_size_y": 6.0,
+    "fuel_consume_per_engine": 0.019,
+    "hard_coded_rot_acc": {
+      "x": 0.0,
+      "y": 0.004999999888241291,
+      "z": 0.0
+    },
+    "hard_coded_rot_decel": 0.025,
+    "heat_per_engine": 10.0,
     "idleheat": 8.0,
-    "inertiapitch": 10.0,
-    "inertiaroll": 6.0,
-    "inertiayaw": 4.0,
+    "inertiapitch": 1000000.0,
+    "inertiaroll": 60000.0,
+    "inertiayaw": 400000.0,
     "mass": 800000.0,
     "mastType": "LARGE",
     "max_health": 200.0,
+    "max_push_thrust_per_engine": 50000.0,
     "max_speed": 0.25,
     "maxpitch": 0.0,
     "maxroll": 0.0,
@@ -314,7 +325,9 @@
     "throttleup": 0.05,
     "torquepitch": 0.0,
     "torqueroll": 0.0,
-    "torqueyaw": 2.0,
-    "turn_radius": 0.0
+    "torqueyaw": 200000.0,
+    "turn_radius": 0.0,
+    "use_horizontal_speed_scale": false,
+    "use_vertical_speed_scale": true
   }
 }

@@ -46,7 +46,7 @@ public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntit
 						+ "_" + entity.textureManager.getBaseTextureIndex() + ".png";
 				loc = new ResourceLocation(texture.getNamespace(), newLoc);
 			}
-			if (entity.getClientStats().isDontCull())
+			if (entity.getAssets().isDontCull())
 				return RendererEntityVehicle.getBaseRenderType(loc);
 			return RendererEntityVehicle.getCullBaseRenderType(loc);
 		};

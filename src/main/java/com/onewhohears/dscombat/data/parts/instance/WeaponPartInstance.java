@@ -5,7 +5,6 @@ import java.util.Objects;
 
 import com.onewhohears.dscombat.crafting.*;
 import com.onewhohears.dscombat.data.parts.PartSlot;
-import com.onewhohears.dscombat.data.parts.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.parts.stats.WeaponPartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -78,17 +77,19 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	@Override
 	public void setup(EntityVehicle craft, String slotId, Vec3 pos) {
 		WeaponInstance<?> data = craft.weaponSystem.get(weapon, slotId);
-		if (data == null) {
-			if (!WeaponPresets.get().has(weapon)) return;
+		if (data == null && WeaponPresets.get().has(weapon)) {
 			data = WeaponPresets.get().get(weapon).createWeaponInstance();
 			data.setSlot(slotId);
 			craft.weaponSystem.addWeapon(data);
 		}
-		data.setMaxAmmo(getStats().getMaxAmmo());
-		data.setCurrentAmmo(ammo);
-		data.setLaunchPos(pos);
-		if (!craft.level.isClientSide) data.updateClientAmmo(craft);
+		// weapon instance must be created before super because of external weapon server setup
 		super.setup(craft, slotId, pos);
+		if (data != null) {
+			data.setMaxAmmo(getStats().getMaxAmmo());
+			data.setCurrentAmmo(ammo);
+			data.setLaunchPos(pos);
+			if (!craft.level.isClientSide) data.updateClientAmmo(craft);
+		}
 	}
 	
 	@Override
@@ -102,9 +103,7 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 		super.tick(slotId);
 		if (getParent() == null) return;
 		WeaponInstance<?> data = getParent().weaponSystem.get(weapon, slotId);
-		if (data != null) {
-			ammo = data.getCurrentAmmo();
-		}
+		if (data != null) ammo = data.getCurrentAmmo();
 	}
 	
 	@Override
@@ -115,10 +114,11 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 	
 	@Override
 	public float getWeight() {
-		int max = getStats().getMaxAmmo();
-		if (max == 0) return 0;
-		float w = super.getWeight();
-		return w * (float)ammo / (float)max;
+		float mass = super.getWeight();
+		if (getParent() == null) return mass;
+		WeaponInstance<?> data = getParent().weaponSystem.get(weapon, getSlotId());
+		if (data == null) return mass;
+		return mass + data.getStats().getMass() * ammo;
 	}
 
 	@Override

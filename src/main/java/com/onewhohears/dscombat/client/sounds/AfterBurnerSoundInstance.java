@@ -18,9 +18,14 @@ public class AfterBurnerSoundInstance extends VehicleEngineSoundInstance {
 	@Override
 	protected void calcVolPitch(EntityVehicle craft) {
 		float th = Math.abs(craft.getCurrentThrottle());
-		th -= 0.5f; th *= 2;
-		if (th <= 0) initVolume = 0;
-		else initVolume = th;
+		if (!craft.isUsingAfterburner()) {
+			initVolume = 0;
+			initPitch = 1;
+			return;
+		}
+		th -= 0.8f; th *= 5;
+		if (th <= 0) initVolume = 0.5f;
+		else initVolume = 0.5f + th*0.5f;
 		initPitch = 0.9f + 0.1f*th;
 	}
 

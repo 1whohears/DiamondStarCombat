@@ -44,10 +44,6 @@ public interface EntityScreenRenderer<T extends Entity> {
 	
 	/**
 	 * @param entity entity the texture is rendered onto
-	 * @param texture texture to be rendered
-	 * @param topLeft in world top left corner position of the texture
-	 * @param topRight in world top right corner position of the texture
-	 * @param bottomLeft in world bottom left corner position of the texture
 	 */ 
 	default void renderScreen(T entity, int screenId, int screenType, PoseStack poseStack, MultiBufferSource buffer,
                               float partialTicks, int packedLight, Vec3 pos, float width, float height, float xRot, float yRot, float zRot) {

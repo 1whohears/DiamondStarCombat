@@ -1,6 +1,6 @@
 {
   "acceleration": 0.04,
-  "bleed": 0.02,
+  "bleed": 0.09,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -17,8 +17,9 @@
   "fireRate": 20,
   "flareResistance": 1.5,
   "fov": 30.0,
-  "fuelTicks": 75,
+  "fuelTicks": 60,
   "fuseDist": 3.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 4,
@@ -41,13 +42,13 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:aim9l",
-  "maxAge": 100,
+  "itemKey": "dscombat:missile",
+  "mass": 85.3,
+  "maxAge": 816,
   "presetId": "aim9l",
   "presetType": "ir_missile",
-  "rackTypeKey": "dscombat:light_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
-  "speed": 2.0,
+  "sort_factor": 1,
+  "speed": 5.359,
   "turnRadius": 80.0
 }

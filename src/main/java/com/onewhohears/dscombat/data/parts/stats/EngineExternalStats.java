@@ -28,7 +28,7 @@ public class EngineExternalStats extends EngineStats {
 	
 	@Override
 	public EntityType<?> getDefaultExternalEntity() {
-		return ModEntities.CFM56.get();
+		return ModEntities.EXTERNAL_ENGINE.get();
 	}
 	
 	@Override

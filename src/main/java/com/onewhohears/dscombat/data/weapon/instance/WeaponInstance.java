@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -36,6 +36,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	private String slotId = "";
 	private boolean overrideGroundCheck = false;
 	protected float changeLaunchPitch = 0;
+	@Nullable protected EntityWeapon<?> firedWeapon;
 	
 	public WeaponInstance(T stats) {
 		super(stats);
@@ -66,7 +67,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		EntityType<?> type = getStats().getEntityType();
 		Entity entity = type.create(level);
 		if (entity instanceof EntityWeapon<?> w) {
-			w.setWeaponData(getStats());
+			w.setPreset(getStatsId());
 			return w;
 		}
 		return null;
@@ -119,8 +120,9 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		vehicle.lastShootTime = vehicle.tickCount;
 		if (vehicle.getPartBySlotId(getSlotId()) instanceof EntityWeaponRack rack) {
 			rack.lastShootTime = rack.tickCount;
-			ToClientOnShoot.onShootWeaponRack(rack);
+			ToClientOnShoot.onShootWeaponRack(rack, owner);
 		}
+		firedWeapon = w;
 		return true;
 	}
 	
@@ -140,10 +142,16 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			vehicle.lastShootTime = vehicle.tickCount;
 			if (vehicle.getPartBySlotId(getSlotId()) instanceof EntityTurret turret) {
 				turret.setLastShootTick(turret.tickCount);
-				ToClientOnShoot.onShootTurret(turret);
+				ToClientOnShoot.onShootTurret(turret, owner);
 			}
 		}
+		firedWeapon = w;
 		return true;
+	}
+
+	@Nullable
+	public EntityWeapon<?> getFiredWeapon() {
+		return firedWeapon;
 	}
 	
 	public void playShootSound(Level level, Vec3 pos) {
@@ -303,7 +311,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	}
 	
 	protected Vec3 getAcc(EntityVehicle vehicle) {
-		return new Vec3(0, -DSCPhyCons.GRAVITY, 0);
+		return new Vec3(0, -DSCPhyCons.GRAVITY*DSCPhyCons.ACC_TIME_SCALE, 0);
 	}
 
 }

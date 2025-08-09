@@ -33,6 +33,9 @@ public abstract class MissileStats extends BulletStats {
 		public static Builder antiRadarMissileBuilder(String namespace, String name) {
 			return new Builder(namespace, name, WeaponType.ANTI_RADAR_MISSILE);
 		}
+		public static Builder dumbTorpedoBuilder(String namespace, String name) {
+			return new Builder(namespace, name, WeaponType.DUMB_TORPEDO);
+		}
 	}
 	
 	private final float turnRadius;
@@ -46,12 +49,12 @@ public abstract class MissileStats extends BulletStats {
 	
 	public MissileStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		turnRadius = json.get("turnRadius").getAsFloat();
-		acceleration = json.get("acceleration").getAsDouble();
-		fuseDist = json.get("fuseDist").getAsDouble();
-		fov = json.get("fov").getAsFloat();
-		bleed = json.get("bleed").getAsDouble();
-		fuelTicks = json.get("fuelTicks").getAsInt();
+		turnRadius = UtilParse.getFloatSafe(json, "turnRadius", 500);
+		acceleration = UtilParse.getFloatSafe(json, "acceleration", 0);
+		fuseDist = UtilParse.getFloatSafe(json, "fuseDist", 1);
+		fov = UtilParse.getFloatSafe(json, "fov", -1);
+		bleed = UtilParse.getFloatSafe(json, "bleed", 0);
+		fuelTicks = UtilParse.getIntSafe(json, "fuelTicks", getMaxAge());
 		seeThroWater = UtilParse.getIntSafe(json, "seeThroWater", 0);
 		seeThroBlock = UtilParse.getIntSafe(json, "seeThroBlock", 0);
 	}
@@ -100,7 +103,7 @@ public abstract class MissileStats extends BulletStats {
 	
 	@Override
 	public double getMobTurretRange() {
-		return Math.min(2000, getSpeed() * getMaxAge() * 0.9);
+		return Math.min(20000, getSpeed() * getMaxAge() * 0.5);
 	}
 	
 	@Override

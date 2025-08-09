@@ -17,6 +17,7 @@
   "fov": -1.0,
   "fuelTicks": 200,
   "fuseDist": 2.0,
+  "inaccuracy": 0.0,
   "ingredients": [
     {
       "num": 3,
@@ -35,13 +36,13 @@
       "num": 1
     }
   ],
-  "innacuracy": 0.0,
-  "itemKey": "dscombat:agm114k",
+  "itemKey": "dscombat:missile",
+  "mass": 45.0,
   "maxAge": 200,
   "presetId": "agm114k",
   "presetType": "pos_missile",
-  "rackTypeKey": "dscombat:light_missile_rack",
   "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 1,
   "speed": 3.0,
   "turnRadius": 30.0
 }

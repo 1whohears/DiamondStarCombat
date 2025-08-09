@@ -1,10 +1,28 @@
 {
   "changeLaunchPitch": 90.0,
   "displayName": "item.dscombat.vls",
-  "item": "dscombat:vls",
+  "externalEntity": "dscombat:external_weapon_part",
+  "hitbox_height": 0.1,
+  "hitbox_width": 0.1,
+  "ingredients": [
+    {
+      "item": "dscombat:ti83",
+      "num": 1
+    },
+    {
+      "item": "minecraft:dispenser",
+      "num": 8
+    },
+    {
+      "num": 10,
+      "tag": "dscombat:aluminum_ingot"
+    }
+  ],
+  "item": "dscombat:external_weapon_part",
   "max": 16,
   "presetId": "vls",
   "presetType": "external_weapon",
   "slotType": "mount_heavy",
+  "sort_factor": 6,
   "weight": 6000.0
 }

@@ -1,0 +1,108 @@
+{
+  "displayName": "preset.dscombat.vehicle_attacker",
+  "presetId": "vehicle_attacker",
+  "presetType": "gameshop",
+  "products": [
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 4
+      },
+      "product": {
+        "item": "dscombat:big_gas_can",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 8
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "bronco_plane_shitter"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 12
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "krait_chopper_door_knocker"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 12
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "krait_chopper_brawler"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 18
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "javi_plane_close_air"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 24
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "javi_plane_heavy_bomber"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 24
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "alexis_plane_escort"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 32
+      },
+      "product": {
+        "item": "dscombat:vehicle",
+        "nbt": {
+          "preset": "alexis_plane_infiltrator"
+        },
+        "num": 1
+      }
+    }
+  ]
+}

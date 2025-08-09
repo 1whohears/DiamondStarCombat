@@ -31,13 +31,13 @@ public class WeaponDamageSource extends EntityDamageSource {
 	}
 	
 	public enum WeaponDamageType {
-		BULLET("bullet", () -> getBulletDeath(), false, false),
-		BULLET_EXPLODE("bullet_explode", () -> getBulletExplodeDeath(), true, false),
-		BOMB("bomb", () -> getBombDeath(), true, false),
-		MISSILE_CONTACT("missile_contact", () -> getMissileContactDeath(), false, true),
-		MISSILE("missile", () -> getMissileDeath(), true, false),
-		TORPEDO("tordepo", () -> getTorpedoDeath(), true, false),
-		IR_MISSILE("ir_missile", () -> getIRMissileDeath(), true, false);
+		BULLET("bullet", WeaponDamageSource::getBulletDeath, false, false),
+		BULLET_EXPLODE("bullet_explode", WeaponDamageSource::getBulletExplodeDeath, true, false),
+		BOMB("bomb", WeaponDamageSource::getBombDeath, true, false),
+		MISSILE_CONTACT("missile_contact", WeaponDamageSource::getMissileContactDeath, false, true),
+		MISSILE("missile", WeaponDamageSource::getMissileDeath, true, false),
+		TORPEDO("tordepo", WeaponDamageSource::getTorpedoDeath, true, false),
+		IR_MISSILE("ir_missile", WeaponDamageSource::getIRMissileDeath, true, false);
 		@Nullable
 		public static WeaponDamageType byId(String id) {
 			for (WeaponDamageType wdt : values()) if (wdt.damageTypeId.equals(id)) return wdt;
@@ -46,7 +46,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 		public final String damageTypeId;
 		public final RandomDeathMessageFactory deathMessages;
 		public final boolean explosion, bypassArmor;
-		private WeaponDamageType(String damageTypeId, RandomDeathMessageFactory deathMessages, boolean explosion, boolean bypassArmor) {
+		WeaponDamageType(String damageTypeId, RandomDeathMessageFactory deathMessages, boolean explosion, boolean bypassArmor) {
 			this.damageTypeId = damageTypeId;
 			this.deathMessages = deathMessages;
 			this.explosion = explosion;

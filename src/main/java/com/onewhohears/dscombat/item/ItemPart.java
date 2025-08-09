@@ -21,9 +21,20 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemPart extends Item {
-	
+
+	@NotNull private String defaultPresetId = "";
+
+	public ItemPart(int stackSize, @NotNull String defaultPresetId) {
+		this(partProps(stackSize), defaultPresetId);
+	}
+
+	public ItemPart(Properties props, @NotNull String defaultPresetId) {
+		super(props);
+		this.defaultPresetId = defaultPresetId;
+	}
+
 	public ItemPart(int stackSize) {
-		this(partProps(stackSize));
+		super(partProps(stackSize));
 	}
 	
 	public ItemPart(Properties props) {
@@ -39,8 +50,8 @@ public class ItemPart extends Item {
 	}
 	
 	@Override
-	public void fillItemCategory(CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if (group.getId() != getCreativeTab().getId() && group.getId() != CreativeModeTab.TAB_SEARCH.getId()) return;
+	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
+		if (group != getCreativeTab() && group != CreativeModeTab.TAB_SEARCH) return;
 		String itemId = UtilItem.getItemKeyString(this);
 		for (int i = 0; i < PartPresets.get().getNum(); ++i) {
 			PartStats stats = PartPresets.get().getAll()[i];
@@ -56,19 +67,25 @@ public class ItemPart extends Item {
 	public CreativeModeTab getCreativeTab() {
 		return ModItems.PARTS;
 	}
-	
+
+	/**
+	 * DO NOT CALL BEFORE THE DATA GENERATORS HAVE BEEN RUN OR IT WILL BE NULL
+	 */
+	@Nullable
 	public PartStats getDefaultPartStats() {
 		return PartPresets.get().get(getDefaultPartPresetId());
 	}
 	
 	public String getDefaultPartPresetId() {
-		return toString();
+		if (defaultPresetId.isEmpty()) defaultPresetId = toString();
+		return defaultPresetId;
 	}
 	
 	@Override
 	public @NotNull ItemStack getDefaultInstance() {
 		ItemStack stack = new ItemStack(this);
-		stack.setTag(getDefaultPartStats().createPartInstance().writeNBT());
+		PartStats stats = getDefaultPartStats();
+		if (stats != null) stack.setTag(stats.createPartInstance().writeNBT());
 		return stack;
 	}
 	
@@ -80,15 +97,27 @@ public class ItemPart extends Item {
 	}
 	
 	@Override
-	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips, @NotNull TooltipFlag isAdvanced) {
+	public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tips,
+								@NotNull TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tips, isAdvanced);
 		PartInstance<?> instance = getPartInstance(stack);
-		if (instance != null) instance.addToolTips(tips, isAdvanced);
+		if (instance != null) {
+			instance.addToolTips(tips, isAdvanced);
+			if (isAdvanced.isAdvanced()) {
+				tips.add(ItemVehicle.formatTooltip("PartId", instance.getStatsId()));
+			}
+		}
 	}
 
 	@Nullable
 	public PartInstance<?> getPartInstance(ItemStack stack) {
 		return UtilPresetParse.parsePartFromItem(stack, getDefaultPartPresetId());
+	}
+
+	public @NotNull String getPreset(@NotNull ItemStack stack) {
+		PartStats stats = UtilPresetParse.getPartStatsFromItem(stack);
+		if (stats == null) return getDefaultPartPresetId();
+		return stats.getId();
 	}
 
 }

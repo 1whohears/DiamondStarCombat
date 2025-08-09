@@ -20,22 +20,14 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 	
 	@Override
-	public void directionGround(Quaternion q) {
-		if (getStats().asCar().isTank && isOperational()) {
-			flatten(q, 4f, 4f, true);
-			addMomentY(inputs.yaw * getYawTorque(), true);
-		} else super.directionGround(q);
-	}
-	
-	@Override
-	public boolean isBraking() {
+	public boolean isGroundBraking() {
 		return inputs.special;
 	}
-	
+
 	@Override
-	public void applyBreaks() {
+	public void applyGroundBreaks() {
 		throttleToZero();
-		super.applyBreaks();
+		super.applyGroundBreaks();
 	}
 	
 	@Override
@@ -59,18 +51,37 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 
 	@Override
-	public boolean canBrake() {
-		return true;
-	}
-
-	@Override
 	public boolean canToggleLandingGear() {
 		return false;
 	}
 
 	@Override
 	public double getMaxSpeedFactor() {
-		return super.getMaxSpeedFactor() * Config.COMMON.carSpeedFactor.get();
+		return super.getMaxSpeedFactor() * Config.SERVER.carSpeedFactor.get();
 	}
 
+	@Override
+	public boolean isPitchControllable() {
+		return false;
+	}
+
+	@Override
+	public boolean isRollControllable() {
+		return false;
+	}
+
+	@Override
+	public boolean canTurnViaTorque() {
+		return isOperational() && isOnGround() && getStats().asCar().isTank;
+	}
+
+	@Override
+	public boolean canDriveOnGround() {
+		return true;
+	}
+
+	@Override
+	public boolean dontUseDriveTurnPhysics() {
+		return getStats().asCar().isTank;
+	}
 }

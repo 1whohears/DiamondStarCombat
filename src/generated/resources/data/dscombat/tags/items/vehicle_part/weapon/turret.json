@@ -11,6 +11,8 @@
     "dscombat:torpedo_tubes",
     "dscombat:mls",
     "dscombat:ciws",
-    "dscombat:mark45_cannon"
+    "dscombat:mark45_cannon",
+    "dscombat:turret",
+    "dscombat:artillery_cannon"
   ]
 }

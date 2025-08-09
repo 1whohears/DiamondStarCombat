@@ -17,32 +17,17 @@ public class EntitySubmarine extends EntityBoat {
 	public VehicleType getVehicleType() {
 		return VehicleType.SUBMARINE;
 	}
-	
-	@Override
-	public void directionWater(Quaternion q) {
-		if (!isOperational()) return;
-		if (!isDriverCameraLocked()) flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
-		else {
-			addMomentX(inputs.pitch * getPitchTorque(), true);
-			addMomentZ(inputs.roll * getRollTorque(), true);
-		}
-		if (canControlYaw()) addMomentY(inputs.yaw * getYawTorque(), true);
-	}
-	
-	@Override
-	public double getDriveAcc() {
-		return 0;
-	}
-	
-	@Override
-	public void tickWater(Quaternion q) {
-		super.tickWater(q);
+
+    @Override
+	public void calcWaterMovement(Quaternion q) {
+		super.calcWaterMovement(q);
 		Vec3 move = getDeltaMovement();
 		if (!isDriverCameraLocked() && isOperational()) {
 			if (inputs.pitch == 0) move = move.multiply(1, 0.9, 1);
-			else move = move.add(0, inputs.pitch * 0.02, 0);
+			else move = move.add(0, -inputs.pitch * 0.02, 0);
 			double max = 0.2;
 			if (Math.abs(move.y) > max) move = new Vec3(move.x, max*Math.signum(move.y), move.z);
+			flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
 		}
 		setDeltaMovement(move);
 	}
@@ -76,27 +61,22 @@ public class EntitySubmarine extends EntityBoat {
 	}
 	
 	@Override
-	public boolean isLandingGear() {
-		return false;
-    }
-	
-	@Override
 	public boolean isCustomBoundingBox() {
     	return true;
     }
 	
 	@Override
-	public float getStepHeight() {
-		return 0.2f;
-	}
-	
-	@Override
 	public void waterDamage() {
 	}
-	
+
 	@Override
-	public boolean canBrake() {
-		return true;
+	public boolean isPitchControllable() {
+		return isDriverCameraLocked();
+	}
+
+	@Override
+	public boolean isRollControllable() {
+		return isDriverCameraLocked();
 	}
 
 }

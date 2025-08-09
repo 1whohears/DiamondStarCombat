@@ -9,6 +9,8 @@ import javax.annotation.Nullable;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
 import com.onewhohears.dscombat.data.parts.PartType;
+import com.onewhohears.dscombat.data.parts.instance.ChainHookInstance;
+import com.onewhohears.dscombat.data.parts.stats.ChainHookStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilServerPacket;
@@ -33,14 +35,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityChainHook extends EntityPart {
+public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstance<ChainHookStats>> {
 	
 	public static final double CHAIN_LENGTH = 8;
 	
 	private final List<ChainConnection> chains = new ArrayList<>();
 	
 	public EntityChainHook(EntityType<?> entityType, Level level) {
-		super(entityType, level);
+		super(entityType, level, "chain_hook");
 	}
 	
 	@Override
@@ -56,7 +58,7 @@ public class EntityChainHook extends EntityPart {
 	}
 	
 	@Override
-	protected void addAdditionalSaveData(CompoundTag nbt) {
+	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		ListTag conns = new ListTag();
 		for (int i = 0; i < chains.size(); ++i) {
@@ -360,7 +362,7 @@ public class EntityChainHook extends EntityPart {
 		}
 	}
 	
-	public static enum ChainUpdateType {
+	public enum ChainUpdateType {
 		CHAIN_ADD_VEHICLE,
 		CHAIN_ADD_PLAYER,
 		CHAIN_DISCONNECT_PLAYER,

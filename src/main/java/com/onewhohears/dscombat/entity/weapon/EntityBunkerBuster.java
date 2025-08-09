@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<T> {
 	
@@ -45,7 +46,7 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 			BlockState state = getLevel().getBlockState(pos);
 			int hit_block_strength = getBlockStrength(pos, state);
 			if (getBlockStrength() >= hit_block_strength &&
-					UtilVehicleEntity.hasPermissionToBreakBlock(pos, state, getLevel(), owner)) {
+					UtilVehicleEntity.weaponHasPermissionToBreak(pos, state, getLevel(), owner)) {
 				level.destroyBlock(pos, true, this);
 				reduceBlockStrength(hit_block_strength);
 			} else {
@@ -69,13 +70,13 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		setBlockStrength(compound.getInt("blockStrength"));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("blockStrength", getBlockStrength());
 	}

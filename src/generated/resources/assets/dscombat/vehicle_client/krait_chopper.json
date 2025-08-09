@@ -11,7 +11,7 @@
           "z": 1.125E-4
         },
         "rot_axis": "Y",
-        "rot_rate": 50.0
+        "rot_rate": 100.0
       },
       {
         "anim_id": "motor_rotation",
@@ -22,7 +22,7 @@
           "z": -9.63
         },
         "rot_axis": "X",
-        "rot_rate": 31.0
+        "rot_rate": 54.0
       },
       {
         "anim_id": "hitbox_destroy_part",

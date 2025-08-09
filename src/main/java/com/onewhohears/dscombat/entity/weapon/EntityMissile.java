@@ -1,11 +1,14 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.vehicle.DSCPhyCons;
+import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
@@ -44,7 +47,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	public Entity target;
 	public Vec3 targetPos;
 	
-	private boolean discardedButTicking;
+	private boolean discardedButTicking, didSonicBoom;
 	private int prevTickCount, tickCountRepeats, repeatCoolDown, lerpSteps;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	
@@ -78,31 +81,35 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	@Override
 	public void tick() {
-		if (weaponStats == null) {
-			kill();
-			return;
-		}
 		if (level.isClientSide) clientTickParticles();
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
-		if (!level.isClientSide && !isRemoved()) {
-			tickGuide();
-			if (targetPos != null) setTargetPos(targetPos);
-			else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
-			if (target != null) setTargetId(target.getId());
-			else setTargetId(-1);
-			if (target != null && distanceTo(target) <= getWeaponStats().getFuseDist()) kill();
-		}
-		if (level.isClientSide && !isRemoved()) {
-			tickClientGuide();
-			if (firstTick) engineSound();
+		if (!isRemoved()) {
+			if (!getLevel().isClientSide()) {
+				tickGuide();
+				if (targetPos != null) setTargetPos(targetPos);
+				else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
+				if (target != null) setTargetId(target.getId());
+				else setTargetId(-1);
+				if (target != null && distanceTo(target) <= getWeaponStats().getFuseDist()) kill();
+				TrackableEntitiesManager.addTrackableEntity(this);
+				DependencySafety.addExtraEntityToRDP(Objects.requireNonNull(getServer()), this);
+			} else {
+				tickClientGuide();
+				if (firstTick) engineSound();
+				if (!didSonicBoom) sonicBoomSound();
+			}
 		}
 		super.tick();
 		tickLerp();
+		if (!getLevel().isClientSide() && tickCount > 100 && getDeltaMovement().length() < 0.1) {
+			kill();
+			return;
+		}
 	}
 	
-	protected void clientTickParticles() {
+	public void clientTickParticles() {
 		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(level, position(), getLookAngle().scale(-1));
 		UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
 	}
@@ -182,7 +189,11 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	private void engineSound() {
 		UtilClientSafeSounds.dopplerSound(this, 
 				ModSounds.MISSILE_ENGINE_1, 0.8F, 1.0F, 
-				DSCPhyCons.VEL_SOUND, true);
+				DSCPhyCons.VEL_SOUND, false);
+	}
+
+	private void sonicBoomSound() {
+		didSonicBoom = UtilClientSafeSounds.missileSonicBoom(this);
 	}
 	
 	@Override
@@ -204,6 +215,10 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			kill();
 			return;
 		}
+		if (tickCount > 100 && getDeltaMovement().length() < 0.1) {
+			kill();
+			return;
+		}
 		//System.out.println("starting tick guide");
 		tickGuide();
 		//System.out.println("starting motion");
@@ -220,15 +235,25 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	@Override
 	protected void tickSetMove() {
 		Vec3 cm = getDeltaMovement();
+		double cv = cm.length();
 		double max = getSpeed();
-		double B = getBleed() * UtilEntity.getAirPressure(this);
-		double bleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
-		double vel = cm.length() - bleed;
+		double B = getBleed() * UtilEntity.getAirPressure(this) * DSCPhyCons.MISSILE_BLEED_SCALE;
+		double turnBleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
+		double airRes = B * cv * DSCPhyCons.MISSILE_AIR_RES_SCALE;
+		double vel = cv - turnBleed - airRes;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
+		double ga = Math.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm))*getGravityAcc()*DSCPhyCons.MISSILE_GRAV_ACC_SCALE;
+		double gravityAcc = Math.max(0, ga);
+		vel += gravityAcc;
 		if (vel > max) vel = max;
 		else if (vel < 0.1) vel = 0.1;
 		Vec3 nm = getLookAngle().scale(vel);
 		setDeltaMovement(nm);
+	}
+
+	@Override
+	protected void tickSetAngle() {
+
 	}
 	
 	public void guideToPosition() {
@@ -318,7 +343,8 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		super.revive();
 		discardedButTicking = false;
 	}
-	
+
+	@Override
 	public boolean isDiscardedButTicking() {
 		return discardedButTicking;
 	}

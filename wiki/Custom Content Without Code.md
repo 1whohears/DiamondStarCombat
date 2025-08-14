@@ -1,4 +1,4 @@
-This page is updated for v0.12.7. If anything is unclear please let me know in the discord so I can update this page!
+This page is updated for v0.13.0. If anything is unclear please let me know in the discord so I can update this page!
 
 # The JSON Preset System
 
@@ -147,10 +147,23 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 `stats` | JSON_OBJECT | **REQUIRED** | *Where a lot of general stats used by all vehicles are stored.*
 - `assetId` | STRING | **`presetId`** | *The id that the client side uses to get the vehicle's assets. Should be the same name as the Vehicle Client json file, and the texture folder. If a vehicle client json file does not exist, then the vehicle model file's name should be `assetId`.*
 - `max_health` | NUMBER | **10** | *The maximum health this vehicle can have. Must be positive!*
-- `max_speed` | NUMBER | **0.1** | *The maximum horizontal speed. Must be positive!*
+- `max_speed` | NUMBER | **0.1** | *The maximum horizontal speed in `meters/tick`. Must be positive!*
+- `max_ground_speed` | NUMBER | **max_speed** | *The maximum speed the vehicle will travel while on the ground in `meters/tick`*
+- `cruise_speed` | NUMBER | **max_speed** | *The max speed a vehicle can reach if the afterburner is OFF in `meters/tick`. 
+`max_speed` is the speed a vehicle can reach if the afterburner is ON.*
+- `use_horizontal_speed_scale` | BOOLEAN | **false** | *If `true`, all horizontal in game speeds will be 1/8th the speed parameters in this preset file. 
+The 1/8th scale value will be configurable in the future. If you are making a custom fighter jet, set this to `true`, and make all speeds like `max_speed`
+and `cruise_speed` the real life speeds in `meters/tick` and also make the thrusts the real life values. Accelerations will be correctly scaled as well.* 
+- `use_vertical_speed_scale` | BOOLEAN | **false** | *If `true`, all vertical in game speeds will be 1/8th the speed parameters in this preset file. 
+The 1/8th scale value will be configurable in the future. If you are making a custom fighter jet, set this to `true`, and make all speeds like `max_speed`
+and `cruise_speed` the real life speeds in `meters/tick` and also make the thrusts the real life values. Accelerations will be correctly scaled as well.* 
+- `break_deacc_ground` | NUMBER | **0.005** | *The de-acceleration applied to a vehicle while using breaks on the ground in `meters/tick^2`*
+- `break_deacc_air` | NUMBER | **0.001** | *The de-acceleration applied to a vehicle while using breaks in the air in `meters/tick^2`*
 - `mass` | NUMBER | **1000** | *Determined the vehicle's weight. Must be positive!*
 - `stealth` | NUMBER | **1** | *A stealth value of 0 means the vehicle is invisible to radars. 1 means no stealth. Values greater than 1 make it easier for radars to see this vehicle. Values less than 1 make it harder for radars to see. Must be positive!*
 - `cross_sec_area` | NUMBER | **10** | *Larger values mean more air resistance and make it easier for a radar to detect. Must be positive!*
+- `drag_area` | NUMBER | **cross_sec_area** | *The surface area of a vehicle used to calculate drag in `meters^2`. 
+`cross_sec_area` is now separate and will be used for radar mechanics. Also note that drag for planes is more complex.*
 - `idleheat` | NUMBER | **10** | *Heat determines how likely a heat seeking missile will target this vehicle. The larger the value, the more likely to be targeted. `idleheat` is the passive heat emission from the vehicle. Note the vehicle will get hotter when the engines are running. Must be positive!*
 - `base_armor` | NUMBER | **0** | *The maximum armor this vehicle can have. Must be positive!* 
 - `armor_damage_threshold` | NUMBER | **0** | *The minimum damage that must be inflicted on a vehicle with armor, before it starts taking damage. Must be positive!*
@@ -169,6 +182,15 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 - `inertiaroll` | NUMBER | **4** | *Controls how much "resistance" there is to turning on the roll axis. Must be greater than zero!*
 - `inertiapitch` | NUMBER | **4** | *Controls how much "resistance" there is to turning on the pitch axis. Must be greater than zero!*
 - `inertiayaw` | NUMBER | **4** | *Controls how much "resistance" there is to turning on the yaw axis. Must be greater than zero!*
+- `has_turn_assist` | BOOLEAN | **false** | *Set to `true` if the pane should have a turn assist. Normally used for modern fighter jets. 
+Also known as a 'Rate Limiter'.*
+- `hard_coded_rot_acc` | VEC3 | **OPTIONAL** | *A rotational acceleration (`degrees/tick^2`) override for each 
+rotational axis (X->pitch,Y->yaw,Z->roll) based on player inputs. Use in combination with `maxroll`, `maxpitch`, `maxyaw`, and `hard_coded_rot_decel`. 
+This parameter is meant for all vehicles other than planes and cars (helis, boats, submarines, tanks). 
+Note that cars should still used `turn_radius`.
+Finding the right `inertia` and `torque` values can be annoying for vehicles like boats that you just want to have simple turn mechanics.*
+- `hard_coded_rot_decel` | NUMBER | **OPTIONAL** | *The rate in `degrees/tick^2` a vehicle will rotationally de-accelerate back to 0. 
+See `hard_coded_rot_acc` for use cases.*
 - `crashExplosionRadius` | NUMBER | **0** | *The radius of an explosion if the vehicle crashes into an obstacle. If no explosion is wanted then keep it at zero.*
 - `cameraDistance` | NUMBER | **4** | *The distance the pilot's third person camera is from the player head. The vanilla/default distance is 4. Must be greater than zero!*
 - `mastType` | ENUM | **NONE** | *The kind of mast that external radars will sit on. Mostly used for boats. Options: `NONE`, `THIN`, `NORMAL`, `LARGE`*
@@ -180,9 +202,14 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 - `hitboxes_control_yaw` | STRING_ARRAY | **OPTIONAL** | *A list of names from `hitboxes`. If all these boxes are destroyed, the player can no longer control the vehicle's yaw.*
 - `hitboxes_control_roll` | STRING_ARRAY | **OPTIONAL** | *A list of names from `hitboxes`. If all these boxes are destroyed, the player can no longer control the vehicle's roll.*
 - `max_push_thrust_per_engine` | NUMBER | **OPTIONAL** | *Override the engine item stats with vehicle specific push thrust per engine. Use `onlyCompatPart` in `slots` to require a specific engine.*
+- `max_afterburner_push_thrust_per_engine` | NUMBER | **max_push_thrust_per_engine** | *Afterburner thrust per engine in Newtons.
+If this is set to a value higher than `max_push_thrust_per_engine`, then the vehicle will be able to turn on an Afterburner.*
 - `max_spin_thrust_per_engine` | NUMBER | **OPTIONAL** | *Override the engine item stats with vehicle specific spin thrust per engine. Use `onlyCompatPart` in `slots` to require a specific engine.*
 - `heat_per_engine` | NUMBER | **OPTIONAL** | *Override the engine item stats with vehicle specific engine heat. Use `onlyCompatPart` in `slots` to require a specific engine.*
 - `fuel_consume_per_engine` | NUMBER | **OPTIONAL** | *Override the engine item stats with vehicle specific fuel consumed per tick per engine. Use `onlyCompatPart` in `slots` to require a specific engine.*
+- `physics_components` | JSON_OBJECT_ARRAY | **OPTIONAL** | *An array of simulated physics instances that contribute to the vehicle's net forces and moments.
+One type of physics component is a lift surface. Scroll down for more information.
+Additionally, please look at [some examples](https://github.com/1whohears/DiamondStarCombat/blob/32a8f38f8d6386f4a51ff15284503f520b44bd80/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L185) to see how they are defined.*
 - `plane` | JSON_OBJECT | **REQUIRED FOR PLANES** | *Stats that only planes used are stored here.*
   - `flapsAOABias` | NUMBER | **8** | *If the plane's flaps are down, the plane's AOA is increased by this value in degrees. Some planes need an AOA greater than zero to take off, so they need their flaps to be down.*
   - `canAimDown` | BOOLEAN | **false** | *If true, a plane can press the Special 2 key to point the nose gun down about 25 degrees.*
@@ -194,6 +221,8 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
   - `wing_lift_hitbox_names` | STRING_ARRAY | **OPTIONAL** | *A list of names from `hitboxes`. The percentage of hitboxes in this list that are still alive, is the percentage of `wing_area` used to generate lift.*
   - `aoa_drag_factor` | NUMBER | **1** | *Scale how much drag high AOA causes.*
   - `centripetal_scale` | NUMBER | **0.4** | *Scale the horizontal force wings generate.*
+  - `drag_aoa_graph_key` | STRING | **default_drag_aoa** | *A stat graph id. The drag vs aoa graph for the main plane body. Not as important as how the lift surfaces in `physics_components` are set up.*
+  - `centripetal_scale` | NUMBER | **1** | *Use if you want to increase or decrease the centripetal forces cause by the plane's lift surfaces.*
 - `heli` | JSON_OBJECT | **REQUIRED FOR HELICOPTERS** | *Stats that only helicopters use are stored here.*
   - `heliLiftFactor` | NUMBER | **1** | *Make this value bigger if you want the helicopter to support more weight. Must be positive!*
   - `alwaysLandingGear` | BOOLEAN | **false** | *If true, the helicopter's landing gear is always active.*
@@ -243,6 +272,58 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 `sounds` | JSON_OBJECT | **REQUIRED** | *Define what sounds this vehicle uses.*
 - `passengerSoundPack` | STRING | **no_voice** | *Which bitchin betty do you want to listen to? Options: `no_voice`, `eng_non_binary_goober`, `eng_male_1`*
 - `loopSoundType` | STRING | **basic** | *The type of "sound engine" this vehicle uses. Depending on this param, you will need to set additional sounds. Options: `basic`, `fighter_jet`. [Basic Sounds Example.](https://github.com/1whohears/DiamondStarCombat/blob/c8af802ba55b345cda7953846bca5734c18822a7/src/generated/resources/data/dscombat/vehicle/mrbudger_tank_empty.json#L118) [Fighter Jet Sounds Example.](https://github.com/1whohears/DiamondStarCombat/blob/c8af802ba55b345cda7953846bca5734c18822a7/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L332)*
+
+#### `physics_components`
+
+The stat property `physics_components` is an array of simulated physics instances that contribute to the vehicle's net forces and moments.
+Please look at [some examples](https://github.com/1whohears/DiamondStarCombat/blob/32a8f38f8d6386f4a51ff15284503f520b44bd80/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L185) to see how they are defined.
+See below for specifics on each Physics Component type.
+
+The following are parameters that every Physics Component Type has: 
+
+`hitbox` | String | **NONE** | *If set to NONE, then this physics instance is active as long as the vehicle is operational. 
+One can set this to a hitbox name from `hitboxes` so that this physics instance is active as long as that hitbox is still alive/exists.*
+
+`pos` | VEC3 | **OPTIONAL** | *The position in `meters` relative to the vehicle's origin that this physics instance operates. Assumes zeros if left empty.*
+
+##### Lift Surface
+
+Lift Surfaces will generate lift and induced drag for their parent aircraft based on Angle of Attack and velocity. 
+
+Planes now only rotate if there is a difference in forces among the lift surfaces. When all lift surfaces are stable, there is zero net torque.
+When a lift surface rotates, the angle of attack for that surface becomes different than the rest, leading to a non zero net torque, causing rotation.
+So the `input_type` parameter allows the lift surface to become a control surface by rotating it based on player inputs. 
+
+If you look at the [Alexis Plane's set of Lift Surfaces](https://github.com/1whohears/DiamondStarCombat/blob/32a8f38f8d6386f4a51ff15284503f520b44bd80/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L185), 
+you will notice that where ever there is an `ELEVATOR` or `STABILIZER` on the tail side of the aircraft, there is an equally sized lift surfce on the
+opposite side of the vehicle. This is to keep the aircraft stable if the pilot is not inputting anything.
+
+`id` = `lift_surface`
+
+`area` | NUMBER | **10** | *The surface area in `meter^2` of this lift surface.*
+
+`rotation` | VEC3 | **OPTIONAL** | *The default rotation of the lift surface relative to the vehicle in degrees. 
+Leaving all as zero leaves the lift surface parallel with the ground. 
+If the lift surface is meant to be a tail stabilizer, then one should set the Z component to 90.*
+
+`input_type` | ENUM | **NONE** | *Options: `NONE`, `LEFT_FLAP`, `RIGHT_FLAP`, `ELEVATOR`, `STABILIZER`. 
+The type of control surface. For example, `ELEVATOR` rotates up and down based on pitch inputs.
+`STABILIZER` rotates based on yaw inputs, and the flaps rotate based on roll inputs.*
+
+`input_rotation_max` | NUMBER | **4** | *How much the lift surface rotates in degrees when the maximum angular input is used.* 
+
+`ignore_roll` | BOOLEAN | **false** | *If `true`, the lift surface will not rotate on the roll axis when the plane rolls.
+Use this to make a 'fuselage' lift surface so that a fighter jet can stay in the air even rolled 90 degrees.*
+
+`lift_k_graph` | STRING | **fuselage** | *Lift vs AOA Stat graph id. Determines what Lift coefficient is used at the current AOA.
+See the Stat Graph section for more information on these types of graphs.
+See this [example Lift vs AOA graph for the Eden Plane.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/eden_lift_aoa.json)*
+
+`zero_lift_drag` | NUMBER | **0.5** | *Can be kinda thought of as the drag coefficient at 0 degrees AOA.*
+
+`drag_graph` | STRING | **default_drag_aoa** | *Float vs Float Stat graph id. Determines what Drag Coefficient is used at the current AOA.
+See the Stat Graph section for more information on these types of graphs.
+See this [example Drag vs AOA graph for the Eden Plane.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/eden_drag_aoa.json)*
 
 ### Dev Commands
 
@@ -918,6 +999,86 @@ The following is a description of each Custom Animation Type compatible with par
 `continuous_rotation` | `pivot`, `rot_axis`, `rot_rate` | *Continuously rotates the model part at `rot_rate` degrees per tick.*
 
 `turret_rotation` | `pivot`, `rot_axis`, `rotPitch` | *Control which parts of the turret will rotate. If `rotPitch` = `true` then the animation will follow the up and down rotation of the turret. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
+
+# Stat Graphs
+
+## Data
+
+Stat graphs are a way to define a property based on a current input stat. The graphs are 2D, so there are horizontal and vertical coordinates. 
+Theses coordinates are also known as Keys and Values.
+
+For example, if one to look at an [Air Density Graph](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/air_density_minecraft_overworld.json), 
+the vehicle's current Y coordinate is the key, and the air density related to that Y coordinate is the value. 
+For example, in the Overworld Air Density Graph, a Y coordinate of 64 (Key) has an air density of 1.225 (value).
+
+**Keys must be defined/sorted from least to greatest. The sorting of the values does not matter. The sorting must be done by Key.**
+
+**Most Stat Graphs require a Key of Zero to be defined.**
+
+If an input key is in between 2 defined keys, then the output value is linearly interpolated between the 2 values. 
+If an input key is above the highest key, then the value associated with the highest key will be returned.
+If an input key is below the highest key, then the value associated with the lowest key will be returned.
+
+All Stat Graphs have the following parameters:
+
+`mirror_negative_keys` | BOOLEAN | **false** | *If `true`, input keys below zero will return the value associated with the positive input key.*
+
+`invert_mirrored_values` | BOOLEAN | **false** | *If `true`, input keys below zero will return the negative value associated with the positive input key.*
+
+### Available Preset Types
+
+- `floatfloat`
+- `aoaliftk`
+- `floatfloat_multi`
+- `turn_rates_speed`
+
+### `floatfloat` Parameters
+
+[Example graph using the `keys` and `values` method.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/air_density_minecraft_overworld.json)
+
+[Example graph using the `map` method.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/alexis_drag_aoa.json)
+
+`keys` | NUMBER_ARRAY | **OPTIONAL** | *A list of Keys. Must be the same length of `size` if used. An alternative way to create a graph is with `map`.*
+
+`values` | NUMBER_ARRAY | **OPTIONAL** | *A list of Values. Must be the same length of `size` if used. An alternative way to create a graph is with `map`.*
+
+`size` | NUMBER | **OPTIONAL** | *The length of the graph. REQUIRED IF defining the graph with the `keys` and `values` method.*
+
+`map` | JSON_OBJECT_ARRAY | **OPTIONAL** | *An array of Json Objects where each entry contains a `key` and `value` property.*
+
+### `aoaliftk` Parameters
+
+This graph type encodes the Lift Coefficient associated with Angle of Attack.
+
+These graphs use the same properties as `floatfloat`.
+
+[Example graph using the `keys` and `values` method.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/fuselage.json)
+
+[Example graph using the `map` method.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/javi_lift_aoa.json)
+
+### `floatfloat_multi` Parameters
+
+This graph type is similar to `floatfloat`, but only the `keys` and `values` method is available. 
+However `values` is a JSON_ARRAY of more NUMBER_ARRAYs containing the values. 
+This is because each key is associated with multiple values determined by `rows`.
+
+`size` | NUMBER | **REQUIRED** | *The length of the graph.*
+
+`rows` | NUMBER | **REQUIRED** | *The length of the graph.*
+
+`keys` | NUMBER_ARRAY | **REQUIRED** | *A list of Keys. Must be the same length of `size` if used.*
+
+`values` | JSON_ARRAY | **REQUIRED** | *A list of NUMBER_ARRAYs. Must be the same length of `rows` if used. Each sub NUMBER_ARRAY must be the length of `size`.*
+
+### `turn_rates_speed` Parameters
+
+This graph encodes the maximum turn rate for each rotational axis based on the current speed in `meters/tick`. 
+The number of rows must be 3. Where Row 1 is Pitch, Row 2 is Yaw, and Row 3 is Roll. 
+These turn rates are used when the `dscombat:planeArcadeMode` gamerule is set to `true`, and when `turn_assist` is enabled.
+
+These graphs use the same properties as `floatfloat_multi`.
+
+[Example graph.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/e3sentry_turn_rates.json)
 
 # Models
 

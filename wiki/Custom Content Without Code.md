@@ -1,10 +1,10 @@
-This page is updated for v0.12.7. If anything is unclear please let me know in the discord so I can update this page!
+This page is updated for v0.13.0. If anything is unclear please let me know in the discord so I can update this page!
 
 # The JSON Preset System
 
-Vehicles, weapons, radars, and parts use Minecraft's data system to load their stats. **I'd recommend getting familiar with how modifying/creating custom recipes works with Datapacks in Vanilla Minecraft before going any further.** Similar to how every recipe has a JSON file: every vehicle, weapon, and radar have their own JSON files that can be modified. I call these JSON files presets. 
+Vehicles, weapons, radars, and parts use Minecraft's data system to load their stats. **I'd recommend getting familiar with how modifying/creating custom recipes works with Datapacks in Vanilla Minecraft before going any further.** Similar to how every recipe has a JSON file: every vehicle, weapon, and radar have their own JSON files that can be modified. I call these JSON files presets.
 
-Presets store all the stats and information that all instances of that preset share. For example: all Alexis Planes use the `alexis_plane_empty.json` preset file to determine their max health, max speed, ext...I recommend exploring the [presets that come with the mod](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/vehicle) and get accustomed to how these json files are written. 
+Presets store all the stats and information that all instances of that preset share. For example: all Alexis Planes use the `alexis_plane_empty.json` preset file to determine their max health, max speed, ext...I recommend exploring the [presets that come with the mod](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/vehicle) and get accustomed to how these json files are written.
 
 ## Datapack Basics
 
@@ -51,9 +51,9 @@ JSON parameters will be documented in the following format hence forth:
 
 Every preset file can have these parameters:
 
-`presetId` | STRING | **REQUIRED** | *MUST BE UNIQUE AND EQUAL TO THE JSON FILE NAME.*
+`presetId` | STRING | **JSON_FILE_NAME** | *MUST BE EQUAL TO JSON FILE NAME OR LEFT EMPTY (ASSUMES JSON NAME)*
 
-`presetType` | STRING | **REQUIRED** | *Determines what kind of stats the preset should have. 
+`presetType` | STRING | **REQUIRED** | *Determines what kind of stats the preset should have.
 Can determine if the preset is a plane or a boat for example. Scroll down to see each preset super type's available preset types.*
 <details> 
 
@@ -75,9 +75,9 @@ Can determine if the preset is a plane or a boat for example. Scroll down to see
 
 `sort_factor` | INTEGER | **0** | *Presets with lower sort factors are sorted before presets with higher sort factors. This is useful for the crafting workbenches if you want a preset to be listed before/after others.*
 
-### Preset Inheritance 
+### Preset Inheritance
 
-The `copyId` parameter allows a preset inherit all the stats from the preset with that id. This lets you make multiple presets with similar stats without copying and pasting the same file multiple times. One can also "override" parent stats in the child preset. Additionally, one can make the inheritance tree as long as they want. 
+The `copyId` parameter allows a preset inherit all the stats from the preset with that id. This lets you make multiple presets with similar stats without copying and pasting the same file multiple times. One can also "override" parent stats in the child preset. Additionally, one can make the inheritance tree as long as they want.
 <details>
 
 <summary>Note the 3 example presets `dog.json`, `fast_dog.json`, and `lazy_dog.json`: </summary>
@@ -105,12 +105,12 @@ The `copyId` parameter allows a preset inherit all the stats from the preset wit
 }
 ```
 
-Notice that `presetId` and `presetType` still must be defined in all examples. Because `fast_dog` copies `dog`, both presets have a health stat of 100. However, `fast_dog` overrides the speed stat. Thus, `fast_dog` has a speed of 10, and `dog` has a speed of 4. `lazy_dog` has the same mass of `fast_dog`, but not the same speed. 
+Notice that `presetId` and `presetType` still must be defined in all examples. Because `fast_dog` copies `dog`, both presets have a health stat of 100. However, `fast_dog` overrides the speed stat. Thus, `fast_dog` has a speed of 10, and `dog` has a speed of 4. `lazy_dog` has the same mass of `fast_dog`, but not the same speed.
 </details> 
 
 # Vehicles
 
-Vehicle presets are the most complex presets to design as you'd expect. If your goal is to make a custom vehicle, you are going to need to create a vehicle preset within a datapack, and then create several assets and make sure they are all in the right folders. I will document every parameter within the json files, and every asset you will need to make your dream custom vehicle operational. This information will also be useful if you merely want to modify some of the vehicles that are in the base mod. 
+Vehicle presets are the most complex presets to design as you'd expect. If your goal is to make a custom vehicle, you are going to need to create a vehicle preset within a datapack, and then create several assets and make sure they are all in the right folders. I will document every parameter within the json files, and every asset you will need to make your dream custom vehicle operational. This information will also be useful if you merely want to modify some of the vehicles that are in the base mod.
 
 ## Data
 
@@ -124,11 +124,11 @@ The following is an explanation of all the preset parameters that are unique to 
 - `boat`
 - `submarine`
 
-For vehicles the `presetType` determines the entity type that is used to summon the vehicle. Each vehicle entity has different physics and stats. For example boats run additional physics calculations for buoyancy that other entities don't. 
+For vehicles the `presetType` determines the entity type that is used to summon the vehicle. Each vehicle entity has different physics and stats. For example boats run additional physics calculations for buoyancy that other entities don't.
 
 ### General Conventions
 
-Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root preset which is called `empty`. The health, armor, movement stats, available part slots, hitboxes, recipe ingredients, ext are all defined in the empty preset. But the empty preset has no engine, no fuel tanks, no weapons, ext. Then there is an `unarmed` preset which puts the `empty` preset id in `copyId` and adds engines and fuel tanks but no weapons. See `slots` for how this is done. This is typically the preset that gets crafted in the vehicle crafting workbench. Then there is the "default" preset which uses the `unarmed` preset id as its `copyId` and adds weapons. The unarmed and default presets all share the same stats, hitboxes, and sounds. But they have different weapon load outs. 
+Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root preset which is called `empty`. The health, armor, movement stats, available part slots, hitboxes, recipe ingredients, ext are all defined in the empty preset. But the empty preset has no engine, no fuel tanks, no weapons, ext. Then there is an `unarmed` preset which puts the `empty` preset id in `copyId` and adds engines and fuel tanks but no weapons. See `slots` for how this is done. This is typically the preset that gets crafted in the vehicle crafting workbench. Then there is the "default" preset which uses the `unarmed` preset id as its `copyId` and adds weapons. The unarmed and default presets all share the same stats, hitboxes, and sounds. But they have different weapon load outs.
 
 ### Full Parameter List
 
@@ -147,12 +147,25 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 `stats` | JSON_OBJECT | **REQUIRED** | *Where a lot of general stats used by all vehicles are stored.*
 - `assetId` | STRING | **`presetId`** | *The id that the client side uses to get the vehicle's assets. Should be the same name as the Vehicle Client json file, and the texture folder. If a vehicle client json file does not exist, then the vehicle model file's name should be `assetId`.*
 - `max_health` | NUMBER | **10** | *The maximum health this vehicle can have. Must be positive!*
-- `max_speed` | NUMBER | **0.1** | *The maximum horizontal speed. Must be positive!*
+- `max_speed` | NUMBER | **0.1** | *The maximum horizontal speed in `meters/tick`. Must be positive!*
+- `max_ground_speed` | NUMBER | **max_speed** | *The maximum speed the vehicle will travel while on the ground in `meters/tick`*
+- `cruise_speed` | NUMBER | **max_speed** | *The max speed a vehicle can reach if the afterburner is OFF in `meters/tick`.
+  `max_speed` is the speed a vehicle can reach if the afterburner is ON.*
+- `use_horizontal_speed_scale` | BOOLEAN | **false** | *If `true`, all horizontal in game speeds will be 1/8th the speed parameters in this preset file.
+  The 1/8th scale value will be configurable in the future. If you are making a custom fighter jet, set this to `true`, and make all speeds like `max_speed`
+  and `cruise_speed` the real life speeds in `meters/tick` and also make the thrusts the real life values. Accelerations will be correctly scaled as well.*
+- `use_vertical_speed_scale` | BOOLEAN | **false** | *If `true`, all vertical in game speeds will be 1/8th the speed parameters in this preset file.
+  The 1/8th scale value will be configurable in the future. If you are making a custom fighter jet, set this to `true`, and make all speeds like `max_speed`
+  and `cruise_speed` the real life speeds in `meters/tick` and also make the thrusts the real life values. Accelerations will be correctly scaled as well.*
+- `break_deacc_ground` | NUMBER | **0.005** | *The de-acceleration applied to a vehicle while using breaks on the ground in `meters/tick^2`*
+- `break_deacc_air` | NUMBER | **0.001** | *The de-acceleration applied to a vehicle while using breaks in the air in `meters/tick^2`*
 - `mass` | NUMBER | **1000** | *Determined the vehicle's weight. Must be positive!*
 - `stealth` | NUMBER | **1** | *A stealth value of 0 means the vehicle is invisible to radars. 1 means no stealth. Values greater than 1 make it easier for radars to see this vehicle. Values less than 1 make it harder for radars to see. Must be positive!*
 - `cross_sec_area` | NUMBER | **10** | *Larger values mean more air resistance and make it easier for a radar to detect. Must be positive!*
+- `drag_area` | NUMBER | **cross_sec_area** | *The surface area of a vehicle used to calculate drag in `meters^2`.
+  `cross_sec_area` is now separate and will be used for radar mechanics. Also note that drag for planes is more complex.*
 - `idleheat` | NUMBER | **10** | *Heat determines how likely a heat seeking missile will target this vehicle. The larger the value, the more likely to be targeted. `idleheat` is the passive heat emission from the vehicle. Note the vehicle will get hotter when the engines are running. Must be positive!*
-- `base_armor` | NUMBER | **0** | *The maximum armor this vehicle can have. Must be positive!* 
+- `base_armor` | NUMBER | **0** | *The maximum armor this vehicle can have. Must be positive!*
 - `armor_damage_threshold` | NUMBER | **0** | *The minimum damage that must be inflicted on a vehicle with armor, before it starts taking damage. Must be positive!*
 - `armor_damage_absorbtion` | NUMBER | **0** | *Must be a value between 0 and 1! The percentage of damage reduced from attacks when the vehicle has armor.*
 - `max_altitude` | NUMBER | **330** | *The maximum altitude a vehicle is allowed to reach. Note: altitude is distance from sea level. Sea level in the overworld is y = 70. So the default max y coordinate is 400.*
@@ -169,6 +182,15 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 - `inertiaroll` | NUMBER | **4** | *Controls how much "resistance" there is to turning on the roll axis. Must be greater than zero!*
 - `inertiapitch` | NUMBER | **4** | *Controls how much "resistance" there is to turning on the pitch axis. Must be greater than zero!*
 - `inertiayaw` | NUMBER | **4** | *Controls how much "resistance" there is to turning on the yaw axis. Must be greater than zero!*
+- `has_turn_assist` | BOOLEAN | **false** | *Set to `true` if the pane should have a turn assist. Normally used for modern fighter jets.
+  Also known as a 'Rate Limiter'.*
+- `hard_coded_rot_acc` | VEC3 | **OPTIONAL** | *A rotational acceleration (`degrees/tick^2`) override for each
+  rotational axis (X->pitch,Y->yaw,Z->roll) based on player inputs. Use in combination with `maxroll`, `maxpitch`, `maxyaw`, and `hard_coded_rot_decel`.
+  This parameter is meant for all vehicles other than planes and cars (helis, boats, submarines, tanks).
+  Note that cars should still used `turn_radius`.
+  Finding the right `inertia` and `torque` values can be annoying for vehicles like boats that you just want to have simple turn mechanics.*
+- `hard_coded_rot_decel` | NUMBER | **OPTIONAL** | *The rate in `degrees/tick^2` a vehicle will rotationally de-accelerate back to 0.
+  See `hard_coded_rot_acc` for use cases.*
 - `crashExplosionRadius` | NUMBER | **0** | *The radius of an explosion if the vehicle crashes into an obstacle. If no explosion is wanted then keep it at zero.*
 - `cameraDistance` | NUMBER | **4** | *The distance the pilot's third person camera is from the player head. The vanilla/default distance is 4. Must be greater than zero!*
 - `mastType` | ENUM | **NONE** | *The kind of mast that external radars will sit on. Mostly used for boats. Options: `NONE`, `THIN`, `NORMAL`, `LARGE`*
@@ -180,25 +202,32 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 - `hitboxes_control_yaw` | STRING_ARRAY | **OPTIONAL** | *A list of names from `hitboxes`. If all these boxes are destroyed, the player can no longer control the vehicle's yaw.*
 - `hitboxes_control_roll` | STRING_ARRAY | **OPTIONAL** | *A list of names from `hitboxes`. If all these boxes are destroyed, the player can no longer control the vehicle's roll.*
 - `max_push_thrust_per_engine` | NUMBER | **OPTIONAL** | *Override the engine item stats with vehicle specific push thrust per engine. Use `onlyCompatPart` in `slots` to require a specific engine.*
+- `max_afterburner_push_thrust_per_engine` | NUMBER | **max_push_thrust_per_engine** | *Afterburner thrust per engine in Newtons.
+  If this is set to a value higher than `max_push_thrust_per_engine`, then the vehicle will be able to turn on an Afterburner.*
 - `max_spin_thrust_per_engine` | NUMBER | **OPTIONAL** | *Override the engine item stats with vehicle specific spin thrust per engine. Use `onlyCompatPart` in `slots` to require a specific engine.*
 - `heat_per_engine` | NUMBER | **OPTIONAL** | *Override the engine item stats with vehicle specific engine heat. Use `onlyCompatPart` in `slots` to require a specific engine.*
 - `fuel_consume_per_engine` | NUMBER | **OPTIONAL** | *Override the engine item stats with vehicle specific fuel consumed per tick per engine. Use `onlyCompatPart` in `slots` to require a specific engine.*
+- `physics_components` | JSON_OBJECT_ARRAY | **OPTIONAL** | *An array of simulated physics instances that contribute to the vehicle's net forces and moments.
+  One type of physics component is a lift surface. Scroll down for more information.
+  Additionally, please look at [some examples](https://github.com/1whohears/DiamondStarCombat/blob/32a8f38f8d6386f4a51ff15284503f520b44bd80/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L185) to see how they are defined.*
 - `plane` | JSON_OBJECT | **REQUIRED FOR PLANES** | *Stats that only planes used are stored here.*
-  - `flapsAOABias` | NUMBER | **8** | *If the plane's flaps are down, the plane's AOA is increased by this value in degrees. Some planes need an AOA greater than zero to take off, so they need their flaps to be down.*
-  - `canAimDown` | BOOLEAN | **false** | *If true, a plane can press the Special 2 key to point the nose gun down about 25 degrees.*
-  - `wing_area` | NUMBER | **10** | *Surface area of the plane's wings. A higher value means more lift generated from the wings. Must be positive!*
-  - `fuselage_lift_area` | NUMBER | **0** | *Surface area of the plane's fuselage. A higher value means more lift generated from the fuselage. Must be positive!*
-  - `wing_lift_k_graph` | STRING | **fuselage** | *A stat graph id. Must be a stat graph with a `presetType` of `aoaliftk`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the lift coefficient for the wings based on AOA.*
-  - `fuselage_lift_k_graph` | STRING | **fuselage** | *A stat graph id. Must be a stat graph with a `presetType` of `aoaliftk`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the lift coefficient for the fuselage based on AOA.*
-  - `turn_rates_graph` | STRING | **wooden_plane_turn_rates** | *A stat graph id. Must be a stat graph with a `presetType` of `turn_rates_speed`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the max turn rate of the plane vs speed.*
-  - `wing_lift_hitbox_names` | STRING_ARRAY | **OPTIONAL** | *A list of names from `hitboxes`. The percentage of hitboxes in this list that are still alive, is the percentage of `wing_area` used to generate lift.*
-  - `aoa_drag_factor` | NUMBER | **1** | *Scale how much drag high AOA causes.*
-  - `centripetal_scale` | NUMBER | **0.4** | *Scale the horizontal force wings generate.*
+    - `flapsAOABias` | NUMBER | **8** | *If the plane's flaps are down, the plane's AOA is increased by this value in degrees. Some planes need an AOA greater than zero to take off, so they need their flaps to be down.*
+    - `canAimDown` | BOOLEAN | **false** | *If true, a plane can press the Special 2 key to point the nose gun down about 25 degrees.*
+    - `wing_area` | NUMBER | **10** | *Surface area of the plane's wings. A higher value means more lift generated from the wings. Must be positive!*
+    - `fuselage_lift_area` | NUMBER | **0** | *Surface area of the plane's fuselage. A higher value means more lift generated from the fuselage. Must be positive!*
+    - `wing_lift_k_graph` | STRING | **fuselage** | *A stat graph id. Must be a stat graph with a `presetType` of `aoaliftk`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the lift coefficient for the wings based on AOA.*
+    - `fuselage_lift_k_graph` | STRING | **fuselage** | *A stat graph id. Must be a stat graph with a `presetType` of `aoaliftk`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the lift coefficient for the fuselage based on AOA.*
+    - `turn_rates_graph` | STRING | **wooden_plane_turn_rates** | *A stat graph id. Must be a stat graph with a `presetType` of `turn_rates_speed`. [Stat Graphs that come with the mod.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/main/resources/data/dscombat/stat_graph) You can always add your own! Determines the max turn rate of the plane vs speed.*
+    - `wing_lift_hitbox_names` | STRING_ARRAY | **OPTIONAL** | *A list of names from `hitboxes`. The percentage of hitboxes in this list that are still alive, is the percentage of `wing_area` used to generate lift.*
+    - `aoa_drag_factor` | NUMBER | **1** | *Scale how much drag high AOA causes.*
+    - `centripetal_scale` | NUMBER | **0.4** | *Scale the horizontal force wings generate.*
+    - `drag_aoa_graph_key` | STRING | **default_drag_aoa** | *A stat graph id. The drag vs aoa graph for the main plane body. Not as important as how the lift surfaces in `physics_components` are set up.*
+    - `centripetal_scale` | NUMBER | **1** | *Use if you want to increase or decrease the centripetal forces cause by the plane's lift surfaces.*
 - `heli` | JSON_OBJECT | **REQUIRED FOR HELICOPTERS** | *Stats that only helicopters use are stored here.*
-  - `heliLiftFactor` | NUMBER | **1** | *Make this value bigger if you want the helicopter to support more weight. Must be positive!*
-  - `alwaysLandingGear` | BOOLEAN | **false** | *If true, the helicopter's landing gear is always active.*
+    - `heliLiftFactor` | NUMBER | **1** | *Make this value bigger if you want the helicopter to support more weight. Must be positive!*
+    - `alwaysLandingGear` | BOOLEAN | **false** | *If true, the helicopter's landing gear is always active.*
 - `car` | JSON_OBJECT | **REQUIRED FOR CARS** | *Stats that only cars use are stored here.*
-  - `isTank` | BOOLEAN | **false** | *If true, the vehicle will use tank drive physics instead of car drive physics.*
+    - `isTank` | BOOLEAN | **false** | *If true, the vehicle will use tank drive physics instead of car drive physics.*
 
 `slots` | JSON_OBJECT_ARRAY | **REQUIRED** | *Set all the slots and their part items in this list. YOU MUST ADD ONE, AND ONLY ONE, PILOT SEAT! Please look at [some examples](https://github.com/1whohears/DiamondStarCombat/blob/c8af802ba55b345cda7953846bca5734c18822a7/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L187) to understand how slots work. See **Dev Commands** to test slot positions in game.*
 - `name` | STRING | **REQUIRED** | *ALL SLOTS MUST HAVE UNIQUE NAMES! Add `"slotname.dscombat.[name]": "Name"` to a lang file if the name doesn't have a translation already. There are a few names with unique behavior...`pilot_seat`: Riders of this seat control everything in the vehicle. There can only be ONE pilot seat! `copilot_seat`: Riders of this seat can ONLY shoot weapons in the vehicle.*
@@ -211,10 +240,10 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 - `onlyCompatPart` | STRING | **OPTIONAL** | *If set, only part items with this `presetId` will be allowed to be put in this slot.*
 - `linkedHitbox` | STRING | **OPTIONAL** | *If set, if a hitbox from `hitboxes` with this `name` is destroyed, the part in this slot will get damaged.*
 - `data` | JSON_OBJECT | **OPTIONAL** | *Part data goes in here. Don't include if you want the slot to be empty.*
-  - `part` | STRING | **REQUIRED?** | *Either `part` or `itemid` is required, not both. A Part `presetId`. See the [Part Presets in the mod](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/parts) for a list of options. Example `seat`.*
-  - `itemid` | RESOURCE_LOCATION | **REQUIRED?** | *Either `part` or `itemid` is required, not both. A part item resource location. Example: `dscombat:seat`.*
-  - `filled` | BOOLEAN | **false** | *If true, the part will be filled in brand new instances of this vehicle.*
-  - `param` | STRING | **OPTIONAL** | *If `filled` is true, some parts need an additional parameter to know what to fill the part with. For example, weapons and turrets need a Weapon's `presetId`.*
+    - `part` | STRING | **REQUIRED?** | *Either `part` or `itemid` is required, not both. A Part `presetId`. See the [Part Presets in the mod](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/data/dscombat/parts) for a list of options. Example `seat`.*
+    - `itemid` | RESOURCE_LOCATION | **REQUIRED?** | *Either `part` or `itemid` is required, not both. A part item resource location. Example: `dscombat:seat`.*
+    - `filled` | BOOLEAN | **false** | *If true, the part will be filled in brand new instances of this vehicle.*
+    - `param` | STRING | **OPTIONAL** | *If `filled` is true, some parts need an additional parameter to know what to fill the part with. For example, weapons and turrets need a Weapon's `presetId`.*
 
 `hitboxes` | JSON_OBJECT_ARRAY | **OPTIONAL** | *The list of custom hitboxes. Each hitbox must have a unique name! If `rootHitboxNoCollide` is true, the first hitbox in this list should be a central or fuselage hitbox. The first hitbox in the list would be what the player interacts with. See **Dev Commands** to test hitbox positions and sizes in game.*
 - `name` | STRING | **REQUIRED** | *Each hitbox must have a unique name! Used as an id by other parts of the mod to check if certain hitboxes were destroyed.*
@@ -244,9 +273,61 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
 - `passengerSoundPack` | STRING | **no_voice** | *Which bitchin betty do you want to listen to? Options: `no_voice`, `eng_non_binary_goober`, `eng_male_1`*
 - `loopSoundType` | STRING | **basic** | *The type of "sound engine" this vehicle uses. Depending on this param, you will need to set additional sounds. Options: `basic`, `fighter_jet`. [Basic Sounds Example.](https://github.com/1whohears/DiamondStarCombat/blob/c8af802ba55b345cda7953846bca5734c18822a7/src/generated/resources/data/dscombat/vehicle/mrbudger_tank_empty.json#L118) [Fighter Jet Sounds Example.](https://github.com/1whohears/DiamondStarCombat/blob/c8af802ba55b345cda7953846bca5734c18822a7/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L332)*
 
+#### `physics_components`
+
+The stat property `physics_components` is an array of simulated physics instances that contribute to the vehicle's net forces and moments.
+Please look at [some examples](https://github.com/1whohears/DiamondStarCombat/blob/32a8f38f8d6386f4a51ff15284503f520b44bd80/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L185) to see how they are defined.
+See below for specifics on each Physics Component type.
+
+The following are parameters that every Physics Component Type has:
+
+`hitbox` | String | **NONE** | *If set to NONE, then this physics instance is active as long as the vehicle is operational.
+One can set this to a hitbox name from `hitboxes` so that this physics instance is active as long as that hitbox is still alive/exists.*
+
+`pos` | VEC3 | **OPTIONAL** | *The position in `meters` relative to the vehicle's origin that this physics instance operates. Assumes zeros if left empty.*
+
+##### Lift Surface
+
+Lift Surfaces will generate lift and induced drag for their parent aircraft based on Angle of Attack and velocity.
+
+Planes now only rotate if there is a difference in forces among the lift surfaces. When all lift surfaces are stable, there is zero net torque.
+When a lift surface rotates, the angle of attack for that surface becomes different than the rest, leading to a non zero net torque, causing rotation.
+So the `input_type` parameter allows the lift surface to become a control surface by rotating it based on player inputs.
+
+If you look at the [Alexis Plane's set of Lift Surfaces](https://github.com/1whohears/DiamondStarCombat/blob/32a8f38f8d6386f4a51ff15284503f520b44bd80/src/generated/resources/data/dscombat/vehicle/alexis_plane_empty.json#L185),
+you will notice that where ever there is an `ELEVATOR` or `STABILIZER` on the tail side of the aircraft, there is an equally sized lift surfce on the
+opposite side of the vehicle. This is to keep the aircraft stable if the pilot is not inputting anything.
+
+`id` = `lift_surface`
+
+`area` | NUMBER | **10** | *The surface area in `meter^2` of this lift surface.*
+
+`rotation` | VEC3 | **OPTIONAL** | *The default rotation of the lift surface relative to the vehicle in degrees.
+Leaving all as zero leaves the lift surface parallel with the ground.
+If the lift surface is meant to be a tail stabilizer, then one should set the Z component to 90.*
+
+`input_type` | ENUM | **NONE** | *Options: `NONE`, `LEFT_FLAP`, `RIGHT_FLAP`, `ELEVATOR`, `STABILIZER`.
+The type of control surface. For example, `ELEVATOR` rotates up and down based on pitch inputs.
+`STABILIZER` rotates based on yaw inputs, and the flaps rotate based on roll inputs.*
+
+`input_rotation_max` | NUMBER | **4** | *How much the lift surface rotates in degrees when the maximum angular input is used.*
+
+`ignore_roll` | BOOLEAN | **false** | *If `true`, the lift surface will not rotate on the roll axis when the plane rolls.
+Use this to make a 'fuselage' lift surface so that a fighter jet can stay in the air even rolled 90 degrees.*
+
+`lift_k_graph` | STRING | **fuselage** | *Lift vs AOA Stat graph id. Determines what Lift coefficient is used at the current AOA.
+See the Stat Graph section for more information on these types of graphs.
+See this [example Lift vs AOA graph for the Eden Plane.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/eden_lift_aoa.json)*
+
+`zero_lift_drag` | NUMBER | **0.5** | *Can be kinda thought of as the drag coefficient at 0 degrees AOA.*
+
+`drag_graph` | STRING | **default_drag_aoa** | *Float vs Float Stat graph id. Determines what Drag Coefficient is used at the current AOA.
+See the Stat Graph section for more information on these types of graphs.
+See this [example Drag vs AOA graph for the Eden Plane.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/eden_drag_aoa.json)*
+
 ### Dev Commands
 
-These commands allow you to check sizes and positions in game. You have to sit in the pilot seat of a vehicle for them to work. The changes these commands make are not permanent! You must guess and check, once you find values you like you update the json file. The slot and hitbox need to exist already in both commands. 
+These commands allow you to check sizes and positions in game. You have to sit in the pilot seat of a vehicle for them to work. The changes these commands make are not permanent! You must guess and check, once you find values you like you update the json file. The slot and hitbox need to exist already in both commands.
 
 Also, for some reason the position coordinates are not accurate sometimes. Adding a small number like 0.00001 fixes it. Don't ask why because I have no idea.
 
@@ -262,7 +343,7 @@ Also, for some reason the position coordinates are not accurate sometimes. Addin
 
 In order for your custom vehicle to appear in the Vehicle Workbench you need to add a recipe json file to `//data/[namespace]/recipes/workbench_vehicle_[presetId].json`
 
-An example of the Unarmed Alexis Plane recipe can be seen below. Replace `alexis_plane_unarmed` with your plane's `presetId`. The Vehicle Workbench will use the items defined in `ingredients` in the vehicle preset file. 
+An example of the Unarmed Alexis Plane recipe can be seen below. Replace `alexis_plane_unarmed` with your plane's `presetId`. The Vehicle Workbench will use the items defined in `ingredients` in the vehicle preset file.
 
 ```
 {
@@ -291,17 +372,17 @@ Vehicle Client Presets have the same format as Json Presets, but they are an ass
 `model_data` | JSON_OBJECT | **OPTIONAL** | *If not included, `model_id` will be assumed to be `assetId`, and there won't be any animations.*
 - `model_id` | STRING | **`assetId`** | *The file name of the model used for this vehicle. Scroll down to the Models section for more information.*
 - `custom_anims` | JSON_OBJECT_ARRAY | **OPTIONAL** | *A list of custom animations. These animations manipulate individual groups/bones/model parts. multiple animations can be stacked on the same `model_part_key`! There are different animation types, each requiring different parameters. All the parameters will be listed below, but a bit further down an explanation of each animation type will be documented.*
-  - `anim_id` | STRING | **REQUIRED** | *Each animation type will be explained below. Options: `continuous_rotation`, `motor_rotation`, `wheel_rotation`, `input_bound_rotation`, `spinning_radar`, `landing_gear`, `input_bound_translation`, `plane_flap_rotation`, `hitbox_destroy_part`.*
-  - `model_part_key` | STRING | **REQUIRED** | *The name of the bone/group/object within the model that is being animated.*
-  - `pivot` | VEC3 | **ZEROS** | *The pivot point a model part will rotate around. The units are Minecraft pixels or 1/16th of a block.*
-  - `rot_axis` | ENUM | **X** | *The axis the model part rotates around. Options: `X`, `Y`, `Z`.*
-  - `rot_rate` | NUMBER | **0** | *Maximum rotation rate in degrees per tick.*
-  - `input_axis` | ENUM | **PITCH** | *The input axis that controls how much the part rotates. Options: `PITCH`, `YAW`, `ROLL`, `THROTTLE`*
-  - `bound` | NUMBER | **0** | *How for the part rotates in degrees.*
-  - `radar_id` | STRING | **OPTIONAL** | *The `presetId` of the radar that should spin.*
-  - `fold_angle` | NUMBER | **0** | *The angle in degrees the landing gear part rotates while folding.*
-  - `bounds` | VEC3 | **ZEROS** | *The max distance the model part will be translated.*
-  - `hitbox_name` | STRING | **OPTIONAL** | *If a hitbox from `hitboxes` with this `name` gets destroyed, this model pat will disappear.*
+    - `anim_id` | STRING | **REQUIRED** | *Each animation type will be explained below. Options: `continuous_rotation`, `motor_rotation`, `wheel_rotation`, `input_bound_rotation`, `spinning_radar`, `landing_gear`, `input_bound_translation`, `plane_flap_rotation`, `hitbox_destroy_part`.*
+    - `model_part_key` | STRING | **REQUIRED** | *The name of the bone/group/object within the model that is being animated.*
+    - `pivot` | VEC3 | **ZEROS** | *The pivot point a model part will rotate around. The units are Minecraft pixels or 1/16th of a block.*
+    - `rot_axis` | ENUM | **X** | *The axis the model part rotates around. Options: `X`, `Y`, `Z`.*
+    - `rot_rate` | NUMBER | **0** | *Maximum rotation rate in degrees per tick.*
+    - `input_axis` | ENUM | **PITCH** | *The input axis that controls how much the part rotates. Options: `PITCH`, `YAW`, `ROLL`, `THROTTLE`*
+    - `bound` | NUMBER | **0** | *How for the part rotates in degrees.*
+    - `radar_id` | STRING | **OPTIONAL** | *The `presetId` of the radar that should spin.*
+    - `fold_angle` | NUMBER | **0** | *The angle in degrees the landing gear part rotates while folding.*
+    - `bounds` | VEC3 | **ZEROS** | *The max distance the model part will be translated.*
+    - `hitbox_name` | STRING | **OPTIONAL** | *If a hitbox from `hitboxes` with this `name` gets destroyed, this model pat will disappear.*
 
 #### Custom Animation Types
 
@@ -339,7 +420,7 @@ The following is a description of each Custom Animation Type, and what parameter
 
 - There should be `textureLayers` many layer texture files.
 - `index` counts from 0 to `textureLayers`-1
-- Layers function like decals. They shouldn't cover the entire model. 
+- Layers function like decals. They shouldn't cover the entire model.
 - If you want the player to have full control of a color, make those pixels `#FFFFFF` white.
 - Must have the same resolution of `base_texture_file`.
 
@@ -352,16 +433,16 @@ The following is a description of each Custom Animation Type, and what parameter
 - Must have the same resolution of `base_texture_file`.
 - Maps UV coordinates on the texture to 3d model coordinates. Thus the screens can fit perfectly onto a vehicle's dash.
 - The screen map reader looks for specific colors to register certain screens. No other colors mater.
-  - `#008282`: Big Radar Screen
-  - `#00FFFF`: Air Radar Screen
-  - `#4CFF00`: Ground Radar Screen
-  - `#7F0000`: Fuel Screen
-  - `#FF00DC`: RWR Screen
-  - `#0026FF`: Heading Screen
-  - `#008718`: Turn Coordinator Screen
-  - `#7F3300`: Attitude Indicator Screen
-  - `#840084`: Altimeter Screen
-  - `#FFD800`: Air Speed Screen
+    - `#008282`: Big Radar Screen
+    - `#00FFFF`: Air Radar Screen
+    - `#4CFF00`: Ground Radar Screen
+    - `#7F0000`: Fuel Screen
+    - `#FF00DC`: RWR Screen
+    - `#0026FF`: Heading Screen
+    - `#008718`: Turn Coordinator Screen
+    - `#7F3300`: Attitude Indicator Screen
+    - `#840084`: Altimeter Screen
+    - `#FFD800`: Air Speed Screen
 
 # Weapons
 
@@ -373,13 +454,13 @@ The following is a description of each Custom Animation Type, and what parameter
 
 - `none`: Used for the "Safety" weapon option.
 - `bullet`: Bullets are bullets.
-- `bomb`: Drops a Christmas present that has no internal propulsion. 
+- `bomb`: Drops a Christmas present that has no internal propulsion.
 - `bunker_buster`: A bomb that breaks a bunch of blocks before exploding.
 - `pos_missile`: A missile that goes to the position the pilot picks.
 - `ir_missile`: A missile that tracks heat sources.
 - `track_missile`: A missile that tracks the entity that the player selects with their radar.
 - `torpedo`: Same as track missile, but it doesn't explode in water.
-- `dumb_torpedo`: Does nothing in the air, goes straight when it touches water. 
+- `dumb_torpedo`: Does nothing in the air, goes straight when it touches water.
 - `anti_radar_missile`: These missiles target radar sources.
 
 ### All Weapons Parameter List
@@ -398,7 +479,7 @@ The following is a description of each Custom Animation Type, and what parameter
 
 `itemKey` | RESOURCE_LOCATION | **dscombat:ammo** | *Can also be set to `dscombat:bullet`, `dscombat:bomb`, or `dscombat:missile`.*
 
-`assetId` | STRING | **`presetId`** | *Either the file name of the model that this weapon uses 
+`assetId` | STRING | **`presetId`** | *Either the file name of the model that this weapon uses
 (Scroll down to the Models section for more info), or the name of the Weapon Client Preset file used to
 define custom weapon animations.*
 
@@ -516,7 +597,7 @@ Includes all stats listed in **All Weapons Parameter List**, **Bullet Parameter 
 
 In order for your custom weapon to appear in the Weapons Workbench you need to add a recipe json file to `//data/[namespace]/recipes/workbench_weapon_[presetId].json`
 
-An example of the 10mm Bullet recipe can be seen below. Replace `10mm` with your weapon's `presetId`. The Weapons Workbench will use the items defined in `ingredients` in the weapon preset file. 
+An example of the 10mm Bullet recipe can be seen below. Replace `10mm` with your weapon's `presetId`. The Weapons Workbench will use the items defined in `ingredients` in the weapon preset file.
 
 ```
 {
@@ -527,21 +608,21 @@ An example of the 10mm Bullet recipe can be seen below. Replace `10mm` with your
 
 ## Assets
 
-All Weapons support the Obj Model custom animation system. It functions nearly identically to the vehicle 
-client preset system. Weapon Client preset files are only needed if you want to add custom animations. 
+All Weapons support the Obj Model custom animation system. It functions nearly identically to the vehicle
+client preset system. Weapon Client preset files are only needed if you want to add custom animations.
 If a Weapon Client Preset file is not created, the `model_id` will be assumed to be the `assetId` defined
 in the Datapack json file.
 
 ### Weapon Client Preset
 
-Weapon Client Presets must have a `presetId` equal to `assetId` as defined in the Datapack portion above. 
+Weapon Client Presets must have a `presetId` equal to `assetId` as defined in the Datapack portion above.
 The file is located here:
 
 **`weapon_client_preset_file` = //assets/[`namespace`]/part_client/[`assetId`].json**
 
-Part Client Presets have the same format as Json Presets, but they are an asset. 
-Thus, they can be modified with resource packs and the server doesn't force syncing this data. 
-[Here are some examples.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/assets/dscombat/weapon_client) 
+Part Client Presets have the same format as Json Presets, but they are an asset.
+Thus, they can be modified with resource packs and the server doesn't force syncing this data.
+[Here are some examples.](https://github.com/1whohears/DiamondStarCombat/tree/1.19.2-dev/src/generated/resources/assets/dscombat/weapon_client)
 Again, note that the file name has to be the same as `presetId`.
 
 #### Available Preset Types
@@ -555,18 +636,18 @@ Weapons Client Presets currently only use one `presetType`:
 `model_data` | JSON_OBJECT | **OPTIONAL** | *If not included, `model_id` will be assumed to be `assetId`, and there won't be any animations.*
 - `model_id` | STRING | **`assetId`** | *The file name of the model used for this vehicle. Scroll down to the Models section for more information.*
 - `custom_anims` | JSON_OBJECT_ARRAY | **OPTIONAL** | *A list of custom animations. These animations manipulate individual groups/bones/model parts. multiple animations can be stacked on the same `model_part_key`! There are different animation types, each requiring different parameters. All the parameters will be listed below, but a bit further down an explanation of each animation type will be documented.*
-  - `anim_id` | STRING | **REQUIRED** | *Each animation type will be explained below. Options: `continuous_rotation`, `motor_rotation`, `wheel_rotation`, `input_bound_rotation`, `spinning_radar`, `landing_gear`, `input_bound_translation`, `plane_flap_rotation`, `hitbox_destroy_part`.*
-  - `model_part_key` | STRING | **REQUIRED** | *The name of the bone/group/object within the model that is being animated.*
-  - `pivot` | VEC3 | **ZEROS** | *The pivot point a model part will rotate around. The units are Minecraft pixels or 1/16th of a block.*
-  - `rot_axis` | ENUM | **X** | *The axis the model part rotates around. Options: `X`, `Y`, `Z`.*
-  - `rot_rate` | NUMBER | **0** | *Maximum rotation rate in degrees per tick.*
-  - `input_axis` | ENUM | **PITCH** | *The input axis that controls how much the part rotates. Options: `PITCH`, `YAW`, `ROLL`, `THROTTLE`*
-  - `bound` | NUMBER | **0** | *How for the part rotates in degrees.*
-  - `radar_id` | STRING | **OPTIONAL** | *The `presetId` of the radar that should spin.*
-  - `fold_angle` | NUMBER | **0** | *The angle in degrees the landing gear part rotates while folding.*
-  - `bounds` | VEC3 | **ZEROS** | *The max distance the model part will be translated.*
-  - `hitbox_name` | STRING | **OPTIONAL** | *If a hitbox from `hitboxes` with this `name` gets destroyed, this model pat will disappear.*
-  - `rotPitch` | BOOLEAN | **true** | *If `rotPitch` = `true` then the animation will follow the up and down rotation of the model. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
+    - `anim_id` | STRING | **REQUIRED** | *Each animation type will be explained below. Options: `continuous_rotation`, `motor_rotation`, `wheel_rotation`, `input_bound_rotation`, `spinning_radar`, `landing_gear`, `input_bound_translation`, `plane_flap_rotation`, `hitbox_destroy_part`.*
+    - `model_part_key` | STRING | **REQUIRED** | *The name of the bone/group/object within the model that is being animated.*
+    - `pivot` | VEC3 | **ZEROS** | *The pivot point a model part will rotate around. The units are Minecraft pixels or 1/16th of a block.*
+    - `rot_axis` | ENUM | **X** | *The axis the model part rotates around. Options: `X`, `Y`, `Z`.*
+    - `rot_rate` | NUMBER | **0** | *Maximum rotation rate in degrees per tick.*
+    - `input_axis` | ENUM | **PITCH** | *The input axis that controls how much the part rotates. Options: `PITCH`, `YAW`, `ROLL`, `THROTTLE`*
+    - `bound` | NUMBER | **0** | *How for the part rotates in degrees.*
+    - `radar_id` | STRING | **OPTIONAL** | *The `presetId` of the radar that should spin.*
+    - `fold_angle` | NUMBER | **0** | *The angle in degrees the landing gear part rotates while folding.*
+    - `bounds` | VEC3 | **ZEROS** | *The max distance the model part will be translated.*
+    - `hitbox_name` | STRING | **OPTIONAL** | *If a hitbox from `hitboxes` with this `name` gets destroyed, this model pat will disappear.*
+    - `rotPitch` | BOOLEAN | **true** | *If `rotPitch` = `true` then the animation will follow the up and down rotation of the model. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
 
 
 # Radars
@@ -583,17 +664,17 @@ WIP. A lot of the current radar data gen will be outdated once radar mechanics a
 
 - `internal_weapon`: A weapon that will appear in the pilot weapon system. Does NOT have an external entity weapon rack.
 - `external_weapon`: A **Weapon Part** that will appear in the pilot weapon system. Has an external entity weapon rack. See Assets for making custom weapon rack models.
-- `seat`: Invisible seat entity that players/mobs can sit in. 
+- `seat`: Invisible seat entity that players/mobs can sit in.
 - `turret`: A **Weapon Part** that the player can sit in. See Assets for making custom turret models.
 - `internal_engine`: An engine that doesn't have an external entity.
 - `external_engine`: An engine that has an external entity. (not implemented yet)
 - `fuel_tank`: Internal fuel tank.
 - `external_fuel_tank`: External fuel tank with an external model.
-- `internal_radar`: Internal radar. 
+- `internal_radar`: Internal radar.
 - `external_radar`: External radar with an external radar model.
 - `flare_dispenser`: Drops flares.
 - `chaff_dispenser`: Drops chaff. (not implemented yet)
-- `buff`: Simple improvement part that is used for data link, night vision, radio, or extra armor. 
+- `buff`: Simple improvement part that is used for data link, night vision, radio, or extra armor.
 - `gimbal`: An external gimbal camera that the pilot can see through use.
 - `chain_hook`: A hook that other vehicles can be chained to.
 - `internal_storage`: Used for internal storage boxes.
@@ -830,7 +911,7 @@ Includes all stats listed in **All Parts Parameter List** and **Internal Storage
 
 In order for your custom weapon rack/turret to appear in the Weapon Parts Workbench you need to add a recipe json file to `//data/[namespace]/recipes/workbench_weapon_part_[presetId].json`
 
-An example of the CIWS recipe can be seen below. Replace `ciws` with your plane's `presetId`. The Weapon Parts Workbench will use the items defined in `ingredients` in the part preset file. 
+An example of the CIWS recipe can be seen below. Replace `ciws` with your plane's `presetId`. The Weapon Parts Workbench will use the items defined in `ingredients` in the part preset file.
 
 ```
 {
@@ -856,7 +937,7 @@ Part Client Presets have the same format as Json Presets, but they are an asset.
 Unlike Vehicle Client Presets, Part Client Presets have more than one `presetType`:
 
 - `standard`: External parts like engines, and chain hooks (they are visually just static models) use this type.
-- `turret`: Used by turrets. 
+- `turret`: Used by turrets.
 - `radar`: Used by external radars.
 - `weapon_rack`: Used by external weapons/missile racks.
 
@@ -865,18 +946,18 @@ Unlike Vehicle Client Presets, Part Client Presets have more than one `presetTyp
 `model_data` | JSON_OBJECT | **OPTIONAL** | *If not included, `model_id` will be assumed to be `assetId`, and there won't be any animations.*
 - `model_id` | STRING | **`assetId`** | *The file name of the model used for this vehicle. Scroll down to the Models section for more information.*
 - `custom_anims` | JSON_OBJECT_ARRAY | **OPTIONAL** | *A list of custom animations. These animations manipulate individual groups/bones/model parts. multiple animations can be stacked on the same `model_part_key`! There are different animation types, each requiring different parameters. All the parameters will be listed below, but a bit further down an explanation of each animation type will be documented.*
-  - `anim_id` | STRING | **REQUIRED** | *Each animation type will be explained below. Options: `continuous_rotation`, `motor_rotation`, `wheel_rotation`, `input_bound_rotation`, `spinning_radar`, `landing_gear`, `input_bound_translation`, `plane_flap_rotation`, `hitbox_destroy_part`.*
-  - `model_part_key` | STRING | **REQUIRED** | *The name of the bone/group/object within the model that is being animated.*
-  - `pivot` | VEC3 | **ZEROS** | *The pivot point a model part will rotate around. The units are Minecraft pixels or 1/16th of a block.*
-  - `rot_axis` | ENUM | **X** | *The axis the model part rotates around. Options: `X`, `Y`, `Z`.*
-  - `rot_rate` | NUMBER | **0** | *Maximum rotation rate in degrees per tick.*
-  - `input_axis` | ENUM | **PITCH** | *The input axis that controls how much the part rotates. Options: `PITCH`, `YAW`, `ROLL`, `THROTTLE`*
-  - `bound` | NUMBER | **0** | *How for the part rotates in degrees.*
-  - `radar_id` | STRING | **OPTIONAL** | *The `presetId` of the radar that should spin.*
-  - `fold_angle` | NUMBER | **0** | *The angle in degrees the landing gear part rotates while folding.*
-  - `bounds` | VEC3 | **ZEROS** | *The max distance the model part will be translated.*
-  - `hitbox_name` | STRING | **OPTIONAL** | *If a hitbox from `hitboxes` with this `name` gets destroyed, this model pat will disappear.*
-  - `rotPitch` | BOOLEAN | **true** | *If `rotPitch` = `true` then the animation will follow the up and down rotation of the model. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
+    - `anim_id` | STRING | **REQUIRED** | *Each animation type will be explained below. Options: `continuous_rotation`, `motor_rotation`, `wheel_rotation`, `input_bound_rotation`, `spinning_radar`, `landing_gear`, `input_bound_translation`, `plane_flap_rotation`, `hitbox_destroy_part`.*
+    - `model_part_key` | STRING | **REQUIRED** | *The name of the bone/group/object within the model that is being animated.*
+    - `pivot` | VEC3 | **ZEROS** | *The pivot point a model part will rotate around. The units are Minecraft pixels or 1/16th of a block.*
+    - `rot_axis` | ENUM | **X** | *The axis the model part rotates around. Options: `X`, `Y`, `Z`.*
+    - `rot_rate` | NUMBER | **0** | *Maximum rotation rate in degrees per tick.*
+    - `input_axis` | ENUM | **PITCH** | *The input axis that controls how much the part rotates. Options: `PITCH`, `YAW`, `ROLL`, `THROTTLE`*
+    - `bound` | NUMBER | **0** | *How for the part rotates in degrees.*
+    - `radar_id` | STRING | **OPTIONAL** | *The `presetId` of the radar that should spin.*
+    - `fold_angle` | NUMBER | **0** | *The angle in degrees the landing gear part rotates while folding.*
+    - `bounds` | VEC3 | **ZEROS** | *The max distance the model part will be translated.*
+    - `hitbox_name` | STRING | **OPTIONAL** | *If a hitbox from `hitboxes` with this `name` gets destroyed, this model pat will disappear.*
+    - `rotPitch` | BOOLEAN | **true** | *If `rotPitch` = `true` then the animation will follow the up and down rotation of the model. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
 
 #### Turret Client Preset Parameters
 
@@ -918,6 +999,86 @@ The following is a description of each Custom Animation Type compatible with par
 `continuous_rotation` | `pivot`, `rot_axis`, `rot_rate` | *Continuously rotates the model part at `rot_rate` degrees per tick.*
 
 `turret_rotation` | `pivot`, `rot_axis`, `rotPitch` | *Control which parts of the turret will rotate. If `rotPitch` = `true` then the animation will follow the up and down rotation of the turret. If `rotPitch` = `false` then the animation will follow the left and right rotation of the model.*
+
+# Stat Graphs
+
+## Data
+
+Stat graphs are a way to define a property based on a current input stat. The graphs are 2D, so there are horizontal and vertical coordinates.
+Theses coordinates are also known as Keys and Values.
+
+For example, if one to look at an [Air Density Graph](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/air_density_minecraft_overworld.json),
+the vehicle's current Y coordinate is the key, and the air density related to that Y coordinate is the value.
+For example, in the Overworld Air Density Graph, a Y coordinate of 64 (Key) has an air density of 1.225 (value).
+
+**Keys must be defined/sorted from least to greatest. The sorting of the values does not matter. The sorting must be done by Key.**
+
+**Most Stat Graphs require a Key of Zero to be defined.**
+
+If an input key is in between 2 defined keys, then the output value is linearly interpolated between the 2 values.
+If an input key is above the highest key, then the value associated with the highest key will be returned.
+If an input key is below the highest key, then the value associated with the lowest key will be returned.
+
+All Stat Graphs have the following parameters:
+
+`mirror_negative_keys` | BOOLEAN | **false** | *If `true`, input keys below zero will return the value associated with the positive input key.*
+
+`invert_mirrored_values` | BOOLEAN | **false** | *If `true`, input keys below zero will return the negative value associated with the positive input key.*
+
+### Available Preset Types
+
+- `floatfloat`
+- `aoaliftk`
+- `floatfloat_multi`
+- `turn_rates_speed`
+
+### `floatfloat` Parameters
+
+[Example graph using the `keys` and `values` method.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/air_density_minecraft_overworld.json)
+
+[Example graph using the `map` method.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/alexis_drag_aoa.json)
+
+`keys` | NUMBER_ARRAY | **OPTIONAL** | *A list of Keys. Must be the same length of `size` if used. An alternative way to create a graph is with `map`.*
+
+`values` | NUMBER_ARRAY | **OPTIONAL** | *A list of Values. Must be the same length of `size` if used. An alternative way to create a graph is with `map`.*
+
+`size` | NUMBER | **OPTIONAL** | *The length of the graph. REQUIRED IF defining the graph with the `keys` and `values` method.*
+
+`map` | JSON_OBJECT_ARRAY | **OPTIONAL** | *An array of Json Objects where each entry contains a `key` and `value` property.*
+
+### `aoaliftk` Parameters
+
+This graph type encodes the Lift Coefficient associated with Angle of Attack.
+
+These graphs use the same properties as `floatfloat`.
+
+[Example graph using the `keys` and `values` method.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/fuselage.json)
+
+[Example graph using the `map` method.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/javi_lift_aoa.json)
+
+### `floatfloat_multi` Parameters
+
+This graph type is similar to `floatfloat`, but only the `keys` and `values` method is available.
+However `values` is a JSON_ARRAY of more NUMBER_ARRAYs containing the values.
+This is because each key is associated with multiple values determined by `rows`.
+
+`size` | NUMBER | **REQUIRED** | *The length of the graph.*
+
+`rows` | NUMBER | **REQUIRED** | *The length of the graph.*
+
+`keys` | NUMBER_ARRAY | **REQUIRED** | *A list of Keys. Must be the same length of `size` if used.*
+
+`values` | JSON_ARRAY | **REQUIRED** | *A list of NUMBER_ARRAYs. Must be the same length of `rows` if used. Each sub NUMBER_ARRAY must be the length of `size`.*
+
+### `turn_rates_speed` Parameters
+
+This graph encodes the maximum turn rate for each rotational axis based on the current speed in `meters/tick`.
+The number of rows must be 3. Where Row 1 is Pitch, Row 2 is Yaw, and Row 3 is Roll.
+These turn rates are used when the `dscombat:planeArcadeMode` gamerule is set to `true`, and when `turn_assist` is enabled.
+
+These graphs use the same properties as `floatfloat_multi`.
+
+[Example graph.](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/e3sentry_turn_rates.json)
 
 # Models
 

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.onewhohears.dscombat.command.argument.WeaponArgument;
@@ -26,43 +27,54 @@ import net.minecraft.world.phys.Vec3;
 public class MissileCommand {
 	
 	public MissileCommand(CommandDispatcher<CommandSourceStack> d) {
-		d.register(Commands.literal("missile").requires((stack) -> { return stack.hasPermission(2);})
-			.then(Commands.argument("target", EntityArgument.entities())
-			.then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> {
-				return testMissile(context, EntityArgument.getEntities(context, "target"), 
-						Vec3Argument.getVec3(context, "pos"), null, null, -1, -1000, -1000);})
-			.then(Commands.argument("weapon", WeaponArgument.weapon()).executes((context) -> {
-				return testMissile(context, EntityArgument.getEntities(context, "target"), 
-						Vec3Argument.getVec3(context, "pos"), 
-						WeaponArgument.getWeapon(context, "weapon"), null, -1, -1000, -1000);})
-			.then(Commands.argument("owner", EntityArgument.entity()).executes((context) -> {
-				return testMissile(context, EntityArgument.getEntities(context, "target"), 
-						Vec3Argument.getVec3(context, "pos"), 
-						WeaponArgument.getWeapon(context, "weapon"), 
-						EntityArgument.getEntity(context, "owner"), -1, -1000, -1000);})
-					.then(Commands.argument("speed", DoubleArgumentType.doubleArg(0, 100)).executes((context) -> {
-						return testMissile(context, EntityArgument.getEntities(context, "target"),
-								Vec3Argument.getVec3(context, "pos"),
-								WeaponArgument.getWeapon(context, "weapon"),
-								EntityArgument.getEntity(context, "owner"),
-								DoubleArgumentType.getDouble(context, "speed"), -1000, -1000);})
-							.then(Commands.argument("pitch", AngleArgument.angle()).executes((context) -> {
-								return testMissile(context, EntityArgument.getEntities(context, "target"),
-										Vec3Argument.getVec3(context, "pos"),
-										WeaponArgument.getWeapon(context, "weapon"),
-										EntityArgument.getEntity(context, "owner"),
-										DoubleArgumentType.getDouble(context, "speed"),
-										AngleArgument.getAngle(context, "pitch"), -1000);})
-									.then(Commands.argument("yaw", AngleArgument.angle()).executes((context) -> {
-										return testMissile(context, EntityArgument.getEntities(context, "target"),
-												Vec3Argument.getVec3(context, "pos"),
-												WeaponArgument.getWeapon(context, "weapon"),
-												EntityArgument.getEntity(context, "owner"),
-												DoubleArgumentType.getDouble(context, "speed"),
-												AngleArgument.getAngle(context, "pitch"),
-												AngleArgument.getAngle(context, "yaw"));})
-									))))))));
+		d.register(Commands.literal("missile").requires((stack) -> stack.hasPermission(2))
+                .then(Commands.literal("no_owner")
+                        .then(testMissileParams(ctx -> null))
+                )
+                .then(Commands.argument("owner", EntityArgument.entity())
+                        .then(testMissileParams(ctx -> EntityArgument.getEntity(ctx, "owner")))
+                )
+        );
 	}
+
+    interface GetOwnerCommand {
+        Entity apply(CommandContext<CommandSourceStack> t) throws CommandSyntaxException;
+    }
+
+    private ArgumentBuilder<CommandSourceStack, ?> testMissileParams(GetOwnerCommand owner) {
+        return Commands.argument("target", EntityArgument.entities())
+                .then(Commands.argument("pos", Vec3Argument.vec3()).executes((context) -> {
+                            return testMissile(context, EntityArgument.getEntities(context, "target"),
+                                    Vec3Argument.getVec3(context, "pos"), null, owner.apply(context),
+                                    -1, -1000, -1000);})
+                        .then(Commands.argument("weapon", WeaponArgument.weapon()).executes((context) -> {
+                                    return testMissile(context, EntityArgument.getEntities(context, "target"),
+                                            Vec3Argument.getVec3(context, "pos"),
+                                            WeaponArgument.getWeapon(context, "weapon"), owner.apply(context),
+                                            -1, -1000, -1000);})
+                                .then(Commands.argument("speed", DoubleArgumentType.doubleArg(0, 100)).executes((context) -> {
+                                            return testMissile(context, EntityArgument.getEntities(context, "target"),
+                                                    Vec3Argument.getVec3(context, "pos"),
+                                                    WeaponArgument.getWeapon(context, "weapon"),
+                                                    owner.apply(context),
+                                                    DoubleArgumentType.getDouble(context, "speed"), -1000, -1000);})
+                                        .then(Commands.argument("pitch", AngleArgument.angle()).executes((context) -> {
+                                                    return testMissile(context, EntityArgument.getEntities(context, "target"),
+                                                            Vec3Argument.getVec3(context, "pos"),
+                                                            WeaponArgument.getWeapon(context, "weapon"),
+                                                            owner.apply(context),
+                                                            DoubleArgumentType.getDouble(context, "speed"),
+                                                            AngleArgument.getAngle(context, "pitch"), -1000);})
+                                                .then(Commands.argument("yaw", AngleArgument.angle()).executes((context) -> {
+                                                            return testMissile(context, EntityArgument.getEntities(context, "target"),
+                                                                    Vec3Argument.getVec3(context, "pos"),
+                                                                    WeaponArgument.getWeapon(context, "weapon"),
+                                                                    owner.apply(context),
+                                                                    DoubleArgumentType.getDouble(context, "speed"),
+                                                                    AngleArgument.getAngle(context, "pitch"),
+                                                                    AngleArgument.getAngle(context, "yaw"));})
+                                                        )))));
+    }
 	
 	private int testMissile(CommandContext<CommandSourceStack> context, Collection<? extends Entity> targets, Vec3 pos,
 							WeaponStats weaponStats, Entity owner, double initSpeed, float pitch, float yaw) throws CommandSyntaxException {

@@ -52,6 +52,7 @@ public class ClientInputManager {
     public static final ActionInputHolder.Button LEAN_LEFT = registerButton("lean_left", "lean_left_key");
     public static final ActionInputHolder.Button LEAN_RIGHT = registerButton("lean_right", "lean_right_key");
     public static final ActionInputHolder.Button TURN_ASSIST = registerButton("turn_assist", "turn_assist_key");
+    public static final ActionInputHolder.Button CAMERA_TRACK_TARGET = registerButton("camera_track_target", "camera_track_target_key");
 
     // PASSENGER CONTROL
     public static final ActionInputHolder.Button VEHICLE_MENU = registerButton("vehicle_menu", "plane_menu_key");
@@ -94,6 +95,7 @@ public class ClientInputManager {
         boolean chaff = CHAFF.isPressed();
         if (AFTERBURNER.isInitPressed()) DSCClientInputs.toggleAfterBurner();
         if (TURN_ASSIST.isInitPressed()) DSCClientInputs.toggleTurnAssist();
+        if (CAMERA_TRACK_TARGET.isInitPressed()) DSCClientInputs.toggleCameraTrackTarget();
         boolean flip = FLIP_CONTROLS.isPressed();
         boolean special = SPECIAL1.isPressed();
         boolean special2 = SPECIAL2.isPressed();

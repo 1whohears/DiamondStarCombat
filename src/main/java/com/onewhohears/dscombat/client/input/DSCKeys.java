@@ -29,7 +29,8 @@ public final class DSCKeys {
 	public static KeyMapping rollLeftKey, rollRightKey;
 	public static KeyMapping yawLeftKey, yawRightKey;
 	public static KeyMapping weaponSelectKey, weaponSelect2Key;
-	public static KeyMapping mouseModeKey, resetMouseKey, gimbalKey;
+	public static KeyMapping mouseModeKey, resetMouseKey;
+    public static KeyMapping cameraTrackTargetKey, gimbalKey;
 	public static KeyMapping shootKey, landingGear, flareKey, chaffKey;
 	public static KeyMapping vehicleMenuKey;
 	public static KeyMapping pingCycleKey, radarModeKey;
@@ -61,6 +62,7 @@ public final class DSCKeys {
 		leanLeftKey = registerKey("lean_left_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
 		leanRightKey = registerKey("lean_right_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
 		turnAssistKey = registerKey("turn_assist_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);
+        cameraTrackTargetKey = registerKey("camera_track_target_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RSHIFT);
 		// PASSENGER CONTROL
 		vehicleMenuKey = registerKey("plane_menu_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_U);
 		dismount = registerKey("dismount_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_H);

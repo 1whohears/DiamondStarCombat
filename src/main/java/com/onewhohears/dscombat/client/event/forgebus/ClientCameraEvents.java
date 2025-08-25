@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
 import com.onewhohears.dscombat.client.input.ClientInputManager;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.mixin.CameraAccess;
 import org.lwjgl.glfw.GLFW;
@@ -37,6 +38,7 @@ public class ClientCameraEvents {
 	
 	private static Entity prevGimbal;
 	@Nullable static private Quaternion prevQ;
+    private static boolean wasTrackingTarget = false;
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
@@ -72,26 +74,42 @@ public class ClientCameraEvents {
 			gimbal.setYRot(player.getViewYRot(pt));
 			prevGimbal = gimbal;
 			camYOffset = -0.2f;
-		} 
-		if (isPilot && DSCClientInputs.isCameraLockedForward()) {
-			float x = UtilAngles.lerpAngle(pt, vehicle.xRotO, vehicle.getXRot());
-			float y = UtilAngles.lerpAngle180(pt, vehicle.yRotO, vehicle.getYRot());
-			setAngles(event, player, x, y, mirrored);
-		} else if (isPilot && DSCClientInputs.isCameraFreeRelative()) {
-			Quaternion qPT = vehicle.getClientQ(pt);
-			if (ClientInputManager.RESET_MOUSE.isPressed()) {
-				float x = UtilAngles.lerpAngle(pt, vehicle.xRotO, vehicle.getXRot());
-				float y = UtilAngles.lerpAngle180(pt, vehicle.yRotO, vehicle.getYRot());
-				setAngles(event, player, x, y, mirrored);
-			} else if (prevQ != null) {
-				float[] relativeAngles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), prevQ);
-				float[] globalAngles = UtilAngles.relativeToGlobalDegrees(relativeAngles[0], relativeAngles[1], qPT);
-				float x = globalAngles[0];
-				float y = globalAngles[1];
-				setAngles(event, player, x, y, mirrored);
-			}
-			prevQ = qPT;
 		}
+        if (isPilot) {
+            boolean resetMousePressed = ClientInputManager.RESET_MOUSE.isPressed();
+            RadarStats.RadarPing target = vehicle.radarSystem.getClientSelectedPing();
+            Entity camEntity = m.getCameraEntity();
+            if (DSCClientInputs.isCameraTrackTarget() && target != null && !resetMousePressed && camEntity != null) {
+                Vec3 diff = target.pos.subtract(camEntity.getEyePosition(pt));
+                float x = UtilAngles.getPitch(diff);
+                float y = UtilAngles.getYaw(diff);
+                setAngles(event, player, x, y, mirrored);
+                wasTrackingTarget = true;
+            } else if (DSCClientInputs.isCameraLockedForward()) {
+                lookForward(event, player, mirrored, pt, vehicle);
+                wasTrackingTarget = false;
+            } else if (DSCClientInputs.isCameraFreeRelative()) {
+                Quaternion qPT = vehicle.getClientQ(pt);
+                if (resetMousePressed) {
+                    lookForward(event, player, mirrored, pt, vehicle);
+                } else if (prevQ != null) {
+                    float[] relativeAngles;
+                    if (wasTrackingTarget) {
+                        relativeAngles = new float[] {DSCClientInputs.xRotPreTrack, DSCClientInputs.yRotPreTrack};
+                    } else {
+                        relativeAngles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), prevQ);
+                    }
+                    float[] globalAngles = UtilAngles.relativeToGlobalDegrees(relativeAngles[0], relativeAngles[1], qPT);
+                    float x = globalAngles[0];
+                    float y = globalAngles[1];
+                    setAngles(event, player, x, y, mirrored);
+                    DSCClientInputs.xRotPreTrack = relativeAngles[0];
+                    DSCClientInputs.yRotPreTrack = relativeAngles[1];
+                }
+                prevQ = qPT;
+                wasTrackingTarget = false;
+            }
+        }
 		float zi = UtilAngles.lerpAngle(pt, vehicle.zRotO, vehicle.zRot);
 		if (detached && mirrored) zi *= -1;
 		event.setRoll(zi);
@@ -119,6 +137,15 @@ public class ClientCameraEvents {
 		if (e == null || m.getCameraEntity() == null) return false;
 		return m.getCameraEntity().equals(e);
 	}
+
+    private static void lookForward(ViewportEvent.ComputeCameraAngles event, Player player,
+                                    boolean mirrored, float pt, EntityVehicle vehicle) {
+        float x = UtilAngles.lerpAngle(pt, vehicle.xRotO, vehicle.getXRot());
+        float y = UtilAngles.lerpAngle180(pt, vehicle.yRotO, vehicle.getYRot());
+        setAngles(event, player, x, y, mirrored);
+        DSCClientInputs.xRotPreTrack = x;
+        DSCClientInputs.yRotPreTrack = y;
+    }
 
 	private static void setAngles(ViewportEvent.ComputeCameraAngles event, Player player, float x, float y, boolean mirrored) {
 		player.setXRot(x);

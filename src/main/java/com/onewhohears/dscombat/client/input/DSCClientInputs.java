@@ -27,7 +27,19 @@ public class DSCClientInputs {
 	private static boolean GIMBAL_MODE = false;
 	private static boolean AFTERBURNER = false;
 	private static boolean TURN_ASSIST = true;
-	
+    private static boolean CAMERA_TRACK_TARGET = false;
+
+    public static float xRotPreTrack, yRotPreTrack;
+
+    public static boolean isCameraTrackTarget() {
+        return CAMERA_TRACK_TARGET;
+    }
+
+    public static boolean toggleCameraTrackTarget() {
+        CAMERA_TRACK_TARGET = !CAMERA_TRACK_TARGET;
+        return CAMERA_TRACK_TARGET;
+    }
+
 	public static RadarMode getPreferredRadarMode() {
 		return PREFERRED_RADAR_MODE;
 	}

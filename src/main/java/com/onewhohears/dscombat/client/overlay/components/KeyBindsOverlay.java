@@ -27,6 +27,8 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
             case InputConstants.KEY_LCONTROL -> UtilMCText.literal("L-CTRL");
             case InputConstants.KEY_LALT -> UtilMCText.literal("L-ALT");
             case InputConstants.KEY_RALT -> UtilMCText.literal("R-ALT");
+            case InputConstants.KEY_LSHIFT -> UtilMCText.literal("LSHIFT");
+            case InputConstants.KEY_RSHIFT -> UtilMCText.literal("RSHIFT");
             default -> key.getKey().getDisplayName();
         };
     }
@@ -141,9 +143,12 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// AFTERBURNER
 		if (vehicle.canUseAfterburner()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				DSCKeys.afterBurnerKey, DSCClientInputs.isAfterBurner(), DSCClientInputs.isAfterBurner() ? "ON" : "OFF");
-		// AFTERBURNER
+		// TURN ASSIST
 		if (vehicle.canUseTurnAssist()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 				DSCKeys.turnAssistKey, DSCClientInputs.isTurnAssist(), DSCClientInputs.isTurnAssist() ? "ON" : "OFF");
+        // TURN ASSIST
+        if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+                DSCKeys.cameraTrackTargetKey, DSCClientInputs.isCameraTrackTarget(), DSCClientInputs.isCameraTrackTarget() ? "ON" : "OFF");
 	}
 
 	@Override

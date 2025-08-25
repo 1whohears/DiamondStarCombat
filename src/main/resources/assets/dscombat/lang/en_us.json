@@ -723,6 +723,7 @@
 	"key.dscombat.lean_right_key": "Lean Right Key",
 	"key.dscombat.afterburner_toggle_key": "After Burner",
 	"key.dscombat.turn_assist_key": "Turn Assist",
+    "key.dscombat.camera_track_target_key": "Track Target",
 
 	"passenger_sound_pack.eng_non_binary_goober": "English Default",
 	"passenger_sound_pack.eng_generic_male": "English Generic Male",

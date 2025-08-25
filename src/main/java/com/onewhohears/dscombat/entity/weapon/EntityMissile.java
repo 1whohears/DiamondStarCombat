@@ -23,6 +23,7 @@ import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -98,7 +99,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			} else {
 				tickClientGuide();
 				if (firstTick) engineSound();
-				if (!didSonicBoom) sonicBoomSound();
+				if (canSonicBoom()) sonicBoomSound();
 			}
 		}
 		super.tick();
@@ -191,6 +192,13 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 				ModSounds.MISSILE_ENGINE_1, 0.8F, 1.0F, 
 				DSCPhyCons.VEL_SOUND, false);
 	}
+
+    private boolean canSonicBoom() {
+        if (didSonicBoom) return false;
+        if (!getLevel().isClientSide()) return false;
+        Entity owner = getOwner();
+        return owner == null || !owner.equals(Minecraft.getInstance().player);
+    }
 
 	private void sonicBoomSound() {
 		didSonicBoom = UtilClientSafeSounds.missileSonicBoom(this);

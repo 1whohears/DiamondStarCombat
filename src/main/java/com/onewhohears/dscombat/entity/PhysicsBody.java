@@ -297,14 +297,24 @@ public interface PhysicsBody {
         double decreaseSpeedPos = 100;
         double altitude = getAltitude();
         double nextY = altitude + my;
-        if (nextY > getMaxAltitude()) my = getMaxAltitude() - altitude;
-        else if (altitude > getMaxAltitude() - decreaseSpeedPos) {
-            double maxY = 1 - (altitude - getMaxAltitude() + decreaseSpeedPos) / decreaseSpeedPos;
+        if (nextY > getMaxAltitude()) {
+            my = getMaxAltitude() - altitude;
+            if (flattenIfMaxAltitude() && getXRot() < 0)
+                flattenPitch(getQBySide(), 0.1f);
+        } else if (altitude > getMaxAltitude() - decreaseSpeedPos) {
+            double percent = (altitude - getMaxAltitude() + decreaseSpeedPos) / decreaseSpeedPos;
+            double maxY = 1 - percent;
             if (my > maxY) my = maxY;
+            if (flattenIfMaxAltitude() && getXRot() < -maxY * 20)
+                flattenPitch(getQBySide(), (float) (0.1 * percent));
         }
 
         if (isOnGround() && my < 0) my = -0.01; // THIS MUST BE BELOW ZERO
         return my;
+    }
+
+    default boolean flattenIfMaxAltitude() {
+        return true;
     }
 
     default void addForce(Vec3 force) {
@@ -371,6 +381,21 @@ public interface PhysicsBody {
 
     default void addMomentZ(float moment, boolean control) {
         addMoment(Vec3.ZERO.add(0, 0, moment), control, true);
+    }
+
+    default void flattenPitch(Quaternion q, float dPitch) {
+        Vec3 av = getAngularVel();
+        float x = (float)av.x;
+        UtilAngles.EulerAngles angles = UtilAngles.toDegrees(q);
+        if (dPitch != 0) {
+            float goalPitch = 0, pitch;
+            if (isOnGround()) goalPitch = -getGroundXTilt();
+            float diff = (float)angles.pitch - goalPitch;
+            if (Math.abs(diff) < dPitch) pitch = diff;
+            else pitch = Math.signum(diff) * dPitch;
+            x += pitch;
+        }
+        setAngularVel(new Vec3(x, av.y, av.z));
     }
 
     default void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {

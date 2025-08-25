@@ -1005,7 +1005,7 @@ The following is a description of each Custom Animation Type compatible with par
 ## Data
 
 Stat graphs are a way to define a property based on a current input stat. The graphs are 2D, so there are horizontal and vertical coordinates.
-Theses coordinates are also known as Keys and Values.
+These coordinates are also known as Keys and Values.
 
 For example, if one to look at an [Air Density Graph](https://github.com/1whohears/DiamondStarCombat/blob/1.19.2-dev/src/main/resources/data/dscombat/stat_graph/air_density_minecraft_overworld.json),
 the vehicle's current Y coordinate is the key, and the air density related to that Y coordinate is the value.

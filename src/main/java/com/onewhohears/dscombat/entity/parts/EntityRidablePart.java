@@ -15,6 +15,7 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
@@ -176,6 +178,11 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 		if (hasAIUsingTurret()) return true;
 		return false;
 	}
+
+    public void explode(DamageSource source, Entity parent) {
+        getLevel().explode(parent, source, null, getX(), getY(), getZ(),
+                3, true, Explosion.BlockInteraction.BREAK);
+    }
 	
 	public boolean hasAIUsingTurret() {
 		return false;

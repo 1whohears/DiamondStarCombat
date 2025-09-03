@@ -1630,9 +1630,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			null, getX(), getY(), getZ(), 
 			getStats().crashExplosionRadius, true,
 			Explosion.BlockInteraction.BREAK);
+        explodeSeats(source);
 		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
 				new ToClientVehicleExplode(this));
 	}
+
+    public void explodeSeats(DamageSource source) {
+        for (EntityRidablePart<?,?> seat : getSeats())
+            seat.explode(source, this);
+    }
 	
 	/**
 	 * ignoring vanilla explosion effects.

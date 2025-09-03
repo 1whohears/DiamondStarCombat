@@ -564,7 +564,7 @@
     "inertiayaw": 105000.0,
     "mass": 11321.0,
     "max_altitude": 685.0,
-    "max_ground_speed": 5.93,
+    "max_ground_speed": 8.0,
     "max_health": 150.0,
     "max_push_thrust_per_engine": 40320.0,
     "max_speed": 11.57,

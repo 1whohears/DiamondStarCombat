@@ -160,10 +160,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		Vec3 tVel = target.getDeltaMovement();
 		if (UtilVehicleEntity.isOnGroundOrWater(target))
 			tVel = tVel.multiply(1, 0, 1);
-		Vec3 pos = UtilGeometry.interceptPos( 
-			position(), getDeltaMovement(), 
-			target.getBoundingBox().getCenter(), tVel);
-		targetPos = pos;
+        targetPos = UtilGeometry.interceptPos(
+            position(), getDeltaMovement(),
+            target.getBoundingBox().getCenter(), tVel);
 		//System.out.println("guide to position");
 		guideToPosition();
 	}

@@ -38,7 +38,7 @@ public class FelixPresets {
 			.setPlaneFlapDownAOABias(18)
 			.setUseSpeedScales(true, true)
 			.setPushEngineOverrideAfterburnerStats(40180, 69580,15, 0.006f)
-			.setPlaneSpeeds(30.21f, 18.06f, 5.84f)
+			.setPlaneSpeeds(30.21f, 18.06f, 8.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,

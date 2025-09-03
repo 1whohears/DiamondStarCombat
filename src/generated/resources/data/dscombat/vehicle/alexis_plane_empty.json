@@ -539,7 +539,7 @@
     "mass": 8573.0,
     "max_afterburner_push_thrust_per_engine": 131000.0,
     "max_altitude": 750.0,
-    "max_ground_speed": 5.19,
+    "max_ground_speed": 8.0,
     "max_health": 100.0,
     "max_push_thrust_per_engine": 76310.0,
     "max_speed": 30.25,

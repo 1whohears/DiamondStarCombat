@@ -37,7 +37,7 @@ public class JasonPresets {
 			.setMaxAltitude(640)
 			.setDragArea(0.35f)
 			.setPushEngineOverrideStats(26000, 5f, 0.003f)
-			.setPlaneSpeeds(9.86f, 9.86f, 4.15f)
+			.setPlaneSpeeds(9.86f, 9.86f, 6.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
 			.setUseSpeedScales(true, true)
 			.setHasTurnAssist(false)

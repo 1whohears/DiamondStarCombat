@@ -36,7 +36,7 @@ public class EdenPresets {
 			.setMaxAltitude(900)
 			.setPushEngineOverrideAfterburnerStats(49420, 81580,7, 0.003f)
 			.setUseSpeedScales(true, true)
-			.setPlaneSpeeds(34.03f, 16.67f, 6.67f)
+			.setPlaneSpeeds(34.03f, 16.67f, 8.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,

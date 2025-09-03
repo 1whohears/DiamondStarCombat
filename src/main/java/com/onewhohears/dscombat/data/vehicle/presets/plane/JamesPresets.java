@@ -37,7 +37,7 @@ public class JamesPresets {
             .setMaxAltitude(400)
             .setDragArea(0.3f)
             .setPushEngineOverrideStats(18000, 5f, 0.003f)
-            .setPlaneSpeeds(8, 8, 4)
+            .setPlaneSpeeds(8, 8, 5)
             .setBreakDeAcc(0.032f, 0.016f)
             .setUseSpeedScales(true, true)
             .setHasTurnAssist(false)

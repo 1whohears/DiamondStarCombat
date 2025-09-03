@@ -38,7 +38,7 @@ public class AlexisPresets {
 			.setMaxAltitude(750)
 			.setUseSpeedScales(true, true)
 			.setPushEngineOverrideAfterburnerStats(76310, 131000,10, 0.005f)
-			.setPlaneSpeeds(30.25f, 12.96f, 5.19f)
+			.setPlaneSpeeds(30.25f, 12.96f, 8.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,

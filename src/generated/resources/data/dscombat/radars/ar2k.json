@@ -3,7 +3,7 @@
   "fov": 60.0,
   "presetId": "ar2k",
   "presetType": "standard",
-  "range": 10000.0,
+  "range": 64000.0,
   "scanAir": true,
   "scanAircraft": true,
   "scanGround": false,
@@ -12,5 +12,6 @@
   "scanRate": 20,
   "sensitivity": 0.3,
   "throGroundRange": 0.0,
-  "throWaterRange": 0.0
+  "throWaterRange": 0.0,
+  "useDistanceScale": true
 }

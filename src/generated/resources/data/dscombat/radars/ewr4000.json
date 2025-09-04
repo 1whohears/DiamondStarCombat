@@ -3,7 +3,7 @@
   "fov": -1.0,
   "presetId": "ewr4000",
   "presetType": "standard",
-  "range": 20000.0,
+  "range": 160000.0,
   "scanAir": true,
   "scanAircraft": true,
   "scanGround": false,
@@ -13,5 +13,6 @@
   "scanRate": 40,
   "sensitivity": 0.6,
   "throGroundRange": 0.0,
-  "throWaterRange": 0.0
+  "throWaterRange": 0.0,
+  "useDistanceScale": true
 }

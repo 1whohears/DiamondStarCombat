@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.radar;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
@@ -29,6 +30,7 @@ public class RadarStats extends JsonPresetStats {
 	private final double throWaterRange;
 	private final double throGroundRange;
 	private final boolean scanMissiles;
+    private final boolean useDistanceScale;
 	
 	public RadarStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -44,6 +46,7 @@ public class RadarStats extends JsonPresetStats {
 		throWaterRange = UtilParse.getFloatSafe(json, "throWaterRange", 0);
 		throGroundRange = UtilParse.getFloatSafe(json, "throGroundRange", 0);
 		scanMissiles = UtilParse.getBooleanSafe(json, "scanMissiles", false);
+        useDistanceScale = UtilParse.getBooleanSafe(json, "useDistanceScale", false);
 	}
 	
 	@Override
@@ -60,7 +63,7 @@ public class RadarStats extends JsonPresetStats {
 		return RadarType.STANDARD;
 	}
 	
-	public double getRange() {
+	public double getUnscaledRange() {
 		return range;
 	}
 
@@ -107,6 +110,15 @@ public class RadarStats extends JsonPresetStats {
 	public boolean isScanMissiles() {
 		return scanMissiles;
 	}
+
+    public boolean isUseDistanceScale() {
+        return useDistanceScale;
+    }
+
+    public double getRange() {
+        if (isUseDistanceScale()) return DSCPhyCons.HORIZONTAL_SPEED_SCALE * getUnscaledRange();
+        return getUnscaledRange();
+    }
 
 	public static class RadarPing {
 		public final int id;
@@ -357,6 +369,9 @@ public class RadarStats extends JsonPresetStats {
 		public Builder setScanMissiles(boolean scanMissiles) {
 			return setBoolean("scanMissiles", scanMissiles);
 		}
+        public Builder setUseDistanceScale(boolean useDistanceScale) {
+            return setBoolean("useDistanceScale", useDistanceScale);
+        }
 	}
 	
 }

@@ -13,7 +13,7 @@ public class DSCClientInputs {
 	private static double mouseCenterY = 0;
 	
 	private static int hoverIndex = -1;
-	private static double radarDisplayRange = 1000;
+	private static double radarDisplayRange = 10000;
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
 	private static long mountTime;
@@ -138,7 +138,10 @@ public class DSCClientInputs {
 		if (range <= 250) range = 1000;
 		else if (range <= 1000) range = 2000;
 		else if (range <= 2000) range = 5000;
-		else if (range <= 5000) range = 250;
+		else if (range <= 5000) range = 10000;
+        else if (range <= 10000) range = 20000;
+        else if (range <= 20000) range = 50000;
+        else if (range <= 50000) range = 250;
 		else range = 250;
 		setRadarDisplayRange(range);
 	}

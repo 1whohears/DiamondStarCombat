@@ -93,12 +93,12 @@ public abstract class MissileStats extends BulletStats {
 	}
 
     public double getAcceleration() {
-        if (isUseSpeedScale()) return DSCPhyCons.HORIZONTAL_SPEED_SCALE * getUnscaledAcceleration();
+        if (isUseSpeedScale()) return DSCPhyCons.getIRLScale() * getUnscaledAcceleration();
         return getUnscaledAcceleration();
     }
 
     public double getBleed() {
-        if (isUseSpeedScale()) return DSCPhyCons.HORIZONTAL_SPEED_SCALE * getUnscaledBleed();
+        if (isUseSpeedScale()) return DSCPhyCons.getIRLScale() * getUnscaledBleed();
         return getUnscaledBleed();
     }
 	

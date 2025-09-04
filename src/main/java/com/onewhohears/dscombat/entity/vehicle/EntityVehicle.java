@@ -771,7 +771,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public double getHorizontalSpeedScale() {
-		return DSCPhyCons.HORIZONTAL_SPEED_SCALE;
+		return DSCPhyCons.getIRLScale();
 	}
 
 	public boolean applyVerticalAccScale() {
@@ -3202,12 +3202,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	@Override
 	public double getGroundBreaksDeAcceleration() {
-		return getStats().break_deacc_ground * DSCPhyCons.HORIZONTAL_SPEED_SCALE;
+		return getStats().break_deacc_ground * DSCPhyCons.getIRLScale();
 	}
 
 	@Override
 	public double getAirBreaksDeAcceleration() {
-		return getStats().break_deacc_air * DSCPhyCons.HORIZONTAL_SPEED_SCALE;
+		return getStats().break_deacc_air * DSCPhyCons.getIRLScale();
 	}
 
 	@Override

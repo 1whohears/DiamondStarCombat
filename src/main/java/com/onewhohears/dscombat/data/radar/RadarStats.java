@@ -116,7 +116,7 @@ public class RadarStats extends JsonPresetStats {
     }
 
     public double getRange() {
-        if (isUseDistanceScale()) return DSCPhyCons.HORIZONTAL_SPEED_SCALE * getUnscaledRange();
+        if (isUseDistanceScale()) return DSCPhyCons.getIRLScale() * getUnscaledRange();
         return getUnscaledRange();
     }
 

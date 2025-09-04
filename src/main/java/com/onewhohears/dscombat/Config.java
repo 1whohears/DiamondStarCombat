@@ -170,6 +170,7 @@ public class Config {
 	}
 
 	public static class Server {
+        public final ForgeConfigSpec.DoubleValue universalIRLScale;
 		public final ForgeConfigSpec.DoubleValue universalTopSpeed;
 		public final ForgeConfigSpec.DoubleValue vehicleSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue planeSpeedFactor;
@@ -178,6 +179,9 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue boatSpeedFactor;
 		public Server(ForgeConfigSpec.Builder builder) {
 			builder.push("speed_factors");
+            universalIRLScale = builder.comment("The percent of the IRL top speed vehicle's travel at. " +
+                            "1/8th (0.125) by default.")
+                    .defineInRange("universalIRLScale", 0.125, 0.01, 1);
 			universalTopSpeed = builder.comment("The absolute max horizontal speed for all vehicles in blocks/second. ",
 							"Lower this value if your playing on a server that doesn't have pre-generated chunks.")
 					.defineInRange("universalTopSpeed", 200.0, 1, 1000);

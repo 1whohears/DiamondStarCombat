@@ -21,7 +21,7 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 	
 	public RWRScreenInstance(int id) {
 		super("rwr", id, TEXTURE, 512, 512);
-		textureRadius = 230;
+		textureRadius = 248;
 		centerX = pixelWidth/2; 
 		centerY = pixelHeight/2;
 	}
@@ -43,21 +43,34 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 		Collection<RadarSystem.RWRWarning> warnings = vehicle.radarSystem.getClientRWRWarnings();
 		for (RadarSystem.RWRWarning warn : warnings) drawWarning(warn, vehicle);
 	}
-	
+
+    public static final double OUTLINE_DISTANCE = 5000d;
+    private static final double OUTLINE_DISTANCE_INV = 1d / OUTLINE_DISTANCE;
+    public static final double TINY_DISTANCE = 10000d;
+    public static final double SMALLEST_SIZE = 0.5;
+
 	protected void drawWarning(RadarSystem.RWRWarning warn, EntityVehicle vehicle) {
 		Vec3 dp = warn.pos.subtract(vehicle.position());
 		double dist = dp.horizontalDistance();
-		double screen_dist = dist*0.00025;
-		if (screen_dist > 1) screen_dist = 1;
-		else if (screen_dist < 0.1) screen_dist = 0.1;
+		double screen_dist = dist * OUTLINE_DISTANCE_INV;
+        double size = 1;
+		if (screen_dist > 1) {
+            if (dist > TINY_DISTANCE) size = SMALLEST_SIZE;
+            else {
+                double dist_scale = 1d - (dist - OUTLINE_DISTANCE) / (TINY_DISTANCE - OUTLINE_DISTANCE);
+                size = dist_scale * (1d - SMALLEST_SIZE) + SMALLEST_SIZE;
+            }
+            screen_dist = 1;
+        }
+		else if (screen_dist < 0.03) screen_dist = 0.03;
 		float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot()+180)*Mth.DEG_TO_RAD;
 		int x = Math.min(centerX + (int)(-Mth.sin(yaw)*textureRadius*screen_dist), pixelWidth-1);
 		int y = Math.min(centerY + (int)(Mth.cos(yaw)*textureRadius*screen_dist), pixelHeight-1);
-		drawWarningAtPos(warn, x, y);
+		drawWarningAtPos(warn, x, y, size);
 	}
 	
-	protected void drawWarningAtPos(RadarSystem.RWRWarning warn, int x, int y) {
-		int r = 32, t = 5;
+	protected void drawWarningAtPos(RadarSystem.RWRWarning warn, int x, int y, double size) {
+		int r = (int) (32d * size), t = (int) (5d * size);
 		if (warn.isMissile) {
 			drawDiamond(x, y, r, t, 0xff0000ff); 
 			drawCross(x, y, r/2, t, 0xff0000ff);

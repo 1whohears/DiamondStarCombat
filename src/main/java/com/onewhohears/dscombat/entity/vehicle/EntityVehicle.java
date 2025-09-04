@@ -17,6 +17,7 @@ import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.CustomAnimEntity;
+import net.minecraft.world.level.ChunkPos;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -784,9 +785,22 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	@Override
 	public void move(@NotNull MoverType type, @NotNull Vec3 move) {
+        move = verifyLoadedChunk(move);
 		super.move(type, move);
 		if (!noPhysics && isOnGround() && getDeltaMovement().y == 0) stepDown(move);
 	}
+
+    protected Vec3 verifyLoadedChunk(@NotNull Vec3 move) {
+        Entity controller = getControllingPassenger();
+        if (controller == null) return move;
+        Vec3 nextPos = controller.position().add(move.normalize().scale(64));
+        ChunkPos nextChunk = new ChunkPos(new BlockPos(nextPos));
+        if (getLevel().hasChunk(nextChunk.x, nextChunk.z)) return move;
+        LOGGER.warn("CHUNK AHEAD VEHICLE DOES NOT EXIST STOPPING MOVE FOR PILOT: {} | SPEED: {}",
+                controller.getScoreboardName(), move.length());
+        // FIXME this seems to prevent players from getting ejected during lag, but lag back looks wierd.
+        return Vec3.ZERO;
+    }
 	
 	/**
 	 * custom physics used to "step down" from a stair step.

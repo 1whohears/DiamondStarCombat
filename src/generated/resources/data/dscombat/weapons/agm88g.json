@@ -1,6 +1,6 @@
 {
-  "acceleration": 0.04,
-  "bleed": 0.1,
+  "acceleration": 0.32,
+  "bleed": 0.8,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -45,6 +45,7 @@
   "scan_range": 20000.0,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 10,
-  "speed": 6.217,
-  "turnRadius": 160.0
+  "speed": 49.74,
+  "turnRadius": 160.0,
+  "useSpeedScale": true
 }

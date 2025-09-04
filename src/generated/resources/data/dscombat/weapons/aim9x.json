@@ -1,6 +1,6 @@
 {
-  "acceleration": 0.05,
-  "bleed": 0.09,
+  "acceleration": 0.4,
+  "bleed": 0.72,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -49,6 +49,7 @@
   "presetType": "ir_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 10,
-  "speed": 6.431,
-  "turnRadius": 60.0
+  "speed": 51.45,
+  "turnRadius": 60.0,
+  "useSpeedScale": true
 }

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.weapon.stats;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -63,7 +64,7 @@ public abstract class MissileStats extends BulletStats {
 		return turnRadius;
 	}
 
-	public double getAcceleration() {
+	public double getUnscaledAcceleration() {
 		return acceleration;
 	}
 
@@ -75,7 +76,7 @@ public abstract class MissileStats extends BulletStats {
 		return fov;
 	}
 	
-	public double getBleed() {
+	public double getUnscaledBleed() {
 		return bleed;
 	}
 	
@@ -90,6 +91,16 @@ public abstract class MissileStats extends BulletStats {
 	public int getSeeThroBlock() {
 		return seeThroBlock;
 	}
+
+    public double getAcceleration() {
+        if (isUseSpeedScale()) return DSCPhyCons.HORIZONTAL_SPEED_SCALE * getUnscaledAcceleration();
+        return getUnscaledAcceleration();
+    }
+
+    public double getBleed() {
+        if (isUseSpeedScale()) return DSCPhyCons.HORIZONTAL_SPEED_SCALE * getUnscaledBleed();
+        return getUnscaledBleed();
+    }
 	
 	@Override
 	public boolean isBullet() {

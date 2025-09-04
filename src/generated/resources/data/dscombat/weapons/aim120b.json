@@ -1,7 +1,7 @@
 {
-  "acceleration": 0.05,
+  "acceleration": 0.4,
   "activeTrack": true,
-  "bleed": 0.15,
+  "bleed": 1.2,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -49,7 +49,8 @@
   "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 6,
-  "speed": 8.875,
+  "speed": 68.6,
   "targetType": "AIR",
-  "turnRadius": 140.0
+  "turnRadius": 140.0,
+  "useSpeedScale": true
 }

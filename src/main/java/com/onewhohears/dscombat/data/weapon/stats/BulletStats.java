@@ -5,6 +5,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
@@ -36,6 +37,7 @@ public class BulletStats extends WeaponStats {
 	private final float explosionRadius;
 	private final float inaccuracy;
 	private final int explodeNum;
+    private final boolean useSpeedScale;
 	
 	public BulletStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -47,13 +49,14 @@ public class BulletStats extends WeaponStats {
 		this.explosionRadius = UtilParse.getFloatSafe(json, "explosionRadius", 0);
 		this.inaccuracy = UtilParse.getFloatSafe(json, "inaccuracy", 0);
 		this.explodeNum = UtilParse.getIntSafe(json, "explodeNum", 1);
+        this.useSpeedScale = UtilParse.getBooleanSafe(json, "useSpeedScale", false);
 	}
 	
 	public float getDamage() {
 		return damage;
 	}
 	
-	public double getSpeed() {
+	public double getUnscaledSpeed() {
 		return speed;
 	}
 
@@ -80,6 +83,15 @@ public class BulletStats extends WeaponStats {
 	public int getExplodeNum() {
 		return explodeNum;
 	}
+
+    public boolean isUseSpeedScale() {
+        return useSpeedScale;
+    }
+
+    public double getSpeed() {
+        if (isUseSpeedScale()) return DSCPhyCons.HORIZONTAL_SPEED_SCALE * getUnscaledSpeed();
+        return getUnscaledSpeed();
+    }
 	
 	@Override
 	public double getMobTurretRange() {

@@ -102,6 +102,10 @@ public class AbstractWeaponBuilders {
 		public C setExplodeNum(int explodeNum) {
 			return setInt("explodeNum", explodeNum);
 		}
+
+        public C setUseSpeedScale(boolean use) {
+            return setBoolean("useSpeedScale", use);
+        }
 		
 	}
 	

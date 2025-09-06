@@ -17,6 +17,8 @@ public class DogFightData extends BuyAttackData {
 		game.setParam(MiniGameParamTypes.BUY_TIME, 200);
 		game.setParam(MiniGameParamTypes.ROUNDS_TO_WIN, 5);
 		game.setParam(MiniGameParamTypes.REQUIRE_SET_SPAWN, true);
+        game.setParam(MiniGameParamTypes.CAN_ADD_TEAMS, true);
+        game.setParam(MiniGameParamTypes.CAN_ADD_PLAYERS, true);
 		game.addKits("dogfight_alexis", "dogfight_felix", "dogfight_javi", "dogfight_eden");
 		return game;
 	}

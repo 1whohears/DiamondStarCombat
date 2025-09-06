@@ -114,7 +114,7 @@ public interface ActionInput {
         float getValue();
         boolean isNegAndPos();
         default boolean isActive() {
-            return getValue() != 0|| isNegAndPos();
+            return getValue() != 0 || isNegAndPos();
         }
         AxisType getAxisType();
         default @NotNull String getType() {

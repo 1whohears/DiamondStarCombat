@@ -27,7 +27,7 @@ public abstract class ActionInputHolder<A extends ActionInput> {
         return secondaryAction;
     }
     public @NotNull A getActiveAction() {
-        if (getPrimaryAction().isActive()) return getPrimaryAction();
+        if (getPrimaryAction().isActive() || !getSecondaryAction().isActive()) return getPrimaryAction();
         return getSecondaryAction();
     }
     public void tick() {

@@ -21,6 +21,10 @@ public class DogFightAttackPhase extends BuyAttackAttackPhase<DogFightData> {
     @Override
     public void tickPlayerAgent(MinecraftServer server, PlayerAgent agent) {
         super.tickPlayerAgent(server, agent);
+        if (!agent.isDead()) checkDeath(server, agent);
+    }
+
+    protected void checkDeath(MinecraftServer server, PlayerAgent agent) {
         ServerPlayer sp = agent.getPlayer(server);
         if (sp == null) return;
         if (!sp.isPassenger()) {

@@ -187,16 +187,16 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 						true, true, true, "AmmoCount", "AmmoId")
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "dogfight_alexis")
-				.addItem("dscombat:vehicle", vehicleItem("alexis_plane"))
+				.addItem("dscombat:vehicle", vehicleItem("alexis_plane_escort"))
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "dogfight_felix")
-				.addItem("dscombat:vehicle", vehicleItem("felix_plane"))
+				.addItem("dscombat:vehicle", vehicleItem("felix_plane_defender"))
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "dogfight_javi")
 				.addItem("dscombat:vehicle", vehicleItem("javi_plane"))
 				.build());
 		addPresetToGenerate(GameKit.Builder.create(DSCombatMod.MODID, "dogfight_eden")
-				.addItem("dscombat:vehicle", vehicleItem("eden_plane"))
+				.addItem("dscombat:vehicle", vehicleItem("eden_plane_interceptor"))
 				.build());
 	}
 

@@ -4,7 +4,7 @@
     {
       "item": "dscombat:vehicle",
       "nbt": {
-        "preset": "eden_plane"
+        "preset": "eden_plane_interceptor"
       },
       "num": 1
     }

@@ -4,7 +4,7 @@
     {
       "item": "dscombat:vehicle",
       "nbt": {
-        "preset": "felix_plane"
+        "preset": "felix_plane_defender"
       },
       "num": 1
     }

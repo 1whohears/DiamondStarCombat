@@ -4,7 +4,7 @@
     {
       "item": "dscombat:vehicle",
       "nbt": {
-        "preset": "alexis_plane"
+        "preset": "alexis_plane_escort"
       },
       "num": 1
     }

@@ -219,7 +219,7 @@ public abstract class WindTunnelJob {
                 tunnel.chatToNearbyPlayers("Searching for optimal Drag Coefficient...", ChatFormatting.YELLOW);
             else if (attempts == 1)
                 tunnel.chatToNearbyPlayers("First attempt failed trying again...", ChatFormatting.YELLOW);
-            tunnel.setQ(UtilAngles.toQuaternion(yaw, pitch, roll));
+            tunnel.setQ(UtilAngles.toQuaternionF(yaw, pitch, roll));
             prevWindAcc = -1000;
             prevDragC = -1000;
             dragC = first_guess;
@@ -302,7 +302,7 @@ public abstract class WindTunnelJob {
         @Override
         protected void init(EntityWindTunnel tunnel) {
             tunnel.chatToNearbyPlayers("Searching for optimal Lift Coefficient...", ChatFormatting.YELLOW);
-            tunnel.setQ(UtilAngles.toQuaternion(yaw, pitch, roll));
+            tunnel.setQ(UtilAngles.toQuaternionF(yaw, pitch, roll));
             prevYawRate = -1000;
             prevLiftC = -1000;
             updateLiftC(tunnel);
@@ -399,7 +399,7 @@ public abstract class WindTunnelJob {
             tunnel.chatToNearbyPlayers(""+pitch, ChatFormatting.BLUE);
         }
         private void updatePitch(EntityWindTunnel tunnel){
-            tunnel.setQ(UtilAngles.toQuaternion(yaw, pitch, roll));
+            tunnel.setQ(UtilAngles.toQuaternionF(yaw, pitch, roll));
         }
         public float getPitch() {
             return (float)pitch;

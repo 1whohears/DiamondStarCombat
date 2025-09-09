@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.integration.distant_players;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.distant_players.common.core.extra_render_info.ExtraRenderTargetInfo;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class DSCVehicleRenderInfo implements ExtraRenderTargetInfo {
 
     private String preset = "wooden_plane";
-    private Quaternion q = Quaternion.ONE;
+    private QuaternionF q = QuaternionF.ONE;
     private boolean landingGear = false;
     private float throttle = 0;
     private int baseTextureIndex = 0;
@@ -60,7 +60,7 @@ public class DSCVehicleRenderInfo implements ExtraRenderTargetInfo {
     @Override
     public void getInfoClientSide(FriendlyByteBuf buffer) {
         preset = buffer.readUtf();
-        q = DataSerializers.QUATERNION.read(buffer);
+        q = DataSerializers.QuaternionF.read(buffer);
         landingGear = buffer.readBoolean();
         throttle = buffer.readFloat();
         baseTextureIndex = buffer.readInt();
@@ -69,7 +69,7 @@ public class DSCVehicleRenderInfo implements ExtraRenderTargetInfo {
     @Override
     public void encodeInfoServerSide(FriendlyByteBuf buffer) {
         buffer.writeUtf(preset);
-        DataSerializers.QUATERNION.write(buffer, q);
+        DataSerializers.QuaternionF.write(buffer, q);
         buffer.writeBoolean(landingGear);
         buffer.writeFloat(throttle);
         buffer.writeInt(baseTextureIndex);

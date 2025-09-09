@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.physics;
 
 import com.google.gson.JsonObject;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
 import com.onewhohears.dscombat.data.graph.FloatFloatGraph;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
@@ -24,7 +24,7 @@ public class LiftSurfaceData extends PhysicsComponentData {
         json.addProperty("input_rotation_max", input_rotation_max);
         json.addProperty("area", area);
         UtilParse.writeVec3(json, "pos", pos);
-        UtilParse.writeVec3f(json, "rotation", new Vector3f(xRot, yRot, zRot));
+        UtilParse.writeVec3f(json, "rotation", new Vec3f(xRot, yRot, zRot));
         UtilParse.writeEnum(json, "input_type", input_type);
         json.addProperty("lift_k_graph", lift_k_graph);
         json.addProperty("drag_graph", drag_graph);
@@ -35,7 +35,7 @@ public class LiftSurfaceData extends PhysicsComponentData {
     private final boolean ignore_roll;
     private final float input_rotation_max;
     private final double area, zero_lift_drag;
-    private final Vector3f rotation;
+    private final Vec3f rotation;
     private final InputType input_type;
     private final String lift_k_graph_key;
     private final String drag_graph_key;
@@ -79,7 +79,7 @@ public class LiftSurfaceData extends PhysicsComponentData {
         return zero_lift_drag;
     }
 
-    public Vector3f getRotation() {
+    public Vec3f getRotation() {
         return rotation;
     }
 

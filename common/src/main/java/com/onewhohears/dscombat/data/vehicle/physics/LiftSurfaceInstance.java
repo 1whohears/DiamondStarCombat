@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.data.vehicle.physics;
 
 import com.mojang.logging.LogUtils;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.entity.PhysicsBody;
 import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -25,21 +25,21 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
 
     @Override
     protected void calcPhysics(PhysicsBody body) {
-        Quaternion vehicleQ;
+        QuaternionF vehicleQ;
         if (getData().isIgnoreRoll()) {
-            vehicleQ = Quaternion.ONE.copy();
-            vehicleQ.mul(Vector3f.XP.rotationDegrees(body.getXRot()));
-            vehicleQ.mul(Vector3f.YP.rotationDegrees(body.getYRot()));
+            vehicleQ = QuaternionF.ONE.copy();
+            vehicleQ.mul(Vec3f.XP.rotationDegrees(body.getXRot()));
+            vehicleQ.mul(Vec3f.YP.rotationDegrees(body.getYRot()));
         } else {
             vehicleQ = body.getQBySide().copy();
         }
-        Quaternion surfaceQ = vehicleQ.copy();
-        Vector3f rotation = getData().getRotation();
-        if (rotation.x() != 0) surfaceQ.mul(Vector3f.XN.rotationDegrees(rotation.x()));
-        if (rotation.y() != 0) surfaceQ.mul(Vector3f.YP.rotationDegrees(rotation.y()));
-        if (rotation.z() != 0) surfaceQ.mul(Vector3f.ZP.rotationDegrees(rotation.z()));
+        QuaternionF surfaceQ = vehicleQ.copy();
+        Vec3f rotation = getData().getRotation();
+        if (rotation.x() != 0) surfaceQ.mul(Vec3f.XN.rotationDegrees(rotation.x()));
+        if (rotation.y() != 0) surfaceQ.mul(Vec3f.YP.rotationDegrees(rotation.y()));
+        if (rotation.z() != 0) surfaceQ.mul(Vec3f.ZP.rotationDegrees(rotation.z()));
         float rotate = getData().getInputType().getRotationFromInput(getData(), body);
-        if (rotate != 0) surfaceQ.mul(Vector3f.XN.rotationDegrees(rotate));
+        if (rotate != 0) surfaceQ.mul(Vec3f.XN.rotationDegrees(rotate));
         Vec3 u = body.getDeltaMovement();
         Vec3 pitchAxis = UtilAngles.getPitchAxis(surfaceQ);
         Vec3 liftDir = u.cross(pitchAxis).normalize();
@@ -59,7 +59,7 @@ public class LiftSurfaceInstance extends PhysicsComponentInstance<LiftSurfaceDat
         double wingLiftMag = 0.5 * liftK * P * airFoilSpeedSqr * getData().getArea();
         liftForce = liftDir.scale(wingLiftMag);
         body.addForce(liftForce);
-        Quaternion vehicleQI = vehicleQ.copy();
+        QuaternionF vehicleQI = vehicleQ.copy();
         vehicleQI.conj();
         Vec3 liftMoment = getData().getPos()
                 .cross(UtilAngles.rotateVector(liftForce, vehicleQI))

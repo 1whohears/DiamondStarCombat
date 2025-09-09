@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
@@ -20,20 +20,20 @@ public interface PhysicsBody {
      * call PhysicsBody.super.setYRot(yRot)
      */
     default void setYRot(float yRot) {
-        setQBySide(UtilAngles.toQuaternion(getYRot(), getXRot(), getZRot()));
+        setQBySide(UtilAngles.toQuaternionF(getYRot(), getXRot(), getZRot()));
     }
     /**
      * if an entity implements PhysicsBody, override setXRot and after calling super.setXRot(xRot)
      * call PhysicsBody.super.setXRot(xRot)
      */
     default void setXRot(float xRot) {
-        setQBySide(UtilAngles.toQuaternion(getYRot(), getXRot(), getZRot()));
+        setQBySide(UtilAngles.toQuaternionF(getYRot(), getXRot(), getZRot()));
     }
     /**
      * call this somewhere in {@link net.minecraft.world.entity.Entity#tick()} after super.tick()
      */
     default void tickPhysics() {
-        Quaternion q = getQBySide();
+        QuaternionF q = getQBySide();
         // SET PREV/OLD
         setPrevDeltaMove(getDeltaMovement());
         setPrevForces(getForces());
@@ -70,14 +70,14 @@ public interface PhysicsBody {
     }
 
     default void updateEulerAngles() {
-        Quaternion q = getQBySide();
+        QuaternionF q = getQBySide();
         UtilAngles.EulerAngles angles = UtilAngles.toDegrees(q);
         setXRotNoQ((float)angles.pitch);
         setYRotNoQ((float)angles.yaw);
         setZRot((float)angles.roll);
     }
 
-    default void calcRotAcc(Quaternion q) {
+    default void calcRotAcc(QuaternionF q) {
         clampControlMoment();
         addMoment(getControlMoment(), false, true);
         addMoment(getMomentBetweenTicks(), false, true);
@@ -95,8 +95,8 @@ public interface PhysicsBody {
         reducePitchRateWhileRolling();
     }
 
-    static Quaternion rotateAngularVel(Vec3 av) {
-        return new Quaternion((float)-av.x, (float)-av.y, (float)av.z, true);
+    static QuaternionF rotateAngularVel(Vec3 av) {
+        return new QuaternionF((float)-av.x, (float)-av.y, (float)av.z, true);
     }
 
     default void reducePitchRateWhileRolling() {
@@ -144,7 +144,7 @@ public interface PhysicsBody {
         return cm;
     }
 
-    default void calcForceMoment(Quaternion q) {
+    default void calcForceMoment(QuaternionF q) {
         calcUniversalForces(q);
         calcUniversalMoments(q);
         if (isOnGround() && isInWater()) {
@@ -155,7 +155,7 @@ public interface PhysicsBody {
         else calcAirMovement(q);
     }
 
-    default void calcUniversalMoments(Quaternion q) {
+    default void calcUniversalMoments(QuaternionF q) {
         applyAngularDrag();
         addControllingTorques(q);
     }
@@ -201,7 +201,7 @@ public interface PhysicsBody {
     double getAirDensity();
     Vec3 getTotalRotInertia();
 
-    void addControllingTorques(Quaternion q);
+    void addControllingTorques(QuaternionF q);
 
     default void hardCodedAccPitch() {
         Vec3 av = getAngularVel();
@@ -231,23 +231,23 @@ public interface PhysicsBody {
         else return Math.min(current + acc, max);
     }
 
-    default void calcUniversalForces(Quaternion q) {
+    default void calcUniversalForces(QuaternionF q) {
         addForce(getWeightForce());
         addForce(getThrustForce(q));
         addDragForce(getDragForce(q));
     }
 
-    void calcGroundMovement(Quaternion q);
-    void calcWaterMovement(Quaternion q);
-    void calcAirMovement(Quaternion q);
+    void calcGroundMovement(QuaternionF q);
+    void calcWaterMovement(QuaternionF q);
+    void calcAirMovement(QuaternionF q);
 
     default Vec3 getWeightForce() {
         return new Vec3(0, -getTotalMass() * getAccGravity(), 0);
     }
 
-    Vec3 getThrustForce(Quaternion q);
+    Vec3 getThrustForce(QuaternionF q);
 
-    default Vec3 getDragForce(Quaternion q) {
+    default Vec3 getDragForce(QuaternionF q) {
         return getDeltaMovement().normalize().scale(-getDragMag());
     }
 
@@ -383,7 +383,7 @@ public interface PhysicsBody {
         addMoment(Vec3.ZERO.add(0, 0, moment), control, true);
     }
 
-    default void flattenPitch(Quaternion q, float dPitch) {
+    default void flattenPitch(QuaternionF q, float dPitch) {
         Vec3 av = getAngularVel();
         float x = (float)av.x;
         UtilAngles.EulerAngles angles = UtilAngles.toDegrees(q);
@@ -398,7 +398,7 @@ public interface PhysicsBody {
         setAngularVel(new Vec3(x, av.y, av.z));
     }
 
-    default void flatten(Quaternion q, float dPitch, float dRoll, boolean forced) {
+    default void flatten(QuaternionF q, float dPitch, float dRoll, boolean forced) {
         Vec3 av = getAngularVel();
         float x = (float)av.x, z = (float)av.z;
         if (!forced) {
@@ -427,8 +427,8 @@ public interface PhysicsBody {
 
     List<PhysicsComponentInstance<?>> getPhysicsInstances();
 
-    void calcMoveStatsPre(Quaternion q);
-    void calcMoveStatsPost(Quaternion q);
+    void calcMoveStatsPre(QuaternionF q);
+    void calcMoveStatsPost(QuaternionF q);
 
     float getTotalMass();
     double getAccTimeScale();
@@ -449,10 +449,10 @@ public interface PhysicsBody {
     Vec3 getHardCodedRotAcc();
     float getHardCodedRotDecel();
 
-    Quaternion getQBySide();
-    void setQBySide(Quaternion q);
-    Quaternion getPrevQ();
-    void setPrevQ(Quaternion q);
+    QuaternionF getQBySide();
+    void setQBySide(QuaternionF q);
+    QuaternionF getPrevQ();
+    void setPrevQ(QuaternionF q);
 
     float getXRot();
     float getYRot();

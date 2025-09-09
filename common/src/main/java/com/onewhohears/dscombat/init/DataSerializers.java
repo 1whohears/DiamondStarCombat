@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DataSerializers {
 
-    public static final EntityDataSerializer<QuaternionF> QUATERNION = register("QuaternionF", new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<QuaternionF> QUATERNION = register("quaternion", new EntityDataSerializer<>() {
 		@Override
 		public void write(FriendlyByteBuf buffer, QuaternionF q) {
 			buffer.writeFloat(q.i());

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.common.network.toserver;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -24,7 +24,7 @@ public class ToServerVehicleMoveRot extends IPacket {
 	
 	public final int id;
 	public final Vec3 motion;
-	public final Quaternion q;
+	public final QuaternionF q;
 	public final Vec3 av;
 	
 	public ToServerVehicleMoveRot(EntityVehicle e) {
@@ -37,7 +37,7 @@ public class ToServerVehicleMoveRot extends IPacket {
 	public ToServerVehicleMoveRot(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		motion = DataSerializers.VEC3.read(buffer);
-		q = DataSerializers.QUATERNION.read(buffer);
+		q = DataSerializers.QuaternionF.read(buffer);
 		av = DataSerializers.VEC3.read(buffer);
 	}
 	
@@ -45,7 +45,7 @@ public class ToServerVehicleMoveRot extends IPacket {
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		DataSerializers.VEC3.write(buffer, motion);
-		DataSerializers.QUATERNION.write(buffer, q);
+		DataSerializers.QuaternionF.write(buffer, q);
 		DataSerializers.VEC3.write(buffer, av);
 	}
 

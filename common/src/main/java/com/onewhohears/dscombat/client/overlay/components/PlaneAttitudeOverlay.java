@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
@@ -52,7 +52,7 @@ public class PlaneAttitudeOverlay extends VehicleOverlayComponent {
         RenderSystem.setShaderTexture(0, ATTITUDE_MID);
         poseStack.pushPose();
         poseStack.translate(attX+ (double) ATTITUDE_SIZE /2, attY+ (double) ATTITUDE_SIZE /2, 0);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-vehicle.zRot));
+        poseStack.mulPose(Vec3f.ZP.rotationDegrees(-vehicle.zRot));
         int pitchPointY = (int)(Mth.clamp(-vehicle.getXRot(), -30, 30) * ATTITUDE_SIZE * 0.0055);
         poseStack.translate(0, pitchPointY, 0);
         blit(poseStack,

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.instance.NoWeaponInstance;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -102,9 +102,9 @@ public class WeaponSystem {
 	}
 	
 	public Vec3 getShootDirection(WeaponInstance<?> data) {
-		Quaternion q = parent.getQ();
+		QuaternionF q = parent.getQ();
 		if (parent.isWeaponAngledDown() && data.getStats().canAngleDown()) {
-			q.mul(Vector3f.XP.rotationDegrees(25f));
+			q.mul(Vec3f.XP.rotationDegrees(25f));
 		}
     	return UtilAngles.getRollAxis(q);
     }

@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.client.model.obj.customanims;
 
 import com.google.gson.JsonObject;
-import com.mojang.math.Matrix4f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
@@ -38,7 +38,7 @@ public class VehicleModelTransforms {
 			return hitbox_name;
 		}
 		@Override
-		public Matrix4f getTransform(T entity, float partialTicks) {
+		public Mat4f getTransform(T entity, float partialTicks) {
 			RotableHitbox hitbox = entity.getHitboxByName(getHitboxName());
 			if (hitbox == null) return NOTHING;
 			return hitbox.isDestroyed() ? INVISIBLE : NOTHING;
@@ -127,7 +127,7 @@ public class VehicleModelTransforms {
 			return radar_id;
 		}
 		@Override
-		public Matrix4f getTransform(T entity, float partialTicks) {
+		public Mat4f getTransform(T entity, float partialTicks) {
 			if (!entity.radarSystem.hasRadar(radar_id)) return INVISIBLE;
 			return super.getTransform(entity, partialTicks);
 		}
@@ -148,7 +148,7 @@ public class VehicleModelTransforms {
 			return Mth.lerp(gear, 0, fold_angle);
 		}
 		@Override
-		public Matrix4f getTransform(T entity, float partialTicks) {
+		public Mat4f getTransform(T entity, float partialTicks) {
 			if (entity.getLandingGearPos(partialTicks) == 1) return INVISIBLE;
 			return super.getTransform(entity, partialTicks);
 		}

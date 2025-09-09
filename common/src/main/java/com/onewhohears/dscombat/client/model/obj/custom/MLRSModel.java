@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -25,9 +25,9 @@ public class MLRSModel extends ObjTurretModel<EntityTurret> {
 	}
 
 	@Override
-	protected void addComponentTransforms(Map<String, Matrix4f> transforms, EntityTurret entity, float partialTicks) {
+	protected void addComponentTransforms(Map<String, Mat4f> transforms, EntityTurret entity, float partialTicks) {
 		float xrothead = entity.getViewXRot(partialTicks);
-		Matrix4f xrothead_mat = UtilAngles.pivotPixelsRotX(0, 8f, 22f, -xrothead);
+		Mat4f xrothead_mat = UtilAngles.pivotPixelsRotX(0, 8f, 22f, -xrothead);
 		transforms.put("RocketLauncher", xrothead_mat);
 		super.addComponentTransforms(transforms, entity, partialTicks);
 	}
@@ -55,6 +55,6 @@ public class MLRSModel extends ObjTurretModel<EntityTurret> {
 	@Override
 	protected void rotate(EntityTurret entity, float partialTicks, PoseStack poseStack) {
 		super.rotate(entity, partialTicks, poseStack);
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+		poseStack.mulPose(Vec3f.YP.rotationDegrees(180f));
 	}
 }

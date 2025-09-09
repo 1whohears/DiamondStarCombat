@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.renderer;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.client.renderer.RendererCustomAnimObjEntity;
@@ -32,7 +32,7 @@ public class RendererObjVehicle extends RendererCustomAnimObjEntity<EntityVehicl
 			MultiBufferSource buffer, int packedLight, float partialTicks) {
 		poseStack.pushPose();
 		
-		Quaternion q = UtilAngles.lerpQ(partialTicks, vehicle.getPrevQ(), vehicle.getClientQ());
+		QuaternionF q = UtilAngles.lerpQ(partialTicks, vehicle.getPrevQ(), vehicle.getClientQ());
         poseStack.mulPose(q);
         
         for (EntityScreenData screen : getScreens(vehicle)) {

@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.client.model.obj.customanims;
 
 import com.google.gson.JsonObject;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms.InputAxis;
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnimsBuilder;
 import com.onewhohears.onewholibs.client.model.obj.customanims.EntityModelTransform.RotationAxis;
@@ -93,7 +93,7 @@ public class VehicleAnimsBuilder extends CustomAnimsBuilder {
 		JsonObject anim = createAnimJson(model_part_key);
 		anim.addProperty("anim_id", "input_bound_translation");
 		UtilParse.writeEnum(anim, "input_axis", input_axis);
-		UtilParse.writeVec3f(anim, "bounds", new Vector3f(boundX, boundY, boundZ));
+		UtilParse.writeVec3f(anim, "bounds", new Vec3f(boundX, boundY, boundZ));
 		return this;
 	}
 	

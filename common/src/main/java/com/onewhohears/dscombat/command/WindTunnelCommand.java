@@ -176,7 +176,7 @@ public class WindTunnelCommand {
                                      float throttle, boolean afterburner) {
         if (preset != null) tunnel.setPreset(preset.getId());
         if (speed != null) tunnel.setSpeed(speed);
-        if (rotation != null) tunnel.setQ(UtilAngles.toQuaternion(rotation.y, rotation.x, rotation.z));
+        if (rotation != null) tunnel.setQ(UtilAngles.toQuaternionF(rotation.y, rotation.x, rotation.z));
         if (throttle >= 0) tunnel.setThrottle(throttle);
         tunnel.setAfterBurner(afterburner);
         return 1;

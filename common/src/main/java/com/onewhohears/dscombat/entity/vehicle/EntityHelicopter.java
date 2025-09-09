@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
@@ -31,7 +31,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 	
 	@Override
-	public void calcAirMovement(Quaternion q) {
+	public void calcAirMovement(QuaternionF q) {
 		super.calcAirMovement(q);
 		if (inputs.special && isOperational()) {
 			flatten(q, getMaxDeltaPitch(), getMaxDeltaRoll(), false);
@@ -43,7 +43,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 
 	@Override
-	public Vec3 getThrustForce(Quaternion q) {
+	public Vec3 getThrustForce(QuaternionF q) {
 		Vec3 direction = UtilAngles.getYawAxis(q);
         return direction.scale(getPushThrustMag());
 	}
@@ -103,7 +103,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 
 	@Override
-	public void calcMoveStatsPre(Quaternion q) {
+	public void calcMoveStatsPre(QuaternionF q) {
 		super.calcMoveStatsPre(q);
 		if (getDeltaMovement().y < 0 && getAltitude() < 40) ++altitudeWarningTicks;
 		else altitudeWarningTicks = 0;

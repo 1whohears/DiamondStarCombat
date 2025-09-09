@@ -2,9 +2,9 @@ package com.onewhohears.dscombat.util;
 
 import java.util.Random;
 
-import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModParticles;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -73,7 +73,7 @@ public class UtilParticles {
 	}
 	
 	public static void vehicleAfterBurner(EntityVehicle vehicle) {
-		Quaternion q = vehicle.getClientQ();
+		QuaternionF q = vehicle.getClientQ();
 		Vec3 dir = vehicle.getLookAngle().scale(-vehicle.getCurrentThrottle()*0.4);
 		for (Vec3 relPos : vehicle.getAfterBurnerSmokePos()) {
 			Vec3 pos = UtilAngles.rotateVector(relPos, q).add(vehicle.position());

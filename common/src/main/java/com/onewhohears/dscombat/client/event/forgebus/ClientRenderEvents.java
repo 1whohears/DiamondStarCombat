@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.client.event.forgebus;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjWeaponRackModel;
@@ -34,7 +34,7 @@ public class ClientRenderEvents {
 		Player player = event.getEntity();
 		if (!player.isPassenger()) return;
 		if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
-		Quaternion q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
+		QuaternionF q = UtilAngles.lerpQ(event.getPartialTick(), plane.getPrevQ(), plane.getClientQ());
 		Vec3 eye = new Vec3(0, player.getEyeHeight(), 0);
 		Vec3 t = eye.subtract(UtilAngles.rotateVector(eye, q));
 		event.getPoseStack().translate(t.x, t.y, t.z);
@@ -62,8 +62,8 @@ public class ClientRenderEvents {
 		player.yBodyRotO = player.getYRot();
 	}
 	
-	private static Matrix4f viewMat = new Matrix4f();
-	private static Matrix4f projMat = new Matrix4f();
+	private static Mat4f viewMat = new Mat4f();
+	private static Mat4f projMat = new Mat4f();
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void getViewMatrices(RenderLevelStageEvent event) {
@@ -103,11 +103,11 @@ public class ClientRenderEvents {
 		}
 	}
 	
-	public static Matrix4f getViewMatrix() {
+	public static Mat4f getViewMatrix() {
 		return viewMat;
 	}
 	
-	public static Matrix4f getProjMatrix() {
+	public static Mat4f getProjMatrix() {
 		return projMat;
 	}
 	

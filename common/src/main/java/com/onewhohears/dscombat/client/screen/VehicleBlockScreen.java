@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -95,7 +95,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		modelViewStack.translate((posX+8)*scaleInv, 0, blitOffset);
 		long time = Util.getMillis();
 		float spinRate = 0.1f;
-		modelViewStack.mulPose(Vector3f.YP.rotationDegrees(time * spinRate));
+		modelViewStack.mulPose(Vec3f.YP.rotationDegrees(time * spinRate));
 		modelViewStack.translate(-(posX+8)*scaleInv, 0, -blitOffset);
 		modelViewStack.translate((posX+8)*(scaleInv-1), (posY+8)*(scaleInv-1), 0);
 		minecraft.getItemRenderer().renderAndDecorateItem(stack, posX, posY);

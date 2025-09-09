@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.math.Matrix4f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -203,7 +203,7 @@ public abstract class EntityDynamicScreenInstance extends EntityScreenInstance {
 	}
 	
 	@Override
-	public void draw(Entity entity, Matrix4f matrix4f, MultiBufferSource buffer, 
+	public void draw(Entity entity, Mat4f matrix4f, MultiBufferSource buffer,
 			float partialTicks, int packedLight, float worldWidth, float worldHeight) {
 		super.draw(entity, matrix4f, buffer, partialTicks, packedLight, worldWidth, worldHeight);
 		if (shouldUpdateTexture(entity)) {

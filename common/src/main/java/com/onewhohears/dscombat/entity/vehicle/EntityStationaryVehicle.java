@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -45,7 +45,7 @@ public class EntityStationaryVehicle extends EntityVehicle {
     }
 
     @Override
-    public Vec3 getThrustForce(Quaternion q) {
+    public Vec3 getThrustForce(QuaternionF q) {
         return Vec3.ZERO;
     }
 

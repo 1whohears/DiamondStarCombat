@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -20,10 +20,10 @@ public class JasonPlaneModel extends ObjVehicleModel<EntityVehicle> {
 	protected Transforms getComponentTransforms(EntityVehicle entity, float partialTicks) {
 		// blade
 		float bladerot = entity.getMotorRotation(partialTicks, 20);
-		Matrix4f blade0_mat = UtilAngles.pivotPixelsRotZ(-0.0426f, 42.0581f, 82.8989f, bladerot);
+		Mat4f blade0_mat = UtilAngles.pivotPixelsRotZ(-0.0426f, 42.0581f, 82.8989f, bladerot);
 		// landing gear
 		float gearpos = entity.getLandingGearPos(partialTicks);
-		Matrix4f lg0_mat, lg1_mat, lg2_mat;
+		Mat4f lg0_mat, lg1_mat, lg2_mat;
 		if (gearpos >= 1f) lg0_mat = lg1_mat = lg2_mat = INVISIBLE;
 		else {
 			float degrees = gearpos*90;
@@ -32,10 +32,10 @@ public class JasonPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			lg2_mat = UtilAngles.pivotPixelsRotX(0, 34.8817f, -71.9732f, degrees);
 		}
 		// flaps
-		Matrix4f rudder = UtilAngles.pivotPixelsRotY(0, 55.8305f, -107.139f, entity.inputs.yaw*15);
-		Matrix4f left_elevator = UtilAngles.pivotPixelsRotX(20.9161f, 50.9701f, -99.3629f, entity.inputs.pitch*22);
-		Matrix4f right_elevator = UtilAngles.pivotPixelsRotX(-20.9161f, 50.9701f, -99.3629f, entity.inputs.pitch*22);
-		Matrix4f left_flap, right_flap;
+		Mat4f rudder = UtilAngles.pivotPixelsRotY(0, 55.8305f, -107.139f, entity.inputs.yaw*15);
+		Mat4f left_elevator = UtilAngles.pivotPixelsRotX(20.9161f, 50.9701f, -99.3629f, entity.inputs.pitch*22);
+		Mat4f right_elevator = UtilAngles.pivotPixelsRotX(-20.9161f, 50.9701f, -99.3629f, entity.inputs.pitch*22);
+		Mat4f left_flap, right_flap;
 		if (entity.isFlapsDown()) {
 			left_flap = UtilAngles.pivotPixelsRotX(94.4596f, 36.7061f, -0.8385f, -22);
 			right_flap = UtilAngles.pivotPixelsRotX(-94.4596f, 36.7061f, -0.8385f, -22);
@@ -44,13 +44,13 @@ public class JasonPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			right_flap = UtilAngles.pivotPixelsRotX(-94.4596f, 36.7061f, -0.8385f, entity.inputs.roll*22);
 		}
 		// controls
-		Quaternion stickRot = Vector3f.XP.rotationDegrees(entity.inputs.pitch*-25);
-		stickRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.roll*25));
-		Matrix4f stick = UtilAngles.pivotPixelsRot(0, 33.8882f, 4.717f, stickRot);
-		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
-		Matrix4f left_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
-		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
-		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
+		QuaternionF stickRot = Vec3f.XP.rotationDegrees(entity.inputs.pitch*-25);
+		stickRot.mul(Vec3f.ZP.rotationDegrees(entity.inputs.roll*25));
+		Mat4f stick = UtilAngles.pivotPixelsRot(0, 33.8882f, 4.717f, stickRot);
+		Mat4f throttle = Mat4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
+		Mat4f left_pedal = Mat4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
+		Mat4f right_pedal = Mat4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
+		ImmutableMap<String, Mat4f> transforms = ImmutableMap.<String, Mat4f>builder()
 			.put("lg0", lg0_mat)
 			.put("lg1", lg1_mat)
 			.put("lg2", lg2_mat)
@@ -68,10 +68,10 @@ public class JasonPlaneModel extends ObjVehicleModel<EntityVehicle> {
 		return Transforms.of(transforms);
 	}
 	
-	private static final Vector3f PIVOT = new Vector3f(0, -2f, 0);
+	private static final Vec3f PIVOT = new Vec3f(0, -2f, 0);
 	
 	@Override
-	public Vector3f getGlobalPivot() {
+	public Vec3f getGlobalPivot() {
 		return PIVOT;
 	}
 	

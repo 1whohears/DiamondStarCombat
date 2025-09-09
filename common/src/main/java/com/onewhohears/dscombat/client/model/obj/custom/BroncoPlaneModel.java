@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -21,9 +21,9 @@ public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 		// landing gear and blades
 		float bladerot = entity.getMotorRotation(partialTicks, 30);
 		float gearpos = entity.getLandingGearPos(partialTicks);
-		Matrix4f blade0rot_mat = UtilAngles.pivotPixelsRotZ(44.8001f, 32.256f, 11.0114f, bladerot);
-		Matrix4f blade1rot_mat = UtilAngles.pivotPixelsRotZ(-44.8001f, 32.256f, 11.0114f, bladerot);
-		Matrix4f lg0_mat, lg1_mat, lg2_mat;
+		Mat4f blade0rot_mat = UtilAngles.pivotPixelsRotZ(44.8001f, 32.256f, 11.0114f, bladerot);
+		Mat4f blade1rot_mat = UtilAngles.pivotPixelsRotZ(-44.8001f, 32.256f, 11.0114f, bladerot);
+		Mat4f lg0_mat, lg1_mat, lg2_mat;
 		if (gearpos >= 1f) lg0_mat = lg1_mat = lg2_mat = INVISIBLE;
 		else {
 			float degrees = gearpos*90;
@@ -32,12 +32,12 @@ public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			lg2_mat = UtilAngles.pivotPixelsRotX(-42.5f, 24f, -24.5f, degrees);
 		}
 		// flaps
-		Quaternion rudderRot = Vector3f.YP.rotationDegrees(entity.inputs.yaw*15);
-		rudderRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.yaw*-10));
-		Matrix4f left_rudder = UtilAngles.pivotPixelsRot(44.7787f, 52.3335f, -127.6889f, rudderRot);
-		Matrix4f right_rudder = UtilAngles.pivotPixelsRot(-44.7787f, 52.3335f, -127.6889f, rudderRot);
-		Matrix4f elevator = UtilAngles.pivotPixelsRotX(0, 73.6614f, -140.7049f, entity.inputs.pitch*22);
-		Matrix4f left_flap, right_flap;
+		QuaternionF rudderRot = Vec3f.YP.rotationDegrees(entity.inputs.yaw*15);
+		rudderRot.mul(Vec3f.ZP.rotationDegrees(entity.inputs.yaw*-10));
+		Mat4f left_rudder = UtilAngles.pivotPixelsRot(44.7787f, 52.3335f, -127.6889f, rudderRot);
+		Mat4f right_rudder = UtilAngles.pivotPixelsRot(-44.7787f, 52.3335f, -127.6889f, rudderRot);
+		Mat4f elevator = UtilAngles.pivotPixelsRotX(0, 73.6614f, -140.7049f, entity.inputs.pitch*22);
+		Mat4f left_flap, right_flap;
 		if (entity.isFlapsDown()) {
 			left_flap = UtilAngles.pivotPixelsRotX(98.9282f, 43.4165f, -34.7215f, -22);
 			right_flap = UtilAngles.pivotPixelsRotX(-98.9282f, 43.4165f, -34.7215f, -22);
@@ -46,13 +46,13 @@ public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			right_flap = UtilAngles.pivotPixelsRotX(-98.9282f, 43.4165f, -34.7215f, entity.inputs.roll*22);
 		}
 		// controls
-		Quaternion stickRot = Vector3f.XP.rotationDegrees(entity.inputs.pitch*-25);
-		stickRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.roll*25));
-		Matrix4f stick = UtilAngles.pivotPixelsRot(0, 26.1123f, 47f, stickRot);
-		Matrix4f left_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
-		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
-		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
-		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
+		QuaternionF stickRot = Vec3f.XP.rotationDegrees(entity.inputs.pitch*-25);
+		stickRot.mul(Vec3f.ZP.rotationDegrees(entity.inputs.roll*25));
+		Mat4f stick = UtilAngles.pivotPixelsRot(0, 26.1123f, 47f, stickRot);
+		Mat4f left_pedal = Mat4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
+		Mat4f right_pedal = Mat4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
+		Mat4f throttle = Mat4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
+		ImmutableMap<String, Mat4f> transforms = ImmutableMap.<String, Mat4f>builder()
 			.put("blade0", blade0rot_mat)
 			.put("blade1", blade1rot_mat)
 			.put("lg0", lg0_mat)
@@ -71,10 +71,10 @@ public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 		return Transforms.of(transforms);
 	}
 	
-	private static final Vector3f PIVOT = new Vector3f(0, -2f, 2f);
+	private static final Vec3f PIVOT = new Vec3f(0, -2f, 2f);
 	
 	@Override
-	public Vector3f getGlobalPivot() {
+	public Vec3f getGlobalPivot() {
 		return PIVOT;
 	}
 

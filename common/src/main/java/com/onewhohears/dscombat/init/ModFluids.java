@@ -61,7 +61,7 @@ public class ModFluids {
 			int tintColor, float fogR, float fogG, float fogB, float fogStart, float fogEnd) {
 		return FLUID_TYPES.register(name, () -> new CustomFluidType(properties, 
 				stillTexture, overlayTexture, flowingTexture, tintColor, 
-				new Vector3f(fogR/255f, fogG/255f, fogB/255f), fogStart, fogEnd));
+				new Vec3f(fogR/255f, fogG/255f, fogB/255f), fogStart, fogEnd));
 	}*/
 	
 }

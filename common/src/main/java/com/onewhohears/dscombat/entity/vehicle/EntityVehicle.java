@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
@@ -122,7 +122,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
-	public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.QUATERNION);
+	public static final EntityDataAccessor<QuaternionF> Q = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.QUATERNION);
 	public static final EntityDataAccessor<Vec3> AV = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
@@ -154,8 +154,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public int lastShootTime = -1, ingredientDropIndex = -1;
 	
-	public Quaternion prevQ = Quaternion.ONE.copy();
-	public Quaternion clientQ = Quaternion.ONE.copy();
+	public QuaternionF prevQ = QuaternionF.ONE.copy();
+	public QuaternionF clientQ = QuaternionF.ONE.copy();
 	public Vec3 clientAV = Vec3.ZERO;
 	
 	public float zRot, zRotO; 
@@ -227,7 +227,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected void defineSynchedData() {
         entityData.define(HEALTH, 100f);
         entityData.define(ARMOR, 100f);
-		entityData.define(Q, Quaternion.ONE);
+		entityData.define(Q, QuaternionF.ONE);
 		entityData.define(AV, Vec3.ZERO);
 		entityData.define(TEST_MODE, false);
 		entityData.define(NO_CONSUME, false);
@@ -282,7 +282,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		setXRotNoQ(nbt.getFloat("xRot"));
 		setYRotNoQ(nbt.getFloat("yRot"));
 		setZRot(nbt.getFloat("zRot"));
-		Quaternion q = UtilAngles.toQuaternion(getYRot(), getXRot(), getZRot());
+		QuaternionF q = UtilAngles.toQuaternionF(getYRot(), getXRot(), getZRot());
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
@@ -405,7 +405,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	@Override
-	public void calcAirMovement(Quaternion q) {
+	public void calcAirMovement(QuaternionF q) {
 		DrivingBody.super.calcAirMovement(q);
 		resetFallDistance();
 	}
@@ -414,12 +414,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		return !canToggleLandingGear() || isLandingGear();
 	}
 
-	public void calcWaterMovement(Quaternion q) {
+	public void calcWaterMovement(QuaternionF q) {
 
 	}
 
 	@Override
-	public void addControllingTorques(Quaternion q) {
+	public void addControllingTorques(QuaternionF q) {
 		if (canTurnViaTorque()) {
 			if (canControlPitch()) {
 				if (isHardCodedRotAcc()) hardCodedAccPitch();
@@ -732,7 +732,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * instead of calculating values multiple times per tick.
 	 * @param q the current direction of the vehicle
 	 */
-	public void calcMoveStatsPre(Quaternion q) {
+	public void calcMoveStatsPre(QuaternionF q) {
 		totalMass = getEmptyVehicleMass() + partsManager.getPartsWeight();
 		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION;
 		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION;
@@ -753,7 +753,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * instead of calculating values multiple times per tick.
 	 * @param q the current direction of the vehicle
 	 */
-	public void calcMoveStatsPost(Quaternion q) {
+	public void calcMoveStatsPost(QuaternionF q) {
 		DrivingBody.super.calcMoveStatsPost(q);
 		currentAltitude = UtilEntity.getDistFromSeaLevel(this);
 	}
@@ -1800,12 +1800,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	setCurrentThrottle(getCurrentThrottle() - getThrottleDecreaseRate());
     }
     
-    public final Quaternion getQBySide() {
+    public final QuaternionF getQBySide() {
     	if (level.isClientSide) return getClientQ();
     	else return getQ();
     }
     
-    public final void setQBySide(Quaternion q) {
+    public final void setQBySide(QuaternionF q) {
     	if (level.isClientSide) setClientQ(q);
     	else setQ(q);
     }
@@ -1813,46 +1813,46 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     /**
      * @return server side quaternion
      */
-    public final Quaternion getQ() {
+    public final QuaternionF getQ() {
         return entityData.get(Q).copy();
     }
     
     /**
      * @param q set server side quaternion
      */
-    public final void setQ(Quaternion q) {
+    public final void setQ(QuaternionF q) {
         entityData.set(Q, q.copy());
     }
     
     /**
      * @return the client side rotation
      */
-    public final Quaternion getClientQ() {
+    public final QuaternionF getClientQ() {
         return clientQ.copy();
     }
     
     /**
      * @param q set client side rotation
      */
-    public final void setClientQ(Quaternion q) {
+    public final void setClientQ(QuaternionF q) {
         clientQ = q.copy();
     }
     
     /**
      * @return the rotation on the previous tick for both client and server side
      */
-    public final Quaternion getPrevQ() {
+    public final QuaternionF getPrevQ() {
         return prevQ.copy();
     }
     
     /**
      * @param q the rotation for both client and server side
      */
-    public final void setPrevQ(Quaternion q) {
+    public final void setPrevQ(QuaternionF q) {
         prevQ = q.copy();
     }
     
-    public Quaternion getClientQ(float partialTicks) {
+    public QuaternionF getClientQ(float partialTicks) {
     	return UtilAngles.lerpQ(partialTicks, getPrevQ(), getClientQ());
     }
     

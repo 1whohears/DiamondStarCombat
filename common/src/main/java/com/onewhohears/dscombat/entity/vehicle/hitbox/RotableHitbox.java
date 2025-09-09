@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle.hitbox;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -110,7 +110,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	
 	protected void positionSelf() {
 		setOldPosAndRot();
-		Quaternion q = getParent().getQBySide();
+		QuaternionF q = getParent().getQBySide();
 		Vec3 pos = getParent().position().add(UtilAngles.rotateVector(getRelPos(), q));
 		hitbox.setCenterAndRot(pos, q);
 		setPos(pos);
@@ -171,8 +171,8 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 		Vec3 parent_pos = getParent().position();
 		Vec3 parent_move = getParent().getDeltaMovement();
 		Vec3 parent_rot_rate = getParent().getAngularVel();
-		Quaternion q = getParent().getQBySide();
-		Quaternion qi = q.copy();
+		QuaternionF q = getParent().getQBySide();
+		QuaternionF qi = q.copy();
 		qi.conj();
 		Vec3 rel_pos = UtilAngles.rotateVector(entity.position().subtract(parent_pos), qi);
 		Vec3 rel_tan_vel = parent_rot_rate.scale(Math.toRadians(1d))

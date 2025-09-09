@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.weapon.instance;
 
 import java.util.Random;
 
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -41,7 +41,7 @@ public class BulletInstance<T extends BulletStats> extends WeaponInstance<T> {
 	protected Vec3 getStartMove(EntityVehicle vehicle) {
 		Vec3 move = vehicle.getLookAngle().scale(getStats().getSpeed());
 		if (vehicle.isWeaponAngledDown() && getStats().canAngleDown())
-			move = UtilAngles.rotateVector(move, Vector3f.XN.rotationDegrees(25f));
+			move = UtilAngles.rotateVector(move, Vec3f.XN.rotationDegrees(25f));
 		return move;
 	}
 

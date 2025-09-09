@@ -2,10 +2,10 @@ package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Mat3f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
@@ -57,8 +57,8 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
                           @NotNull MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         EntityVehicle vehicle = entity.getSimulatedVehicle();
-        Quaternion q = vehicle.getQBySide();
-        Quaternion qi = vehicle.getQBySide();
+        QuaternionF q = vehicle.getQBySide();
+        QuaternionF qi = vehicle.getQBySide();
         qi.conj();
         poseStack.mulPose(qi);
         float maxForceMag = (float) entity.weightAcc.length();
@@ -96,13 +96,13 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         poseStack.translate(pos.x, pos.y, pos.z);
         float y = UtilAngles.getYaw(dir);
         float x = UtilAngles.getPitch(dir);
-        poseStack.mulPose(Vector3f.YN.rotationDegrees(y+180));
-        poseStack.mulPose(Vector3f.XN.rotationDegrees(x-90));
+        poseStack.mulPose(Vec3f.YN.rotationDegrees(y+180));
+        poseStack.mulPose(Vec3f.XN.rotationDegrees(x-90));
         poseStack.translate(0, -mag*0.5, 0);
 
         poseStack.scale(1, mag, 1);
         for (int i = 0; i < 4; ++i) {
-            poseStack.mulPose(Vector3f.YN.rotationDegrees(90*i));
+            poseStack.mulPose(Vec3f.YN.rotationDegrees(90*i));
             drawTextureCentered(ARROW, poseStack.last().pose(), buffer, packedLight, 0, color);
         }
         poseStack.popPose();
@@ -111,12 +111,12 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
     private void drawGlobalAxis(float partialTicks, @NotNull PoseStack poseStack,
                                 @NotNull MultiBufferSource buffer, int packedLight) {
         VertexConsumer buff = buffer.getBuffer(RenderType.lines());
-        Vector3f O = new Vector3f();
-        Vector3f X = new Vector3f(8, 0, 0);
-        Vector3f Y = new Vector3f(0, 8, 0);
-        Vector3f Z = new Vector3f(0, 0, 8);
-        Matrix4f m4 = poseStack.last().pose();
-        Matrix3f m3 = poseStack.last().normal();
+        Vec3f O = new Vec3f();
+        Vec3f X = new Vec3f(8, 0, 0);
+        Vec3f Y = new Vec3f(0, 8, 0);
+        Vec3f Z = new Vec3f(0, 0, 8);
+        Mat4f m4 = poseStack.last().pose();
+        Mat3f m3 = poseStack.last().normal();
         drawLine(O, X, buff, m4, m3, RED);
         drawLine(O, Y, buff, m4, m3, GREEN);
         drawLine(O, Z, buff, m4, m3, BLUE);

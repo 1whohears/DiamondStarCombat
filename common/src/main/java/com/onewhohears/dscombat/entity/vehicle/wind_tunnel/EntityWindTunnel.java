@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.vehicle.wind_tunnel;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -44,7 +44,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
 
     public static final EntityDataAccessor<String> PRESET = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Vec3> SPEED = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
-    public static final EntityDataAccessor<Quaternion> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QUATERNION);
+    public static final EntityDataAccessor<QuaternionF> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QuaternionF);
     public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Boolean> AFTERBURNER = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> HIDE_MODEL = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
@@ -67,7 +67,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     public void startFindMultiLiftDragJob(float altitude) {
         chatToNearbyPlayers("Starting Multi Find Lift/Drag Coefficients Job...", ChatFormatting.LIGHT_PURPLE);
         // initialize parameters
-        setQ(UtilAngles.toQuaternion(0, 0, 90));
+        setQ(UtilAngles.toQuaternionF(0, 0, 90));
         setThrottle(1.0f);
         setAfterBurner(true);
         setAltitude(altitude);
@@ -122,7 +122,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         chatToNearbyPlayers("Speed = "+speed+" | Turn Rate = "+turn_rate+" | AOA = "+aoa+" | Altitude = "+altitude, ChatFormatting.AQUA);
         // initialize parameters
         setSpeed(new Vec3(0, 0, speed));
-        setQ(UtilAngles.toQuaternion(aoa, 0, 90));
+        setQ(UtilAngles.toQuaternionF(aoa, 0, 90));
         setThrottle(1.0f);
         setAfterBurner(true);
         setAltitude(altitude);
@@ -176,7 +176,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
 
     protected void tickSimulate() {
         Vec3 speed = getSpeed();
-        Quaternion q = getQ();
+        QuaternionF q = getQ();
         EntityVehicle vehicle = getSimulatedVehicle();
         vehicle.setTestMode(true);
         vehicle.setPos(position().multiply(1, 0, 1)
@@ -254,7 +254,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     @Override
     protected void defineSynchedData() {
         entityData.define(SPEED, Vec3.ZERO);
-        entityData.define(Q, Quaternion.ONE);
+        entityData.define(Q, QuaternionF.ONE);
         entityData.define(THROTTLE, 1f);
         entityData.define(AFTERBURNER, false);
         entityData.define(HIDE_MODEL, false);
@@ -293,7 +293,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         float qj = tag.getFloat("qj");
         float qk = tag.getFloat("qk");
         float qr = tag.getFloat("qr");
-        setQ(new Quaternion(qi, qj, qk, qr));
+        setQ(new QuaternionF(qi, qj, qk, qr));
         setThrottle(tag.getFloat("throttle"));
         setAfterBurner(tag.getBoolean("afterburner"));
         setHideModel(tag.getBoolean("hide_model"));
@@ -306,7 +306,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         UtilParse.writeVec3(tag, getSpeed(), "speed");
-        Quaternion q = getQ();
+        QuaternionF q = getQ();
         tag.putFloat("qi", q.i());
         tag.putFloat("qj", q.j());
         tag.putFloat("qk", q.k());
@@ -327,11 +327,11 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         entityData.set(SPEED, speed);
     }
 
-    public Quaternion getQ() {
+    public QuaternionF getQ() {
         return entityData.get(Q);
     }
 
-    public void setQ(Quaternion q) {
+    public void setQ(QuaternionF q) {
         entityData.set(Q, q);
     }
 

@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.client.input;
 
 import com.google.gson.JsonObject;
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -86,7 +86,7 @@ public class ClientInputManager {
             if (vehicle.isTestMode()) {
                 player.setXRot(0);
                 player.setYRot(0);
-                vehicle.setClientQ(Quaternion.ONE);
+                vehicle.setClientQ(QuaternionF.ONE);
             }
         }
         else if (mc.screen != null) DSCClientInputs.centerMousePos();

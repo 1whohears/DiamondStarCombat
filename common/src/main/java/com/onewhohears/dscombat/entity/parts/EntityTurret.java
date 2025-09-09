@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.parts;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
@@ -106,7 +106,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	}
 
 	protected void rotateTowards(float goalRotX, float goalRotY) {
-		Quaternion ra = Quaternion.ONE;
+		QuaternionF ra = QuaternionF.ONE;
 		EntityVehicle vehicle = getParentVehicle();
 		if (vehicle != null) ra = vehicle.getQBySide();
 		if (!getLevel().isClientSide()) {
@@ -146,7 +146,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	
 	@Override
 	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
-		Quaternion q;
+		QuaternionF q;
 		if (level.isClientSide) q = craft.getClientQ();
 		else q = craft.getQ();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();

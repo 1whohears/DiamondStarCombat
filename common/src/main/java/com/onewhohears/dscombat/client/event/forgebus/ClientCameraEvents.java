@@ -7,8 +7,8 @@ import com.onewhohears.dscombat.mixin.CameraAccess;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 public class ClientCameraEvents {
 	
 	private static Entity prevGimbal;
-	@Nullable static private Quaternion prevQ;
+	@Nullable static private QuaternionF prevQ;
     private static boolean wasTrackingTarget = false;
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -89,7 +89,7 @@ public class ClientCameraEvents {
                 lookForward(event, player, mirrored, pt, vehicle);
                 wasTrackingTarget = false;
             } else if (DSCClientInputs.isCameraFreeRelative()) {
-                Quaternion qPT = vehicle.getClientQ(pt);
+                QuaternionF qPT = vehicle.getClientQ(pt);
                 if (resetMousePressed) {
                     lookForward(event, player, mirrored, pt, vehicle);
                 } else if (prevQ != null) {
@@ -120,7 +120,7 @@ public class ClientCameraEvents {
 			((CameraAccess)camera).invokeSetRotation(event.getYaw(), event.getPitch());
 			camera.move(vehicleCamDist, 0, 0);
 		}
-		Quaternion q = null;
+		QuaternionF q = null;
 		if (camYOffset != 0) {
 			q = UtilAngles.lerpQ(pt, vehicle.getPrevQ(), vehicle.getClientQ());
 			Vec3 yawAxis = UtilAngles.getYawAxis(q);
@@ -162,7 +162,7 @@ public class ClientCameraEvents {
 	
 	public static double getMaxDist(Camera cam, Player player, double dist) {
 		Vec3 from = cam.getPosition();
-		Vector3f d = cam.getLookVector().copy();
+		Vec3f d = cam.getLookVector().copy();
 		d.mul((float)-dist);
 		Vec3 to = from.add(d.x(), d.y(), d.z());
 		HitResult hitresult = player.level.clip(new ClipContext(from, to, 

@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
@@ -33,10 +33,10 @@ public class ObjPartModel<T extends EntityPart> extends KeyframeAnimsEntityModel
 	@Override
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
 		if (entity.getVehicle() instanceof EntityVehicle plane) {
-			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
-			poseStack.mulPose(q);
+			QuaternionF q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
+			poseStack.mulPose(q.convert());
 		}
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
+		poseStack.mulPose(Vec3f.ZP.rotationDegrees(entity.getZRot()).convert());
 	}
 	
 	@Override

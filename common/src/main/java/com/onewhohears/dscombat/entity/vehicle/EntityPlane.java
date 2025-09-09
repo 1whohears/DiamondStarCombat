@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.graph.AoaLiftKGraph;
@@ -44,7 +44,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 
 	@Override
-	public void calcUniversalForces(Quaternion q) {
+	public void calcUniversalForces(QuaternionF q) {
 		super.calcUniversalForces(q);
 		if (isArcadeMode) {
 			addForce(getWeightForce().scale(-getArcadeIgnoreGravityFactor()));
@@ -52,7 +52,7 @@ public class EntityPlane extends EntityVehicle {
 		}
 	}
 
-	protected void calcIgnoreGravityFactor(Quaternion q) {
+	protected void calcIgnoreGravityFactor(QuaternionF q) {
 		Vec3 u = getDeltaMovement();
 		Vec3 rollAxis = UtilAngles.getRollAxis(q);
 		double speed = UtilGeometry.vecCompByNormAxis(u, rollAxis).length();
@@ -75,7 +75,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public void calcMoveStatsPre(Quaternion q) {
+	public void calcMoveStatsPre(QuaternionF q) {
 		super.calcMoveStatsPre(q);
 		if (isArcadeMode) {
 			aoa = 0;
@@ -117,7 +117,7 @@ public class EntityPlane extends EntityVehicle {
 		return inputs.special;
 	}
 	
-	protected void calculateAOA(Quaternion q) {
+	protected void calculateAOA(QuaternionF q) {
 		Vec3 u = getDeltaMovement();
 		Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
 		liftDir = u.cross(pitchAxis).normalize();
@@ -159,7 +159,7 @@ public class EntityPlane extends EntityVehicle {
 		}
 	}
 	
-	protected void calculateLift(Quaternion q) {
+	protected void calculateLift(QuaternionF q) {
 		// Lift = (angle of attack coefficient) * (air density) * (speed)^2 * (wing surface area) / 2
 		wingLiftMag = liftK * getFluidDensity() * airFoilSpeedSqr * getWingSurfaceArea() * getWingLiftPercent();
         double fuselageLift = fuselageLiftK * getFluidDensity() * airFoilSpeedSqr * getFuselageLiftArea();
@@ -176,7 +176,7 @@ public class EntityPlane extends EntityVehicle {
 		centrifugalForce = getTotalMass() * xzSpeed * getYawRate()*Mth.DEG_TO_RAD;
 	}
 	
-	public Vec3 getLiftForce(Quaternion q) {
+	public Vec3 getLiftForce(QuaternionF q) {
 		return liftForce;
 	}
 	
@@ -185,7 +185,7 @@ public class EntityPlane extends EntityVehicle {
 	}
 	
 	@Override
-	public Vec3 getThrustForce(Quaternion q) {
+	public Vec3 getThrustForce(QuaternionF q) {
 		return UtilAngles.getRollAxis(q).scale(getPushThrustMag());
 	}
 

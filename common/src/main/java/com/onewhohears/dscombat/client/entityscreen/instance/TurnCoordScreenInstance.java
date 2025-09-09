@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -39,7 +39,7 @@ public class TurnCoordScreenInstance extends SpinMeterScreenInstance {
         float xTranslation = (int) ((plane.getCentripetalForce() - plane.getCentrifugalForce()) * 0.1);
         if (Math.abs(xTranslation) > MAX_BALL_MOVE) xTranslation = MAX_BALL_MOVE * Math.signum(xTranslation);
         poseStack.translate(xTranslation, 0, 0);
-        Matrix4f matrix4f = poseStack.last().pose();
+        Mat4f matrix4f = Mat4f.from(poseStack.last().pose());
         drawTextureCentered(ballRenderType, matrix4f, buffer, packedLight, -0.001f);
         poseStack.popPose();
     }

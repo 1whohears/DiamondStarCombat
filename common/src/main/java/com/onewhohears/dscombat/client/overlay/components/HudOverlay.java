@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
@@ -90,7 +90,7 @@ public class HudOverlay extends VehicleOverlayComponent {
         double yOrigin = ((((double) screenHeight) - ((double) HORIZONTAL_BOUNDS_V_HEIGHT)) / 2.0) + 1.0;
 
         poseStack.translate(xOrigin + (((double) HORIZONTAL_BOUNDS_U_WIDTH) - 1.0) / 2.0, yOrigin + ((double) HORIZONTAL_BOUNDS_V_HEIGHT) / 2.0, HORIZONTAL_BOUNDS_BLIT_OFFSET);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(-plane.zRot));
+        poseStack.mulPose(Vec3f.ZP.rotationDegrees(-plane.zRot));
 
         // TODO: make this look less jarring
         poseStack.translate(-(plane.getYawRate() * 5.6), 0, 0);

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 
 import net.minecraft.world.entity.EntityType;
@@ -19,7 +19,7 @@ public class EntitySubmarine extends EntityBoat {
 	}
 
     @Override
-	public void calcWaterMovement(Quaternion q) {
+	public void calcWaterMovement(QuaternionF q) {
 		super.calcWaterMovement(q);
 		Vec3 move = getDeltaMovement();
 		if (!isDriverCameraLocked() && isOperational()) {

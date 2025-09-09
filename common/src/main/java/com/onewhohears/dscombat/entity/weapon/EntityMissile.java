@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import java.util.List;
 import java.util.Objects;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.DSCGameRules;
@@ -274,7 +274,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			setYRot(UtilAngles.getYaw(goal_dir));
 		} else {
 			Vec3 P = cur_dir.cross(goal_dir).normalize();
-			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, new Quaternion(
+			Vec3 new_dir = UtilAngles.rotateVector(cur_dir, new QuaternionF(
 					UtilGeometry.convertVector(P), 
 					rot, true));
 			setXRot(UtilAngles.getPitch(new_dir));

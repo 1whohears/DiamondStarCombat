@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.components.VehicleStatsOverlay;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -106,7 +106,7 @@ public class VehicleHealthScreen extends VehicleSubScreen {
         RenderSystem.setShaderTexture(0, FUEL_GAUGE_ARROW);
         poseStack.pushPose();
         poseStack.translate(xOrigin + (double) FUEL_GAUGE_WIDTH / 2, yOrigin + 24, 0);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(160F * fuelPercent + 10F));
+        poseStack.mulPose(Vec3f.ZP.rotationDegrees(160F * fuelPercent + 10F));
         blit(poseStack,
                 -FUEL_ARROW_WIDTH + 5, -FUEL_ARROW_HEIGHT / 2,
                 0, 0,

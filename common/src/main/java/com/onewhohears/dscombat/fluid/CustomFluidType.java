@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,11 +22,11 @@ public class CustomFluidType extends FluidType {
 	private final ResourceLocation flowingTexture;
 	private final ResourceLocation overlayTexture;
 	private final int tintColor;
-	private final Vector3f fogColor;
+	private final Vec3f fogColor;
 	private final float fogStart, fogEnd;
 	
 	public CustomFluidType(Properties properties, ResourceLocation stillTexture, ResourceLocation overlayTexture, ResourceLocation flowingTexture, 
-			int tintColor, Vector3f fogColor, float fogStart, float fogEnd) {
+			int tintColor, Vec3f fogColor, float fogStart, float fogEnd) {
 		super(properties);
 		this.stillTexture = stillTexture;
 		this.flowingTexture = flowingTexture;
@@ -57,8 +57,8 @@ public class CustomFluidType extends FluidType {
 				return overlayTexture;
 			}
 			@Override
-			public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level,
-					int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+			public @NotNull Vec3f modifyFogColor(Camera camera, float partialTick, ClientLevel level,
+					int renderDistance, float darkenWorldAmount, Vec3f fluidFogColor) {
 				return fogColor;
 			}
 			@Override
@@ -86,7 +86,7 @@ public class CustomFluidType extends FluidType {
 		return tintColor;
 	}
 
-	public Vector3f getFogColor() {
+	public Vec3f getFogColor() {
 		return fogColor;
 	}
 

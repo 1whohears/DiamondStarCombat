@@ -25,7 +25,7 @@ public abstract class EntityMixin {
 	 */
 	@Inject(method = "collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;", 
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D", shift = At.Shift.AFTER))
-	private void dscombat_EntityCollideVec(CallbackInfoReturnable<Vec3> cir, @Local LocalRef<Vec3> vec3) {
+	private void dscombat_EntityCollideVec(CallbackInfoReturnable<Vec3> cir, @Local(argsOnly = true) LocalRef<Vec3> vec3) {
 		Entity entity = (Entity)(Object)this;
 		if (entity.noPhysics) return;
 		Vec3 move = vec3.get();

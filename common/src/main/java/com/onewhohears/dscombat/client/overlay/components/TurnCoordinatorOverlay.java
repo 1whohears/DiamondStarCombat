@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
@@ -59,7 +59,7 @@ public class TurnCoordinatorOverlay extends VehicleOverlayComponent {
         poseStack.pushPose();
         poseStack.translate(xOrigin + (double) TURN_COORD_SIZE / 2, yOrigin + (double) TURN_COORD_SIZE / 2, 0);
         float yawRate = plane.getYawRate() * 20 / 40 * 30; // yawRate /  (indicator rate) * (indicator angle)
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(yawRate));
+        poseStack.mulPose(Vec3f.ZP.rotationDegrees(yawRate));
         blit(poseStack,
                 -TURN_COORD_SIZE / 2, -TURN_COORD_SIZE / 2,
                 0, 0,

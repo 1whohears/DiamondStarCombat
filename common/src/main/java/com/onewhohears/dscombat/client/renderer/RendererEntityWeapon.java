@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
@@ -33,8 +33,8 @@ public class RendererEntityWeapon<T extends EntityWeapon<?>> extends EntityRende
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
 		poseStack.pushPose();
-		poseStack.mulPose(Vector3f.YN.rotationDegrees(UtilAngles.lerpAngle180(partialTicks, entity.yRotO, entity.getYRot())));
-		poseStack.mulPose(Vector3f.XP.rotationDegrees(UtilAngles.lerpAngle(partialTicks, entity.xRotO, entity.getXRot())));
+		poseStack.mulPose(Vec3f.YN.rotationDegrees(UtilAngles.lerpAngle180(partialTicks, entity.yRotO, entity.getYRot())));
+		poseStack.mulPose(Vec3f.XP.rotationDegrees(UtilAngles.lerpAngle(partialTicks, entity.xRotO, entity.getXRot())));
 		
 		VertexConsumer vertexconsumer = multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity)));
 		model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

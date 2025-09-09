@@ -2,8 +2,8 @@ package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.model.EntityControllableModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityPart;
@@ -37,10 +37,10 @@ public class RendererEntityPart<T extends EntityPart> extends EntityRenderer<T> 
 		if (!entity.shouldRender()) return;
 		poseStack.pushPose();
 		if (entity.getVehicle() instanceof EntityVehicle plane) {
-			Quaternion q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
+			QuaternionF q = UtilAngles.lerpQ(partialTicks, plane.getPrevQ(), plane.getClientQ());
 			poseStack.mulPose(q);
 		}
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(entity.getZRot()));
+		poseStack.mulPose(Vec3f.ZP.rotationDegrees(entity.getZRot()));
 		VertexConsumer vertexconsumer = multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity)));
 		model.renderToBuffer(entity, partialTicks, poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		poseStack.popPose();

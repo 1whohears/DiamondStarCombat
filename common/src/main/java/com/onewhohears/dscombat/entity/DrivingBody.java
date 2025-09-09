@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 
 public interface DrivingBody extends PhysicsBody {
 
-    default void calcGroundMovement(Quaternion q) {
+    default void calcGroundMovement(QuaternionF q) {
         if (canFlattenOnGround()) flatten(q, 4f, 4f, true);
         if (canDriveOnGround()) calcDriveMovement(q);
         else calcOtherGroundMovement(q);
@@ -20,7 +20,7 @@ public interface DrivingBody extends PhysicsBody {
         driveSlowDown(getGroundBreaksDeAcceleration());
     }
 
-    default void calcDriveMovement(Quaternion q) {
+    default void calcDriveMovement(QuaternionF q) {
         // drive physics
         Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
         if (isSliding() || willSlideFromTurn()) {
@@ -69,7 +69,7 @@ public interface DrivingBody extends PhysicsBody {
         return !canDriveOnGround() || !isSlideAngleNearZero();
     }
 
-    default void calcOtherGroundMovement(Quaternion q) {
+    default void calcOtherGroundMovement(QuaternionF q) {
         addFrictionForce(getKineticFriction());
     }
 
@@ -97,7 +97,7 @@ public interface DrivingBody extends PhysicsBody {
     float getTurnRadius();
     boolean canFlattenOnGround();
 
-    default void calcAirMovement(Quaternion q) {
+    default void calcAirMovement(QuaternionF q) {
         if (canAirBrake() && isAirBreaking()) applyAirBreaks();
     }
 
@@ -116,7 +116,7 @@ public interface DrivingBody extends PhysicsBody {
     }
 
     @Override
-    default void calcMoveStatsPost(Quaternion q) {
+    default void calcMoveStatsPost(QuaternionF q) {
         Vec3 m = getDeltaMovement();
         float y = getYRot();
         setXZSpeed((float) Math.sqrt(m.x*m.x + m.z*m.z));

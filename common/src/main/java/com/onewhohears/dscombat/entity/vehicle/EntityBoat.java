@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
@@ -60,7 +60,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 	
 	@Override
-	public void calcWaterMovement(Quaternion q) {
+	public void calcWaterMovement(QuaternionF q) {
 		super.calcWaterMovement(q);
 		if (!checkInWater()) return;
 		flatten(q, 2f, 2f, true);
@@ -162,7 +162,7 @@ public class EntityBoat extends EntityVehicle {
 	}
 
 	@Override
-	public Vec3 getThrustForce(Quaternion q) {
+	public Vec3 getThrustForce(QuaternionF q) {
 		if (!isInWater()) return Vec3.ZERO;
 		Vec3 direction = UtilAngles.getRollAxis(q);
         return direction.scale(getPushThrustMag());

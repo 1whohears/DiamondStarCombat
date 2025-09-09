@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
@@ -103,7 +103,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	}
 	
 	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
-		Quaternion q = craft.getQBySide();
+		QuaternionF q = craft.getQBySide();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
 		return UtilAngles.rotateVector(new Vec3(0, offset, 0), q)
 				.subtract(0, passenger.getEyeHeight(), 0);

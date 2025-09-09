@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -21,25 +21,25 @@ public class AlexisPlaneModel extends ObjVehicleModel<EntityVehicle> {
 	protected Transforms getComponentTransforms(EntityVehicle entity, float partialTicks) {
 		// landing gear
 		float gearpos = entity.getLandingGearPos(partialTicks);
-		Matrix4f lg0_mat, lg1_mat, lg2_mat;
+		Mat4f lg0_mat, lg1_mat, lg2_mat;
 		if (gearpos >= 1f) lg0_mat = lg1_mat = lg2_mat = INVISIBLE;
 		else {
 			float degrees = gearpos*90;
 			lg0_mat = UtilAngles.pivotPixelsRotX(0, 17.9256f, 45.5465f, degrees);
-			Quaternion lg1Rot = Vector3f.XN.rotationDegrees(degrees);
-			Quaternion lg2Rot = lg1Rot.copy();
-			lg1Rot.mul(Vector3f.ZP.rotationDegrees(gearpos*-50));
-			lg2Rot.mul(Vector3f.ZP.rotationDegrees(gearpos*50));
+			QuaternionF lg1Rot = Vec3f.XN.rotationDegrees(degrees);
+			QuaternionF lg2Rot = lg1Rot.copy();
+			lg1Rot.mul(Vec3f.ZP.rotationDegrees(gearpos*-50));
+			lg2Rot.mul(Vec3f.ZP.rotationDegrees(gearpos*50));
 			lg1_mat = UtilAngles.pivotPixelsRot(10.4f, 23.4316f, -34.5632f, lg1Rot);
 			lg2_mat = UtilAngles.pivotPixelsRot(-10.4f, 23.4316f, -34.5632f, lg2Rot);
 		}
 		// flaps
-		Quaternion rudderRot = Vector3f.YP.rotationDegrees(entity.inputs.yaw*15);
-		rudderRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.yaw*-15));
-		Matrix4f rudder = UtilAngles.pivotPixelsRot(0, 81.0642f, -125.9015f, rudderRot);
-		Matrix4f left_elevator = UtilAngles.pivotPixelsRotX(21.7721f, 38.2332f, -119.5741f, entity.inputs.pitch*22);
-		Matrix4f right_elevator = UtilAngles.pivotPixelsRotX(-21.7721f, 38.2332f, -119.5741f, entity.inputs.pitch*22);
-		Matrix4f left_flap, right_flap;
+		QuaternionF rudderRot = Vec3f.YP.rotationDegrees(entity.inputs.yaw*15);
+		rudderRot.mul(Vec3f.ZP.rotationDegrees(entity.inputs.yaw*-15));
+		Mat4f rudder = UtilAngles.pivotPixelsRot(0, 81.0642f, -125.9015f, rudderRot);
+		Mat4f left_elevator = UtilAngles.pivotPixelsRotX(21.7721f, 38.2332f, -119.5741f, entity.inputs.pitch*22);
+		Mat4f right_elevator = UtilAngles.pivotPixelsRotX(-21.7721f, 38.2332f, -119.5741f, entity.inputs.pitch*22);
+		Mat4f left_flap, right_flap;
 		if (entity.isFlapsDown()) {
 			left_flap = UtilAngles.pivotPixelsRotX(49.8276f, 38.2332f, -58.5647f, -22);
 			right_flap = UtilAngles.pivotPixelsRotX(-49.8276f, 38.2332f, -58.5647f, -22);
@@ -48,13 +48,13 @@ public class AlexisPlaneModel extends ObjVehicleModel<EntityVehicle> {
 			right_flap = UtilAngles.pivotPixelsRotX(-49.8276f, 38.2332f, -58.5647f, entity.inputs.roll*22);
 		}
 		// controls
-		Quaternion stickRot = Vector3f.XP.rotationDegrees(entity.inputs.pitch*-25);
-		stickRot.mul(Vector3f.ZP.rotationDegrees(entity.inputs.roll*25));
-		Matrix4f stick = UtilAngles.pivotPixelsRot(-7.1778f, 40.7333f, 78.8995f, stickRot);
-		Matrix4f left_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
-		Matrix4f right_pedal = Matrix4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
-		Matrix4f throttle = Matrix4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.1875f);
-		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
+		QuaternionF stickRot = Vec3f.XP.rotationDegrees(entity.inputs.pitch*-25);
+		stickRot.mul(Vec3f.ZP.rotationDegrees(entity.inputs.roll*25));
+		Mat4f stick = UtilAngles.pivotPixelsRot(-7.1778f, 40.7333f, 78.8995f, stickRot);
+		Mat4f left_pedal = Mat4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
+		Mat4f right_pedal = Mat4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
+		Mat4f throttle = Mat4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.1875f);
+		ImmutableMap<String, Mat4f> transforms = ImmutableMap.<String, Mat4f>builder()
 			.put("lg0", lg0_mat)
 			.put("lg1", lg1_mat)
 			.put("lg2", lg2_mat)
@@ -71,10 +71,10 @@ public class AlexisPlaneModel extends ObjVehicleModel<EntityVehicle> {
 		return Transforms.of(transforms);
 	}
 	
-	private static final Vector3f PIVOT = new Vector3f(0, -2f, 2f);
+	private static final Vec3f PIVOT = new Vec3f(0, -2f, 2f);
 	
 	@Override
-	public Vector3f getGlobalPivot() {
+	public Vec3f getGlobalPivot() {
 		return PIVOT;
 	}
 

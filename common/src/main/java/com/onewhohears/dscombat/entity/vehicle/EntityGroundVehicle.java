@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.mojang.math.Quaternion;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 
@@ -31,7 +31,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	}
 	
 	@Override
-	public Vec3 getThrustForce(Quaternion q) {
+	public Vec3 getThrustForce(QuaternionF q) {
 		return Vec3.ZERO;
 	}
 	

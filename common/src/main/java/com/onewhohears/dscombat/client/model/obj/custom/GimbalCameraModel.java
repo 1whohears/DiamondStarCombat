@@ -1,9 +1,9 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
@@ -23,10 +23,10 @@ public class GimbalCameraModel extends ObjPartModel<EntityGimbal> {
 		if (vehicle == null) return Transforms.EMPTY;
 		float[] relangles = UtilAngles.globalToRelativeDegrees(entity.getViewXRot(partialTicks), 
 				entity.getViewYRot(partialTicks), vehicle.getClientQ());
-		Quaternion rot = Vector3f.XN.rotationDegrees(relangles[0]);
-		rot.mul(Vector3f.YP.rotationDegrees(relangles[1]));
-		Matrix4f head_mat = UtilAngles.pivotPixelsRot(0, 2f, 3.5f, rot);
-		ImmutableMap<String, Matrix4f> transforms = ImmutableMap.<String, Matrix4f>builder()
+		QuaternionF rot = Vec3f.XN.rotationDegrees(relangles[0]);
+		rot.mul(Vec3f.YP.rotationDegrees(relangles[1]));
+		Mat4f head_mat = UtilAngles.pivotPixelsRot(0, 2f, 3.5f, rot);
+		ImmutableMap<String, Mat4f> transforms = ImmutableMap.<String, Mat4f>builder()
 			.put("head", head_mat)
 			.build();
 		return Transforms.of(transforms);

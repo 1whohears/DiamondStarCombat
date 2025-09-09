@@ -6,8 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
@@ -62,13 +62,13 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
         Vec3 view = cam.getPosition();
         float z_rot = UtilAngles.lerpAngle(PARTIAL_TICK, vehicle.zRotO, vehicle.zRot);
         stack.pushPose();
-        stack.mulPose(Vector3f.ZP.rotationDegrees(z_rot));
-        stack.mulPose(Vector3f.XP.rotationDegrees(cam.getXRot()));
-        stack.mulPose(Vector3f.YP.rotationDegrees(cam.getYRot()+180f));
+        stack.mulPose(Vec3f.ZP.rotationDegrees(z_rot));
+        stack.mulPose(Vec3f.XP.rotationDegrees(cam.getXRot()));
+        stack.mulPose(Vec3f.YP.rotationDegrees(cam.getYRot()+180f));
         stack.translate(-view.x, -view.y, -view.z);
-        Matrix4f view_mat = stack.last().pose().copy();
+        Mat4f view_mat = stack.last().pose().copy();
         stack.popPose();
-        Matrix4f proj_mat = ClientRenderEvents.getProjMatrix();
+        Mat4f proj_mat = ClientRenderEvents.getProjMatrix();
         float[] screen_pos = UtilGeometry.worldToScreenPos(targetWorldPos,
                 view_mat, proj_mat, screenWidth, screenHeight);
         if (screen_pos[0] < 0 || screen_pos[1] < 0) return;

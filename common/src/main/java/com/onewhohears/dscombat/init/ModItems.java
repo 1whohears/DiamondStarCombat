@@ -82,7 +82,7 @@ public class ModItems {
 	public static final RegistrySupplier<Item> COMPRESSED_FOSSIL = ITEMS.register("compressed_fossil", 
 			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistrySupplier<Item> OIL_BUCKET = ITEMS.register("oil_bucket", 
-			() -> new BucketItem(ModFluids.OIL_FLUID_SOURCE, 
+			() -> new BucketItem(ModFluids.OIL_FLUID_SOURCE.get(),
 					ItemPart.itemProps(1).craftRemainder(Items.BUCKET)));
 	
 	// PARTS

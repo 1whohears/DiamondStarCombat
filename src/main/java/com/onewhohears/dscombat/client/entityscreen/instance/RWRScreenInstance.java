@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
@@ -16,7 +17,12 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 	
 	public static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/entity_screen/rwr_screen_bg.png");
-	
+
+    protected static double OUTLINE_DISTANCE = 5000d;
+    protected static double OUTLINE_DISTANCE_INV = 1d / OUTLINE_DISTANCE;
+    protected static double TINY_DISTANCE = 10000d;
+    public static final double SMALLEST_SIZE = 0.5;
+
 	protected final int centerX, centerY, textureRadius;
 	
 	public RWRScreenInstance(int id) {
@@ -41,13 +47,15 @@ public class RWRScreenInstance extends EntityDynamicScreenInstance {
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		if (!vehicle.radarSystem.clientHasRWRWarnings()) return;
 		Collection<RadarSystem.RWRWarning> warnings = vehicle.radarSystem.getClientRWRWarnings();
+        updateConstants();
 		for (RadarSystem.RWRWarning warn : warnings) drawWarning(warn, vehicle);
 	}
 
-    public static final double OUTLINE_DISTANCE = 5000d;
-    private static final double OUTLINE_DISTANCE_INV = 1d / OUTLINE_DISTANCE;
-    public static final double TINY_DISTANCE = 10000d;
-    public static final double SMALLEST_SIZE = 0.5;
+    protected void updateConstants() {
+        OUTLINE_DISTANCE = DSCPhyCons.getIRLScale() * 40000d;
+        OUTLINE_DISTANCE_INV = 1d / OUTLINE_DISTANCE;
+        TINY_DISTANCE = OUTLINE_DISTANCE * 2;
+    }
 
 	protected void drawWarning(RadarSystem.RWRWarning warn, EntityVehicle vehicle) {
 		Vec3 dp = warn.pos.subtract(vehicle.position());

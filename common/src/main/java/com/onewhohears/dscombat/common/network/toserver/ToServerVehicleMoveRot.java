@@ -37,7 +37,7 @@ public class ToServerVehicleMoveRot extends IPacket {
 	public ToServerVehicleMoveRot(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		motion = DataSerializers.VEC3.read(buffer);
-		q = DataSerializers.QuaternionF.read(buffer);
+		q = DataSerializers.QUATERNION.read(buffer);
 		av = DataSerializers.VEC3.read(buffer);
 	}
 	
@@ -45,7 +45,7 @@ public class ToServerVehicleMoveRot extends IPacket {
 	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		DataSerializers.VEC3.write(buffer, motion);
-		DataSerializers.QuaternionF.write(buffer, q);
+		DataSerializers.QUATERNION.write(buffer, q);
 		DataSerializers.VEC3.write(buffer, av);
 	}
 

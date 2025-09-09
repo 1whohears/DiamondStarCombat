@@ -44,7 +44,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
 
     public static final EntityDataAccessor<String> PRESET = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Vec3> SPEED = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.VEC3);
-    public static final EntityDataAccessor<QuaternionF> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QuaternionF);
+    public static final EntityDataAccessor<QuaternionF> Q = SynchedEntityData.defineId(EntityWindTunnel.class, DataSerializers.QUATERNION);
     public static final EntityDataAccessor<Float> THROTTLE = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Boolean> AFTERBURNER = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> HIDE_MODEL = SynchedEntityData.defineId(EntityWindTunnel.class, EntityDataSerializers.BOOLEAN);

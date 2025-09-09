@@ -60,7 +60,7 @@ public class DSCVehicleRenderInfo implements ExtraRenderTargetInfo {
     @Override
     public void getInfoClientSide(FriendlyByteBuf buffer) {
         preset = buffer.readUtf();
-        q = DataSerializers.QuaternionF.read(buffer);
+        q = DataSerializers.QUATERNION.read(buffer);
         landingGear = buffer.readBoolean();
         throttle = buffer.readFloat();
         baseTextureIndex = buffer.readInt();
@@ -69,7 +69,7 @@ public class DSCVehicleRenderInfo implements ExtraRenderTargetInfo {
     @Override
     public void encodeInfoServerSide(FriendlyByteBuf buffer) {
         buffer.writeUtf(preset);
-        DataSerializers.QuaternionF.write(buffer, q);
+        DataSerializers.QUATERNION.write(buffer, q);
         buffer.writeBoolean(landingGear);
         buffer.writeFloat(throttle);
         buffer.writeInt(baseTextureIndex);

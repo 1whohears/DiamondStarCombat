@@ -745,7 +745,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setBleed(0.1f * 8)
 				.setFuseDistance(2f)
 				.setFieldOfView(80f)
-				.setScanRange(20000f)
+				.setScanRange(41000)
 				.setItem(ModItems.MISSILE.getId())
 				.setEntityType(ModEntities.ANTI_RADAR_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())

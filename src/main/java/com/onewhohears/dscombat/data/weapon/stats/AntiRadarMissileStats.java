@@ -5,6 +5,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
@@ -43,9 +44,14 @@ public class AntiRadarMissileStats extends MissileStats {
 		tips.add(UtilMCText.translatable("info.dscombat.scan_range").append(": "+getScanRange())
 				.setStyle(Style.EMPTY.withColor(INFO_COLOR)));
 	}
-	
+
+    public double getUnscaledScanRange() {
+        return scan_range;
+    }
+
 	public double getScanRange() {
-		return scan_range;
+        if (isUseSpeedScale()) return DSCPhyCons.getIRLScale() * getUnscaledScanRange();
+		return getUnscaledScanRange();
 	}
 	
 	@Override

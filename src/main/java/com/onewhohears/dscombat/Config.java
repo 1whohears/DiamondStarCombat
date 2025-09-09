@@ -2,6 +2,7 @@ package com.onewhohears.dscombat;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
@@ -181,7 +182,7 @@ public class Config {
 			builder.push("speed_factors");
             universalIRLScale = builder.comment("The percent of the IRL top speed vehicle's travel at. " +
                             "1/8th (0.125) by default.")
-                    .defineInRange("universalIRLScale", 0.125, 0.01, 1);
+                    .defineInRange("universalIRLScale", DSCPhyCons.HORIZONTAL_SPEED_SCALE, 0.01, 1);
 			universalTopSpeed = builder.comment("The absolute max horizontal speed for all vehicles in blocks/second. ",
 							"Lower this value if your playing on a server that doesn't have pre-generated chunks.")
 					.defineInRange("universalTopSpeed", 200.0, 1, 1000);

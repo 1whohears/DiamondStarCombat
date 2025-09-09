@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle.physics;
 
+import com.onewhohears.dscombat.Config;
+
 /**
  * There are 20 minecraft game ticks every second.
  * Thus, all physics must run at this discrete time interval.
@@ -79,6 +81,6 @@ public class DSCPhyCons {
 	public static final double MISSILE_GRAV_ACC_SCALE = 0.05;
 
     public static double getIRLScale() {
-        return HORIZONTAL_SPEED_SCALE;
+        return Config.SERVER.universalIRLScale.get();
     }
 }

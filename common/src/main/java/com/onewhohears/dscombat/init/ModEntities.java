@@ -15,48 +15,44 @@ import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.entity.weapon.*;
 
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModEntities {
 	
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, DSCombatMod.MODID);
-	
-	public static void register(IEventBus eventBus) {
-		ENTITIES.register(eventBus);
-	}
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(
+            DSCombatMod.MODID, Registry.ENTITY_TYPE_REGISTRY);
 
-	public static final RegistryObject<EntityType<EntityWindTunnel>> WIND_TUNNEL = ENTITIES.register("wind_tunnel",
+	public static final RegistrySupplier<EntityType<EntityWindTunnel>> WIND_TUNNEL = ENTITIES.register("wind_tunnel",
 			() -> createEntityType(EntityWindTunnel::new, EntityDimensions.fixed(16, 8)));
 
 	// VEHICLES
 	
-	public static final RegistryObject<EntityType<EntityPlane>> PLANE = ENTITIES.register("plane", 
+	public static final RegistrySupplier<EntityType<EntityPlane>> PLANE = ENTITIES.register("plane",
 			() -> createVehicleType((type, level) -> new EntityPlane(type, level, 
 					PlanePresets.DEFAULT_WOODEN_PLANE.getId())));
-	public static final RegistryObject<EntityType<EntityHelicopter>> HELICOPTER = ENTITIES.register("helicopter", 
+	public static final RegistrySupplier<EntityType<EntityHelicopter>> HELICOPTER = ENTITIES.register("helicopter",
 			() -> createVehicleType((type, level) -> new EntityHelicopter(type, level, 
 					NoahChopperPresets.DEFAULT_NOAH_CHOPPER.getId())));
-	public static final RegistryObject<EntityType<EntityGroundVehicle>> CAR = ENTITIES.register("car", 
+	public static final RegistrySupplier<EntityType<EntityGroundVehicle>> CAR = ENTITIES.register("car",
 			() -> createVehicleType((type, level) -> new EntityGroundVehicle(type, level, 
 					CarPresets.DEFAULT_AXCEL_TRUCK.getId())));
-	public static final RegistryObject<EntityType<EntityBoat>> BOAT = ENTITIES.register("boat", 
+	public static final RegistrySupplier<EntityType<EntityBoat>> BOAT = ENTITIES.register("boat",
 			() -> createVehicleType((type, level) -> new EntityBoat(type, level, 
 					BoatPresets.DEFAULT_NATHAN_BOAT.getId())));
-	public static final RegistryObject<EntityType<EntitySubmarine>> SUBMARINE = ENTITIES.register("submarine", 
+	public static final RegistrySupplier<EntityType<EntitySubmarine>> SUBMARINE = ENTITIES.register("submarine",
 			() -> createVehicleType((type, level) -> new EntitySubmarine(type, level, 
 					SubPresets.DEFAULT_ANDOLF_SUB.getId())));
-	public static final RegistryObject<EntityType<EntityStationaryVehicle>> STATIONARY = ENTITIES.register("stationary_vehicle",
+	public static final RegistrySupplier<EntityType<EntityStationaryVehicle>> STATIONARY = ENTITIES.register("stationary_vehicle",
 			() -> createVehicleType((type, level) -> new EntityStationaryVehicle(type, level,
 					StationaryPresets.EWR4000.getId())));
 	
-	public static final RegistryObject<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox",
+	public static final RegistrySupplier<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox",
 			() -> createEntityTypeFar(RotableHitbox::new, EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	/* 
@@ -89,57 +85,57 @@ public class ModEntities {
 	
 	public static final EntityDimensions SEAT_SIZE = EntityDimensions.scalable(0.8f, 0.8f);
 	
-	public static final RegistryObject<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat",
+	public static final RegistrySupplier<EntityType<EntitySeat>> SEAT = ENTITIES.register("seat",
 			() -> createEntityType(EntitySeat::new, SEAT_SIZE));
 
-	public static final RegistryObject<EntityType<EntityTurret>> TURRET = ENTITIES.register("turret",
+	public static final RegistrySupplier<EntityType<EntityTurret>> TURRET = ENTITIES.register("turret",
 			() -> createEntityTypeFar((type, level) -> new EntityTurret(type, level, "aa_turret"), SEAT_SIZE));
 	
-	public static final RegistryObject<EntityType<EntityChainHook>> CHAIN_HOOK = ENTITIES.register("chain_hook", 
+	public static final RegistrySupplier<EntityType<EntityChainHook>> CHAIN_HOOK = ENTITIES.register("chain_hook",
 			() -> createEntityType(EntityChainHook::new, EntityDimensions.scalable(1.0f, 1.0f)));
 	
 	public static final EntityDimensions TINY = EntityDimensions.scalable(0.1f, 0.1f);
 	
-	public static final RegistryObject<EntityType<EntityGimbal>> GIMBAL_CAMERA = ENTITIES.register("gimbal_camera", 
+	public static final RegistrySupplier<EntityType<EntityGimbal>> GIMBAL_CAMERA = ENTITIES.register("gimbal_camera",
 			() -> createEntityType(EntityGimbal::new, TINY));
-	public static final RegistryObject<EntityType<EntityWeaponRack>> EXTERNAL_WEAPON_PART = ENTITIES.register("external_weapon_part",
+	public static final RegistrySupplier<EntityType<EntityWeaponRack>> EXTERNAL_WEAPON_PART = ENTITIES.register("external_weapon_part",
 			() -> createEntityType(EntityWeaponRack::new, TINY));
-	public static final RegistryObject<EntityType<EntityEngine>> EXTERNAL_ENGINE = ENTITIES.register("external_engine",
+	public static final RegistrySupplier<EntityType<EntityEngine>> EXTERNAL_ENGINE = ENTITIES.register("external_engine",
 			() -> createEntityType(EntityEngine::new, EntityDimensions.scalable(0.8f, 0.8f)));
-	public static final RegistryObject<EntityType<EntityRadar>> EXTERNAL_RADAR = ENTITIES.register("external_radar",
+	public static final RegistrySupplier<EntityType<EntityRadar>> EXTERNAL_RADAR = ENTITIES.register("external_radar",
 			() -> createEntityType(EntityRadar::new, EntityDimensions.scalable(1.0f, 1.0f)));
 	
-	public static final RegistryObject<EntityType<EntityBullet<?>>> BULLET = ENTITIES.register("bullet", 
+	public static final RegistrySupplier<EntityType<EntityBullet<?>>> BULLET = ENTITIES.register("bullet",
 			() -> createEntityType((type, level) -> new EntityBullet<>(type, level, "20mm"), 
 					EntityDimensions.scalable(0.15f, 0.15f)));
-	public static final RegistryObject<EntityType<EntityBomb<?>>> BOMB = ENTITIES.register("bomb", 
+	public static final RegistrySupplier<EntityType<EntityBomb<?>>> BOMB = ENTITIES.register("bomb",
 			() -> createEntityType((type, level) -> new EntityBomb<>(type, level, "anm30"), 
 					EntityDimensions.scalable(0.6f, 0.6f)));
-	public static final RegistryObject<EntityType<EntityBunkerBuster<?>>> BUNKER_BUSTER = ENTITIES.register("bunker_buster", 
+	public static final RegistrySupplier<EntityType<EntityBunkerBuster<?>>> BUNKER_BUSTER = ENTITIES.register("bunker_buster",
 			() -> createEntityType((type, level) -> new EntityBunkerBuster<>(type, level, "gruetz_bunker_buster"), 
 					EntityDimensions.scalable(0.8f, 0.8f)));
-	public static final RegistryObject<EntityType<PositionMissile<?>>> POS_MISSILE = ENTITIES.register("pos_missile", 
+	public static final RegistrySupplier<EntityType<PositionMissile<?>>> POS_MISSILE = ENTITIES.register("pos_missile",
 			() -> createEntityTypeFar((type, level) -> new PositionMissile<>(type, level, "agm114k"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<IRMissile<?>>> IR_MISSILE = ENTITIES.register("ir_missile", 
+	public static final RegistrySupplier<EntityType<IRMissile<?>>> IR_MISSILE = ENTITIES.register("ir_missile",
 			() -> createEntityTypeFar((type, level) -> new IRMissile<>(type, level, "aim9l"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TrackEntityMissile<?>>> TRACK_MISSILE = ENTITIES.register("track_missile", 
+	public static final RegistrySupplier<EntityType<TrackEntityMissile<?>>> TRACK_MISSILE = ENTITIES.register("track_missile",
 			() -> createEntityTypeFar((type, level) -> new TrackEntityMissile<>(type, level, "aim120b"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<AntiRadarMissile<?>>> ANTI_RADAR_MISSILE = ENTITIES.register("anti_radar_missile", 
+	public static final RegistrySupplier<EntityType<AntiRadarMissile<?>>> ANTI_RADAR_MISSILE = ENTITIES.register("anti_radar_missile",
 			() -> createEntityTypeFar((type, level) -> new AntiRadarMissile<>(type, level, "agm88g"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<TorpedoMissile<?>>> TORPEDO_MISSILE = ENTITIES.register("torpedo_missile", 
+	public static final RegistrySupplier<EntityType<TorpedoMissile<?>>> TORPEDO_MISSILE = ENTITIES.register("torpedo_missile",
 			() -> createEntityTypeFar((type, level) -> new TorpedoMissile<>(type, level, "mk13"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
-	public static final RegistryObject<EntityType<EntityDumbTorpedo<?>>> DUMB_TORPEDO_MISSILE = ENTITIES.register("dumb_torpedo_missile",
+	public static final RegistrySupplier<EntityType<EntityDumbTorpedo<?>>> DUMB_TORPEDO_MISSILE = ENTITIES.register("dumb_torpedo_missile",
 			() -> createEntityTypeFar((type, level) -> new EntityDumbTorpedo<>(type, level, "type91"),
 					EntityDimensions.scalable(1f, 1f)));
 	
-	public static final RegistryObject<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare", 
+	public static final RegistrySupplier<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare",
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));
-	public static final RegistryObject<EntityType<EntityParachute>> PARACHUTE = ENTITIES.register("parachute", 
+	public static final RegistrySupplier<EntityType<EntityParachute>> PARACHUTE = ENTITIES.register("parachute",
 			() -> createEntityType(EntityParachute::new, EntityDimensions.scalable(0.625f, 0.125f)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
@@ -155,5 +151,9 @@ public class ModEntities {
 	private static <T extends Entity> EntityType<T> createVehicleType(EntityType.EntityFactory<T> factory) {
 		return createEntityTypeFar(factory, EntityDimensions.fixed(4, 4));
 	}
+
+    public static void register() {
+        ENTITIES.register();
+    }
 	
 }

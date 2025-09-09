@@ -8,6 +8,10 @@ architectury {
     common rootProject.enabled_platforms.split(',')
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/dscombat.accesswidener")
+}
+
 dependencies {
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 

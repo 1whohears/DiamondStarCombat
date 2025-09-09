@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -26,7 +27,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.registries.RegistryObject;
 
 public class UtilClientSafeSounds {
 	
@@ -116,7 +116,7 @@ public class UtilClientSafeSounds {
 		}
 	}
 	
-	public static void playCockpitSound(RegistryObject<SoundEvent> sound, float pitch, float volume) {
+	public static void playCockpitSound(RegistrySupplier<SoundEvent> sound, float pitch, float volume) {
 		if (sound == null) return;
 		playCockpitSound(sound.get(), pitch, volume);
 	}

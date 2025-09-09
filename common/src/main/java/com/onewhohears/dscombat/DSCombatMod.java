@@ -43,18 +43,18 @@ public class DSCombatMod {
         minigamesLoaded = Platform.isModLoaded("minigames");
         distantPlayersLoaded = Platform.isModLoaded("distant_players");
 
-        ModBlocks.register(eventBus);
-        ModFluids.register(eventBus);
-        ModContainers.register(eventBus);
-        ModEntities.register(eventBus);
-        ModItems.register(eventBus);
-        ModRecipes.register(eventBus);
-        ModSounds.register(eventBus);
-        ModBlockEntities.register(eventBus);
-        DataSerializers.register(eventBus);
-        ModVillagers.register(eventBus);
-        ModParticles.register(eventBus);
-        ModArgumentTypes.register(eventBus);
+        ModBlocks.register();
+        ModFluids.register();
+        ModContainers.register();
+        ModEntities.register();
+        ModItems.register();
+        ModRecipes.register();
+        ModSounds.register();
+        ModBlockEntities.register();
+        DataSerializers.register();
+        ModVillagers.register();
+        ModParticles.register();
+        ModArgumentTypes.register();
         ModTags.init();
     }
 

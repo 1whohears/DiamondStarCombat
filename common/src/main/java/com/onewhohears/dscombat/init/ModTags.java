@@ -4,9 +4,6 @@ import com.onewhohears.dscombat.DSCombatMod;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -27,7 +24,7 @@ public class ModTags {
 		public static final TagKey<Block> VEHICLE_TRAMPLE = tag("vehicle_trample");
 		private static void init() {}
         public static TagKey<Block> tag(String name) {
-        	return BlockTags.create(new ResourceLocation(DSCombatMod.MODID, name));
+            return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
         }
 	}
 	
@@ -91,20 +88,20 @@ public class ModTags {
 		public static final TagKey<Item> FOSSIL_OIL_CONVERTER = tag("fossil_oil_converter");
 		private static void init() {}
 		public static TagKey<Item> tag(String name) {
-        	return ItemTags.create(new ResourceLocation(DSCombatMod.MODID, name));
+            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
         }
 		public static TagKey<Item> forgeTag(String name) {
-        	return ItemTags.create(new ResourceLocation("forge", name));
+            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge", name));
         }
 	}
 	
 	public static class Fluids {
 		public static final TagKey<Fluid> OIL = forgeTag("oil");
 		public static TagKey<Fluid> tag(String name) {
-			return FluidTags.create(new ResourceLocation(DSCombatMod.MODID, name));
+            return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
 		}
 		public static TagKey<Fluid> forgeTag(String name) {
-			return FluidTags.create(new ResourceLocation("forge", name));
+            return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation("forge", name));
 		}
 	}
 	

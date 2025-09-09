@@ -3,15 +3,15 @@ package com.onewhohears.dscombat.init;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
 
+import dev.architectury.registry.registries.DeferredRegister;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModSounds {
 	
-	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, DSCombatMod.MODID);
+	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(
+            DSCombatMod.MODID, Registry.SOUND_EVENT_REGISTRY);
 	
 	public static final SoundEvent ORANGE_TESLA = registerSoundEvent("orange_tesla", "music/orange_tesla", "sounds.dscombat.orange_tesla", true, 1);
 	public static final SoundEvent MISSILE_KNOWS_WHERE = registerSoundEvent("missile_knows_where", "music/missile_knows_where", "sounds.dscombat.missile_knows_where", true, 1);
@@ -88,8 +88,8 @@ public class ModSounds {
 	public static final SoundEvent EJECT_WIND = registerSoundEvent("eject_wind", "cockpit/eject/eject_wind", "sounds.dscombat.eject_wind");
 	public static final SoundEvent SONIC_BOOM = registerSoundEvent("sonic_boom", "vehicle/other/sonic_boom", "sounds.dscombat.sonic_boom");
 
-	public static void register(IEventBus eventBus) {
-		SOUND_EVENTS.register(eventBus);
+	public static void register() {
+		SOUND_EVENTS.register();
 	}
 
 	public static SoundEvent registerSoundEvent(String name, String subtitle, float volume, String... paths) {

@@ -2,8 +2,7 @@ package com.onewhohears.dscombat.util.math;
 
 import java.util.Optional;
 
-import com.mojang.math.Quaternion;
-
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.world.entity.EntityDimensions;
@@ -23,7 +22,7 @@ public class RotableAABB {
 	
 	private Vec3 center, extents;
 	private double maxRadius;
-	private Quaternion rot = Quaternion.ONE.copy(), roti = Quaternion.ONE.copy();
+	private QuaternionF rot = QuaternionF.ONE.copy(), roti = QuaternionF.ONE.copy();
 	
 	public RotableAABB(AABB bb) {
 		this(bb.getCenter(), extentsFromBB(bb));
@@ -47,7 +46,7 @@ public class RotableAABB {
 		return new RotableAABB(getCenter(), getExtents());
 	}
 	
-	public void setCenterAndRot(Vec3 center, Quaternion q) {
+	public void setCenterAndRot(Vec3 center, QuaternionF q) {
 		setCenter(center);
 		setRot(q);
 	}
@@ -315,15 +314,15 @@ public class RotableAABB {
 		this.extents = extents;
 	}
 	
-	public Quaternion getRot() {
+	public QuaternionF getRot() {
 		return rot.copy();
 	}
 	
-	public Quaternion getIRot() {
+	public QuaternionF getIRot() {
 		return roti.copy();
 	}
 	
-	public void setRot(Quaternion rot) {
+	public void setRot(QuaternionF rot) {
 		this.rot = rot;
 		this.roti = rot.copy();
 		roti.conj();

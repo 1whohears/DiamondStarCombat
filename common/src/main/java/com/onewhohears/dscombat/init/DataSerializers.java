@@ -1,48 +1,39 @@
 package com.onewhohears.dscombat.init;
 
-import com.mojang.math.Quaternion;
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 public class DataSerializers {
-	
-	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, DSCombatMod.MODID);
 
-    public static void register(IEventBus eventBus) {
-        DATA_SERIALIZERS.register(eventBus);
-    }
-
-    public static final EntityDataSerializer<Quaternion> QUATERNION = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<QuaternionF> QuaternionF = register("QuaternionF", new EntityDataSerializer<>() {
 		@Override
-		public void write(FriendlyByteBuf buffer, Quaternion q) {
+		public void write(FriendlyByteBuf buffer, QuaternionF q) {
 			buffer.writeFloat(q.i());
 			buffer.writeFloat(q.j());
 			buffer.writeFloat(q.k());
 			buffer.writeFloat(q.r());
 		}
 		@Override
-		public Quaternion read(FriendlyByteBuf buffer) {
-			return new Quaternion(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+		public @NotNull QuaternionF read(FriendlyByteBuf buffer) {
+			return new QuaternionF(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
 		}
 		@Override
-		public Quaternion copy(Quaternion q) {
-			return new Quaternion(q);
+		public @NotNull QuaternionF copy(QuaternionF q) {
+			return new QuaternionF(q);
 		}
-    };
+    });
     
-    public static final EntityDataSerializer<Vec3> VEC3 = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<Vec3> VEC3 = register("vec3", new EntityDataSerializer<>() {
 		@Override
 		public void write(FriendlyByteBuf buffer, Vec3 v) {
 			buffer.writeFloat((float)v.x);
@@ -50,22 +41,22 @@ public class DataSerializers {
 			buffer.writeFloat((float)v.z);
 		}
 		@Override
-		public Vec3 read(FriendlyByteBuf buffer) {
+		public @NotNull Vec3 read(FriendlyByteBuf buffer) {
 			return new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
 		}
 		@Override
-		public Vec3 copy(Vec3 v) {
+		public @NotNull Vec3 copy(Vec3 v) {
 			return new Vec3(v.x, v.y, v.z);
 		}
-    };
+    });
     
-    public static final EntityDataSerializer<PartInstance<?>> PART_DATA = new EntityDataSerializer<>() {
+    public static final EntityDataSerializer<PartInstance<?>> PART_DATA = register("partdata", new EntityDataSerializer<>() {
 		@Override
 		public void write(FriendlyByteBuf buffer, PartInstance<?> p) {
 			p.writeBuffer(buffer);
 		}
 		@Override
-		public PartInstance<?> read(FriendlyByteBuf buffer) {
+		public @NotNull PartInstance<?> read(FriendlyByteBuf buffer) {
 			String presetId = buffer.readUtf();
 			PartStats stats = PartPresets.get().get(presetId);
 			PartInstance<?> data = stats.createPartInstance();
@@ -73,13 +64,15 @@ public class DataSerializers {
 			return data;
 		}
 		@Override
-		public PartInstance<?> copy(PartInstance<?> p) {
+		public @NotNull PartInstance<?> copy(PartInstance<?> p) {
 			return p;
 		}
-    };
+    });
     
-    public static final EntityDataSerializer<RadarMode> RADAR_MODE = getEnumSerializer(RadarMode.class);
-	public static final EntityDataSerializer<EntityVehicle.PermMode> PERM_MODE = getEnumSerializer(EntityVehicle.PermMode.class);
+    public static final EntityDataSerializer<RadarMode> RADAR_MODE = register("radarmode",
+            getEnumSerializer(RadarMode.class));
+	public static final EntityDataSerializer<EntityVehicle.PermMode> PERM_MODE = register("permmode",
+            getEnumSerializer(EntityVehicle.PermMode.class));
     
     private static <E extends Enum<E>> EntityDataSerializer<E> getEnumSerializer(Class<E> enumClass) {
     	return new EntityDataSerializer<>() {
@@ -88,24 +81,18 @@ public class DataSerializers {
     			buffer.writeEnum(e);
     		}
     		@Override
-    		public E read(FriendlyByteBuf buffer) {
+    		public @NotNull E read(FriendlyByteBuf buffer) {
     			return buffer.<E>readEnum(enumClass);
     		}
     		@Override
-    		public E copy(E e) {
+    		public @NotNull E copy(E e) {
     			return e;
     		}
     	};
     }
 
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_QUATERNION = DATA_SERIALIZERS
-    		.register("quaternion", () -> QUATERNION);
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_VEC3 = DATA_SERIALIZERS
-    		.register("vec3", () -> VEC3);
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PARTDATA = DATA_SERIALIZERS
-    		.register("partdata", () -> PART_DATA);
-    public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_RADARMODE = DATA_SERIALIZERS
-    		.register("radarmode", () -> RADAR_MODE);
-	public static final RegistryObject<EntityDataSerializer<?>> SERIALIZER_ENTRY_PERMMODE = DATA_SERIALIZERS
-			.register("permmode", () -> PERM_MODE);
+    @ExpectPlatform
+    public static <T> EntityDataSerializer<T> register(String id, EntityDataSerializer<T> serializer) {
+        throw new AssertionError();
+    }
 }

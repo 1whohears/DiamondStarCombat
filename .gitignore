@@ -1,6 +1,6 @@
 .gradle
 **/build/
-!src/**/build/
+!common/src/**/build/
 **/src/generated/resources/.cache
 **/libs/
 *.xlsx#

@@ -1,0 +1,109 @@
+plugins {
+    id 'com.gradleup.shadow'
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    mods {
+        fabric {
+            sourceSet project(":fabric").sourceSets.main
+        }
+    }
+    runs {
+        client2 {
+            inherit client
+            name 'runClient2'
+            programArgs '--username=StupidIdiot'
+        }
+        client3 {
+            inherit client
+            name 'runClient3'
+            programArgs '--username=LunaticDonkey'
+        }
+        client4 {
+            inherit client
+            name 'runClient4'
+            programArgs '--username=ShitAss'
+        }
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/generated/resources'
+        }
+    }
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        force("net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}")
+    }
+}
+
+dependencies {
+    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+
+    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
+
+    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+
+    modApi "com.onewhohears.onewholibs:onewholibs-fabric-$rootProject.minecraft_version:$rootProject.onewholibs_version"
+    modApi "com.onewhohears.minigames:minigames-fabric-${rootProject.minecraft_version}:${rootProject.minigames_version}"
+    modApi "com.onewhohears.distant_players:distant_players-fabric-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('fabric.mod.json') {
+        expand version: project.version,
+                mod_id: project.findProperty("mod_id"),
+                mod_name: project.findProperty("mod_name"),
+                mod_license: project.findProperty("mod_license"),
+                homepage: project.findProperty("homepage"),
+                mod_authors: project.findProperty("mod_authors"),
+                issue_tracker: project.findProperty("issue_tracker"),
+                mod_description: project.findProperty("mod_description"),
+                minecraft_version: project.findProperty("minecraft_version"),
+                architectury_version: project.findProperty("architectury_version"),
+                fabric_loader_version: project.findProperty("fabric_loader_version"),
+                fabric_api_version: project.findProperty("fabric_api_version"),
+                onewholibs_version: project.findProperty("onewholibs_version"),
+                modernfix_version: project.findProperty("modernfix_version"),
+                minigames_version: project.findProperty("minigames_version"),
+                distant_players_version: project.findProperty("distant_players_version"),
+                jei_version: project.findProperty("jei_version")
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+}
+
+remapJar {
+    inputFile.set shadowJar.archiveFile
+}

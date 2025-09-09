@@ -1,0 +1,102 @@
+plugins {
+    id 'com.gradleup.shadow'
+}
+
+loom {
+    mods {
+        forge {
+            sourceSet project(":forge").sourceSets.main
+        }
+    }
+    runs {
+        data {
+            data()
+
+            runDir("build/datagen")
+
+            property("forge.logging.markers", "REGISTRIES")
+            property("forge.logging.console.level", "debug")
+
+            programArgs "--mod", "${mod_id}", "--all"
+            programArgs '--output', project(':common').file('src/generated/resources').getAbsolutePath()
+            programArgs "--existing", project(":common").file("src/main/resources").absolutePath
+        }
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/generated/resources'
+        }
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+dependencies {
+    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionForge')
+
+    forge "net.minecraftforge:forge:$rootProject.forge_version"
+
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+
+    modApi "com.onewhohears.onewholibs:onewholibs-forge-$rootProject.minecraft_version:$rootProject.onewholibs_version"
+    modApi "com.onewhohears.minigames:minigames-forge-${rootProject.minecraft_version}:${rootProject.minigames_version}"
+    // this is causing a File Name too Long Error
+    //modApi "com.onewhohears.distant_players:distant_players-forge-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
+
+    modCompileOnly "curse.maven:timeless-and-classics-zero-1028108:$rootProject.tacz_id_forge"
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('META-INF/mods.toml') {
+        expand version: project.version,
+                mod_id: project.findProperty("mod_id"),
+                mod_name: project.findProperty("mod_name"),
+                mod_license: project.findProperty("mod_license"),
+                mod_authors: project.findProperty("mod_authors"),
+                issue_tracker: project.findProperty("issue_tracker"),
+                mod_description: project.findProperty("mod_description"),
+                minecraft_version: project.findProperty("minecraft_version"),
+                architectury_version: project.findProperty("architectury_version"),
+                forge_version: project.findProperty("forge_version"),
+                forge_version_range: project.findProperty("forge_version_range"),
+                forge_loader_version_range: project.findProperty("forge_loader_version_range"),
+                onewholibs_version: project.findProperty("onewholibs_version"),
+                modernfix_version: project.findProperty("modernfix_version"),
+                minigames_version: project.findProperty("minigames_version"),
+                distant_players_version: project.findProperty("distant_players_version"),
+                jei_version: project.findProperty("jei_version")
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+}
+
+remapJar {
+    inputFile.set shadowJar.archiveFile
+}

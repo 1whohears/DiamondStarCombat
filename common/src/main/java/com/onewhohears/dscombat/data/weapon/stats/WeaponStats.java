@@ -5,7 +5,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.weapon.WeaponType;

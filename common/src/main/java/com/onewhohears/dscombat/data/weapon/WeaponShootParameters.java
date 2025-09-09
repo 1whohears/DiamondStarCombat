@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 

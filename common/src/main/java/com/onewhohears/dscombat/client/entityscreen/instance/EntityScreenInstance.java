@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.entityscreen.instance;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;

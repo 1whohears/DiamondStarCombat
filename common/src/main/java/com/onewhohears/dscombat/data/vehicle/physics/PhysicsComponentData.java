@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;

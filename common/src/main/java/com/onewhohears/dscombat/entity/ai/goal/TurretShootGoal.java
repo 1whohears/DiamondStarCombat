@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.entity.ai.goal;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;

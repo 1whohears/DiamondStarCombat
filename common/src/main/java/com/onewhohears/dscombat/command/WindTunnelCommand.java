@@ -19,7 +19,7 @@ import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static com.onewhohears.dscombat.util.UtilVehicleEntity.WIND_TUNNEL_SEARCH_RANGE;

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.radar;
 import java.util.*;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.weapon.instance;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;

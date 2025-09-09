@@ -11,7 +11,7 @@ import com.onewhohears.dscombat.item.ItemPart;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class UtilPresetParse {
 

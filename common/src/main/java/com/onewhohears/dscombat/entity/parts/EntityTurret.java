@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.onewhohears.dscombat.Config;

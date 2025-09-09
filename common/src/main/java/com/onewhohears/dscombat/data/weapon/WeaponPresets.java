@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;

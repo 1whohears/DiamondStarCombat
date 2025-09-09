@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.common.network.toclient;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;

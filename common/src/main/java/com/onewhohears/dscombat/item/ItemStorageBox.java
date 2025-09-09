@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.item;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.onewholibs.util.UtilMCText;
 

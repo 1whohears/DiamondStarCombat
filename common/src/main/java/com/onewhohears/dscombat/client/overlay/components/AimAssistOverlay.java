@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 

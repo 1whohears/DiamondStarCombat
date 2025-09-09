@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.model.obj;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;

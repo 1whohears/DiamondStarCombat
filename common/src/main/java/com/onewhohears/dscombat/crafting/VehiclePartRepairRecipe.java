@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.crafting;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.init.ModRecipes;

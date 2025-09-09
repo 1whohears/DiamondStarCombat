@@ -8,7 +8,7 @@ import com.onewhohears.minigames.data.shops.MiniGameShopsManager;
 
 import net.minecraft.data.DataGenerator;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class DSCKitGenerator extends MiniGameKitsGenerator {
 	

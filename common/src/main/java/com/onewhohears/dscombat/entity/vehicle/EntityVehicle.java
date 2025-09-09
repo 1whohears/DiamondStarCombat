@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 import java.util.*;
 import java.util.function.Predicate;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;

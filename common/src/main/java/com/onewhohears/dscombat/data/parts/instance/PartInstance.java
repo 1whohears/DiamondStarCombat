@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.parts.instance;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;

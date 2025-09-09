@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.entity.damagesource;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.weapon;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;

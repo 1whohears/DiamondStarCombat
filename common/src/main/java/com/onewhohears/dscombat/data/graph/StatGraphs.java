@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.graph;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 

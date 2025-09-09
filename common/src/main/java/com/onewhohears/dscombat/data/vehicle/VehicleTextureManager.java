@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.vehicle;
 
 import java.awt.Color;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.client.texture.VehicleDynamicTextures;
 import com.onewhohears.dscombat.common.network.PacketHandler;

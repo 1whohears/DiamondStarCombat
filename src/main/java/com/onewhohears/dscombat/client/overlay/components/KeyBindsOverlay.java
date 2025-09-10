@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.client.overlay.components;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.client.input.ActionInputHolder;
+import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
@@ -21,20 +23,25 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	private static final int MAPPING_NAME_WIDTH = 80;
 	private static final int KEY_NAME_WIDTH = 40;
 	
-	public static Component fixKeyName(KeyMapping key) {
-        return switch (key.getKey().getValue()) {
-            case InputConstants.KEY_RCONTROL -> UtilMCText.literal("R-CTRL");
-            case InputConstants.KEY_LCONTROL -> UtilMCText.literal("L-CTRL");
-            case InputConstants.KEY_LALT -> UtilMCText.literal("L-ALT");
-            case InputConstants.KEY_RALT -> UtilMCText.literal("R-ALT");
-            case InputConstants.KEY_LSHIFT -> UtilMCText.literal("LSHIFT");
-            case InputConstants.KEY_RSHIFT -> UtilMCText.literal("RSHIFT");
-            default -> key.getKey().getDisplayName();
-        };
+	public static Component fixKeyName(ActionInputHolder.Button key) {
+        if (key.getPrimaryAction().isKeyBind()) {
+            KeyMapping map = DSCKeys.getKey(key.getPrimaryAction().getId());
+            if (map == null) return UtilMCText.literal(key.getPrimaryAction().getId());
+            return switch (map.getKey().getValue()) {
+                case InputConstants.KEY_RCONTROL -> UtilMCText.literal("R-CTRL");
+                case InputConstants.KEY_LCONTROL -> UtilMCText.literal("L-CTRL");
+                case InputConstants.KEY_LALT -> UtilMCText.literal("L-ALT");
+                case InputConstants.KEY_RALT -> UtilMCText.literal("R-ALT");
+                case InputConstants.KEY_LSHIFT -> UtilMCText.literal("LSHIFT");
+                case InputConstants.KEY_RSHIFT -> UtilMCText.literal("RSHIFT");
+                default -> map.getKey().getDisplayName();
+            };
+        }
+        return key.getName();
     }
 	
-	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key,
-			Component mapName, boolean isUsed, String setting) {
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index,
+                                  ActionInputHolder.Button key, Component mapName, boolean isUsed, String setting) {
     	int pY = 2 + 10 * index;
     	int pX = 3;
     	int pColor = DEFAULT_KEY_COLOR;
@@ -47,28 +54,36 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
     	drawString(poseStack, FONT, setting, pX, pY, pColor);
     }
 	
-	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, boolean isUsed, String setting) {
-		displayMapping(poseStack, screenWidth, screenHeight, index, key, UtilMCText.translatable(key.getName()), isUsed, setting);
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index,
+                                  ActionInputHolder.Button key, boolean isUsed, String setting) {
+		displayMapping(poseStack, screenWidth, screenHeight, index, key,
+                key.getName(), isUsed, setting);
 	}
 
-	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, boolean isUsed) {
-		displayMapping(poseStack, screenWidth, screenHeight, index, key, UtilMCText.translatable(key.getName()), isUsed, null);
+	protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index,
+                                  ActionInputHolder.Button key, boolean isUsed) {
+		displayMapping(poseStack, screenWidth, screenHeight, index, key,
+                key.getName(), isUsed, null);
 	}
     
-    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key) {
-    	displayMapping(poseStack, screenWidth, screenHeight, index, key, key.isDown(), null);
+    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index,
+                                  ActionInputHolder.Button key) {
+    	displayMapping(poseStack, screenWidth, screenHeight, index, key, key.isPressed(), null);
     }
     
-    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, String setting) {
-    	displayMapping(poseStack, screenWidth, screenHeight, index, key, key.isDown(), setting);
+    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index,
+                                  ActionInputHolder.Button key, String setting) {
+    	displayMapping(poseStack, screenWidth, screenHeight, index, key, key.isPressed(), setting);
     }
     
-    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, Component mapName, boolean isUsed) {
+    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index,
+                                  ActionInputHolder.Button key, Component mapName, boolean isUsed) {
     	displayMapping(poseStack, screenWidth, screenHeight, index, key, mapName, isUsed, null);
     }
     
-    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index, KeyMapping key, Component mapName) {
-    	displayMapping(poseStack, screenWidth, screenHeight, index, key, mapName, key.isDown(), null);
+    protected void displayMapping(PoseStack poseStack, int screenWidth, int screenHeight, int index,
+                                  ActionInputHolder.Button key, Component mapName) {
+    	displayMapping(poseStack, screenWidth, screenHeight, index, key, mapName, key.isPressed(), null);
     }
 
 	@Override
@@ -91,64 +106,67 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		boolean isPilot = seat.isPilotSeat(), isCoPilot = seat.isCoPilotSeat();
 		int index = 0;
 		// MOUSE MODE
-		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.mouseModeKey,
+		if (isPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, ClientInputManager.MOUSE_MODE,
 				!DSCClientInputs.getMouseMode().isLockedForward(), DSCClientInputs.getMouseMode().name());
 		// OPEN PLANE MENU
-		displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.vehicleMenuKey);
+		displayMapping(poseStack, screenWidth, screenHeight, index++, ClientInputManager.VEHICLE_MENU);
 		// DISMOUNT
-		if (Config.CLIENT.customDismount.get()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.dismount);
+		if (Config.CLIENT.customDismount.get()) displayMapping(poseStack, screenWidth, screenHeight, index++, ClientInputManager.DISMOUNT);
 		// EJECT
-		if (seat.canEject()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.eject);
+		if (seat.canEject()) displayMapping(poseStack, screenWidth, screenHeight, index++, ClientInputManager.EJECT);
 		// CHANGE SEAT
-		displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.changeSeat);
+		displayMapping(poseStack, screenWidth, screenHeight, index++, ClientInputManager.CHANGE_SEAT);
 		// LANDING GEAR
-		if (isPilot && vehicle.canToggleLandingGear()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.landingGear,
-				vehicle.isLandingGear(), vehicle.isLandingGear() ? "OUT"  : "IN");
+		if (isPilot && vehicle.canToggleLandingGear()) displayMapping(poseStack, screenWidth, screenHeight, index++,
+                ClientInputManager.LANDING_GEAR, vehicle.isLandingGear(), vehicle.isLandingGear() ? "OUT"  : "IN");
 		// BREAKS
 		if (isPilot && vehicle.canGroundBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
+				vehicle.getStats().isPlane() ? ClientInputManager.SPECIAL2 : ClientInputManager.SPECIAL1,
 				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isGroundBraking());
 		if (isPilot && vehicle.canAirBrake()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				vehicle.getStats().isPlane() ? DSCKeys.special2Key : DSCKeys.specialKey,
+				vehicle.getStats().isPlane() ? ClientInputManager.SPECIAL2 : ClientInputManager.SPECIAL1,
 				UtilMCText.translatable("info.dscombat.breaks"), vehicle.isAirBreaking());
 		// FLAPS DOWN
 		if (isPilot && vehicle.canFlapsDown()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.specialKey, UtilMCText.translatable("info.dscombat.flaps_down"));
+                ClientInputManager.SPECIAL1, UtilMCText.translatable("info.dscombat.flaps_down"));
 		// WEAPON ANGLED DOWN
 		if (isPilot && vehicle.canAngleWeaponDown()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.special2Key, UtilMCText.translatable("info.dscombat.nose_down"));
+                ClientInputManager.SPECIAL2, UtilMCText.translatable("info.dscombat.nose_down"));
 		// HOVER
 		if (isPilot && vehicle.canHover()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.specialKey, UtilMCText.translatable("info.dscombat.hover"));
+                ClientInputManager.SPECIAL1, UtilMCText.translatable("info.dscombat.hover"));
 		// FLARES
 		if (isPilot && vehicle.hasFlares()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.flareKey, vehicle.getFlareNum()+"");
+                ClientInputManager.FLARE, vehicle.getFlareNum()+"");
 		// CHAFF
 		//if (isPilot && vehicle.hasChaff()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 		//		DSCKeys.chaffKey, vehicle.getChaffNum()+"");
 		// CYCLE WEAPON
-		if (isPilot || isCoPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.weaponSelectKey);
+		if (isPilot || isCoPilot) displayMapping(poseStack, screenWidth, screenHeight, index++, ClientInputManager.WEAPON_CYCLE);
 		// RADAR MODE
 		if (vehicle.radarSystem.hasRadar()) {
 			boolean warning = DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode();
-			displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.radarModeKey,
+			displayMapping(poseStack, screenWidth, screenHeight, index++, ClientInputManager.RADAR_MODE,
 					warning, DSCClientInputs.getPreferredRadarMode().name());
 		}
 		// SELECT RADAR PING
-		if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++, DSCKeys.pingCycleKey);
+		if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++, ClientInputManager.PING_CYCLE);
 		// GIMBAL MODE
 		if (vehicle.getGimbalForPilotCamera() != null || seat.getCameraYOffset() != 0) displayMapping(poseStack,
-				screenWidth, screenHeight, index++, DSCKeys.gimbalKey,
+				screenWidth, screenHeight, index++, ClientInputManager.GIMBAL,
 				DSCClientInputs.isGimbalMode(), DSCClientInputs.isGimbalMode() ? "ON" : "OFF");
 		// AFTERBURNER
 		if (vehicle.canUseAfterburner()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.afterBurnerKey, DSCClientInputs.isAfterBurner(), DSCClientInputs.isAfterBurner() ? "ON" : "OFF");
+                ClientInputManager.AFTERBURNER, DSCClientInputs.isAfterBurner(),
+                DSCClientInputs.isAfterBurner() ? "ON" : "OFF");
 		// TURN ASSIST
 		if (vehicle.canUseTurnAssist()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-				DSCKeys.turnAssistKey, DSCClientInputs.isTurnAssist(), DSCClientInputs.isTurnAssist() ? "ON" : "OFF");
-        // TURN ASSIST
+                ClientInputManager.TURN_ASSIST, DSCClientInputs.isTurnAssist(),
+                DSCClientInputs.isTurnAssist() ? "ON" : "OFF");
+        // CAMERA TRACK
         if (vehicle.radarSystem.hasRadar()) displayMapping(poseStack, screenWidth, screenHeight, index++,
-                DSCKeys.cameraTrackTargetKey, DSCClientInputs.isCameraTrackTarget(), DSCClientInputs.isCameraTrackTarget() ? "ON" : "OFF");
+                ClientInputManager.CAMERA_TRACK_TARGET, DSCClientInputs.isCameraTrackTarget(),
+                DSCClientInputs.isCameraTrackTarget() ? "ON" : "OFF");
 	}
 
 	@Override

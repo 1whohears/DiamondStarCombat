@@ -78,6 +78,9 @@ public interface ActionInput {
     default boolean isUnbound() {
         return false;
     }
+    default boolean isKeyBind() {
+        return false;
+    }
 
     abstract class Button implements ActionInput {
         private boolean isPressed, wasPressed;
@@ -148,6 +151,9 @@ public interface ActionInput {
         }
         public static DSCKeyButton read(JsonObject json) {
             return new DSCKeyButton(UtilParse.getStringSafe(json, "key_mapping_id", ""));
+        }
+        public boolean isKeyBind() {
+            return true;
         }
     }
 

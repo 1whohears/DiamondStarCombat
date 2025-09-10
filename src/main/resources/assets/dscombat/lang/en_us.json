@@ -90,6 +90,7 @@
 	"ui.dscombat.edit_dsc_key_button": "Edit Key Button",
 	"ui.dscombat.edit_controller_button": "Edit Controller Button",
 	"ui.dscombat.edit_controller_axis_button": "Edit Controller Axis Button",
+    "ui.dscombat.thrust_to_weight_ratio": "Thrust to Weight Ratio",
 
 	"action_type.dscombat.unbound_button": "Unbound Button",
 	"action_type.dscombat.dsc_key_button": "DSC Key Button",

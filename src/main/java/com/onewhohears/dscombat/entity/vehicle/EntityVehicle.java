@@ -168,7 +168,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	protected boolean hasFlares;
 	protected int xzSpeedDir, hurtByFireTime, flareTicks;
-	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust, currentFuel, maxFuel;
+	protected float xzSpeed, totalMass, xzYaw, slideAngle, slideAngleCos, maxPushThrust, maxSpinThrust;
+    protected float currentFuel, maxFuel, afterburnerMaxPushThrust;
 	protected double staticFric, kineticFric, airDensity, currentAltitude, maxXZ;
 	
 	private int lerpSteps, deadTicks, stallWarnTicks, stallTicks, engineFireTicks, fuelLeakTicks, bingoTicks;
@@ -737,6 +738,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		staticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.STATIC_FRICTION;
 		kineticFric = totalMass * DSCPhyCons.GRAVITY * DSCPhyCons.KINETIC_FRICTION;
 		maxPushThrust = partsManager.getTotalPushThrust();
+        afterburnerMaxPushThrust = partsManager.getAfterburnerTotalPushThrust();
 		maxSpinThrust = partsManager.getTotalSpinThrust();
 		currentFuel = partsManager.getCurrentFuel();
 		maxFuel = partsManager.getMaxFuel();
@@ -848,13 +850,14 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (getCurrentFuel() <= 0 || !isOperational()) return 0;
 		return getCurrentThrottle() * getMaxPushThrust();
 	}
-	
-	/**
-	 * @return max possible push force magnitude assuming max throttle. 
-	 */
+
 	public float getMaxPushThrust() {
 		return maxPushThrust;
 	}
+
+    public float getAfterburnerMaxPushThrust() {
+        return afterburnerMaxPushThrust;
+    }
 	
 	/**
 	 * @return the magnitude of the spin force based on the engines, throttle, and 0 if no fuel

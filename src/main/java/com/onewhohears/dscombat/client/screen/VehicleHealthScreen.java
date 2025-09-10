@@ -7,11 +7,18 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.components.VehicleStatsOverlay;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
+import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
+
+import static com.onewhohears.dscombat.client.overlay.components.VehicleStatsOverlay.GREEN_ME_SAY_ALONE_RAMP;
+import static com.onewhohears.dscombat.client.overlay.components.VehicleStatsOverlay.RED;
 
 public class VehicleHealthScreen extends VehicleSubScreen {
 
@@ -113,9 +120,21 @@ public class VehicleHealthScreen extends VehicleSubScreen {
                 FUEL_ARROW_WIDTH, FUEL_ARROW_HEIGHT,
                 FUEL_ARROW_WIDTH, FUEL_ARROW_HEIGHT);
         poseStack.popPose();
+
+        // THRUST TO WEIGHT
+        double thrustToWeight = vehicle.getAfterburnerMaxPushThrust()/(vehicle.getTotalMass()*vehicle.getAccGravity());
+        getMinecraft().font.draw(poseStack, UtilMCText.translatable("ui.dscombat.thrust_to_weight_ratio"),
+                guiX+left_padding+100, guiY+top_padding+150, 0x0000AA);
+        getMinecraft().font.draw(poseStack, UtilMCText.literal(UtilPrint.printDec(thrustToWeight, 4)),
+                guiX+left_padding+100, guiY+top_padding+160, getThrustToWeightColor(thrustToWeight));
     }
 
     public static int getHealthColor(float health, float max) {
         return VehicleStatsOverlay.getHealthColor(health, max);
+    }
+
+    public static int getThrustToWeightColor(double thrustToWeight) {
+        if (thrustToWeight > 1) return GREEN_ME_SAY_ALONE_RAMP.getRGB();
+        else return RED.getRGB();
     }
 }

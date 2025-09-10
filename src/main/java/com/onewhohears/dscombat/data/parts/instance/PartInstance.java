@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class PartInstance<T extends PartStats> extends JsonPresetInstance<T> {
 	
@@ -300,5 +301,9 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 				getWeight() * (relPos.x*relPos.x + relPos.z*relPos.z),
 				getWeight() * (relPos.x*relPos.x + relPos.y*relPos.y)
 		).scale(DSCPhyCons.PART_ROT_INERTIA_SCALE);
+    }
+
+    public float getAfterburnerMaxPushThrust(@NotNull VehicleStats stats) {
+        return 0;
     }
 }

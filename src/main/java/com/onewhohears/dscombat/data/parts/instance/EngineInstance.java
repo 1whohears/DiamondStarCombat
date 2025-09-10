@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.parts.instance;
 import com.onewhohears.dscombat.data.parts.stats.EngineStats;
 import com.onewhohears.dscombat.data.parts.stats.EngineStats.EngineType;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
+import org.jetbrains.annotations.NotNull;
 
 public class EngineInstance<T extends EngineStats> extends PartInstance<T> {
 
@@ -22,6 +23,17 @@ public class EngineInstance<T extends EngineStats> extends PartInstance<T> {
 		}
 		return 0;
 	}
+
+    public float getAfterburnerMaxPushThrust(@NotNull VehicleStats vehicleStats) {
+        if (isDamaged()) return 0;
+        if (getStats().getEngineType() == EngineType.PUSH) {
+            if (vehicleStats.max_push_thrust_per_engine != -1) {
+                return vehicleStats.max_afterburner_push_thrust_per_engine;
+            }
+            return getStats().getThrust();
+        }
+        return 0;
+    }
 	
 	public float getSpinThrust(VehicleStats vehicleStats) {
 		if (isDamaged()) return 0;

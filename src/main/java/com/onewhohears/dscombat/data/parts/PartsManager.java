@@ -268,6 +268,13 @@ public class PartsManager {
 			total += p.getPartData().getPushThrust(parent.getStats());
 		return total;
 	}
+
+    public float getAfterburnerTotalPushThrust() {
+        float total = 0;
+        for (PartSlot p : slots) if (p.filled())
+            total += p.getPartData().getAfterburnerMaxPushThrust(parent.getStats());
+        return total;
+    }
 	
 	public float getTotalSpinThrust() {
 		float total = 0;

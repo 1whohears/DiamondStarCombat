@@ -71,14 +71,28 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		// FUEL TANK
 		addPresetToGenerate(PartBuilder.create(ModItems.LIGHT_FUEL_TANK.getId(), PartType.FUEL_TANK)
 				.setCompatibleSlotType(SlotType.INTERNAL)
-				.setWeight(500)
+				.setWeight(100)
 				.setFuelTankStats(50)
 				.build());
 		addPresetToGenerate(PartBuilder.create(ModItems.HEAVY_FUEL_TANK.getId(), PartType.FUEL_TANK)
 				.setCompatibleSlotType(SlotType.INTERNAL)
-				.setWeight(1500)
+				.setWeight(200)
 				.setFuelTankStats(150)
 				.build());
+        addPresetToGenerate(PartBuilder.create(ModItems.LIGHT_EXTERNAL_FUEL_TANK.getId(), PartType.EXTERNAL_FUEL_TANK)
+                .setCompatibleSlotType(SlotType.PYLON_LIGHT)
+                .setWeight(125)
+                .setFuelTankStats(50)
+                .setExternalEntityType(ModEntities.EXTERNAL_FUEL_TANK.getId())
+                .setEntityHitboxSize(0.8f, 0.8f)
+                .build());
+        addPresetToGenerate(PartBuilder.create(ModItems.HEAVY_EXTERNAL_FUEL_TANK.getId(), PartType.EXTERNAL_FUEL_TANK)
+                .setCompatibleSlotType(SlotType.PYLON_MED)
+                .setWeight(250)
+                .setFuelTankStats(150)
+                .setExternalEntityType(ModEntities.EXTERNAL_FUEL_TANK.getId())
+                .setEntityHitboxSize(0.8f, 0.8f)
+                .build());
 		// ENGINES
 		addPresetToGenerate(PartBuilder.create(ModItems.C6_ENGINE.getId(), PartType.INTERNAL_ENGINE)
 				.setCompatibleSlotType(SlotType.SPIN_ENGINE)

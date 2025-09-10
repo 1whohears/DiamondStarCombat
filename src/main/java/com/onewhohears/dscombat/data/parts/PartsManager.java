@@ -305,13 +305,27 @@ public class PartsManager {
 	}
 	
 	public float addFuel(float fuel) {
-		for (PartSlot p : slots) if (p.filled() && p.getPartData().getStats().isFuelTank()) {
-			FuelTankInstance<?> data = (FuelTankInstance<?>) p.getPartData();
-			fuel = data.addFuel(fuel);
-			if (fuel == 0) break;
-		}
+        if (fuel > 0) {
+            fuel = addFuel(fuel, false);
+            fuel = addFuel(fuel, true);
+        } else if (fuel < 0) {
+            fuel = addFuel(fuel, true);
+            fuel = addFuel(fuel, false);
+        }
 		return fuel;
 	}
+
+    public float addFuel(float fuel, boolean external) {
+        for (PartSlot p : slots) {
+            if (p.filled() && p.getPartData().getStats().isFuelTank()
+                    && !(p.getSlotType().isExternal()) ^ external) {
+                FuelTankInstance<?> data = (FuelTankInstance<?>) p.getPartData();
+                fuel = data.addFuel(fuel);
+                if (fuel == 0) break;
+            }
+        }
+        return fuel;
+    }
 	
 	public boolean isFuelTankDamaged() {
 		for (PartSlot p : slots) 

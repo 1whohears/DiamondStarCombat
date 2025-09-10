@@ -5,5 +5,5 @@
   "presetId": "light_fuel_tank",
   "presetType": "fuel_tank",
   "slotType": "internal",
-  "weight": 500.0
+  "weight": 100.0
 }

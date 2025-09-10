@@ -26,7 +26,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "internal_weapon";
 		public static final Weapon INSTANCE = new Weapon();
 		public Weapon() {
-			super(ID, (key, data) -> new WeaponPartStats(key, data));
+			super(ID, WeaponPartStats::new);
 		}
 		public Weapon(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 			super(id, statsFactory);
@@ -37,7 +37,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "external_weapon";
 		public static final ExternalWeapon INSTANCE = new ExternalWeapon();
 		public ExternalWeapon() {
-			super(ID, (key, data) -> new WeaponExternalStats(key, data));
+			super(ID, WeaponExternalStats::new);
 		}
 	}
 	public static final Seat SEAT = Seat.INSTANCE;
@@ -45,7 +45,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "seat";
 		public static final Seat INSTANCE = new Seat();
 		public Seat() {
-			super(ID, (key, data) -> new SeatStats(key, data));
+			super(ID, SeatStats::new);
 		}
 		public Seat(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 			super(id, statsFactory);
@@ -60,7 +60,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "turret";
 		public static final Turret INSTANCE = new Turret();
 		public Turret() {
-			super(ID, (key, data) -> new TurretStats(key, data));
+			super(ID, TurretStats::new);
 		}
 	}
 	public static final Engine INTERNAL_ENGINE = Engine.INSTANCE;
@@ -68,7 +68,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "internal_engine";
 		public static final Engine INSTANCE = new Engine();
 		public Engine() {
-			super(ID, (key, data) -> new EngineStats(key, data));
+			super(ID, EngineStats::new);
 		}
 		public Engine(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 			super(id, statsFactory);
@@ -79,7 +79,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "external_engine";
 		public static final ExternalEngine INSTANCE = new ExternalEngine();
 		public ExternalEngine() {
-			super(ID, (key, data) -> new EngineExternalStats(key, data));
+			super(ID, EngineExternalStats::new);
 		}
 	}
 	public static final FuelTank FUEL_TANK = FuelTank.INSTANCE;
@@ -87,7 +87,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "fuel_tank";
 		public static final FuelTank INSTANCE = new FuelTank();
 		public FuelTank() {
-			super(ID, (key, data) -> new FuelTankStats(key, data));
+			super(ID, FuelTankStats::new);
 		}
 		public FuelTank(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 			super(id, statsFactory);
@@ -98,7 +98,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "external_fuel_tank";
 		public static final ExternalFuelTank INSTANCE = new ExternalFuelTank();
 		public ExternalFuelTank() {
-			super(ID, (key, data) -> new FuelTankExternalStats(key, data));
+			super(ID, FuelTankExternalStats::new);
 		}
 	}
 	public static final Radar INTERNAL_RADAR = Radar.INSTANCE;
@@ -106,7 +106,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "internal_radar";
 		public static final Radar INSTANCE = new Radar();
 		public Radar() {
-			super(ID, (key, data) -> new RadarPartStats(key, data));
+			super(ID, RadarPartStats::new);
 		}
 		public Radar(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 			super(id, statsFactory);
@@ -117,7 +117,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "external_radar";
 		public static final ExternalRadar INSTANCE = new ExternalRadar();
 		public ExternalRadar() {
-			super(ID, (key, data) -> new RadarExternalStats(key, data));
+			super(ID, RadarExternalStats::new);
 		}
 	}
 	public static final FlareDispenser FLARE_DISPENSER = FlareDispenser.INSTANCE;
@@ -125,7 +125,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "flare_dispenser";
 		public static final FlareDispenser INSTANCE = new FlareDispenser();
 		public FlareDispenser() {
-			super(ID, (key, data) -> new FlareDispenserStats(key, data));
+			super(ID, FlareDispenserStats::new);
 		}
 	}
 	public static final ChaffDispenser CHAFF_DISPENSER = ChaffDispenser.INSTANCE;
@@ -133,7 +133,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "chaff_dispenser";
 		public static final ChaffDispenser INSTANCE = new ChaffDispenser();
 		public ChaffDispenser() {
-			super(ID, (key, data) -> new ChaffDispenserStats(key, data));
+			super(ID, ChaffDispenserStats::new);
 		}
 	}
 	public static final Buff BUFF = Buff.INSTANCE;
@@ -141,7 +141,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "buff";
 		public static final Buff INSTANCE = new Buff();
 		public Buff() {
-			super(ID, (key, data) -> new BuffStats(key, data));
+			super(ID, BuffStats::new);
 		}
 	}
 	public static final Gimbal GIMBAL = Gimbal.INSTANCE;
@@ -149,7 +149,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "gimbal";
 		public static final Gimbal INSTANCE = new Gimbal();
 		public Gimbal() {
-			super(ID, (key, data) -> new GimbalStats(key, data));
+			super(ID, GimbalStats::new);
 		}
 	}
 	public static final ChainHook CHAIN_HOOK = ChainHook.INSTANCE;
@@ -157,7 +157,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "chain_hook";
 		public static final ChainHook INSTANCE = new ChainHook();
 		public ChainHook() {
-			super(ID, (key, data) -> new ChainHookStats(key, data));
+			super(ID, ChainHookStats::new);
 		}
 	}
 	public static final Storage INTERNAL_STORAGE = Storage.INSTANCE;
@@ -165,7 +165,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "internal_storage";
 		public static final Storage INSTANCE = new Storage();
 		public Storage() {
-			super(ID, (key, data) -> new StorageStats(key, data));
+			super(ID, StorageStats::new);
 		}
 		public Storage(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 			super(id, statsFactory);
@@ -176,7 +176,7 @@ public abstract class PartType extends JsonPresetType {
 		public static final String ID = "external_storage";
 		public static final ExternalStorage INSTANCE = new ExternalStorage();
 		public ExternalStorage() {
-			super(ID, (key, data) -> new StorageExternalStats(key, data));
+			super(ID, StorageExternalStats::new);
 		}
 	}
 	public PartType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {

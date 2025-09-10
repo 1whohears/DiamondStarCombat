@@ -187,6 +187,10 @@ public class ModItems {
 			() -> new ItemPart(16));
 	public static final RegistryObject<ItemPart> HEAVY_FUEL_TANK = ITEMS.register("heavy_fuel_tank", 
 			() -> new ItemPart(16));
+    public static final RegistryObject<ItemPart> LIGHT_EXTERNAL_FUEL_TANK = ITEMS.register("light_external_fuel_tank",
+            () -> new ItemExternalPart(16, "light_external_fuel_tank"));
+    public static final RegistryObject<ItemPart> HEAVY_EXTERNAL_FUEL_TANK = ITEMS.register("heavy_external_fuel_tank",
+            () -> new ItemExternalPart(16, "heavy_external_fuel_tank"));
 	
 	// ENGINES
 	public static final RegistryObject<ItemPart> C6_ENGINE = ITEMS.register("c6_engine", 

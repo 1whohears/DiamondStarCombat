@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.crafting.FuelTankLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemLoadRecipe;
 import com.onewhohears.dscombat.crafting.PartItemUnloadRecipe;
 import com.onewhohears.dscombat.data.parts.stats.FuelTankStats;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import io.netty.buffer.ByteBuf;
@@ -34,7 +35,7 @@ public class FuelTankInstance<T extends FuelTankStats> extends PartInstance<T> i
 	@Override
 	public float getWeight() {
 		float w = super.getWeight();
-		return w * fuel / getStats().getMaxFuel();
+		return w + fuel * DSCPhyCons.getFuelKgPerLiter();
 	}
 	
 	public float getFuel() {

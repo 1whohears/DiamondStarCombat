@@ -83,4 +83,8 @@ public class DSCPhyCons {
     public static double getIRLScale() {
         return Config.SERVER.universalIRLScale.get();
     }
+
+    public static float getFuelKgPerLiter() {
+        return 10;
+    }
 }

@@ -90,6 +90,7 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.EXTERNAL_WEAPON_PART.get(), RendererCustomAnimObjEntity::new);
 		event.registerEntityRenderer(ModEntities.EXTERNAL_ENGINE.get(), RendererCustomAnimObjEntity::new);
 		event.registerEntityRenderer(ModEntities.EXTERNAL_RADAR.get(), RendererCustomAnimObjEntity::new);
+        event.registerEntityRenderer(ModEntities.EXTERNAL_FUEL_TANK.get(), RendererCustomAnimObjEntity::new);
 		// OTHER
 		event.registerEntityRenderer(ModEntities.SEAT.get(), RendererEntityInvisible::new);
 		event.registerEntityRenderer(ModEntities.FLARE.get(), RendererEntityInvisible::new);

@@ -23,11 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemTurret extends ItemPart implements ObjModelItem {
-	
-	public ItemTurret(int stackSize) {
-		super(stackSize);
-	}
+public class ItemTurret extends ItemExternalPart {
 
 	public ItemTurret(int stackSize, String defaultPresetId) {
 		super(stackSize, defaultPresetId);
@@ -76,22 +72,4 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
 		return (TurretInstance<?>) getPartInstance(stack);
 	}
 
-	@Override
-	public @NotNull String getObjModelId(@NotNull String preset) {
-		PartClientStats<?> pcs = PartAssets.get().get(preset);
-		if (pcs == null) return "";
-		return pcs.getModelId();
-	}
-
-	@Override
-	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
-		ObjModelItem.super.initializeClient(consumer);
-	}
-
-	@Override
-	public ObjEntityModels.@NotNull ModelOverrides getItemModelOverrides(@NotNull String preset) {
-		PartClientStats<?> pcs = PartAssets.get().get(preset);
-		if (pcs == null) return ObjEntityModels.NO_OVERRIDES;
-		return pcs.getItemModelOverrides();
-	}
 }

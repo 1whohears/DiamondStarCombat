@@ -429,6 +429,8 @@
 	
 	"item.dscombat.light_fuel_tank": "Light Fuel Tank",
 	"item.dscombat.heavy_fuel_tank": "Heavy Fuel Tank",
+    "item.dscombat.light_external_fuel_tank": "Light External Fuel Tank",
+    "item.dscombat.heavy_external_fuel_tank": "Heavy External Fuel Tank",
 	
 	"item.dscombat.c6_engine": "6 Cylinder Engine",
 	"item.dscombat.c12_engine": "12 Cylinder Engine",

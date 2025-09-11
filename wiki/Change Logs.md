@@ -1,3 +1,34 @@
+# V0.13.1 beta | Sep 11, 2025
+
+**__Additions__**
+
+- @boobcat added some WIP improved vehicle UI. It is not done yet but you can enable it in the `dscombat-client.toml` file. Scroll down and set `enableModernHUD = true`. Press F6 by default to move the modern UI elements around.
+- Added Track Radar Target Camera mode. Press Right Shift by default to toggle it. It is very useful when flying with a controller.
+- The IRL speed scale is now configurable in the server config file
+- Added External Fuel Tanks
+- Will now display the plane's thrust to weight ratio in the Heath vehicle menu.
+
+**__Changes__**
+
+- Helicopter physics have now been significantly improved thanks to @boobcat
+- Increased max fall speed
+- Changed the `/missile` command
+- Significantly increase ground take off speeds for planes to make it easier to take off
+- Seats will now also explode when a vehicle crashes because I hate you
+- Missile speeds are now dependent on the IRL scale
+- Air radar ranges are now dependent on the IRL scale
+- RWR pings get smaller when they are farther away
+- Anti Radar missile (agm88g) scan range is now based on universalSpeedScale. At 1/8th scale it has a seeker range of about 5K
+
+**_Fixes_**
+
+- Plane nose no longer gets stuck pointed up when reaching max altitude
+- Fixed pilots hearing their own sonic booms
+- Planes will try to verify if the chunk ahead of them is loaded to reduce the consequences of lag
+- Fixed dog fight minigame spamming forfeit message
+- Fixed secondary joystick not being plugged in causing throttle issues
+- Fixed keybind overlay not updating when controller buttons are used
+
 # V0.13.0 beta | Aug 9, 2025
 
 ## General Notes

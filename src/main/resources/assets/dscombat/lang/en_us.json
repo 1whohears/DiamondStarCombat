@@ -128,6 +128,7 @@
 	"action.dscombat.dismount": "Dismount",
 	"action.dscombat.gimbal": "Gimbal",
 	"action.dscombat.chaff": "Chaff",
+    "action.dscombat.camera_track_target": "Cam Track Target",
 	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",

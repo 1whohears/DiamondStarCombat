@@ -24,16 +24,23 @@ public class WerewolfPresets {
 			.setIdleHeat(8f)
 			.setMaxAltitude(450)
 			.setTurnRadius(0f)
-			.setMaxTurnRates(4f, 2f, 4f)
-			.setTurnTorques(1f, 1f, 2.5f)
-			.setThrottleRate(0.01f, 0.02f)
+			// roll, pitch, yaw (deg/tick): normalized and reduced for stability
+			.setMaxTurnRates(2.8f, 1.3f, 2.2f)
+			// normalized torque magnitudes
+			.setTurnTorques(80000f, 80000f, 200000f)
+			// slower throttle ramp for more stable vertical thrust
+			.setThrottleRate(0.008f, 0.015f)
 			.setHeliHoverMovement(0.04f, 0.02f)
 			.setBasicEngineSounds(ModSounds.HELI_1, ModSounds.HELI_1)
-			.setRotationalInertia(8, 6, 4)
+			// normalized inertia similar to other helis (roll, pitch, yaw order in builder)
+			.setRotationalInertia(8E3f, 6E4f, 4E4f)
+			// lower accel, higher decel for crisper stop and less float
+			.setHardCodedRotAcc(0.06f, 0.06f, 0.05f, 0.18f)
 			.setCrashExplosionRadius(4)
 			.set3rdPersonCamDist(6)
 			.setHeliAlwaysLandingGear(false)
-			.setHeliLiftFactor(10)
+			// normalized lift factor
+			.setHeliLiftFactor(1100)
 			.setLayerTextureNum(1)
 			.addPilotSeatSlot(0.4, -0.65, 1.5, true)
 			.addEmptySlot("left_wing_1", SlotType.PYLON_MED, 0.75, -0.5, 1.8, -90)

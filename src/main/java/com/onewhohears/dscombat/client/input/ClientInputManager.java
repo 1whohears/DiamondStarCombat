@@ -78,6 +78,8 @@ public class ClientInputManager {
     private static long radarModeUpdateTime = 0;
     private static float currentThrottle = 0;
     private static boolean wasPilot = false;
+    // Smoothed heli inputs to reduce touchiness (applied only for helicopters)
+    private static float smPitch = 0f, smRoll = 0f, smYaw = 0f;
 
     private static void pilotTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle) {
         if (MOUSE_MODE.isInitPressed()) DSCClientInputs.cycleMouseMode();
@@ -168,21 +170,43 @@ public class ClientInputManager {
         else zeroThrottle = -1;
         if (!wasPilot) currentThrottle = zeroThrottle;
         if (ActionInput.isWindowActive()) {
+            // Use vehicle-defined throttle ramp rates for smoother, more stable thrust changes
+            float incRate = vehicle.getThrottleIncreaseRate();
+            float decRate = vehicle.getThrottleDecreaseRate();
             if (vehicle.inputs.isThrottleOverride(vehicle)) {
                 float goal = vehicle.inputs.getGoalThrottle(vehicle);
                 if (!vehicle.getStats().negativeThrottle) goal = goal * 2 - 1;
-                currentThrottle = goal;
+                // Smoothly approach override goal to avoid sudden jumps
+                float step = goal >= currentThrottle ? incRate : decRate;
+                currentThrottle = Mth.approach(currentThrottle, goal, step);
             } else if (flipPitchThrottle && type_flip && THROTTLE.isJoystickController()) {
                 currentThrottle = THROTTLE.getValue();
             } else if ((!flipPitchThrottle && THROTTLE.isNegAndPos()) || (flipPitchThrottle && PITCH.isNegAndPos())) {
-                currentThrottle = Mth.approach(currentThrottle, zeroThrottle, THROTTLE_CHANGE_RATE);
+                currentThrottle = Mth.approach(currentThrottle, zeroThrottle, decRate);
             } else if ((!flipPitchThrottle && THROTTLE.isJoystickController()) || (flipPitchThrottle && PITCH.isJoystickController())) {
                 currentThrottle = throttle;
             } else if (throttle > 0) {
-                currentThrottle = Mth.approach(currentThrottle, 1, THROTTLE_CHANGE_RATE);
+                currentThrottle = Mth.approach(currentThrottle, 1, incRate);
             } else if (throttle < 0) {
-                currentThrottle = Mth.approach(currentThrottle, -1, THROTTLE_CHANGE_RATE);
+                currentThrottle = Mth.approach(currentThrottle, -1, incRate);
             }
+        }
+        // Apply input smoothing for helicopters; configurable and optional
+        if (vehicle.getStats().isHeli() && Config.CLIENT.enableHeliInputSmoothing.get()) {
+            float stepPitch = Config.CLIENT.heliPitchSmoothingStep.get().floatValue();
+            float stepRoll  = Config.CLIENT.heliRollSmoothingStep.get().floatValue();
+            float stepYaw   = Config.CLIENT.heliYawSmoothingStep.get().floatValue();
+            smPitch = Mth.approach(smPitch, pitch, stepPitch);
+            smRoll  = Mth.approach(smRoll,  roll,  stepRoll);
+            smYaw   = Mth.approach(smYaw,   yaw,   stepYaw);
+            pitch = smPitch;
+            roll = smRoll;
+            yaw = smYaw;
+        } else {
+            // No smoothing or not a heli: ensure accumulators match raw inputs
+            smPitch = pitch;
+            smRoll = roll;
+            smYaw = yaw;
         }
         float t;
         if (vehicle.getStats().negativeThrottle) t = currentThrottle;
@@ -289,15 +313,18 @@ public class ClientInputManager {
         Minecraft mc = Minecraft.getInstance();
         final var player = mc.player;
         if (player == null) {
+            if (wasPilot) { smPitch = smRoll = smYaw = 0f; }
             wasPilot = false;
             return;
         }
         if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle vehicle)) {
+            if (wasPilot) { smPitch = smRoll = smYaw = 0f; }
             wasPilot = false;
             return;
         }
         Entity controller = vehicle.getControllingPassenger();
         if (controller == null || !controller.equals(player)) {
+            if (wasPilot) { smPitch = smRoll = smYaw = 0f; }
             wasPilot = false;
             return;
         }

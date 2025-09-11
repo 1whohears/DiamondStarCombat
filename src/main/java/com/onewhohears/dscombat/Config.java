@@ -42,6 +42,18 @@ public class Config {
 		// OTHER
 		public final ForgeConfigSpec.BooleanValue debugMode;
 		public final ForgeConfigSpec.IntValue syncSeatPosRate;
+		// HUD
+		public final ForgeConfigSpec.BooleanValue enableModernHUD;
+		public final ForgeConfigSpec.DoubleValue modernHudOpacity;
+		public final ForgeConfigSpec.DoubleValue modernHudScale;
+		public final ForgeConfigSpec.ConfigValue<String> hudSpeedUnit;
+		public final ForgeConfigSpec.ConfigValue<String> hudAltUnit;
+		public final ForgeConfigSpec.BooleanValue showControlsInModernHUD;
+		// HELICOPTER INPUT SMOOTHING
+		public final ForgeConfigSpec.BooleanValue enableHeliInputSmoothing;
+		public final ForgeConfigSpec.DoubleValue heliPitchSmoothingStep;
+		public final ForgeConfigSpec.DoubleValue heliRollSmoothingStep;
+		public final ForgeConfigSpec.DoubleValue heliYawSmoothingStep;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("display");
@@ -129,6 +141,42 @@ public class Config {
 			renderOtherExternalPartDistance = builder
 					.defineInRange("renderOtherExternalPartDistance", 192.0, 0, 1000);
 			builder.pop();
+			// Helicopter input smoothing
+			builder.push("helicopter-input");
+			enableHeliInputSmoothing = builder
+				.comment("Enable helicopter-specific input smoothing for pitch/roll/yaw.")
+				.define("enableHeliInputSmoothing", true);
+			heliPitchSmoothingStep = builder
+				.comment("Per-tick approach step for heli pitch input smoothing. Smaller = smoother (0-1).")
+				.defineInRange("heliPitchSmoothingStep", 0.06d, 0.0d, 1.0d);
+			heliRollSmoothingStep = builder
+				.comment("Per-tick approach step for heli roll input smoothing. Smaller = smoother (0-1).")
+				.defineInRange("heliRollSmoothingStep", 0.06d, 0.0d, 1.0d);
+			heliYawSmoothingStep = builder
+				.comment("Per-tick approach step for heli yaw input smoothing. Smaller = smoother (0-1).")
+				.defineInRange("heliYawSmoothingStep", 0.04d, 0.0d, 1.0d);
+			builder.pop();
+			// Modern HUD settings
+			builder.push("hud");
+			enableModernHUD = builder
+				.comment("Enable the modern, consolidated vehicle HUD.")
+				.define("enableModernHUD", false);
+			modernHudOpacity = builder
+				.comment("Opacity of the modern HUD panels (0.0-1.0).")
+				.defineInRange("modernHudOpacity", 0.85d, 0.0d, 1.0d);
+			modernHudScale = builder
+				.comment("Scale of the modern HUD panels (0.5-1.5).")
+				.defineInRange("modernHudScale", 1.0d, 0.5d, 1.5d);
+			hudSpeedUnit = builder
+				.comment("Speed units: mps (m/s), kph (km/h), knots (kt)")
+				.define("hudSpeedUnit", "mps");
+			hudAltUnit = builder
+				.comment("Altitude units: m (meters), ft (feet)")
+				.define("hudAltUnit", "m");
+			showControlsInModernHUD = builder
+				.comment("If true, keeps the stick/rudder control overlay visible when Modern HUD is enabled.")
+				.define("showControlsInModernHUD", false);
+			builder.pop();
 			builder.pop();
 		}
 
@@ -177,6 +225,43 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue heliSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue carSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue boatSpeedFactor;
+		// HELICOPTER HANDLING
+		public final ForgeConfigSpec.DoubleValue heliLateralDampingXZ;
+		public final ForgeConfigSpec.DoubleValue heliHoverDamping;
+		// HELICOPTER PHYSICS (ground effect, ETL, VRS)
+		public final ForgeConfigSpec.BooleanValue enableGroundEffect;
+		public final ForgeConfigSpec.DoubleValue groundEffectStrength;
+		public final ForgeConfigSpec.DoubleValue groundEffectMaxHeight;
+		public final ForgeConfigSpec.BooleanValue enableTranslationalLift;
+		public final ForgeConfigSpec.DoubleValue translationalLiftMaxBonus;
+		public final ForgeConfigSpec.DoubleValue translationalLiftFullSpeed;
+		public final ForgeConfigSpec.BooleanValue enableVRS;
+		public final ForgeConfigSpec.DoubleValue vrsDescentTrigger;
+		public final ForgeConfigSpec.DoubleValue vrsHorizMaxSpeed;
+		public final ForgeConfigSpec.DoubleValue vrsMaxPenalty;
+		// Anti-torque & yaw damper
+		public final ForgeConfigSpec.BooleanValue enableAntiTorque;
+		public final ForgeConfigSpec.DoubleValue antiTorqueCoeff;
+		public final ForgeConfigSpec.DoubleValue antiTorqueDirection;
+		public final ForgeConfigSpec.DoubleValue yawDamperGain;
+		// Rotor spool dynamics
+		public final ForgeConfigSpec.DoubleValue rotorSpoolUpRate;
+		public final ForgeConfigSpec.DoubleValue rotorSpoolDownRate;
+		// Control authority scaling and IGE damping
+		public final ForgeConfigSpec.DoubleValue minControlAuthorityAtIdle;
+		public final ForgeConfigSpec.DoubleValue igeExtraLateralDamping;
+		public final ForgeConfigSpec.DoubleValue igeDampingMaxHeight;
+		// Coupling effects
+		public final ForgeConfigSpec.BooleanValue enableETLPitchUp;
+		public final ForgeConfigSpec.DoubleValue etlPitchGain;
+		public final ForgeConfigSpec.BooleanValue enableTailRotorRollCoupling;
+		public final ForgeConfigSpec.DoubleValue tailRotorRollCoeff;
+		// Authority scaling behavior
+		public final ForgeConfigSpec.BooleanValue scaleAuthorityPreClamp;
+		// ETL trim assist (auto pitch-down to counter pitch-up)
+		public final ForgeConfigSpec.BooleanValue enableETLTrimAssist;
+		public final ForgeConfigSpec.DoubleValue etlTrimGain;
+		public final ForgeConfigSpec.BooleanValue scaleTorqueWithRotorPower;
 		public Server(ForgeConfigSpec.Builder builder) {
 			builder.push("speed_factors");
             universalIRLScale = builder.comment("The percent of the IRL top speed vehicle's travel at. " +
@@ -190,6 +275,99 @@ public class Config {
 			heliSpeedFactor = builder.defineInRange("heliSpeedFactor", 1.0, 0, 10);
 			carSpeedFactor = builder.defineInRange("carSpeedFactor", 1.0, 0, 10);
 			boatSpeedFactor = builder.defineInRange("boatSpeedFactor", 1.0, 0, 10);
+			builder.pop();
+			// Helicopter handling tuning knobs
+			builder.push("helicopter_handling");
+			heliLateralDampingXZ = builder
+				.comment("Per-tick lateral damping multiplier for helicopters while airborne and not in hover assist. 1 = no damping.")
+				.defineInRange("heliLateralDampingXZ", 0.99d, 0.90d, 1.0d);
+			heliHoverDamping = builder
+				.comment("Per-tick velocity damping multiplier applied in heli hover assist mode (all axes). 1 = no damping.")
+				.defineInRange("heliHoverDamping", 0.95d, 0.80d, 1.0d);
+			builder.pop();
+			// Helicopter physics effects
+			builder.push("helicopter_physics");
+			enableGroundEffect = builder
+				.comment("Enable ground effect: increased lift near ground (IGE).")
+				.define("enableGroundEffect", true);
+			groundEffectStrength = builder
+				.comment("Max additional lift near ground (as a fraction). 0.2 = up to +20%.")
+				.defineInRange("groundEffectStrength", 0.2d, 0.0d, 1.0d);
+			groundEffectMaxHeight = builder
+				.comment("Height above ground (blocks) where ground effect fades to zero.")
+				.defineInRange("groundEffectMaxHeight", 5.0d, 0.0d, 64.0d);
+			enableTranslationalLift = builder
+				.comment("Enable ETL: increased lift with forward airspeed up to a limit.")
+				.define("enableTranslationalLift", true);
+			translationalLiftMaxBonus = builder
+				.comment("Max additional lift at or above ETL full speed (fraction). 0.15 = +15%.")
+				.defineInRange("translationalLiftMaxBonus", 0.15d, 0.0d, 1.0d);
+			translationalLiftFullSpeed = builder
+				.comment("Horizontal speed (blocks/tick) where ETL bonus reaches max.")
+				.defineInRange("translationalLiftFullSpeed", 0.35d, 0.0d, 5.0d);
+			enableVRS = builder
+				.comment("Enable VRS: lift degradation during high-rate vertical descents with low forward speed.")
+				.define("enableVRS", true);
+			vrsDescentTrigger = builder
+				.comment("Downward speed (blocks/tick) above which VRS begins.")
+				.defineInRange("vrsDescentTrigger", 0.15d, 0.0d, 5.0d);
+			vrsHorizMaxSpeed = builder
+				.comment("Max horizontal speed (blocks/tick) for VRS to apply (above this, no VRS).")
+				.defineInRange("vrsHorizMaxSpeed", 0.20d, 0.0d, 5.0d);
+			vrsMaxPenalty = builder
+				.comment("Max lift reduction from VRS (fraction). 0.5 = up to -50% lift.")
+				.defineInRange("vrsMaxPenalty", 0.5d, 0.0d, 1.0d);
+			enableAntiTorque = builder
+				.comment("Enable anti-torque/yaw coupling: simulates main rotor torque and tail rotor compensation.")
+				.define("enableAntiTorque", true);
+			antiTorqueCoeff = builder
+				.comment("Yaw moment per unit rotor thrust (tune small).")
+				.defineInRange("antiTorqueCoeff", 0.0025d, 0.0d, 1.0d);
+			antiTorqueDirection = builder
+				.comment("Direction sign of main rotor torque (+1 or -1). Use to flip depending on rotor spin.")
+				.defineInRange("antiTorqueDirection", 1.0d, -1.0d, 1.0d);
+			yawDamperGain = builder
+				.comment("Additional yaw rate damping gain to stabilize heading (applied as moment proportional to yaw rate).")
+				.defineInRange("yawDamperGain", 0.02d, 0.0d, 1.0d);
+			rotorSpoolUpRate = builder
+				.comment("Per-tick rotor power increase step towards throttle command.")
+				.defineInRange("rotorSpoolUpRate", 0.02d, 0.0d, 1.0d);
+			rotorSpoolDownRate = builder
+				.comment("Per-tick rotor power decrease step towards throttle command.")
+				.defineInRange("rotorSpoolDownRate", 0.04d, 0.0d, 1.0d);
+			minControlAuthorityAtIdle = builder
+				.comment("Minimum fraction of control authority (pitch/roll/yaw) when rotor power is near zero.")
+				.defineInRange("minControlAuthorityAtIdle", 0.3d, 0.0d, 1.0d);
+			igeExtraLateralDamping = builder
+				.comment("Additional lateral damping multiplier applied near ground (IGE). 0 = none; 0.03 ~ mild.")
+				.defineInRange("igeExtraLateralDamping", 0.0d, 0.0d, 0.2d);
+			igeDampingMaxHeight = builder
+				.comment("Max height above ground (blocks) over which extra IGE lateral damping fades.")
+				.defineInRange("igeDampingMaxHeight", 3.0d, 0.0d, 16.0d);
+			enableETLPitchUp = builder
+				.comment("Enable ETL-induced pitch-up moment that grows with forward speed.")
+				.define("enableETLPitchUp", true);
+			etlPitchGain = builder
+				.comment("Pitch-up moment gain vs normalized forward speed (tune small, e.g., 0.02).")
+				.defineInRange("etlPitchGain", 0.02d, 0.0d, 0.2d);
+			enableTailRotorRollCoupling = builder
+				.comment("Enable roll moment proportional to anti-torque (tail rotor) thrust.")
+				.define("enableTailRotorRollCoupling", true);
+			tailRotorRollCoeff = builder
+				.comment("Roll moment per unit of anti-torque yaw moment (tune small, e.g., 0.15).")
+				.defineInRange("tailRotorRollCoeff", 0.15d, 0.0d, 1.0d);
+			scaleAuthorityPreClamp = builder
+				.comment("Scale control max deltas by rotor power (pre-clamp). If false, authority scales after clamping.")
+				.define("scaleAuthorityPreClamp", true);
+			enableETLTrimAssist = builder
+				.comment("Apply small auto pitch-down with forward speed to reduce manual trim.")
+				.define("enableETLTrimAssist", true);
+			etlTrimGain = builder
+				.comment("Pitch-down trim gain vs normalized forward speed (tune very small, e.g., 0.01).")
+				.defineInRange("etlTrimGain", 0.01d, 0.0d, 0.1d);
+			scaleTorqueWithRotorPower = builder
+				.comment("Scale applied control torques by rotor power (alternative to control moment scaling).")
+				.define("scaleTorqueWithRotorPower", false);
 			builder.pop();
 		}
 	}

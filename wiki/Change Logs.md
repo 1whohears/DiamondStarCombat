@@ -2,7 +2,7 @@
 
 **__Additions__**
 
-- @boobcat added some WIP improved vehicle UI. It is not done yet but you can enable it in the `dscombat-client.toml` file. Scroll down and set `enableModernHUD = true`. Press F6 by default to move the modern UI elements around.
+- @boobcat added some WIP improved vehicle HUD. It is not done yet but you can enable it in the `dscombat-client.toml` file. Scroll down and set `enableModernHUD = true`. Press F6 by default to move the modern HUD elements around.
 - Added Track Radar Target Camera mode. Press Right Shift by default to toggle it. It is very useful when flying with a controller.
 - The IRL speed scale is now configurable in the server config file
 - Added External Fuel Tanks

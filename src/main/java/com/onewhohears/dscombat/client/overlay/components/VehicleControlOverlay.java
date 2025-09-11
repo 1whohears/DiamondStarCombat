@@ -26,6 +26,8 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
     @Override
     protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
+        if (com.onewhohears.dscombat.Config.CLIENT.enableModernHUD.get() &&
+                !com.onewhohears.dscombat.Config.CLIENT.showControlsInModernHUD.get()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 

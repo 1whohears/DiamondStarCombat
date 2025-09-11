@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -36,6 +37,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     @Override
     protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
+        if (Config.CLIENT.enableModernHUD.get()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityVehicle)) return false;
         return !DSCClientInputs.isCameraLockedForward();
     }

@@ -40,6 +40,7 @@ public class VehicleCompassOverlay extends VehicleOverlayComponent {
     @Override
     protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
+        if (com.onewhohears.dscombat.Config.CLIENT.enableModernHUD.get()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 

@@ -79,6 +79,8 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
                 //new VehicleFuelOverlay(),
                 new VehicleStatsOverlay(),
                 new VehicleThrottleOverlay(),
+                new HeliStatusOverlay(),
+                new ModernHudOverlay(),
                 new VehicleWeaponsOverlay(),
                 new PosRangeOverlay()
         };

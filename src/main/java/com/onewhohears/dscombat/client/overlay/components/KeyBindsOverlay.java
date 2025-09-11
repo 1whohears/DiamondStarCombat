@@ -89,6 +89,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	@Override
 	protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
 		if (defaultRenderConditions()) return false;
+		if (Config.CLIENT.enableModernHUD.get()) return false;
 		if (!(getPlayerVehicle() instanceof EntityRidablePart seat)) return false;
 
 		EntityVehicle vehicle = seat.getParentVehicle();

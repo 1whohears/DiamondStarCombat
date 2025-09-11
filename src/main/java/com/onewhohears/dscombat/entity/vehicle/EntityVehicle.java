@@ -433,7 +433,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			if (canControlRoll()) {
 				if (isHardCodedRotAcc()) hardCodedAccRoll();
 				else{
-					if (inputs.bothRoll) flatten(q, 0, getRollTorque(), false);
+					if (inputs.bothRoll) flatten(q, 0, getMaxDeltaRoll(), false);
 					else addMomentZ(inputs.roll * getRollTorque(), true);
 				}
 			}

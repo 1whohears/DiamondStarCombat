@@ -24,17 +24,21 @@ public class KraitChopperPresets {
 			.setIdleHeat(8f)
 			.setMaxAltitude(430)
 			.setTurnRadius(0f)
-			.setMaxTurnRates(4f, 2f, 4f)
+			// roll, pitch, yaw (deg/tick): reduced to be less twitchy
+			.setMaxTurnRates(3.0f, 1.4f, 2.4f)
 			.setTurnTorques(80000f, 80000f, 200000f)
-			.setThrottleRate(0.01f, 0.02f)
+			// slower throttle ramp for more stable vertical thrust
+			.setThrottleRate(0.008f, 0.015f)
 			.setHeliHoverMovement(0.04f, 0.02f)
 			.setBasicEngineSounds(ModSounds.HELI_1, ModSounds.HELI_1)
 			.setRotationalInertia(8E3f, 6E4f, 4E4f)
-			.setHardCodedRotAcc(0.1f, 0.1f, 0.1f, 0.1f)
+			// lower accel, higher decel for crisper stop and less float
+			.setHardCodedRotAcc(0.06f, 0.06f, 0.05f, 0.18f)
 			.setCrashExplosionRadius(4)
 			.set3rdPersonCamDist(6)
 			.setHeliAlwaysLandingGear(true)
-			.setHeliLiftFactor(1500)
+			// reduce lift factor to avoid over-eager climb response
+			.setHeliLiftFactor(1200)
 			.setBaseTextureNum(4)
 			.setLayerTextureNum(4)
 			.addPilotSeatSlot(0, -0.05, 2, true)

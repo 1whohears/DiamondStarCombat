@@ -39,6 +39,7 @@ public final class DSCKeys {
 	public static KeyMapping flipControlsKey;
 	public static KeyMapping leanLeftKey, leanRightKey;
 	public static KeyMapping afterBurnerKey, turnAssistKey;
+	public static KeyMapping hudModeToggleKey, hudHintsToggleKey, hudLayoutEditKey, hudShowAllKey;
 	
 	private static RegisterKeyMappingsEvent event;
 
@@ -59,6 +60,10 @@ public final class DSCKeys {
 		mouseModeKey = registerKey("mouse_mode_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LCONTROL);
 		flipControlsKey = registerKey("flip_controls_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_LSHIFT);
 		resetMouseKey = registerKey("reset_mouse_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RCONTROL);
+		hudModeToggleKey = registerKey("hud_mode_toggle_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_F7);
+		hudHintsToggleKey = registerKey("hud_hints_toggle_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_F8);
+		hudLayoutEditKey = registerKey("hud_layout_edit_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_F6);
+		hudShowAllKey = registerKey("hud_show_all_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_F9);
 		leanLeftKey = registerKey("lean_left_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
 		leanRightKey = registerKey("lean_right_key", VEHICLE_CONTROL_UTIL, InputConstants.UNKNOWN.getValue());
 		turnAssistKey = registerKey("turn_assist_key", VEHICLE_CONTROL_UTIL, InputConstants.KEY_RALT);

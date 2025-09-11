@@ -168,16 +168,16 @@
     "entity_size_xz": 2.8,
     "entity_size_y": 2.8,
     "hard_coded_rot_acc": {
-      "x": 0.10000000149011612,
-      "y": 0.10000000149011612,
-      "z": 0.10000000149011612
+      "x": 0.06,
+      "y": 0.06,
+      "z": 0.05
     },
-    "hard_coded_rot_decel": 0.1,
+    "hard_coded_rot_decel": 0.18,
     "heli": {
       "accForward": 0.04,
       "accSide": 0.02,
       "alwaysLandingGear": true,
-      "heliLiftFactor": 1000.0
+      "heliLiftFactor": 900.0
     },
     "idleheat": 8.0,
     "inertiapitch": 60000.0,
@@ -186,12 +186,12 @@
     "mass": 6000.0,
     "max_health": 80.0,
     "max_speed": 0.65,
-    "maxpitch": 1.5,
-    "maxroll": 2.0,
-    "maxyaw": 3.0,
+    "maxpitch": 1.2,
+    "maxroll": 1.8,
+    "maxyaw": 2.2,
     "stealth": 1.2,
-    "throttledown": 0.02,
-    "throttleup": 0.01,
+    "throttledown": 0.015,
+    "throttleup": 0.008,
     "torquepitch": 80000.0,
     "torqueroll": 80000.0,
     "torqueyaw": 200000.0,

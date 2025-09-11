@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -130,6 +131,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     @Override
     protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
+        if (Config.CLIENT.enableModernHUD.get()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityPlane)) return false;
         return !DSCClientInputs.isCameraFree();
     }

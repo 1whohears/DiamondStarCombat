@@ -1,19 +1,14 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilClientPacket;
-
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToClientSyncPart extends IPacket {
+public class ToClientSyncPart extends BaseS2CMessage {
 	
 	private final int id;
 	private final String slotId;
@@ -27,31 +22,29 @@ public class ToClientSyncPart extends IPacket {
 	}
 	
 	public ToClientSyncPart(FriendlyByteBuf buffer) {
-		super(buffer);
 		id = buffer.readInt();
 		slotId = buffer.readUtf();
 		buffer.readUtf(); // read preset id cause it ain't needed
 		this.buffer = buffer;
 	}
-	
-	@Override
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		buffer.writeUtf(slotId);
 		instance.writeBuffer(buffer);
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilClientPacket.syncPartPacket(id, slotId, this.buffer);
-				success.set(true);
-			});
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            UtilClientPacket.syncPartPacket(id, slotId, this.buffer);
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

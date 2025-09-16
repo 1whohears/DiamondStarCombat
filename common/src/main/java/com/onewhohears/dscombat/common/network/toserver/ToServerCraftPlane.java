@@ -1,21 +1,21 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
 
 import com.mojang.datafixers.util.Pair;
-import com.onewhohears.dscombat.common.network.IPacket;
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.onewholibs.util.UtilItem;
 
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseC2SMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.world.entity.player.Player;
 
-public class ToServerCraftPlane extends IPacket {
+public class ToServerCraftPlane extends BaseC2SMessage {
 	
 	public final String recipeId;
 	public final BlockPos pos;
@@ -34,7 +34,7 @@ public class ToServerCraftPlane extends IPacket {
 	}
 	
 	@Override
-	public void encode(FriendlyByteBuf buffer) {
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeUtf(recipeId);
 		buffer.writeDouble(pos.getX());
 		buffer.writeDouble(pos.getY());
@@ -42,20 +42,20 @@ public class ToServerCraftPlane extends IPacket {
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			success.set(true);
-			ServerPlayer player = ctx.get().getSender();
-			Optional<Pair<ResourceLocation, VehicleRecipe>> option = player.level.getRecipeManager().getRecipeFor(
-					VehicleRecipe.Type.INSTANCE, player.getInventory(), player.level,
-					new ResourceLocation(recipeId));
-			if (option.isEmpty()) return;
-			VehicleRecipe recipe = option.get().getSecond();
-			UtilItem.handleInventoryRecipe(player, recipe, pos);
-		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
+	public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            Player player = context.getPlayer();
+            Optional<Pair<ResourceLocation, VehicleRecipe>> option = player.level.getRecipeManager().getRecipeFor(
+                    VehicleRecipe.Type.INSTANCE, player.getInventory(), player.level,
+                    new ResourceLocation(recipeId));
+            if (option.isEmpty()) return;
+            VehicleRecipe recipe = option.get().getSecond();
+            UtilItem.handleInventoryRecipe(player, recipe, pos);
+        });
 	}
 
+    @Override
+    public MessageType getType() {
+        return null;
+    }
 }

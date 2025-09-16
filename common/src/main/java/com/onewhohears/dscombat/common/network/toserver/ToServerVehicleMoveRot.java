@@ -1,18 +1,16 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
 import com.onewhohears.onewholibs.util.math.QuaternionF;
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseC2SMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent.Context;
 
 /**
  * this packet synchronizes the vehicle's speed and rotation from the pilot client's perspective with the server.
@@ -20,7 +18,7 @@ import net.minecraftforge.network.NetworkEvent.Context;
  * drastic changes in the vehicle's position, speed and/or rotation.
  * @author 1whohears
  */
-public class ToServerVehicleMoveRot extends IPacket {
+public class ToServerVehicleMoveRot extends BaseC2SMessage {
 	
 	public final int id;
 	public final Vec3 motion;
@@ -40,9 +38,14 @@ public class ToServerVehicleMoveRot extends IPacket {
 		q = DataSerializers.QUATERNION.read(buffer);
 		av = DataSerializers.VEC3.read(buffer);
 	}
-	
-	@Override
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		DataSerializers.VEC3.write(buffer, motion);
 		DataSerializers.QUATERNION.write(buffer, q);
@@ -50,12 +53,10 @@ public class ToServerVehicleMoveRot extends IPacket {
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			success.set(true);
-			ServerPlayer player = ctx.get().getSender();
-			ServerLevel level = player.getLevel();
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            Player player = context.getPlayer();
+			Level level = player.getLevel();
 			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.setDeltaMovement(motion);
 				plane.setPrevQ(plane.getQ());
@@ -63,8 +64,6 @@ public class ToServerVehicleMoveRot extends IPacket {
 				plane.setAngularVel(av);
 			}
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

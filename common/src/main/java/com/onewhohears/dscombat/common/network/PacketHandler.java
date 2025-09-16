@@ -3,34 +3,24 @@ package com.onewhohears.dscombat.common.network;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.*;
 import com.onewhohears.dscombat.common.network.toserver.*;
-
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
+import dev.architectury.networking.simple.SimpleNetworkManager;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.chunk.LevelChunk;
+import org.jetbrains.annotations.NotNull;
 
 public final class PacketHandler {
 	
 	private PacketHandler() {}
-	
-	private static final String PROTOCOL_VERSION = "1.0";
-	
-	public static SimpleChannel INSTANCE;
+
+    public static final SimpleNetworkManager INSTANCE = SimpleNetworkManager.create(DSCombatMod.MODID);
+
+    public static final MessageType C2S_VEHICLE_CONTROL = INSTANCE.registerC2S(
+            "c2s_vehicle_control", ToServerVehicleControl::new);
 
 	public static void register() {
-		SimpleChannel net = NetworkRegistry.ChannelBuilder
-				.named(new ResourceLocation(DSCombatMod.MODID, "messages"))
-				.networkProtocolVersion(() -> PROTOCOL_VERSION)
-                .clientAcceptedVersions(s -> s.equals(PROTOCOL_VERSION))
-                .serverAcceptedVersions(s -> s.equals(PROTOCOL_VERSION))
-                .simpleChannel();
-		INSTANCE = net;
-		int index = 0;
-		net.messageBuilder(ToServerVehicleControl.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerVehicleControl::encode)
-			.decoder(ToServerVehicleControl::new)
-			.consumerMainThread(ToServerVehicleControl::handle)
-			.add();
 		net.messageBuilder(ToClientVehicleControl.class, index++, NetworkDirection.PLAY_TO_CLIENT)
 			.encoder(ToClientVehicleControl::encode)
 			.decoder(ToClientVehicleControl::new)
@@ -162,5 +152,15 @@ public final class PacketHandler {
 				.consumerMainThread(ToServerCraftWeaponPart::handle)
 				.add();
 	}
+
+    public static LevelChunk getEntityChunk(@NotNull Entity entity) {
+        return UtilEntity.getLevel(entity).getChunkAt(entity.blockPosition());
+    }
+
+    public static void sendToTrackers(@NotNull BaseS2CMessage message, @NotNull Entity entity) {
+        message.sendToChunkListeners(getEntityChunk(entity));
+    }
+
+    public static void register() {}
 	
 }

@@ -1,18 +1,16 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseC2SMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
-public class ToServerVehicleControl extends IPacket {
+public class ToServerVehicleControl extends BaseC2SMessage {
 	
 	public final int id;
 	public final VehicleInputManager inputs;
@@ -26,25 +24,28 @@ public class ToServerVehicleControl extends IPacket {
 		id = buffer.readInt();
 		inputs = new VehicleInputManager(buffer);
 	}
-	
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		inputs.write(buffer);
 	}
-	
-	public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			ServerPlayer player = ctx.get().getSender();
-			ServerLevel level = player.getLevel();
+
+    @Override
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            Player player = context.getPlayer();
+			Level level = player.getLevel();
 			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.inputs.updateInputsFromPacket(inputs, plane);
 				plane.syncControlsToClient();
 			}
-			success.set(true);
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 	
 }

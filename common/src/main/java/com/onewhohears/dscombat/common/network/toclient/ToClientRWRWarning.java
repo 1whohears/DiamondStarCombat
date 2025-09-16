@@ -1,18 +1,13 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.util.UtilClientPacket;
-
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToClientRWRWarning extends IPacket {
+public class ToClientRWRWarning extends BaseS2CMessage {
 	
 	public final int id;
 	public final RWRWarning warning;
@@ -23,28 +18,26 @@ public class ToClientRWRWarning extends IPacket {
 	}
 	
 	public ToClientRWRWarning(FriendlyByteBuf buffer) {
-		//super(buffer);
 		id = buffer.readInt();
 		warning = new RWRWarning(buffer);
 	}
-	
-	@Override
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		warning.write(buffer);
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilClientPacket.rwrPacket(id, warning);
-				success.set(true);
-			});
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            UtilClientPacket.rwrPacket(id, warning);
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

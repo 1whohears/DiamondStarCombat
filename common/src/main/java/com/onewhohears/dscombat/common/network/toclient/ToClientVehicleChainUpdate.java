@@ -1,23 +1,17 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-import org.jetbrains.annotations.Nullable;
-
-import com.onewhohears.dscombat.common.network.IPacket;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilClientPacket;
-
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent.Context;
+import org.jetbrains.annotations.Nullable;
 
-public class ToClientVehicleChainUpdate extends IPacket {
+public class ToClientVehicleChainUpdate extends BaseS2CMessage {
 	
 	public final int vehicleId, hookId, playerId;
 	public final ChainUpdateType type;
@@ -38,9 +32,14 @@ public class ToClientVehicleChainUpdate extends IPacket {
 		this.playerId = buffer.readInt();
 		this.type = ChainUpdateType.values()[buffer.readInt()];
 	}
-	
-	@Override
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(vehicleId);
 		buffer.writeInt(hookId);
 		buffer.writeInt(playerId);
@@ -48,15 +47,10 @@ public class ToClientVehicleChainUpdate extends IPacket {
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilClientPacket.updateVehicleChain(vehicleId, hookId, playerId, type);
-			});
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            UtilClientPacket.updateVehicleChain(vehicleId, hookId, playerId, type);
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

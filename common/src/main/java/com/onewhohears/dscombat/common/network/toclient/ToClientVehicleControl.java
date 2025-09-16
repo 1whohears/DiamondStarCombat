@@ -1,19 +1,14 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilClientPacket;
-
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToClientVehicleControl extends IPacket {
+public class ToClientVehicleControl extends BaseS2CMessage {
 	
 	public final int id;
 	public final VehicleInputManager inputs;
@@ -27,23 +22,22 @@ public class ToClientVehicleControl extends IPacket {
 		id = buffer.readInt();
 		inputs = new VehicleInputManager(buffer);
 	}
-	
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		inputs.write(buffer);
 	}
 	
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilClientPacket.aircraftInputsPacket(id, inputs);
-				success.set(true);
-			});
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            UtilClientPacket.aircraftInputsPacket(id, inputs);
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

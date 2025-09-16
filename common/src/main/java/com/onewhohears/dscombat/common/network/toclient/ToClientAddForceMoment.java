@@ -1,20 +1,16 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToClientAddForceMoment extends IPacket {
+public class ToClientAddForceMoment extends BaseS2CMessage {
 	
 	public final int id;
 	public final Vec3 force;
@@ -31,25 +27,24 @@ public class ToClientAddForceMoment extends IPacket {
 		force = DataSerializers.VEC3.read(buffer);
 		moment = DataSerializers.VEC3.read(buffer);
 	}
-	
-	@Override
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		DataSerializers.VEC3.write(buffer, force);
 		DataSerializers.VEC3.write(buffer, moment);
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilClientPacket.addMomentPacket(id, force, moment);
-				success.set(true);
-			});
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            UtilClientPacket.addMomentPacket(id, force, moment);
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

@@ -1,17 +1,15 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseC2SMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent.Context;
 
-public class ToServerFixHitboxes extends IPacket {
+public class ToServerFixHitboxes extends BaseC2SMessage {
 	
 	private final int id;
 	
@@ -22,25 +20,26 @@ public class ToServerFixHitboxes extends IPacket {
 	public ToServerFixHitboxes(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 	}
-	
-	@Override
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			success.set(true);
-			ServerPlayer player = ctx.get().getSender();
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            Player player = context.getPlayer();
 			if (player == null) return;
 			Level level = player.level;
 			if (!(level.getEntity(id) instanceof EntityVehicle vehicle)) return;
 			vehicle.refreshHitboxes();
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

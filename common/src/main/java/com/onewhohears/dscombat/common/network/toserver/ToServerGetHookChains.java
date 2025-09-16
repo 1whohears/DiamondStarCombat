@@ -1,15 +1,15 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseC2SMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
-public class ToServerGetHookChains extends IPacket {
+public class ToServerGetHookChains extends BaseC2SMessage {
 			
 	public final int hookId;
 	
@@ -20,23 +20,25 @@ public class ToServerGetHookChains extends IPacket {
 	public ToServerGetHookChains(FriendlyByteBuf buffer) {
 		hookId = buffer.readInt();
 	}
-	
-	@Override
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(hookId);
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			success.set(true);
-			if (ctx.get().getSender().level.getEntity(hookId) instanceof EntityChainHook hook) {
-				hook.sendAllVehicleChainsToClient(ctx.get().getSender());
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            Player player = context.getPlayer();
+			if (player.level.getEntity(hookId) instanceof EntityChainHook hook) {
+				hook.sendAllVehicleChainsToClient((ServerPlayer) player);
 			}
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

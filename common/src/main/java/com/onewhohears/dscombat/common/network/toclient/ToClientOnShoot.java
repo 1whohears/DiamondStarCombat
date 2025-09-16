@@ -1,45 +1,40 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilClientPacket;
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent.Context;
-import net.minecraftforge.network.PacketDistributor;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
-public class ToClientOnShoot extends IPacket {
+public class ToClientOnShoot extends BaseS2CMessage {
 
 	public static void onShootWeaponRack(EntityWeaponRack rack, Entity shooter) {
 		if (rack.getLevel().isClientSide()) return;
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> rack),
-				new ToClientOnShoot(rack.getId(), shooter.getId(), UtilClientPacket.ShootType.WEAPON_RACK));
+        PacketHandler.sendToTrackers(new ToClientOnShoot(rack.getId(),
+                shooter.getId(), UtilClientPacket.ShootType.WEAPON_RACK), rack);
 	}
 
 	public static void onShootTurret(EntityTurret turret, Entity shooter) {
 		if (turret.getLevel().isClientSide()) return;
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> turret),
-				new ToClientOnShoot(turret.getId(), shooter.getId(), UtilClientPacket.ShootType.TURRET));
+        PacketHandler.sendToTrackers(new ToClientOnShoot(turret.getId(),
+                shooter.getId(), UtilClientPacket.ShootType.TURRET), turret);
 	}
 
 	public static void onShootFlareRack(EntityVehicle vehicle, Entity shooter) {
 		if (vehicle.getLevel().isClientSide()) return;
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle),
-				new ToClientOnShoot(vehicle.getId(), shooter.getId(), UtilClientPacket.ShootType.FLARE));
+        PacketHandler.sendToTrackers(new ToClientOnShoot(vehicle.getId(),
+                shooter.getId(), UtilClientPacket.ShootType.FLARE), vehicle);
 	}
 
 	public static void onShootChaffRack(EntityVehicle vehicle, Entity shooter) {
 		if (vehicle.getLevel().isClientSide()) return;
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle),
-				new ToClientOnShoot(vehicle.getId(), shooter.getId(), UtilClientPacket.ShootType.CHAFF));
+        PacketHandler.sendToTrackers(new ToClientOnShoot(vehicle.getId(),
+                shooter.getId(), UtilClientPacket.ShootType.CHAFF), vehicle);
 	}
 
 	public final int vehicleId, shooterId;
@@ -56,25 +51,24 @@ public class ToClientOnShoot extends IPacket {
 		shooterId = buffer.readInt();
 		type = buffer.readEnum(UtilClientPacket.ShootType.class);
 	}
-	
-	@Override
-	public void encode(FriendlyByteBuf buffer) {
+
+    @Override
+    public MessageType getType() {
+        return null;
+    }
+
+    @Override
+	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(vehicleId);
 		buffer.writeInt(shooterId);
 		buffer.writeEnum(type);
 	}
 
 	@Override
-	public boolean handle(Supplier<Context> ctx) {
-		final var success = new AtomicBoolean(false);
-		ctx.get().enqueueWork(() -> {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-				UtilClientPacket.onShoot(vehicleId, shooterId, type);
-				success.set(true);
-			});
+    public void handle(NetworkManager.PacketContext context) {
+        context.queue(() -> {
+            UtilClientPacket.onShoot(vehicleId, shooterId, type);
 		});
-		ctx.get().setPacketHandled(true);
-		return success.get();
 	}
 
 }

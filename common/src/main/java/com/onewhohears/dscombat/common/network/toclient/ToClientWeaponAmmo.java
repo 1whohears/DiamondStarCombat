@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
@@ -29,7 +30,7 @@ public class ToClientWeaponAmmo extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.S2C_WEAPON_AMMO;
     }
 
     @Override

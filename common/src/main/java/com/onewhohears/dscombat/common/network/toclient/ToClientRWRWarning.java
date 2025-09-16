@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
@@ -24,7 +25,7 @@ public class ToClientRWRWarning extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.S2C_RWR_WARNING;
     }
 
     @Override

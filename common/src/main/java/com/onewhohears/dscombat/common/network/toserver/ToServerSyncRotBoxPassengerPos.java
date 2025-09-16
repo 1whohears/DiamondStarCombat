@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.onewholibs.util.UtilEntity;
 
@@ -36,7 +37,7 @@ public class ToServerSyncRotBoxPassengerPos extends BaseC2SMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.C2S_SYNC_ROTBOX_PASSENGER_POS;
     }
 
     @Override

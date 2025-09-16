@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
@@ -27,7 +28,7 @@ public class ToServerVehicleControl extends BaseC2SMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.C2S_VEHICLE_CONTROL;
     }
 
     @Override

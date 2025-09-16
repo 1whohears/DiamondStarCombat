@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.init.DataSerializers;
 
@@ -24,7 +25,7 @@ public class ToServerSeatPos extends BaseC2SMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.C2S_SEAT_POS;
     }
 
     @Override

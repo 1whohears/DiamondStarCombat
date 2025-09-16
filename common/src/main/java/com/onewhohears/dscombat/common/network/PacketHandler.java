@@ -19,139 +19,59 @@ public final class PacketHandler {
 
     public static final MessageType C2S_VEHICLE_CONTROL = INSTANCE.registerC2S(
             "c2s_vehicle_control", ToServerVehicleControl::new);
+    public static final MessageType C2S_CRAFT_WEAPON = INSTANCE.registerC2S(
+            "c2s_craft_weapon", ToServerCraftWeapon::new);
+    public static final MessageType C2S_CRAFT_PLANE = INSTANCE.registerC2S(
+            "c2s_craft_plane", ToServerCraftPlane::new);
+    public static final MessageType C2S_SEAT_POS = INSTANCE.registerC2S(
+            "c2s_seat_pos", ToServerSeatPos::new);
+    public static final MessageType C2S_VEHICLE_COLLIDE = INSTANCE.registerC2S(
+            "c2s_vehicle_collide", ToServerVehicleCollide::new);
+    public static final MessageType C2S_VEHICLE_MOVE_ROT = INSTANCE.registerC2S(
+            "c2s_vehicle_move_rot", ToServerVehicleMoveRot::new);
+    public static final MessageType C2S_VEHICLE_TEXTURE = INSTANCE.registerC2S(
+            "c2s_vehicle_texture", ToServerVehicleTexture::new);
+    public static final MessageType C2S_GET_HOOK_CHAINS = INSTANCE.registerC2S(
+            "c2s_get_hook_chains", ToServerGetHookChains::new);
+    public static final MessageType C2S_SYNC_ROTBOX_PASSENGER_POS = INSTANCE.registerC2S(
+            "c2s_sync_rotbox_passenger_pos", ToServerSyncRotBoxPassengerPos::new);
+    public static final MessageType C2S_FIX_HITBOXES = INSTANCE.registerC2S(
+            "c2s_fix_hitboxes", ToServerFixHitboxes::new);
+    public static final MessageType C2S_VEHICLE_SYNC_ACTION = INSTANCE.registerC2S(
+            "c2s_vehicle_sync_action", ToServerVehicleSyncAction::new);
+    public static final MessageType C2S_CRAFT_WEAPON_PART = INSTANCE.registerC2S(
+            "c2s_craft_weapon_part", ToServerCraftWeaponPart::new);
 
-	public static void register() {
-		net.messageBuilder(ToClientVehicleControl.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientVehicleControl::encode)
-			.decoder(ToClientVehicleControl::new)
-			.consumerMainThread(ToClientVehicleControl::handle)
-			.add();
-		net.messageBuilder(ToClientRadarPings.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientRadarPings::encode)
-			.decoder(ToClientRadarPings::new)
-			.consumerMainThread(ToClientRadarPings::handle)
-			.add();
-		net.messageBuilder(ToClientWeaponAmmo.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientWeaponAmmo::encode)
-			.decoder(ToClientWeaponAmmo::new)
-			.consumerMainThread(ToClientWeaponAmmo::handle)
-			.add();
-		net.messageBuilder(ToClientRemovePart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientRemovePart::encode)
-			.decoder(ToClientRemovePart::new)
-			.consumerMainThread(ToClientRemovePart::handle)
-			.add();	
-		net.messageBuilder(ToClientAddPart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientAddPart::encode)
-			.decoder(ToClientAddPart::new)
-			.consumerMainThread(ToClientAddPart::handle)
-			.add();
-		net.messageBuilder(ToServerCraftWeapon.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerCraftWeapon::encode)
-			.decoder(ToServerCraftWeapon::new)
-			.consumerMainThread(ToServerCraftWeapon::handle)
-			.add();
-		net.messageBuilder(ToServerCraftPlane.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerCraftPlane::encode)
-			.decoder(ToServerCraftPlane::new)
-			.consumerMainThread(ToServerCraftPlane::handle)
-			.add();
-		net.messageBuilder(ToClientRWRWarning.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientRWRWarning::encode)
-			.decoder(ToClientRWRWarning::new)
-			.consumerMainThread(ToClientRWRWarning::handle)
-			.add();
-		net.messageBuilder(ToClientAddForceMoment.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientAddForceMoment::encode)
-			.decoder(ToClientAddForceMoment::new)
-			.consumerMainThread(ToClientAddForceMoment::handle)
-			.add();
-		net.messageBuilder(ToServerSeatPos.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerSeatPos::encode)
-			.decoder(ToServerSeatPos::new)
-			.consumerMainThread(ToServerSeatPos::handle)
-			.add();
-		net.messageBuilder(ToServerVehicleCollide.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerVehicleCollide::encode)
-			.decoder(ToServerVehicleCollide::new)
-			.consumerMainThread(ToServerVehicleCollide::handle)
-			.add();
-		net.messageBuilder(ToServerVehicleMoveRot.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerVehicleMoveRot::encode)
-			.decoder(ToServerVehicleMoveRot::new)
-			.consumerMainThread(ToServerVehicleMoveRot::handle)
-			.add();
-		net.messageBuilder(ToServerVehicleTexture.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerVehicleTexture::encode)
-			.decoder(ToServerVehicleTexture::new)
-			.consumerMainThread(ToServerVehicleTexture::handle)
-			.add();
-		net.messageBuilder(ToClientVehicleTexture.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientVehicleTexture::encode)
-			.decoder(ToClientVehicleTexture::new)
-			.consumerMainThread(ToClientVehicleTexture::handle)
-			.add();
-		net.messageBuilder(ToClientVehicleExplode.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientVehicleExplode::encode)
-			.decoder(ToClientVehicleExplode::new)
-			.consumerMainThread(ToClientVehicleExplode::handle)
-			.add();
-		net.messageBuilder(ToClientWeaponImpact.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientWeaponImpact::encode)
-			.decoder(ToClientWeaponImpact::new)
-			.consumerMainThread(ToClientWeaponImpact::handle)
-			.add();
-		net.messageBuilder(ToClientDelayedSound.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientDelayedSound::encode)
-			.decoder(ToClientDelayedSound::new)
-			.consumerMainThread(ToClientDelayedSound::handle)
-			.add();
-		net.messageBuilder(ToClientVehicleChainUpdate.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientVehicleChainUpdate::encode)
-			.decoder(ToClientVehicleChainUpdate::new)
-			.consumerMainThread(ToClientVehicleChainUpdate::handle)
-			.add();
-		net.messageBuilder(ToServerGetHookChains.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerGetHookChains::encode)
-			.decoder(ToServerGetHookChains::new)
-			.consumerMainThread(ToServerGetHookChains::handle)
-			.add();
-		net.messageBuilder(ToClientSyncPart.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientSyncPart::encode)
-			.decoder(ToClientSyncPart::new)
-			.consumerMainThread(ToClientSyncPart::handle)
-			.add();
-		net.messageBuilder(ToServerSyncRotBoxPassengerPos.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerSyncRotBoxPassengerPos::encode)
-			.decoder(ToServerSyncRotBoxPassengerPos::new)
-			.consumerMainThread(ToServerSyncRotBoxPassengerPos::handle)
-			.add();
-		net.messageBuilder(ToClientDebugHitboxPos.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-			.encoder(ToClientDebugHitboxPos::encode)
-			.decoder(ToClientDebugHitboxPos::new)
-			.consumerMainThread(ToClientDebugHitboxPos::handle)
-			.add();
-		net.messageBuilder(ToServerFixHitboxes.class, index++, NetworkDirection.PLAY_TO_SERVER)
-			.encoder(ToServerFixHitboxes::encode)
-			.decoder(ToServerFixHitboxes::new)
-			.consumerMainThread(ToServerFixHitboxes::handle)
-			.add();
-		net.messageBuilder(ToServerVehicleSyncAction.class, index++, NetworkDirection.PLAY_TO_SERVER)
-				.encoder(ToServerVehicleSyncAction::encode)
-				.decoder(ToServerVehicleSyncAction::new)
-				.consumerMainThread(ToServerVehicleSyncAction::handle)
-				.add();
-		net.messageBuilder(ToClientOnShoot.class, index++, NetworkDirection.PLAY_TO_CLIENT)
-				.encoder(ToClientOnShoot::encode)
-				.decoder(ToClientOnShoot::new)
-				.consumerMainThread(ToClientOnShoot::handle)
-				.add();
-		net.messageBuilder(ToServerCraftWeaponPart.class, index++, NetworkDirection.PLAY_TO_SERVER)
-				.encoder(ToServerCraftWeaponPart::encode)
-				.decoder(ToServerCraftWeaponPart::new)
-				.consumerMainThread(ToServerCraftWeaponPart::handle)
-				.add();
-	}
+    public static final MessageType S2C_VEHICLE_CONTROL = INSTANCE.registerS2C(
+            "s2c_vehicle_control", ToClientVehicleControl::new);
+    public static final MessageType S2C_RADAR_PINGS = INSTANCE.registerS2C(
+            "s2c_radar_pings", ToClientRadarPings::new);
+    public static final MessageType S2C_WEAPON_AMMO = INSTANCE.registerS2C(
+            "s2c_weapon_ammo", ToClientWeaponAmmo::new);
+    public static final MessageType S2C_REMOVE_PART = INSTANCE.registerS2C(
+            "s2c_remove_part", ToClientRemovePart::new);
+    public static final MessageType S2C_ADD_PART = INSTANCE.registerS2C(
+            "s2c_add_part", ToClientAddPart::new);
+    public static final MessageType S2C_RWR_WARNING = INSTANCE.registerS2C(
+            "s2c_rwr_warning", ToClientRWRWarning::new);
+    public static final MessageType S2C_ADD_FORCE_MOMENT = INSTANCE.registerS2C(
+            "s2c_add_force_moment", ToClientAddForceMoment::new);
+    public static final MessageType S2C_VEHICLE_TEXTURE = INSTANCE.registerS2C(
+            "s2c_vehicle_texture", ToClientVehicleTexture::new);
+    public static final MessageType S2C_VEHICLE_EXPLODE = INSTANCE.registerS2C(
+            "s2c_vehicle_explode", ToClientVehicleExplode::new);
+    public static final MessageType S2C_WEAPON_IMPACT = INSTANCE.registerS2C(
+            "s2c_weapon_impact", ToClientWeaponImpact::new);
+    public static final MessageType S2C_DELAYED_SOUND = INSTANCE.registerS2C(
+            "s2c_delayed_sound", ToClientDelayedSound::new);
+    public static final MessageType S2C_VEHICLE_CHAIN_UPDATE = INSTANCE.registerS2C(
+            "s2c_vehicle_chain_update", ToClientVehicleChainUpdate::new);
+    public static final MessageType S2C_SYNC_PART = INSTANCE.registerS2C(
+            "s2c_sync_part", ToClientSyncPart::new);
+    public static final MessageType S2C_DEBUG_HITBOX_POS = INSTANCE.registerS2C(
+            "s2c_debug_hitbox_pos", ToClientDebugHitboxPos::new);
+    public static final MessageType S2C_ON_SHOOT = INSTANCE.registerS2C(
+            "s2c_on_shoot", ToClientOnShoot::new);
 
     public static LevelChunk getEntityChunk(@NotNull Entity entity) {
         return UtilEntity.getLevel(entity).getChunkAt(entity.blockPosition());

@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilClientPacket;
@@ -30,7 +31,7 @@ public class ToClientSyncPart extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.S2C_SYNC_PART;
     }
 
     @Override

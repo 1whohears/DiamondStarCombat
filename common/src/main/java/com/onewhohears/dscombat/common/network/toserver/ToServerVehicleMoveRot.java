@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -41,7 +42,7 @@ public class ToServerVehicleMoveRot extends BaseC2SMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.C2S_VEHICLE_MOVE_ROT;
     }
 
     @Override

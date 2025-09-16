@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
 import dev.architectury.networking.NetworkManager;
@@ -23,7 +24,7 @@ public class ToServerFixHitboxes extends BaseC2SMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.C2S_FIX_HITBOXES;
     }
 
     @Override

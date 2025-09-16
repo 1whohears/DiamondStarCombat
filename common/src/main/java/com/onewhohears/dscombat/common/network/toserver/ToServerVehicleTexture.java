@@ -30,7 +30,7 @@ public class ToServerVehicleTexture extends BaseC2SMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.C2S_VEHICLE_TEXTURE;
     }
 
     @Override

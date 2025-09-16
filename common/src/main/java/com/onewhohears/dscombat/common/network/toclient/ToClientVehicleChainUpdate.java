@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -35,7 +36,7 @@ public class ToClientVehicleChainUpdate extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.S2C_VEHICLE_CHAIN_UPDATE;
     }
 
     @Override

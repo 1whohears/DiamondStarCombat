@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilClientPacket;
@@ -30,7 +31,7 @@ public class ToClientAddForceMoment extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.S2C_ADD_FORCE_MOMENT;
     }
 
     @Override

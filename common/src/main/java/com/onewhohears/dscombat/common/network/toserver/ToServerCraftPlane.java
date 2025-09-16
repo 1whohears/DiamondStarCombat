@@ -56,6 +56,6 @@ public class ToServerCraftPlane extends BaseC2SMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.C2S_CRAFT_PLANE;
     }
 }

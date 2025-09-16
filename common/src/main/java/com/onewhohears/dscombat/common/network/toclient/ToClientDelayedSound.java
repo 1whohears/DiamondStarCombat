@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
@@ -33,7 +34,7 @@ public class ToClientDelayedSound extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.S2C_DELAYED_SOUND;
     }
 
     @Override

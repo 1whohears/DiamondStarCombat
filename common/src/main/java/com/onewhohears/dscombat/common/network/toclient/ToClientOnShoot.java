@@ -54,7 +54,7 @@ public class ToClientOnShoot extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.S2C_ON_SHOOT;
     }
 
     @Override

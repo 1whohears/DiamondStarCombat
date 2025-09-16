@@ -76,7 +76,7 @@ public abstract class VehicleSyncAction {
     }
 
     public static void sendSyncAction(VehicleSyncAction action) {
-        PacketHandler.INSTANCE.sendToServer(new ToServerVehicleSyncAction(action));
+        new ToServerVehicleSyncAction(action).sendToServer();
     }
 
     private static final IntObjectMap<VehicleSyncAction> sync_action_map = new IntObjectHashMap<>();

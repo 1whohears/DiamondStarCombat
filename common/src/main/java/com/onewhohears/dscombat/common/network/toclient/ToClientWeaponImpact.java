@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -27,7 +28,7 @@ public class ToClientWeaponImpact extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.S2C_WEAPON_IMPACT;
     }
 
     @Override

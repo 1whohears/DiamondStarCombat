@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common.network.toserver;
 import java.util.Optional;
 
 import com.mojang.datafixers.util.Pair;
+import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.onewholibs.util.UtilItem;
 
@@ -34,7 +35,7 @@ public class ToServerCraftWeapon extends BaseC2SMessage {
 
     @Override
     public MessageType getType() {
-        return null;
+        return PacketHandler.C2S_CRAFT_WEAPON;
     }
 
     @Override

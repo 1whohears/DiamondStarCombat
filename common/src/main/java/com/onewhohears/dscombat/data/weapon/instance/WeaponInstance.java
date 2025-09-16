@@ -161,8 +161,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	public void updateClientAmmo(EntityVehicle vehicle) {
 		if (vehicle == null) return;
 		if (vehicle.level.isClientSide) return;
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle), 
-				new ToClientWeaponAmmo(vehicle.getId(), getStatsId(), slotId, getCurrentAmmo()));
+        PacketHandler.sendToTrackers(new ToClientWeaponAmmo(vehicle.getId(), getStatsId(), slotId, getCurrentAmmo()), vehicle);
 	}
 	
 	public void tick(@Nullable EntityVehicle parent, boolean isSelected) {

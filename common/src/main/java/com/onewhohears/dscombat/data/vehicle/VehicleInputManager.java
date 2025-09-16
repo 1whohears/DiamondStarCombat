@@ -53,7 +53,7 @@ public class VehicleInputManager {
 		parent.setDriverCameraLocked(isDriverCameraLocked);
 		weaponIndex = parent.weaponSystem.getSelectedIndex();
 		currentThrottle = parent.getCurrentThrottle();
-		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleControl(parent));
+        new ToServerVehicleControl(parent).sendToServer();
 	}
 
 	public void setThrottleOverride(float t, EntityVehicle parent) {

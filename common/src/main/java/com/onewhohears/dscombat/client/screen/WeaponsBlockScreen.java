@@ -212,7 +212,7 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 		if (player == null) return;
 		WeaponRecipe recipe = WeaponPresets.get().getWeaponRecipes(m.level.getRecipeManager())[weaponIndex];
 		if (recipe.matches(player.getInventory(), m.level)) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerCraftWeapon(recipe.getId(), menu.getPos()));
+            new ToServerCraftWeapon(recipe.getId(), menu.getPos()).sendToServer();
 		} else {
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));

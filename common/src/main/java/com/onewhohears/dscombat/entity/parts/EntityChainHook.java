@@ -82,7 +82,7 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 	
 	private void requestChainsFromServer() {
 		if (!level.isClientSide) return;
-		PacketHandler.INSTANCE.sendToServer(new ToServerGetHookChains(this));
+        new ToServerGetHookChains(this).sendToServer();
 	}
 	
 	public void sendAllVehicleChainsToClient(ServerPlayer reciever) {

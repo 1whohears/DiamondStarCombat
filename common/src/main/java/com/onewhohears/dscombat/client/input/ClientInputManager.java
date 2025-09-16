@@ -211,7 +211,7 @@ public class ClientInputManager {
          * is there a way to fix this without the ToServerSeatPos packet?
          */
         if (player.tickCount % Config.CLIENT.syncSeatPosRate.get() == 0) {
-            PacketHandler.INSTANCE.sendToServer(new ToServerSeatPos(seat.position()));
+            new ToServerSeatPos(seat.position()).sendToServer();
         }
         // SWITCH SEAT
         if (CHANGE_SEAT.isInitPressed()) {

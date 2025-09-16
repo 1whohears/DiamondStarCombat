@@ -407,8 +407,7 @@ public class RadarSystem {
 	public void addRWRWarning(int fromId, Vec3 pos, boolean isMissile, boolean fromGround) {
 		if (parent == null || parent.level.isClientSide || !hasRadar()) return;
 		RWRWarning warning = new RWRWarning(fromId, pos, fromGround, isMissile);
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> parent), 
-				new ToClientRWRWarning(parent.getId(), warning));
+        PacketHandler.sendToTrackers(new ToClientRWRWarning(parent.getId(), warning), parent);
 	}
 	
 	public void readRWRWarningFromServer(RWRWarning warning) {

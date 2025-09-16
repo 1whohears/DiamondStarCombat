@@ -214,9 +214,9 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
 	public void kill() {
-		if (!level.isClientSide) PacketHandler.INSTANCE.send(
-				PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ToClientWeaponImpact(this, position()));
+		if (!level.isClientSide) {
+            PacketHandler.sendToTrackers(new ToClientWeaponImpact(this, position()), this);
+        }
 		super.kill();
 	}
 	

@@ -128,8 +128,7 @@ public class PartSlot {
 		if (plane == null) return true;
 		if (data.canSetup()) data.setup(plane, slotId, pos);
 		if (!plane.level.isClientSide) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
-					new ToClientAddPart(plane.getId(), slotId, data));
+            PacketHandler.sendToTrackers(new ToClientAddPart(plane.getId(), slotId, data), plane);
 		}
 		return true;
 	}
@@ -138,8 +137,7 @@ public class PartSlot {
 		if (!filled()) return false;
 		data.remove(plane, slotId);
 		if (!plane.level.isClientSide) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> plane), 
-					new ToClientRemovePart(plane.getId(), slotId));
+            PacketHandler.sendToTrackers(new ToClientRemovePart(plane.getId(), slotId), plane);
 		}
 		data = null;
 		return true;
@@ -166,8 +164,7 @@ public class PartSlot {
 	public void checkDirtyToSync(EntityVehicle vehicle) {
 		if (getPartData() == null) return;
 		if (!vehicle.getLevel().isClientSide() && data.isDirty()) {
-			PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> vehicle),
-					new ToClientSyncPart(vehicle, getPartData()));
+            PacketHandler.sendToTrackers(new ToClientSyncPart(vehicle, getPartData()), vehicle);
 			getPartData().onSendClientSync();
 		}
 	}

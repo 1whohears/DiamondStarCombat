@@ -63,7 +63,7 @@ public class VehicleTextureManager {
 	
 	public void clientTick() {
 		if (isChanged()) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleTexture(parent));
+            new ToServerVehicleTexture(parent).sendToServer();
 			setupDynamicTexture();
 			resetChanged();
 		}

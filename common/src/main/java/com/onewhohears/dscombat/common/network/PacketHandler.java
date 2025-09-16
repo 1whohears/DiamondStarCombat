@@ -10,6 +10,7 @@ import dev.architectury.networking.simple.SimpleNetworkManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class PacketHandler {
 	
@@ -77,7 +78,8 @@ public final class PacketHandler {
         return UtilEntity.getLevel(entity).getChunkAt(entity.blockPosition());
     }
 
-    public static void sendToTrackers(@NotNull BaseS2CMessage message, @NotNull Entity entity) {
+    public static void sendToTrackers(@NotNull BaseS2CMessage message, @Nullable Entity entity) {
+        if (entity == null) return;
         message.sendToChunkListeners(getEntityChunk(entity));
     }
 

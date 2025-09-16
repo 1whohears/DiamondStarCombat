@@ -5,8 +5,10 @@ import java.util.NoSuchElementException;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 
+import com.onewhohears.onewholibs.common.event.ServerHolder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -24,9 +26,12 @@ public class UtilSound {
 		}
 	}
 	
-	public static void sendDelayedSound(SoundEvent sound, Vec3 pos, float radius, ResourceKey<Level> dim, float volume, float pitch) {
-		PacketHandler.INSTANCE.send(PacketDistributor.NEAR.with(TargetPoint.p(pos.x, pos.y, pos.z, radius, dim)), 
-				new ToClientDelayedSound(sound, pos, radius, volume, pitch));
+	public static void sendDelayedSound(SoundEvent sound, Vec3 pos, float radius,
+                                        ResourceKey<Level> dim, float volume, float pitch) {
+        MinecraftServer server = ServerHolder.get();
+        if (server == null) return;
+        new ToClientDelayedSound(sound, pos, radius, volume, pitch)
+                .sendTo(UtilServerPacket.getPlayersWithinRadius(server, dim, pos, radius));
 	}
 	
 }

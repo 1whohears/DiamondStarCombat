@@ -212,7 +212,7 @@ public class WeaponPartsBlockScreen extends AbstractContainerScreen<WeaponPartsB
 		if (player == null) return;
 		WeaponPartRecipe recipe = PartPresets.get().getWeaponPartRecipes(m.level.getRecipeManager())[weaponIndex];
 		if (recipe.matches(player.getInventory(), m.level)) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerCraftWeaponPart(recipe.getId(), menu.getPos()));
+            new ToServerCraftWeaponPart(recipe.getId(), menu.getPos()).sendToServer();
 		} else {
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.cant_craft"), true);
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.VILLAGER_NO, 1.0F));

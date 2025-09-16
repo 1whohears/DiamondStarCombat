@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 import java.util.*;
 import java.util.function.Predicate;
 
+import dev.architectury.networking.simple.BaseS2CMessage;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
@@ -470,9 +471,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void syncControlsToClient() {
 		if (level.isClientSide) return;
-		PacketHandler.INSTANCE.send(
-			PacketDistributor.TRACKING_ENTITY.with(() -> this),
-			new ToClientVehicleControl(this));
+        PacketHandler.sendToTrackers(new ToClientVehicleControl(this), this);
 	}
 	
 	/**
@@ -570,7 +569,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			if (isFall) hurt(DamageSource.FALL, amount);
 			else hurt(DamageSource.FLY_INTO_WALL, amount);
 		} else if (level.isClientSide && isControlledByLocalInstance()) {
-			PacketHandler.INSTANCE.sendToServer(new ToServerVehicleCollide(getId(), amount, isFall));
+            new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
 		}
 	}
 	
@@ -1016,7 +1015,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	private void syncMoveRot() {
 		if (!level.isClientSide || tickCount % 10 != 0 || firstTick) return;
-		PacketHandler.INSTANCE.sendToServer(new ToServerVehicleMoveRot(this));
+        new ToServerVehicleMoveRot(this).sendToServer();
 	}
 	
 	/**
@@ -1634,8 +1633,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (level.isClientSide) return;
 		addForceBetweenTicks = addForceBetweenTicks.add(force);
 		addMomentBetweenTicks = addMomentBetweenTicks.add(moment);
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ToClientAddForceMoment(this, force, moment));
+        PacketHandler.sendToTrackers(new ToClientAddForceMoment(this, force, moment), this);
 	}
 	
 	public void explode(DamageSource source) {
@@ -1645,8 +1643,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			getStats().crashExplosionRadius, true,
 			Explosion.BlockInteraction.BREAK);
         explodeSeats(source);
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), 
-				new ToClientVehicleExplode(this));
+        PacketHandler.sendToTrackers(new ToClientVehicleExplode(this), this);
 	}
 
     public void explodeSeats(DamageSource source) {
@@ -2426,17 +2423,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		System.out.println(side+" TICK "+tickCount+" "+this);
 	}
     
-    public void toClientPassengers(IPacket packet) {
+    public void toClientPassengers(BaseS2CMessage packet) {
     	if (level.isClientSide()) return;
 		// somehow class cast exception happened here while playing single player on a modded v0.10 client?
 		// LocalPlayer cannot be cast to ServerPlayer
     	for (Player p : getRidingPlayers()) if (!p.level.isClientSide()) // this additional client side check should fix?
-    		PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)p), packet);
+            packet.sendTo((ServerPlayer) p);
     }
 
-	public void toTrackers(IPacket packet) {
+	public void toTrackers(BaseS2CMessage packet) {
 		if (level.isClientSide()) return;
-		PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), packet);
+        PacketHandler.sendToTrackers(packet, this);
 	}
     
     public boolean isWeaponAngledDown() {
@@ -2559,7 +2556,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (level.isClientSide && hitboxes.size() < getStats().getHitboxNum() && tickCount % 200 == 20) {
             LOGGER.debug("Vehicle {} on client side has {}/{} hitboxes. Sending hitbox refresh packet. Attempt {}",
 					getId(), hitboxes.size(), getStats().getHitboxNum(), ++hitboxRefreshAttempts);
-			PacketHandler.INSTANCE.sendToServer(new ToServerFixHitboxes(this));
+            new ToServerFixHitboxes(this).sendToServer();
 		}
 		for (RotableHitbox box : hitboxes) box.tick();
 		//syncHitboxCollidePositions();
@@ -2664,7 +2661,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			else pos[i] = new Vec3(0, -1000, 0);
 			++i;
 		}
-		PacketHandler.INSTANCE.sendToServer(new ToServerSyncRotBoxPassengerPos(ids, pos));
+        new ToServerSyncRotBoxPassengerPos(ids, pos).sendToServer();
 	}
 	
 	public void addEntityCollidedHitbox(Entity entity) {

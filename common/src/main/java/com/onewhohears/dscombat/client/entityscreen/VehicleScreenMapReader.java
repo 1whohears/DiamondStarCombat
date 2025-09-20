@@ -6,15 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.onewhohears.onewholibs.client.model.obj.ObjBakedModel;
 import org.slf4j.Logger;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.dscombat.data.vehicle.EntityScreenData;
-import com.onewhohears.dscombat.mixin.CompositeRenderableAccess;
-import com.onewhohears.dscombat.mixin.CompositeRenderableComponentAccess;
-import com.onewhohears.dscombat.mixin.CompositeRenderableMeshAccess;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
@@ -24,7 +22,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.model.renderable.CompositeRenderable;
 
 public class VehicleScreenMapReader {
 	
@@ -75,7 +72,7 @@ public class VehicleScreenMapReader {
 					(float)v0 / (float)image.getHeight(), (float)v1 / (float)image.getHeight());
 			list.add(vsuv);
 			x = u1;
-			LOGGER.debug("Found screen "+vsuv.toString()+" in "+screenMap.toString());
+			LOGGER.debug("Found screen "+vsuv+" in "+screenMap.toString());
 		}
 		return list;
 	}
@@ -86,17 +83,17 @@ public class VehicleScreenMapReader {
 			LOGGER.warn("Obj Model "+modelId+" does not exist! No screens created.");
 			return list;
 		}
-		CompositeRenderable model = ObjEntityModels.get().getBakedModel(modelId);
+		ObjBakedModel model = ObjEntityModels.get().getBakedModel(modelId);
 		for (VehicleScreenUV screenUV : vehicleScreenUVs) findScreenPos(screenUV, model, list, offset);
 		return list;
 	}
 	
-	private static void findScreenPos(VehicleScreenUV screenUV, CompositeRenderable model, List<EntityScreenData> list, Vec3 offset) {
+	private static void findScreenPos(VehicleScreenUV screenUV, ObjBakedModel model, List<EntityScreenData> list, Vec3 offset) {
 		List<BakedQuad> middleQuads = findQuadsWithUV(model, screenUV.um, screenUV.vm);
 		for (BakedQuad quad : middleQuads) addScreenFromQuad(quad, list, screenUV, model, offset);
 	}
 	
-	private static void addScreenFromQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV, CompositeRenderable model, Vec3 offset) {
+	private static void addScreenFromQuad(BakedQuad quad, List<EntityScreenData> list, VehicleScreenUV screenUV, ObjBakedModel model, Vec3 offset) {
 		Vec2[] uvs = getUVs(quad);
 		Vec3[] corners = getQuadPositions(quad);
 		Vec3 pos = getWorldPos(screenUV.um, screenUV.vm, uvs, corners);
@@ -114,7 +111,7 @@ public class VehicleScreenMapReader {
 				UtilAngles.getPitch(normal), UtilAngles.getYaw(normal), 0));
 	}
 	
-	private static float[] getWidthHeightOtherQuad(Vec3 pos, VehicleScreenUV screenUV, CompositeRenderable model) {
+	private static float[] getWidthHeightOtherQuad(Vec3 pos, VehicleScreenUV screenUV, ObjBakedModel model) {
 		List<BakedQuad> cornerQuads = findQuadsWithUV(model, screenUV.u0, screenUV.v0);
 		for (BakedQuad quad : cornerQuads) {
 			Vec2[] uvs = getUVs(quad);
@@ -155,22 +152,22 @@ public class VehicleScreenMapReader {
 		return new float[] {width, height};
 	}
 	
-	private static List<BakedQuad> findQuadsWithUV(CompositeRenderable model, float u, float v) {
+	private static List<BakedQuad> findQuadsWithUV(ObjBakedModel model, float u, float v) {
 		List<BakedQuad> quads = new ArrayList<>();
-		for (CompositeRenderableComponentAccess component : ((CompositeRenderableAccess)model).getComponents()) 
+		for (ObjBakedModel.Component component : model.getComponents())
 			searchComponent(component, quads, u, v);
 		return quads;
 	}
 	
-	private static void searchComponent(CompositeRenderableComponentAccess component, List<BakedQuad> quads, float u, float v) {
-		for (CompositeRenderableMeshAccess mesh : ((CompositeRenderableComponentAccess)component).getMeshes()) 
+	private static void searchComponent(ObjBakedModel.Component component, List<BakedQuad> quads, float u, float v) {
+		for (ObjBakedModel.Mesh mesh : component.getMeshes())
 			searchMesh(mesh, quads, u, v);
-		for (CompositeRenderableComponentAccess childComponent : ((CompositeRenderableComponentAccess)component).getChildren()) 
+		for (ObjBakedModel.Component childComponent : component.getChildren())
 			searchComponent(childComponent, quads, u, v);
 	}
 	
-	private static void searchMesh(CompositeRenderableMeshAccess mesh, List<BakedQuad> quads, float u, float v) {
-		for (BakedQuad quad : ((CompositeRenderableMeshAccess)mesh).getQuads()) searchQuad(quad, quads, u, v);
+	private static void searchMesh(ObjBakedModel.Mesh mesh, List<BakedQuad> quads, float u, float v) {
+		for (BakedQuad quad : mesh.getQuads()) searchQuad(quad, quads, u, v);
 	}
 	
 	private static void searchQuad(BakedQuad quad, List<BakedQuad> quads, float u, float v) {

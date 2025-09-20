@@ -66,6 +66,9 @@ dependencies {
     //modApi "com.onewhohears.distant_players:distant_players-forge-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
 
     modCompileOnly "curse.maven:timeless-and-classics-zero-1028108:$rootProject.tacz_id_forge"
+
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
+    modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
 }
 
 processResources {

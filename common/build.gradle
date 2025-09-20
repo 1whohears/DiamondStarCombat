@@ -18,6 +18,9 @@ dependencies {
     modApi "com.onewhohears.onewholibs:onewholibs-common-${rootProject.minecraft_version}:${rootProject.onewholibs_version}"
     modApi "com.onewhohears.minigames:minigames-common-${rootProject.minecraft_version}:${rootProject.minigames_version}"
     modApi "com.onewhohears.distant_players:distant_players-common-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
+
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
+    modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common:${rootProject.jei_version}"
 }
 
 tasks.register("commonShadowJar", ShadowJar) {

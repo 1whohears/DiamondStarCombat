@@ -2,11 +2,19 @@ package com.onewhohears.dscombat.block.custom;
 
 import com.onewhohears.dscombat.block.entity.WeaponsBlockEntity;
 
+import com.onewhohears.dscombat.init.ModContainers;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import dev.architectury.registry.menu.ExtendedMenuProvider;
+import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -23,7 +31,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 
 public class WeaponsBlock extends BaseEntityBlock {
 	
@@ -64,14 +72,31 @@ public class WeaponsBlock extends BaseEntityBlock {
     public RenderShape getRenderShape(BlockState p_49232_) {
         return RenderShape.MODEL;
     }
-    
+
+    private static ExtendedMenuProvider getProvider(BlockPos pos) {
+        return new ExtendedMenuProvider() {
+            @Override
+            public void saveExtraData(FriendlyByteBuf buf) {
+                buf.writeBlockPos(pos);
+            }
+            @Override
+            public @NotNull Component getDisplayName() {
+                return UtilMCText.translatable("block.dscombat.weapons_block");
+            }
+            @Override
+            public @NotNull AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+                return ModContainers.WEAPONS_BLOCK_MENU.get().create(i, inventory);
+            }
+        };
+    }
+
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
                                  Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof WeaponsBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (WeaponsBlockEntity)entity, pPos);
+                MenuRegistry.openExtendedMenu((ServerPlayer)pPlayer, getProvider(pPos));
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.block.entity.VehicleBlock;
+import com.onewhohears.dscombat.block.entity.VehicleBlockEntity;
 import com.onewhohears.dscombat.block.entity.WeaponPartsBlockEntity;
 import com.onewhohears.dscombat.block.entity.WeaponsBlockEntity;
 import com.onewhohears.dscombat.common.container.menu.*;
@@ -31,7 +31,7 @@ public class ModContainers {
 			}));
 	public static final RegistrySupplier<MenuType<VehicleBlockContainerMenu>> AIRCRAFT_BLOCK_MENU =
             register("aircraft_block_menu", MenuRegistry.ofExtended((windowId, playerInv, data) -> {
-				VehicleBlock aircraftBlock = (VehicleBlock)playerInv.player.level.getBlockEntity(data.readBlockPos());
+				VehicleBlockEntity aircraftBlock = (VehicleBlockEntity)playerInv.player.level.getBlockEntity(data.readBlockPos());
 				return new VehicleBlockContainerMenu(windowId, playerInv, aircraftBlock);
 			}));
 	public static final RegistrySupplier<MenuType<WeaponPartsBlockContainerMenu>> WEAPON_PARTS_BLOCK_MENU =

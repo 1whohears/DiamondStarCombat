@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.block.entity;
 import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 import com.onewhohears.onewholibs.util.UtilMCText;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -14,13 +13,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class VehicleBlock extends SyncedBlockEntity implements MenuProvider {
+public class VehicleBlockEntity extends BlockEntity implements MenuProvider {
 	
 	private NonNullList<ItemStack> inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	
-	public VehicleBlock(BlockPos pos, BlockState blockState) {
+	public VehicleBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.AIRCRAFT_BLOCK_ENTITY.get(), pos, blockState);
 	}
 

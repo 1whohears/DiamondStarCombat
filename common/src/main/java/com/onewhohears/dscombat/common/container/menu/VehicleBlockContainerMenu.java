@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.common.container.menu;
 
-import com.onewhohears.dscombat.block.entity.VehicleBlock;
+import com.onewhohears.dscombat.block.entity.VehicleBlockEntity;
 import com.onewhohears.dscombat.common.container.slot.DisplaySlot;
 import com.onewhohears.dscombat.init.ModContainers;
 
@@ -15,11 +15,11 @@ import net.minecraft.world.item.ItemStack;
 public class VehicleBlockContainerMenu extends AbstractContainerMenu {
 	
 	public final Container recipeSlots = new SimpleContainer(18);
-	private VehicleBlock aircraftBlock;
+	private VehicleBlockEntity aircraftBlock;
 	private BlockPos pos;
 	private boolean loaded = false;
 	
-	public VehicleBlockContainerMenu(int windowId, Container playerInv, VehicleBlock aircraftBlock) {
+	public VehicleBlockContainerMenu(int windowId, Container playerInv, VehicleBlockEntity aircraftBlock) {
 		super(ModContainers.AIRCRAFT_BLOCK_MENU.get(), windowId);
 		this.aircraftBlock = aircraftBlock;
 		this.pos = aircraftBlock.getBlockPos();
@@ -50,7 +50,7 @@ public class VehicleBlockContainerMenu extends AbstractContainerMenu {
 		return aircraftBlock.stillValid(player);
 	}
 	
-	public VehicleBlock getWeaponsBlock() {
+	public VehicleBlockEntity getWeaponsBlock() {
 		return aircraftBlock;
 	}
 	

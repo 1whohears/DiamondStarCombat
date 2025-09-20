@@ -14,9 +14,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class WeaponsBlockEntity extends SyncedBlockEntity implements MenuProvider {
+public class WeaponsBlockEntity extends BlockEntity implements MenuProvider {
 	
 	private NonNullList<ItemStack> inventory = NonNullList.withSize(1, ItemStack.EMPTY);
 	

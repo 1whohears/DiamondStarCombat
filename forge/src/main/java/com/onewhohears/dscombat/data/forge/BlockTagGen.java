@@ -1,17 +1,14 @@
-package com.onewhohears.dscombat.data.tag;
-
-import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.Nullable;
+package com.onewhohears.dscombat.data.forge;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.init.ModTags;
-
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockTagGen extends BlockTagsProvider {
 

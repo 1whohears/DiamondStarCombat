@@ -1,17 +1,15 @@
-package com.onewhohears.dscombat.data.tag;
-
-import org.jetbrains.annotations.Nullable;
+package com.onewhohears.dscombat.data.forge;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModTags;
-
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
 
 public class ItemTagGen extends ItemTagsProvider {
 

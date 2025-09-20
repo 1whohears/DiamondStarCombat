@@ -2,16 +2,11 @@ package com.onewhohears.dscombat.forge;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.DependencySafety;
-import com.onewhohears.dscombat.data.forge.DSCRecipeGenerator;
+import com.onewhohears.dscombat.data.forge.*;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
 import com.onewhohears.dscombat.data.parts.client.PartClientPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
-import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
 import com.onewhohears.dscombat.data.sound.forge.DSCSoundDefinitionGenImpl;
-import com.onewhohears.dscombat.data.tag.BlockTagGen;
-import com.onewhohears.dscombat.data.tag.EntityTypeTagGen;
-import com.onewhohears.dscombat.data.tag.FluidTagGen;
-import com.onewhohears.dscombat.data.tag.ItemTagGen;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;

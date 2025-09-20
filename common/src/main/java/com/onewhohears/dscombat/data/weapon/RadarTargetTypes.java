@@ -34,7 +34,7 @@ public class RadarTargetTypes {
 	
 	public void readConfig() {
 		LOGGER.info("RadarTargetTypes READ CONFIG");
-		readRadarMobs();
+		readRadarMobs(); // FIXME call this on read/reload config
 	}
 	
 	private void readRadarMobs() {

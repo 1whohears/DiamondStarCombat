@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat;
 
+import com.onewhohears.dscombat.common.event.CommonEventHandlers;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModArgumentTypes;
@@ -25,7 +26,7 @@ import dev.architectury.platform.Platform;
  * {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents}
  * {@link com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents}
  * {@link com.onewhohears.dscombat.client.event.ClientModEvents}
- * {@link com.onewhohears.dscombat.common.event.CommonForgeEvents}
+ * {@link com.onewhohears.dscombat.common.event.CommonEventHandlers}
  * {@link EntityVehicle}
  * 
  * @author 1whohears
@@ -41,6 +42,7 @@ public class DSCombatMod {
         minigamesLoaded = Platform.isModLoaded("minigames");
         distantPlayersLoaded = Platform.isModLoaded("distant_players");
 
+        CommonEventHandlers.init();
         ModFluids.register();
         ModBlocks.register();
         ModContainers.register();

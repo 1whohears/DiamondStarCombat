@@ -1,14 +1,21 @@
 package com.onewhohears.dscombat.data.villager;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.onewhohears.dscombat.init.ModItems;
 
+import com.onewhohears.dscombat.init.ModVillagers;
+import dev.architectury.registry.level.entity.trade.TradeRegistry;
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
 import net.minecraft.world.item.Item;
@@ -69,8 +76,32 @@ public class DSCVillagerTrades {
 		trades.get(5).add(new EmeraldForAircraft(ModItems.VEHICLE.get(), "krait_chopper_unarmed", 65, 70, 2, 25));
 		trades.get(5).add(new EmeraldForAircraft(ModItems.VEHICLE.get(), "mrbudger_tank", 90, 96, 2, 25));
 	}
-	
-	public static class ItemForEmerald implements VillagerTrades.ItemListing {
+
+    public static void register() {
+        registerTrades(ModVillagers.WEAPONS_ENGINEER.get(), DSCVillagerTrades::putWeaponEngineerTrades);
+        registerTrades(ModVillagers.AIRCRAFT_ENGINEER.get(), DSCVillagerTrades::putAircraftEngineerTrades);
+    }
+
+    public static Int2ObjectMap<List<ItemListing>> createListingMap() {
+        Int2ObjectMap<List<ItemListing>> map = new Int2ObjectArrayMap<>();
+        for (int i = 1; i <= 5; ++i) map.put(i, new ArrayList<>());
+        return map;
+    }
+
+    public static void registerTrades(VillagerProfession profession,
+                                      Consumer<Int2ObjectMap<List<ItemListing>>> tradeFiller) {
+        Int2ObjectMap<List<ItemListing>> trades = createListingMap();
+        tradeFiller.accept(trades);
+        registerTrades(profession, trades);
+    }
+
+    public static void registerTrades(VillagerProfession profession, Int2ObjectMap<List<ItemListing>> trades) {
+        trades.forEach((level, listings) -> {
+            TradeRegistry.registerVillagerTrade(profession, level, listings.toArray(new ItemListing[0]));
+        });
+    }
+
+    public static class ItemForEmerald implements VillagerTrades.ItemListing {
 		
 		protected final Item item;
 		protected final int num;

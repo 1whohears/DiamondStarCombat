@@ -47,7 +47,7 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
             ObjEntityModels.ModelOverrides overrides = model.getModelOverride();
             poseStack.translate(-overrides.translate.x(), -overrides.translate.y(), -overrides.translate.z());
         } else {
-            poseStack.mulPose(entity.getQ());
+            poseStack.mulPose(entity.getQ().convert());
         }
         drawAccs(entity, partialTicks, poseStack, buffer, packedLight);
         poseStack.popPose();
@@ -60,7 +60,7 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         QuaternionF q = vehicle.getQBySide();
         QuaternionF qi = vehicle.getQBySide();
         qi.conj();
-        poseStack.mulPose(qi);
+        poseStack.mulPose(qi.convert());
         float maxForceMag = (float) entity.weightAcc.length();
         // draw sum forces
         drawAcc(poseStack, buffer, packedLight, WHITE, maxForceMag, Vec3.ZERO, entity.totalAcc);
@@ -96,14 +96,15 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         poseStack.translate(pos.x, pos.y, pos.z);
         float y = UtilAngles.getYaw(dir);
         float x = UtilAngles.getPitch(dir);
-        poseStack.mulPose(Vec3f.YN.rotationDegrees(y+180));
-        poseStack.mulPose(Vec3f.XN.rotationDegrees(x-90));
+        QuaternionF q1 = Vec3f.YN.rotationDegrees(y+180);
+        q1.mul(Vec3f.XN.rotationDegrees(x-90));
+        poseStack.mulPose(q1.convert());
         poseStack.translate(0, -mag*0.5, 0);
 
         poseStack.scale(1, mag, 1);
         for (int i = 0; i < 4; ++i) {
-            poseStack.mulPose(Vec3f.YN.rotationDegrees(90*i));
-            drawTextureCentered(ARROW, poseStack.last().pose(), buffer, packedLight, 0, color);
+            poseStack.mulPose(Vec3f.YN.rotationDegrees(90*i).convert());
+            drawTextureCentered(ARROW, Mat4f.from(poseStack.last().pose()), buffer, packedLight, 0, color);
         }
         poseStack.popPose();
     }
@@ -115,8 +116,8 @@ public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
         Vec3f X = new Vec3f(8, 0, 0);
         Vec3f Y = new Vec3f(0, 8, 0);
         Vec3f Z = new Vec3f(0, 0, 8);
-        Mat4f m4 = poseStack.last().pose();
-        Mat3f m3 = poseStack.last().normal();
+        Mat4f m4 = Mat4f.from(poseStack.last().pose());
+        Mat3f m3 = Mat3f.from(poseStack.last().normal());
         drawLine(O, X, buff, m4, m3, RED);
         drawLine(O, Y, buff, m4, m3, GREEN);
         drawLine(O, Z, buff, m4, m3, BLUE);

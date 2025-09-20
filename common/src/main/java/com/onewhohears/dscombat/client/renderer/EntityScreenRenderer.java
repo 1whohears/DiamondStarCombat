@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.client.entityscreen.instance.EntityScreenInstance;
@@ -51,9 +52,10 @@ public interface EntityScreenRenderer<T extends Entity> {
 		poseStack.pushPose();
 		
 		poseStack.translate(pos.x, pos.y, pos.z);
-		poseStack.mulPose(Vec3f.XP.rotationDegrees(xRot));
-		poseStack.mulPose(Vec3f.YP.rotationDegrees(yRot));
-		poseStack.mulPose(Vec3f.ZP.rotationDegrees(zRot+180));
+        QuaternionF q = Vec3f.XP.rotationDegrees(xRot);
+        q.mul(Vec3f.YP.rotationDegrees(yRot));
+        q.mul(Vec3f.ZP.rotationDegrees(zRot+180));
+		poseStack.mulPose(q.convert());
 		poseStack.scale(width, height, 1);
 		
 		getOrCreateEntityScreenById(screenId, screenType).draw(entity, poseStack, buffer, partialTicks, packedLight, 

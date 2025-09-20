@@ -39,8 +39,8 @@ public interface RotableHitboxRenderer {
 		poseStack.pushPose();
 		Vec3 trans = UtilAngles.rotateVector(hitbox.getRelPos(), q);
 		poseStack.translate(trans.x, trans.y, trans.z);
-		Mat4f m4 = poseStack.last().pose();
-		Mat3f m3 = poseStack.last().normal();
+        Mat4f m4 = Mat4f.from(poseStack.last().pose());
+        Mat3f m3 = Mat3f.from(poseStack.last().normal());
 		Vec3f ext = UtilGeometry.convertVector(hitbox.getHitbox().getExtents());
 		Vec3f c0 = ext.copy(); c0.transform(q);
 		Vec3f c1 = ext.copy(); c1.mul(-1,1,1); c1.transform(q);

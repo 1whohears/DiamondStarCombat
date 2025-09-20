@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.client.renderer.RendererEntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
 import com.onewhohears.onewholibs.util.math.*;
@@ -15,6 +14,21 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntityModel<T> {
+
+    public static RenderType getCullBaseRenderType(ResourceLocation texture) {
+        // FIXME 1 why are entities sometimes not seen through transparent stuff?
+        //return RenderType.entityTranslucent(texture);
+        return RenderType.entityTranslucentCull(texture); // until it's fixed, the cockpit glass will be clear
+    }
+
+    public static RenderType getBaseRenderType(ResourceLocation texture) {
+        return RenderType.entityTranslucent(texture);
+    }
+
+    public static RenderType getLayerRenderType(ResourceLocation texture) {
+        //return RenderType.entityTranslucent(texture);
+        return RenderType.armorCutoutNoCull(texture); // is this faster?
+    }
 
     private final Map<String, Mat4f> transforms = new HashMap<>();
 
@@ -49,8 +63,8 @@ public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntit
 				loc = new ResourceLocation(texture.getNamespace(), newLoc);
 			}
 			if (entity.getAssets().isDontCull())
-				return RendererEntityVehicle.getBaseRenderType(loc);
-			return RendererEntityVehicle.getCullBaseRenderType(loc);
+				return getBaseRenderType(loc);
+			return getCullBaseRenderType(loc);
 		};
 	}
 	

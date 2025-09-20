@@ -33,7 +33,7 @@ public class RendererObjVehicle extends RendererCustomAnimObjEntity<EntityVehicl
 		poseStack.pushPose();
 		
 		QuaternionF q = UtilAngles.lerpQ(partialTicks, vehicle.getPrevQ(), vehicle.getClientQ());
-        poseStack.mulPose(q);
+        poseStack.mulPose(q.convert());
         
         for (EntityScreenData screen : getScreens(vehicle)) {
         	renderScreen(vehicle, screen.instanceId, screen.type, 

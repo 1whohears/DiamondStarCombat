@@ -1,11 +1,10 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
-import com.google.common.collect.ImmutableMap;
-import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
+import com.onewhohears.onewholibs.util.math.Mat4f;
 
-import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import java.util.Map;
 
 public class BombRackModel extends ObjPartModel<EntityWeaponRack> {
 
@@ -14,11 +13,9 @@ public class BombRackModel extends ObjPartModel<EntityWeaponRack> {
 	}
 	
 	@Override
-	protected Transforms getComponentTransforms(EntityWeaponRack entity, float partialTicks) {
-		ImmutableMap.Builder<String, Mat4f> builder = ImmutableMap.builder();
+	protected void addComponentTransforms(Map<String, Mat4f> transforms, EntityWeaponRack entity, float partialTicks) {
 		int num = entity.getAmmoNum();
-		for (int i = num+7; i <= 19; ++i) builder.put("cube"+i, INVISIBLE);
-		return Transforms.of(builder.build());
+		for (int i = num+7; i <= 19; ++i) transforms.put("cube"+i, INVISIBLE);
 	}
 
 }

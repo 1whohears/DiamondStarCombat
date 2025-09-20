@@ -2,13 +2,12 @@ package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.onewhohears.onewholibs.util.math.Mat4f;
-import com.onewhohears.onewholibs.util.math.QuaternionF;
-import com.onewhohears.onewholibs.util.math.Vec3f;
+import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
-
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +24,7 @@ public class ChainHookModel extends ObjPartModel<EntityChainHook> {
 	
 	@Override
 	public void render(EntityChainHook entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
-		if (entity.getConnections().size() != 0) {
+		if (!entity.getConnections().isEmpty()) {
 			poseStack.pushPose();
 			VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.text(TEXTURE));
 			QuaternionF hookPosRot = Vec3f.ZP.rotationDegrees(entity.getZRot());
@@ -33,7 +32,7 @@ public class ChainHookModel extends ObjPartModel<EntityChainHook> {
 			if (entity.getParentVehicle() != null) chainOffset = UtilAngles.rotateVector(chainOffset, entity.getParentVehicle().getClientQ(partialTicks));
 			Vec3 hookPos = entity.getPosition(partialTicks).add(chainOffset);
 			poseStack.translate(chainOffset.x, chainOffset.y, chainOffset.z);
-			Mat4f matrix4f = poseStack.last().pose();
+            Matrix4f matrix4f = poseStack.last().pose();
 			for (EntityChainHook.ChainConnection chain : entity.getConnections()) {
 				Entity connector = chain.getEntity();
 				if (connector == null || connector.isRemoved()) continue;
@@ -54,19 +53,19 @@ public class ChainHookModel extends ObjPartModel<EntityChainHook> {
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
 	}
 	
-	private void drawChainSide(VertexConsumer vertexconsumer, Mat4f matrix4f, Vec3 chainDiff, Vec3 axis, float t, float l, int lightmap) {
-		vertexconsumer.vertex(matrix4f, (float)-axis.x*t, (float)-axis.y*t, (float)-axis.z*t)
+	private void drawChainSide(VertexConsumer vertexconsumer, Matrix4f mat, Vec3 chainDiff, Vec3 axis, float t, float l, int lightmap) {
+        vertexconsumer.vertex(mat, (float)-axis.x*t, (float)-axis.y*t, (float)-axis.z*t)
 			.color(255, 255, 255, 255)
 			.uv(0.0F, 0.0F).uv2(lightmap).endVertex();
-		vertexconsumer.vertex(matrix4f, (float)(chainDiff.x-axis.x*t), 
+		vertexconsumer.vertex(mat, (float)(chainDiff.x-axis.x*t),
 				(float)(chainDiff.y-axis.y*t), (float)(chainDiff.z-axis.z*t))
 			.color(255, 255, 255, 255)
 			.uv(l, 0.0F).uv2(lightmap).endVertex();
-		vertexconsumer.vertex(matrix4f, (float)(chainDiff.x+axis.x*t), 
+		vertexconsumer.vertex(mat, (float)(chainDiff.x+axis.x*t),
 				(float)(chainDiff.y+axis.y*t), (float)(chainDiff.z+axis.z*t))
 			.color(255, 255, 255, 255)
 			.uv(l, 1.0F).uv2(lightmap).endVertex();
-		vertexconsumer.vertex(matrix4f, (float)axis.x*t, (float)axis.y*t, (float)axis.z*t)
+		vertexconsumer.vertex(mat, (float)axis.x*t, (float)axis.y*t, (float)axis.z*t)
 			.color(255, 255, 255, 255)
 			.uv(0.0F, 1.0F).uv2(lightmap).endVertex();
 	}

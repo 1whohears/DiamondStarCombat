@@ -26,7 +26,7 @@ public class CIWSModel extends ObjTurretModel<EntityTurret> {
 	@Override
 	protected void rotate(EntityTurret entity, float partialTicks, PoseStack poseStack) {
 		super.rotate(entity, partialTicks, poseStack);
-		poseStack.mulPose(Vec3f.YP.rotationDegrees(180f));
+		poseStack.mulPose(Vec3f.YP.rotationDegrees(180f).convert());
 	}
 
 	@Override

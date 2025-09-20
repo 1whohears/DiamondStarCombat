@@ -2,20 +2,22 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.onewholibs.util.math.QuaternionF;
-import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.renderer.RendererEntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
-import com.onewhohears.onewholibs.util.math.UtilAngles;
-import com.onewhohears.onewholibs.util.math.UtilGeometry;
-
+import com.onewhohears.onewholibs.util.math.*;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntityModel<T> {
-	
+
+    private final Map<String, Mat4f> transforms = new HashMap<>();
+
 	public ObjVehicleModel(String modelId) {
 		this(modelId, new JsonArray());
 	}
@@ -33,7 +35,7 @@ public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntit
 	}
 
 	@Override
-	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(T entity) {
+	protected Function<ResourceLocation, RenderType> getTextureRenderTypeLookup(T entity) {
 		return (texture) -> {
 			String path = texture.getPath();
 			ResourceLocation loc = texture;
@@ -57,9 +59,11 @@ public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntit
 		// apparently this slightly different render order is needed or else the plane's render position gets messed up
 		handleGlobalOverrides(entity, partialTicks, poseStack);
 		rotate(entity, partialTicks, poseStack);
-		getModel().render(poseStack, bufferSource, getTextureRenderTypeLookup(entity), 
-				getLight(entity, lightmap), getOverlay(entity), partialTicks, 
-				getComponentTransforms(entity, partialTicks));
+        transforms.clear();
+        addComponentTransforms(transforms, entity, partialTicks);
+		getObjModelHandler().render(poseStack, bufferSource, partialTicks,
+				getLight(entity, lightmap), getOverlay(entity),
+                transforms, getTextureRenderTypeLookup(entity));
 	}
 	
 	@Override

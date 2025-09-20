@@ -1,12 +1,11 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
-import com.google.common.collect.ImmutableMap;
-import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 
-import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import java.util.Map;
 
 public class SamLauncherModel extends ObjTurretModel<EntityTurret> {
 
@@ -15,7 +14,7 @@ public class SamLauncherModel extends ObjTurretModel<EntityTurret> {
 	}
 	
 	@Override
-	protected Transforms getComponentTransforms(EntityTurret entity, float partialTicks) {
+    protected void addComponentTransforms(Map<String, Mat4f> transforms, EntityTurret entity, float partialTicks) {
 		float xrothead = UtilAngles.lerpAngle(partialTicks, entity.xRotRelO, entity.getRelRotX());
 		Mat4f xrothead_mat = UtilAngles.pivotPixelsRotX(0, 36.6f, -10.2f, xrothead);
 		Mat4f m1_mat = xrothead_mat, m2_mat = xrothead_mat, m3_mat = xrothead_mat, m4_mat = xrothead_mat;
@@ -24,14 +23,11 @@ public class SamLauncherModel extends ObjTurretModel<EntityTurret> {
 		if (ammo < 3) m3_mat = INVISIBLE;
 		if (ammo < 2) m2_mat = INVISIBLE;
 		if (ammo < 1) m1_mat = INVISIBLE;
-		ImmutableMap<String, Mat4f> transforms = ImmutableMap.<String, Mat4f>builder()
-			.put("launcher", xrothead_mat)
-			.put("m1", m1_mat)
-			.put("m2", m2_mat)
-			.put("m3", m3_mat)
-			.put("m4", m4_mat)
-			.build();
-		return Transforms.of(transforms);
+        transforms.put("launcher", xrothead_mat);
+        transforms.put("m1", m1_mat);
+        transforms.put("m2", m2_mat);
+        transforms.put("m3", m3_mat);
+        transforms.put("m4", m4_mat);
 	}
 
 }

@@ -1,22 +1,20 @@
 package com.onewhohears.dscombat.client.model.obj;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.entity.parts.EntityRadar;
+import com.onewhohears.onewholibs.client.model.obj.ObjBakedModel;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
-import com.onewhohears.dscombat.entity.parts.EntityRadar;
-
+import com.onewhohears.onewholibs.client.model.obj.ObjModelHandler;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraftforge.client.model.renderable.CompositeRenderable;
-import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import org.jetbrains.annotations.Nullable;
 
 public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 	
 	@Nullable protected final String largeModelId;
-	@Nullable private CompositeRenderable largeModel;
+	@Nullable private ObjModelHandler largeModel;
 	@Nullable private ModelOverrides largeOverride;
 	protected MastType currentMastType = MastType.NONE;
 	
@@ -40,24 +38,24 @@ public class ObjRadarModel extends ObjPartModel<EntityRadar> {
 		poseStack.translate(0, currentMastType.radarTopPos, 0);
 		super.render(entity, poseStack, bufferSource, lightmap, partialTicks);
 		if (!currentMastType.isNone()) {
-			CompositeRenderable mastModel = ObjEntityModels.get().getBakedModel(currentMastType.modelId);
+            ObjBakedModel mastModel = ObjEntityModels.get().getBakedModel(currentMastType.modelId);
 			if (mastModel != null) {
 				poseStack.pushPose();
 				poseStack.translate(0, -currentMastType.radarTopPos, 0);
 				mastModel.render(poseStack, bufferSource, RenderType::entitySolid,
-					getLight(entity, lightmap), getOverlay(entity), partialTicks, Transforms.EMPTY);
+					getLight(entity, lightmap), getOverlay(entity), partialTicks, NO_TRANSFORMS);
 				poseStack.popPose();
 			}
 		}
 	}
 	
 	@Override
-	public CompositeRenderable getModel() {
+	public ObjModelHandler getObjModelHandler() {
 		if (currentMastType.isLarge() && largeModelId != null && !largeModelId.isEmpty()) {
-			if (largeModel == null) largeModel = ObjEntityModels.get().getBakedModel(largeModelId); 
+			if (largeModel == null) largeModel = ObjEntityModels.get().getObjModelHandler(largeModelId);
 			return largeModel;
 		}
-		return super.getModel();
+		return super.getObjModelHandler();
 	}
 	
 	@Override

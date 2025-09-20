@@ -1,14 +1,13 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
-import com.google.common.collect.ImmutableMap;
-import com.onewhohears.onewholibs.util.math.Mat4f;
-import com.onewhohears.onewholibs.util.math.QuaternionF;
-import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.model.obj.ObjVehicleModel;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 
-import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
+import java.util.Map;
 
 public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 
@@ -17,7 +16,7 @@ public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 	}
 	
 	@Override
-	protected Transforms getComponentTransforms(EntityVehicle entity, float partialTicks) {
+    protected void addComponentTransforms(Map<String, Mat4f> transforms, EntityVehicle entity, float partialTicks) {
 		// landing gear and blades
 		float bladerot = entity.getMotorRotation(partialTicks, 30);
 		float gearpos = entity.getLandingGearPos(partialTicks);
@@ -52,23 +51,20 @@ public class BroncoPlaneModel extends ObjVehicleModel<EntityVehicle> {
 		Mat4f left_pedal = Mat4f.createTranslateMatrix(0, 0, entity.inputs.yaw*-0.0625f);
 		Mat4f right_pedal = Mat4f.createTranslateMatrix(0, 0, entity.inputs.yaw*0.0625f);
 		Mat4f throttle = Mat4f.createTranslateMatrix(0, 0, entity.getCurrentThrottle()*0.125f);
-		ImmutableMap<String, Mat4f> transforms = ImmutableMap.<String, Mat4f>builder()
-			.put("blade0", blade0rot_mat)
-			.put("blade1", blade1rot_mat)
-			.put("lg0", lg0_mat)
-			.put("lg1", lg1_mat)
-			.put("lg2", lg2_mat)
-			.put("surface0", left_flap)
-			.put("surface1", right_flap)
-			.put("surface2", left_rudder)
-			.put("surface3", right_rudder)
-			.put("surface4", elevator)
-			.put("stick", stick)
-			.put("pedal0", left_pedal)
-			.put("pedal1", right_pedal)
-			.put("throttle", throttle)
-			.build();
-		return Transforms.of(transforms);
+        transforms.put("blade0", blade0rot_mat);
+        transforms.put("blade1", blade1rot_mat);
+        transforms.put("lg0", lg0_mat);
+        transforms.put("lg1", lg1_mat);
+        transforms.put("lg2", lg2_mat);
+        transforms.put("surface0", left_flap);
+        transforms.put("surface1", right_flap);
+        transforms.put("surface2", left_rudder);
+        transforms.put("surface3", right_rudder);
+        transforms.put("surface4", elevator);
+        transforms.put("stick", stick);
+        transforms.put("pedal0", left_pedal);
+        transforms.put("pedal1", right_pedal);
+        transforms.put("throttle", throttle);
 	}
 	
 	private static final Vec3f PIVOT = new Vec3f(0, -2f, 2f);

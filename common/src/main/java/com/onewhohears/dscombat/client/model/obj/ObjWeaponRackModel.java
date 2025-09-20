@@ -6,6 +6,7 @@ import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverride
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.client.model.obj.ObjModelHandler;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -21,7 +22,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 	protected final int maxAmmoNum;
 	protected final Vec3[] weapon_pos;
 	private String prevWeaponModelId = "";
-	private CompositeRenderable prevModel;
+	private ObjModelHandler prevModel;
 	private ModelOverrides prevMO;
 	
 	public ObjWeaponRackModel(String modelId, int maxAmmoNum, Vec3[] weapon_pos) {
@@ -37,7 +38,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 		// FIXME 0 rendering many missile rack models has performance issues
 		String weaponModelId = entity.getWeaponModelId();
 		if (weaponModelId == null || weaponModelId.isEmpty()) return;
-		CompositeRenderable model;
+        ObjModelHandler model;
 		ModelOverrides mo;
 		if (weaponModelId.equals(prevWeaponModelId)) {
 			model = prevModel;
@@ -57,19 +58,19 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 	}
 	
 	protected void renderWeapon(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks,
-			CompositeRenderable model, ModelOverrides mo, double x, double y, double z) {
+                                ObjModelHandler model, ModelOverrides mo, double x, double y, double z) {
 		poseStack.pushPose();
 		poseStack.translate(x, y, z);
 		mo.apply(poseStack);
 		// it has been tested that RenderType#entitySolid is faster than RenderType#entityTranslucentCull (+10fps on my machine)
-		model.render(poseStack, bufferSource, RenderType::entitySolid,
-				lightmap, OverlayTexture.NO_OVERLAY, partialTicks, Transforms.EMPTY);
+		model.render(poseStack, bufferSource, partialTicks, lightmap,
+                OverlayTexture.NO_OVERLAY, NO_TRANSFORMS, RenderType::entitySolid);
 		poseStack.popPose();
 		++renderedRackWeaponNum;
 	}
 	
-	protected CompositeRenderable getWeaponModel(String modelId) {
-		return ObjEntityModels.get().getBakedModel(modelId);
+	protected ObjModelHandler getWeaponModel(String modelId) {
+		return ObjEntityModels.get().getObjModelHandler(modelId);
 	}
 	
 	protected ModelOverrides getWeaponModelOverride(String modelId) {

@@ -1,15 +1,15 @@
 package com.onewhohears.dscombat.client.model.obj.custom;
 
-import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.dscombat.client.model.obj.ObjTurretModel;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.renderable.ITextureRenderTypeLookup;
 
 import java.util.Map;
+import java.util.function.Function;
 
 public class ArtilleryCannonModel extends ObjTurretModel<EntityTurret> {
 
@@ -36,7 +36,7 @@ public class ArtilleryCannonModel extends ObjTurretModel<EntityTurret> {
 	}
 
 	@Override
-	protected ITextureRenderTypeLookup getTextureRenderTypeLookup(EntityTurret entity) {
+	protected Function<ResourceLocation, RenderType> getTextureRenderTypeLookup(EntityTurret entity) {
 		return (texture) -> {
 			EntityVehicle vehicle = entity.getParentVehicle();
 			if (vehicle == null) return RenderType.entityTranslucent(texture);

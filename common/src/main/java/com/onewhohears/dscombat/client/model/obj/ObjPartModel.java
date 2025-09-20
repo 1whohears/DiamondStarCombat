@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -11,8 +12,13 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ObjPartModel<T extends EntityPart> extends KeyframeAnimsEntityModel<T> {
-	
+
+    public static final Map<String, Mat4f> NO_TRANSFORMS = new HashMap<>();
+
 	public ObjPartModel(String modelId) {
 		super(modelId);
 	}

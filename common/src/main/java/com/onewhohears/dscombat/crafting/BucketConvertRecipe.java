@@ -1,12 +1,9 @@
 package com.onewhohears.dscombat.crafting;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.onewholibs.util.UtilItem;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +14,7 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public class BucketConvertRecipe extends CustomRecipe {
 	
@@ -58,8 +56,8 @@ public class BucketConvertRecipe extends CustomRecipe {
 				ItemStack item2 = item.copy();
 				item2.setDamageValue(item.getDamageValue()+1);
 				nonnulllist.set(i, item2);
-			} else if (item.hasCraftingRemainingItem()) {
-				nonnulllist.set(i, ForgeHooks.getCraftingRemainingItem(item));
+			} else if (UtilItem.hasCraftingRemainingItem(item)) {
+				nonnulllist.set(i, UtilItem.getCraftingRemainingItem(item));
 			}
 		}
 		return nonnulllist;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.onewhohears.onewholibs.util.UtilItem;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
@@ -72,7 +73,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 		NonNullList<ItemStack> list = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
 		for(int i = 0; i < list.size(); ++i) {
 			ItemStack stack = container.getItem(i);
-			list.set(i, ForgeHooks.getCraftingRemainingItem(stack));
+			list.set(i, UtilItem.getCraftingRemainingItem(stack));
 		}
 		return list;
 	}
@@ -285,8 +286,8 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(pContainer.getContainerSize(), ItemStack.EMPTY);
 		for(int i = 0; i < nonnulllist.size(); ++i) {
 			ItemStack item = pContainer.getItem(i);
-			if (item.hasCraftingRemainingItem()) {
-				nonnulllist.set(i, item.getCraftingRemainingItem());
+			if (UtilItem.hasCraftingRemainingItem(item)) {
+				nonnulllist.set(i, UtilItem.getCraftingRemainingItem(item));
 			}
 		}
 		return nonnulllist;

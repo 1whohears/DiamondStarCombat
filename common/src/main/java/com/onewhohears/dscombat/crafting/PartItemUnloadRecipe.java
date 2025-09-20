@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 
+import com.onewhohears.onewholibs.util.UtilItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -54,7 +55,7 @@ public abstract class PartItemUnloadRecipe<I extends ReloadablePartInstance> ext
 				continue;
 			}
 			ItemStack stack = container.getItem(i);
-			list.set(i, ForgeHooks.getCraftingRemainingItem(stack));
+			list.set(i, UtilItem.getCraftingRemainingItem(stack));
 		}
 		return list;
 	}

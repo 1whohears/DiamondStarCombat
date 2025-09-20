@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.util;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.UUID;
@@ -14,11 +15,11 @@ public enum DSCFakePlayer {
             UUID.fromString("4f5237ff-0b7f-464e-8c33-9e6b43572fd2"),
             "dsc_weapon_break"));
     private final GameProfile profile;
-    private FakePlayer player = null;
+    private ServerPlayer player = null;
     DSCFakePlayer(GameProfile profile) {
         this.profile = profile;
     }
-    public FakePlayer getPlayer(ServerLevel level) {
+    public ServerPlayer getPlayer(ServerLevel level) {
         if (player == null) player = new FakePlayer(level, profile);
         return player;
     }

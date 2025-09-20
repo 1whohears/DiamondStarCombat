@@ -5,8 +5,12 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.BlockEvent;
+import dev.architectury.utils.value.IntValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -15,10 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.BlockEvent;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -48,19 +50,22 @@ public class UtilVehicleEntity {
         return SeaLevels.getAirPressure(entity.getLevel().dimension(), entity.getY());
     }
 
+    private static final IntValue XP = new IntValue() {
+        @Override public void accept(int value) {}
+        @Override public int getAsInt() {return 0;}
+    };
+
     public static boolean hasPermissionToBreakBlock(BlockPos pos, BlockState state, Level level,
                                                     @Nullable Entity entity, DSCFakePlayer type) {
-        if (entity instanceof Player player) {
-            BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, pos, state, player);
-            MinecraftForge.EVENT_BUS.post(event);
-            return !event.isCanceled();
+        if (entity instanceof ServerPlayer player) {
+            EventResult result = BlockEvent.BREAK.invoker().breakBlock(level, pos, state, player, XP);
+            return result.isTrue();
         } else if (entity instanceof Enemy) {
             return level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
         } else if (!level.isClientSide()) {
-            BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, pos, state,
-                    type.getPlayer((ServerLevel) level));
-            MinecraftForge.EVENT_BUS.post(event);
-            return !event.isCanceled();
+            EventResult result = BlockEvent.BREAK.invoker().breakBlock(level, pos, state,
+                    type.getPlayer((ServerLevel) level), XP);
+            return result.isTrue();
         }
         return false;
     }

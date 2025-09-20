@@ -31,21 +31,21 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addTag(ModTags.EntityTypes.MISSILE);
 		tag(ModTags.EntityTypes.BULLET)
 			.add(ModEntities.BULLET.get())
-			.addOptional(new ResourceLocation("cgm:projectile"))
-			.addOptional(new ResourceLocation("moguns:taki"))
-			.addOptional(new ResourceLocation("moguns:magma_cream"))
-			.addOptional(new ResourceLocation("moguns:flare"))
-				.addOptional(new ResourceLocation("tacz:bullet"))
-				.addOptional(new ResourceLocation("smallships:cannon_ball"));
+			.addOptional(ResourceLocation.tryParse("cgm:projectile"))
+			.addOptional(ResourceLocation.tryParse("moguns:taki"))
+			.addOptional(ResourceLocation.tryParse("moguns:magma_cream"))
+			.addOptional(ResourceLocation.tryParse("moguns:flare"))
+				.addOptional(ResourceLocation.tryParse("tacz:bullet"))
+				.addOptional(ResourceLocation.tryParse("smallships:cannon_ball"));
 		tag(ModTags.EntityTypes.BOMB)
 			.add(ModEntities.BOMB.get(), ModEntities.BUNKER_BUSTER.get())
-			.addOptional(new ResourceLocation("cgm:grenade"))
-			.addOptional(new ResourceLocation("cgm:throwable_grenade"))
-			.addOptional(new ResourceLocation("cgm:throwable_stun_grenade"));
+			.addOptional(ResourceLocation.tryParse("cgm:grenade"))
+			.addOptional(ResourceLocation.tryParse("cgm:throwable_grenade"))
+			.addOptional(ResourceLocation.tryParse("cgm:throwable_stun_grenade"));
 		tag(ModTags.EntityTypes.MISSILE)
 			.add(ModEntities.POS_MISSILE.get(), ModEntities.IR_MISSILE.get(), ModEntities.TRACK_MISSILE.get(), ModEntities.ANTI_RADAR_MISSILE.get())
 			.add(ModEntities.TORPEDO_MISSILE.get())
-			.addOptional(new ResourceLocation("cgm:missile"));
+			.addOptional(ResourceLocation.tryParse("cgm:missile"));
 		// VEHICLES
 		tag(ModTags.EntityTypes.VEHICLE)
 			.addTag(ModTags.EntityTypes.PLANE)
@@ -57,26 +57,26 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.addTag(ModTags.EntityTypes.MISC_VEHICLE);
 		tag(ModTags.EntityTypes.MISC_VEHICLE)
 			.add(EntityType.BOAT, EntityType.MINECART, ModEntities.PARACHUTE.get())
-			.addOptional(new ResourceLocation("simpleplanes:parachute"))
-			.addOptional(new ResourceLocation("iceandfire:fire_dragon"))
-			.addOptional(new ResourceLocation("iceandfire:ice_dragon"))
-			.addOptional(new ResourceLocation("iceandfire:lightning_dragon"));
+			.addOptional(ResourceLocation.tryParse("simpleplanes:parachute"))
+			.addOptional(ResourceLocation.tryParse("iceandfire:fire_dragon"))
+			.addOptional(ResourceLocation.tryParse("iceandfire:ice_dragon"))
+			.addOptional(ResourceLocation.tryParse("iceandfire:lightning_dragon"));
 		tag(ModTags.EntityTypes.PLANE)
 			.add(ModEntities.PLANE.get())
-			.addOptional(new ResourceLocation("simpleplanes:plane"))
-			.addOptional(new ResourceLocation("simpleplanes:large_plane"));
+			.addOptional(ResourceLocation.tryParse("simpleplanes:plane"))
+			.addOptional(ResourceLocation.tryParse("simpleplanes:large_plane"));
 		tag(ModTags.EntityTypes.HELI)
 			.add(ModEntities.HELICOPTER.get())
-			.addOptional(new ResourceLocation("simpleplanes:helicopter"));
+			.addOptional(ResourceLocation.tryParse("simpleplanes:helicopter"));
 		tag(ModTags.EntityTypes.CAR)
 			.add(ModEntities.CAR.get());
 		tag(ModTags.EntityTypes.TANK)
 			.add(ModEntities.CAR.get())
-				.addOptional(new ResourceLocation("car:car"));
+				.addOptional(ResourceLocation.tryParse("car:car"));
 		tag(ModTags.EntityTypes.BOAT)
 			.add(ModEntities.BOAT.get())
-				.addOptional(new ResourceLocation("smallships:cog"))
-				.addOptional(new ResourceLocation("smallships:brigg"));
+				.addOptional(ResourceLocation.tryParse("smallships:cog"))
+				.addOptional(ResourceLocation.tryParse("smallships:brigg"));
 		tag(ModTags.EntityTypes.SUBMARINE)
 			.add(ModEntities.SUBMARINE.get());
 		// TURRET
@@ -117,22 +117,22 @@ public class EntityTypeTagGen extends EntityTypeTagsProvider {
 			.add(ModEntities.FLARE.get());
 		tag(ModTags.EntityTypes.IR_EMITTER_LOW)
 			.add(EntityType.PLAYER, EntityType.ALLAY, EntityType.PHANTOM, EntityType.SHULKER_BULLET, EntityType.VEX)
-			.addOptional(new ResourceLocation("iceandfire:ice_dragon"));
+			.addOptional(ResourceLocation.tryParse("iceandfire:ice_dragon"));
 		tag(ModTags.EntityTypes.IR_EMITTER_MED)
 			.add(EntityType.WITHER_SKULL, EntityType.BEE, EntityType.FIREWORK_ROCKET, EntityType.SMALL_FIREBALL, EntityType.GHAST)
 			.addTag(ModTags.EntityTypes.MISSILE)
-			.addOptional(new ResourceLocation("simpleplanes:plane"))
-			.addOptional(new ResourceLocation("simpleplanes:large_plane"))
-			.addOptional(new ResourceLocation("simpleplanes:helicopter"));
+			.addOptional(ResourceLocation.tryParse("simpleplanes:plane"))
+			.addOptional(ResourceLocation.tryParse("simpleplanes:large_plane"))
+			.addOptional(ResourceLocation.tryParse("simpleplanes:helicopter"));
 		tag(ModTags.EntityTypes.IR_EMITTER_HIGH)
 			.add(EntityType.FIREBALL, EntityType.DRAGON_FIREBALL, EntityType.BLAZE, EntityType.MAGMA_CUBE);
 		tag(ModTags.EntityTypes.IR_EMITTER_EXTREME)
 			.add(EntityType.WITHER, EntityType.ENDER_DRAGON)
-			.addOptional(new ResourceLocation("iceandfire:fire_dragon"))
-			.addOptional(new ResourceLocation("iceandfire:lightning_dragon"));
+			.addOptional(ResourceLocation.tryParse("iceandfire:fire_dragon"))
+			.addOptional(ResourceLocation.tryParse("iceandfire:lightning_dragon"));
 		// OTHER
 		tag(ModTags.EntityTypes.ALWAYS_GROUNDED).add(EntityType.BOAT, EntityType.MINECART)
-				.addOptional(new ResourceLocation("minigames:flag"));
+				.addOptional(ResourceLocation.tryParse("minigames:flag"));
 		tag(ModTags.EntityTypes.TICKET_BOOKER).add(EntityType.VILLAGER);
 	}
 	

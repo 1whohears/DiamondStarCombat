@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.forge;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.DependencySafety;
+import com.onewhohears.dscombat.client.event.DSCEntityRenderers;
 import com.onewhohears.dscombat.data.forge.*;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
 import com.onewhohears.dscombat.data.parts.client.PartClientPresetGenerator;
@@ -16,9 +17,11 @@ import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.utils.Env;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.data.loading.DatagenModLoader;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -71,6 +74,14 @@ public class DSCombatModForge {
             generator.addProvider(true, new VehicleClientPresetGenerator(generator));
             generator.addProvider(true, new PartClientPresetGenerator(generator));
             generator.addProvider(true, new WeaponClientPresetGenerator(generator));
+        }
+    }
+
+    @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            DSCEntityRenderers.register();
         }
     }
 

@@ -2,11 +2,8 @@ package com.onewhohears.dscombat.client.input;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.onewhohears.dscombat.DSCombatMod;
-
+import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,13 +36,10 @@ public final class DSCKeys {
 	public static KeyMapping flipControlsKey;
 	public static KeyMapping leanLeftKey, leanRightKey;
 	public static KeyMapping afterBurnerKey, turnAssistKey;
-	
-	private static RegisterKeyMappingsEvent event;
 
 	private static final Map<String, KeyMapping> keys = new HashMap<>();
 	
-	public static void init(RegisterKeyMappingsEvent e) {
-		event = e;
+	public static void init() {
 		// MOVE CONTROL
 		throttleUpKey = registerKey("throttle_up_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_UP);
 		throttleDownKey = registerKey("throttle_down_key", VEHICLE_MOVE_CONTROL, InputConstants.KEY_DOWN);
@@ -85,16 +79,16 @@ public final class DSCKeys {
 	
 	private static KeyMapping registerKey(String name, String category, int keycode) {
 		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
-				KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, keycode, category);
-		event.register(key);
+				InputConstants.Type.KEYSYM, keycode, category);
+        KeyMappingRegistry.register(key);
 		keys.put(name, key);
 		return key;
 	}
 	
 	private static KeyMapping registerMouse(String name, String category, int keycode) {
 		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
-				KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE, keycode, category);
-		event.register(key);
+				InputConstants.Type.MOUSE, keycode, category);
+        KeyMappingRegistry.register(key);
 		keys.put(name, key);
 		return key;
 	}

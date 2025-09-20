@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.crafting;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.onewhohears.dscombat.data.parts.instance.WeaponPartInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -24,7 +24,7 @@ public class WeaponPartUnloadRecipe extends PartItemUnloadRecipe<WeaponPartInsta
 		return ModRecipes.WEAPON_PART_UNLOAD.get();
 	}
 
-	@Override @Nonnull
+	@Override @NotNull
 	public ItemStack getNewAmmoItem(String continuity) {
 		WeaponStats wd = WeaponPresets.get().get(continuity);
 		if (wd == null) return ItemStack.EMPTY;

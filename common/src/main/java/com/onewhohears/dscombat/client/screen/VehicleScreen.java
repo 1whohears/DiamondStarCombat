@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public abstract class VehicleScreen extends BackgroundScreen {
@@ -46,11 +45,11 @@ public abstract class VehicleScreen extends BackgroundScreen {
     public boolean isPauseScreen() {
         return false;
     }
-    @Nonnull
+    @NotNull
     public Player getPlayer() {
         return Objects.requireNonNull(getMinecraft().player);
     }
-    @Nonnull
+    @NotNull
     public EntityVehicle getVehicle() {
         return (EntityVehicle) getPlayer().getRootVehicle();
     }

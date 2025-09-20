@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.radar;
 
 import java.util.*;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DependencySafety;
@@ -26,7 +26,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 
 /**
  * manages the radar/targeting/rwr system for {@link EntityVehicle}.
@@ -317,7 +316,7 @@ public class RadarSystem {
 		return clientSelectedIndex;
 	}
 	
-	@Nonnull
+	@NotNull
 	public List<RadarPing> getClientRadarPings() {
 		return clientTargets;
 	}

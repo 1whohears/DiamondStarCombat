@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.data.parts.instance;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.crafting.*;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class TurretInstance<T extends TurretStats> extends SeatInstance<T> implements ReloadablePartInstance {
 	
-	@Nonnull private String weapon = "";
+	@NotNull private String weapon = "";
 	private int ammo = 0;
 	@Nullable private WeaponInstance<?> data;
 	

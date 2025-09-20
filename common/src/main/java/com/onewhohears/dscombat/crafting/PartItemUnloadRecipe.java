@@ -2,8 +2,6 @@ package com.onewhohears.dscombat.crafting;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.annotation.Nonnull;
-
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 
 import net.minecraft.core.NonNullList;
@@ -67,6 +65,6 @@ public abstract class PartItemUnloadRecipe<I extends ReloadablePartInstance> ext
 		return !isLoadablePartItem(stack);
 	}
 	
-	@Nonnull public abstract ItemStack getNewAmmoItem(String continuity);
+	@NotNull public abstract ItemStack getNewAmmoItem(String continuity);
 	
 }

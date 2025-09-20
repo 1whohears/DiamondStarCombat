@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.crafting;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
@@ -55,7 +55,7 @@ public class TurretUnloadRecipe extends PartItemUnloadRecipe<TurretInstance<?>> 
 		return lpd.getStats().getMaxAmmo();
 	}
 
-	@Override @Nonnull
+	@Override @NotNull
 	public ItemStack getNewAmmoItem(String continuity) {
 		WeaponStats wd = WeaponPresets.get().get(continuity);
 		if (wd == null) return ItemStack.EMPTY;

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.entity.damagesource;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.DSCombatMod;
@@ -20,7 +20,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 	protected final EntityWeapon<?> weapon;
 	protected final String deathMsgId;
 	
-	public WeaponDamageSource(WeaponDamageType type, @Nullable Entity shooter, @Nonnull EntityWeapon<?> weapon) {
+	public WeaponDamageSource(WeaponDamageType type, @Nullable Entity shooter, @NotNull EntityWeapon<?> weapon) {
 		super(type.damageTypeId, shooter);
 		this.type = type;
 		this.weapon = weapon;
@@ -52,7 +52,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 			this.explosion = explosion;
 			this.bypassArmor = bypassArmor;
 		}
-		public WeaponDamageSource getSource(@Nullable Entity shooter, @Nonnull EntityWeapon<?> weapon) {
+		public WeaponDamageSource getSource(@Nullable Entity shooter, @NotNull EntityWeapon<?> weapon) {
 			return new WeaponDamageSource(this, shooter, weapon);
 		}
 		public boolean isContact() {
@@ -108,7 +108,7 @@ public class WeaponDamageSource extends EntityDamageSource {
 		return UtilParse.getRandomString(new int[]{1,2,1,4}, saltyDeaths, missileDeaths, explodeDeaths, irMissileDeaths);
 	}
 	
-	@Nonnull
+	@NotNull
 	@Override
 	public Entity getDirectEntity() {
 		return weapon;

@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.entity.ai.goal;
 
 import java.util.Random;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.logging.LogUtils;
@@ -196,7 +196,7 @@ public class TurretShootGoal extends Goal {
 		 * one can return the same prevTargetPos if they wish to only update it sometimes.
 		 * @return the updated target position
 		 */
-		@Nonnull Vec3 shoot(Mob mob, EntityTurret turret, @Nonnull LivingEntity target, @Nullable Vec3 prevTargetPos);
+		@NotNull Vec3 shoot(Mob mob, EntityTurret turret, @NotNull LivingEntity target, @Nullable Vec3 prevTargetPos);
 	}
 	
 	private final EntityTurret turret;

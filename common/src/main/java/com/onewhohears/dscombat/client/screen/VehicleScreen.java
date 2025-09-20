@@ -31,12 +31,12 @@ public abstract class VehicleScreen extends BackgroundScreen {
     @Override
     public void tick() {
         super.tick();
-        if (getMinecraft().player == null) {
-            getMinecraft().setScreen(null);
+        if (minecraft.player == null) {
+            minecraft.setScreen(null);
             return;
         }
-        if (!getMinecraft().player.isPassenger()) {
-            getMinecraft().setScreen(null);
+        if (!minecraft.player.isPassenger()) {
+            minecraft.setScreen(null);
             return;
         }
         if (infoTicks > 0) --infoTicks;
@@ -47,7 +47,7 @@ public abstract class VehicleScreen extends BackgroundScreen {
     }
     @NotNull
     public Player getPlayer() {
-        return Objects.requireNonNull(getMinecraft().player);
+        return Objects.requireNonNull(minecraft.player);
     }
     @NotNull
     public EntityVehicle getVehicle() {
@@ -56,9 +56,9 @@ public abstract class VehicleScreen extends BackgroundScreen {
     @Override
     public void renderBackground(@NotNull PoseStack poseStack) {
         super.renderBackground(poseStack);
-        if (!titleText.isEmpty()) getMinecraft().font.draw(poseStack,
+        if (!titleText.isEmpty()) minecraft.font.draw(poseStack,
                 UtilMCText.translatable(titleText), guiX+left_padding, guiY+top_padding, infoColor);
-        if (info != null && infoTicks != 0) getMinecraft().font.draw(poseStack, info,
+        if (info != null && infoTicks != 0) minecraft.font.draw(poseStack, info,
                 guiX+left_padding, guiY+top_padding+infoTextYOffset, infoColor);
     }
     public void setInfoText(String info_text, int display_time) {

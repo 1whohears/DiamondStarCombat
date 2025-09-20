@@ -59,8 +59,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
         RenderSystem.enableBlend();
         if (WeaponPresets.get().getWeaponRecipeNum() == 0) return;
         // render weapon item options
-        int startX = getGuiLeft() + titleLabelX;
-		int startY = getGuiTop() + titleLabelY;
+        int startX = leftPos + titleLabelX;
+		int startY = topPos + titleLabelY;
 		int wx = startX + 51;
 		int wy = startY + 12;
 		for (int i = 0; i < buttonNum; ++i) {
@@ -128,8 +128,8 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
 	@Override
 	protected void init() {
 		super.init();
-		int startX = getGuiLeft() + titleLabelX;
-		int startY = getGuiTop() + titleLabelY;
+		int startX = leftPos + titleLabelX;
+		int startY = topPos + titleLabelY;
 		// weapons buttons
 		int wx = startX + 39;
 		int wy = startY + 10;

@@ -46,7 +46,7 @@ public class VehicleHealthScreen extends VehicleSubScreen {
         for (int i = 0; i < vehicle.getHitboxes().size(); ++i) {
             hitboxNames[i] = UtilMCText.translatable(vehicle.getHitboxes().get(i).getHitboxName())
                     .setStyle(Style.EMPTY.withColor(0x00AA00));
-            int width = getMinecraft().font.width(hitboxNames[i]);
+            int width = minecraft.font.width(hitboxNames[i]);
             if (width > maxHitboxNameWidth) maxHitboxNameWidth = width;
         }
         maxHitboxNameWidth += 10;
@@ -57,17 +57,17 @@ public class VehicleHealthScreen extends VehicleSubScreen {
         super.renderBackground(poseStack);
         EntityVehicle vehicle = getVehicle();
         // VEHICLE BASE HEALTH / ARMOR
-        getMinecraft().font.draw(poseStack, UtilMCText.translatable("ui.dscombat.root_health")
+        minecraft.font.draw(poseStack, UtilMCText.translatable("ui.dscombat.root_health")
                         .append(":"+(int)vehicle.getHealth()+"/"+(int)vehicle.getMaxHealth()),
                 guiX+left_padding, guiY+top_padding+40,
                 getHealthColor(vehicle.getHealth(), vehicle.getMaxHealth()));
-        getMinecraft().font.draw(poseStack, UtilMCText.translatable("ui.dscombat.root_armor")
+        minecraft.font.draw(poseStack, UtilMCText.translatable("ui.dscombat.root_armor")
                         .append(":"+(int)vehicle.getArmor()+"/"+(int)vehicle.getMaxTotalArmor()),
                 guiX+left_padding+imageWidth/2f, guiY+top_padding+40,
                 getHealthColor(vehicle.getArmor(), vehicle.getMaxTotalArmor()));
         // VEHICLE HITBOX HEALTH / ARMOR
         if (hitboxNames != null && hitboxNames.length > 0) {
-            getMinecraft().font.draw(poseStack, UtilMCText.translatable("ui.dscombat.hitbox_health_armor"),
+            minecraft.font.draw(poseStack, UtilMCText.translatable("ui.dscombat.hitbox_health_armor"),
                     guiX + left_padding, guiY + top_padding + 54, 0x0000AA);
             float hitbox_scale = 2f / 3f;
             poseStack.pushPose();
@@ -80,11 +80,11 @@ public class VehicleHealthScreen extends VehicleSubScreen {
                 Style healthStyle = Style.EMPTY.withColor(getHealthColor(health, max_health));
                 float armor = hitbox.getArmor(), max_armor = hitbox.getMaxArmor();
                 Style armorStyle = Style.EMPTY.withColor(getHealthColor(armor, max_armor));
-                getMinecraft().font.draw(poseStack, hitboxNames[i], startX, startY + i * 10, 0xFFFFFF);
+                minecraft.font.draw(poseStack, hitboxNames[i], startX, startY + i * 10, 0xFFFFFF);
                 if (i == 0 && vehicle.getStats().rootHitboxNoCollide) continue;
-                getMinecraft().font.draw(poseStack, UtilMCText.literal("H: "+(int)health+"/"+(int)max_health)
+                minecraft.font.draw(poseStack, UtilMCText.literal("H: "+(int)health+"/"+(int)max_health)
                         .setStyle(healthStyle), startX+maxHitboxNameWidth, startY+i*10, 0xFFFFFF);
-                getMinecraft().font.draw(poseStack, UtilMCText.literal("A: "+(int)armor+"/"+(int)max_armor)
+                minecraft.font.draw(poseStack, UtilMCText.literal("A: "+(int)armor+"/"+(int)max_armor)
                         .setStyle(armorStyle), startX+maxHitboxNameWidth+70, startY+i*10, 0xFFFFFF);
             }
             poseStack.popPose();
@@ -106,7 +106,7 @@ public class VehicleHealthScreen extends VehicleSubScreen {
         RenderSystem.setShaderTexture(0, FUEL_GAUGE_ARROW);
         poseStack.pushPose();
         poseStack.translate(xOrigin + (double) FUEL_GAUGE_WIDTH / 2, yOrigin + 24, 0);
-        poseStack.mulPose(Vec3f.ZP.rotationDegrees(160F * fuelPercent + 10F));
+        poseStack.mulPose(Vec3f.ZP.rotationDegrees(160F * fuelPercent + 10F).convert());
         blit(poseStack,
                 -FUEL_ARROW_WIDTH + 5, -FUEL_ARROW_HEIGHT / 2,
                 0, 0,

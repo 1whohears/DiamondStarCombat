@@ -56,7 +56,7 @@ public class VehiclePaintScreen extends BackgroundScreen {
 				.create(layerX+44, layerY, 74, 20,
 						UtilMCText.translatable("info.dscombat.color_mix"),
 					onBlendModeChange(i)));
-			EditBox colorBox = new EditBox(getMinecraft().font, layerX+118, layerY,
+			EditBox colorBox = new EditBox(minecraft.font, layerX+118, layerY,
 					50, 20, UtilMCText.empty());
 			colorBox.setValue(UtilParse.toColorString(textures.getTextureLayers()[i].getColor()));
 			colorBox.setTextColor(textures.getTextureLayers()[i].getColorInt());

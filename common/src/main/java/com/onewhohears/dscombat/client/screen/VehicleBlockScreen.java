@@ -95,7 +95,7 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
 		modelViewStack.translate((posX+8)*scaleInv, 0, blitOffset);
 		long time = Util.getMillis();
 		float spinRate = 0.1f;
-		modelViewStack.mulPose(Vec3f.YP.rotationDegrees(time * spinRate));
+		modelViewStack.mulPose(Vec3f.YP.rotationDegrees(time * spinRate).convert());
 		modelViewStack.translate(-(posX+8)*scaleInv, 0, -blitOffset);
 		modelViewStack.translate((posX+8)*(scaleInv-1), (posY+8)*(scaleInv-1), 0);
 		minecraft.getItemRenderer().renderAndDecorateItem(stack, posX, posY);

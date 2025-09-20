@@ -71,7 +71,7 @@ public class VehicleJetesinScreen extends VehicleSubScreen {
         for (int i = 0; i < slots.size(); ++i) {
             PartSlot slot = slots.get(i);
             PartInstance<?> part = slot.getPartData();
-            if (part != null) getMinecraft().font.draw(poseStack,
+            if (part != null) minecraft.font.draw(poseStack,
                     part.getItemName().setStyle(style), x, y, 0xFFFFFF);
             if (i % 3 == 2) {
                 y += 40;

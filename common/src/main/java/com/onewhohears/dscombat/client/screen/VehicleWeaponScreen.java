@@ -56,19 +56,19 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
                 ROWS, COLUMNS, 5, padding, 2);
         // TARGET POSITION X
         vertical_widget_shift = 48;
-        xPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        xPosBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(xPosBox, 9, 3, 0, 2);
         xPosBox.setValue((int) Config.CLIENT.getTargetPos().x()+"");
         xPosBox.setTextColor(0xFFFFFF);
         xPosBox.setResponder(onTargetPosCoordChange(0));
         // TARGET POSITION Y
-        yPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        yPosBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(yPosBox, 9, 3, 1, 2);
         yPosBox.setValue((int)Config.CLIENT.getTargetPos().y()+"");
         yPosBox.setTextColor(0xFFFFFF);
         yPosBox.setResponder(onTargetPosCoordChange(1));
         // TARGET POSITION Z
-        zPosBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        zPosBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(zPosBox, 9, 3, 2, 2);
         zPosBox.setValue((int)Config.CLIENT.getTargetPos().z()+"");
         zPosBox.setTextColor(0xFFFFFF);
@@ -117,7 +117,7 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
     public void renderBackground(@NotNull PoseStack poseStack) {
         super.renderBackground(poseStack);
         if (DSCClientInputs.getTargetMode() == DSCClientInputs.TargetMode.COORDS) {
-            getMinecraft().font.draw(poseStack, UtilMCText.translatable("info.dscombat.target_mode_pos"),
+            minecraft.font.draw(poseStack, UtilMCText.translatable("info.dscombat.target_mode_pos"),
                     guiX + left_padding, guiY + top_padding + 38, infoColor);
             if (xPosBox != null) xPosBox.setVisible(true);
             if (yPosBox != null) yPosBox.setVisible(true);

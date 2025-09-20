@@ -29,7 +29,7 @@ public class VehicleOtherScreen extends VehicleSubScreen {
         super.init();
         // CUSTOM DISMOUNT
         positionWidgetGrid(new Checkbox(0, 0, 20, 20, UtilMCText.translatable("ui.dscombat.dismount_key",
-                                   DSCKeys.dismount.getKey().getDisplayName()),
+                                   DSCKeys.dismount.getTranslatedKeyMessage()),
                                    Config.CLIENT.customDismount.get()) {
                 @Override
                 public void onPress() {
@@ -50,7 +50,7 @@ public class VehicleOtherScreen extends VehicleSubScreen {
         // KEYBINDS BUTTON
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.key_binds"),
-                        onPress -> getMinecraft().setScreen(new VehicleKeyBindsScreen(0))),
+                        onPress -> minecraft.setScreen(new VehicleKeyBindsScreen(0))),
                 ROWS, COLUMNS, 2, 2);
     }
 

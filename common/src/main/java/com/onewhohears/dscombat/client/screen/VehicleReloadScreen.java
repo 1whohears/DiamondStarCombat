@@ -86,10 +86,10 @@ public class VehicleReloadScreen extends VehicleSubScreen {
         for (int i = 0; i < slots.size(); ++i) {
             ReloadablePartInstance part = (ReloadablePartInstance) slots.get(i).getPartData();
             if (part == null) continue;
-            getMinecraft().font.draw(poseStack, part.getItemName().setStyle(style), x, y, 0xFFFFFF);
+            minecraft.font.draw(poseStack, part.getItemName().setStyle(style), x, y, 0xFFFFFF);
             MutableComponent ammo = UtilMCText.translatable("info.dscombat.ammo")
                     .append(": "+(int)part.getCurrentAmmo()+"/"+(int)part.getMaxAmmo());
-            getMinecraft().font.draw(poseStack, ammo.setStyle(style), x, y+10, 0xFFFFFF);
+            minecraft.font.draw(poseStack, ammo.setStyle(style), x, y+10, 0xFFFFFF);
             if (i % 3 == 2) {
                 y += 50;
                 x = xStart;

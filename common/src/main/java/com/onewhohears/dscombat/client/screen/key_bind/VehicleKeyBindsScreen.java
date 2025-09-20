@@ -38,7 +38,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
                 UtilMCText.literal("<-"), onPress -> {
             int p = page - 1;
             if (p < 0) p = maxPage;
-            getMinecraft().setScreen(new VehicleKeyBindsScreen(p));
+            minecraft.setScreen(new VehicleKeyBindsScreen(p));
         });
         positionWidgetGrid(leftButton, ROWS, 4, 2, 2);
         // PAGE UP
@@ -46,7 +46,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
                 UtilMCText.literal("->"), onPress -> {
             int p = page + 1;
             if (p > maxPage) p = 0;
-            getMinecraft().setScreen(new VehicleKeyBindsScreen(p));
+            minecraft.setScreen(new VehicleKeyBindsScreen(p));
         });
         positionWidgetGrid(rightButton, ROWS, 4, 3, 2);
         // DISPLAY 12 BIND BUTTONS BASED ON PAGE
@@ -56,7 +56,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
             if (k < firstBindIndex || k >= lastBindIndex) { ++k; continue; }
             Button button = new Button(0, 0, 20, 20,
                     action.getName(), onPress -> {
-                getMinecraft().setScreen(new VehicleEditAxisBindScreen(page, action));
+                minecraft.setScreen(new VehicleEditAxisBindScreen(page, action));
             });
             positionWidgetGrid(button, ROWS, COLUMNS, a + 2, 2);
             ++k; ++a;
@@ -65,7 +65,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
             if (k < firstBindIndex || k >= lastBindIndex) { ++k; continue; }
             Button button = new Button(0, 0, 20, 20,
                     action.getName(), onPress -> {
-                getMinecraft().setScreen(new VehicleEditButtonBindScreen(page, action));
+                minecraft.setScreen(new VehicleEditButtonBindScreen(page, action));
             });
             positionWidgetGrid(button, ROWS, COLUMNS, a + 2, 2);
             ++k; ++a;

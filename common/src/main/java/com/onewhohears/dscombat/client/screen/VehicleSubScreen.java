@@ -19,7 +19,7 @@ public abstract class VehicleSubScreen extends VehicleScreen {
         super.init();
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.back"),
-                        onPress -> getMinecraft().setScreen(getBackScreen())),
+                        onPress -> minecraft.setScreen(getBackScreen())),
                 ROWS, COLUMNS, 0, padding);
     }
 

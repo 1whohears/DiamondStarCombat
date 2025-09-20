@@ -26,7 +26,7 @@ public class VehicleStorageScreen extends ContainerScreen {
         // Back to Main Menu
         Button backButton = new Button(0, 0, 60, 20,
                 UtilMCText.translatable("ui.dscombat.back"),
-                onPress -> { getMinecraft().setScreen(new VehicleMainScreen()); });
+                onPress -> { minecraft.setScreen(new VehicleMainScreen()); });
         backButton.x = leftPos + 2;
         backButton.y = topPos - 20;
         addRenderableWidget(backButton);

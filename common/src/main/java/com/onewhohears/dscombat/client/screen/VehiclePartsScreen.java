@@ -109,9 +109,9 @@ public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu
 		super.init();
 		Button backButton = new Button(0, 0, 60, 20,
 				UtilMCText.translatable("ui.dscombat.back"),
-				onPress -> { getMinecraft().setScreen(new VehicleMainScreen()); });
-		backButton.x = getGuiLeft() + titleLabelX+144;
-		backButton.y = getGuiTop() + titleLabelY+110;
+				onPress -> { minecraft.setScreen(new VehicleMainScreen()); });
+		backButton.x = leftPos + titleLabelX+144;
+		backButton.y = topPos + titleLabelY+110;
 		addRenderableWidget(backButton);
 	}
 

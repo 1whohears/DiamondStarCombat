@@ -157,7 +157,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         // RADAR DISPLAY RANGE FIELD
         vertical_widget_shift = 34;
         COLUMNS = 4;
-        EditBox rangeBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        EditBox rangeBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(rangeBox, ROWS, COLUMNS, 3, 2);
         rangeBox.setValue(DSCClientInputs.getRadarDisplayRange()+"");
         rangeBox.setTextColor(0xFFFFFF);
@@ -176,7 +176,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                         onPress -> getVehicle().radarSystem.clientSelectNextTarget()),
                 ROWS, COLUMNS, 6, 2, 2);
         // CHANGE RADAR PING OVERLAY SIZE BOX
-        EditBox pingSizeBox = new EditBox(getMinecraft().font, 0, 0, 20, 20, UtilMCText.empty());
+        EditBox pingSizeBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(pingSizeBox, ROWS, 6, 17, 2);
         pingSizeBox.setValue(Config.CLIENT.radarPingOverlaySize.get()+"");
         pingSizeBox.setTextColor(0xFFFFFF);
@@ -199,7 +199,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     @Override
     public void renderBackground(@NotNull PoseStack poseStack) {
         super.renderBackground(poseStack);
-        getMinecraft().font.draw(poseStack, UtilMCText.translatable("ui.dscombat.change_ping_size"),
+        minecraft.font.draw(poseStack, UtilMCText.translatable("ui.dscombat.change_ping_size"),
                 guiX+left_padding+126, guiY+top_padding+82, 0x555555);
     }
 

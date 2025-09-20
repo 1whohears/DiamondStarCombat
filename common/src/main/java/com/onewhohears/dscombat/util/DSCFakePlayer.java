@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.util;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.UUID;
 
@@ -20,7 +19,7 @@ public enum DSCFakePlayer {
         this.profile = profile;
     }
     public ServerPlayer getPlayer(ServerLevel level) {
-        if (player == null) player = new FakePlayer(level, profile);
+        if (player == null) player = UtilVehicleEntity.createFakePlayer(level, profile);
         return player;
     }
 }

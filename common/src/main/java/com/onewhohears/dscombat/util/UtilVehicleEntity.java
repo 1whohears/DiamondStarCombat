@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.util;
 
+import com.mojang.authlib.GameProfile;
 import com.onewhohears.dscombat.data.vehicle.physics.SeaLevels;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
@@ -7,6 +8,7 @@ import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.utils.value.IntValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -104,6 +106,11 @@ public class UtilVehicleEntity {
         }
 
         return dist;
+    }
+
+    @ExpectPlatform
+    public static ServerPlayer createFakePlayer(ServerLevel level, GameProfile profile) {
+        throw new AssertionError();
     }
 
 }

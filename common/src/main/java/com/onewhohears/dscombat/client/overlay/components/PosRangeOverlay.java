@@ -7,14 +7,14 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.NotNull;
 
 public class PosRangeOverlay extends VehicleOverlayComponent {
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (DSCClientInputs.getTargetMode() == DSCClientInputs.TargetMode.LOOK) return false;
 
         if (defaultRenderConditions()) return false;
@@ -27,7 +27,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
         WeaponInstance<?> data = vehicle.weaponSystem.getSelected();

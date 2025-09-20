@@ -1,27 +1,21 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import org.jetbrains.annotations.Nullable;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.onewholibs.util.math.Mat4f;
-import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.util.math.UtilAngles;
-import com.onewhohears.onewholibs.util.math.UtilGeometry;
-
+import com.onewhohears.onewholibs.util.math.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class AimAssistOverlay extends VehicleOverlayComponent {
 	public static final ResourceLocation AIM_HUD = new ResourceLocation(DSCombatMod.MODID,
@@ -33,7 +27,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
     private int prevTick = 0;
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return false;
 
@@ -47,7 +41,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
         WeaponInstance<?> data = vehicle.weaponSystem.getSelected();
@@ -62,11 +56,12 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
         Vec3 view = cam.getPosition();
         float z_rot = UtilAngles.lerpAngle(PARTIAL_TICK, vehicle.zRotO, vehicle.zRot);
         stack.pushPose();
-        stack.mulPose(Vec3f.ZP.rotationDegrees(z_rot));
-        stack.mulPose(Vec3f.XP.rotationDegrees(cam.getXRot()));
-        stack.mulPose(Vec3f.YP.rotationDegrees(cam.getYRot()+180f));
+        QuaternionF q = Vec3f.ZP.rotationDegrees(z_rot);
+        q.mul(Vec3f.XP.rotationDegrees(cam.getXRot()));
+        q.mul(Vec3f.YP.rotationDegrees(cam.getYRot()+180f));
+        stack.mulPose(q.convert());
         stack.translate(-view.x, -view.y, -view.z);
-        Mat4f view_mat = stack.last().pose().copy();
+        Mat4f view_mat = Mat4f.from(stack.last().pose().copy());
         stack.popPose();
         Mat4f proj_mat = ClientRenderEvents.getProjMatrix();
         float[] screen_pos = UtilGeometry.worldToScreenPos(targetWorldPos,

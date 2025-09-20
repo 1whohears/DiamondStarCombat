@@ -1,14 +1,7 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import java.util.List;
-
-import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.onewholibs.util.math.Mat4f;
-import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
@@ -17,17 +10,19 @@ import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilEntity;
-import com.onewhohears.onewholibs.util.math.UtilAngles;
-import com.onewhohears.onewholibs.util.math.UtilGeometry;
-
+import com.onewhohears.onewholibs.util.math.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class RadarOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation PING_HUD = new ResourceLocation(DSCombatMod.MODID,
@@ -41,7 +36,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     protected static float PARTIAL_TICK;
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (Minecraft.getInstance().screen != null) return false;
         if (!(getPlayerVehicle() instanceof EntityRidablePart seat)) return false;
@@ -56,7 +51,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         EntityRidablePart seat = (EntityRidablePart) getPlayerVehicle();
         assert seat != null;
 
@@ -73,11 +68,12 @@ public class RadarOverlay extends VehicleOverlayComponent {
         Vec3 view = cam.getPosition();
         float z_rot = UtilAngles.lerpAngle(PARTIAL_TICK, vehicle.zRotO, vehicle.zRot);
         poseStack.pushPose();
-        poseStack.mulPose(Vec3f.ZP.rotationDegrees(z_rot));
-        poseStack.mulPose(Vec3f.XP.rotationDegrees(cam.getXRot()));
-        poseStack.mulPose(Vec3f.YP.rotationDegrees(cam.getYRot()+180f));
+        QuaternionF q = Vec3f.ZP.rotationDegrees(z_rot);
+        q.mul(Vec3f.XP.rotationDegrees(cam.getXRot()));
+        q.mul(Vec3f.YP.rotationDegrees(cam.getYRot()+180f));
+        poseStack.mulPose(q.convert());
         poseStack.translate(-view.x, -view.y, -view.z);
-        Mat4f view_mat = poseStack.last().pose().copy();
+        Mat4f view_mat = Mat4f.from(poseStack.last().pose().copy());
         poseStack.popPose();
         Mat4f proj_mat = ClientRenderEvents.getProjMatrix();
         float cursorX = screenWidth / 2F, cursorY = screenHeight / 2F;

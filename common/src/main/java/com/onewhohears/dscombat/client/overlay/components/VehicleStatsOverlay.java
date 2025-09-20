@@ -4,14 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraft.client.gui.Gui;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.STICK_BASE_SIZE;
-import static com.onewhohears.dscombat.client.overlay.components.VehicleFuelOverlay.FUEL_GAUGE_HEIGHT;
+import static com.onewhohears.dscombat.client.screen.VehicleHealthScreen.FUEL_GAUGE_HEIGHT;
 
 public class VehicleStatsOverlay extends VehicleOverlayComponent {
     public static final Color GREEN_ME_SAY_ALONE_RAMP = new Color(0, 255, 0);
@@ -34,14 +34,14 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityVehicle)) return false;
         return !DSCClientInputs.isCameraLockedForward();
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
         assert vehicle != null;
 

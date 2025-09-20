@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.NotNull;
 
 // TODO: redo texture
@@ -24,13 +24,13 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
     public static final int STICK_BASE_SIZE = 60, STICK_KNOB_SIZE = STICK_BASE_SIZE / 6;
     protected static int PEDAL_HEIGHT = 25, PEDAL_WIDTH = 20;
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
         assert vehicle != null;
 

@@ -6,24 +6,16 @@ import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-@OnlyIn(Dist.CLIENT)
 public class WindTunnelOverlay extends GuiComponent {
-
-    public static void register(RegisterGuiOverlaysEvent event) {
-        event.registerBelowAll("dscombat_wind_tunnel", WindTunnelOverlay::render);
-    }
 
     static final long CHECK_TUNNEL_RATE = 2000;
     static long prevTunnelCheckTime = System.currentTimeMillis();
@@ -33,7 +25,7 @@ public class WindTunnelOverlay extends GuiComponent {
     @Nullable
     static EntityWindTunnel tunnel;
 
-    static void render(ForgeGui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
+    static void render(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (!player.hasPermissions(2)) return;

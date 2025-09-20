@@ -5,18 +5,18 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilParse;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraft.client.gui.Gui;
 import org.jetbrains.annotations.NotNull;
 
 public class DebugOverlay extends VehicleOverlayComponent {
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle && Config.CLIENT.debugMode.get();
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
         EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
         assert vehicle != null;
 

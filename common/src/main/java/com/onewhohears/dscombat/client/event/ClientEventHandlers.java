@@ -1,10 +1,12 @@
 package com.onewhohears.dscombat.client.event;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.client.entityscreen.instance.*;
 import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
+import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.particle.*;
 import com.onewhohears.dscombat.client.screen.*;
 import com.onewhohears.dscombat.data.sound.PassengerSoundPack;
@@ -14,19 +16,23 @@ import com.onewhohears.dscombat.init.ModParticles;
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.ControllableAnimPlayer;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KFAnimPlayers;
-import dev.architectury.event.EventResult;
+import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
-import dev.architectury.event.events.common.ChatEvent;
 import dev.architectury.registry.client.particle.ParticleProviderRegistry;
+import dev.architectury.registry.client.rendering.RenderTypeRegistry;
+import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 
 public class ClientEventHandlers {
 
     public static void init() {
         ClientLifecycleEvent.CLIENT_SETUP.register(ClientEventHandlers::onClientSetup);
+        ClientGuiEvent.RENDER_HUD.register(ClientEventHandlers::onRenderHud);
+    }
+
+    public static void onRenderHud(PoseStack poseStack, float partialTicks) {
+        OverlayController.onRenderHud(poseStack, partialTicks);
     }
 
     public static void onClientSetup(Minecraft minecraft) {
@@ -65,8 +71,8 @@ public class ClientEventHandlers {
     }
 
     public static void setFluidRenderLayers() {
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_SOURCE.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.OIL_FLUID_FLOWING.get(), RenderType.translucent());
+        RenderTypeRegistry.register(RenderType.translucent(), ModFluids.OIL_FLUID_SOURCE.get());
+        RenderTypeRegistry.register(RenderType.translucent(), ModFluids.OIL_FLUID_FLOWING.get());
     }
 
     public static void registerKeyframeAnims() {
@@ -93,17 +99,17 @@ public class ClientEventHandlers {
     }
 
     public static void registerScreens() {
-        MenuScreens.register(ModContainers.VEHICLE_PARTS_MENU.get(), VehiclePartsScreen::new);
-        MenuScreens.register(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
-        MenuScreens.register(ModContainers.WEAPON_PARTS_BLOCK_MENU.get(), WeaponPartsBlockScreen::new);
-        MenuScreens.register(ModContainers.AIRCRAFT_BLOCK_MENU.get(), VehicleBlockScreen::new);
-        MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x0.get(), VehicleStorageScreen::new);
-        MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x1.get(), VehicleStorageScreen::new);
-        MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x2.get(), VehicleStorageScreen::new);
-        MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x3.get(), VehicleStorageScreen::new);
-        MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x4.get(), VehicleStorageScreen::new);
-        MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x5.get(), VehicleStorageScreen::new);
-        MenuScreens.register(ModContainers.VEHICLE_STORAGE_MENU_9x6.get(), VehicleStorageScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_PARTS_MENU.get(), VehiclePartsScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.WEAPON_PARTS_BLOCK_MENU.get(), WeaponPartsBlockScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.AIRCRAFT_BLOCK_MENU.get(), VehicleBlockScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x0.get(), VehicleStorageScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x1.get(), VehicleStorageScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x2.get(), VehicleStorageScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x3.get(), VehicleStorageScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x4.get(), VehicleStorageScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x5.get(), VehicleStorageScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x6.get(), VehicleStorageScreen::new);
     }
 
 }

@@ -2,13 +2,12 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
-import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.math.Vec3f;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -90,7 +89,7 @@ public class HudOverlay extends VehicleOverlayComponent {
         double yOrigin = ((((double) screenHeight) - ((double) HORIZONTAL_BOUNDS_V_HEIGHT)) / 2.0) + 1.0;
 
         poseStack.translate(xOrigin + (((double) HORIZONTAL_BOUNDS_U_WIDTH) - 1.0) / 2.0, yOrigin + ((double) HORIZONTAL_BOUNDS_V_HEIGHT) / 2.0, HORIZONTAL_BOUNDS_BLIT_OFFSET);
-        poseStack.mulPose(Vec3f.ZP.rotationDegrees(-plane.zRot));
+        poseStack.mulPose(Vec3f.ZP.rotationDegrees(-plane.zRot).convert());
 
         // TODO: make this look less jarring
         poseStack.translate(-(plane.getYawRate() * 5.6), 0, 0);
@@ -128,14 +127,14 @@ public class HudOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityPlane)) return false;
         return !DSCClientInputs.isCameraFree();
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         EntityPlane plane = (EntityPlane) getPlayerRootVehicle();
         assert plane != null;
 

@@ -10,8 +10,8 @@ import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.jetbrains.annotations.NotNull;
 
 public class KeyBindsOverlay extends VehicleOverlayComponent {
@@ -22,14 +22,14 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	private static final int KEY_NAME_WIDTH = 40;
 	
 	public static Component fixKeyName(KeyMapping key) {
-        return switch (key.getKey().getValue()) {
+        return switch (key.key.getValue()) {
             case InputConstants.KEY_RCONTROL -> UtilMCText.literal("R-CTRL");
             case InputConstants.KEY_LCONTROL -> UtilMCText.literal("L-CTRL");
             case InputConstants.KEY_LALT -> UtilMCText.literal("L-ALT");
             case InputConstants.KEY_RALT -> UtilMCText.literal("R-ALT");
             case InputConstants.KEY_LSHIFT -> UtilMCText.literal("LSHIFT");
             case InputConstants.KEY_RSHIFT -> UtilMCText.literal("RSHIFT");
-            default -> key.getKey().getDisplayName();
+            default -> key.key.getDisplayName();
         };
     }
 	
@@ -72,7 +72,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
     }
 
 	@Override
-	protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+	protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
 		if (defaultRenderConditions()) return false;
 		if (!(getPlayerVehicle() instanceof EntityRidablePart seat)) return false;
 
@@ -81,7 +81,7 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 	}
 
 	@Override
-	protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+	protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
 		EntityRidablePart seat = (EntityRidablePart) getPlayerVehicle();
 		assert seat != null;
 

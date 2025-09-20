@@ -43,3 +43,6 @@ accessible field net/minecraft/world/entity/Mob targetSelector Lnet/minecraft/wo
 
 # Entity.ENTITY_COUNTER
 accessible field net/minecraft/world/entity/Entity ENTITY_COUNTER Ljava/util/concurrent/atomic/AtomicInteger;
+
+# KeyMapping.key
+accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;

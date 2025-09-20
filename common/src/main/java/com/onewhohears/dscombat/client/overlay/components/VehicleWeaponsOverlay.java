@@ -1,32 +1,26 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import static com.onewhohears.dscombat.DSCombatMod.MODID;
-
-import java.util.List;
-
-import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
-
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 // TODO: finish this lol
 /**
@@ -52,13 +46,13 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     protected int superFrame;
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         return getPlayerVehicle() instanceof EntityRidablePart;
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         EntityRidablePart seat = (EntityRidablePart) getPlayerVehicle();
         assert seat != null;
 
@@ -172,7 +166,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
     }
 
     /**
-     * Renders an icon defined by the <code>ResourceLocation</code> from the return of <code>{@link WeaponData#getWeaponIcon()}</code>.
+     * Renders an icon defined by the <code>ResourceLocation</code> from the return of <code>{@link WeaponStats#getWeaponIcon()}</code>.
      * This method provides an easy way to animate the icon.
      * @param frame an <code>int</code> representing the frame of animation. See the return of
      *              <code>#getMaxFrames</code> and subtract one to get the highest allowed frame.
@@ -228,7 +222,7 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         BufferBuilder bufferbuilder = tesselator.getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        Mat4f matrix4f = stack.last().pose();
+        Matrix4f matrix4f = stack.last().pose();
 
         int nameWidth = FONT.width(name);
         int nameHeight = FONT.lineHeight;

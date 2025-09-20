@@ -103,10 +103,4 @@ public final class ClientModEvents {
 		event.registerEntityRenderer(ModEntities.WIND_TUNNEL.get(), RendererWindTunnel::new);
 	}
 	
-	@SubscribeEvent
-    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-        VehicleOverlayComponent.registerOverlays(event);
-		WindTunnelOverlay.register(event);
-    }
-	
 }

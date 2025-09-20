@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
-
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;

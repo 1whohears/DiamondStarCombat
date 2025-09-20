@@ -1,9 +1,7 @@
 package com.onewhohears.dscombat.data.vehicle;
 
-import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleControl;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-
 import net.minecraft.network.FriendlyByteBuf;
 
 /**

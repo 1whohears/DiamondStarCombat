@@ -1,20 +1,17 @@
 package com.onewhohears.dscombat.data.vehicle;
 
-import java.awt.Color;
-
-import org.jetbrains.annotations.Nullable;
-
 import com.onewhohears.dscombat.client.texture.VehicleDynamicTextures;
-import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleTexture;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilEntity;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
+
+import java.awt.*;
 
 public class VehicleTextureManager {
 	

@@ -23,8 +23,7 @@ public class PassengerSoundPack extends JsonPresetStats {
     private static final Map<String, BiPredicate<EntityVehicle, PassengerSound>> soundTriggers = new HashMap<>();
 
     /**
-     * addon mods can register their own triggers by calling this in
-     * {@link net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent}
+     * addon mods can register their own triggers by calling this in client init
      */
     public static void registerPassengerSoundTrigger(String id, BiPredicate<EntityVehicle, PassengerSound> trigger) {
         soundTriggers.put(id, trigger);

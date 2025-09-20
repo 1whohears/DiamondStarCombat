@@ -2,11 +2,12 @@ package com.onewhohears.dscombat.forge;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.DependencySafety;
+import com.onewhohears.dscombat.data.forge.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
 import com.onewhohears.dscombat.data.parts.client.PartClientPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
-import com.onewhohears.dscombat.data.recipe.DSCRecipeGenerator;
 import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
+import com.onewhohears.dscombat.data.sound.forge.DSCSoundDefinitionGenImpl;
 import com.onewhohears.dscombat.data.tag.BlockTagGen;
 import com.onewhohears.dscombat.data.tag.EntityTypeTagGen;
 import com.onewhohears.dscombat.data.tag.FluidTagGen;
@@ -71,7 +72,7 @@ public class DSCombatModForge {
             generator.addProvider(true, new FluidTagGen(generator, event.getExistingFileHelper()));
         }
         if (event.includeClient()) {
-            generator.addProvider(true, new DSCSoundDefinitionGen(generator, event.getExistingFileHelper()));
+            generator.addProvider(true, new DSCSoundDefinitionGenImpl(generator, event.getExistingFileHelper()));
             generator.addProvider(true, new VehicleClientPresetGenerator(generator));
             generator.addProvider(true, new PartClientPresetGenerator(generator));
             generator.addProvider(true, new WeaponClientPresetGenerator(generator));

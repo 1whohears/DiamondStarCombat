@@ -1,21 +1,21 @@
-package com.onewhohears.dscombat.data.recipe;
-
-import java.util.function.Consumer;
+package com.onewhohears.dscombat.data.forge;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.crafting.WeaponPartRecipe;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
-
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 public class DSCRecipeGenerator extends RecipeProvider {
 
@@ -24,7 +24,7 @@ public class DSCRecipeGenerator extends RecipeProvider {
 	}
 
 	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> finishedRecipeConsumer) {
+	protected void buildCraftingRecipes(@NotNull Consumer<FinishedRecipe> finishedRecipeConsumer) {
 		genAircraftRecipes(finishedRecipeConsumer);
 		genWeaponRecipes(finishedRecipeConsumer);
 		genWeaponPartRecipes(finishedRecipeConsumer);
@@ -58,7 +58,7 @@ public class DSCRecipeGenerator extends RecipeProvider {
 		private final String presetId;
 		private final RecipeSerializer<?> type;
 		public FinishedPresetRecipe(JsonPresetStats preset, String prefix, RecipeSerializer<?> type) {
-			this.id = new ResourceLocation(preset.getNameSpace(), prefix+preset.getId());
+			this.id = ResourceLocation.tryBuild(preset.getNameSpace(), prefix+preset.getId());
 			this.presetId = preset.getId();
 			this.type = type;
 		}
@@ -67,11 +67,11 @@ public class DSCRecipeGenerator extends RecipeProvider {
 			json.addProperty("presetId", presetId);
 		}
 		@Override
-		public ResourceLocation getId() {
+		public @NotNull ResourceLocation getId() {
 			return id;
 		}
 		@Override
-		public RecipeSerializer<?> getType() {
+		public @NotNull RecipeSerializer<?> getType() {
 			return type;
 		}
 		@Override

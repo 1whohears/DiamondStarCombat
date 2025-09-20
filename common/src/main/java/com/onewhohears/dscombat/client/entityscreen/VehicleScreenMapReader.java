@@ -218,7 +218,7 @@ public class VehicleScreenMapReader {
 	
 	private static boolean hasUV(Vec2[] uvs, float u, float v) {
 		Vec2 uv = new Vec2(u, v);
-		if (isUVsTri(uvs)) UtilGeometry.isIn2DTriangle(uv, uvs);
+		if (isUVsTri(uvs)) return UtilGeometry.isIn2DTriangle(uv, uvs);
 		return UtilGeometry.isIn2DQuad(uv, uvs);
 	}
 	

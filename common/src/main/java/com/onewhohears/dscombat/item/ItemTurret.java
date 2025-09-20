@@ -1,8 +1,5 @@
 package com.onewhohears.dscombat.item;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 import com.onewhohears.dscombat.data.parts.client.PartAssets;
 import com.onewhohears.dscombat.data.parts.client.PartClientStats;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
@@ -10,24 +7,26 @@ import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
-
-import com.onewhohears.dscombat.util.UtilPresetParse;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class ItemTurret extends ItemPart implements ObjModelItem {
-	
-	public ItemTurret(int stackSize) {
-		super(stackSize);
-	}
+
+    @ExpectPlatform
+    public static ItemTurret create(int stackSize, String defaultPresetId) {
+        throw new AssertionError();
+    }
 
 	public ItemTurret(int stackSize, String defaultPresetId) {
 		super(stackSize, defaultPresetId);
@@ -81,11 +80,6 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
 		PartClientStats<?> pcs = PartAssets.get().get(preset);
 		if (pcs == null) return "";
 		return pcs.getModelId();
-	}
-
-	@Override
-	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
-		ObjModelItem.super.initializeClient(consumer);
 	}
 
 	@Override

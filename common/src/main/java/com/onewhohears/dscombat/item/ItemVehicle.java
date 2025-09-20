@@ -1,11 +1,5 @@
 package com.onewhohears.dscombat.item;
 
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
-import org.jetbrains.annotations.Nullable;
-
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
@@ -15,7 +9,7 @@ import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
-
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -42,11 +36,19 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public class ItemVehicle extends Item implements ObjModelItem {
-	
+
+    @ExpectPlatform
+    public static ItemVehicle create(String defaultPresetId) {
+        throw new AssertionError();
+    }
+
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
 	
@@ -205,11 +207,6 @@ public class ItemVehicle extends Item implements ObjModelItem {
 				items.add(stack);
             }
         }
-	}
-
-	@Override
-	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
-		ObjModelItem.super.initializeClient(consumer);
 	}
 
 	@Override

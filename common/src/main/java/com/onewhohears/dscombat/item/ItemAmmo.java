@@ -1,10 +1,5 @@
 package com.onewhohears.dscombat.item;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import org.jetbrains.annotations.Nullable;
-
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
 import com.onewhohears.dscombat.data.weapon.client.WeaponClientStats;
@@ -16,7 +11,7 @@ import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
-
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,11 +23,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem {
-	
+
+    @ExpectPlatform
+    public static ItemAmmo create(int stackSize, String defaultWeaponId) {
+        throw new AssertionError();
+    }
+
 	private final String defaultWeaponId;
 	
 	public ItemAmmo(int size, String defaultWeaponId) {
@@ -111,11 +113,6 @@ public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem 
 		ItemStack stack = super.getDefaultInstance();
 		stack.getOrCreateTag().putString("weapon", defaultWeaponId);
 		return stack;
-	}
-
-	@Override
-	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
-		ObjModelItem.super.initializeClient(consumer);
 	}
 
 	@Override

@@ -1,10 +1,5 @@
 package com.onewhohears.dscombat.item;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import org.jetbrains.annotations.Nullable;
-
 import com.onewhohears.dscombat.data.parts.client.PartAssets;
 import com.onewhohears.dscombat.data.parts.client.PartClientStats;
 import com.onewhohears.dscombat.data.parts.instance.WeaponPartInstance;
@@ -12,11 +7,11 @@ import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.util.UtilPresetParse;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
-
-import com.onewhohears.dscombat.util.UtilPresetParse;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,14 +21,17 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ItemWeaponPart extends ItemPart implements ObjModelItem {
-	
-	public ItemWeaponPart(int stackSize) {
-		super(stackSize);
-	}
+
+    @ExpectPlatform
+    public static ItemWeaponPart create(int stackSize, String defaultPresetId) {
+        throw new AssertionError();
+    }
 
 	public ItemWeaponPart(int stackSize, String defaultPresetId) {
 		super(stackSize, defaultPresetId);
@@ -108,10 +106,5 @@ public class ItemWeaponPart extends ItemPart implements ObjModelItem {
 		PartClientStats<?> pcs = PartAssets.get().get(preset);
 		if (pcs == null) return ObjEntityModels.NO_OVERRIDES;
 		return pcs.getItemModelOverrides();
-	}
-
-	@Override
-	public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
-		ObjModelItem.super.initializeClient(consumer);
 	}
 }

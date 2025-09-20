@@ -245,31 +245,31 @@ public class ModItems {
 	
 	// TURRETS
 	public static final RegistrySupplier<ItemPart> TURRET = ITEMS.register("turret",
-			() -> new ItemTurret(16, "aa_turret"));
+			() -> ItemTurret.create(16, "aa_turret"));
 	public static final RegistrySupplier<ItemPart> AA_TURRET = ITEMS.register("aa_turret", 
-			() -> new ItemTurret(16, "aa_turret"));
+			() -> ItemTurret.create(16, "aa_turret"));
 	public static final RegistrySupplier<ItemPart> MINIGUN_TURRET = ITEMS.register("minigun_turret", 
-			() -> new ItemTurret(16, "minigun_turret"));
+			() -> ItemTurret.create(16, "minigun_turret"));
 	public static final RegistrySupplier<ItemPart> CIWS = ITEMS.register("ciws", 
-			() -> new ItemTurret(16, "ciws"));
+			() -> ItemTurret.create(16, "ciws"));
 	public static final RegistrySupplier<ItemPart> MARK45_CANNON = ITEMS.register("mark45_cannon", 
-			() -> new ItemTurret(16, "mark45_cannon"));
+			() -> ItemTurret.create(16, "mark45_cannon"));
 	public static final RegistrySupplier<ItemPart> HEAVY_TANK_TURRET = ITEMS.register("heavy_tank_turret", 
-			() -> new ItemTurret(16, "heavy_tank_turret"));
+			() -> ItemTurret.create(16, "heavy_tank_turret"));
 	public static final RegistrySupplier<ItemPart> MARK7_CANNON = ITEMS.register("mark7_cannon", 
-			() -> new ItemTurret(16, "mark7_cannon"));
+			() -> ItemTurret.create(16, "mark7_cannon"));
 	public static final RegistrySupplier<ItemPart> STEVE_UP_SMASH = ITEMS.register("steve_up_smash", 
-			() -> new ItemTurret(16, "steve_up_smash"));
+			() -> ItemTurret.create(16, "steve_up_smash"));
 	public static final RegistrySupplier<ItemPart> SAM_LAUNCHER = ITEMS.register("sam_launcher", 
-			() -> new ItemTurret(16, "sam_launcher"));
+			() -> ItemTurret.create(16, "sam_launcher"));
 	public static final RegistrySupplier<ItemPart> TORPEDO_TUBES = ITEMS.register("torpedo_tubes", 
-			() -> new ItemTurret(16, "torpedo_tubes"));
+			() -> ItemTurret.create(16, "torpedo_tubes"));
 	public static final RegistrySupplier<ItemPart> MLS = ITEMS.register("mls", 
-			() -> new ItemTurret(16, "mls"));
+			() -> ItemTurret.create(16, "mls"));
 	public static final RegistrySupplier<ItemPart> MLRS = ITEMS.register("mlrs",
-			() -> new ItemTurret(16, "mlrs"));
+			() -> ItemTurret.create(16, "mlrs"));
 	public static final RegistrySupplier<ItemPart> ARTILLERY_CANNON = ITEMS.register("artillery_cannon",
-			() -> new ItemTurret(16, "artillery_cannon"));
+			() -> ItemTurret.create(16, "artillery_cannon"));
 	
 	// FLARE DISPENSERS
 	public static final RegistrySupplier<ItemPart> BASIC_FLARE_DISPENSER = ITEMS.register("basic_flare_dispenser", 
@@ -277,21 +277,21 @@ public class ModItems {
 	
 	// WEAPON PARTS
 	public static final RegistrySupplier<ItemPart> EXTERNAL_WEAPON_PART = ITEMS.register("external_weapon_part",
-			() -> new ItemWeaponPart(16, "xm12"));
+			() -> ItemWeaponPart.create(16, "xm12"));
 	public static final RegistrySupplier<ItemPart> XM12 = ITEMS.register("xm12", 
-			() -> new ItemWeaponPart(16, "xm12"));
+			() -> ItemWeaponPart.create(16, "xm12"));
 	public static final RegistrySupplier<ItemPart> INTERNAL_GUN = ITEMS.register("internal_gun", 
-			() -> new ItemWeaponPart(16, "internal_gun"));
+			() -> ItemWeaponPart.create(16, "internal_gun"));
 	public static final RegistrySupplier<ItemPart> LIGHT_MISSILE_RACK = ITEMS.register("light_missile_rack", 
-			() -> new ItemWeaponPart(16, "light_missile_rack"));
+			() -> ItemWeaponPart.create(16, "light_missile_rack"));
 	public static final RegistrySupplier<ItemPart> HEAVY_MISSILE_RACK = ITEMS.register("heavy_missile_rack", 
-			() -> new ItemWeaponPart(16, "heavy_missile_rack"));
+			() -> ItemWeaponPart.create(16, "heavy_missile_rack"));
 	public static final RegistrySupplier<ItemPart> BOMB_RACK = ITEMS.register("bomb_rack", 
-			() -> new ItemWeaponPart(16, "bomb_rack"));
+			() -> ItemWeaponPart.create(16, "bomb_rack"));
 	public static final RegistrySupplier<ItemPart> ADL = ITEMS.register("adl", 
-			() -> new ItemWeaponPart(16, "adl"));
+			() -> ItemWeaponPart.create(16, "adl"));
 	public static final RegistrySupplier<ItemPart> VLS = ITEMS.register("vls", 
-			() -> new ItemWeaponPart(16, "vls"));
+			() -> ItemWeaponPart.create(16, "vls"));
 	/**
 	 * TODO 2.1 radar jamming weapon
 	 * causes victims radar to display random noise
@@ -300,132 +300,132 @@ public class ModItems {
 	
 	// AMMO
 	public static final RegistrySupplier<Item> AMMO = ITEMS.register("ammo",
-			() -> new ItemAmmo(64, "20mm"));
+			() -> ItemAmmo.create(64, "20mm"));
 	public static final RegistrySupplier<Item> BULLET = ITEMS.register("bullet", 
-			() -> new ItemAmmo(64, "20mm")); 
+			() -> ItemAmmo.create(64, "20mm"));
 	public static final RegistrySupplier<Item> BOMB = ITEMS.register("bomb", 
-			() -> new ItemAmmo(64, "anm57"));
+			() -> ItemAmmo.create(64, "anm57"));
 	public static final RegistrySupplier<Item> MISSILE = ITEMS.register("missile",
-			() -> new ItemAmmo(16, "agm114k"));
+			() -> ItemAmmo.create(16, "agm114k"));
 	public static final RegistrySupplier<Item> TRACK_AIR_MISSILE = ITEMS.register("track_air_missile", 
-			() -> new ItemAmmo(16, "aim120b")); 
+			() -> ItemAmmo.create(16, "aim120b"));
 	public static final RegistrySupplier<Item> TRACK_GROUND_MISSILE = ITEMS.register("track_ground_missile", 
-			() -> new ItemAmmo(16, "agm84e")); 
+			() -> ItemAmmo.create(16, "agm84e"));
 	public static final RegistrySupplier<Item> IR_MISSILE = ITEMS.register("ir_missile", 
-			() -> new ItemAmmo(16, "aim9p5")); 
+			() -> ItemAmmo.create(16, "aim9p5"));
 	public static final RegistrySupplier<Item> POS_MISSILE = ITEMS.register("pos_missile", 
-			() -> new ItemAmmo(16, "agm114k")); 
+			() -> ItemAmmo.create(16, "agm114k"));
 	public static final RegistrySupplier<Item> TORPEDO = ITEMS.register("torpedo", 
-			() -> new ItemAmmo(16, "mk13")); 
+			() -> ItemAmmo.create(16, "mk13"));
 	public static final RegistrySupplier<Item> ANTIRADAR_MISSILE = ITEMS.register("antiradar_missile", 
-			() -> new ItemAmmo(16, "agm88g")); 
+			() -> ItemAmmo.create(16, "agm88g"));
 	
 	public static final RegistrySupplier<Item> B_20MM = ITEMS.register("20mm", 
-			() -> new ItemAmmo(64, "20mm")); 
+			() -> ItemAmmo.create(64, "20mm"));
 	public static final RegistrySupplier<Item> B_50MMHE = ITEMS.register("50mmhe", 
-			() -> new ItemAmmo(64, "50mmhe")); 
+			() -> ItemAmmo.create(64, "50mmhe"));
 	public static final RegistrySupplier<Item> B_120MMHE = ITEMS.register("120mmhe", 
-			() -> new ItemAmmo(16, "120mmhe")); 
+			() -> ItemAmmo.create(16, "120mmhe"));
 	public static final RegistrySupplier<Item> AGM65G = ITEMS.register("agm65g", 
-			() -> new ItemAmmo(16, "agm65g")); 
+			() -> ItemAmmo.create(16, "agm65g"));
 	public static final RegistrySupplier<Item> AGM65L = ITEMS.register("agm65l", 
-			() -> new ItemAmmo(16, "agm65l")); 
+			() -> ItemAmmo.create(16, "agm65l"));
 	public static final RegistrySupplier<Item> AGM84E = ITEMS.register("agm84e", 
-			() -> new ItemAmmo(16, "agm84e")); 
+			() -> ItemAmmo.create(16, "agm84e"));
 	public static final RegistrySupplier<Item> AGM114K = ITEMS.register("agm114k", 
-			() -> new ItemAmmo(16, "agm114k")); 
+			() -> ItemAmmo.create(16, "agm114k"));
 	public static final RegistrySupplier<Item> AIM7F = ITEMS.register("aim7f", 
-			() -> new ItemAmmo(16, "aim7f")); 
+			() -> ItemAmmo.create(16, "aim7f"));
 	public static final RegistrySupplier<Item> AIM7MH = ITEMS.register("aim7mh", 
-			() -> new ItemAmmo(16, "aim7mh")); 
+			() -> ItemAmmo.create(16, "aim7mh"));
 	public static final RegistrySupplier<Item> AIM9L = ITEMS.register("aim9l", 
-			() -> new ItemAmmo(16, "aim9l")); 
+			() -> ItemAmmo.create(16, "aim9l"));
 	public static final RegistrySupplier<Item> AIM9P5 = ITEMS.register("aim9p5", 
-			() -> new ItemAmmo(16, "aim9p5")); 
+			() -> ItemAmmo.create(16, "aim9p5"));
 	public static final RegistrySupplier<Item> AIM9X = ITEMS.register("aim9x", 
-			() -> new ItemAmmo(16, "aim9x")); 
+			() -> ItemAmmo.create(16, "aim9x"));
 	public static final RegistrySupplier<Item> AIM120B = ITEMS.register("aim120b", 
-			() -> new ItemAmmo(16, "aim120b")); 
+			() -> ItemAmmo.create(16, "aim120b"));
 	public static final RegistrySupplier<Item> AIM120C = ITEMS.register("aim120c", 
-			() -> new ItemAmmo(16, "aim120c")); 
+			() -> ItemAmmo.create(16, "aim120c"));
 	public static final RegistrySupplier<Item> TORPEDO1 = ITEMS.register("torpedo1", 
-			() -> new ItemAmmo(16, "mk13")); 
+			() -> ItemAmmo.create(16, "mk13"));
 	public static final RegistrySupplier<Item> RIFEL1 = ITEMS.register("rifel1", 
-			() -> new ItemAmmo(16, "agm88g")); 
+			() -> ItemAmmo.create(16, "agm88g"));
 	public static final RegistrySupplier<Item> GRUETZ_BUNKER_BUSTER = ITEMS.register("gruetz_bunker_buster", 
-			() -> new ItemAmmo(16, "gruetz_bunker_buster")); 
+			() -> ItemAmmo.create(16, "gruetz_bunker_buster"));
 	public static final RegistrySupplier<Item> MK13 = ITEMS.register("mk13", 
-			() -> new ItemAmmo(16, "mk13")); 
+			() -> ItemAmmo.create(16, "mk13"));
 	public static final RegistrySupplier<Item> AGM88G = ITEMS.register("agm88g", 
-			() -> new ItemAmmo(16, "agm88g")); 
+			() -> ItemAmmo.create(16, "agm88g"));
 
 	// VEHICLE
 	public static final RegistrySupplier<Item> VEHICLE = ITEMS.register("vehicle",
-			() -> new ItemVehicle(TankPresets.UNARMED_SMALL_ROLLER.getId()));
+			() -> ItemVehicle.create(TankPresets.UNARMED_SMALL_ROLLER.getId()));
 
 	// PLANES
 	public static final RegistrySupplier<Item> JAVI_PLANE = ITEMS.register("javi_plane", 
-			() -> new ItemVehicle(JaviPresets.DEFAULT_JAVI_PLANE.getId()));
+			() -> ItemVehicle.create(JaviPresets.DEFAULT_JAVI_PLANE.getId()));
 	public static final RegistrySupplier<Item> ALEXIS_PLANE = ITEMS.register("alexis_plane", 
-			() -> new ItemVehicle(AlexisPresets.DEFAULT_ALEXIS_PLANE.getId()));
+			() -> ItemVehicle.create(AlexisPresets.DEFAULT_ALEXIS_PLANE.getId()));
 	public static final RegistrySupplier<Item> WOODEN_PLANE = ITEMS.register("wooden_plane", 
-			() -> new ItemVehicle(PlanePresets.DEFAULT_WOODEN_PLANE.getId()));
+			() -> ItemVehicle.create(PlanePresets.DEFAULT_WOODEN_PLANE.getId()));
 	public static final RegistrySupplier<Item> E3SENTRY_PLANE = ITEMS.register("e3sentry_plane", 
-			() -> new ItemVehicle(PlanePresets.DEFAULT_E3SENTRY_PLANE.getId()));
+			() -> ItemVehicle.create(PlanePresets.DEFAULT_E3SENTRY_PLANE.getId()));
 	public static final RegistrySupplier<Item> BRONCO_PLANE = ITEMS.register("bronco_plane", 
-			() -> new ItemVehicle(BroncoPresets.DEFAULT_BRONCO_PLANE.getId()));
+			() -> ItemVehicle.create(BroncoPresets.DEFAULT_BRONCO_PLANE.getId()));
 	public static final RegistrySupplier<Item> FELIX_PLANE = ITEMS.register("felix_plane", 
-			() -> new ItemVehicle(FelixPresets.DEFAULT_FELIX_PLANE.getId()));
+			() -> ItemVehicle.create(FelixPresets.DEFAULT_FELIX_PLANE.getId()));
 	public static final RegistrySupplier<Item> JASON_PLANE = ITEMS.register("jason_plane", 
-			() -> new ItemVehicle(JasonPresets.DEFAULT_JASON_PLANE.getId()));
+			() -> ItemVehicle.create(JasonPresets.DEFAULT_JASON_PLANE.getId()));
 	public static final RegistrySupplier<Item> EDEN_PLANE = ITEMS.register("eden_plane", 
-			() -> new ItemVehicle(EdenPresets.DEFAULT_EDEN_PLANE.getId()));
+			() -> ItemVehicle.create(EdenPresets.DEFAULT_EDEN_PLANE.getId()));
 	public static final RegistrySupplier<Item> JAMES_WOODEN_PLANE = ITEMS.register("james_wooden_plane",
-			() -> new ItemVehicle(JamesPresets.DEFAULT_JAMES_PLANE.getId()));
+			() -> ItemVehicle.create(JamesPresets.DEFAULT_JAMES_PLANE.getId()));
 	
 	// HELICOPTERS
 	public static final RegistrySupplier<Item> NOAH_CHOPPER = ITEMS.register("noah_chopper", 
-			() -> new ItemVehicle(NoahChopperPresets.DEFAULT_NOAH_CHOPPER.getId()));
+			() -> ItemVehicle.create(NoahChopperPresets.DEFAULT_NOAH_CHOPPER.getId()));
 	public static final RegistrySupplier<Item> KRAIT_CHOPPER = ITEMS.register("krait_chopper",
-			() -> new ItemVehicle(KraitChopperPresets.DEFAULT_KRAIT_CHOPPER.getId()));
+			() -> ItemVehicle.create(KraitChopperPresets.DEFAULT_KRAIT_CHOPPER.getId()));
 	
 	// CARS
 	public static final RegistrySupplier<Item> ORANGE_TESLA = ITEMS.register("orange_tesla", 
-			() -> new ItemVehicle(CarPresets.DEFAULT_ORANGE_TESLA.getId()));
+			() -> ItemVehicle.create(CarPresets.DEFAULT_ORANGE_TESLA.getId()));
 	public static final RegistrySupplier<Item> AXCEL_TRUCK = ITEMS.register("axcel_truck", 
-			() -> new ItemVehicle(CarPresets.DEFAULT_AXCEL_TRUCK.getId()));
+			() -> ItemVehicle.create(CarPresets.DEFAULT_AXCEL_TRUCK.getId()));
 	public static final RegistrySupplier<Item> ERIC_TRUCK = ITEMS.register("eric_truck",
-			() -> new ItemVehicle(CarPresets.DEFAULT_ERIC_TRUCK.getId()));
+			() -> ItemVehicle.create(CarPresets.DEFAULT_ERIC_TRUCK.getId()));
 	
 	// TANKS
 	public static final RegistrySupplier<Item> MRBUDGER_TANK = ITEMS.register("mrbudger_tank", 
-			() -> new ItemVehicle(TankPresets.DEFAULT_MRBUDGER_TANK.getId()));
+			() -> ItemVehicle.create(TankPresets.DEFAULT_MRBUDGER_TANK.getId()));
 	public static final RegistrySupplier<Item> SMALL_ROLLER = ITEMS.register("small_roller", 
-			() -> new ItemVehicle(TankPresets.DEFAULT_SMALL_ROLLER.getId()));
+			() -> ItemVehicle.create(TankPresets.DEFAULT_SMALL_ROLLER.getId()));
 	
 	// BOATS
 	public static final RegistrySupplier<Item> NATHAN_BOAT = ITEMS.register("nathan_boat", 
-			() -> new ItemVehicle(BoatPresets.DEFAULT_NATHAN_BOAT.getId()));
+			() -> ItemVehicle.create(BoatPresets.DEFAULT_NATHAN_BOAT.getId()));
 	public static final RegistrySupplier<Item> GRONK_BATTLESHIP = ITEMS.register("gronk_battleship", 
-			() -> new ItemVehicle(BoatPresets.DEFAULT_GRONK_BATTLESHIP.getId()));
+			() -> ItemVehicle.create(BoatPresets.DEFAULT_GRONK_BATTLESHIP.getId()));
 	public static final RegistrySupplier<Item> DESTROYER = ITEMS.register("destroyer", 
-			() -> new ItemVehicle(BoatPresets.DEFAULT_DESTROYER.getId()));
+			() -> ItemVehicle.create(BoatPresets.DEFAULT_DESTROYER.getId()));
 	public static final RegistrySupplier<Item> CRUISER = ITEMS.register("cruiser", 
-			() -> new ItemVehicle(BoatPresets.DEFAULT_CRUISER.getId()));
+			() -> ItemVehicle.create(BoatPresets.DEFAULT_CRUISER.getId()));
 	public static final RegistrySupplier<Item> CORVETTE = ITEMS.register("corvette", 
-			() -> new ItemVehicle(BoatPresets.DEFAULT_CORVETTE.getId()));
+			() -> ItemVehicle.create(BoatPresets.DEFAULT_CORVETTE.getId()));
 	public static final RegistrySupplier<Item> AIRCRAFT_CARRIER = ITEMS.register("aircraft_carrier", 
-			() -> new ItemVehicle(BoatPresets.DEFAULT_AIRCRAFT_CARRIER.getId()));
+			() -> ItemVehicle.create(BoatPresets.DEFAULT_AIRCRAFT_CARRIER.getId()));
 	
 	// SUBMARINES
 	public static final RegistrySupplier<Item> ANDOLF_SUB = ITEMS.register("andolf_sub", 
-			() -> new ItemVehicle(SubPresets.DEFAULT_ANDOLF_SUB.getId()));
+			() -> ItemVehicle.create(SubPresets.DEFAULT_ANDOLF_SUB.getId()));
 	public static final RegistrySupplier<Item> GOOGLE_SUB = ITEMS.register("google_sub", 
-			() -> new ItemVehicle(SubPresets.DEFAULT_GOOGLE_SUB.getId()));
+			() -> ItemVehicle.create(SubPresets.DEFAULT_GOOGLE_SUB.getId()));
 
 	// STATIONARY
 	public static final RegistrySupplier<Item> EWR4000 = ITEMS.register("ewr4000",
-			() -> new ItemVehicle(StationaryPresets.EWR4000.getId()));
+			() -> ItemVehicle.create(StationaryPresets.EWR4000.getId()));
 
     public static void register() {
         ITEMS.register();

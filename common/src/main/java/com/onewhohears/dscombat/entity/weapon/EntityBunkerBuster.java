@@ -1,10 +1,7 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import java.util.Iterator;
-
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BunkerBusterStats;
-
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import net.minecraft.core.BlockPos;
@@ -21,6 +18,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
 
 public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<T> {
 	
@@ -60,7 +59,7 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 	protected int getBlockStrength(BlockPos pos, BlockState state) {
 		if (state.is(Blocks.BEDROCK)) return Integer.MAX_VALUE;
 		if (state.is(ModTags.Blocks.ABSORBENT)) return 50;
-		return (int) state.getExplosionResistance(level, pos, null);
+		return (int) state.getBlock().getExplosionResistance();
 	}
 	
 	@Override

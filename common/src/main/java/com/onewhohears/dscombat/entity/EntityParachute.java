@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -11,9 +12,8 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 
-public class EntityParachute extends Entity {
+public class EntityParachute extends Entity implements TrampleHandler {
 
 	public static final float UP_DECELERATION_RATE = 0.02f;
 	public static final float DOWN_DECELERATION_RATE = 0.15f;
@@ -95,7 +95,7 @@ public class EntityParachute extends Entity {
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+        return new ClientboundAddEntityPacket(this);
 	}
 
 }

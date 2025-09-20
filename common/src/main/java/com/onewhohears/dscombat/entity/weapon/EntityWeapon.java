@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.command.DSCGameRules;
@@ -254,7 +255,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 	
 	@Override

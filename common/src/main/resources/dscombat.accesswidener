@@ -2,6 +2,9 @@ accessWidener   v2  named
 
 # Explosion.radius f_46017_
 accessible field net/minecraft/world/level/Explosion radius F
+accessible field net/minecraft/world/level/Explosion x D
+accessible field net/minecraft/world/level/Explosion y D
+accessible field net/minecraft/world/level/Explosion z D
 
 # Projectile.canHitEntity(Entity) m_5603_
 accessible method net/minecraft/world/entity/projectile/ShulkerBullet canHitEntity (Lnet/minecraft/world/entity/Entity;)Z
@@ -33,3 +36,10 @@ accessible method net/minecraft/client/Camera setPosition (Lnet/minecraft/world/
 
 # MouseHandler.onMove(long,double,double) m_91561_
 accessible method net/minecraft/client/MouseHandler onMove (JDD)V
+
+# Mob.goalSelector
+accessible field net/minecraft/world/entity/Mob goalSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
+accessible field net/minecraft/world/entity/Mob targetSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
+
+# Entity.ENTITY_COUNTER
+accessible field net/minecraft/world/entity/Entity ENTITY_COUNTER Ljava/util/concurrent/atomic/AtomicInteger;

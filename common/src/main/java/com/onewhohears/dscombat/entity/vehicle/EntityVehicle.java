@@ -3,7 +3,10 @@ package com.onewhohears.dscombat.entity.vehicle;
 import java.util.*;
 import java.util.function.Predicate;
 
+import com.onewhohears.dscombat.entity.TrampleHandler;
+import com.onewhohears.onewholibs.util.UtilItem;
 import dev.architectury.networking.simple.BaseS2CMessage;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
@@ -29,7 +32,6 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.container.menu.VehiclePartsMenu;
-import com.onewhohears.dscombat.common.network.IPacket;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientAddForceMoment;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleControl;
@@ -114,7 +116,7 @@ import net.minecraft.world.scores.Team;
  * @author 1whohears
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
-public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion, DrivingBody {
+public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion, DrivingBody, TrampleHandler {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -240,7 +242,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         // if this entity is on the client side and receiving the quaternion of the plane from the server 
-        if (!level.isClientSide()) return;
+        if (!isClientSide()) return;
         if (Q.equals(key)) {
     		if (!isControlledByLocalInstance()) {
     			setPrevQ(getClientQ());
@@ -371,7 +373,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void init() {
 		refreshDimensions();
-		if (!level.isClientSide) serverSetup();
+		if (!isClientSide()) serverSetup();
 		else clientSetup();
 		soundManager.loadSounds(getStats());
 	}
@@ -398,7 +400,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         tickWarnings();
 		soundManager.onTick();
 		textureManager.onTick();
-		if (level.isClientSide) clientTick();
+		if (isClientSide()) clientTick();
 		else serverTick();
 	}
 
@@ -467,7 +469,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * could also be used by a server side AI to sync a vehicle's inputs with all client's.
 	 */
 	public void syncControlsToClient() {
-		if (level.isClientSide) return;
+		if (isClientSide()) return;
         PacketHandler.sendToTrackers(new ToClientVehicleControl(this), this);
 	}
 	
@@ -476,8 +478,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * damages plane if it falls or collides with a wall at speeds defined in config.
 	 */
 	public void tickCollisions() {
-		if (!level.isClientSide) {
-			knockBack(level.getEntities(this, 
+		if (!isClientSide()) {
+			knockBack(getLevel().getEntities(this,
 					getBoundingBox(), 
 					getKnockbackPredicate()));
 			tickDismountSafety();
@@ -562,10 +564,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * @param isFall true if vertical collision, false if horizontal
 	 */
 	public void collideHurt(float amount, boolean isFall) {
-		if (!level.isClientSide && tickCount > 200) {
+		if (!isClientSide() && tickCount > 200) {
 			if (isFall) hurt(DamageSource.FALL, amount);
 			else hurt(DamageSource.FLY_INTO_WALL, amount);
-		} else if (level.isClientSide && isControlledByLocalInstance()) {
+		} else if (isClientSide() && isControlledByLocalInstance()) {
             new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
 		}
 	}
@@ -590,7 +592,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void onSeatDismount(Entity entity) {
-		if (!level.isClientSide) formerPassengersServer.put(entity.getId(), DSCPhyCons.EJECT_SAFETY_COOLDOWN);
+		if (!isClientSide()) formerPassengersServer.put(entity.getId(), DSCPhyCons.EJECT_SAFETY_COOLDOWN);
 	}
 	
 	protected void knockBack(List<Entity> entities) {
@@ -807,8 +809,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected void stepDown(Vec3 move) {
 		AABB aabb = getBoundingBox();
 		Vec3 down = new Vec3(0,-getStepHeight()-0.1, 0); // this -0.1 is needed trust me
-		List<VoxelShape> list = level.getEntityCollisions(this, aabb.expandTowards(down));
-		Vec3 collide = collideBoundingBox(this, down, aabb, level, list);
+		List<VoxelShape> list = getLevel().getEntityCollisions(this, aabb.expandTowards(down));
+		Vec3 collide = collideBoundingBox(this, down, aabb, getLevel(), list);
 		if (collide.y < 0 && collide.y >= -getStepHeight()) {
 			setPos(getX(), getY()+collide.y, getZ());
 		}
@@ -917,17 +919,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (!isOperational()) return;
 		radarSystem.tick();
 		Entity controller = getControllingPassenger();
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
 			weaponSystem.serverTick();
 			if (controller == null) return;
 			boolean consume = !isNoConsume();
 			if (controller instanceof ServerPlayer player) {
 				if (player.isCreative()) consume = false;
 			}
-			boolean consumeFuel = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
+			boolean consumeFuel = getLevel().getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
 			if (consume && consumeFuel) tickFuel();
 			if (inputs.flare && tickCount - flareTicks >= 10) {
-				boolean consumeFlares = level.getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
+				boolean consumeFlares = getLevel().getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
 				flare(controller, consume && consumeFlares);
 			}
 		}
@@ -972,7 +974,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void tickParts() {
 		findGimbalForPilotCamera();
-		if (level.isClientSide) partsManager.clientTickParts();
+		if (isClientSide()) partsManager.clientTickParts();
 		else partsManager.serverTickParts();
 	}
 	
@@ -1011,7 +1013,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	private void syncMoveRot() {
-		if (!level.isClientSide || tickCount % 10 != 0 || firstTick) return;
+		if (!isClientSide() || tickCount % 10 != 0 || firstTick) return;
         new ToServerVehicleMoveRot(this).sendToServer();
 	}
 	
@@ -1075,7 +1077,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	@Override
 	public @NotNull Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 	
 	@Override
@@ -1089,7 +1091,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			if (result != InteractionResult.FAIL) return result;
 		}
 		if (!isOperational()) return onDestroyedInteract(player, hand);
-		if (!level.isClientSide) return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
+		if (!isClientSide()) return rideAvailableSeat(player) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		else {
 			Minecraft m = Minecraft.getInstance();
 			if (m.player != null && m.player.equals(player)) DSCClientInputs.centerMousePos();
@@ -1099,7 +1101,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	protected InteractionResult onItemInteract(Player player, InteractionHand hand, ItemStack stack) {
 		if (stack.is(ModTags.Items.SPRAY_CAN)) return onSprayCanInteract(player, hand, stack);
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
 			Item item = stack.getItem();
 			// INTERACT ITEMS
 			if (item instanceof VehicleInteractItem vii) 
@@ -1139,28 +1141,28 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		int d = stack.getDamageValue();
 		int r = (int)addFuel(md-d);
 		stack.setDamageValue(md-r);
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.sidedSuccess(isClientSide());
 	}
 	
 	protected InteractionResult onOilBucketInteract(Player player, InteractionHand hand, ItemStack stack) {
-		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(level);
+		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(UtilEntity.getLevel(this));
 		if (addFuel(fuelPerBucket) == fuelPerBucket) return InteractionResult.PASS;
-		ItemStack remain = stack.getCraftingRemainingItem();
+		ItemStack remain = UtilItem.getCraftingRemainingItem(stack);
 		player.getInventory().setItem(player.getInventory().selected, remain);
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.sidedSuccess(isClientSide());
 	}
 	
 	protected InteractionResult onSprayCanInteract(Player player, InteractionHand hand, ItemStack stack) {
-		if (level.isClientSide) UtilClientPacket.openVehicleTextureScreen(textureManager);
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		if (isClientSide()) UtilClientPacket.openVehicleTextureScreen(textureManager);
+		return InteractionResult.sidedSuccess(isClientSide());
 	}
 	
 	protected InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
-		List<EntityChainHook> hooks = level.getEntitiesOfClass(EntityChainHook.class, 
+		List<EntityChainHook> hooks = getLevel().getEntitiesOfClass(EntityChainHook.class,
 				getBoundingBox().inflate(EntityChainHook.CHAIN_LENGTH), hook -> hook.isPlayerConnected(player));
 		/*if (hooks.size() == 0) {
 			chainToPlayer(player);
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(isClientSide());
 		}*/
 		for (EntityChainHook hook : hooks) {
 			if (hook.addVehicleConnection(player, this)) {
@@ -1169,23 +1171,23 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 				break;
 			}
 		}
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.sidedSuccess(isClientSide());
 	}
 	
 	protected InteractionResult onDestroyedInteract(Player player, InteractionHand hand) {
 		if (partsManager.dropPartItem()) {
 			playTheftSound();
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(isClientSide());
 		}
 		if (dropIngredient()) {
 			playTheftSound();
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(isClientSide());
 		}
 		return InteractionResult.PASS;
 	}
 	
 	public boolean dropIngredient() {
-		if (level.isClientSide) return false;
+		if (isClientSide()) return false;
 		while (canDropIngredients()) {
 			++ingredientDropIndex;
 			Ingredient ing = getStats().getIngredients().get(ingredientDropIndex);
@@ -1245,7 +1247,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public boolean chainToPlayer(Player player) {
 		chainHolderPlayer = player;
 		chainHolderHook = null;
-		if (!level.isClientSide) UtilServerPacket.sendVehicleAddPlayer(this, player);
+		if (!isClientSide()) UtilServerPacket.sendVehicleAddPlayer(this, player);
 		return true;
 	}
 	/**
@@ -1264,7 +1266,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		SoundEvent sound;
 		if (isMaxHealth()) sound = SoundEvents.ANVIL_USE;
 		else sound = SoundEvents.ANVIL_PLACE;
-		level.playSound(null, this, sound, 
+		getLevel().playSound(null, this, sound,
 				getSoundSource(), 0.5f, 1.0f);
 	}
 	
@@ -1492,7 +1494,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (source.isFire()) hurtByFireTime = tickCount;
 		soundManager.onHurt(source, amount);
 		damage(source, amount, hitbox, hurtRoot);
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
 			if (!isOperational()) {
 				partsManager.damageAllParts();
 				checkExplodeWhenKilled(source);
@@ -1513,7 +1515,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		/*if (shouldDebug(source)) 
-			System.out.println("D="+amount+" C?"+level.isClientSide+" R?"+hurtRoot+" H="+hitbox+" source "+source);*/
+			System.out.println("D="+amount+" C?"+isClientSide()+" R?"+hurtRoot+" H="+hitbox+" source "+source);*/
 		if (!source.isExplosion() && source.getDirectEntity() != null
 				&& source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) {
 			amount = calcDamageFromBullet(source, amount);
@@ -1557,7 +1559,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public float calcDamageToArmor(float amount) {
 		return Math.max(0, reduceByPercent(amount, 
-				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(level))
+				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(UtilEntity.getLevel(this)))
 				- getStats().armor_damage_threshold);
 	}
 	
@@ -1575,7 +1577,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
-		return amount * DSCGameRules.getBulletDamageVehicleFactor(level);
+		return amount * DSCGameRules.getBulletDamageVehicleFactor(UtilEntity.getLevel(this));
 	}
 	
 	private static float reduceByPercent(float amount, float percent) {
@@ -1627,15 +1629,15 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void addForceMomentToClient(Vec3 force, Vec3 moment) {
-		if (level.isClientSide) return;
+		if (isClientSide()) return;
 		addForceBetweenTicks = addForceBetweenTicks.add(force);
 		addMomentBetweenTicks = addMomentBetweenTicks.add(moment);
         PacketHandler.sendToTrackers(new ToClientAddForceMoment(this, force, moment), this);
 	}
 	
 	public void explode(DamageSource source) {
-		if (level.isClientSide) return;
-		level.explode(this, source,
+		if (isClientSide()) return;
+		getLevel().explode(this, source,
 			null, getX(), getY(), getZ(), 
 			getStats().crashExplosionRadius, true,
 			Explosion.BlockInteraction.BREAK);
@@ -1660,7 +1662,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public void customExplosionHandler(Explosion exp, @Nullable RotableHitbox hitbox) {
 		Entity entity = (hitbox == null) ? this : hitbox;
-		Vec3 s = exp.getPosition();
+		Vec3 s = new Vec3(exp.x, exp.y, exp.z);
 		Vec3 b = getClosest(s, hitbox);
 		Vec3 r = b.subtract(entity.position());
 		
@@ -1685,7 +1687,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
         float amount = (float)((int)((exp_factor*exp_factor+exp_factor)*3.5d*(double)diameter+1d));
-        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(level);
+        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(UtilEntity.getLevel(this));
         
         if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
         else hurtLogic(exp.getDamageSource(), amount, null);
@@ -1795,12 +1797,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public final QuaternionF getQBySide() {
-    	if (level.isClientSide) return getClientQ();
+    	if (isClientSide()) return getClientQ();
     	else return getQ();
     }
     
     public final void setQBySide(QuaternionF q) {
-    	if (level.isClientSide) setClientQ(q);
+    	if (isClientSide()) setClientQ(q);
     	else setQ(q);
     }
     
@@ -1863,7 +1865,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public final Vec3 getAngularVel() {
-    	if (level.isClientSide) return clientAV;
+    	if (isClientSide()) return clientAV;
     	return entityData.get(AV);
     }
     
@@ -1876,7 +1878,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public final void setAngularVel(Vec3 av) {
-    	if (level.isClientSide) clientAV = av;
+    	if (isClientSide()) clientAV = av;
     	else entityData.set(AV, av);
     }
     
@@ -1904,8 +1906,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public boolean canBecomeItem() {
-    	int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
-    	int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
+    	int fresh = getLevel().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
+    	int shoot = getLevel().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
     	return tickCount/20 > fresh && (lastShootTime == -1 || (tickCount-lastShootTime)/20 > shoot);
     }
 
@@ -1924,13 +1926,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			return UtilMCText.translatable("error.dscombat.not_a_passenger");
 		if (!seat.isPilotSeat())
 			return UtilMCText.translatable("error.dscombat.not_a_pilot");
-		int fresh = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
+		int fresh = getLevel().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
 		int fresh_diff = fresh - tickCount/20;
 		if (fresh_diff > 0)
 			return UtilMCText.translatable("error.dscombat.cant_item_yet_fresh", fresh_diff);
 		if (lastShootTime == -1)
 			return null;
-		int shoot = level.getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
+		int shoot = getLevel().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
 		int shoot_diff = shoot - (tickCount-lastShootTime)/20;
 		if (shoot_diff > 0)
 			return UtilMCText.translatable("error.dscombat.cant_item_yet_shoot", shoot_diff);
@@ -1941,10 +1943,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
      * SERVER SIDE ONLY
      */
     public void becomeItem(Vec3 pos) {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	ItemStack stack = getItem();
-		ItemEntity e = new ItemEntity(level, pos.x, pos.y, pos.z, stack);
-		level.addFreshEntity(e);
+		ItemEntity e = new ItemEntity(getLevel(), pos.x, pos.y, pos.z, stack);
+		getLevel().addFreshEntity(e);
 		discard();
     }
     
@@ -1952,7 +1954,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
      * SERVER SIDE ONLY
      */
     public void becomeItem() {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	becomeItem(position());
     }
 
@@ -2025,7 +2027,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public void repairAll() {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	addHealth(100000);
 		addArmor(100000);
 		repairAllHitboxes();
@@ -2034,7 +2036,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public int onRepairTool(float repair) {
-    	if (level.isClientSide) return 0;
+    	if (isClientSide()) return 0;
     	int damage = 0;
     	if (getHealth() < getMaxHealth()) {
     		addHealth(repair);
@@ -2051,12 +2053,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public void repairAllParts() {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	partsManager.repairAllParts();
     }
     
     public void repairAllHitboxes() {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	for (RotableHitbox h : hitboxes) h.fullyRepair();
     }
     
@@ -2273,32 +2275,32 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public void refillAll() {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	refillFuel();
 		refillAllWeapons();
     }
     
     public void refillFlares() {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	partsManager.addFlares(100000);
     }
     
     public void refillFuel() {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	addFuel(100000);
-    	level.playSound(null, this, SoundEvents.BREWING_STAND_BREW, 
+    	getLevel().playSound(null, this, SoundEvents.BREWING_STAND_BREW,
     			SoundSource.PLAYERS, 1f, 1f);
     }
     
     public void refillAllWeapons() {
-    	if (level.isClientSide) return;
+    	if (isClientSide()) return;
     	refillFlares();
     	weaponSystem.refillAll();
 		for (EntityTurret t : getTurrets()) {
 			TurretInstance<?> ti = t.getPartInstance();
 			if (ti != null) ti.setWeaponAmmo(100000);
 		}
-		level.playSound(null, this, SoundEvents.VILLAGER_WORK_TOOLSMITH, 
+		getLevel().playSound(null, this, SoundEvents.VILLAGER_WORK_TOOLSMITH,
     			SoundSource.PLAYERS, 1f, 1f);
     }
     
@@ -2416,20 +2418,20 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     
     protected void debugTick() {
 		String side = "SERVER";
-		if (level.isClientSide) side = "CLIENT";
+		if (isClientSide()) side = "CLIENT";
 		System.out.println(side+" TICK "+tickCount+" "+this);
 	}
     
     public void toClientPassengers(BaseS2CMessage packet) {
-    	if (level.isClientSide()) return;
+    	if (isClientSide()) return;
 		// somehow class cast exception happened here while playing single player on a modded v0.10 client?
 		// LocalPlayer cannot be cast to ServerPlayer
-    	for (Player p : getRidingPlayers()) if (!p.level.isClientSide()) // this additional client side check should fix?
+    	for (Player p : getRidingPlayers()) if (!p.isClientSide()) // this additional client side check should fix?
             packet.sendTo((ServerPlayer) p);
     }
 
 	public void toTrackers(BaseS2CMessage packet) {
-		if (level.isClientSide()) return;
+		if (isClientSide()) return;
         PacketHandler.sendToTrackers(packet, this);
 	}
     
@@ -2519,7 +2521,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
             hitbox.setPos(position());
             hitbox.readNbt(hitbox_data);
             hitbox.setId(ENTITY_COUNTER.incrementAndGet());
-            level.addFreshEntity(hitbox);
+            getLevel().addFreshEntity(hitbox);
         }
 	}
 	
@@ -2530,7 +2532,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void refreshHitboxes() {
-		if (level.isClientSide) return;
+		if (isClientSide()) return;
 		CompoundTag nbt = new CompoundTag();
 		saveRotableHitboxes(nbt);
         for (RotableHitbox hitbox : hitboxes) hitbox.discard();
@@ -2538,7 +2540,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void addRotableHitboxForClient(RotableHitbox hitbox) {
-		if (!level.isClientSide) return;
+		if (!isClientSide()) return;
 		String name = hitbox.getHitboxName();
 		for (int i = 0; i < hitboxes.size(); ++i) {
 			if (hitboxes.get(i).getHitboxName().equals(name)) {
@@ -2550,7 +2552,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void tickHitboxes() {
-		if (level.isClientSide && hitboxes.size() < getStats().getHitboxNum() && tickCount % 200 == 20) {
+		if (isClientSide() && hitboxes.size() < getStats().getHitboxNum() && tickCount % 200 == 20) {
             LOGGER.debug("Vehicle {} on client side has {}/{} hitboxes. Sending hitbox refresh packet. Attempt {}",
 					getId(), hitboxes.size(), getStats().getHitboxNum(), ++hitboxRefreshAttempts);
             new ToServerFixHitboxes(this).sendToServer();
@@ -2647,13 +2649,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	private void syncHitboxCollidePositions() {
-		if (!level.isClientSide || collidedEntityIds.isEmpty() || !isControlledByLocalInstance()) return;
+		if (!isClientSide() || collidedEntityIds.isEmpty() || !isControlledByLocalInstance()) return;
 		int[] ids = new int[collidedEntityIds.size()];
 		Vec3[] pos = new Vec3[collidedEntityIds.size()];
 		int i = 0;
 		for (Integer id : collidedEntityIds) {
 			ids[i] = id;
-			Entity entity = level.getEntity(id);
+			Entity entity = getLevel().getEntity(id);
 			if (entity != null) pos[i] = entity.position();
 			else pos[i] = new Vec3(0, -1000, 0);
 			++i;
@@ -3287,4 +3289,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		radarSystem.onParentRemove();
 		super.remove(reason);
 	}
+
+    public @NotNull Level getLevel() {
+        return UtilEntity.getLevel(this);
+    }
 }

@@ -95,4 +95,6 @@ public class DataSerializers {
     public static <T> EntityDataSerializer<T> register(String id, EntityDataSerializer<T> serializer) {
         throw new AssertionError();
     }
+
+    public static void init() {}
 }

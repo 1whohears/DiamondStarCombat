@@ -16,8 +16,6 @@ import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.init.ModVillagers;
 
 import dev.architectury.platform.Platform;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
 
 /**
  * This is the main class of the Diamond Star Combat mod.
@@ -55,6 +53,7 @@ public class DSCombatMod {
         ModParticles.register();
         ModArgumentTypes.register();
         ModTags.init();
+        DataSerializers.init();
     }
 
     public static void clientInit() {

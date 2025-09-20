@@ -44,10 +44,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProjectile<T, WeaponClientStats> implements IEntityAdditionalSpawnData {

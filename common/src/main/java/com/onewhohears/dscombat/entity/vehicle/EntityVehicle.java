@@ -108,9 +108,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
 
 /**
  * the parent class for all vehicle entities in this mod

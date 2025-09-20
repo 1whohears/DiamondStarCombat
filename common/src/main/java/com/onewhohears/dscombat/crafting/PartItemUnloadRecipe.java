@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class PartItemUnloadRecipe<I extends ReloadablePartInstance> extends PartItemLoadRecipe<I> {

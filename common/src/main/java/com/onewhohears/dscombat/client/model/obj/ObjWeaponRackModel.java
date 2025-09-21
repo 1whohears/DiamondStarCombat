@@ -2,21 +2,17 @@ package com.onewhohears.dscombat.client.model.obj;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
-
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
 import com.onewhohears.onewholibs.client.model.obj.ObjModelHandler;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.model.renderable.CompositeRenderable;
-import net.minecraftforge.client.model.renderable.CompositeRenderable.Transforms;
 
 public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel<T> {
-	
-	public static final int maxRenderedRackWeaponNum = 30;
+
 	public static int renderedRackWeaponNum = 0;
 	
 	protected final int maxAmmoNum;

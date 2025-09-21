@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModTags;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.stats.Stats;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class ItemGasCan extends Item {
 	
@@ -33,8 +31,9 @@ public class ItemGasCan extends Item {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.getDamageValue() == 0) return InteractionResultHolder.pass(stack);
 		BlockHitResult blockhitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
-		InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(player, level, stack, blockhitresult);
-		if (ret != null) return ret;
+        // FIXME was this ForgeEventFactory#onBucketUse call needed?
+		//InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(player, level, stack, blockhitresult);
+		//if (ret != null) return ret;
 		if (blockhitresult.getType() == HitResult.Type.MISS) return InteractionResultHolder.pass(stack);
 		else if (blockhitresult.getType() != HitResult.Type.BLOCK) return InteractionResultHolder.pass(stack);
 		BlockPos blockpos = blockhitresult.getBlockPos();
@@ -51,7 +50,7 @@ public class ItemGasCan extends Item {
 			ItemStack filledStack = bucketpickup.pickupBlock(level, blockpos, blockstate1);
 			if (!filledStack.isEmpty()) {
 				player.awardStat(Stats.ITEM_USED.get(this));
-				bucketpickup.getPickupSound(blockstate1).ifPresent((sound) -> {
+				bucketpickup.getPickupSound().ifPresent((sound) -> {
 					player.playSound(sound, 1.0F, 1.0F);
 				});
 				level.gameEvent(player, GameEvent.FLUID_PICKUP, blockpos);
@@ -64,11 +63,6 @@ public class ItemGasCan extends Item {
 	
 	protected void fillGasCan(ItemStack stack, int amount) {
 		stack.setDamageValue(Math.max(stack.getDamageValue()-amount, 0));
-	}
-	
-	@Override
-	public float getXpRepairRatio(ItemStack stack) {
-		return Config.COMMON.gasCanXpRepairRate.get().floatValue();
 	}
 
 }

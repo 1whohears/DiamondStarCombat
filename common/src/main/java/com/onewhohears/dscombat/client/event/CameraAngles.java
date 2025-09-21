@@ -2,11 +2,15 @@ package com.onewhohears.dscombat.client.event;
 
 public class CameraAngles {
     private float roll = 0, pitch = 0, yaw = 0;
-    private boolean isChanged = false;
+    private boolean isRollChanged = false;
+    private boolean isPitchChanged = false;
+    private boolean isYawChanged = false;
 
     public void reset() {
         roll = 0; pitch = 0; yaw = 0;
-        isChanged = false;
+        isRollChanged = false;
+        isPitchChanged = false;
+        isYawChanged = false;
     }
 
     public float getRoll() {
@@ -15,7 +19,7 @@ public class CameraAngles {
 
     public void setRoll(float roll) {
         this.roll = roll;
-        this.isChanged = true;
+        this.isRollChanged = true;
     }
 
     public float getPitch() {
@@ -24,7 +28,7 @@ public class CameraAngles {
 
     public void setPitch(float pitch) {
         this.pitch = pitch;
-        this.isChanged = true;
+        this.isPitchChanged = true;
     }
 
     public float getYaw() {
@@ -33,10 +37,18 @@ public class CameraAngles {
 
     public void setYaw(float yaw) {
         this.yaw = yaw;
-        this.isChanged = true;
+        this.isYawChanged = true;
     }
 
-    public boolean isChanged() {
-        return isChanged;
+    public boolean isRollChanged() {
+        return isRollChanged;
+    }
+
+    public boolean isPitchChanged() {
+        return isPitchChanged;
+    }
+
+    public boolean isYawChanged() {
+        return isYawChanged;
     }
 }

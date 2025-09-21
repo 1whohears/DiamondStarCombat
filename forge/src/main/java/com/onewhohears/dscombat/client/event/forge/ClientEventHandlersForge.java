@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.client.model.obj.ObjWeaponRackModel;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
@@ -74,11 +75,12 @@ public class ClientEventHandlersForge {
         CAMERA_ANGLES.reset();
         ClientCameraEventHandlers.onSetupCameraAngles(event.getCamera(), (float)event.getPartialTick(),
                 event.getYaw(), event.getPitch(), CAMERA_ANGLES);
-        if (CAMERA_ANGLES.isChanged()) {
-            event.setRoll(CAMERA_ANGLES.getRoll());
+        if (CAMERA_ANGLES.isPitchChanged())
             event.setPitch(CAMERA_ANGLES.getPitch());
+        if (CAMERA_ANGLES.isYawChanged())
             event.setYaw(CAMERA_ANGLES.getYaw());
-        }
+        if (CAMERA_ANGLES.isRollChanged())
+            event.setRoll(CAMERA_ANGLES.getRoll());
     }
 
 }

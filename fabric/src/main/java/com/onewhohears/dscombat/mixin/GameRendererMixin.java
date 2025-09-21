@@ -30,10 +30,11 @@ public abstract class GameRendererMixin {
         CAMERA_ANGLES.reset();
         ClientCameraEventHandlers.onSetupCameraAngles(mainCamera, f,
                 mainCamera.getYRot(), mainCamera.getXRot(), CAMERA_ANGLES);
-        if (CAMERA_ANGLES.isChanged()) {
-            mainCamera.yRot = CAMERA_ANGLES.getYaw();
+        if (CAMERA_ANGLES.isPitchChanged())
             mainCamera.xRot = CAMERA_ANGLES.getPitch();
+        if (CAMERA_ANGLES.isYawChanged())
+            mainCamera.yRot = CAMERA_ANGLES.getYaw();
+        if (CAMERA_ANGLES.isRollChanged())
             poseStack.mulPose(Vec3f.ZP.rotationDegrees(CAMERA_ANGLES.getRoll()).convert());
-        }
     }
 }

@@ -39,7 +39,7 @@ public class EntityPlane extends EntityVehicle {
 
 	@Override
 	public void tick() {
-		if (tickCount % 10 == 0) isArcadeMode = DSCGameRules.isPlaneArcadeMode(getLevel());
+		if (tickCount % 10 == 0) isArcadeMode = DSCGameRules.isPlaneArcadeMode(getWorld());
 		super.tick();
 	}
 

@@ -92,7 +92,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -397,7 +396,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		// PHYSICS
 		tickPhysics();
 		tickCollisions();
-		if (!getLevel().isClientSide() && canTrample()) tickTrample();
+		if (!getWorld().isClientSide() && canTrample()) tickTrample();
 		tickLerp();
 		// HITBOXES
 		tickHitboxes();
@@ -485,7 +484,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void tickCollisions() {
 		if (!isClientSide()) {
-			knockBack(getLevel().getEntities(this,
+			knockBack(getWorld().getEntities(this,
 					getBoundingBox(), 
 					getKnockbackPredicate()));
 			tickDismountSafety();
@@ -496,7 +495,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public boolean canTrample() {
-		return (isOnGround() || isInWater()) && xzSpeed > 0 && getLevel().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
+		return (isOnGround() || isInWater()) && xzSpeed > 0 && getWorld().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
 	}
 
 	protected void tickTrample() {
@@ -506,10 +505,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			for (double z = box.minZ; z < box.maxZ+1; ++z) {
 				for (double y = box.minY; y < box.maxY+1; ++y) {
 					BlockPos pos = new BlockPos(x, y, z);
-					BlockState state = getLevel().getBlockState(pos);
+					BlockState state = getWorld().getBlockState(pos);
 					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;
-					if (UtilVehicleEntity.vehicleHasPermissionToTrample(pos, state, getLevel(), controller))
-						getLevel().destroyBlock(pos, true, this);
+					if (UtilVehicleEntity.vehicleHasPermissionToTrample(pos, state, getWorld(), controller))
+						getWorld().destroyBlock(pos, true, this);
 				}
 			}
 		}
@@ -634,9 +633,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public void tickNoHealth() {
 		++deadTicks;
 		if (isFullyLooted()) kill();
-		int removeTicks = getLevel().getGameRules().getInt(DSCGameRules.REMOVE_DEAD_VEHICLES_TIME) * 20;
+		int removeTicks = getWorld().getGameRules().getInt(DSCGameRules.REMOVE_DEAD_VEHICLES_TIME) * 20;
 		if (removeTicks >= 0 && deadTicks >= removeTicks) {
-			if (getLevel().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) dropAllItems();
+			if (getWorld().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) dropAllItems();
 			kill();
 		}
 	}
@@ -800,7 +799,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         if (controller == null) return move;
         Vec3 nextPos = controller.position().add(move.normalize().scale(64));
         ChunkPos nextChunk = new ChunkPos(new BlockPos(nextPos));
-        if (getLevel().hasChunk(nextChunk.x, nextChunk.z)) return move;
+        if (getWorld().hasChunk(nextChunk.x, nextChunk.z)) return move;
         LOGGER.warn("CHUNK AHEAD VEHICLE DOES NOT EXIST STOPPING MOVE FOR PILOT: {} | SPEED: {}",
                 controller.getScoreboardName(), move.length());
         // FIXME this seems to prevent players from getting ejected during lag, but lag back looks wierd.
@@ -816,8 +815,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected void stepDown(Vec3 move) {
 		AABB aabb = getBoundingBox();
 		Vec3 down = new Vec3(0,-maxUpStep-0.1, 0); // this -0.1 is needed trust me
-		List<VoxelShape> list = getLevel().getEntityCollisions(this, aabb.expandTowards(down));
-		Vec3 collide = collideBoundingBox(this, down, aabb, getLevel(), list);
+		List<VoxelShape> list = getWorld().getEntityCollisions(this, aabb.expandTowards(down));
+		Vec3 collide = collideBoundingBox(this, down, aabb, getWorld(), list);
 		if (collide.y < 0 && collide.y >= -maxUpStep) {
 			setPos(getX(), getY()+collide.y, getZ());
 		}
@@ -933,10 +932,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			if (controller instanceof ServerPlayer player) {
 				if (player.isCreative()) consume = false;
 			}
-			boolean consumeFuel = getLevel().getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
+			boolean consumeFuel = getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_FULE);
 			if (consume && consumeFuel) tickFuel();
 			if (inputs.flare && tickCount - flareTicks >= 10) {
-				boolean consumeFlares = getLevel().getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
+				boolean consumeFlares = getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
 				flare(controller, consume && consumeFlares);
 			}
 		}
@@ -1170,7 +1169,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	protected InteractionResult onOilBucketInteract(Player player, InteractionHand hand, ItemStack stack) {
-		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(getLevel());
+		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(getWorld());
 		if (addFuel(fuelPerBucket) == fuelPerBucket) return InteractionResult.PASS;
 		ItemStack remain = UtilItem.getCraftingRemainingItem(stack);
 		player.getInventory().setItem(player.getInventory().selected, remain);
@@ -1183,7 +1182,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	protected InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
-		List<EntityChainHook> hooks = getLevel().getEntitiesOfClass(EntityChainHook.class,
+		List<EntityChainHook> hooks = getWorld().getEntitiesOfClass(EntityChainHook.class,
 				getBoundingBox().inflate(EntityChainHook.CHAIN_LENGTH), hook -> hook.isPlayerConnected(player));
 		/*if (hooks.size() == 0) {
 			chainToPlayer(player);
@@ -1233,7 +1232,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public void playTheftSound() {
-		getLevel().playSound(null, this, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR,
+		getWorld().playSound(null, this, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR,
 				getSoundSource(), 0.5f, 1.0f);
 	}
 
@@ -1243,12 +1242,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public void dropAllParts() {
-		if (getLevel().isClientSide) return;
+		if (getWorld().isClientSide) return;
 		partsManager.dropAllItems();
 	}
 
 	public void dropAllIngredients() {
-		if (getLevel().isClientSide) return;
+		if (getWorld().isClientSide) return;
 		while (true) if (!dropIngredient()) break;
 	}
 	
@@ -1291,7 +1290,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		SoundEvent sound;
 		if (isMaxHealth()) sound = SoundEvents.ANVIL_USE;
 		else sound = SoundEvents.ANVIL_PLACE;
-		getLevel().playSound(null, this, sound,
+		getWorld().playSound(null, this, sound,
 				getSoundSource(), 0.5f, 1.0f);
 	}
 	
@@ -1579,7 +1578,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public float calcDamageToArmor(float amount) {
 		return Math.max(0, reduceByPercent(amount, 
-				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(getLevel()))
+				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(getWorld()))
 				- getStats().armor_damage_threshold);
 	}
 	
@@ -1597,7 +1596,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
-		return amount * DSCGameRules.getBulletDamageVehicleFactor(getLevel());
+		return amount * DSCGameRules.getBulletDamageVehicleFactor(getWorld());
 	}
 	
 	private static float reduceByPercent(float amount, float percent) {
@@ -1657,7 +1656,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public void explode(DamageSource source) {
 		if (isClientSide()) return;
-		getLevel().explode(this, source,
+		getWorld().explode(this, source,
 			null, getX(), getY(), getZ(), 
 			getStats().crashExplosionRadius, true,
 			Explosion.BlockInteraction.BREAK);
@@ -1707,7 +1706,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
         float amount = (float)((int)((exp_factor*exp_factor+exp_factor)*3.5d*(double)diameter+1d));
-        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(getLevel());
+        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(getWorld());
         
         if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
         else hurtLogic(exp.getDamageSource(), amount, null);
@@ -1926,8 +1925,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     }
     
     public boolean canBecomeItem() {
-    	int fresh = getLevel().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
-    	int shoot = getLevel().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
+    	int fresh = getWorld().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
+    	int shoot = getWorld().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
     	return tickCount/20 > fresh && (lastShootTime == -1 || (tickCount-lastShootTime)/20 > shoot);
     }
 
@@ -1936,7 +1935,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	@Nullable
 	public Component getCantBecomeItemReason(Player player) {
-		boolean canItemWhileMoving = getLevel().getGameRules().getBoolean(DSCGameRules.CAN_ITEM_WHILE_MOVING);
+		boolean canItemWhileMoving = getWorld().getGameRules().getBoolean(DSCGameRules.CAN_ITEM_WHILE_MOVING);
 		if (!canItemWhileMoving && !isOnGround() && !ignoreToItemFlyCheck())
 			return UtilMCText.translatable("error.dscombat.cant_item_while_flying");
 		if (!canItemWhileMoving && getDeltaMovement().lengthSqr() > 0.01)
@@ -1946,13 +1945,13 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			return UtilMCText.translatable("error.dscombat.not_a_passenger");
 		if (!seat.isPilotSeat())
 			return UtilMCText.translatable("error.dscombat.not_a_pilot");
-		int fresh = getLevel().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
+		int fresh = getWorld().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_FRESH);
 		int fresh_diff = fresh - tickCount/20;
 		if (fresh_diff > 0)
 			return UtilMCText.translatable("error.dscombat.cant_item_yet_fresh", fresh_diff);
 		if (lastShootTime == -1)
 			return null;
-		int shoot = getLevel().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
+		int shoot = getWorld().getGameRules().getInt(DSCGameRules.ITEM_COOLDOWN_VEHICLE_SHOOT);
 		int shoot_diff = shoot - (tickCount-lastShootTime)/20;
 		if (shoot_diff > 0)
 			return UtilMCText.translatable("error.dscombat.cant_item_yet_shoot", shoot_diff);
@@ -1965,8 +1964,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     public void becomeItem(Vec3 pos) {
     	if (isClientSide()) return;
     	ItemStack stack = getItem();
-		ItemEntity e = new ItemEntity(getLevel(), pos.x, pos.y, pos.z, stack);
-		getLevel().addFreshEntity(e);
+		ItemEntity e = new ItemEntity(getWorld(), pos.x, pos.y, pos.z, stack);
+		getWorld().addFreshEntity(e);
 		discard();
     }
     
@@ -2308,7 +2307,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     public void refillFuel() {
     	if (isClientSide()) return;
     	addFuel(100000);
-    	getLevel().playSound(null, this, SoundEvents.BREWING_STAND_BREW,
+    	getWorld().playSound(null, this, SoundEvents.BREWING_STAND_BREW,
     			SoundSource.PLAYERS, 1f, 1f);
     }
     
@@ -2320,7 +2319,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			TurretInstance<?> ti = t.getPartInstance();
 			if (ti != null) ti.setWeaponAmmo(100000);
 		}
-		getLevel().playSound(null, this, SoundEvents.VILLAGER_WORK_TOOLSMITH,
+		getWorld().playSound(null, this, SoundEvents.VILLAGER_WORK_TOOLSMITH,
     			SoundSource.PLAYERS, 1f, 1f);
     }
     
@@ -2531,7 +2530,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
             hitbox.setPos(position());
             hitbox.readNbt(hitbox_data);
             hitbox.setId(ENTITY_COUNTER.incrementAndGet());
-            getLevel().addFreshEntity(hitbox);
+            getWorld().addFreshEntity(hitbox);
         }
 	}
 	
@@ -2665,7 +2664,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		int i = 0;
 		for (Integer id : collidedEntityIds) {
 			ids[i] = id;
-			Entity entity = getLevel().getEntity(id);
+			Entity entity = getWorld().getEntity(id);
 			if (entity != null) pos[i] = entity.position();
 			else pos[i] = new Vec3(0, -1000, 0);
 			++i;
@@ -2932,8 +2931,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	@Nullable
 	public Entity getOwner() {
 		if (owner_uuid == null) return null;
-		if (owner == null || getLevel().getEntity(owner_id) == null) {
-			owner = getLevel().getPlayerByUUID(owner_uuid);
+		if (owner == null || getWorld().getEntity(owner_id) == null) {
+			owner = getWorld().getPlayerByUUID(owner_uuid);
 			if (owner != null) owner_id = owner.getId();
 			else owner_id = -1;
 		}
@@ -2958,8 +2957,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * SERVER SIDE ONLY
 	 */
 	public boolean hasPermission(@NotNull Entity entity) {
-		if (getLevel().isClientSide()) return false;
-		if (DSCGameRules.isForcePublicPerm(getLevel())) return true;
+		if (getWorld().isClientSide()) return false;
+		if (DSCGameRules.isForcePublicPerm(getWorld())) return true;
 		if (getPermMode() == PermMode.PUBLIC) return true;
 		Entity owner = getOwner();
 		if (getPermMode() == PermMode.ALLIES) {
@@ -3271,7 +3270,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	@Override
 	public boolean isClientSide() {
-		return getLevel().isClientSide();
+		return getWorld().isClientSide();
 	}
 
 	public boolean wasInWater() {
@@ -3300,7 +3299,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		super.remove(reason);
 	}
 
-    public @NotNull Level getLevel() {
+    /**
+     * DO NOT REFACTOR THIS TO getLevel OR ELSE IT WILL LOOP INFINITELY
+     */
+    public @NotNull Level getWorld() {
         return UtilEntity.getLevel(this);
     }
 }

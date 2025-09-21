@@ -89,25 +89,25 @@ public class VehicleSoundManager {
 	}
 	
 	public void playPassengerRadarLockSound() {
-		if (!parent.getLevel().isClientSide()) return;
+		if (!parent.getWorld().isClientSide()) return;
 		PassengerSoundPack pack = getPassengerSoundPack();
 		if (pack != null) pack.playRadarLockSound();
 	}
 
 	public void playPassengerRadarFoundSound() {
-		if (!parent.getLevel().isClientSide()) return;
+		if (!parent.getWorld().isClientSide()) return;
 		PassengerSoundPack pack = getPassengerSoundPack();
 		if (pack != null) pack.playRadarFoundSound();
 	}
 
 	public void playPassengerFlareSound() {
-		if (!parent.getLevel().isClientSide()) return;
+		if (!parent.getWorld().isClientSide()) return;
 		PassengerSoundPack pack = getPassengerSoundPack();
 		if (pack != null) pack.playFlareSound();
 	}
 
 	public void playPassengerChaffSound() {
-		if (!parent.getLevel().isClientSide()) return;
+		if (!parent.getWorld().isClientSide()) return;
 		PassengerSoundPack pack = getPassengerSoundPack();
 		if (pack != null) pack.playChaffSound();
 	}

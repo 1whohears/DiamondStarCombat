@@ -2,14 +2,11 @@ package com.onewhohears.dscombat.entity.vehicle;
 
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
-import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.init.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.List;
 
 public class EntityStationaryVehicle extends EntityVehicle {
 
@@ -21,7 +18,7 @@ public class EntityStationaryVehicle extends EntityVehicle {
     public void serverTick() {
         super.serverTick();
         if (getStats().isStationaryRadar() && tickCount % 40 == 0 && radarSystem.hasTargets() && isOperational())
-            getLevel().playSound(null, this, ModSounds.TARGETS_FOUND, SoundSource.PLAYERS, 1, 1);
+            getWorld().playSound(null, this, ModSounds.TARGETS_FOUND, SoundSource.PLAYERS, 1, 1);
     }
 
     @Override

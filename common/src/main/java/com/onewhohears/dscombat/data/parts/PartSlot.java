@@ -162,7 +162,7 @@ public class PartSlot {
 
 	public void checkDirtyToSync(EntityVehicle vehicle) {
 		if (getPartData() == null) return;
-		if (!vehicle.getLevel().isClientSide() && data.isDirty()) {
+		if (!vehicle.getWorld().isClientSide() && data.isDirty()) {
             PacketHandler.sendToTrackers(new ToClientSyncPart(vehicle, getPartData()), vehicle);
 			getPartData().onSendClientSync();
 		}

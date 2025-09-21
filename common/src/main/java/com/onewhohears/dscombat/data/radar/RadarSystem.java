@@ -107,7 +107,7 @@ public class RadarSystem {
 	}
 
 	protected void updateVisibility() {
-		if (parent.getLevel().isClientSide()) return;
+		if (parent.getWorld().isClientSide()) return;
 		if (!parent.isPlayerRiding()) {
 			TrackableEntitiesManager.addTrackableEntity(parent);
 			DependencySafety.addExtraEntityToRDP(Objects.requireNonNull(parent.getServer()), parent);
@@ -116,12 +116,12 @@ public class RadarSystem {
 	}
 
 	public void onParentRemove() {
-		if (parent.getLevel().isClientSide()) return;
+		if (parent.getWorld().isClientSide()) return;
 		TrackableEntitiesManager.removeTrackableEntity(parent);
 	}
 	
 	protected void updateDataLink() {
-		if (parent.getLevel().isClientSide()) return;
+		if (parent.getWorld().isClientSide()) return;
 		refreshDataLink();
 		if (!hasDataLink()) return;
 		Entity controller = parent.getControllingPlayerOrBot();
@@ -133,7 +133,7 @@ public class RadarSystem {
 		if (controller == null) return;
 		ServerPlayer playerController = null;
 		if (controller instanceof ServerPlayer sp) playerController = sp;
-		List<? extends Player> players = parent.getLevel().players();
+		List<? extends Player> players = parent.getWorld().players();
 		for (Player p : players) {
 			if (check_equals && controller.equals(p))
 				continue;

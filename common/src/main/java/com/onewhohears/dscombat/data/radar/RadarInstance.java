@@ -59,7 +59,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	}
 	
 	public void tickUpdateTargets(EntityVehicle radar, List<RadarPing> vehiclePings) {
-		if (radar.getLevel().isClientSide()) return;
+		if (radar.getWorld().isClientSide()) return;
 		if (scanTicks > getStats().getScanRate()) scanTicks = 0;
 		else {
 			++scanTicks;
@@ -88,7 +88,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
 	private void scanPlayersVehicles(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 									 double rangeSqr, boolean playersOnly, boolean vehiclesOnly) {
-		MinecraftServer server = radar.getLevel().getServer();
+		MinecraftServer server = radar.getWorld().getServer();
 		if (server == null) return;
 		List<ServerPlayer> players = server.getPlayerList().getPlayers();
 		for (ServerPlayer player : players) {
@@ -109,7 +109,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		if (playersOnly && !player) return;
 
 		if (entity.distanceToSqr(radar) > rangeSqr) return;
-		if (!entity.getLevel().dimension().equals(radar.getLevel().dimension())) return;
+		if (!entity.getLevel().dimension().equals(radar.getWorld().dimension())) return;
 
 		EntityVehicle vehicle = null;
 		if (!player && entity instanceof EntityVehicle ev) vehicle = ev;
@@ -186,7 +186,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private void handleMissile(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 							   double rangeSqr, Entity target) {
 		if (target.distanceToSqr(radar) > rangeSqr) return;
-		if (!target.getLevel().dimension().equals(radar.getLevel().dimension())) return;
+		if (!target.getLevel().dimension().equals(radar.getWorld().dimension())) return;
 		if (isFailBasicCheck(radar, target, -1)) return;
 		RadarPing p = new RadarPing(target,
 				checkFriendly(controller, target),

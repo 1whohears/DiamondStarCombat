@@ -26,13 +26,13 @@ public class ToClientOnShoot extends BaseS2CMessage {
 	}
 
 	public static void onShootFlareRack(EntityVehicle vehicle, Entity shooter) {
-		if (vehicle.getLevel().isClientSide()) return;
+		if (vehicle.getWorld().isClientSide()) return;
         PacketHandler.sendToTrackers(new ToClientOnShoot(vehicle.getId(),
                 shooter.getId(), UtilClientPacket.ShootType.FLARE), vehicle);
 	}
 
 	public static void onShootChaffRack(EntityVehicle vehicle, Entity shooter) {
-		if (vehicle.getLevel().isClientSide()) return;
+		if (vehicle.getWorld().isClientSide()) return;
         PacketHandler.sendToTrackers(new ToClientOnShoot(vehicle.getId(),
                 shooter.getId(), UtilClientPacket.ShootType.CHAFF), vehicle);
 	}

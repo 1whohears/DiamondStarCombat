@@ -12,8 +12,8 @@ public class OverlayController {
 
     public static void onRenderHud(PoseStack poseStack, float partialTicks) {
         Minecraft mc = Minecraft.getInstance();
-        int width = mc.getWindow().getScreenWidth();
-        int height = mc.getWindow().getScreenHeight();
+        int width = mc.getWindow().getGuiScaledWidth();
+        int height = mc.getWindow().getGuiScaledHeight();
 
         WindTunnelOverlay.render(mc.gui, poseStack, partialTicks, width, height);
         VehicleOverlayComponent.renderAll(mc.gui, poseStack, partialTicks, width, height);

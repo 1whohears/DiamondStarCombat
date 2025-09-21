@@ -8,8 +8,10 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 
 public class ModFluids {
 
@@ -24,6 +26,8 @@ public class ModFluids {
 
     public static final ArchitecturyFluidAttributes OIL_ATTRIBUTES = SimpleArchitecturyFluidAttributes.ofSupplier(
             ModFluids::getOilFluidSource, ModFluids::getOilFluidFlowing)
+            .blockSupplier(() -> ModBlocks.OIL_LIQUID_BLOCK)
+            .bucketItemSupplier(() -> ModItems.OIL_BUCKET)
             .density(1000).viscosity(1000).luminosity(1).dropOff(1)
             .color(0xFF000000).slopeFindDistance(4).temperature(10).tickDelay(15)
             .convertToSource(false).lighterThanAir(false)
@@ -32,12 +36,31 @@ public class ModFluids {
             .sourceTexture(ResourceLocation.tryBuild(DSCombatMod.MODID, "block/oil_block"));
 
     public static final RegistrySupplier<Fluid> OIL_FLUID_SOURCE = FLUIDS.register("oil_fluid_source",
-            () -> new ArchitecturyFlowingFluid.Source(OIL_ATTRIBUTES));
+            () -> new OilFluid.Source(OIL_ATTRIBUTES));
     public static final RegistrySupplier<FlowingFluid> OIL_FLUID_FLOWING = FLUIDS.register("oil_fluid_flowing",
             () -> new ArchitecturyFlowingFluid.Flowing(OIL_ATTRIBUTES));
 
     public static void register() {
         FLUIDS.register();
+    }
+
+    /**
+     * for reasons that I can't explain, arch didn't add a LEVEL property to ArchitecturyFlowingFluid.Source???
+     * so the game crashes on startup constantly without this child class.
+     * this took forever to figure out and I could not find anyone else having the same issue.
+     * this is why I put off working on the fabric port for so long...
+     */
+    public static class OilFluid {
+        public static class Source extends ArchitecturyFlowingFluid.Source {
+            public Source(ArchitecturyFluidAttributes attributes) {
+                super(attributes);
+            }
+            @Override
+            protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
     }
 
 	/* FIXME how to register the rest of these properties?

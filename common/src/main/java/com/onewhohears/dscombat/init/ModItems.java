@@ -11,17 +11,11 @@ import com.onewhohears.dscombat.data.vehicle.presets.plane.*;
 import com.onewhohears.dscombat.data.vehicle.presets.submarine.SubPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.item.*;
-
+import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Registry;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.RecordItem;
+import net.minecraft.world.item.*;
 import org.jetbrains.annotations.NotNull;
 
 public class ModItems {
@@ -82,7 +76,7 @@ public class ModItems {
 	public static final RegistrySupplier<Item> COMPRESSED_FOSSIL = ITEMS.register("compressed_fossil", 
 			() -> new Item(ItemPart.itemProps(64)));
 	public static final RegistrySupplier<Item> OIL_BUCKET = ITEMS.register("oil_bucket", 
-			() -> new BucketItem(ModFluids.OIL_FLUID_SOURCE.get(),
+			() -> new ArchitecturyBucketItem(ModFluids.OIL_FLUID_SOURCE,
 					ItemPart.itemProps(1).craftRemainder(Items.BUCKET)));
 	
 	// PARTS

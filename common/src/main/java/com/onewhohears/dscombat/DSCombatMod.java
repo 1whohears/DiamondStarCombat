@@ -25,6 +25,8 @@ import com.onewhohears.dscombat.init.ModVillagers;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.server.packs.PackType;
+import net.minecraftforge.api.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 
 /**
  * This is the main class of the Diamond Star Combat mod.
@@ -50,6 +52,10 @@ public class DSCombatMod {
         minigamesLoaded = Platform.isModLoaded("minigames");
         distantPlayersLoaded = Platform.isModLoaded("distant_players");
 
+        ModLoadingContext.registerConfig(MODID, ModConfig.Type.CLIENT, Config.clientSpec);
+        ModLoadingContext.registerConfig(MODID, ModConfig.Type.COMMON, Config.commonSpec);
+        ModLoadingContext.registerConfig(MODID, ModConfig.Type.SERVER, Config.serverSpec);
+
         CommonEventHandlers.init();
         ModFluids.register();
         ModBlocks.register();
@@ -73,12 +79,6 @@ public class DSCombatMod {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, PartAssets.get());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, WeaponAssets.get());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, VehiclePassengerSoundPacks.get());
-    }
-
-    public DSCombatMod() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
     }
     
 }

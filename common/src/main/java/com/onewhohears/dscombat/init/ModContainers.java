@@ -39,30 +39,32 @@ public class ModContainers {
 				WeaponPartsBlockEntity weaponsBlock = (WeaponPartsBlockEntity)playerInv.player.level.getBlockEntity(data.readBlockPos());
 				return new WeaponPartsBlockContainerMenu(windowId, playerInv, weaponsBlock);
 			}));
-	public static final MenuType<ChestMenu> VEHICLE_STORAGE_MENU_FACTORY = MenuRegistry.ofExtended(
-            (windowId, playerInv, data) -> {
-		int storageId = data.readInt();
-		if (playerInv.player.getRootVehicle() instanceof EntityVehicle vehicle) {
-			StorageInstance<?> storageInstance = vehicle.partsManager.getStorageData(storageId);
-			if (storageInstance != null)
-				return storageInstance.createMenu(windowId, playerInv);
-		}
-		return StorageInstance.getEmptyStorageMenu(windowId, playerInv);
-	});
+    public static MenuType<ChestMenu> createVehicleStorageMenuFactory() {
+        return MenuRegistry.ofExtended(
+                (windowId, playerInv, data) -> {
+                    int storageId = data.readInt();
+                    if (playerInv.player.getRootVehicle() instanceof EntityVehicle vehicle) {
+                        StorageInstance<?> storageInstance = vehicle.partsManager.getStorageData(storageId);
+                        if (storageInstance != null)
+                            return storageInstance.createMenu(windowId, playerInv);
+                    }
+                    return StorageInstance.getEmptyStorageMenu(windowId, playerInv);
+                });
+    }
 	public static final RegistrySupplier<MenuType<ChestMenu>> VEHICLE_STORAGE_MENU_9x0 =
-            register("vehicle_storage_menu_9x0", VEHICLE_STORAGE_MENU_FACTORY);
+            register("vehicle_storage_menu_9x0", createVehicleStorageMenuFactory());
 	public static final RegistrySupplier<MenuType<ChestMenu>> VEHICLE_STORAGE_MENU_9x1 =
-			register("vehicle_storage_menu_9x1", VEHICLE_STORAGE_MENU_FACTORY);
+			register("vehicle_storage_menu_9x1", createVehicleStorageMenuFactory());
 	public static final RegistrySupplier<MenuType<ChestMenu>> VEHICLE_STORAGE_MENU_9x2 =
-			register("vehicle_storage_menu_9x2", VEHICLE_STORAGE_MENU_FACTORY);
+			register("vehicle_storage_menu_9x2", createVehicleStorageMenuFactory());
 	public static final RegistrySupplier<MenuType<ChestMenu>> VEHICLE_STORAGE_MENU_9x3 =
-			register("vehicle_storage_menu_9x3", VEHICLE_STORAGE_MENU_FACTORY);
+			register("vehicle_storage_menu_9x3", createVehicleStorageMenuFactory());
 	public static final RegistrySupplier<MenuType<ChestMenu>> VEHICLE_STORAGE_MENU_9x4 =
-			register("vehicle_storage_menu_9x4", VEHICLE_STORAGE_MENU_FACTORY);
+			register("vehicle_storage_menu_9x4", createVehicleStorageMenuFactory());
 	public static final RegistrySupplier<MenuType<ChestMenu>> VEHICLE_STORAGE_MENU_9x5 =
-			register("vehicle_storage_menu_9x5", VEHICLE_STORAGE_MENU_FACTORY);
+			register("vehicle_storage_menu_9x5", createVehicleStorageMenuFactory());
 	public static final RegistrySupplier<MenuType<ChestMenu>> VEHICLE_STORAGE_MENU_9x6 =
-			register("vehicle_storage_menu_9x6", VEHICLE_STORAGE_MENU_FACTORY);
+			register("vehicle_storage_menu_9x6", createVehicleStorageMenuFactory());
 
     private static <T extends AbstractContainerMenu> RegistrySupplier<MenuType<T>> register(
             String id, MenuType<T> type) {

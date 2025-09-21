@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "refmap": "dscombat.fabric.refmap.json",
   "client": [
+    "GameRendererMixin",
     "ItemInHandRendererMixin",
     "LocalPlayerMixin",
     "PlayerRendererMixin"

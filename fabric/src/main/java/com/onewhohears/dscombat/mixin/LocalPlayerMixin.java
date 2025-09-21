@@ -14,7 +14,7 @@ public class LocalPlayerMixin {
     @Shadow
     public Input input;
     @Inject(method = "aiStep", at = @At("HEAD"))
-    private void onUpdateInput(CallbackInfo ci) {
+    private void dscombat_fabric_onUpdateInput(CallbackInfo ci) {
         LocalPlayer player = (LocalPlayer) (Object) this;
         if (ClientInputEventHandlers.isCancelShiftInput(player))
             input.shiftKeyDown = false;

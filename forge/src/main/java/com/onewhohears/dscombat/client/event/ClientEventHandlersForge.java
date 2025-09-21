@@ -1,15 +1,12 @@
 package com.onewhohears.dscombat.client.event;
 
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjWeaponRackModel;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
-import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.Mat4f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -18,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Objects;
 
+import static com.onewhohears.dscombat.client.event.ClientCameraEventHandlers.CAMERA_ANGLES;
 import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.*;
 
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -66,6 +64,16 @@ public class ClientEventHandlersForge {
     public static void clientMoveInput(MovementInputUpdateEvent event) {
         if (ClientInputEventHandlers.isCancelShiftInput(event.getEntity()))
             event.getInput().shiftKeyDown = false;
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
+        CAMERA_ANGLES.reset();
+        ClientCameraEventHandlers.onSetupCameraAngles(event.getCamera(), (float)event.getPartialTick(),
+                event.getYaw(), event.getPitch(), CAMERA_ANGLES);
+        event.setRoll(CAMERA_ANGLES.roll);
+        event.setPitch(CAMERA_ANGLES.pitch);
+        event.setYaw(CAMERA_ANGLES.yaw);
     }
 
 }

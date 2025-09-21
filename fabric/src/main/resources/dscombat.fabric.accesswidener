@@ -6,3 +6,6 @@ accessible field net/minecraft/client/MouseHandler accumulatedDY D
 accessible field net/minecraft/client/MouseHandler accumulatedDX D
 
 accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer addLayer (Lnet/minecraft/client/renderer/entity/layers/RenderLayer;)Z
+
+accessible field net/minecraft/client/Camera yRot F
+accessible field net/minecraft/client/Camera xRot F

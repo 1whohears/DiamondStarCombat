@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererMixin {
     @Inject(method = "renderHandsWithItems", at = @At("HEAD"), cancellable = true)
-    private void cancelHandRender(float f, PoseStack poseStack, MultiBufferSource.BufferSource bufferSource,
+    private void dscombat_fabric_cancelHandRender(float f, PoseStack poseStack, MultiBufferSource.BufferSource bufferSource,
                                   LocalPlayer localPlayer, int i, CallbackInfo ci) {
         if (ClientRenderEventHandlers.isCancelRenderHand()) ci.cancel();
     }

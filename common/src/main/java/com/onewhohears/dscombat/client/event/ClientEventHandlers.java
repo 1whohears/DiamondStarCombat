@@ -4,12 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.client.entityscreen.instance.*;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.particle.*;
 import com.onewhohears.dscombat.client.screen.*;
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.sound.PassengerSoundPack;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModFluids;
@@ -17,6 +19,9 @@ import com.onewhohears.dscombat.init.ModParticles;
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.ControllableAnimPlayer;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KFAnimPlayers;
+import com.onewhohears.onewholibs.common.event.OWLEvents;
+import dev.architectury.event.CompoundEventResult;
+import dev.architectury.event.events.client.ClientChatEvent;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.registry.client.particle.ParticleProviderRegistry;
@@ -24,12 +29,37 @@ import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class ClientEventHandlers {
 
     public static void init() {
         ClientLifecycleEvent.CLIENT_SETUP.register(ClientEventHandlers::onClientSetup);
         ClientGuiEvent.RENDER_HUD.register(ClientEventHandlers::onRenderHud);
+        OWLEvents.SYNC_BOOL_GAME_RULE.register(ClientEventHandlers::onSyncGameRuleBool);
+        ClientChatEvent.RECEIVED.register(ClientEventHandlers::receivedChat);
+    }
+
+    public static CompoundEventResult<Component> receivedChat(ChatType.Bound bound, Component message) {
+        ResourceLocation typeId = Minecraft.getInstance().level.registryAccess()
+                .registryOrThrow(Registry.CHAT_TYPE_REGISTRY)
+                .getKey(bound.chatType());
+        if (typeId == null) return CompoundEventResult.pass();
+        if (typeId.getPath().equals("chat")) return CompoundEventResult.pass();
+        Minecraft m = Minecraft.getInstance();
+        if (!(m.screen instanceof VehicleScreen screen)) return CompoundEventResult.pass();
+        screen.setInfoFromMessage(message, 60);
+        return CompoundEventResult.pass();
+    }
+
+    public static void onSyncGameRuleBool(String id, boolean value) {
+        if (id.equals(DSCGameRules.DISABLE_3RD_PERSON_VEHICLE.getId()))
+            DSCClientInputs.disable3rdPersonVehicle = value;
+        else if (id.equals(DSCGameRules.PLANE_ARCADE_MODE.getId()))
+            DSCClientInputs.planeArcadePhysicsMode = value;
     }
 
     public static void onRenderHud(PoseStack poseStack, float partialTicks) {

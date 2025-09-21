@@ -3,6 +3,7 @@ plugins {
 }
 
 loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
     mods {
         forge {
             sourceSet project(":forge").sourceSets.main

@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.dscombat.data.villager.DSCVillagerTrades;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
+import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -32,6 +33,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.config.ModConfig;
 
 import java.util.HashSet;
 import java.util.List;
@@ -120,6 +122,12 @@ public class CommonEventHandlers {
         PartPresets.close();
         StatGraphs.close();
         RotableHitboxes.onServerStop();
+    }
+
+    public static void onReadConfig(ModConfig modConfig) {
+        if (modConfig.getType() == ModConfig.Type.COMMON) {
+            RadarTargetTypes.get().readConfig();
+        }
     }
 
 }

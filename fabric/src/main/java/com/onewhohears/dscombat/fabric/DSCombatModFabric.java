@@ -7,7 +7,9 @@ import com.onewhohears.dscombat.common.event.fabric.CommonEventHandlersFabric;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.fabricmc.api.ModInitializer;
+import net.minecraftforge.ForgeConfigAPIPort;
 import net.minecraftforge.api.ModLoadingContext;
+import net.minecraftforge.configured.ForgeConfigHelper;
 import net.minecraftforge.fml.config.ModConfig;
 
 import static com.onewhohears.dscombat.DSCombatMod.MODID;

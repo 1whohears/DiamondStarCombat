@@ -78,6 +78,8 @@ dependencies {
     modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
 
+    implementation 'com.electronwill.night-config:core:3.6.5'
+    implementation 'com.electronwill.night-config:toml:3.6.5'
     modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forgeconfigapiport_version}"
 
     modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_fabric_id}"

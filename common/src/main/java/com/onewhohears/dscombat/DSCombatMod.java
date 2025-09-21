@@ -10,7 +10,6 @@ import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.init.ModArgumentTypes;
 import com.onewhohears.dscombat.init.ModBlockEntities;
 import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.dscombat.init.ModContainers;
@@ -62,7 +61,6 @@ public class DSCombatMod {
         ModBlockEntities.register();
         ModVillagers.register();
         ModParticles.register();
-        ModArgumentTypes.register();
         ModTags.init();
         DataSerializers.init();
     }

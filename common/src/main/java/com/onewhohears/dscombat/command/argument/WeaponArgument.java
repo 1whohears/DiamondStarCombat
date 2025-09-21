@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.command.argument;
 
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 import com.mojang.brigadier.StringReader;
@@ -44,5 +45,10 @@ public class WeaponArgument implements ArgumentType<String> {
 				SharedSuggestionProvider.suggest(WeaponPresets.get().getAllIds(), builder) : 
 				Suggestions.empty();
 	}
+
+    @Override
+    public Collection<String> getExamples() {
+        return ArgumentType.super.getExamples();
+    }
 
 }

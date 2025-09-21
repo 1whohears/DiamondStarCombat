@@ -16,6 +16,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.client.WeaponClientPresetGenerator;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.forge.DataSerializersImpl;
+import com.onewhohears.dscombat.init.forge.ModArgumentTypesForge;
 import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.utils.Env;
@@ -51,6 +52,7 @@ public class DSCombatModForge {
         }
 
         DataSerializersImpl.register(modEventBus);
+        ModArgumentTypesForge.register(modEventBus);
     }
 
     private void onGatherData(GatherDataEvent event) {

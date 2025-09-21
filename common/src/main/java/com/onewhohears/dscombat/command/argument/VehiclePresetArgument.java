@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.command.argument;
 
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 import com.mojang.brigadier.StringReader;
@@ -45,4 +46,8 @@ public class VehiclePresetArgument implements ArgumentType<String> {
 				Suggestions.empty();
 	}
 
+    @Override
+    public Collection<String> getExamples() {
+        return ArgumentType.super.getExamples();
+    }
 }

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.onewhohears.dscombat.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "refmap": "dscombat.fabric.refmap.json",
+  "client": [
+    "ItemInHandRendererMixin",
+    "PlayerRendererMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

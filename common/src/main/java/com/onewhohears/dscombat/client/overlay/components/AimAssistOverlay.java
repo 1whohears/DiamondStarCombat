@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.overlay.components;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
+import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -63,7 +63,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
         stack.translate(-view.x, -view.y, -view.z);
         Mat4f view_mat = Mat4f.from(stack.last().pose().copy());
         stack.popPose();
-        Mat4f proj_mat = ClientRenderEvents.getProjMatrix();
+        Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
         float[] screen_pos = UtilGeometry.worldToScreenPos(targetWorldPos,
                 view_mat, proj_mat, screenWidth, screenHeight);
         if (screen_pos[0] < 0 || screen_pos[1] < 0) return;

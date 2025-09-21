@@ -4,8 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
@@ -75,7 +75,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         poseStack.translate(-view.x, -view.y, -view.z);
         Mat4f view_mat = Mat4f.from(poseStack.last().pose().copy());
         poseStack.popPose();
-        Mat4f proj_mat = ClientRenderEvents.getProjMatrix();
+        Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
         float cursorX = screenWidth / 2F, cursorY = screenHeight / 2F;
         boolean hovering = false;
         int size = Config.CLIENT.radarPingOverlaySize.get();

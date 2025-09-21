@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.particle.*;
+import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.client.screen.*;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.sound.PassengerSoundPack;
@@ -24,15 +25,18 @@ import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.events.client.ClientChatEvent;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.registry.client.particle.ParticleProviderRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 public class ClientEventHandlers {
 
@@ -41,6 +45,12 @@ public class ClientEventHandlers {
         ClientGuiEvent.RENDER_HUD.register(ClientEventHandlers::onRenderHud);
         OWLEvents.SYNC_BOOL_GAME_RULE.register(ClientEventHandlers::onSyncGameRuleBool);
         ClientChatEvent.RECEIVED.register(ClientEventHandlers::receivedChat);
+        // TODO 4.3 thermal camera option
+        ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientEventHandlers::onClientPlayerQuit);
+    }
+
+    public static void onClientPlayerQuit(@Nullable LocalPlayer localPlayer) {
+        EntityScreenRenderer.clearCache();
     }
 
     public static CompoundEventResult<Component> receivedChat(ChatType.Bound bound, Component message) {

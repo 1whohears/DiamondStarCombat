@@ -23,6 +23,7 @@
     ]
   },
   "mixins": [
+    "dscombat.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",

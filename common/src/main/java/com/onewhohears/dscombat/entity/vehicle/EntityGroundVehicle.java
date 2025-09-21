@@ -12,6 +12,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	
 	public EntityGroundVehicle(EntityType<? extends EntityGroundVehicle> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
+        maxUpStep = 1.0f;
 	}
 	
 	@Override
@@ -39,11 +40,6 @@ public class EntityGroundVehicle extends EntityVehicle {
 	public boolean isLandingGear() {
 		return true;
     }
-	
-	@Override
-	public float getStepHeight() {
-		return 1.0f;
-	}
 	
 	@Override
 	public String getOpenMenuError() {

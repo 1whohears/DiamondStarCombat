@@ -22,6 +22,7 @@ public class EntityBoat extends EntityVehicle {
 	
 	public EntityBoat(EntityType<? extends EntityBoat> entity, Level level, String defaultPreset) {
 		super(entity, level, defaultPreset);
+        maxUpStep = 0.2f;
 	}
 	
 	@Override
@@ -182,11 +183,6 @@ public class EntityBoat extends EntityVehicle {
 	public boolean isLandingGear() {
 		return false;
     }
-	
-	@Override
-	public float getStepHeight() {
-		return 0.2f;
-	}
 	
 	@Override
 	public void waterDamage() {

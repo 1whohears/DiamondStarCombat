@@ -6,7 +6,11 @@ import java.util.function.Predicate;
 import com.onewhohears.dscombat.entity.TrampleHandler;
 import com.onewhohears.onewholibs.util.UtilItem;
 import dev.architectury.networking.simple.BaseS2CMessage;
+import dev.architectury.registry.menu.ExtendedMenuProvider;
+import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
@@ -207,6 +211,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
 		updatePhysicsInstances();
+        maxUpStep = 0.6f;
 	}
 
 	@Override
@@ -808,10 +813,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	protected void stepDown(Vec3 move) {
 		AABB aabb = getBoundingBox();
-		Vec3 down = new Vec3(0,-getStepHeight()-0.1, 0); // this -0.1 is needed trust me
+		Vec3 down = new Vec3(0,-maxUpStep-0.1, 0); // this -0.1 is needed trust me
 		List<VoxelShape> list = getLevel().getEntityCollisions(this, aabb.expandTowards(down));
 		Vec3 collide = collideBoundingBox(this, down, aabb, getLevel(), list);
-		if (collide.y < 0 && collide.y >= -getStepHeight()) {
+		if (collide.y < 0 && collide.y >= -maxUpStep) {
 			setPos(getX(), getY()+collide.y, getZ());
 		}
 	}
@@ -936,9 +941,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public void openPartsMenu(ServerPlayer player) {
-		NetworkHooks.openScreen(player, new SimpleMenuProvider((windowId, playerInv, p) ->
-				new VehiclePartsMenu(windowId, playerInv),
-				UtilMCText.translatable("screen.dscombat.vehicle_parts_screen")));
+        MenuRegistry.openExtendedMenu(player, new ExtendedMenuProvider() {
+            @Override public void saveExtraData(FriendlyByteBuf buf) {}
+            @Override
+            public @NotNull Component getDisplayName() {
+                return UtilMCText.translatable("screen.dscombat.vehicle_parts_screen");
+            }
+            @Override
+            public AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player) {
+                return new VehiclePartsMenu(windowId, inventory);
+            }
+        });
 	}
 
 	public void openStorage(ServerPlayer player, int index) {
@@ -947,10 +960,20 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			player.displayClientMessage(UtilMCText.translatable("error.dscombat.no_storage_boxes"), true);
 			return;
 		}
-		NetworkHooks.openScreen(player, new SimpleMenuProvider((windowId, playerInventory, p) ->
-						box.createMenu(windowId, playerInventory),
-						UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen")),
-				(buff) -> buff.writeInt(partsManager.getStorageIndex()));
+        MenuRegistry.openExtendedMenu(player, new ExtendedMenuProvider() {
+            @Override
+            public void saveExtraData(FriendlyByteBuf buf) {
+                buf.writeInt(partsManager.getStorageIndex());
+            }
+            @Override
+            public @NotNull Component getDisplayName() {
+                return UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen");
+            }
+            @Override
+            public @Nullable AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player) {
+                return box.createMenu(windowId, inventory);
+            }
+        });
 	}
 	
 	public boolean canOpenPartsMenu() {
@@ -1145,7 +1168,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	protected InteractionResult onOilBucketInteract(Player player, InteractionHand hand, ItemStack stack) {
-		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(UtilEntity.getLevel(this));
+		float fuelPerBucket = (float)DSCGameRules.getFuelPerOilBlock(getLevel());
 		if (addFuel(fuelPerBucket) == fuelPerBucket) return InteractionResult.PASS;
 		ItemStack remain = UtilItem.getCraftingRemainingItem(stack);
 		player.getInventory().setItem(player.getInventory().selected, remain);
@@ -1437,11 +1460,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		}
 		return false;
 	}
-
-	@Override
-    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
-        return true;
-    }
     
     @Override
     public double getPassengersRidingOffset() {
@@ -1559,7 +1577,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public float calcDamageToArmor(float amount) {
 		return Math.max(0, reduceByPercent(amount, 
-				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(UtilEntity.getLevel(this)))
+				getStats().armor_damage_absorbtion * DSCGameRules.getVehicleArmorStrengthFactor(getLevel()))
 				- getStats().armor_damage_threshold);
 	}
 	
@@ -1577,7 +1595,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
-		return amount * DSCGameRules.getBulletDamageVehicleFactor(UtilEntity.getLevel(this));
+		return amount * DSCGameRules.getBulletDamageVehicleFactor(getLevel());
 	}
 	
 	private static float reduceByPercent(float amount, float percent) {
@@ -1687,7 +1705,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         double exp_factor = (1.0D - dist_check) * seen_percent;
         
         float amount = (float)((int)((exp_factor*exp_factor+exp_factor)*3.5d*(double)diameter+1d));
-        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(UtilEntity.getLevel(this));
+        amount *= DSCGameRules.getExplodeDamagerVehicleFactor(getLevel());
         
         if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
         else hurtLogic(exp.getDamageSource(), amount, null);
@@ -2375,11 +2393,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	return getStats().turn_radius;
     }
     
-    @Override
-	public float getStepHeight() {
-		return 0.6f;
-	}
-    
     /**
      * @return if this vehicle will consume fuel or ammo
      */
@@ -2426,7 +2439,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	if (isClientSide()) return;
 		// somehow class cast exception happened here while playing single player on a modded v0.10 client?
 		// LocalPlayer cannot be cast to ServerPlayer
-    	for (Player p : getRidingPlayers()) if (!p.isClientSide()) // this additional client side check should fix?
+    	for (Player p : getRidingPlayers()) if (!UtilEntity.getLevel(p).isClientSide()) // this additional client side check should fix?
             packet.sendTo((ServerPlayer) p);
     }
 
@@ -2458,11 +2471,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     @Override
     public boolean canChangeDimensions() {
     	return isOperational();
-    }
-    
-    @Override
-    public boolean canRiderInteract() {
-    	return false;
     }
     
     @Override

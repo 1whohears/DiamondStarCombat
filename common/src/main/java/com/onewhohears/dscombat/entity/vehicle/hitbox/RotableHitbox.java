@@ -49,6 +49,7 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 		initStats();
 		setHealth(data.getMaxHealth());
 		setArmor(data.getMaxArmor());
+        RotableHitboxes.addHitbox(this);
 	}
 	
 	public void readNbt(CompoundTag nbt) {
@@ -269,18 +270,12 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	public boolean shouldBeSaved() {
 		return false;
 	}
-	
-	@Override
-	public void onRemovedFromWorld() {
-		super.onRemovedFromWorld();
-		RotableHitboxes.removeHitbox(this);
-	}
-	
-	@Override
-	public void onAddedToWorld() {
-		super.onAddedToWorld();
-		RotableHitboxes.addHitbox(this);
-	}
+
+    @Override
+    public void remove(RemovalReason removalReason) {
+        super.remove(removalReason);
+        RotableHitboxes.removeHitbox(this);
+    }
 
 	@Override
 	protected void defineSynchedData() {

@@ -27,9 +27,9 @@ public class ModFluids {
             .density(1000).viscosity(1000).luminosity(1).dropOff(1)
             .color(0xFF000000).slopeFindDistance(4).temperature(10).tickDelay(15)
             .convertToSource(false).lighterThanAir(false)
-            .flowingTexture(new ResourceLocation("block/oil_block"))
-            .overlayTexture(new ResourceLocation("misc/in_oil_oil"))
-            .sourceTexture(new ResourceLocation("block/oil_block"));
+            .flowingTexture(ResourceLocation.tryBuild(DSCombatMod.MODID, "block/oil_block"))
+            .overlayTexture(ResourceLocation.tryBuild(DSCombatMod.MODID, "misc/in_oil_oil"))
+            .sourceTexture(ResourceLocation.tryBuild(DSCombatMod.MODID, "block/oil_block"));
 
     public static final RegistrySupplier<Fluid> OIL_FLUID_SOURCE = FLUIDS.register("oil_fluid_source",
             () -> new ArchitecturyFlowingFluid.Source(OIL_ATTRIBUTES));

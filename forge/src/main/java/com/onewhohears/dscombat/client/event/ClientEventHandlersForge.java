@@ -1,17 +1,17 @@
 package com.onewhohears.dscombat.client.event;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjWeaponRackModel;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.Mat4f;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -60,6 +60,12 @@ public class ClientEventHandlersForge {
         if (Objects.equals(event.getOverlay().id(), FOOD_LEVEL.id())) event.setCanceled(true);
         if (Objects.equals(event.getOverlay().id(), EXPERIENCE_BAR.id())) event.setCanceled(true);
         if (Objects.equals(event.getOverlay().id(), ITEM_NAME.id())) event.setCanceled(true);
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void clientMoveInput(MovementInputUpdateEvent event) {
+        if (ClientInputEventHandlers.isCancelShiftInput(event.getEntity()))
+            event.getInput().shiftKeyDown = false;
     }
 
 }

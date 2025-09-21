@@ -22,10 +22,7 @@ import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.Controll
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KFAnimPlayers;
 import com.onewhohears.onewholibs.common.event.OWLEvents;
 import dev.architectury.event.CompoundEventResult;
-import dev.architectury.event.events.client.ClientChatEvent;
-import dev.architectury.event.events.client.ClientGuiEvent;
-import dev.architectury.event.events.client.ClientLifecycleEvent;
-import dev.architectury.event.events.client.ClientPlayerEvent;
+import dev.architectury.event.events.client.*;
 import dev.architectury.registry.client.particle.ParticleProviderRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import dev.architectury.registry.menu.MenuRegistry;
@@ -46,7 +43,9 @@ public class ClientEventHandlers {
         OWLEvents.SYNC_BOOL_GAME_RULE.register(ClientEventHandlers::onSyncGameRuleBool);
         ClientChatEvent.RECEIVED.register(ClientEventHandlers::receivedChat);
         // TODO 4.3 thermal camera option
+        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(ClientInputEventHandlers::onClientPlayerJoin);
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientEventHandlers::onClientPlayerQuit);
+        ClientTickEvent.CLIENT_PRE.register(ClientInputEventHandlers::clientTickPilotControl);
     }
 
     public static void onClientPlayerQuit(@Nullable LocalPlayer localPlayer) {

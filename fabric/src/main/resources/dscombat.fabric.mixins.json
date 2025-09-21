@@ -6,6 +6,7 @@
   "refmap": "dscombat.fabric.refmap.json",
   "client": [
     "ItemInHandRendererMixin",
+    "LocalPlayerMixin",
     "PlayerRendererMixin"
   ],
   "mixins": [

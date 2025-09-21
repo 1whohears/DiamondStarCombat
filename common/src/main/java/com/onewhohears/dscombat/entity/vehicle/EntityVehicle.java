@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.vehicle;
 import java.util.*;
 import java.util.function.Predicate;
 
+import com.onewhohears.dscombat.client.event.ClientInputEventHandlers;
 import com.onewhohears.dscombat.entity.TrampleHandler;
 import com.onewhohears.onewholibs.util.UtilItem;
 import dev.architectury.networking.simple.BaseS2CMessage;
@@ -598,6 +599,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public void onSeatDismount(Entity entity) {
 		if (!isClientSide()) formerPassengersServer.put(entity.getId(), DSCPhyCons.EJECT_SAFETY_COOLDOWN);
+        else ClientInputEventHandlers.onEntityDismountVehicle(entity);
 	}
 	
 	protected void knockBack(List<Entity> entities) {

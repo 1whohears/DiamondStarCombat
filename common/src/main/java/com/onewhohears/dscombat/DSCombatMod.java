@@ -30,10 +30,10 @@ import net.minecraft.server.packs.PackType;
  * This is the main class of the Diamond Star Combat mod.
  * Some events are registered here but most are subscribed via Annotation. 
  * Here are some of the event classes and other possibly relevant Entry Points:
- * {@link com.onewhohears.dscombat.client.event.forgebus.ClientCameraEvents}
- * {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents}
- * {@link com.onewhohears.dscombat.client.event.forgebus.ClientRenderEvents}
- * {@link com.onewhohears.dscombat.client.event.ClientModEvents}
+ * {@link com.onewhohears.dscombat.client.event.ClientEventHandlers}
+ * {@link com.onewhohears.dscombat.client.event.ClientCameraEventHandlers}
+ * {@link com.onewhohears.dscombat.client.event.ClientInputEventHandlers}
+ * {@link com.onewhohears.dscombat.client.event.ClientRenderEventHandlers}
  * {@link com.onewhohears.dscombat.common.event.CommonEventHandlers}
  * {@link EntityVehicle}
  * 

@@ -1,10 +1,8 @@
 package com.onewhohears.dscombat.client.input;
 
 import com.google.gson.JsonObject;
-import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
-import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.data.radar.RadarStats;
@@ -16,6 +14,8 @@ import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.Util;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -148,13 +148,13 @@ public class ClientInputManager {
                 int step = (int) (xa / max * stickStepsX * xs);
                 roll = ((float) step) / stickStepsX;
             }
-            if (mc.mouseHandler.getYVelocity() == 0) {
+            if (getMouseYVelocity(mc) == 0) {
                 DSCClientInputs.setMouseCenterY((int) Mth.approach(
                         (float) DSCClientInputs.getMouseCenterY(),
                         (float) mc.mouseHandler.ypos(),
                         Config.CLIENT.mouseYReturnRate.get().floatValue()));
             }
-            if (mc.mouseHandler.getXVelocity() == 0) {
+            if (getMouseXVelocity(mc) == 0) {
                 DSCClientInputs.setMouseCenterX((int) Mth.approach(
                         (float) DSCClientInputs.getMouseCenterX(),
                         (float) mc.mouseHandler.xpos(),
@@ -401,5 +401,15 @@ public class ClientInputManager {
             if (!type.equals("axis")) return;
             action.read(data);
         });
+    }
+
+    @ExpectPlatform
+    public static double getMouseYVelocity(Minecraft mc) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static double getMouseXVelocity(Minecraft mc) {
+        throw new AssertionError();
     }
 }

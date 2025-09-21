@@ -12,6 +12,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityParachute extends Entity implements TrampleHandler {
 
@@ -94,7 +95,7 @@ public class EntityParachute extends Entity implements TrampleHandler {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public @NotNull Packet<?> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
 	}
 

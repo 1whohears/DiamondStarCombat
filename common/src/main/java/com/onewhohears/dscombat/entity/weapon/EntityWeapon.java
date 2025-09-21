@@ -251,11 +251,6 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 	
 	@Override
-	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
-	}
-	
-	@Override
 	public boolean shouldRenderAtSqrDistance(double dist) {
 		return dist < 65536;
 	}

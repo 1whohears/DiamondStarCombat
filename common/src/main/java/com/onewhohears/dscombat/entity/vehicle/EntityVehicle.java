@@ -469,7 +469,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * SERVER SIDE ONLY
 	 * called externally to sync a vehicle's inputs with client's that aren't controlling this vehicle.
 	 * normally used by {@link ToServerVehicleControl}
-	 * which is called by {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents}
+	 * which is called by {@link com.onewhohears.dscombat.client.event.ClientInputEventHandlers}
 	 * to the controlling player can sync their inputs with every other client.
 	 * could also be used by a server side AI to sync a vehicle's inputs with all client's.
 	 */
@@ -1097,11 +1097,6 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void clientSetup() {
 		soundManager.onClientInit();
-	}
-	
-	@Override
-	public @NotNull Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
 	}
 	
 	@Override

@@ -72,11 +72,6 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 		compound.putString("slotid", getSlotId());
 		compound.putFloat("health", getHealth());
 	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
-	}
 	
 	public void init() {
 		PartSlot ps = getSlot();

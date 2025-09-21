@@ -5,7 +5,7 @@ import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.fabricmc.api.ModInitializer;
 
-public class DCCombatModFabric implements ModInitializer {
+public class DSCombatModFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         DSCombatMod.init();

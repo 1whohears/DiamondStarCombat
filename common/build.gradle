@@ -21,6 +21,8 @@ dependencies {
 
     modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common:${rootProject.jei_version}"
+
+    modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forgeconfigapiport_version}"
 }
 
 tasks.register("commonShadowJar", ShadowJar) {

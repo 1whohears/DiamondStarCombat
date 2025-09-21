@@ -76,6 +76,8 @@ dependencies {
 
     modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
+
+    modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forgeconfigapiport_version}"
 }
 
 processResources {
@@ -98,7 +100,8 @@ processResources {
                 modernfix_version: project.findProperty("modernfix_version"),
                 minigames_version: project.findProperty("minigames_version"),
                 distant_players_version: project.findProperty("distant_players_version"),
-                jei_version: project.findProperty("jei_version")
+                jei_version: project.findProperty("jei_version"),
+                forgeconfigapiport_version: project.findProperty("forgeconfigapiport_version")
     }
 }
 

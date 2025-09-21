@@ -31,7 +31,8 @@
     "java": ">=17",
     "architectury": ">=${architectury_version}",
     "onewholibs": ">=${onewholibs_version}",
-    "modernfix": ">=${modernfix_version}"
+    "modernfix": ">=${modernfix_version}",
+    "forgeconfigapiport": ">=${forgeconfigapiport_version}"
   },
   "suggests": {
     "minigames": ">=${minigames_version}",

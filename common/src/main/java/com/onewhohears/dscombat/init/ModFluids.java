@@ -15,10 +15,10 @@ public class ModFluids {
 
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(DSCombatMod.MODID, Registry.FLUID_REGISTRY);
 
-    static RegistrySupplier<Fluid> getOilFluidSource() {
+    public static RegistrySupplier<Fluid> getOilFluidSource() {
         return OIL_FLUID_SOURCE;
     }
-    static RegistrySupplier<FlowingFluid> getOilFluidFlowing() {
+    public static RegistrySupplier<FlowingFluid> getOilFluidFlowing() {
         return OIL_FLUID_FLOWING;
     }
 

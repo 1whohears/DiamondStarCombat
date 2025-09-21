@@ -1,12 +1,10 @@
 package com.onewhohears.dscombat.init;
 
-import java.util.function.Supplier;
-
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.block.custom.VehicleBlock;
 import com.onewhohears.dscombat.block.custom.WeaponPartsBlock;
 import com.onewhohears.dscombat.block.custom.WeaponsBlock;
-
+import dev.architectury.core.block.ArchitecturyLiquidBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Registry;
@@ -19,6 +17,8 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+
+import java.util.function.Supplier;
 
 public class ModBlocks {
 	
@@ -52,7 +52,7 @@ public class ModBlocks {
                     .strength(1f).explosionResistance(2f).sound(SoundType.COPPER)), ModItems.DSC_ITEMS);
 	
 	public static final RegistrySupplier<LiquidBlock> OIL_LIQUID_BLOCK = BLOCKS.register("oil_block",
-			() -> new LiquidBlock(ModFluids.OIL_FLUID_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.WATER)));
+			() -> new ArchitecturyLiquidBlock(ModFluids.getOilFluidFlowing(), BlockBehaviour.Properties.copy(Blocks.WATER)));
 	
 	// TODO 2.3 block to put stationary turrets on
 

@@ -113,4 +113,9 @@ public class UtilVehicleEntity {
         throw new AssertionError();
     }
 
+    @ExpectPlatform
+    public static void revive(Entity entity) {
+        throw new AssertionError();
+    }
+
 }

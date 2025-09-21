@@ -2,8 +2,10 @@ package com.onewhohears.dscombat.entity.vehicle.hitbox;
 
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.entity.CustomExplosion;
+import com.onewhohears.dscombat.entity.Revivable;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -28,7 +30,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 
-public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData, CustomExplosion {
+public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData, CustomExplosion, Revivable {
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(RotableHitbox.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(RotableHitbox.class, EntityDataSerializers.FLOAT);
@@ -442,5 +444,9 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 		if (getParent() != null) return getParent().getItem();
 		return null;
 	}
-	
+
+    @Override
+    public void revive() {
+        UtilVehicleEntity.revive(this);
+    }
 }

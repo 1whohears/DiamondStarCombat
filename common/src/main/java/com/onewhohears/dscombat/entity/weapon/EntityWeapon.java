@@ -1,8 +1,5 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import org.jetbrains.annotations.Nullable;
-
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
@@ -20,12 +17,12 @@ import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.CustomAnimProjectile;
 import com.onewhohears.onewholibs.util.UtilEntity;
-
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -46,8 +43,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProjectile<T, WeaponClientStats> implements IEntityAdditionalSpawnData {
+public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProjectile<T, WeaponClientStats> {
 	
 	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
@@ -147,8 +145,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 					System.out.println("OWNER "+owner);
 				}*/
 			}
-			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics 
-					&& !ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics) {
 				onHit(hitresult);
 				hasImpulse = true;
 				break;

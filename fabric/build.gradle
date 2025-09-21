@@ -8,6 +8,7 @@ architectury {
 }
 
 loom {
+    accessWidenerPath = file("src/main/resources/dscombat.fabric.accesswidener")
     mods {
         fabric {
             sourceSet project(":fabric").sourceSets.main

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import java.util.List;
 import java.util.Objects;
 
+import com.onewhohears.dscombat.entity.Revivable;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DependencySafety;
@@ -40,7 +41,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> {
+public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> implements Revivable {
 	
 	public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Vec3> TARGET_POS = SynchedEntityData.defineId(EntityMissile.class, DataSerializers.VEC3);
@@ -347,7 +348,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	@Override
 	public void revive() {
-		super.revive();
+        UtilVehicleEntity.revive(this);
 		discardedButTicking = false;
 	}
 

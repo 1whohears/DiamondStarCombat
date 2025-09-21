@@ -1,6 +1,9 @@
-package com.onewhohears.dscombat.client.event;
+package com.onewhohears.dscombat.client.event.forge;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.client.event.ClientCameraEventHandlers;
+import com.onewhohears.dscombat.client.event.ClientInputEventHandlers;
+import com.onewhohears.dscombat.client.event.ClientRenderEventHandlers;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.ObjWeaponRackModel;
 import com.onewhohears.dscombat.client.overlay.OverlayController;

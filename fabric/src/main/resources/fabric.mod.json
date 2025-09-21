@@ -23,6 +23,7 @@
     ]
   },
   "mixins": [
+    "dscombat.mixins.json",
     "dscombat.fabric.mixins.json"
   ],
   "depends": {

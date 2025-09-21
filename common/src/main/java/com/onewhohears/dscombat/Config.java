@@ -190,13 +190,13 @@ public class Config {
 		}
 	}
 	
-	static final ForgeConfigSpec clientSpec;
+	public static final ForgeConfigSpec clientSpec;
 	public static final Config.Client CLIENT;
 	
-	static final ForgeConfigSpec commonSpec;
+	public static final ForgeConfigSpec commonSpec;
 	public static final Config.Common COMMON;
 
-	static final ForgeConfigSpec serverSpec;
+	public static final ForgeConfigSpec serverSpec;
 	public static final Config.Server SERVER;
 	
 	static {

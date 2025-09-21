@@ -1,5 +1,6 @@
-package com.onewhohears.dscombat.client.event;
+package com.onewhohears.dscombat.client.event.fabric;
 
+import com.onewhohears.dscombat.client.event.ClientCameraEventHandlers;
 import com.onewhohears.dscombat.client.model.obj.ObjWeaponRackModel;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.onewholibs.util.math.Mat4f;

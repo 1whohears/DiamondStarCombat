@@ -1,6 +1,7 @@
-package com.onewhohears.dscombat.common.event;
+package com.onewhohears.dscombat.common.event.forge;
 
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.common.event.CommonEventHandlers;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;

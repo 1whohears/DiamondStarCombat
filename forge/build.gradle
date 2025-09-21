@@ -22,6 +22,11 @@ loom {
             programArgs "--existing", project(":common").file("src/main/resources").absolutePath
         }
     }
+    forge {
+        mixinConfigs = [
+                "dscombat.mixins.json"
+        ]
+    }
 }
 
 sourceSets {
@@ -69,6 +74,8 @@ dependencies {
 
     modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
+
+    modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_forge_id}"
 }
 
 processResources {

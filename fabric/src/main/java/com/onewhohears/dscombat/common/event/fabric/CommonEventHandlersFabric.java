@@ -1,7 +1,7 @@
-package com.onewhohears.dscombat.common.event;
+package com.onewhohears.dscombat.common.event.fabric;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
+import com.onewhohears.dscombat.common.event.CommonEventHandlers;
 import net.minecraftforge.api.fml.event.config.ModConfigEvents;
 import net.minecraftforge.fml.config.ModConfig;
 

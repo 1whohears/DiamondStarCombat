@@ -52,10 +52,6 @@ public class DSCombatMod {
         minigamesLoaded = Platform.isModLoaded("minigames");
         distantPlayersLoaded = Platform.isModLoaded("distant_players");
 
-        ModLoadingContext.registerConfig(MODID, ModConfig.Type.CLIENT, Config.clientSpec);
-        ModLoadingContext.registerConfig(MODID, ModConfig.Type.COMMON, Config.commonSpec);
-        ModLoadingContext.registerConfig(MODID, ModConfig.Type.SERVER, Config.serverSpec);
-
         CommonEventHandlers.init();
         ModFluids.register();
         ModBlocks.register();

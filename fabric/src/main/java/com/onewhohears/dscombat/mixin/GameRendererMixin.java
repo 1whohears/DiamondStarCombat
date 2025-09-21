@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.event.ClientEventHandlersFabric;
+import com.onewhohears.dscombat.client.event.fabric.ClientEventHandlersFabric;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Final;

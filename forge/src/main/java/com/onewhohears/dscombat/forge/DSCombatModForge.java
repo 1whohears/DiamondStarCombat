@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.forge;
 
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.event.DSCEntityRenderers;
@@ -24,27 +25,19 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(DSCombatMod.MODID)
 public class DSCombatModForge {
 
-    public DSCombatModForge() {
-        @SuppressWarnings("removal")
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        EventBuses.registerModEventBus(DSCombatMod.MODID, modEventBus);
-
-        modEventBus.addListener(this::onGatherData);
-
-        DSCombatMod.init();
-        if (Platform.getEnvironment() == Env.CLIENT && !DatagenModLoader.isRunningDataGen()) {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> DSCombatMod::clientInit);
-        }
-    }
-
     public DSCombatModForge(FMLJavaModLoadingContext loadingContext) {
         IEventBus modEventBus = loadingContext.getModEventBus();
         EventBuses.registerModEventBus(DSCombatMod.MODID, modEventBus);
+
+        loadingContext.registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
+        loadingContext.registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
+        loadingContext.registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
 
         modEventBus.addListener(this::onGatherData);
 

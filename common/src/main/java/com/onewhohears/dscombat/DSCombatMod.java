@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat;
 
 import com.onewhohears.dscombat.client.event.ClientEventHandlers;
+import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.obj.HardCodedModelAnims;
 import com.onewhohears.dscombat.common.event.CommonEventHandlers;
 import com.onewhohears.dscombat.data.parts.client.PartAssets;
@@ -25,8 +26,6 @@ import com.onewhohears.dscombat.init.ModVillagers;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
 import net.minecraft.server.packs.PackType;
-import net.minecraftforge.api.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
 
 /**
  * This is the main class of the Diamond Star Combat mod.
@@ -75,6 +74,7 @@ public class DSCombatMod {
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, PartAssets.get());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, WeaponAssets.get());
         ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, VehiclePassengerSoundPacks.get());
+        DSCKeys.init();
     }
     
 }

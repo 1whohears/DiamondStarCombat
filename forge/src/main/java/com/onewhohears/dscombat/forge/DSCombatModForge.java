@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.forge;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.DependencySafety;
+import com.onewhohears.dscombat.client.event.ClientEventHandlers;
 import com.onewhohears.dscombat.client.event.DSCEntityRenderers;
 import com.onewhohears.dscombat.data.forge.*;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
@@ -21,6 +22,7 @@ import dev.architectury.utils.Env;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.data.loading.DatagenModLoader;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -79,6 +81,10 @@ public class DSCombatModForge {
         @SubscribeEvent
         public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
             DSCEntityRenderers.register();
+        }
+        @SubscribeEvent
+        public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
+            ClientEventHandlers.registerParticleProvider();
         }
     }
 

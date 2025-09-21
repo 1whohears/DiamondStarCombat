@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.client.entityscreen.instance.*;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
@@ -76,14 +75,12 @@ public class ClientEventHandlers {
     }
 
     public static void onClientSetup(Minecraft minecraft) {
-        DSCKeys.init();
         registerScreens();
         registerCustomAnims();
         registerKeyframeAnims();
         setFluidRenderLayers();
         registerEntityScreens();
         PassengerSoundPack.registerBuiltInPassengerSoundTriggers();
-        registerParticleProvider();
     }
 
     public static void registerParticleProvider() {

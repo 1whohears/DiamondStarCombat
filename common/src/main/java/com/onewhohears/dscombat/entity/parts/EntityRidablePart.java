@@ -1,18 +1,12 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-import org.jetbrains.annotations.Nullable;
-
-import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.data.parts.stats.SeatStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
-
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -26,8 +20,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInstance<P>> extends EntityPart<P,I> {
 	
@@ -187,11 +184,6 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	public boolean hasAIUsingTurret() {
 		return false;
 	}
-
-    @Override
-    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
-        return true;
-    }
     
     @Override
     public double getPassengersRidingOffset() {

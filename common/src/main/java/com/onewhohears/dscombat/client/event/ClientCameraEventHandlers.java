@@ -29,14 +29,7 @@ public class ClientCameraEventHandlers {
     static private QuaternionF prevQ;
     private static boolean wasTrackingTarget = false;
 
-    public static final ClientCameraEventHandlers.CameraAngles CAMERA_ANGLES = new ClientCameraEventHandlers.CameraAngles();
-
-    public static class CameraAngles {
-        public float roll = 0, pitch = 0, yaw = 0;
-        public void reset() {
-            roll = 0; pitch = 0; yaw = 0;
-        }
-    }
+    public static final CameraAngles CAMERA_ANGLES = new CameraAngles();
 
     public static void onSetupCameraAngles(Camera camera, float pt, float yaw, float pitch, CameraAngles angles) {
         Minecraft m = Minecraft.getInstance();
@@ -108,7 +101,7 @@ public class ClientCameraEventHandlers {
         }
         float zi = UtilAngles.lerpAngle(pt, vehicle.zRotO, vehicle.zRot);
         if (detached && mirrored) zi *= -1;
-        angles.roll = zi;
+        angles.setRoll(zi);
         double camDist = vehicle.getStats().cameraDistance;
         if (detached && isPilot && camDist > 4) {
             double vehicleCamDist = Math.min(0, 4-getMaxDist(camera, player, camDist));
@@ -151,8 +144,8 @@ public class ClientCameraEventHandlers {
             x *= -1;
             y += 180;
         }
-        angles.pitch = x;
-        angles.yaw = y;
+        angles.setPitch(x);
+        angles.setYaw(y);
     }
 
     public static double getMaxDist(Camera cam, Player player, double dist) {

@@ -1,8 +1,8 @@
 package com.onewhohears.dscombat.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.event.fabric.ClientEventHandlersFabric;
+import com.onewhohears.dscombat.client.event.ClientCameraEventHandlers;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Final;
@@ -27,10 +27,13 @@ public abstract class GameRendererMixin {
             )
     )
     private void dscombat_fabric_cameraAngleSetup(float f, long l, PoseStack poseStack, CallbackInfo ci) {
-        ClientEventHandlersFabric.onCameraSetupEvent(mainCamera, f,
+        CAMERA_ANGLES.reset();
+        ClientCameraEventHandlers.onSetupCameraAngles(mainCamera, f,
                 mainCamera.getYRot(), mainCamera.getXRot(), CAMERA_ANGLES);
-        mainCamera.yRot = CAMERA_ANGLES.yaw;
-        mainCamera.xRot = CAMERA_ANGLES.pitch;
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(CAMERA_ANGLES.roll));
+        if (CAMERA_ANGLES.isChanged()) {
+            mainCamera.yRot = CAMERA_ANGLES.getYaw();
+            mainCamera.xRot = CAMERA_ANGLES.getPitch();
+            poseStack.mulPose(Vec3f.ZP.rotationDegrees(CAMERA_ANGLES.getRoll()).convert());
+        }
     }
 }

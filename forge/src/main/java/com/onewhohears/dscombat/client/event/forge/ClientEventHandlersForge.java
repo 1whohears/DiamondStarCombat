@@ -74,9 +74,11 @@ public class ClientEventHandlersForge {
         CAMERA_ANGLES.reset();
         ClientCameraEventHandlers.onSetupCameraAngles(event.getCamera(), (float)event.getPartialTick(),
                 event.getYaw(), event.getPitch(), CAMERA_ANGLES);
-        event.setRoll(CAMERA_ANGLES.roll);
-        event.setPitch(CAMERA_ANGLES.pitch);
-        event.setYaw(CAMERA_ANGLES.yaw);
+        if (CAMERA_ANGLES.isChanged()) {
+            event.setRoll(CAMERA_ANGLES.getRoll());
+            event.setPitch(CAMERA_ANGLES.getPitch());
+            event.setYaw(CAMERA_ANGLES.getYaw());
+        }
     }
 
 }

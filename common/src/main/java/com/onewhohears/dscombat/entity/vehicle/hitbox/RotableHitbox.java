@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.vehicle.hitbox;
 
+import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddRotableHitboxPacket;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.Revivable;
@@ -10,9 +11,7 @@ import com.onewhohears.dscombat.util.math.RotableAABB;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -28,9 +27,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import org.jetbrains.annotations.NotNull;
 
-public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData, CustomExplosion, Revivable {
+public class RotableHitbox extends Entity implements CustomExplosion, Revivable {
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(RotableHitbox.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(RotableHitbox.class, EntityDataSerializers.FLOAT);
@@ -69,22 +68,14 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
 	public RotableHitbox(EntityType<?> type, Level level) {
 		super(type, level);
 	}
-	
-	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
-		buffer.writeInt(parent.getId());
-		buffer.writeUtf(getHitboxName());
-	}
 
-	@Override
-	public void readSpawnData(FriendlyByteBuf buffer) {
-		int parentId = buffer.readInt();
-		parent = (EntityVehicle) level.getEntity(parentId);
-		String name = buffer.readUtf();
-		data = parent.getStats().getHitboxDataByName(name);
-		initStats();
-		parent.addRotableHitboxForClient(this);
-	}
+    public void handleClientAddEntityPacket(int parentId, String name) {
+        parent = (EntityVehicle) level.getEntity(parentId);
+        if (parent == null) return;
+        data = parent.getStats().getHitboxDataByName(name);
+        initStats();
+        parent.addRotableHitboxForClient(this);
+    }
 	
 	protected void initStats() {
 		if (data == null) return;
@@ -262,8 +253,8 @@ public class RotableHitbox extends Entity implements IEntityAdditionalSpawnData,
     }
 	
 	@Override
-	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
+	public @NotNull Packet<?> getAddEntityPacket() {
+		return new ClientBoundAddRotableHitboxPacket(this);
 	}
 	
 	@Override

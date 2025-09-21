@@ -23,6 +23,8 @@ dependencies {
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common:${rootProject.jei_version}"
 
     modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forgeconfigapiport_version}"
+
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 }
 
 tasks.register("commonShadowJar", ShadowJar) {

@@ -75,7 +75,9 @@ dependencies {
     modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
     modCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
 
-    modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_forge_id}"
+    //modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_forge_id}"
+
+    implementation(include("io.github.llamalad7:mixinextras-forge:0.5.0"))
 }
 
 processResources {

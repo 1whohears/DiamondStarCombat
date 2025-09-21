@@ -81,6 +81,8 @@ dependencies {
     modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forgeconfigapiport_version}"
 
     modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_fabric_id}"
+
+    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.0")))
 }
 
 processResources {

@@ -13,6 +13,8 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.client.WeaponClientPresetGenerator;
+import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.forge.DataSerializersImpl;
 import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.utils.Env;
@@ -45,6 +47,8 @@ public class DSCombatModForge {
         if (Platform.getEnvironment() == Env.CLIENT && !DatagenModLoader.isRunningDataGen()) {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> DSCombatMod::clientInit);
         }
+
+        DataSerializersImpl.register(modEventBus);
     }
 
     private void onGatherData(GatherDataEvent event) {

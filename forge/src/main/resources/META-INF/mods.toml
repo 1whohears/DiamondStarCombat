@@ -44,12 +44,7 @@ showAsResourcePack=false
     ordering = "NONE"
     side = "BOTH"
 
-[[dependencies."${mod_id}"]]
-    modId = "modernfix"
-    mandatory = true
-    versionRange = "[${modernfix_version},)"
-    ordering = "NONE"
-    side = "BOTH"
+
 
 [[dependencies."${mod_id}"]]
     modId="minigames"

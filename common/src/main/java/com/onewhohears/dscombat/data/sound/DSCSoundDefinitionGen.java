@@ -9,11 +9,13 @@ public class DSCSoundDefinitionGen {
 	public static void registerSound(SoundEvent soundEvent, String path, String subtitle, float volume) {
 		throw new AssertionError();
 	}
-	
+
+    @ExpectPlatform
 	public static void registerStreamSound(SoundEvent soundEvent, String path, String subtitle, float volume) {
         throw new AssertionError();
 	}
 
+    @ExpectPlatform
 	public static void registerSound(SoundEvent soundEvent, String subtitle, float volume, String... paths) {
         throw new AssertionError();
 	}

@@ -12,53 +12,31 @@ import com.onewhohears.dscombat.data.vehicle.presets.submarine.SubPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.item.*;
 import dev.architectury.core.item.ArchitecturyBucketItem;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.*;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
 
 public class ModItems {
 	
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(
             DSCombatMod.MODID, Registry.ITEM_REGISTRY);
+
+    @ExpectPlatform
+    public static CreativeModeTab createTab(String name, Supplier<RegistrySupplier<? extends Item>> displayItem) {
+        throw new AssertionError();
+    }
 	
-	public static final CreativeModeTab DSC_ITEMS = new CreativeModeTab(-1, "items") {
-		@Override
-		public @NotNull ItemStack makeIcon() {
-			return new ItemStack(ModItems.WRENCH.get());
-		}
-	};
+	public static final CreativeModeTab DSC_ITEMS = createTab("items", () -> ModItems.WRENCH);
+    public static final CreativeModeTab PARTS = createTab("parts", () -> ModItems.C12_ENGINE);
+    public static final CreativeModeTab WEAPONS = createTab("weapons", () -> ModItems.AIM9X);
+    public static final CreativeModeTab WEAPON_PARTS = createTab("weapon_parts", () -> ModItems.CIWS);
+    public static final CreativeModeTab VEHICLES = createTab("vehicle", () -> ModItems.JAVI_PLANE);
 	
-	public static final CreativeModeTab PARTS = new CreativeModeTab(-1, "parts") {
-		@Override
-		public @NotNull ItemStack makeIcon() {
-			return new ItemStack(ModItems.C12_ENGINE.get());
-		}
-	};
-	
-	public static final CreativeModeTab WEAPONS = new CreativeModeTab(-1, "weapons") {
-		@Override
-		public @NotNull ItemStack makeIcon() {
-			return new ItemStack(ModItems.AIM9X.get());
-		}
-	};
-	
-	public static final CreativeModeTab WEAPON_PARTS = new CreativeModeTab(-1, "weapon_parts") {
-		@Override
-		public @NotNull ItemStack makeIcon() {
-			return new ItemStack(ModItems.CIWS.get());
-		}
-	};
-	
-	public static final CreativeModeTab VEHICLES = new CreativeModeTab(-1, "vehicle") {
-		@Override
-		public @NotNull ItemStack makeIcon() {
-			return new ItemStack(ModItems.JAVI_PLANE.get());
-		}
-	};
-	
-	// DISKS
+	// DISCS
 	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost
 	// IDEA 8.2 disk 911?
 	public static final RegistrySupplier<Item> MISSILE_KNOWS_WHERE_DISC = ITEMS.register("the_missile_knows_disc", 

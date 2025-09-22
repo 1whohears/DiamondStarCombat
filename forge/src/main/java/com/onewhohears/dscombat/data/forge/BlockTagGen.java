@@ -19,8 +19,8 @@ public class BlockTagGen extends BlockTagsProvider {
 	@Override
 	protected void addTags() {
 		tag(ModTags.Blocks.FRAGILE)
-			.addTag(Tags.Blocks.GLASS_PANES)
-			.addTag(Tags.Blocks.GLASS)
+			.addOptionalTag(Tags.Blocks.GLASS_PANES.location())
+			.addOptionalTag(Tags.Blocks.GLASS.location())
 			.addTag(BlockTags.CANDLES)
 			.add(Blocks.LILY_PAD)
 			.add(Blocks.COCOA)

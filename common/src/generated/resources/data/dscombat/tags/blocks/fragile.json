@@ -1,7 +1,13 @@
 {
   "values": [
-    "#forge:glass_panes",
-    "#forge:glass",
+    {
+      "id": "#forge:glass_panes",
+      "required": false
+    },
+    {
+      "id": "#forge:glass",
+      "required": false
+    },
     "#minecraft:candles",
     "minecraft:lily_pad",
     "minecraft:cocoa",

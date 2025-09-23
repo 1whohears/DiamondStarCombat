@@ -12,6 +12,7 @@
     "PlayerRendererMixin"
   ],
   "mixins": [
+    "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

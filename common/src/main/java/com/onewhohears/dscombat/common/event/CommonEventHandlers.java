@@ -21,8 +21,10 @@ import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitboxes;
 import com.onewhohears.onewholibs.common.event.OWLEvents;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.util.UtilEntity;
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.*;
+import dev.architectury.event.events.common.CommandRegistrationEvent;
+import dev.architectury.event.events.common.ExplosionEvent;
+import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -48,7 +50,6 @@ public class CommonEventHandlers {
         TickEvent.SERVER_PRE.register(CommonEventHandlers::onServerTickPre);
         TickEvent.PLAYER_POST.register(CommonEventHandlers::onPlayerTick);
         ExplosionEvent.DETONATE.register(CommonEventHandlers::onExplosionDetonate);
-        EntityEvent.LIVING_HURT.register(CommonEventHandlers::onLivingHurt);
         CommandRegistrationEvent.EVENT.register(CommonEventHandlers::registerCommands);
     }
 
@@ -73,14 +74,12 @@ public class CommonEventHandlers {
         DSCVillagerTrades.register();
     }
 
-    public static EventResult onLivingHurt(LivingEntity livingEntity, DamageSource damageSource, float amount) {
+    public static float onLivingHurt(LivingEntity livingEntity, DamageSource damageSource, float amount) {
         if (damageSource.isMagic())
-            return EventResult.pass();
+            return amount;
         if (!livingEntity.isPassenger() || !(livingEntity.getRootVehicle() instanceof EntityVehicle plane))
-            return EventResult.pass();
-        float newAmount = plane.calcDamageToRider(damageSource, amount);
-        livingEntity.hurt(damageSource, newAmount); // FIXME will this cause an infinite loop?
-        return EventResult.interruptDefault();
+            return amount;
+        return plane.calcDamageToRider(damageSource, amount);
     }
 
     private static final Set<Integer> explodeRepeatCheck = new HashSet<>();

@@ -18,4 +18,5 @@ public final class CommonModEventHandlersForge {
     public static void reloadModConfigEvent(ModConfigEvent.Reloading event) {
         CommonEventHandlers.onReadConfig(event.getConfig());
     }
+
 }

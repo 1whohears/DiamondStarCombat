@@ -14,7 +14,7 @@ public class ClientRenderEventHandlers {
     public static void onRenderPlayerPre(Player player, float partialTick, PoseStack stack) {
         if (!player.isPassenger()) return;
         if (!(player.getRootVehicle() instanceof EntityVehicle plane)) return;
-        QuaternionF q = UtilAngles.lerpQ(partialTick, plane.getPrevQ(), plane.getClientQ());
+        QuaternionF q = plane.getClientQ();
         Vec3 eye = new Vec3(0, player.getEyeHeight(), 0);
         Vec3 t = eye.subtract(UtilAngles.rotateVector(eye, q));
         stack.translate(t.x, t.y, t.z);

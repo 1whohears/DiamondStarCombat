@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.input;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.onewhohears.dscombat.DSCombatMod;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.NotNull;
@@ -76,21 +77,27 @@ public final class DSCKeys {
 		pingCycleKey = registerKey("ping_cycle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_I);
 		afterBurnerKey = registerKey("afterburner_toggle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_B);
 	}
-	
-	private static KeyMapping registerKey(String name, String category, int keycode) {
-		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
-				InputConstants.Type.KEYSYM, keycode, category);
-        KeyMappingRegistry.register(key);
-		keys.put(name, key);
-		return key;
+
+    public static KeyMapping registerKey(String name, String category, int keycode) {
+        var key = registerKeyImpl(name, category, keycode);
+        keys.put(name, key);
+        return key;
+    }
+
+    public static KeyMapping registerMouse(String name, String category, int keycode) {
+        var key = registerMouseImpl(name, category, keycode);
+        keys.put(name, key);
+        return key;
+    }
+
+    @ExpectPlatform
+	public static KeyMapping registerKeyImpl(String name, String category, int keycode) {
+        throw new AssertionError();
 	}
-	
-	private static KeyMapping registerMouse(String name, String category, int keycode) {
-		final var key = new KeyMapping("key."+DSCombatMod.MODID+"."+name, 
-				InputConstants.Type.MOUSE, keycode, category);
-        KeyMappingRegistry.register(key);
-		keys.put(name, key);
-		return key;
+
+    @ExpectPlatform
+	public static KeyMapping registerMouseImpl(String name, String category, int keycode) {
+		throw new AssertionError();
 	}
 
 	public static @Nullable KeyMapping getKey(@NotNull String name) {

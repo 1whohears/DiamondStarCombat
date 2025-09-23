@@ -44,7 +44,12 @@ public class ClientEventHandlers {
         // TODO 4.3 thermal camera option
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(ClientInputEventHandlers::onClientPlayerJoin);
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientEventHandlers::onClientPlayerQuit);
-        ClientTickEvent.CLIENT_PRE.register(ClientInputEventHandlers::clientTickPilotControl);
+        ClientTickEvent.CLIENT_PRE.register(ClientEventHandlers::onClientTickPre);
+    }
+
+    public static void onClientTickPre(Minecraft minecraft) {
+        ClientInputEventHandlers.clientTickPilotControl(minecraft);
+        ClientCameraEventHandlers.clientTickSetMouseCallback(minecraft);
     }
 
     public static void onClientPlayerQuit(@Nullable LocalPlayer localPlayer) {

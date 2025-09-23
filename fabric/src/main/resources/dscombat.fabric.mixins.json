@@ -8,7 +8,7 @@
     "GameRendererMixin",
     "ItemInHandRendererMixin",
     "KeyMappingMixin",
-    "LocalPlayerMixin",
+    "KeyboardInputMixin",
     "PlayerRendererMixin"
   ],
   "mixins": [

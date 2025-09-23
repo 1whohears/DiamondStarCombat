@@ -247,7 +247,7 @@ public class ClientInputManager {
             if (seat.canEject()) {
                 seat.useEject();
                 sendSyncAction(new VehicleSyncAction.DismountAction(true));
-                player.getLevel().playLocalSound(player.getX(), player.getY(), player.getZ(),
+                UtilEntity.getLevel(player).playLocalSound(player.getX(), player.getY(), player.getZ(),
                         ModSounds.EJECT_WIND, SoundSource.PLAYERS, 0.5f, 1, false);
             } else {
                 sendSyncAction(new VehicleSyncAction.DismountAction(false));

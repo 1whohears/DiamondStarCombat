@@ -88,7 +88,7 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 			data.setMaxAmmo(getStats().getMaxAmmo());
 			data.setCurrentAmmo(ammo);
 			data.setLaunchPos(pos);
-			if (!craft.level.isClientSide) data.updateClientAmmo(craft);
+			if (!craft.isClientSide()) data.updateClientAmmo(craft);
 		}
 	}
 	
@@ -138,7 +138,7 @@ public class WeaponPartInstance<T extends WeaponPartStats> extends PartInstance<
 			WeaponInstance<?> data = getParent().weaponSystem.get(weapon, getSlotId());
 			if (data != null) {
 				data.setCurrentAmmo((int)ammo);
-				if (!getParent().level.isClientSide) data.updateClientAmmo(getParent());
+				if (!getParent().isClientSide()) data.updateClientAmmo(getParent());
 			}
 		}
 	}

@@ -14,10 +14,9 @@ import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.CustomAnimEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -44,7 +43,7 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 	
 	protected EntityPart(EntityType<?> entityType, Level level, String defaultPresetId) {
 		super(entityType, level, defaultPresetId);
-		if (level.isClientSide && shouldRender()) {
+		if (isClientSide() && shouldRender()) {
 			double dist = getClientRenderDistance();
 			renderSqrDistance = dist * dist;
 		}
@@ -85,7 +84,7 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 	public void tick() {
 		if (firstTick) init();
 		super.tick();
-		if (!level.isClientSide && tickCount > 10 && getVehicle() == null) onNoParent();
+		if (!isClientSide() && tickCount > 10 && getVehicle() == null) onNoParent();
 	}
 	
 	protected void onNoParent() {
@@ -268,7 +267,7 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 
 	@Override
 	public @Nullable JsonPresetAssetReader<PartClientStats> getClientPresets() {
-		if (!getLevel().isClientSide()) return null;
+		if (!isClientSide()) return null;
 		return PartAssets.get();
 	}
 
@@ -276,4 +275,8 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 	public @NotNull JsonPresetReloadListener<P> getPresets() {
 		return (JsonPresetReloadListener<P>) PartPresets.get();
 	}
+
+    public Level getWorld() {
+        return UtilEntity.getLevel(this);
+    }
 }

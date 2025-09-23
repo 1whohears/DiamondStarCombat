@@ -109,7 +109,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 		QuaternionF ra = QuaternionF.ONE;
 		EntityVehicle vehicle = getParentVehicle();
 		if (vehicle != null) ra = vehicle.getQBySide();
-		if (!getLevel().isClientSide()) {
+		if (!isClientSide()) {
 			if (newRiderCoolDown > 0) --newRiderCoolDown;
 			float rely = yRotRelO, relx = xRotRelO;
 			float rotrate = getRotRate(), minrotx = getMinRotX(), maxrotx = getMaxRotX();
@@ -147,7 +147,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	@Override
 	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
 		QuaternionF q;
-		if (level.isClientSide) q = craft.getClientQ();
+		if (isClientSide()) q = craft.getClientQ();
 		else q = craft.getQ();
 		double offset = getPassengersRidingOffset() + passenger.getMyRidingOffset() + passenger.getEyeHeight();
 		float cos = Mth.cos(getRelRotY()*Mth.DEG_TO_RAD), sin = Mth.sin(getRelRotY()*Mth.DEG_TO_RAD);
@@ -212,7 +212,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	}
 	
 	public double getAIVerticalRange() {
-		return level.getGameRules().getInt(DSCGameRules.MOB_TURRET_VERTICAL_RANGE);
+		return getWorld().getGameRules().getInt(DSCGameRules.MOB_TURRET_VERTICAL_RANGE);
 	}
 	
 	@Override
@@ -267,7 +267,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	
 	public void shoot(Entity shooter) {
 		WeaponInstance<?> data = getWeaponData();
-		if (getLevel().isClientSide() || data == null || newRiderCoolDown > 0) return;
+		if (isClientSide() || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
 		Vec3 pos = position();
 		EntityVehicle parent = null;
@@ -282,10 +282,10 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 			if (player.isCreative()) consume = false;
 			p = player;
 		}
-		boolean consumeAmmo = getLevel().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
+		boolean consumeAmmo = getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		boolean couldShoot = data.checkRecoil();
 		data.setSlot(getSlotId());
-		data.shootFromTurret(getLevel(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo);
+		data.shootFromTurret(getWorld(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo);
 		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo, data);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
@@ -313,8 +313,8 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 			float yRad = getYRot() * Mth.DEG_TO_RAD;
 			Vec3 posL = pos.add(new Vec3(-d*Mth.cos(yRad), 0, -d*Mth.sign(yRad))); 
 			Vec3 posR = pos.add(new Vec3(d*Mth.cos(yRad), 0, d*Mth.sign(yRad)));
-			data.shootFromTurret(getLevel(), shooter, getLookAngle(), posL, parent, consume, true);
-			data.shootFromTurret(getLevel(), shooter, getLookAngle(), posR, parent, consume, true);
+			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posL, parent, consume, true);
+			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posR, parent, consume, true);
 		}
 	}
 

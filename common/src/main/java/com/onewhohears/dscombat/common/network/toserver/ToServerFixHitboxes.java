@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common.network.toserver;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -37,7 +38,7 @@ public class ToServerFixHitboxes extends BaseC2SMessage {
         context.queue(() -> {
             Player player = context.getPlayer();
 			if (player == null) return;
-			Level level = player.level;
+            Level level = UtilEntity.getLevel(player);
 			if (!(level.getEntity(id) instanceof EntityVehicle vehicle)) return;
 			vehicle.refreshHitboxes();
 		});

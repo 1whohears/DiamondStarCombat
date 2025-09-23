@@ -34,7 +34,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	
 	public void tick() {
 		super.tick();
-		if (!level.isClientSide && level.getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES)) 
+		if (!isClientSide() && getWorld().getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES))
 			tickRideCollision();
 	}
 	
@@ -43,7 +43,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 		if (getPassenger() != null) return;
 		if (!(getVehicle() instanceof EntityVehicle vehicle)) return;
 		if (vehicle.getXZSpeed() > 0.1) return;
-		List<Entity> entities = level.getEntities(this, 
+		List<Entity> entities = getWorld().getEntities(this,
 			getBoundingBox().inflate(0.1), 
 			getRidePredicate());
 		for (Entity entity : entities) 
@@ -64,7 +64,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		if (player.isSecondaryUseActive()) {
 			return InteractionResult.PASS;
-		} else if (!level.isClientSide) {
+		} else if (!isClientSide()) {
 			if (player.isPassenger()) return InteractionResult.PASS;
 			if (player.startRiding(this)) return InteractionResult.CONSUME;
 			if (getVehicle() != null && player.startRiding(getVehicle())) return InteractionResult.CONSUME;
@@ -108,7 +108,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	
 	@Override
     protected void addPassenger(Entity passenger) {
-        if (!getLevel().isClientSide()) {
+        if (!isClientSide()) {
 			EntityVehicle vehicle = getParentVehicle();
 			if (vehicle != null && !vehicle.hasOwner()) {
 				vehicle.setOwner(passenger);
@@ -134,7 +134,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	@Override
 	protected void removePassenger(Entity passenger) {
 		super.removePassenger(passenger);
-		if (level.isClientSide) return;
+		if (isClientSide()) return;
 		EntityVehicle vehicle = getParentVehicle();
 		if (vehicle == null) return;
 		vehicle.onSeatDismount(passenger);
@@ -142,7 +142,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	
 	@Override
     public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity entity) {
-		int minY = getLevel().getMinBuildHeight()+4;
+		int minY = getWorld().getMinBuildHeight()+4;
 		Vec3 dis = super.getDismountLocationForPassenger(entity);
 		if (dis.y() < minY) dis = new Vec3(dis.x(), minY, dis.z());
 		return dis;
@@ -177,7 +177,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	}
 
     public void explode(DamageSource source, Entity parent) {
-        getLevel().explode(parent, source, null, getX(), getY(), getZ(),
+        getWorld().explode(parent, source, null, getX(), getY(), getZ(),
                 3, true, Explosion.BlockInteraction.BREAK);
     }
 	

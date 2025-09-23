@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
@@ -30,7 +31,7 @@ public class WindTunnelOverlay extends GuiComponent {
         if (player == null) return;
         if (!player.hasPermissions(2)) return;
         if (System.currentTimeMillis() - prevTunnelCheckTime >= CHECK_TUNNEL_RATE)
-            findTunnel(player.position(), player.getLevel());
+            findTunnel(player.position(), UtilEntity.getLevel(player));
         if (tunnel == null) return;
         int index = 0;
         gui.getFont().draw(stack, tunnel.getStatsId(), LABEL_PADDING, LABEL_PADDING, 0x00ff00);

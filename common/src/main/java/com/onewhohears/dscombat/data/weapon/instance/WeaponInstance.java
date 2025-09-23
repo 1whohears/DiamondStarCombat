@@ -159,7 +159,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	
 	public void updateClientAmmo(EntityVehicle vehicle) {
 		if (vehicle == null) return;
-		if (vehicle.level.isClientSide) return;
+		if (vehicle.isClientSide()) return;
         PacketHandler.sendToTrackers(new ToClientWeaponAmmo(vehicle.getId(), getStatsId(), slotId, getCurrentAmmo()), vehicle);
 	}
 	
@@ -297,7 +297,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			pos = pos.add(move);
 			if (pos.y < -64) pos = new Vec3(pos.x, -64, pos.z);
 			move = move.add(acc);
-			Vec3 raycast = UtilEntity.raycastBlock(vehicle.level, prevPos, pos);
+			Vec3 raycast = UtilEntity.raycastBlock(vehicle.getWorld(), prevPos, pos);
 			if (raycast == null) continue;
 			return raycast;
 		}

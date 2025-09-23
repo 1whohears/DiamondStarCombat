@@ -37,7 +37,7 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 	
 	public static void updateIRTargetsList(Entity weapon, List<IrTarget> targets, float flareResistance, float fov) {
 		targets.clear();
-		List<Entity> irEmitters = weapon.level.getEntities(weapon, getIrBoundingBox(weapon), 
+		List<Entity> irEmitters = UtilEntity.getLevel(weapon).getEntities(weapon, getIrBoundingBox(weapon),
 				(entity) -> entity.getType().is(ModTags.EntityTypes.IR_EMITTER));
         for (Entity emitter : irEmitters) {
             if (emitter.isPassenger()) continue;

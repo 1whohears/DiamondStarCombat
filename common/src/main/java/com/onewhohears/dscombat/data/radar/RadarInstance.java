@@ -109,7 +109,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		if (playersOnly && !player) return;
 
 		if (entity.distanceToSqr(radar) > rangeSqr) return;
-		if (!entity.getLevel().dimension().equals(radar.getWorld().dimension())) return;
+		if (!UtilEntity.getLevel(entity).dimension().equals(radar.getWorld().dimension())) return;
 
 		EntityVehicle vehicle = null;
 		if (!player && entity instanceof EntityVehicle ev) vehicle = ev;
@@ -159,7 +159,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		//System.out.println("SCANNING MOBS");
 		for (int j = 0; j < RadarTargetTypes.get().getRadarMobClasses().size(); ++j) {
 			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarMobClasses().get(j);
-			List<? extends Entity> list = radar.level.getEntitiesOfClass(clazz, radarArea);
+			List<? extends Entity> list = radar.getWorld().getEntitiesOfClass(clazz, radarArea);
             for (Entity entity : list) {
                 if (entity.isPassenger()) continue;
                 if (isFailBasicCheck(radar, entity, 1)) continue;
@@ -186,7 +186,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private void handleMissile(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 							   double rangeSqr, Entity target) {
 		if (target.distanceToSqr(radar) > rangeSqr) return;
-		if (!target.getLevel().dimension().equals(radar.getWorld().dimension())) return;
+		if (!UtilEntity.getLevel(target).dimension().equals(radar.getWorld().dimension())) return;
 		if (isFailBasicCheck(radar, target, -1)) return;
 		RadarPing p = new RadarPing(target,
 				checkFriendly(controller, target),

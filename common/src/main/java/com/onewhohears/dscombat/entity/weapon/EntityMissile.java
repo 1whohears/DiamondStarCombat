@@ -55,7 +55,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	public EntityMissile(EntityType<? extends EntityMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
-		if (!level.isClientSide) NonTickingMissileManager.addMissile(this);
+		if (!isClientSide()) NonTickingMissileManager.addMissile(this);
 	}
 	
 	@Override
@@ -83,12 +83,12 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	@Override
 	public void tick() {
-		if (level.isClientSide) clientTickParticles();
+		if (isClientSide()) clientTickParticles();
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
 		if (!isRemoved()) {
-			if (!getLevel().isClientSide()) {
+			if (!isClientSide()) {
 				tickGuide();
 				if (targetPos != null) setTargetPos(targetPos);
 				else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
@@ -105,15 +105,15 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		}
 		super.tick();
 		tickLerp();
-		if (!getLevel().isClientSide() && tickCount > 100 && getDeltaMovement().length() < 0.1) {
+		if (!isClientSide() && tickCount > 100 && getDeltaMovement().length() < 0.1) {
 			kill();
 			return;
 		}
 	}
 	
 	public void clientTickParticles() {
-		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(level, position(), getLookAngle().scale(-1));
-		UtilParticles.missileTrail(level, position(), getLookAngle(), getRadius(), isInWater());
+		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(getWorld(), position(), getLookAngle().scale(-1));
+		UtilParticles.missileTrail(getWorld(), position(), getLookAngle(), getRadius(), isInWater());
 	}
 	
 	public abstract void tickGuide();
@@ -123,7 +123,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		if (tpos.y == -1000) tpos = null;
 		int tid = getTargetId();
 		if (tid != -1) {
-			Entity t = level.getEntity(tid);
+			Entity t = getWorld().getEntity(tid);
 			if (t != null) targetPos = t.position();
 			else targetPos = tpos;
 		} else targetPos = tpos;
@@ -195,7 +195,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 
     private boolean canSonicBoom() {
         if (didSonicBoom) return false;
-        if (!getLevel().isClientSide()) return false;
+        if (!isClientSide()) return false;
         Entity owner = getOwner();
         return owner == null || !owner.equals(Minecraft.getInstance().player);
     }
@@ -397,7 +397,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
     }
 	
 	private void tickLerp() {
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
 			syncPacketPositionCodec(getX(), getY(), getZ());
 			lerpSteps = 0;
 			return;
@@ -423,8 +423,8 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	@Override
 	public void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (level.isClientSide) return;
-		if (level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT)) {
+		if (isClientSide()) return;
+		if (getWorld().getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT)) {
 			Entity entity = result.getEntity();
 			if (entity == null) return;
 			ServerPlayer targetPlayer = null;
@@ -435,8 +435,8 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			if (!(owner instanceof ServerPlayer ownerPlayer)) return;
 			MutableComponent message = UtilMCText.translatable("info.dscombat.missile_impacted_player",
 					ownerPlayer.getDisplayName(), targetPlayer.getDisplayName());
-			boolean teamOnly = level.getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY);
-			List<ServerPlayer> players = level.getServer().getPlayerList().getPlayers();
+			boolean teamOnly = getWorld().getGameRules().getBoolean(DSCGameRules.BROADCAST_MISSILE_HIT_TEAM_ONLY);
+			List<ServerPlayer> players = getWorld().getServer().getPlayerList().getPlayers();
 			for (ServerPlayer player : players) {
 				if (teamOnly && (ownerPlayer.getTeam() == null || player.getTeam() == null || 
 						!ownerPlayer.getTeam().getName().equals(player.getTeam().getName()))) continue;

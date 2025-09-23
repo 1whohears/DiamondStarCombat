@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.common.container.menu.*;
 
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -26,17 +27,17 @@ public class ModContainers {
                     (windowId, playerInv, data) -> new VehiclePartsMenu(windowId, playerInv)));
 	public static final RegistrySupplier<MenuType<WeaponsBlockContainerMenu>> WEAPONS_BLOCK_MENU =
             register("weapons_block_menu", MenuRegistry.ofExtended((windowId, playerInv, data) -> {
-				WeaponsBlockEntity weaponsBlock = (WeaponsBlockEntity)playerInv.player.level.getBlockEntity(data.readBlockPos());
+				WeaponsBlockEntity weaponsBlock = (WeaponsBlockEntity)UtilEntity.getLevel(playerInv.player).getBlockEntity(data.readBlockPos());
 				return new WeaponsBlockContainerMenu(windowId, playerInv, weaponsBlock);
 			}));
 	public static final RegistrySupplier<MenuType<VehicleBlockContainerMenu>> AIRCRAFT_BLOCK_MENU =
             register("aircraft_block_menu", MenuRegistry.ofExtended((windowId, playerInv, data) -> {
-				VehicleBlockEntity aircraftBlock = (VehicleBlockEntity)playerInv.player.level.getBlockEntity(data.readBlockPos());
+				VehicleBlockEntity aircraftBlock = (VehicleBlockEntity)UtilEntity.getLevel(playerInv.player).getBlockEntity(data.readBlockPos());
 				return new VehicleBlockContainerMenu(windowId, playerInv, aircraftBlock);
 			}));
 	public static final RegistrySupplier<MenuType<WeaponPartsBlockContainerMenu>> WEAPON_PARTS_BLOCK_MENU =
             register("weapon_parts_block_menu", MenuRegistry.ofExtended((windowId, playerInv, data) -> {
-				WeaponPartsBlockEntity weaponsBlock = (WeaponPartsBlockEntity)playerInv.player.level.getBlockEntity(data.readBlockPos());
+				WeaponPartsBlockEntity weaponsBlock = (WeaponPartsBlockEntity)UtilEntity.getLevel(playerInv.player).getBlockEntity(data.readBlockPos());
 				return new WeaponPartsBlockContainerMenu(windowId, playerInv, weaponsBlock);
 			}));
     public static MenuType<ChestMenu> createVehicleStorageMenuFactory() {

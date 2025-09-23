@@ -36,7 +36,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
         double range = data.getStats().getMobTurretRange();
         Vec3 pos = Config.CLIENT.getTargetPos();
         int dist = (int) pos.distanceTo(vehicle.position());
-        int alt = UtilEntity.getDistFromSeaLevel(pos.y, vehicle.level);
+        int alt = UtilEntity.getDistFromSeaLevel(pos.y, vehicle.getWorld());
         String text = dist + " | " + alt;
         int color;
         if (dist <= range) {

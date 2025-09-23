@@ -10,19 +10,21 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemParachute;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -383,8 +385,9 @@ public abstract class VehicleSyncAction {
                         player.setDeltaMovement(vehicle.getDeltaMovement().add(dir.scale(EJECT_MOVE)));
                     } else dir = new Vec3(0, 1, 0);
                     player.setPos(player.position().add(dir.scale(EJECT_PUSH)));
-                    ItemParachute.createParachute(player.getLevel(), player, null);
-                    player.getLevel().playSound(null, player.blockPosition(),
+                    ServerLevel level = (ServerLevel) UtilEntity.getLevel(player);
+                    ItemParachute.createParachute(level, player, null);
+                    level.playSound(null, player.blockPosition(),
                             ModSounds.EJECT, SoundSource.PLAYERS, 1, 1);
                 } else player.stopRiding();
             };

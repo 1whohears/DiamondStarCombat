@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.dscombat.util.math.RotableAABB;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +42,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
 	private Vec3 test_pos, test_size;
 	
 	public RotableHitbox(EntityVehicle parent, RotableHitboxData data) {
-		this(ModEntities.ROTABLE_HITBOX.get(), parent.level);
+		this(ModEntities.ROTABLE_HITBOX.get(), parent.getWorld());
 		this.parent = parent;
 		this.data = data;
 		this.noPhysics = true;
@@ -70,7 +71,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
 	}
 
     public void handleClientAddEntityPacket(int parentId, String name) {
-        parent = (EntityVehicle) level.getEntity(parentId);
+        parent = (EntityVehicle) getWorld().getEntity(parentId);
         if (parent == null) return;
         data = parent.getStats().getHitboxDataByName(name);
         initStats();
@@ -93,13 +94,21 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
 			discard();
 			return;
 		}
-		if (!level.isClientSide && tickCount > 20 && data.isRemoveOnDestroy() && isDestroyed()) {
+		if (!isClientSide() && tickCount > 20 && data.isRemoveOnDestroy() && isDestroyed()) {
 			kill();
 			return;
 		}
 		positionSelf();
 		firstTick = false;
 	}
+
+    public boolean isClientSide() {
+        return getWorld().isClientSide();
+    }
+
+    public Level getWorld() {
+        return UtilEntity.getLevel(this);
+    }
 	
 	protected void positionSelf() {
 		setOldPosAndRot();
@@ -118,7 +127,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
 			return move;
 		}*/
 		if (getParent().isEntityHitboxCooldown(entity)) {
-			//System.out.println("Hitbox Cooldown "+entity.level.isClientSide);
+			//System.out.println("Hitbox Cooldown "+entity.isClientSide());
 			return move;
 		}
 		if (!couldCollide(entity)) {
@@ -131,7 +140,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
 		}
 		// FIXME 4.6 prevent entities from falling off when the chunks load
 		//System.out.println("==========");
-		//System.out.println("PRE COLLISION "+getHitboxName()+" "+getId()+" "+entity.level.isClientSide+" "+getParent().tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround());
+		//System.out.println("PRE COLLISION "+getHitboxName()+" "+getId()+" "+entity.isClientSide()+" "+getParent().tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround());
 		//getParent().addEntityCollidedHitbox(entity);
 		if (isInside(entity)) {
 			//System.out.println("INSIDE");
@@ -150,7 +159,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
 			System.out.println("entityMoveByParent = "+entityMoveByParent);
 		}*/
 		move = hitbox.collide(entity.position(), entity.getBoundingBox(), move);
-		//if (entity.level.isClientSide) ClientSideHitboxStuckFixer.onCollide(entity, isInside);
+		//if (entity.isClientSide()) ClientSideHitboxStuckFixer.onCollide(entity, isInside);
 		getParent().addEntityCollideInfo(entity, this, entity.position());
 		if (getParent().isStuckInHitbox(entity)) {
 			getParent().addEntityToHitboxCooldown(entity);
@@ -345,9 +354,9 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
 	}
 	
 	public void repair(float repair) {
-		if (!level.isClientSide && isRemoved()) {
+		if (!isClientSide() && isRemoved()) {
 			revive();
-			level.addFreshEntity(this);
+            getWorld().addFreshEntity(this);
 		}
 		if (getHealth() < getMaxHealth()) addHealth(repair);
 		else if (getArmor() < getMaxArmor()) addArmor(repair);

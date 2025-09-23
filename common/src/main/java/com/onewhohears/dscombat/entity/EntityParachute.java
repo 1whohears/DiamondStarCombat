@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -44,7 +45,7 @@ public class EntityParachute extends Entity implements TrampleHandler {
 	}
 	
 	public void tickCollide() {
-		if (!level.isClientSide && verticalCollisionBelow) {
+		if (!UtilEntity.getLevel(this).isClientSide() && verticalCollisionBelow) {
 			kill();
 		}
 	}

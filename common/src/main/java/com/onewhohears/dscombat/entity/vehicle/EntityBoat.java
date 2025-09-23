@@ -134,9 +134,9 @@ public class EntityBoat extends EntityVehicle {
 		BlockPos.MutableBlockPos mbp = new BlockPos.MutableBlockPos();
 		for(int k1=i;k1<j;++k1){for(int l1=k;l1<l;++l1){for(int i2=i1;i2<j1;++i2){
 			mbp.set(k1, l1, i2);
-			FluidState fluidstate = level.getFluidState(mbp);
+			FluidState fluidstate = getWorld().getFluidState(mbp);
 			if (fluidstate.is(FluidTags.WATER)) {
-				float f = (float)l1 + fluidstate.getHeight(level, mbp);
+				float f = (float)l1 + fluidstate.getHeight(getWorld(), mbp);
 				waterLevel = Math.max((double)f, waterLevel);
 				flag = aabb.minY < (double)f;
 			}

@@ -51,7 +51,7 @@ public class ToServerSyncRotBoxPassengerPos extends BaseC2SMessage {
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
             Player player = context.getPlayer();
-			Level level = player.level;
+            Level level = UtilEntity.getLevel(player);
 			for (int i = 0; i < ids.length; ++i) {
 				if (pos[i].y == -1000) continue;
 				Entity entity = level.getEntity(ids[i]);

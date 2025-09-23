@@ -99,8 +99,8 @@ public abstract class WindTunnelJob {
 
     public static String getJobDataPath(EntityWindTunnel tunnel) {
         File dir;
-        if (tunnel.getLevel().isClientSide()) dir = Minecraft.getInstance().gameDirectory;
-        else dir = tunnel.getLevel().getServer().getServerDirectory();
+        if (tunnel.getWorld().isClientSide()) dir = Minecraft.getInstance().gameDirectory;
+        else dir = tunnel.getWorld().getServer().getServerDirectory();
         String path;
         if (dir.getPath().equals(".")) path = dir.getAbsolutePath().substring(0, dir.getAbsolutePath().length()-2);
         else path = dir.getAbsolutePath();

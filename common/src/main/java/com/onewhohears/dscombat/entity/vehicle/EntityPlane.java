@@ -266,7 +266,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
-		return amount * DSCGameRules.getBulletDamagePlaneFactor(level);
+		return amount * DSCGameRules.getBulletDamagePlaneFactor(getWorld());
 	}
 	
 	public float getWingLiftPercent() {

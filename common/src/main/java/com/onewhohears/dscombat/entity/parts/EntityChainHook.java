@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
@@ -51,7 +52,7 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 		ListTag conns = nbt.getList("chains", 10);
 		for (int i = 0; i < conns.size(); ++i) {
 			CompoundTag tag = conns.getCompound(i);
-			ChainConnection conn = fromNBT(tag, level);
+			ChainConnection conn = fromNBT(tag, getWorld());
 			if (conn == null) continue;
 			chains.add(conn);
 		}
@@ -70,23 +71,31 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 	
 	@Override
 	public void tick() {
-		if (firstTick && level.isClientSide) requestChainsFromServer();
+		if (firstTick && isClientSide()) requestChainsFromServer();
 		super.tick();
 		for (int i = 0; i < chains.size(); ++i) {
 			ChainConnection chain = chains.get(i);
 			chain.tick();
-			if (!level.isClientSide && chain.isDisconnected()) 
+			if (!isClientSide() && chain.isDisconnected())
 				disconnectChain(i--);
 		}
 	}
+
+    public boolean isClientSide() {
+        return getWorld().isClientSide();
+    }
+
+    public Level getWorld() {
+        return UtilEntity.getLevel(this);
+    }
 	
 	private void requestChainsFromServer() {
-		if (!level.isClientSide) return;
+		if (!isClientSide()) return;
         new ToServerGetHookChains(this).sendToServer();
 	}
 	
 	public void sendAllVehicleChainsToClient(ServerPlayer reciever) {
-		if (level.isClientSide) return;
+		if (isClientSide()) return;
 		for (ChainConnection chain : chains) {
 			if (chain.isVehicleConnection()) {
 				UtilServerPacket.sendChainAddVehicleTo(chain.getVehicle(), this, reciever);
@@ -99,18 +108,18 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 		ItemStack item = player.getItemInHand(hand);
 		if (!item.isEmpty() && item.is(ModTags.Items.VEHICLE_CHAIN)) {
 			handleChainInteract(player, item);
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(isClientSide());
 		} else if (hasChain()) {
 			disconnectAllChains();
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(isClientSide());
 		}
 		return InteractionResult.PASS;
 	}
 	
 	protected void handleChainInteract(Player player, ItemStack item) {
-		if (level.isClientSide) return;
+		if (isClientSide()) return;
 		if (isPlayerConnected(player)) return;
-		List<EntityVehicle> vehicles = level.getEntitiesOfClass(EntityVehicle.class, 
+		List<EntityVehicle> vehicles = getWorld().getEntitiesOfClass(EntityVehicle.class,
 			getBoundingBox().inflate(CHAIN_LENGTH), vehicle -> vehicle.isChainConnectedToPlayer(player));
 		if (vehicles.size() == 0) {
 			addPlayerConnection(player);
@@ -121,7 +130,7 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 	
 	public void addPlayerConnection(Player player) {
 		chains.add(new ChainConnection(this, player, null));
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
 			UtilServerPacket.sendChainAddPlayer(this, player);
 			playChainConnectSound();
 		}
@@ -147,7 +156,7 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 				}
 			}
 		}
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
 			UtilServerPacket.sendChainAddVehicle(vehicle, this, player);
 			playChainConnectSound();
 		}
@@ -155,11 +164,11 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 	}
 	
 	public void playChainConnectSound() {
-		level.playSound(null, this, SoundEvents.CHAIN_PLACE, SoundSource.BLOCKS, 1, 1);
+        getWorld().playSound(null, this, SoundEvents.CHAIN_PLACE, SoundSource.BLOCKS, 1, 1);
 	}
 	
 	public void playChainDisconnectSound() {
-		level.playSound(null, this, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS, 1, 1);
+        getWorld().playSound(null, this, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS, 1, 1);
 	}
 	
 	public void disconnectVehicle(EntityVehicle vehicle) {
@@ -274,15 +283,15 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 		private void onDisconnect() {
 			if (getVehicle() != null) {
 				getVehicle().disconnectChain();
-				if (!hook.level.isClientSide) {
-					Containers.dropItemStack(hook.level, hook.getX(), hook.getY(), hook.getZ(), 
+				if (!hook.isClientSide()) {
+					Containers.dropItemStack(hook.getWorld(), hook.getX(), hook.getY(), hook.getZ(),
 							Items.CHAIN.getDefaultInstance());
 					UtilServerPacket.sendChainDisconnectVehicle(getVehicle(), hook);
 				}
 			} else if (player != null) {
-				if (!hook.level.isClientSide) UtilServerPacket.sendChainDisconnectPlayer(hook, player);
+				if (!hook.isClientSide()) UtilServerPacket.sendChainDisconnectPlayer(hook, player);
 			}
-			if (!hook.level.isClientSide) hook.playChainDisconnectSound();
+			if (!hook.isClientSide()) hook.playChainDisconnectSound();
 			resetVehicle();
 			player = null;
 		}
@@ -313,8 +322,8 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 		@Nullable
 		public EntityVehicle getVehicle() {
 			if (vehicle == null) {
-				if (vehicleUUID != null && !hook.level.isClientSide) {
-					Entity entity = ((ServerLevel)hook.level).getEntity(vehicleUUID);
+				if (vehicleUUID != null && !hook.isClientSide()) {
+					Entity entity = ((ServerLevel)hook.getWorld()).getEntity(vehicleUUID);
 					if (!(entity instanceof EntityVehicle v)) {
 						resetVehicle();
 						return null;
@@ -322,8 +331,8 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 					vehicle = v;
 					vehicleId = vehicle.getId();
 					vehicle.chainToHook(hook);
-				} else if (vehicleId != -1 && hook.level.isClientSide) {
-					Entity entity = hook.level.getEntity(vehicleId);
+				} else if (vehicleId != -1 && hook.isClientSide()) {
+					Entity entity = hook.getWorld().getEntity(vehicleId);
 					if (!(entity instanceof EntityVehicle v)) {
 						resetVehicle();
 						return null;

@@ -160,16 +160,20 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
 
     public void chatToNearbyPlayers(Component msg) {
         AABB bb = getBoundingBox().inflate(16);
-        for(Player player : getLevel().players()) {
+        for(Player player : getWorld().players()) {
             if (bb.contains(player.getX(), player.getY(), player.getZ())) {
                 player.displayClientMessage(msg, false);
             }
         }
     }
 
+    public Level getWorld() {
+        return UtilEntity.getLevel(this);
+    }
+
     @Override
     public void tick() {
-        if (!getLevel().isClientSide() && job != null) job.tick(this);
+        if (!getWorld().isClientSide() && job != null) job.tick(this);
         tickSimulate();
     }
 
@@ -179,7 +183,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         EntityVehicle vehicle = getSimulatedVehicle();
         vehicle.setTestMode(true);
         vehicle.setPos(position().multiply(1, 0, 1)
-                .add(0, getAltitude()+UtilEntity.getSeaLevel(getLevel()), 0));
+                .add(0, getAltitude()+UtilEntity.getSeaLevel(getWorld()), 0));
         vehicle.setQBySide(q);
         vehicle.setDeltaMovement(speed);
         vehicle.setCurrentThrottle(getThrottle());
@@ -188,7 +192,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         vehicle.updateEulerAngles();
         vehicle.setLandingGear(false);
         vehicle.foldLandingGearNow();
-        if (getLevel().isClientSide()) vehicle.clientTick();
+        if (getWorld().isClientSide()) vehicle.clientTick();
         Vec3 i = getInputs();
         vehicle.inputs.pitch = (float) i.x;
         vehicle.inputs.yaw = (float) i.y;
@@ -228,11 +232,11 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         verifyCurrentPresetId();
         VehicleStats stats = getStats();
         EntityType<? extends EntityVehicle> entityType = stats.getEntityType();
-        EntityVehicle vehicle = entityType.create(getLevel());
+        EntityVehicle vehicle = entityType.create(getWorld());
         vehicle.setPreset(getStatsId());
         vehicle.updatePhysicsInstances();
         vehicle.partsManager.read(stats.getDataAsNBT(), stats.getDataAsNBT());
-        if (getLevel().isClientSide()) {
+        if (getWorld().isClientSide()) {
             vehicle.partsManager.clientPartsSetup();
             vehicle.textureManager.setupTextureLocations();
             vehicle.textureManager.setupDynamicTexture();

@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.mixin.CameraAccess;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.Vec3f;
@@ -153,7 +154,7 @@ public class ClientCameraEventHandlers {
         Vec3f d = Vec3f.from(cam.getLookVector());
         d.mul((float)-dist);
         Vec3 to = from.add(d.x(), d.y(), d.z());
-        HitResult hitresult = player.level.clip(new ClipContext(from, to,
+        HitResult hitresult = UtilEntity.getLevel(player).clip(new ClipContext(from, to,
                 ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, player));
         if (hitresult.getType() != HitResult.Type.MISS) {
             double d0 = hitresult.getLocation().distanceTo(from);

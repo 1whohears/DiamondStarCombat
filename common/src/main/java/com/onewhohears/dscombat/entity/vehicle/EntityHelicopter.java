@@ -89,7 +89,7 @@ public class EntityHelicopter extends EntityVehicle {
 	
 	@Override
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
-		return amount * DSCGameRules.getBulletDamageHeliFactor(level);
+		return amount * DSCGameRules.getBulletDamageHeliFactor(getWorld());
 	}
 
 	@Override

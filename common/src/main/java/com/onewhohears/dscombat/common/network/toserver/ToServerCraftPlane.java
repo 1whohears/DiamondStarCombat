@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.mojang.datafixers.util.Pair;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilItem;
 
 import dev.architectury.networking.NetworkManager;
@@ -14,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 public class ToServerCraftPlane extends BaseC2SMessage {
 	
@@ -45,8 +47,9 @@ public class ToServerCraftPlane extends BaseC2SMessage {
 	public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
             Player player = context.getPlayer();
-            Optional<Pair<ResourceLocation, VehicleRecipe>> option = player.level.getRecipeManager().getRecipeFor(
-                    VehicleRecipe.Type.INSTANCE, player.getInventory(), player.level,
+            Level level = UtilEntity.getLevel(player);
+            Optional<Pair<ResourceLocation, VehicleRecipe>> option = level.getRecipeManager().getRecipeFor(
+                    VehicleRecipe.Type.INSTANCE, player.getInventory(), level,
                     new ResourceLocation(recipeId));
             if (option.isEmpty()) return;
             VehicleRecipe recipe = option.get().getSecond();

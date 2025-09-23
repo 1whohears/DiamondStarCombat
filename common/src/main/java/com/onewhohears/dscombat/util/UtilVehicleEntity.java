@@ -49,7 +49,7 @@ public class UtilVehicleEntity {
     }
 
     public static double getAirDensity(Entity entity) {
-        return SeaLevels.getAirPressure(entity.getLevel().dimension(), entity.getY());
+        return SeaLevels.getAirPressure(UtilEntity.getLevel(entity).dimension(), entity.getY());
     }
 
     private static final IntValue XP = new IntValue() {
@@ -93,7 +93,7 @@ public class UtilVehicleEntity {
     }
 
     public static int getDistFromGround(Entity entity, int limit, boolean ignoreWater) {
-        Level l = entity.getLevel();
+        Level l = UtilEntity.getLevel(entity);
         int[] pos = new int[]{entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()};
 
         int dist;

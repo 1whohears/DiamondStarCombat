@@ -102,7 +102,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                 200, 200, 200, 200);
         if (new Vec2(x,y).distanceToSqr(new Vec2(mouseX,mouseY)) > SQUARE_PS) return false;
         int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
-        int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.level);
+        int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.getWorld());
         String text = dist + " | " + alt;
         Component comp = UtilMCText.literal(text);
         int width = font.width(comp);

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.common.network.toserver;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
@@ -57,7 +58,7 @@ public class ToServerVehicleMoveRot extends BaseC2SMessage {
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
             Player player = context.getPlayer();
-			Level level = player.getLevel();
+            Level level = UtilEntity.getLevel(player);
 			if (level.getEntity(id) instanceof EntityVehicle plane) {
 				plane.setDeltaMovement(motion);
 				plane.setPrevQ(plane.getQ());

@@ -114,9 +114,9 @@ public class PartSlot {
 	}
 	
 	public boolean dropPartItem(EntityVehicle parent) {
-		if (parent.level.isClientSide) return false;
+		if (parent.isClientSide()) return false;
 		if (!filled()) return false;
-		UtilEntity.dropItemStack(parent.level, getPartData().getNewItemStack(), parent.convertRelPos(getRelPos()));
+		UtilEntity.dropItemStack(parent.getWorld(), getPartData().getNewItemStack(), parent.convertRelPos(getRelPos()));
 		return removePartData(parent);
 	}
 	
@@ -126,7 +126,7 @@ public class PartSlot {
 		this.data = data;
 		if (plane == null) return true;
 		if (data.canSetup()) data.setup(plane, slotId, pos);
-		if (!plane.level.isClientSide) {
+		if (!plane.isClientSide()) {
             PacketHandler.sendToTrackers(new ToClientAddPart(plane.getId(), slotId, data), plane);
 		}
 		return true;
@@ -135,7 +135,7 @@ public class PartSlot {
 	public boolean removePartData(EntityVehicle plane) {
 		if (!filled()) return false;
 		data.remove(plane, slotId);
-		if (!plane.level.isClientSide) {
+		if (!plane.isClientSide()) {
             PacketHandler.sendToTrackers(new ToClientRemovePart(plane.getId(), slotId), plane);
 		}
 		data = null;

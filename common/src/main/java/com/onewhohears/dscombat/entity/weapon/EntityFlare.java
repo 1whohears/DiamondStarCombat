@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModParticles;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -71,18 +72,26 @@ public class EntityFlare extends Entity implements IREmitter {
 		Vec3 move = getDeltaMovement().scale(0.999).add(0, -0.01, 0);
 		if (move.y < -0.2) move = new Vec3(move.x, -0.2, move.z);
 		setDeltaMovement(move);
-		if (!level.isClientSide && tickCount > age) {
+		if (!isClientSide() && tickCount > age) {
 			discard();
 		}
-		if (level.isClientSide && tickCount % 2 == 0) {
+		if (isClientSide() && tickCount % 2 == 0) {
 			particle();
 		}
 		move(MoverType.SELF, getDeltaMovement());
 	}
+
+    public boolean isClientSide() {
+        return getWorld().isClientSide();
+    }
+
+    public Level getWorld() {
+        return UtilEntity.getLevel(this);
+    }
 	
 	private void particle() {
 		Vec3 move = getDeltaMovement();
-		level.addParticle(ModParticles.FLARE.get(), 
+        getWorld().addParticle(ModParticles.FLARE.get(),
 				getX(), getY(), getZ(), 
 				move.x + random.nextGaussian() * 0.0001D, 
 				move.y + random.nextGaussian() * 0.0001D, 

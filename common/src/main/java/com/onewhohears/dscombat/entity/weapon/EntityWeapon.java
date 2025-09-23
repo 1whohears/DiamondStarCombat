@@ -21,8 +21,6 @@ import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -66,7 +64,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-		if (level.isClientSide) {
+		if (isClientSide()) {
 			if (key.equals(AGE)) {
 				tickCount = entityData.get(AGE);
 			}
@@ -103,7 +101,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		//System.out.println(this+" "+tickCount);
 		if (isTestMode()) return;
 		if (firstTick) init();
-		if (!level.isClientSide && firstTick) setShootPos(position());
+		if (!isClientSide() && firstTick) setShootPos(position());
 		super.tick();
 		tickCheckCollide();
 		tickSetMove();
@@ -114,7 +112,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 	
 	protected void tickAge() {
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
 			setAge(tickCount);
 			if (tickCount > getMaxAge()) kill();
 		}
@@ -156,17 +154,21 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 
 	private boolean shouldSkipCollide(Entity hit, Entity owner) {
-		return getLevel().isClientSide() != hit.getLevel().isClientSide() || hit.isAlliedTo(owner);
+		return isClientSide() != UtilEntity.getLevel(hit).isClientSide() || hit.isAlliedTo(owner);
 	}
 	
 	protected BlockHitResult checkBlockCollide() {
-		return level.clip(new ClipContext(position(), position().add(getDeltaMovement()), 
+		return getWorld().clip(new ClipContext(position(), position().add(getDeltaMovement()),
 				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
 	}
+
+    public Level getWorld() {
+        return UtilEntity.getLevel(this);
+    }
 	
 	@Nullable
 	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
-		return UtilEntity.getEntityHitResultAtClip(level, this, start, end, 
+		return UtilEntity.getEntityHitResultAtClip(getWorld(), this, start, end,
 				getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), 
 				this::canHitEntity, 0.3f);
 	}
@@ -188,10 +190,10 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		super.onHitBlock(result);
 		//System.out.println("BULLET HIT "+result.getBlockPos());
 		if (canBreakFragileBlocks()) {
-			BlockState state = getLevel().getBlockState(result.getBlockPos());
-			if (state.is(ModTags.Blocks.FRAGILE) && getLevel().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
-					&& UtilVehicleEntity.weaponHasPermissionToBreak(result.getBlockPos(), state, getLevel(), getOwner())) {
-				getLevel().destroyBlock(result.getBlockPos(), true, this);
+			BlockState state = getWorld().getBlockState(result.getBlockPos());
+			if (state.is(ModTags.Blocks.FRAGILE) && getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
+					&& UtilVehicleEntity.weaponHasPermissionToBreak(result.getBlockPos(), state, getWorld(), getOwner())) {
+                getWorld().destroyBlock(result.getBlockPos(), true, this);
 				return;
 			}
         }
@@ -208,7 +210,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
 	public void kill() {
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
             PacketHandler.sendToTrackers(new ToClientWeaponImpact(this, position()), this);
         }
 		super.kill();
@@ -231,7 +233,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 	
 	public int getAge() {
-		if (!level.isClientSide) return tickCount;
+		if (!isClientSide()) return tickCount;
 		return entityData.get(AGE);
 	}
 	
@@ -278,7 +280,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	@Override
 	public Entity getOwner() {
 		Entity o = super.getOwner();
-		if (o == null && level.isClientSide) {
+		if (o == null && isClientSide()) {
 			Minecraft m = Minecraft.getInstance();
 			o = m.level.getEntity(getOwnerId());
 		}
@@ -327,7 +329,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	public void checkDespawn() {
 		if (isTestMode()) return;
 		//System.out.println("CHECK DESPAWN");
-		if (!level.isClientSide) {
+		if (!isClientSide()) {
 			if (!inEntityTickingRange()) {
 				//System.out.println("REMOVED OUT OF TICK RANGE");
 				discard();
@@ -337,8 +339,8 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 	
 	public boolean inEntityTickingRange() {
-		if (level.isClientSide) return true;
-		ServerLevel sl = (ServerLevel) level;
+		if (isClientSide()) return true;
+		ServerLevel sl = (ServerLevel) getWorld();
 		ServerChunkCache scc = sl.getChunkSource();
 		return scc.chunkMap.getDistanceManager().inEntityTickingRange(chunkPosition().toLong());
 	}
@@ -384,7 +386,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 
 	@Override
 	public @Nullable JsonPresetAssetReader<WeaponClientStats> getClientPresets() {
-		if (!getLevel().isClientSide()) return null;
+		if (!isClientSide()) return null;
 		return WeaponAssets.get();
 	}
 

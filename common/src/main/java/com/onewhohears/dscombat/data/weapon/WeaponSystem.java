@@ -80,7 +80,7 @@ public class WeaponSystem {
 		boolean consume = true;
 		if (parent.isNoConsume()) consume = false;
 		else if (controller instanceof Player p && p.isCreative()) consume = false;
-		boolean consumeAmmo = parent.level.getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
+		boolean consumeAmmo = parent.getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		return shootSelected(controller, consume && consumeAmmo);
 	}
 	
@@ -89,10 +89,10 @@ public class WeaponSystem {
 		if (data == null) return false;
 		String name = data.getStatsId();
 		String reason = null;
-		data.shootFromVehicle(parent.level, controller, getShootDirection(data), parent, consume);
+		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponInstance<?> wd : weapons) if (wd.getStats().isBullet() && wd.getStatsId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shootFromVehicle(parent.level, controller, getShootDirection(wd), parent, consume);
+			wd.shootFromVehicle(parent.getWorld(), controller, getShootDirection(wd), parent, consume);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
@@ -162,7 +162,7 @@ public class WeaponSystem {
 	}
 	
 	public void refillAll() {
-		if (parent.level.isClientSide) return;
+		if (parent.isClientSide()) return;
 		for (WeaponInstance<?> w : weapons) {
 			w.addAmmo(100000);
 			w.updateClientAmmo(parent);

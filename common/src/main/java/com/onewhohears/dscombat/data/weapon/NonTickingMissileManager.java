@@ -34,7 +34,7 @@ public class NonTickingMissileManager {
 			return false;
 		}
 		ChunkPos cp = missile.chunkPosition();
-		boolean hasChunk = missile.level.hasChunk(cp.x, cp.z);
+		boolean hasChunk = missile.getWorld().hasChunk(cp.x, cp.z);
 		boolean inTickRange = missile.inEntityTickingRange();
 		int repeats = missile.getTickCountRepeats();
 		//System.out.println(hasChunk+" "+inTickRange+" "+repeats);
@@ -44,7 +44,7 @@ public class NonTickingMissileManager {
 				//System.out.println("MISSILE UNLOADED");
 				missile.revive();
 				missile.setUUID(UUID.randomUUID());
-				missile.level.addFreshEntity(missile);
+				missile.getWorld().addFreshEntity(missile);
 			}
 		} else {
 			//System.out.println("MISSILE OUT OF TICK RANGE");

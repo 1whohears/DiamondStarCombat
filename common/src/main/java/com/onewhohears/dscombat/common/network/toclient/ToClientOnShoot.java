@@ -14,13 +14,13 @@ import net.minecraft.world.entity.Entity;
 public class ToClientOnShoot extends BaseS2CMessage {
 
 	public static void onShootWeaponRack(EntityWeaponRack rack, Entity shooter) {
-		if (rack.getLevel().isClientSide()) return;
+		if (rack.isClientSide()) return;
         PacketHandler.sendToTrackers(new ToClientOnShoot(rack.getId(),
                 shooter.getId(), UtilClientPacket.ShootType.WEAPON_RACK), rack);
 	}
 
 	public static void onShootTurret(EntityTurret turret, Entity shooter) {
-		if (turret.getLevel().isClientSide()) return;
+		if (turret.isClientSide()) return;
         PacketHandler.sendToTrackers(new ToClientOnShoot(turret.getId(),
                 shooter.getId(), UtilClientPacket.ShootType.TURRET), turret);
 	}

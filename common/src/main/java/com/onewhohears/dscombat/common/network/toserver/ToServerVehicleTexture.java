@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleTexture;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -43,7 +44,7 @@ public class ToServerVehicleTexture extends BaseC2SMessage {
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
             Player player = context.getPlayer();
-			Level level = player.getLevel();
+            Level level = UtilEntity.getLevel(player);
 			if (level.getEntity(id) instanceof EntityVehicle vehicle) {
 				vehicle.textureManager.read(buffer);
                 PacketHandler.sendToTrackers(new ToClientVehicleTexture(player, vehicle), vehicle);

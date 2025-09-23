@@ -149,7 +149,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (hover != -1 && hover < pings.size()) {
             RadarStats.RadarPing ping = pings.get(hover);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
-            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.level);
+            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.getWorld());
             String text = dist + " | " + alt;
             int color = 0xffff00;
             WeaponInstance<?> weapon = null;

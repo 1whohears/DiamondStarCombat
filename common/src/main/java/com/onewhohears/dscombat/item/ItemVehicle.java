@@ -90,7 +90,7 @@ public class ItemVehicle extends Item implements ObjModelItem {
 				else e.setPos(pos);
 				if (!level.noCollision(e, e.getBoundingBox())) 
 					return InteractionResultHolder.fail(itemstack);
-				if (!level.isClientSide) {
+				if (!level.isClientSide()) {
 					int above = 0;
 					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
 					Entity entity = entityType.spawn((ServerLevel)level, 

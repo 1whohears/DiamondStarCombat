@@ -22,13 +22,13 @@ public class RotableHitboxes {
 	}
 	
 	public static void addHitbox(RotableHitbox hitbox) {
-		List<RotableHitbox> hitboxes = getHitboxes(hitbox.level.dimension());
+		List<RotableHitbox> hitboxes = getHitboxes(hitbox.getWorld().dimension());
 		if (hitboxes.contains(hitbox)) return;
 		hitboxes.add(hitbox);
 	}
 	
 	public static void removeHitbox(RotableHitbox hitbox) {
-		List<RotableHitbox> hitboxes = getHitboxes(hitbox.level.dimension());
+		List<RotableHitbox> hitboxes = getHitboxes(hitbox.getWorld().dimension());
 		hitboxes.remove(hitbox);
 	}
 	

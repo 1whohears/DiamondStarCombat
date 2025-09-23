@@ -37,16 +37,16 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 	
 	@Override
 	protected BlockHitResult checkBlockCollide() {
-		Iterator<VoxelShape> it = level.getBlockCollisions(this, getBoundingBox().expandTowards(getDeltaMovement())).iterator();
+		Iterator<VoxelShape> it = getWorld().getBlockCollisions(this, getBoundingBox().expandTowards(getDeltaMovement())).iterator();
 		Entity owner = getOwner();
 		while (it.hasNext()) {
 			VoxelShape voxel = it.next();
 			BlockPos pos = new BlockPos(voxel.bounds().getCenter());
-			BlockState state = getLevel().getBlockState(pos);
+			BlockState state = getWorld().getBlockState(pos);
 			int hit_block_strength = getBlockStrength(pos, state);
 			if (getBlockStrength() >= hit_block_strength &&
-					UtilVehicleEntity.weaponHasPermissionToBreak(pos, state, getLevel(), owner)) {
-				level.destroyBlock(pos, true, this);
+					UtilVehicleEntity.weaponHasPermissionToBreak(pos, state, getWorld(), owner)) {
+                getWorld().destroyBlock(pos, true, this);
 				reduceBlockStrength(hit_block_strength);
 			} else {
 				return new BlockHitResult(voxel.bounds().getCenter(), getDirection(), pos, false);

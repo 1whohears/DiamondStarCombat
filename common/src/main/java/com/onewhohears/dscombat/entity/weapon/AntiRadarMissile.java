@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.AntiRadarMissileStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 
+import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +45,7 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 		// IDEA 7 make anti radar missile target entity type configurable so entities other mod entities can be targeted
 		targets.clear();
 		// players
-		MinecraftServer server = getLevel().getServer();
+		MinecraftServer server = getWorld().getServer();
 		if (server == null) return;
 		double rangeSqr = getWeaponStats().getScanRange() * getWeaponStats().getScanRange();
 		List<ServerPlayer> players = server.getPlayerList().getPlayers();
@@ -70,7 +71,7 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 	protected void checkEntity(Entity entity, double rangeSqr) {
 		if (entity.isSpectator()) return;
 		if (distanceToSqr(entity) > rangeSqr) return;
-		if (!entity.getLevel().dimension().equals(getLevel().dimension())) return;
+		if (!UtilEntity.getLevel(entity).dimension().equals(getWorld().dimension())) return;
 		EntityVehicle vehicle;
 		if (entity instanceof EntityVehicle ev) vehicle = ev;
 		else if (entity.getRootVehicle() instanceof EntityVehicle ev) vehicle = ev;

@@ -58,7 +58,7 @@ public class VehicleSoundManager {
 	}
 	
 	public void onTick() {
-		if (parent.level.isClientSide) onClientTick();
+		if (parent.isClientSide()) onClientTick();
 		else onServerTick();
 	}
 	
@@ -113,7 +113,7 @@ public class VehicleSoundManager {
 	}
 	
 	public void onHurt(DamageSource source, float amount) {
-		if (this.parent.level.isClientSide || !this.parent.isOperational()) return;
+		if (this.parent.isClientSide() || !this.parent.isOperational()) return;
 
 		float volume = Mth.clamp(amount * 0.5F, 0.12F,1.88F);
 		// keep this clamped close to 1.0F since audio duration noticeably changes for larger values
@@ -123,12 +123,12 @@ public class VehicleSoundManager {
 
 		UtilSound.sendDelayedSound(
 				forBroadcast,
-				parent.position(), 160, parent.level.dimension(), volume, pitch
+				parent.position(), 160, parent.getWorld().dimension(), volume, pitch
 		);
 	}
 	
 	public void onRadioSongUpdate(String song) {
-		if (!parent.level.isClientSide) return;
+		if (!parent.isClientSide()) return;
 		if (song.isEmpty()) return;
 		UtilClientSafeSounds.aircraftRadio(parent, song);
 	}

@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.entity.ai.goal.MoveToPassengerSeatGoal;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -34,7 +35,8 @@ public class ItemTicketBook extends Item implements VehicleInteractItem {
     @Override
     public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, @NotNull Player player,
                                                            @NotNull LivingEntity entity, @NotNull InteractionHand hand) {
-        if (player.getLevel().isClientSide()) return InteractionResult.PASS;
+        Level level = UtilEntity.getLevel(player);
+        if (level.isClientSide()) return InteractionResult.PASS;
         if (entity.isPassenger())
             return sendError(player, "error.dscombat.entity_already_passenger");
         if (!entity.getType().is(ModTags.EntityTypes.TICKET_BOOKER) || !(entity instanceof PathfinderMob mob))
@@ -43,7 +45,7 @@ public class ItemTicketBook extends Item implements VehicleInteractItem {
         if (tag == null || !tag.contains("vehicle"))
             return sendError(player, "error.dscombat.ticket_not_linked_vehicle");
         UUID vehicleId = tag.getUUID("vehicle");
-        List<EntityVehicle> vehicles = player.getLevel().getEntitiesOfClass(EntityVehicle.class,
+        List<EntityVehicle> vehicles = level.getEntitiesOfClass(EntityVehicle.class,
                 player.getBoundingBox().inflate(VEHICLE_SEARCH_RANGE), vehicle -> vehicle.getUUID().equals(vehicleId));
         if (vehicles.isEmpty())
             return sendError(player, "error.dscombat.vehicle_not_found");

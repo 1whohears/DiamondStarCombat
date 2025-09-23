@@ -13,6 +13,7 @@ import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -22,6 +23,7 @@ import net.minecraft.commands.arguments.AngleArgument;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class MissileCommand {
@@ -92,7 +94,8 @@ public class MissileCommand {
 				if (yaw == -1000) yaw = UtilAngles.getYaw(dp);
 				dp = Vec3.directionFromRotation(pitch, yaw);
 			}
-			EntityWeapon<?> ew = weapon.getEntity(e.level);
+            Level level = UtilEntity.getLevel(e);
+			EntityWeapon<?> ew = weapon.getEntity(level);
 			if (ew == null) continue;
 			ew.setOwner(owner);
 			ew.setPos(pos);
@@ -103,7 +106,7 @@ public class MissileCommand {
 				missile.target = v;
 				missile.targetPos = v.position();
 			}
-			e.level.addFreshEntity(ew);
+			level.addFreshEntity(ew);
 			//ew.tick();
 			++i;
 		}

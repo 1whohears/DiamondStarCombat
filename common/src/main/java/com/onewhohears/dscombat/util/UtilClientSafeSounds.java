@@ -184,7 +184,7 @@ public class UtilClientSafeSounds {
 		double scale = Math.max(1, Math.min(32, distance * 0.08)); // 32 / 400
 		Vec3 pos = m.player.position().add(diff.normalize().scale(scale));
 		float volume = Math.max(0f, Math.min(1f, 400f / (float) distance));
-		m.player.getLevel().playLocalSound(pos.x(), pos.y(), pos.z(), ModSounds.SONIC_BOOM,
+		m.level.playLocalSound(pos.x(), pos.y(), pos.z(), ModSounds.SONIC_BOOM,
 				SoundSource.PLAYERS, volume, pitch, false);
 		//System.out.println("played sonic boom pitch "+pitch);
 		return true;

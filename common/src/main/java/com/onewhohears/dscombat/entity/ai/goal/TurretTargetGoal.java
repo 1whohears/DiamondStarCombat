@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
@@ -129,11 +130,12 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 			mob.setTarget(target);
 			return;
 		}
-		if (targetType != Player.class && targetType != ServerPlayer.class) 
-			target = mob.level.getNearestEntity(mob.level.getEntitiesOfClass(targetType, 
+        Level level = UtilEntity.getLevel(mob);
+		if (targetType != Player.class && targetType != ServerPlayer.class)
+			target = level.getNearestEntity(level.getEntitiesOfClass(targetType,
 					getTargetSearchArea(getFollowDistance()), (entity) -> true), targetConditions, 
 					mob, mob.getX(), mob.getEyeY(), mob.getZ());
-		else target = mob.level.getNearestPlayer(targetConditions, 
+		else target = level.getNearestPlayer(targetConditions,
 					mob, mob.getX(), mob.getEyeY(), mob.getZ());
 		mob.setTarget(target);
 	}
@@ -141,7 +143,7 @@ public class TurretTargetGoal<T extends LivingEntity> extends NearestAttackableT
 	@Override
 	public boolean canUse() {
 		if (debugTurretAI()) LOGGER.info("canUse? {}", mob);
-		if (!mob.level.getGameRules().getBoolean(DSCGameRules.MOBS_USE_TURRETS)) return false;
+		if (!UtilEntity.getLevel(mob).getGameRules().getBoolean(DSCGameRules.MOBS_USE_TURRETS)) return false;
 		if (mob.getVehicle() == null || !mob.getVehicle().equals(turret)) return false;
 		return super.canUse();
 	}

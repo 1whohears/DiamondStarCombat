@@ -7,26 +7,29 @@ import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
 
 public class ToClientSyncPart extends BaseS2CMessage {
 	
 	private final int id;
 	private final String slotId;
-	private PartInstance<?> instance;
-	private FriendlyByteBuf buffer;
+    private final FriendlyByteBuf buffer;
 	
 	public ToClientSyncPart(EntityVehicle vehicle, PartInstance<?> instance) {
 		this.id = vehicle.getId();
 		this.slotId = instance.getSlotId();
-		this.instance = instance;
+        buffer = new FriendlyByteBuf(Unpooled.buffer());
+        instance.writeBuffer(buffer);
 	}
 	
 	public ToClientSyncPart(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
 		slotId = buffer.readUtf();
-		buffer.readUtf(); // read preset id cause it ain't needed
-		this.buffer = buffer;
+        int bytes = buffer.readInt();
+        ByteBuf buf = buffer.readBytes(bytes);
+        this.buffer = new FriendlyByteBuf(buf);
 	}
 
     @Override
@@ -38,7 +41,8 @@ public class ToClientSyncPart extends BaseS2CMessage {
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		buffer.writeUtf(slotId);
-		instance.writeBuffer(buffer);
+        buffer.writeInt(this.buffer.readableBytes());
+        buffer.writeBytes(this.buffer);
 	}
 
 	@Override

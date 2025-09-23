@@ -90,6 +90,7 @@ public class UtilClientPacket {
 	public static void syncPartPacket(int id, String slotId, FriendlyByteBuf buffer) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
+        buffer.readUtf(); // preset id is given so the DataSerializer works, but it isn't needed here
 		if (world.getEntity(id) instanceof EntityVehicle plane) {
 			PartSlot slot = plane.partsManager.getSlot(slotId);
 			if (slot != null && slot.getPartData() != null) {

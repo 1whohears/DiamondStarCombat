@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels.ModelOverrides;
 import com.onewhohears.onewholibs.client.model.obj.ObjModelHandler;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -58,6 +59,7 @@ public class ObjWeaponRackModel<T extends EntityWeaponRack> extends ObjPartModel
 		poseStack.pushPose();
 		poseStack.translate(x, y, z);
 		mo.apply(poseStack);
+        poseStack.mulPose(Vec3f.ZP.rotationDegrees(-entity.getZRot()).convert());
 		// it has been tested that RenderType#entitySolid is faster than RenderType#entityTranslucentCull (+10fps on my machine)
 		model.render(poseStack, bufferSource, partialTicks, lightmap,
                 OverlayTexture.NO_OVERLAY, NO_TRANSFORMS, RenderType::entitySolid);

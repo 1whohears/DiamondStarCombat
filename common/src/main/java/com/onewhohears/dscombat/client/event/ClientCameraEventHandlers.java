@@ -32,7 +32,7 @@ public class ClientCameraEventHandlers {
 
     public static final CameraAngles CAMERA_ANGLES = new CameraAngles();
 
-    public static void onSetupCameraAngles(Camera camera, float pt, float yaw, float pitch, CameraAngles angles) {
+    public static void onSetupCameraAngles(Camera camera, float pt, CameraAngles angles) {
         Minecraft m = Minecraft.getInstance();
         final var player = m.player;
         if (player == null) return;
@@ -106,7 +106,7 @@ public class ClientCameraEventHandlers {
         double camDist = vehicle.getStats().cameraDistance;
         if (detached && isPilot && camDist > 4) {
             double vehicleCamDist = Math.min(0, 4-getMaxDist(camera, player, camDist));
-            ((CameraAccess)camera).invokeSetRotation(yaw, pitch);
+            ((CameraAccess)camera).invokeSetRotation(angles.getYaw(), angles.getPitch());
             camera.move(vehicleCamDist, 0, 0);
         }
         QuaternionF q = null;

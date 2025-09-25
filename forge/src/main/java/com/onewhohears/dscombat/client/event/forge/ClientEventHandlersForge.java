@@ -73,8 +73,7 @@ public class ClientEventHandlersForge {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void cameraSetup(ViewportEvent.ComputeCameraAngles event) {
         CAMERA_ANGLES.reset();
-        ClientCameraEventHandlers.onSetupCameraAngles(event.getCamera(), (float)event.getPartialTick(),
-                event.getYaw(), event.getPitch(), CAMERA_ANGLES);
+        ClientCameraEventHandlers.onSetupCameraAngles(event.getCamera(), (float)event.getPartialTick(), CAMERA_ANGLES);
         if (CAMERA_ANGLES.isPitchChanged())
             event.setPitch(CAMERA_ANGLES.getPitch());
         if (CAMERA_ANGLES.isYawChanged())

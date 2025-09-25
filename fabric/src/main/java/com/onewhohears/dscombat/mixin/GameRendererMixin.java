@@ -28,8 +28,7 @@ public abstract class GameRendererMixin {
     )
     private void dscombat_fabric_cameraAngleSetup(float f, long l, PoseStack poseStack, CallbackInfo ci) {
         CAMERA_ANGLES.reset();
-        ClientCameraEventHandlers.onSetupCameraAngles(mainCamera, f,
-                mainCamera.getYRot(), mainCamera.getXRot(), CAMERA_ANGLES);
+        ClientCameraEventHandlers.onSetupCameraAngles(mainCamera, f, CAMERA_ANGLES);
         if (CAMERA_ANGLES.isPitchChanged())
             mainCamera.xRot = CAMERA_ANGLES.getPitch();
         if (CAMERA_ANGLES.isYawChanged())

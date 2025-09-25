@@ -36,7 +36,7 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 		if (!getWorld().hasChunk(chunkPosition().x, chunkPosition().z)) return;
 		if (!isClientSide() && getExplosive()) {
 			Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
-			if (getTerrain() && !getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS))
+			if (getTerrain() && getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS))
 				interact = Explosion.BlockInteraction.BREAK;
 			for (int i = 0; i < getExplodeNum(); ++i) {
                 getWorld().explode(this, getExplosionDamageSource(),

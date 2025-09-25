@@ -1,21 +1,19 @@
 package com.onewhohears.dscombat.util;
 
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleChainUpdate;
+import com.onewhohears.dscombat.entity.parts.EntityChainHook;
+import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
-
-import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleChainUpdate;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.parts.EntityChainHook;
-import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -59,6 +57,10 @@ public class UtilServerPacket {
         if (level == null) {
             return List.of();
         }
+        return getPlayersWithinRadius(level, center,  radius);
+    }
+
+    public static List<ServerPlayer> getPlayersWithinRadius(ServerLevel level, Vec3 center, double radius) {
         double radiusSq = radius * radius;
         return level.getPlayers(player -> player.position().distanceToSqr(center) <= radiusSq);
     }

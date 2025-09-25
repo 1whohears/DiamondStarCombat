@@ -1,29 +1,28 @@
 package com.onewhohears.dscombat.data.weapon.instance;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
-import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+import com.onewhohears.dscombat.entity.parts.EntityTurret;
+import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.dscombat.util.UtilSound;
-import com.onewhohears.onewholibs.util.math.UtilAngles;
-
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetInstance<T> {
 	
@@ -154,7 +153,8 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	}
 	
 	public void playShootSound(Level level, Vec3 pos) {
-		UtilSound.sendDelayedSound(getStats().getShootSound(), pos, 160, level.dimension(), 1, 1);
+        if (level.isClientSide()) return;
+		UtilSound.sendDelayedSound((ServerLevel) level, getStats().getShootSound(), pos, 160, 1, 1);
 	}
 	
 	public void updateClientAmmo(EntityVehicle vehicle) {

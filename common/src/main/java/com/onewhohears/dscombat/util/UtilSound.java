@@ -1,13 +1,13 @@
 package com.onewhohears.dscombat.util;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
-import com.onewhohears.onewholibs.common.event.ServerHolder;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class UtilSound {
 
@@ -16,12 +16,10 @@ public class UtilSound {
 		throw new AssertionError();
 	}
 	
-	public static void sendDelayedSound(SoundEvent sound, Vec3 pos, float radius,
-                                        ResourceKey<Level> dim, float volume, float pitch) {
-        MinecraftServer server = ServerHolder.get();
-        if (server == null) return;
-        new ToClientDelayedSound(sound, pos, radius, volume, pitch)
-                .sendTo(UtilServerPacket.getPlayersWithinRadius(server, dim, pos, radius));
+	public static void sendDelayedSound(ServerLevel level, SoundEvent sound, Vec3 pos,
+                                        float radius, float volume, float pitch) {
+        List<ServerPlayer> players = UtilServerPacket.getPlayersWithinRadius(level, pos, radius);
+        new ToClientDelayedSound(sound, pos, radius, volume, pitch).sendTo(players);
 	}
 	
 }

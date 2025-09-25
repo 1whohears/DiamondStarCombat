@@ -8,14 +8,13 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilSound;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-
 import org.jetbrains.annotations.Nullable;
 
 public class VehicleSoundManager {
@@ -122,8 +121,8 @@ public class VehicleSoundManager {
 		final SoundEvent forBroadcast = soundForHurt(source);
 
 		UtilSound.sendDelayedSound(
-				forBroadcast,
-				parent.position(), 160, parent.getWorld().dimension(), volume, pitch
+                (ServerLevel) parent.getWorld(), forBroadcast,
+				parent.position(), 160, volume, pitch
 		);
 	}
 	

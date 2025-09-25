@@ -4,8 +4,9 @@ import com.google.gson.JsonArray;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KeyframeAnimsEntityModel;
-import com.onewhohears.onewholibs.util.math.*;
-import net.minecraft.client.renderer.MultiBufferSource;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
@@ -69,23 +70,9 @@ public class ObjVehicleModel<T extends EntityVehicle> extends KeyframeAnimsEntit
 	}
 	
 	@Override
-	public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, int lightmap, float partialTicks) {
-		// apparently this slightly different render order is needed or else the plane's render position gets messed up
-		handleGlobalOverrides(entity, partialTicks, poseStack);
-		rotate(entity, partialTicks, poseStack);
-        transforms.clear();
-        addComponentTransforms(transforms, entity, partialTicks);
-		getObjModelHandler().render(poseStack, bufferSource, partialTicks,
-				getLight(entity, lightmap), getOverlay(entity),
-                transforms, getTextureRenderTypeLookup(entity));
-	}
-	
-	@Override
 	protected void rotate(T entity, float partialTicks, PoseStack poseStack) {
-		QuaternionF q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
-        Vec3f pivot = getGlobalPivot();
-		if (!UtilGeometry.isZero(pivot)) poseStack.mulPoseMatrix(UtilAngles.pivotInvRot(pivot, q).convert());
-		else poseStack.mulPose(q.convert());
+        QuaternionF q = UtilAngles.lerpQ(partialTicks, entity.getPrevQ(), entity.getClientQ());
+        poseStack.mulPose(q.convert());
 	}
 	
 	@Override

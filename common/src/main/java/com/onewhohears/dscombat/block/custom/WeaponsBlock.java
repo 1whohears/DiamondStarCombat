@@ -1,8 +1,11 @@
 package com.onewhohears.dscombat.block.custom;
 
+import com.onewhohears.dscombat.block.entity.VehicleBlockEntity;
 import com.onewhohears.dscombat.block.entity.WeaponsBlockEntity;
-
+import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
+import com.onewhohears.dscombat.common.container.menu.WeaponsBlockContainerMenu;
 import com.onewhohears.dscombat.init.ModContainers;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
@@ -18,11 +21,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -85,7 +84,8 @@ public class WeaponsBlock extends BaseEntityBlock {
             }
             @Override
             public @NotNull AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-                return ModContainers.WEAPONS_BLOCK_MENU.get().create(i, inventory);
+                return new WeaponsBlockContainerMenu(i, inventory,
+                        (WeaponsBlockEntity) UtilEntity.getLevel(player).getBlockEntity(pos));
             }
         };
     }

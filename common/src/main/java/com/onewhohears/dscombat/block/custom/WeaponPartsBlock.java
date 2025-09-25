@@ -1,8 +1,11 @@
 package com.onewhohears.dscombat.block.custom;
 
+import com.onewhohears.dscombat.block.entity.VehicleBlockEntity;
 import com.onewhohears.dscombat.block.entity.WeaponPartsBlockEntity;
-import com.onewhohears.dscombat.block.entity.WeaponsBlockEntity;
+import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
+import com.onewhohears.dscombat.common.container.menu.WeaponPartsBlockContainerMenu;
 import com.onewhohears.dscombat.init.ModContainers;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
@@ -81,7 +84,8 @@ public class WeaponPartsBlock extends BaseEntityBlock {
             }
             @Override
             public @NotNull AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-                return ModContainers.WEAPON_PARTS_BLOCK_MENU.get().create(i, inventory);
+                return new WeaponPartsBlockContainerMenu(i, inventory,
+                        (WeaponPartsBlockEntity) UtilEntity.getLevel(player).getBlockEntity(pos));
             }
         };
     }

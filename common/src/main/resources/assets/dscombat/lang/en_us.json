@@ -372,11 +372,17 @@
 	"container.dscombat.aircraft_block_menu": "Vehicle Workbench",
 	"container.dscombat.weapon_parts_block_menu": "Weapon Parts Workbench",
 	
-	"itemGroup.items": "DSCombat Items",
-	"itemGroup.parts": "DSCombat Parts",
-	"itemGroup.weapons": "DSCombat Weapons",
-	"itemGroup.weapon_parts": "DSCombat Weapon Parts",
-	"itemGroup.vehicle": "DSCombat Vehicles",
+	"itemGroup.dscombat.items": "DSCombat Items",
+	"itemGroup.dscombat.parts": "DSCombat Parts",
+	"itemGroup.dscombat.weapons": "DSCombat Weapons",
+	"itemGroup.dscombat.weapon_parts": "DSCombat Weapon Parts",
+	"itemGroup.dscombat.vehicle": "DSCombat Vehicles",
+
+    "itemGroup.items": "DSCombat Items",
+    "itemGroup.parts": "DSCombat Parts",
+    "itemGroup.weapons": "DSCombat Weapons",
+    "itemGroup.weapon_parts": "DSCombat Weapon Parts",
+    "itemGroup.vehicle": "DSCombat Vehicles",
 	
 	"item.dscombat.raw_aluminum": "Raw Aluminum",
 	"item.dscombat.aluminum_ingot": "Aluminum Ingot",

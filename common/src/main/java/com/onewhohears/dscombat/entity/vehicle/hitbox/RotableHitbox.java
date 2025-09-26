@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.vehicle.hitbox;
 
-import com.onewhohears.dscombat.common.network.toclient.ClientBoundAddRotableHitboxPacket;
 import com.onewhohears.dscombat.data.vehicle.RotableHitboxData;
 import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.Revivable;
@@ -8,10 +7,13 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.dscombat.util.math.RotableAABB;
+import com.onewhohears.onewholibs.common.network.toclient.ClientBoundSpawnDataPacket;
+import com.onewhohears.onewholibs.entity.AdditionalSpawnDataEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -30,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
 
-public class RotableHitbox extends Entity implements CustomExplosion, Revivable {
+public class RotableHitbox extends Entity implements CustomExplosion, Revivable, AdditionalSpawnDataEntity {
 	
 	public static final EntityDataAccessor<Float> HEALTH = SynchedEntityData.defineId(RotableHitbox.class, EntityDataSerializers.FLOAT);
 	public static final EntityDataAccessor<Float> ARMOR = SynchedEntityData.defineId(RotableHitbox.class, EntityDataSerializers.FLOAT);
@@ -263,7 +265,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
 	
 	@Override
 	public @NotNull Packet<?> getAddEntityPacket() {
-		return new ClientBoundAddRotableHitboxPacket(this);
+		return new ClientBoundSpawnDataPacket(this, this);
 	}
 	
 	@Override
@@ -443,5 +445,18 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable 
     @Override
     public void revive() {
         UtilVehicleEntity.revive(this);
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf buffer) {
+        int parentId = buffer.readInt();
+        String hitboxName = buffer.readUtf();
+        handleClientAddEntityPacket(parentId, hitboxName);
+    }
+
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        buffer.writeInt(getParent().getId());
+        buffer.writeUtf(getHitboxName());
     }
 }

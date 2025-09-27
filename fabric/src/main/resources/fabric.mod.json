@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "dscombat",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_authors}"
+  ],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "${issue_tracker}"
+  },
+  "license": "MIT",
+  "icon": "assets/dscombat/dscombat.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.onewhohears.dscombat.fabric.DSCombatModFabric"
+    ],
+    "client": [
+      "com.onewhohears.dscombat.fabric.client.DSCombatModFabricClient"
+    ]
+  },
+  "mixins": [
+    "dscombat.mixins.json",
+    "dscombat.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": ">=${fabric_api_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=17",
+    "architectury": ">=${architectury_version}",
+    "onewholibs": ">=${onewholibs_version}",
+    "modernfix": ">=${modernfix_version}",
+    "forgeconfigapiport": ">=${forgeconfigapiport_version}"
+  },
+  "suggests": {
+    "minigames": ">=${minigames_version}",
+    "distant_players": ">=${distant_players_version}",
+    "jei": ">=${jei_version}"
+  }
+}

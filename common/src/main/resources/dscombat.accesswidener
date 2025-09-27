@@ -1,0 +1,63 @@
+accessWidener   v2  named
+
+# Explosion.radius f_46017_
+accessible field net/minecraft/world/level/Explosion radius F
+accessible field net/minecraft/world/level/Explosion x D
+accessible field net/minecraft/world/level/Explosion y D
+accessible field net/minecraft/world/level/Explosion z D
+
+# Projectile.canHitEntity(Entity) m_5603_
+accessible method net/minecraft/world/entity/projectile/ShulkerBullet canHitEntity (Lnet/minecraft/world/entity/Entity;)Z
+accessible method net/minecraft/world/entity/projectile/AbstractHurtingProjectile canHitEntity (Lnet/minecraft/world/entity/Entity;)Z
+accessible method net/minecraft/world/entity/projectile/AbstractArrow canHitEntity (Lnet/minecraft/world/entity/Entity;)Z
+accessible method net/minecraft/world/entity/projectile/FishingHook canHitEntity (Lnet/minecraft/world/entity/Entity;)Z
+accessible method net/minecraft/world/entity/projectile/Projectile canHitEntity (Lnet/minecraft/world/entity/Entity;)Z
+
+# Projectile.onHitEntity(EntityHitResult) m_5790_
+accessible method net/minecraft/world/entity/projectile/ThrownTrident onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/ThrownEnderpearl onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/ThrownEgg onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/Snowball onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/SmallFireball onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/ShulkerBullet onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/LlamaSpit onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/LargeFireball onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/WitherSkull onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/FireworkRocketEntity onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/AbstractArrow onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/FishingHook onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+accessible method net/minecraft/world/entity/projectile/Projectile onHitEntity (Lnet/minecraft/world/phys/EntityHitResult;)V
+
+# Camera.move(double,double,double) m_90568_
+accessible method net/minecraft/client/Camera move (DDD)V
+
+# Camera.setPosition(net.minecraft.world.phys.Vec3) m_90584_/m_90581_
+accessible method net/minecraft/client/Camera setPosition (Lnet/minecraft/world/phys/Vec3;)V
+
+# MouseHandler.onMove(long,double,double) m_91561_
+accessible method net/minecraft/client/MouseHandler onMove (JDD)V
+
+# Mob.goalSelector
+accessible field net/minecraft/world/entity/Mob goalSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
+accessible field net/minecraft/world/entity/Mob targetSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
+
+# Entity.ENTITY_COUNTER
+accessible field net/minecraft/world/entity/Entity ENTITY_COUNTER Ljava/util/concurrent/atomic/AtomicInteger;
+
+# KeyMapping.key
+accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
+
+accessible method net/minecraft/world/entity/Entity unsetRemoved ()V
+
+accessible field net/minecraft/client/MouseHandler accumulatedDY D
+accessible field net/minecraft/client/MouseHandler accumulatedDX D
+
+accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer addLayer (Lnet/minecraft/client/renderer/entity/layers/RenderLayer;)Z
+
+accessible field net/minecraft/client/Camera yRot F
+accessible field net/minecraft/client/Camera xRot F
+
+accessible field net/minecraft/client/KeyMapping ALL Ljava/util/Map;
+accessible field net/minecraft/client/KeyMapping MAP Ljava/util/Map;
+
+accessible field net/minecraft/client/KeyMapping clickCount I

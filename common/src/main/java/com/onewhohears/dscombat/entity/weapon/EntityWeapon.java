@@ -1,0 +1,401 @@
+package com.onewhohears.dscombat.entity.weapon;
+
+import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.common.network.PacketHandler;
+import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponImpact;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
+import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
+import com.onewhohears.dscombat.data.weapon.client.WeaponClientStats;
+import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
+import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
+import com.onewhohears.onewholibs.entity.CustomAnimProjectile;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Team;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProjectile<T, WeaponClientStats> {
+	
+	public static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Vec3> SHOOT_POS = SynchedEntityData.defineId(EntityWeapon.class, DataSerializers.VEC3);
+	
+	public EntityWeapon(EntityType<? extends EntityWeapon<?>> type, Level level, String defaultWeaponId) {
+		super(type, level, defaultWeaponId);
+	}
+
+	@Override
+	protected void defineSynchedData() {
+		entityData.define(OWNER_ID, -1);
+		entityData.define(AGE, 0);
+		entityData.define(TEST_MODE, false);
+		entityData.define(SHOOT_POS, Vec3.ZERO);
+	}
+	
+	@Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		if (isClientSide()) {
+			if (key.equals(AGE)) {
+				tickCount = entityData.get(AGE);
+			}
+		}
+	}
+	
+	@Override
+	public void readAdditionalSaveData(@NotNull CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+		tickCount = compound.getInt("tickCount");
+		if (getOwner() != null) setOwnerId(getOwner().getId());
+		else setOwnerId(-1);
+		setTestMode(compound.getBoolean("test_mode"));
+		setShootPos(UtilParse.readVec3(compound, "shoot_pos"));
+	}
+
+	@Override
+	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putInt("tickCount", tickCount);
+		compound.putBoolean("test_mode", isTestMode());
+		UtilParse.writeVec3(compound, getShootPos(), "shoot_pos");
+	}
+	
+	public T getWeaponStats() {
+		return getStats();
+	}
+	
+	public void init() {
+	}
+	
+	@Override
+	public void tick() {
+		//System.out.println(this+" "+tickCount);
+		if (isTestMode()) return;
+		if (firstTick) init();
+		if (!isClientSide() && firstTick) setShootPos(position());
+		super.tick();
+		tickCheckCollide();
+		tickSetMove();
+		tickSetAngle();
+		setPos(position().add(getDeltaMovement()));
+		checkInsideBlocks();
+		tickAge();
+	}
+	
+	protected void tickAge() {
+		if (!isClientSide()) {
+			setAge(tickCount);
+			if (tickCount > getMaxAge()) kill();
+		}
+	}
+	
+	public Fluid getFluidClipContext() {
+		return ClipContext.Fluid.NONE;
+	}
+	
+	protected void tickCheckCollide() {
+		Vec3 move = getDeltaMovement();
+		Vec3 pos = position();
+		Vec3 next_pos = pos.add(move);
+		HitResult hitresult = checkBlockCollide();
+		if (hitresult.getType() != HitResult.Type.MISS) next_pos = hitresult.getLocation();
+		Entity owner = getOwner();
+		while(!isRemoved()) {
+			EntityHitResult entityhitresult = findHitEntity(pos, next_pos);
+			if (entityhitresult != null) hitresult = entityhitresult;
+			if (owner != null && hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
+				Entity hit = ((EntityHitResult)hitresult).getEntity();
+				if (shouldSkipCollide(hit, owner)) {
+					hitresult = null;
+					entityhitresult = null;
+				} /*else {
+					System.out.println("BULLET "+this);
+					System.out.println("HIT "+hit);
+					System.out.println("OWNER "+owner);
+				}*/
+			}
+			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics) {
+				onHit(hitresult);
+				hasImpulse = true;
+				break;
+			}
+			if (entityhitresult == null) break;
+			hitresult = null;
+		}
+	}
+
+	private boolean shouldSkipCollide(Entity hit, Entity owner) {
+		return isClientSide() != UtilEntity.getLevel(hit).isClientSide() || hit.isAlliedTo(owner);
+	}
+	
+	protected BlockHitResult checkBlockCollide() {
+		return getWorld().clip(new ClipContext(position(), position().add(getDeltaMovement()),
+				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
+	}
+
+    public Level getWorld() {
+        return UtilEntity.getLevel(this);
+    }
+	
+	@Nullable
+	protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
+		return UtilEntity.getEntityHitResultAtClip(getWorld(), this, start, end,
+				getBoundingBox().expandTowards(getDeltaMovement()).inflate(1.0D), 
+				this::canHitEntity, 0.3f);
+	}
+	
+	@Override
+	public boolean canHitEntity(Entity entity) {
+		return super.canHitEntity(entity) && !isAlliedTo(entity);
+	}
+	
+	@Override
+	public void onHit(HitResult result) {
+		if (isRemoved()) return;
+		setPos(result.getLocation());
+		super.onHit(result);
+	}
+	
+	@Override
+	public void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		//System.out.println("BULLET HIT "+result.getBlockPos());
+		if (canBreakFragileBlocks()) {
+			BlockState state = getWorld().getBlockState(result.getBlockPos());
+			if (state.is(ModTags.Blocks.FRAGILE) && getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
+					&& UtilVehicleEntity.weaponHasPermissionToBreak(result.getBlockPos(), state, getWorld(), getOwner())) {
+                getWorld().destroyBlock(result.getBlockPos(), true, this);
+				return;
+			}
+        }
+		kill();
+	}
+	
+	@Override
+	public void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		//System.out.println("BULLET HIT "+result.getEntity());
+		kill();
+		result.getEntity().hurt(getImpactDamageSource(), getDamage());
+	}
+	
+	@Override
+	public void kill() {
+		if (!isClientSide()) {
+            PacketHandler.sendToTrackers(new ToClientWeaponImpact(this, position()), this);
+        }
+		super.kill();
+	}
+	
+	public float getDamage() {
+		return 0;
+	}
+	
+	protected int getOwnerId() {
+		return entityData.get(OWNER_ID);
+	}
+	
+	protected void setOwnerId(int id) {
+		entityData.set(OWNER_ID, id);
+	}
+	
+	protected void setAge(int age) {
+		entityData.set(AGE, age);
+	}
+	
+	public int getAge() {
+		if (!isClientSide()) return tickCount;
+		return entityData.get(AGE);
+	}
+	
+	@Override
+	public boolean ignoreExplosion() {
+		return true;
+	}
+	
+	@Override 
+	public boolean canBeCollidedWith() {
+		return false;
+	}
+	
+	@Override
+    public boolean hurt(DamageSource source, float amount) {
+		return false;
+	}
+	
+	@Override
+	public boolean shouldRenderAtSqrDistance(double dist) {
+		return dist < 65536;
+	}
+	
+	protected void tickSetMove() {
+		setDeltaMovement(getDeltaMovement().add(0, -getGravityAcc(), 0));
+	}
+
+	protected double getGravityAcc() {
+		return DSCPhyCons.GRAVITY * DSCPhyCons.ACC_TIME_SCALE;
+	}
+
+	protected void tickSetAngle() {
+		float goalPitch = UtilAngles.getPitch(getDeltaMovement());
+		float goalYaw = UtilAngles.getYaw(getDeltaMovement());
+		setXRot(Mth.rotLerp(0.5f, getXRot(), goalPitch));
+		setYRot(Mth.rotLerp(0.5f, getYRot(), goalYaw));
+	}
+	
+	@Override
+	public void lerpMotion(double x, double y, double z) {
+		
+	}
+	
+	@Override
+	public Entity getOwner() {
+		Entity o = super.getOwner();
+		if (o == null && isClientSide()) {
+			Minecraft m = Minecraft.getInstance();
+			o = m.level.getEntity(getOwnerId());
+		}
+		return o;
+	}
+	
+	@Override
+	public void setOwner(Entity owner) {
+		super.setOwner(owner);
+		if (owner != null) this.setOwnerId(owner.getId());
+		else this.setOwnerId(-1);
+	}
+	
+	@Override
+    public boolean isAlliedTo(Entity entity) {
+		if (entity == null) return false;
+    	Entity o = getOwner();
+    	if (entity.equals(o)) return true;
+    	if (entity instanceof Projectile p) {
+    		Entity po = p.getOwner();
+    		if (po != null && po.equals(o)) return true;
+    	}
+    	Entity c = entity.getControllingPassenger();
+    	if (c != null) {
+    		if (c.equals(o)) return true;
+    		return isAlliedTo(c.getTeam());
+    	}
+    	return super.isAlliedTo(entity);
+    }
+    
+    @Override
+    public boolean isAlliedTo(Team team) {
+    	if (team == null) return false;
+    	Entity o = getOwner();
+		if (o != null) return team.isAlliedTo(o.getTeam());
+    	return super.isAlliedTo(team);
+    }
+	
+	@Override
+	public void remove(Entity.RemovalReason reason) {
+		super.remove(reason);
+		//System.out.println("REMOVED "+reason.toString()+" "+this);
+	}
+	
+	@Override
+	public void checkDespawn() {
+		if (isTestMode()) return;
+		//System.out.println("CHECK DESPAWN");
+		if (!isClientSide()) {
+			if (!inEntityTickingRange()) {
+				//System.out.println("REMOVED OUT OF TICK RANGE");
+				discard();
+				return;
+			}
+		}
+	}
+	
+	public boolean inEntityTickingRange() {
+		if (isClientSide()) return true;
+		ServerLevel sl = (ServerLevel) getWorld();
+		ServerChunkCache scc = sl.getChunkSource();
+		return scc.chunkMap.getDistanceManager().inEntityTickingRange(chunkPosition().toLong());
+	}
+	
+	public int getMaxAge() {
+		return getWeaponStats().getMaxAge();
+	}
+	
+	public boolean isTestMode() {
+    	return entityData.get(TEST_MODE);
+    }
+    
+    public void setTestMode(boolean testMode) {
+    	entityData.set(TEST_MODE, testMode);
+    }
+    
+    public Vec3 getShootPos() {
+    	return entityData.get(SHOOT_POS);
+    }
+    
+    private void setShootPos(Vec3 pos) {
+    	entityData.set(SHOOT_POS, pos);
+    }
+    
+    public String getModelId() {
+		if (getAssets() == null) return getAssetId();
+    	return getAssets().getModelId();
+    }
+    
+    public abstract WeaponType getWeaponType();
+    protected abstract WeaponDamageSource getImpactDamageSource();
+    protected abstract WeaponDamageSource getExplosionDamageSource();
+    public abstract WeaponStats.WeaponClientImpactType getClientImpactType();
+
+	public boolean canBreakFragileBlocks() {
+		return true;
+	}
+
+	@Override
+	public @Nullable String getAssetId() {
+		return getStats().getAssetId();
+	}
+
+	@Override
+	public @Nullable JsonPresetAssetReader<WeaponClientStats> getClientPresets() {
+		if (!isClientSide()) return null;
+		return WeaponAssets.get();
+	}
+
+	@Override
+	public @NotNull JsonPresetReloadListener<T> getPresets() {
+		return (JsonPresetReloadListener<T>) WeaponPresets.get();
+	}
+
+	public boolean isDiscardedButTicking() {
+		return false;
+	}
+}

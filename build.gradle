@@ -1,160 +1,66 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id 'eclipse'
-    id 'idea'
-    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'dev.architectury.loom' version '1.10-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'com.gradleup.shadow' version '8.3.6' apply false
 }
 
-apply plugin: 'org.spongepowered.mixin'
-
-group = mod_group_id
-version = mod_version
-
-base {
-    archivesName = mod_id+'-'+minecraft_version
+architectury {
+    minecraft = project.minecraft_version
 }
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
-}
+allprojects {
+    group = rootProject.maven_group
+    version = rootProject.mod_version
 
-minecraft {
-    mappings channel: mapping_channel, version: mapping_version
-
-    copyIdeResources = true
-
-    // generateRunFolders = true
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        configureEach {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
+    repositories {
+        maven { url "https://cursemaven.com" }
+        maven { url "https://repo.repsy.io/mvn/1whohears/1wholibs" }
+        maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }
+        maven { url "https://repo.repsy.io/mvn/1whohears/distant_players" }
+        maven {
+            name = "Jared's maven"
+            url = "https://maven.blamejared.com/"
         }
-
-        client {
-            property 'forge.enabledGameTestNamespaces', mod_id
-        }
-
-        client2 {
-            parent runs.client
-            taskName 'runClient2'
-            arg '--username=StupidIdiot'
-        }
-
-        client3 {
-            parent runs.client
-            taskName 'runClient3'
-            arg '--username=LunaticDonkey'
-        }
-
-        server {
-            property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
-        }
-
-        gameTestServer {
-            property 'forge.enabledGameTestNamespaces', mod_id
-        }
-
-        data {
-            workingDirectory project.file('run-data')
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        maven {
+            name = "Fuzs Mod Resources"
+            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
         }
     }
 }
 
-mixin {
-    add sourceSets.main, "${mod_id}.refmap.json"
-    config "${mod_id}.mixins.json"
+ext.localProps = new Properties()
+def localFile = rootProject.file("local.properties")
+if (localFile.exists()) {
+    localFile.withInputStream { ext.localProps.load(it) }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+subprojects {
+    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
 
-repositories {
-    maven { url "https://cursemaven.com" }
-    maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }
-    maven { url "https://repo.repsy.io/mvn/1whohears/1wholibs" }
-    maven { url "https://repo.repsy.io/mvn/1whohears/distant_players" }
-    maven {
-        name = "Jared's maven"
-        url = "https://maven.blamejared.com/"
-    }
-    flatDir {
-        dir 'libs'
-    }
-}
-
-dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:modernfix-790626:4792392")
-    // https://github.com/1whohears/CustomMiniGames
-    implementation fg.deobf("com.1whohears.minigames:minigames-${minecraft_version}:${minigames_version}")
-    // https://github.com/1whohears/1wholibs
-    implementation fg.deobf("com.onewhohears.onewholibs:onewholibs-${minecraft_version}:${onewholibs_version}")
-    // https://github.com/1whohears/RenderDistantPlayers
-    implementation fg.deobf("com.onewhohears.distant_players:distant_players-${minecraft_version}:${distant_players_version}")
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.2")) {
-        jarJar.ranged(it, "[0.3.2,)")
-    }
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-    implementation fg.deobf("curse.maven:architectury-api-419699:5137942")
-    implementation fg.deobf("curse.maven:ftb-library-forge-404465:4661834")
-    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4611938")
-    implementation fg.deobf("curse.maven:open-parties-and-claims-636608:6055470")
-    implementation fg.deobf("curse.maven:timeless-and-classics-zero-${tacz_version}")
-}
-
-tasks.named('processResources', ProcessResources).configure {
-    var replaceProperties = [minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
-                             forge_version       : forge_version, forge_version_range: forge_version_range,
-                             loader_version_range: loader_version_range,
-                             mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-                             mod_authors         : mod_authors, mod_description: mod_description,]
-
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
-        expand replaceProperties + [project: project]
-    }
-}
-
-tasks.named('jar', Jar).configure {
-    manifest {
-        attributes(["Specification-Title"     : mod_id,
-                    "Specification-Vendor"    : mod_authors,
-                    "Specification-Version"   : "1", // We are version 1 of ourselves
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : project.jar.archiveVersion,
-                    "Implementation-Vendor"   : mod_authors,
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
+    base {
+        archivesName = "$rootProject.archives_name-$project.name-$rootProject.minecraft_version"
     }
 
-    finalizedBy 'reobfJar'
-}
+    loom {
+        silentMojangMappingsLicense()
+    }
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+    dependencies {
+        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        mappings loom.officialMojangMappings()
+    }
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = 17
+    }
 }

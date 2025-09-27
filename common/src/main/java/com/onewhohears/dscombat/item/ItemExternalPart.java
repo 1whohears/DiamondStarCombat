@@ -4,20 +4,18 @@ import com.onewhohears.dscombat.data.parts.client.PartAssets;
 import com.onewhohears.dscombat.data.parts.client.PartClientStats;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
 
 public class ItemExternalPart extends ItemPart implements ObjModelItem {
 
-    public ItemExternalPart(int stackSize, @NotNull String defaultPresetId) {
-        super(stackSize, defaultPresetId);
+    @ExpectPlatform
+    public static ItemExternalPart create(int stackSize, String defaultPresetId) {
+        throw new AssertionError();
     }
 
-    @Override
-    public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
-        ObjModelItem.super.initializeClient(consumer);
+    public ItemExternalPart(int stackSize, @NotNull String defaultPresetId) {
+        super(stackSize, defaultPresetId);
     }
 
     @Override

@@ -123,9 +123,9 @@ public class VehicleHealthScreen extends VehicleSubScreen {
 
         // THRUST TO WEIGHT
         double thrustToWeight = vehicle.getAfterburnerMaxPushThrust()/(vehicle.getTotalMass()*vehicle.getAccGravity());
-        getMinecraft().font.draw(poseStack, UtilMCText.translatable("ui.dscombat.thrust_to_weight_ratio"),
+        minecraft.font.draw(poseStack, UtilMCText.translatable("ui.dscombat.thrust_to_weight_ratio"),
                 guiX+left_padding+100, guiY+top_padding+150, 0x0000AA);
-        getMinecraft().font.draw(poseStack, UtilMCText.literal(UtilPrint.printDec(thrustToWeight, 4)),
+        minecraft.font.draw(poseStack, UtilMCText.literal(UtilPrint.printDec(thrustToWeight, 4)),
                 guiX+left_padding+100, guiY+top_padding+160, getThrustToWeightColor(thrustToWeight));
     }
 

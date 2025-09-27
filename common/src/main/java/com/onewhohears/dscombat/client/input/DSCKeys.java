@@ -1,9 +1,7 @@
 package com.onewhohears.dscombat.client.input;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.onewhohears.dscombat.DSCombatMod;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,8 +36,6 @@ public final class DSCKeys {
 	public static KeyMapping leanLeftKey, leanRightKey;
 	public static KeyMapping afterBurnerKey, turnAssistKey;
 	public static KeyMapping hudModeToggleKey, hudHintsToggleKey, hudLayoutEditKey, hudShowAllKey;
-
-	private static RegisterKeyMappingsEvent event;
 
 	private static final Map<String, KeyMapping> keys = new HashMap<>();
 	

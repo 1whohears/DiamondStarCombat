@@ -1,13 +1,12 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
-import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
-import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -97,7 +96,7 @@ public class EntityHelicopter extends EntityVehicle {
 	 *  - Effective translational lift (ETL): extra lift with forward airspeed.
 	 *  - Vortex Ring State (VRS): reduced lift during high-rate vertical descents at low forward speed.
 	 */
-	protected double computeLiftMultiplier(Quaternion q) {
+	protected double computeLiftMultiplier(QuaternionF q) {
 		double mult = 1.0;
 
 		// Ground Effect (IGE)
@@ -145,7 +144,7 @@ public class EntityHelicopter extends EntityVehicle {
 	}
 	
 	@Override
-	public void addControllingTorques(Quaternion q) {
+	public void addControllingTorques(QuaternionF q) {
         boolean scaleTorque = Config.SERVER.scaleTorqueWithRotorPower.get();
         if (scaleTorque) {
             // Apply torques ourselves, scaled by rotor power authority

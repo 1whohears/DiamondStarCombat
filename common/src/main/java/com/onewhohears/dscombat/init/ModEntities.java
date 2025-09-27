@@ -104,7 +104,7 @@ public class ModEntities {
 			() -> createEntityType(EntityEngine::new, EntityDimensions.scalable(0.8f, 0.8f)));
 	public static final RegistrySupplier<EntityType<EntityRadar>> EXTERNAL_RADAR = ENTITIES.register("external_radar",
 			() -> createEntityType(EntityRadar::new, EntityDimensions.scalable(1.0f, 1.0f)));
-    public static final RegistryObject<EntityType<EntityFuelTank>> EXTERNAL_FUEL_TANK = ENTITIES.register("external_fuel_tank",
+    public static final RegistrySupplier<EntityType<EntityFuelTank>> EXTERNAL_FUEL_TANK = ENTITIES.register("external_fuel_tank",
             () -> createEntityType(EntityFuelTank::new, EntityDimensions.scalable(0.8f, 0.8f)));
 	
 	public static final RegistrySupplier<EntityType<EntityBullet<?>>> BULLET = ENTITIES.register("bullet",

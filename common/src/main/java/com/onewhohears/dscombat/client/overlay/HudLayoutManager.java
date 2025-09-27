@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.overlay;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import net.minecraftforge.fml.loading.FMLPaths;
+import dev.architectury.platform.Platform;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class HudLayoutManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path FILE = FMLPaths.CONFIGDIR.get().resolve("dscombat_hud_layout.json");
+    private static final Path FILE = Platform.getConfigFolder().resolve("dscombat_hud_layout.json");
 
     private static Map<String, Map<String, Rect>> layouts = new HashMap<>(); // vehicleType -> (elementId -> Rect)
     private static boolean loaded = false;

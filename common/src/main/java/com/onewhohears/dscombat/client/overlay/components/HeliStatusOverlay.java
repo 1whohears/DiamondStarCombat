@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraft.client.gui.Gui;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -21,14 +21,14 @@ public class HeliStatusOverlay extends VehicleOverlayComponent {
     private static final int OFF_COLOR = new Color(0x888888).getRGB();
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (Config.CLIENT.enableModernHUD.get()) return false;
         return getPlayerRootVehicle() instanceof EntityHelicopter;
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         EntityHelicopter heli = (EntityHelicopter) getPlayerRootVehicle();
         assert heli != null;
 

@@ -2,16 +2,15 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.HudLayoutManager;
+import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
-import com.onewhohears.dscombat.entity.vehicle.EntityGroundVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraft.client.gui.Gui;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -167,14 +166,14 @@ public class ModernHudOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected boolean shouldRender(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (!com.onewhohears.dscombat.Config.CLIENT.enableModernHUD.get()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
     @Override
-    protected void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         updateToggles();
         final float scale = com.onewhohears.dscombat.Config.CLIENT.modernHudScale.get().floatValue();
         final float alpha = com.onewhohears.dscombat.Config.CLIENT.modernHudOpacity.get().floatValue();

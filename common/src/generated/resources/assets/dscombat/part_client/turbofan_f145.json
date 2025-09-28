@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.survey_all_b",
+  "displayName": "preset.dscombat.turbofan_f145",
   "item_model_overrides": {
     "rotation": {
       "x": 0.0,
@@ -13,14 +13,11 @@
     },
     "scale_all": 0.8,
     "translate": {
-      "x": 0.1,
+      "x": 0.05,
       "y": 0.1,
       "z": 0.0
     }
   },
-  "model_data": {
-    "hard_coded_model_anims": "survey_all_b"
-  },
-  "presetId": "survey_all_b",
-  "presetType": "radar"
+  "presetId": "turbofan_f145",
+  "presetType": "standard"
 }

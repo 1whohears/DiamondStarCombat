@@ -1,5 +1,5 @@
 {
-  "displayName": "preset.dscombat.survey_all_b",
+  "displayName": "preset.dscombat.allison_v_1710",
   "item_model_overrides": {
     "rotation": {
       "x": 0.0,
@@ -18,9 +18,6 @@
       "z": 0.0
     }
   },
-  "model_data": {
-    "hard_coded_model_anims": "survey_all_b"
-  },
-  "presetId": "survey_all_b",
-  "presetType": "radar"
+  "presetId": "allison_v_1710",
+  "presetType": "standard"
 }

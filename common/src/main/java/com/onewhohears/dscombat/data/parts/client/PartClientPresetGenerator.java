@@ -65,15 +65,18 @@ public class PartClientPresetGenerator extends JsonPresetGenerator<PartClientSta
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createRadar("air_scan_a")
                 .setHardCodedModel("air_scan_a")
+                .setItemModelOverrides(0.9f, ONE, new Vec3(-0.9, -0.2, 0), new Vec3(60, 180, 0))
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createRadar("air_scan_b")
                 .setHardCodedModel("air_scan_b")
+                .setItemModelOverrides(0.8f, ONE, new Vec3(-0.9, -0.2, 0), new Vec3(60, 180, 0))
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createRadar("survey_all_a")
                 .setHardCodedModel("survey_all_a")
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createRadar("survey_all_b")
                 .setHardCodedModel("survey_all_b")
+                .setItemModelOverrides(0.8f, ONE, new Vec3(0.1, 0.1, 0), Vec3.ZERO)
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createStandard("xm12")
                 .setItemModelOverrides(0.8f, ONE, new Vec3(0.3, 0, 0), Vec3.ZERO)
@@ -98,6 +101,15 @@ public class PartClientPresetGenerator extends JsonPresetGenerator<PartClientSta
                 .setHardCodedModel("vls")
                 .build());
         addPresetToGenerate(PartClientStats.Builder.createStandard("cfm56")
+                .build());
+        addPresetToGenerate(PartClientStats.Builder.createStandard("chain_hook")
+                .setItemModelOverrides(0.5f, ONE, new Vec3(0.25, 0.3, 0), Vec3.ZERO)
+                .build());
+        addPresetToGenerate(PartClientStats.Builder.createStandard("turbofan_f145")
+                .setItemModelOverrides(0.8f, ONE, new Vec3(0.05, 0.1, 0), Vec3.ZERO)
+                .build());
+        addPresetToGenerate(PartClientStats.Builder.createStandard("allison_v_1710")
+                .setItemModelOverrides(0.8f, ONE, new Vec3(0.1, 0.1, 0), Vec3.ZERO)
                 .build());
     }
 

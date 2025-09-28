@@ -22,7 +22,7 @@ public class ItemExternalPart extends ItemPart implements ObjModelItem {
     public @NotNull String getObjModelId(@NotNull String preset) {
         PartClientStats<?> pcs = PartAssets.get().get(preset);
         if (pcs == null) return "";
-        return pcs.getModelId();
+        return pcs.getModel().modelId;
     }
 
     @Override

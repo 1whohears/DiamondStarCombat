@@ -144,7 +144,7 @@ public class ModItems {
 	
 	// CHAIN HOOK
 	public static final RegistrySupplier<ItemPart> CHAIN_HOOK = registerItem("chain_hook",
-			() -> new ItemPart(16));
+			() -> ItemExternalPart.create(16, "chain_hook"));
 	
 	// STORAGE BOXES
 	public static final RegistrySupplier<ItemPart> SMALL_STORAGE_BOX = registerItem("small_storage_box",
@@ -173,7 +173,7 @@ public class ModItems {
 	public static final RegistrySupplier<ItemPart> TURBOFAN_F25 = registerItem("turbofan_f25",
 			() -> new ItemPart(16));
 	public static final RegistrySupplier<ItemPart> TURBOFAN_F145 = registerItem("turbofan_f145",
-			() -> new ItemPart(16));
+			() -> ItemExternalPart.create(16, "turbofan_f145"));
 	public static final RegistrySupplier<ItemPart> TURBOFAN_F39 = registerItem("turbofan_f39",
 			() -> new ItemPart(16));
 	public static final RegistrySupplier<ItemPart> KLIMOV_RD33 = registerItem("klimov_rd33",
@@ -181,7 +181,7 @@ public class ModItems {
 	public static final RegistrySupplier<ItemPart> CM_MANLY_52 = registerItem("cm_manly_52",
 			() -> new ItemPart(16));
 	public static final RegistrySupplier<ItemPart> ALLISON_V_1710 = registerItem("allison_v_1710",
-			() -> new ItemPart(16));
+			() -> ItemExternalPart.create(16, "allison_v_1710"));
 	public static final RegistrySupplier<ItemPart> COMPOUND_TURBINE = registerItem("compound_turbine",
 			() -> new ItemPart(16));
 	public static final RegistrySupplier<ItemPart> CFM56 = registerItem("cfm56",
@@ -212,13 +212,13 @@ public class ModItems {
 			() -> new ItemPart(16));
 	// IDEA 2 passive under water sonar doesn's show RWR warning
 	public static final RegistrySupplier<ItemPart> AIR_SCAN_A = registerItem("air_scan_a",
-			() -> new ItemPart(16));
+			() -> ItemExternalPart.create(16, "air_scan_a"));
 	public static final RegistrySupplier<ItemPart> AIR_SCAN_B = registerItem("air_scan_b",
-			() -> new ItemPart(16));
+			() -> ItemExternalPart.create(16, "air_scan_b"));
 	public static final RegistrySupplier<ItemPart> SURVEY_ALL_A = registerItem("survey_all_a",
 			() -> new ItemPart(16));
 	public static final RegistrySupplier<ItemPart> SURVEY_ALL_B = registerItem("survey_all_b",
-			() -> new ItemPart(16));
+			() -> ItemExternalPart.create(16, "survey_all_b"));
 	
 	// SEATS
 	public static final RegistrySupplier<ItemPart> SEAT = registerItem("seat",

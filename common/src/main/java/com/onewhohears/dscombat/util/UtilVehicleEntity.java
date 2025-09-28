@@ -61,13 +61,13 @@ public class UtilVehicleEntity {
                                                     @Nullable Entity entity, DSCFakePlayer type) {
         if (entity instanceof ServerPlayer player) {
             EventResult result = BlockEvent.BREAK.invoker().breakBlock(level, pos, state, player, XP);
-            return result.isTrue();
+            return !result.isPresent() || result.isTrue(); // FIXME is this correct? test with FTB
         } else if (entity instanceof Enemy) {
             return level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
         } else if (!level.isClientSide()) {
             EventResult result = BlockEvent.BREAK.invoker().breakBlock(level, pos, state,
                     type.getPlayer((ServerLevel) level), XP);
-            return result.isTrue();
+            return !result.isPresent() || result.isTrue();
         }
         return false;
     }

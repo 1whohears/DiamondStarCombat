@@ -42,7 +42,7 @@ public class NonTickingMissileManager {
 			//System.out.println("MISSILE IN TICK RANGE");
 			if (isUnloaded(missile)) {
 				//System.out.println("MISSILE UNLOADED");
-				missile.revive();
+				missile.invokeRevive();
 				missile.setUUID(UUID.randomUUID());
 				missile.getWorld().addFreshEntity(missile);
 			}

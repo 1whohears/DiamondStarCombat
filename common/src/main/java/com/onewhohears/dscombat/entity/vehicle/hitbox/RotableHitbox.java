@@ -357,7 +357,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable,
 	
 	public void repair(float repair) {
 		if (!isClientSide() && isRemoved()) {
-			revive();
+			invokeRevive();
             getWorld().addFreshEntity(this);
 		}
 		if (getHealth() < getMaxHealth()) addHealth(repair);
@@ -443,7 +443,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable,
 	}
 
     @Override
-    public void revive() {
+    public void invokeRevive() {
         UtilVehicleEntity.revive(this);
     }
 

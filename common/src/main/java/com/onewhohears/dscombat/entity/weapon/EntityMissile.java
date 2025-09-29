@@ -347,7 +347,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 	
 	@Override
-	public void revive() {
+	public void invokeRevive() {
         UtilVehicleEntity.revive(this);
 		discardedButTicking = false;
 	}

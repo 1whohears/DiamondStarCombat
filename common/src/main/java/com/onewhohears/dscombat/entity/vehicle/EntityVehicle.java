@@ -706,6 +706,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			}
 			if (currentFuel <= 0 || isAllEnginesDamaged()) {
 				throttleToZero();
+                inputs.setThrottleOverride(getCurrentThrottle(), this);
 				return;
 			}
 		}

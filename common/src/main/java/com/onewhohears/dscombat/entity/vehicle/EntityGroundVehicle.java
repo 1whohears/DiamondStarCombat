@@ -28,6 +28,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 	@Override
 	public void applyGroundBreaks() {
 		throttleToZero();
+        inputs.setThrottleOverride(getCurrentThrottle(), this);
 		super.applyGroundBreaks();
 	}
 	

@@ -38,6 +38,7 @@ public class EntityBoat extends EntityVehicle {
 	@Override
 	public void applyAirBreaks() {
 		throttleToZero();
+        inputs.setThrottleOverride(getCurrentThrottle(), this);
 		super.applyAirBreaks();
 	}
 

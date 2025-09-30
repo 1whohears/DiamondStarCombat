@@ -114,8 +114,8 @@ public class ClientEventHandlers {
     }
 
     public static void setFluidRenderLayers() {
-        RenderTypeRegistry.register(RenderType.translucent(), ModFluids.OIL_FLUID_SOURCE.get());
-        RenderTypeRegistry.register(RenderType.translucent(), ModFluids.OIL_FLUID_FLOWING.get());
+        RenderTypeRegistry.register(RenderType.translucent(), ModFluids.getOilFluidSource().get());
+        RenderTypeRegistry.register(RenderType.translucent(), ModFluids.getOilFluidFlowing().get());
     }
 
     public static void registerKeyframeAnims() {

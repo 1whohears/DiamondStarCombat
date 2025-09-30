@@ -18,7 +18,7 @@ public class FluidTagGen extends FluidTagsProvider {
 	@Override
 	protected void addTags() {
 		tag(ModTags.Fluids.OIL)
-			.add(ModFluids.OIL_FLUID_FLOWING.get(), ModFluids.OIL_FLUID_SOURCE.get())
+			.add(ModFluids.getOilFluidSource().get(), ModFluids.getOilFluidFlowing().get())
 			.addOptional(ResourceLocation.tryParse("createindustry:crude_oil_fluid"));
 	}
 

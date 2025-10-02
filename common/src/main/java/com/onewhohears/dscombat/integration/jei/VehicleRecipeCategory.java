@@ -16,6 +16,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class VehicleRecipeCategory implements IRecipeCategory<VehicleRecipe> {
 	
@@ -35,17 +36,17 @@ public class VehicleRecipeCategory implements IRecipeCategory<VehicleRecipe> {
 	}
 	
 	@Override
-	public RecipeType<VehicleRecipe> getRecipeType() {
+	public @NotNull RecipeType<VehicleRecipe> getRecipeType() {
 		return TYPE;
 	}
 
 	@Override
-	public Component getTitle() {
+	public @NotNull Component getTitle() {
 		return UtilMCText.translatable("container.dscombat.aircraft_block_menu");
 	}
 
 	@Override
-	public IDrawable getBackground() {
+	public @NotNull IDrawable getBackground() {
 		return background;
 	}
 

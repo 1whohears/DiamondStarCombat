@@ -1,18 +1,13 @@
 package com.onewhohears.dscombat.integration.jei;
 
-import java.util.List;
-
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.crafting.VehicleRecipe;
 import com.onewhohears.dscombat.crafting.WeaponPartRecipe;
 import com.onewhohears.dscombat.crafting.WeaponRecipe;
-
 import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.item.ItemVehicle;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
@@ -21,13 +16,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 	
 	private static final ResourceLocation PLUGIN_UID = new ResourceLocation(DSCombatMod.MODID, "jei_plugin");
 	
 	@Override
-	public ResourceLocation getPluginUid() {
+	public @NotNull ResourceLocation getPluginUid() {
 		return PLUGIN_UID;
 	}
 

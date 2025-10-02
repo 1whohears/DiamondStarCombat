@@ -15,6 +15,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class WeaponPartRecipeCategory implements IRecipeCategory<WeaponPartRecipe> {
 
@@ -34,17 +35,17 @@ public class WeaponPartRecipeCategory implements IRecipeCategory<WeaponPartRecip
 	}
 	
 	@Override
-	public RecipeType<WeaponPartRecipe> getRecipeType() {
+	public @NotNull RecipeType<WeaponPartRecipe> getRecipeType() {
 		return TYPE;
 	}
 
 	@Override
-	public Component getTitle() {
+	public @NotNull Component getTitle() {
 		return UtilMCText.translatable("container.dscombat.weapon_parts_block_menu");
 	}
 
 	@Override
-	public IDrawable getBackground() {
+	public @NotNull IDrawable getBackground() {
 		return background;
 	}
 

@@ -52,7 +52,7 @@ public class ModBlocks {
                     .strength(1f).explosionResistance(2f).sound(SoundType.COPPER)), ModItems.DSC_ITEMS);
 	
 	public static final RegistrySupplier<LiquidBlock> OIL_LIQUID_BLOCK = BLOCKS.register("oil_block",
-			() -> new ArchitecturyLiquidBlock(ModFluids.getOilFluidFlowing(), BlockBehaviour.Properties.copy(Blocks.WATER)));
+			() -> new ArchitecturyLiquidBlock(ModFluids.getOilFluidSource(), BlockBehaviour.Properties.copy(Blocks.WATER)));
 	
 	// TODO 2.3 block to put stationary turrets on
 

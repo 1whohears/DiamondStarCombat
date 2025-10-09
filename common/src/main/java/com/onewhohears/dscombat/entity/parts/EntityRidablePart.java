@@ -84,16 +84,16 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 			super.positionRider(passenger);
 			return;
 		}
-		if (tickCount % 20 != 0 && passenger instanceof Player player) {
+		if (tickCount % 20 == 0 && passenger instanceof Player player) {
 			if (craft.nightVisionHud) {
 				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
-						80, 0, false, false));
+						240, 0, false, false));
 			}	
 			if (craft.getStats().isSub()) {
-				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 
-						80, 0, false, false));
-				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 
-						80, 0, false, false));
+				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING,
+                        240, 0, false, false));
+				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION,
+                        240, 0, false, false));
 			}
 		}
 		passenger.setPos(position().add(getPassengerRelPos(passenger, craft)));

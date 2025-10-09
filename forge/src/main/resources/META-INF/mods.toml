@@ -46,7 +46,7 @@ showAsResourcePack=false
 
 [[dependencies."${mod_id}"]]
     modId = "modernfix"
-    mandatory = true
+    mandatory = false
     versionRange = "[${modernfix_version},)"
     ordering = "NONE"
     side = "BOTH"

@@ -33,12 +33,12 @@
     "java": ">=17",
     "architectury": ">=${architectury_version}",
     "onewholibs": ">=${onewholibs_version}",
-    "modernfix": ">=${modernfix_version}",
     "forgeconfigapiport": ">=${forgeconfigapiport_version}"
   },
   "suggests": {
     "minigames": ">=${minigames_version}",
     "distant_players": ">=${distant_players_version}",
-    "jei": ">=${jei_version}"
+    "jei": ">=${jei_version}",
+    "modernfix": ">=${modernfix_version}"
   }
 }

@@ -75,8 +75,8 @@ dependencies {
     modApi "com.onewhohears.minigames:minigames-fabric-${rootProject.minecraft_version}:${rootProject.minigames_version}"
     modApi "com.onewhohears.distant_players:distant_players-fabric-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
 
-    modApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
-    modImplementation "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
+    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
 
     implementation 'com.electronwill.night-config:core:3.6.5'
     implementation 'com.electronwill.night-config:toml:3.6.5'

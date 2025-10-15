@@ -20,6 +20,9 @@
     ],
     "client": [
       "com.onewhohears.dscombat.fabric.client.DSCombatModFabricClient"
+    ],
+    "jei_mod_plugin": [
+      "com.onewhohears.dscombat.integration.jei.JEIPlugin"
     ]
   },
   "mixins": [

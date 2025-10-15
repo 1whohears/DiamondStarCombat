@@ -73,8 +73,8 @@ dependencies {
 
     modCompileOnly "curse.maven:timeless-and-classics-zero-1028108:$rootProject.tacz_id_forge"
 
-    modApi "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
-    modImplementation "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
+    modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}"
+    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-forge:${rootProject.jei_version}"
 
     //modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_forge_id}"
 

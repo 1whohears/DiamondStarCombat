@@ -13,6 +13,6 @@
     "dscombat:large_wheel",
     "dscombat:cockpit",
     "dscombat:advanced_cockpit",
-    "#forge:ingots/aluminum"
+    "#dscombat:aluminum_ingot"
   ]
 }

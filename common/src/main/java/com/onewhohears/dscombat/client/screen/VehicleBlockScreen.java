@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -110,7 +111,9 @@ public class VehicleBlockScreen extends AbstractContainerScreen<VehicleBlockCont
         for (int i = 0; i < getMenu().recipeSlots.getContainerSize(); ++i) {
         	if (i < ingredients.size()) {
         		ItemStack[] items = ingredients.get(i).getItems();
-    			ItemStack stack = items[(m.player.tickCount/20)%items.length];
+                ItemStack stack;
+                if (items.length == 0) stack = Items.BARRIER.getDefaultInstance();
+                else stack = items[(m.player.tickCount/20)%items.length];
         		getMenu().recipeSlots.setItem(i, stack);
         		if (fails.contains(i)) {
         			Slot slot = getMenu().getSlot(i);

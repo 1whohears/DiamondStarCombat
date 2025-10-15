@@ -83,9 +83,12 @@ public class ModTags {
 		public static final TagKey<Item> VEHICLE_REPAIR_TOOL = tag("vehicle_repair_tool");
 		public static final TagKey<Item> RECOVERABLE = tag("recoverable");
 		public static final TagKey<Item> ALUMINUM_INGOT = tag("aluminum_ingot");
-		public static final TagKey<Item> FORGE_ALUMINUM_INGOT = forgeTag("ingots/aluminum");
-		public static final TagKey<Item> FORGE_OIL_BUCKET = forgeTag("buckets/oil");
+        public static final TagKey<Item> OIL_BUCKET = tag("buckets/oil");
 		public static final TagKey<Item> FOSSIL_OIL_CONVERTER = tag("fossil_oil_converter");
+        public static final TagKey<Item> FORGE_ALUMINUM_INGOT = forgeTag("ingots/aluminum");
+        public static final TagKey<Item> FABRIC_ALUMINUM_INGOT = fabricTag("ingots/aluminum");
+        public static final TagKey<Item> FORGE_OIL_BUCKET = forgeTag("buckets/oil");
+        public static final TagKey<Item> FABRIC_OIL_BUCKET = fabricTag("buckets/oil");
 		private static void init() {}
 		public static TagKey<Item> tag(String name) {
             return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
@@ -93,10 +96,14 @@ public class ModTags {
 		public static TagKey<Item> forgeTag(String name) {
             return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge", name));
         }
+        public static TagKey<Item> fabricTag(String name) {
+            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", name));
+        }
 	}
 	
 	public static class Fluids {
-		public static final TagKey<Fluid> OIL = forgeTag("oil");
+		public static final TagKey<Fluid> OIL = tag("oil");
+        public static final TagKey<Fluid> FORGE_OIL = forgeTag("oil");
 		public static TagKey<Fluid> tag(String name) {
             return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
 		}

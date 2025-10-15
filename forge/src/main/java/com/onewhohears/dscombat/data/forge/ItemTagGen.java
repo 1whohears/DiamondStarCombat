@@ -20,15 +20,25 @@ public class ItemTagGen extends ItemTagsProvider {
 	@Override
 	protected void addTags() {
 		tag(ModTags.Items.ALUMINUM_INGOT)
-			.addTag(ModTags.Items.FORGE_ALUMINUM_INGOT);
-		tag(ModTags.Items.FORGE_ALUMINUM_INGOT)
-			.add(ModItems.ALUMINUM_INGOT.get())
-			.addOptional(ResourceLocation.tryParse("createindustry:aluminum_ingot"));
+                .add(ModItems.ALUMINUM_INGOT.get())
+                .addOptionalTag(ResourceLocation.tryParse("forge:ingots/aluminum"))
+                .addOptionalTag(ResourceLocation.tryParse("c:ingots/aluminum"))
+                .addOptional(ResourceLocation.tryParse("createindustry:aluminum_ingot"));
+        tag(ModTags.Items.FORGE_ALUMINUM_INGOT)
+                .addTag(ModTags.Items.ALUMINUM_INGOT);
+        tag(ModTags.Items.FABRIC_ALUMINUM_INGOT)
+                .addTag(ModTags.Items.ALUMINUM_INGOT);
 		tag(ModTags.Items.VEHICLE_CHAIN)
 			.add(Items.CHAIN);
-		tag(ModTags.Items.FORGE_OIL_BUCKET)
+		tag(ModTags.Items.OIL_BUCKET)
 			.add(ModItems.OIL_BUCKET.get())
-			.addOptional(ResourceLocation.tryParse("createindustry:crude_oil_fluid_bucket"));;
+			.addOptional(ResourceLocation.tryParse("createindustry:crude_oil_fluid_bucket"))
+            .addOptionalTag(ResourceLocation.tryParse("forge:buckets/oil"))
+            .addOptionalTag(ResourceLocation.tryParse("c:buckets/oil"));
+        tag(ModTags.Items.FORGE_OIL_BUCKET)
+                .addTag(ModTags.Items.OIL_BUCKET);
+        tag(ModTags.Items.FABRIC_OIL_BUCKET)
+                .addTag(ModTags.Items.OIL_BUCKET);
 		tag(ModTags.Items.FOSSIL_OIL_CONVERTER)
 			.add(Items.FLINT_AND_STEEL);
 		tag(ModTags.Items.GAS_CAN)
@@ -96,7 +106,7 @@ public class ItemTagGen extends ItemTagsProvider {
 			.add(ModItems.WING.get(), ModItems.LARGE_WING.get(), ModItems.FUSELAGE.get(), ModItems.LARGE_FUSELAGE.get())
 			.add(ModItems.PROPELLER.get(), ModItems.LARGE_PROPELLER.get(), ModItems.WHEEL.get(), ModItems.LARGE_WHEEL.get())
 			.add(ModItems.COCKPIT.get(), ModItems.ADVANCED_COCKPIT.get())
-			.addTag(ModTags.Items.FORGE_ALUMINUM_INGOT);
+			.addTag(ModTags.Items.ALUMINUM_INGOT);
 	}
 	
 }

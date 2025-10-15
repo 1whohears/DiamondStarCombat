@@ -27,6 +27,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockContainerMenu> {
@@ -79,7 +80,9 @@ public class WeaponsBlockScreen extends AbstractContainerScreen<WeaponsBlockCont
         for (int i = 0; i < getMenu().recipeSlots.getContainerSize(); ++i) {
         	if (i < ingredients.size()) {
         		ItemStack[] items = ingredients.get(i).getItems();
-    			ItemStack stack = items[(m.player.tickCount/20)%items.length];
+                ItemStack stack;
+                if (items.length == 0) stack = Items.BARRIER.getDefaultInstance();
+                else stack = items[(m.player.tickCount/20)%items.length];
         		getMenu().recipeSlots.setItem(i, stack);
         		if (fails.contains(i)) {
         			Slot slot = getMenu().getSlot(i);

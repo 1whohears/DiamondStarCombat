@@ -19,7 +19,9 @@ public class FluidTagGen extends FluidTagsProvider {
 	protected void addTags() {
 		tag(ModTags.Fluids.OIL)
 			.add(ModFluids.getOilFluidSource().get(), ModFluids.getOilFluidFlowing().get())
-			.addOptional(ResourceLocation.tryParse("createindustry:crude_oil_fluid"));
+			.addOptional(ResourceLocation.tryParse("createindustry:crude_oil_fluid"))
+            .addOptionalTag(ResourceLocation.tryParse("forge:oil"));
+        tag(ModTags.Fluids.FORGE_OIL).addTag(ModTags.Fluids.OIL);
 	}
 
 }

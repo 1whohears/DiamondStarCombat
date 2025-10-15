@@ -1116,7 +1116,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 			else if (stack.is(ModTags.Items.GAS_CAN)) 
 				return onGasCanInteract(player, hand, stack);
 			// OIL BUCKET
-			else if (stack.is(ModTags.Items.FORGE_OIL_BUCKET)) 
+			else if (stack.is(ModTags.Items.OIL_BUCKET))
 				return onOilBucketInteract(player, hand, stack);
 			// VEHICLE CHAIN
 			else if (stack.is(ModTags.Items.VEHICLE_CHAIN)) 

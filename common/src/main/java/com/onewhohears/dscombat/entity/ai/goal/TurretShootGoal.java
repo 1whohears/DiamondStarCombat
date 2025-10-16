@@ -106,7 +106,7 @@ public class TurretShootGoal extends Goal {
 			if (accountGravity && wd != null && wd.getStats().isBullet()) {
 				double speed = ((BulletStats)wd.getStats()).getSpeed();
 				if (speed <= 0) speed = 0.01;
-				double g = -DSCPhyCons.GRAVITY;
+				double g = -DSCPhyCons.GRAVITY * DSCPhyCons.ACC_TIME_SCALE;
 				Vec3 diff = targetPos.subtract(origin);
 				double r = diff.horizontalDistance();
 				double h = diff.y;

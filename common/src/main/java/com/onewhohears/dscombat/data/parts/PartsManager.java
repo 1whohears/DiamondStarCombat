@@ -349,14 +349,16 @@ public class PartsManager {
 	}
 	
 	public boolean isAllEnginesDamaged() {
-		boolean hasAnEngine = false;
+		boolean hasAnEngine = false, hasDamagedEngine = false;
 		for (PartSlot p : slots) {
 			if (!p.filled()) continue;
 			if (!p.getPartData().getStats().isEngine()) continue;
 			hasAnEngine = true;
 			if (!p.getPartData().isDamaged()) return false;
+            hasDamagedEngine = true;
 		}
-		return hasAnEngine;
+        if (!hasAnEngine) return true;
+		return hasDamagedEngine;
 	}
 	
 	public Set<String> getEngineFireHitboxNames() {

@@ -48,7 +48,9 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	public static final EntityDataAccessor<Integer> AGE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> TEST_MODE = SynchedEntityData.defineId(EntityWeapon.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Vec3> SHOOT_POS = SynchedEntityData.defineId(EntityWeapon.class, DataSerializers.VEC3);
-	
+
+    @NotNull protected Vec3 throughBlockMove = Vec3.ZERO;
+
 	public EntityWeapon(EntityType<? extends EntityWeapon<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
 	}
@@ -105,7 +107,8 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		tickCheckCollide();
 		tickSetMove();
 		tickSetAngle();
-		setPos(position().add(getDeltaMovement()));
+		setPos(position().add(getDeltaMovement()).subtract(throughBlockMove));
+        throughBlockMove = Vec3.ZERO;
 		checkInsideBlocks();
 		tickAge();
 	}
@@ -157,7 +160,8 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 	
 	protected BlockHitResult checkBlockCollide() {
-		return getWorld().clip(new ClipContext(position(), position().add(getDeltaMovement()),
+		return getWorld().clip(new ClipContext(position(),
+                position().add(getDeltaMovement()).subtract(throughBlockMove),
 				ClipContext.Block.COLLIDER, getFluidClipContext(), this));
 	}
 
@@ -180,19 +184,28 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	@Override
 	public void onHit(HitResult result) {
 		if (isRemoved()) return;
-		setPos(result.getLocation());
+        throughBlockMove = throughBlockMove.add(result.getLocation().subtract(position()));
+        setPos(result.getLocation());
 		super.onHit(result);
 	}
 	
 	@Override
 	public void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		//System.out.println("BULLET HIT "+result.getBlockPos());
+		/*System.out.println("BULLET HIT "+result.getBlockPos().toShortString()
+                +" pos "+UtilParse.prettyVec3(position(), 1)
+                +" vel "+UtilParse.prettyVec3(getDeltaMovement(), 1)
+                +" through "+UtilParse.prettyVec3(throughBlockMove, 1)
+                +" tick "+tickCount);*/
 		if (canBreakFragileBlocks()) {
 			BlockState state = getWorld().getBlockState(result.getBlockPos());
 			if (state.is(ModTags.Blocks.FRAGILE) && getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS)
 					&& UtilVehicleEntity.weaponHasPermissionToBreak(result.getBlockPos(), state, getWorld(), getOwner())) {
                 getWorld().destroyBlock(result.getBlockPos(), true, this);
+                BlockHitResult blockHitResult = checkBlockCollide();
+                if (blockHitResult != null && blockHitResult.getType() == HitResult.Type.BLOCK) {
+                    onHit(blockHitResult);
+                }
 				return;
 			}
         }
@@ -270,8 +283,6 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
             float goalYaw = UtilAngles.getYaw(getDeltaMovement());
             setXRot(goalPitch);
             setYRot(goalYaw);
-            //xRotO = goalPitch;
-            //yRotO = goalYaw;
         }
 	}
 

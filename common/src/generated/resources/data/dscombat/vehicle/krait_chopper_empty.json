@@ -249,7 +249,7 @@
     "armor_damage_threshold": 4.0,
     "assetId": "krait_chopper",
     "base_armor": 60.0,
-    "cameraDistance": 6.0,
+    "cameraDistance": 10.0,
     "crashExplosionRadius": 4.0,
     "cross_sec_area": 8.0,
     "entity_size_xz": 2.8,

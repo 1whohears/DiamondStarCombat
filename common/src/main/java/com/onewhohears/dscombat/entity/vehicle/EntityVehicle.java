@@ -161,8 +161,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	private int groundTicks, hitboxRefreshAttempts, numFlares, hydraulicsFailureTicks;
 	private int missileTicks, trackedTicks;
 	private double lerpX, lerpY, lerpZ;
-	private float landingGearPos, landingGearPosOld, motorRot, wheelRot;
-	private boolean wasInWater;
+	private float landingGearPos, landingGearPosOld, motorRot, wheelRot, previousThrottle;
+	private boolean wasInWater, hadControllingPassenger, wasPlayerOrBotRiding;
 	
 	protected boolean isDriverCameraLocked = false;
 	protected float throttle;
@@ -679,12 +679,20 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void tickThrottle() {
 		if (!isTestMode()) {
+            boolean hasControllingPassenger = hasControllingPassenger();
+            boolean isPlayerOrBotRiding = isPlayerOrBotRiding();
 			if (!isOperational()
-					|| (cutThrottleOnNoPilot() && !hasControllingPassenger())
-					|| (cutThrottleOnNoPassengers() && !isPlayerOrBotRiding())) {
+					|| (cutThrottleOnNoPilot() && !hasControllingPassenger)
+					|| (cutThrottleOnNoPassengers() && !isPlayerOrBotRiding)) {
 				resetControls();
+                inputs.setThrottleOverride(getCurrentThrottle(), this);
+                previousThrottle = 0;
 				return;
 			}
+            if ((!cutThrottleOnNoPilot() && (!hasControllingPassenger || !hadControllingPassenger))
+                    || (!cutThrottleOnNoPassengers() && (!isPlayerOrBotRiding || !wasPlayerOrBotRiding))) {
+                inputs.setThrottleOverride(previousThrottle, this);
+            }
 			if (currentFuel <= 0 || isAllEnginesDamaged()) {
 				throttleToZero();
                 inputs.setThrottleOverride(getCurrentThrottle(), this);
@@ -924,6 +932,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 				flare(controller, consume && consumeFlares);
 			}
 		}
+        hadControllingPassenger = hasControllingPassenger();
+        wasPlayerOrBotRiding = isPlayerOrBotRiding();
+        if (hadControllingPassenger) previousThrottle = getCurrentThrottle();
 	}
 
 	public void openPartsMenu(ServerPlayer player) {

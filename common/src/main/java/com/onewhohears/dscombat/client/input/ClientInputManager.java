@@ -168,7 +168,7 @@ public class ClientInputManager {
         float zeroThrottle;
         if (vehicle.getStats().negativeThrottle) zeroThrottle = 0;
         else zeroThrottle = -1;
-        if (!wasPilot) currentThrottle = zeroThrottle;
+        if (!wasPilot && vehicle.cutThrottleOnNoPilot()) currentThrottle = zeroThrottle;
         if (ActionInput.isWindowActive()) {
             // Use vehicle-defined throttle ramp rates for smoother, more stable thrust changes
             float incRate = vehicle.getThrottleIncreaseRate();

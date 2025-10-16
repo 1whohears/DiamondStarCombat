@@ -62,11 +62,13 @@ public class VehicleClientStats extends CustomAnimStats<ObjVehicleModel<EntityVe
 	public HashMap<String, UIPos> getSlotsPos() {
 		if (slotsPos == null) {
 			slotsPos = new HashMap<>();
-			JsonArray isp = getJsonData().get("inventory_slots_pos").getAsJsonArray();
-			for (int i = 0; i < isp.size(); ++i) {
-				JsonObject sp = isp.get(i).getAsJsonObject();
-				slotsPos.put(sp.get("slot_name").getAsString(), new UIPos(sp));
-			}
+            if (getJsonData().has("inventory_slots_pos")) {
+			    JsonArray isp = getJsonData().get("inventory_slots_pos").getAsJsonArray();
+			    for (int i = 0; i < isp.size(); ++i) {
+				    JsonObject sp = isp.get(i).getAsJsonObject();
+				    slotsPos.put(sp.get("slot_name").getAsString(), new UIPos(sp));
+			    }
+            }
 		}
 		return slotsPos;
 	}

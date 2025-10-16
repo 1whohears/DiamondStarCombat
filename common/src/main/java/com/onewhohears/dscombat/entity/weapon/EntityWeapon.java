@@ -26,7 +26,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -266,16 +265,28 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 
 	protected void tickSetAngle() {
-		float goalPitch = UtilAngles.getPitch(getDeltaMovement());
-		float goalYaw = UtilAngles.getYaw(getDeltaMovement());
-		setXRot(Mth.rotLerp(0.5f, getXRot(), goalPitch));
-		setYRot(Mth.rotLerp(0.5f, getYRot(), goalYaw));
+        if (getAge() > getSetAngleTicks()) {
+            float goalPitch = UtilAngles.getPitch(getDeltaMovement());
+            float goalYaw = UtilAngles.getYaw(getDeltaMovement());
+            setXRot(goalPitch);
+            setYRot(goalYaw);
+            //xRotO = goalPitch;
+            //yRotO = goalYaw;
+        }
 	}
+
+    protected int getSetAngleTicks() {
+        return 4;
+    }
 	
 	@Override
 	public void lerpMotion(double x, double y, double z) {
-		
+        if (getAge() > getLerpWaitTicks()) super.lerpMotion(x, y, z);
 	}
+
+    protected int getLerpWaitTicks() {
+        return 4;
+    }
 	
 	@Override
 	public Entity getOwner() {

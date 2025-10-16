@@ -13,6 +13,7 @@ allprojects {
     version = rootProject.mod_version
 
     repositories {
+        mavenLocal()
         maven { url "https://cursemaven.com" }
         maven { url "https://repo.repsy.io/mvn/1whohears/1wholibs" }
         maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }

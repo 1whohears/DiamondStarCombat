@@ -311,7 +311,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 						EntityTurret.ShootType.MARK7, 4.0f, 1.7f)
 				.addIngredient("dscombat:seat", 1)
 				.addIngredientTag("dscombat:aluminum_ingot", 64)
-				.addIngredientTag("dscombat:aluminum_ingot", 56)
+				.addIngredient("minecraft:iron_ingot", 56)
 				.addIngredient("minecraft:tnt", 8)
 				.addRepairCost("minecraft:iron_ingot", 12)
 				.setSortFactor(13)

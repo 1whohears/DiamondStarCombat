@@ -13,8 +13,8 @@
       "tag": "dscombat:aluminum_ingot"
     },
     {
-      "num": 56,
-      "tag": "dscombat:aluminum_ingot"
+      "item": "minecraft:iron_ingot",
+      "num": 56
     },
     {
       "item": "minecraft:tnt",

@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.init.ModTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
@@ -21,6 +22,8 @@ public class BlockTagGen extends BlockTagsProvider {
 		tag(ModTags.Blocks.FRAGILE)
 			.addOptionalTag(Tags.Blocks.GLASS_PANES.location())
 			.addOptionalTag(Tags.Blocks.GLASS.location())
+                .addOptionalTag(ResourceLocation.tryParse("c:glass_blocks"))
+                .addOptionalTag(ResourceLocation.tryParse("c:glass_panes"))
 			.addTag(BlockTags.CANDLES)
 			.add(Blocks.LILY_PAD)
 			.add(Blocks.COCOA)

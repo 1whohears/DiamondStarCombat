@@ -8,6 +8,14 @@
       "id": "#forge:glass",
       "required": false
     },
+    {
+      "id": "#c:glass_blocks",
+      "required": false
+    },
+    {
+      "id": "#c:glass_panes",
+      "required": false
+    },
     "#minecraft:candles",
     "minecraft:lily_pad",
     "minecraft:cocoa",

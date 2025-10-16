@@ -7,11 +7,12 @@
   "client": [
     "GameRendererMixin",
     "ItemInHandRendererMixin",
-    "KeyMappingMixin",
     "KeyboardInputMixin",
+    "KeyMappingMixin",
     "PlayerRendererMixin"
   ],
   "mixins": [
+    "AbstractContainerMenuMixin",
     "LivingEntityMixin"
   ],
   "injectors": {

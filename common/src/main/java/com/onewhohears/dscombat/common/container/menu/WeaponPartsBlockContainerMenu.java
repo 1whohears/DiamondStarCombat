@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.common.container.menu;
 
 import com.onewhohears.dscombat.block.entity.WeaponPartsBlockEntity;
-import com.onewhohears.dscombat.block.entity.WeaponsBlockEntity;
 import com.onewhohears.dscombat.common.container.slot.DisplaySlot;
 import com.onewhohears.dscombat.init.ModContainers;
 import net.minecraft.core.BlockPos;
@@ -11,12 +10,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class WeaponPartsBlockContainerMenu extends AbstractContainerMenu {
 
 	public final Container recipeSlots = new SimpleContainer(16);
-	private WeaponPartsBlockEntity weaponsBlock;
-	private BlockPos pos;
+	private final WeaponPartsBlockEntity weaponsBlock;
+	private final BlockPos pos;
 	private boolean loaded = false;
 
 	public WeaponPartsBlockContainerMenu(int windowId, Container playerInv, WeaponPartsBlockEntity weaponsBlock) {
@@ -37,16 +37,12 @@ public class WeaponPartsBlockContainerMenu extends AbstractContainerMenu {
 	@Override
 	public void slotsChanged(Container inventory) {
 		//System.out.println("SLOTS CHANGED "+inventory);
-		if (this.loaded) {
-			
-		}
 		super.slotsChanged(inventory);
 	}
 
 	@Override
-	public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-		ItemStack stack = ItemStack.EMPTY;
-		return stack;
+	public @NotNull ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        return ItemStack.EMPTY;
 	}
 
 	@Override

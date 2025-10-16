@@ -11,12 +11,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class VehicleBlockContainerMenu extends AbstractContainerMenu {
 	
 	public final Container recipeSlots = new SimpleContainer(18);
-	private VehicleBlockEntity aircraftBlock;
-	private BlockPos pos;
+	private final VehicleBlockEntity aircraftBlock;
+	private final BlockPos pos;
 	private boolean loaded = false;
 	
 	public VehicleBlockContainerMenu(int windowId, Container playerInv, VehicleBlockEntity aircraftBlock) {
@@ -40,9 +41,8 @@ public class VehicleBlockContainerMenu extends AbstractContainerMenu {
 	}
 
 	@Override
-	public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-		ItemStack stack = ItemStack.EMPTY;
-		return stack;
+	public @NotNull ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        return ItemStack.EMPTY;
 	}
 
 	@Override

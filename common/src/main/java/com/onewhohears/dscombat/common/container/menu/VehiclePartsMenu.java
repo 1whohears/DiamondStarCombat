@@ -15,10 +15,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class VehiclePartsMenu extends AbstractContainerMenu {
 	
-	private Container playerInv;
+	private final Container playerInv;
 	private Container planeInv;
 	private VehicleClientStats clientData;
 	
@@ -70,20 +71,22 @@ public class VehiclePartsMenu extends AbstractContainerMenu {
 	}
 	
 	@Override
-	public ItemStack quickMoveStack(Player player, int index) {
+	public @NotNull ItemStack quickMoveStack(Player player, int index) {
 		if (planeInv == null) return ItemStack.EMPTY;
 		Slot slot = getSlot(index);
-		if (slot == null || !slot.hasItem()) return ItemStack.EMPTY;
+		if (!slot.hasItem()) return ItemStack.EMPTY;
 		ItemStack stack1 = slot.getItem();
 		ItemStack stack = stack1.copy();
 		int planeSize = planeInv.getContainerSize();
-		if (index < planeSize) { if (!moveItemStackTo(stack1, 
-				planeSize, slots.size(), true)) {
-			return ItemStack.EMPTY;
-		} } else if (index >= planeSize) { if (!moveItemStackTo(stack1, 
-				0, planeSize, false)) {
-			return ItemStack.EMPTY;
-		} }
+		if (index < planeSize) {
+            if (!moveItemStackTo(stack1, planeSize, slots.size(), true)) {
+			    return ItemStack.EMPTY;
+		    }
+        } else {
+            if (!moveItemStackTo(stack1, 0, planeSize, false)) {
+			    return ItemStack.EMPTY;
+		    }
+        }
 		if (stack1.isEmpty()) slot.set(ItemStack.EMPTY);
 		else slot.setChanged();
 		return stack;

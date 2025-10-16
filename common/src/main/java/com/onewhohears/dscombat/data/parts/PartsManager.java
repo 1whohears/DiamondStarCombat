@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.data.parts.instance.*;
@@ -103,11 +104,15 @@ public class PartsManager {
 				super.setItem(i, stack);
 			}
 			@Override
-			public ItemStack removeItem(int i, int count) {
+			public @NotNull ItemStack removeItem(int i, int count) {
 				//System.out.println("REMOVE ITEM "+i);
 				if (readData && !parent.isClientSide()) inventoryRemoveItem(i, count);
 				return super.removeItem(i, count);
-			}			
+			}
+            @Override
+            public int getMaxStackSize() {
+                return 1;
+            }
 		};
 		for (int i = 0; i < slots.size(); ++i) if (slots.get(i).filled()) {
 			inventory.setItem(i, slots.get(i).getPartData().getNewItemStack());

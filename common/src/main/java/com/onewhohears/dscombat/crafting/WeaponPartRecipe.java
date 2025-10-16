@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.init.ModBlocks;
+import com.onewhohears.onewholibs.data.crafting.IngredientStack;
 import com.onewhohears.onewholibs.util.UtilItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,16 +17,19 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class WeaponPartRecipe implements Recipe<Inventory> {
 
 	private final ResourceLocation id;
 	private final String presetId;
+    @Nullable private NonNullList<Ingredient> ingredients;
 
-    public WeaponPartRecipe(ResourceLocation id, String presetId) {
+    public WeaponPartRecipe(ResourceLocation id, String presetId, @Nullable NonNullList<Ingredient> ingredients) {
         this.id = id;
         this.presetId = presetId;
+        this.ingredients = ingredients;
     }
 	
 	@Override
@@ -34,12 +38,12 @@ public class WeaponPartRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack assemble(Inventory container) {
+	public @NotNull ItemStack assemble(Inventory container) {
 		return getOutput();
 	}
 	
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(Inventory inventory) {
+	public @NotNull NonNullList<ItemStack> getRemainingItems(Inventory inventory) {
 		return UtilItem.getRemainingItemsStackIngredients(inventory, getIngredients());
 	}
 
@@ -49,27 +53,27 @@ public class WeaponPartRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack getResultItem() {
+	public @NotNull ItemStack getResultItem() {
 		return getOutput().copy();
 	}
 
 	@Override
-	public ItemStack getToastSymbol() {
+	public @NotNull ItemStack getToastSymbol() {
 		return new ItemStack(ModBlocks.WEAPON_PARTS_BLOCK.get());
 	}
 	
 	@Override
-	public ResourceLocation getId() {
+	public @NotNull ResourceLocation getId() {
 		return id;
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
 	}
 
 	@Override
-	public RecipeType<?> getType() {
+	public @NotNull RecipeType<?> getType() {
 		return Type.INSTANCE;
 	}
 	
@@ -87,12 +91,15 @@ public class WeaponPartRecipe implements Recipe<Inventory> {
 		if (me == null || you == null) return 0;
 		return me.compare(you);
 	}
-	
-	public NonNullList<Ingredient> getIngredients() {
-		PartStats preset = getPartData();
-		if (preset == null) return NonNullList.create();
-		return preset.getIngredients();
-	}
+
+    public @NotNull NonNullList<Ingredient> getIngredients() {
+        if (ingredients == null) {
+            PartStats preset = getPartData();
+            if (preset == null) ingredients = NonNullList.create();
+            else ingredients = preset.getIngredients();
+        }
+        return ingredients;
+    }
 	
 	public ItemStack getOutput() {
 		PartStats preset = getPartData();
@@ -119,19 +126,24 @@ public class WeaponPartRecipe implements Recipe<Inventory> {
 		public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(DSCombatMod.MODID, "weapon_parts_workbench");
         @Override
-		public WeaponPartRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
-			String presetId = serializedRecipe.get("presetId").getAsString();
-			return new WeaponPartRecipe(recipeId, presetId);
-		}
-		@Override
-		public @Nullable WeaponPartRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-			String presetId = buffer.readUtf();
-			return new WeaponPartRecipe(recipeId, presetId);
-		}
-		@Override
-		public void toNetwork(FriendlyByteBuf buffer, WeaponPartRecipe recipe) {
-			buffer.writeUtf(recipe.presetId);
-		}
+        public @NotNull WeaponPartRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
+            String presetId = serializedRecipe.get("presetId").getAsString();
+            return new WeaponPartRecipe(recipeId, presetId, null);
+        }
+        @Override
+        public @NotNull WeaponPartRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+            String presetId = buffer.readUtf();
+            int size = buffer.readInt();
+            NonNullList<Ingredient> ingredients = NonNullList.create();
+            for (int i = 0; i < size; ++i) ingredients.add(IngredientStack.fromNetwork(buffer));
+            return new WeaponPartRecipe(recipeId, presetId, ingredients);
+        }
+        @Override
+        public void toNetwork(FriendlyByteBuf buffer, WeaponPartRecipe recipe) {
+            buffer.writeUtf(recipe.presetId);
+            buffer.writeInt(recipe.getIngredients().size());
+            for (Ingredient i : recipe.getIngredients()) IngredientStack.toNetwork(buffer, i);
+        }
 	}
 
 }

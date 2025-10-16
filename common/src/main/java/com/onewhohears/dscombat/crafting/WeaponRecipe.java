@@ -1,17 +1,12 @@
 package com.onewhohears.dscombat.crafting;
 
-import com.mojang.logging.LogUtils;
-import com.onewhohears.onewholibs.data.crafting.IngredientStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.init.ModBlocks;
+import com.onewhohears.onewholibs.data.crafting.IngredientStack;
 import com.onewhohears.onewholibs.util.UtilItem;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +17,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.slf4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class WeaponRecipe implements Recipe<Inventory> {
 	
@@ -129,7 +125,6 @@ public class WeaponRecipe implements Recipe<Inventory> {
 	public static class Serializer implements RecipeSerializer<WeaponRecipe> {
 		public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(DSCombatMod.MODID, "weapon_workbench");
-        private static final Logger LOGGER = LogUtils.getLogger();
         @Override
 		public @NotNull WeaponRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
 			String presetId = serializedRecipe.get("presetId").getAsString();
@@ -140,25 +135,14 @@ public class WeaponRecipe implements Recipe<Inventory> {
 			String presetId = buffer.readUtf();
             int size = buffer.readInt();
             NonNullList<Ingredient> ingredients = NonNullList.create();
-            LOGGER.info("RECEIVING WEAPON RECIPE "+presetId);
-            for (int i = 0; i < size; ++i) {
-                IngredientStack is = IngredientStack.fromNetwork(buffer);
-                LOGGER.info("cost = "+is.cost);
-                ingredients.add(is);
-            }
+            for (int i = 0; i < size; ++i) ingredients.add(IngredientStack.fromNetwork(buffer));
 			return new WeaponRecipe(recipeId, presetId, ingredients);
 		}
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, WeaponRecipe recipe) {
 			buffer.writeUtf(recipe.presetId);
             buffer.writeInt(recipe.getIngredients().size());
-            LOGGER.info("SENDING WEAPON RECIPE "+recipe.presetId);
-            for (Ingredient i : recipe.getIngredients()) {
-                IngredientStack.toNetwork(buffer, i);
-                if (i instanceof IngredientStack is) {
-                    LOGGER.info("cost = "+is.cost);
-                }
-            }
+            for (Ingredient i : recipe.getIngredients()) IngredientStack.toNetwork(buffer, i);
 		}
 	}
 

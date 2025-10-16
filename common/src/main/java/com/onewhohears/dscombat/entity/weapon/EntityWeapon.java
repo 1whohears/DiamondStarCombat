@@ -222,7 +222,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
 	public void kill() {
-		if (!isClientSide()) {
+		if (!isClientSide() && tickCount > 4) {
             PacketHandler.sendToTrackers(new ToClientWeaponImpact(this, position()), this);
         }
 		super.kill();

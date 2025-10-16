@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.parts;
 
+import com.onewhohears.dscombat.client.event.ClientInputEventHandlers;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
@@ -113,7 +114,9 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 			if (vehicle != null && !vehicle.hasOwner()) {
 				vehicle.setOwner(passenger);
 			}
-		}
+		} else {
+            ClientInputEventHandlers.onEntityMountVehicle(passenger);
+        }
 		super.addPassenger(passenger);
 	}
 	

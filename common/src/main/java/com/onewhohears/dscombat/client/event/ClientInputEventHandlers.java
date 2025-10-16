@@ -28,7 +28,11 @@ public class ClientInputEventHandlers {
 
     public static void onEntityDismountVehicle(Entity entity) {
         if (!entity.equals(Minecraft.getInstance().player)) return;
-        DSCClientInputs.setClientMountTime(System.currentTimeMillis());
         DSCClientInputs.leanNot();
+    }
+
+    public static void onEntityMountVehicle(Entity entity) {
+        if (!entity.equals(Minecraft.getInstance().player)) return;
+        DSCClientInputs.setClientMountTime(System.currentTimeMillis());
     }
 }

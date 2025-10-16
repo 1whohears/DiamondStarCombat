@@ -1,10 +1,12 @@
 package com.onewhohears.dscombat.init;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.DSCombatMod;
 
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Registry;
@@ -26,7 +28,18 @@ public class ModVillagers {
 	
 	public static final RegistrySupplier<PoiType> AIRCRAFT_POI = POI_TYPES.register("aircraft_workbench_poi", 
 			() -> new PoiType(getBlockStates(ModBlocks.AIRCRAFT_BLOCK.get()), 1, 1));
-	
+
+    public static RegistrySupplier<PoiType> registerPoi(String name, Supplier<Block> block, int workers, int range) {
+        RegistrySupplier<PoiType> type = POI_TYPES.register(name, () -> new PoiType(getBlockStates(block.get()), workers, range));
+        platformRegisterPoiType(name, block, workers, range);
+        return type;
+    }
+
+    @ExpectPlatform
+    public static void platformRegisterPoiType(String name, Supplier<Block> block, int workers, int range) {
+        throw new AssertionError();
+    }
+
 	public static final RegistrySupplier<VillagerProfession> WEAPONS_ENGINEER = VILLAGER_PROS.register("weapons_engineer", 
 			() -> new VillagerProfession("weapons_engineer", 
 					site -> site.is(WEAPON_POI.getId()),

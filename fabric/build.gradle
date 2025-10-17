@@ -80,7 +80,7 @@ dependencies {
 
     implementation 'com.electronwill.night-config:core:3.6.5'
     implementation 'com.electronwill.night-config:toml:3.6.5'
-    modApi "net.minecraftforge:forgeconfigapiport-fabric:${rootProject.forgeconfigapiport_version}"
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forgeconfigapiport_version}"
 
     modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_fabric_id}"
 

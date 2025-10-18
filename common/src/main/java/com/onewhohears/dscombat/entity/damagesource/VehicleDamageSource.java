@@ -5,8 +5,11 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import com.onewhohears.onewholibs.util.UtilParse;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -18,7 +21,7 @@ public class VehicleDamageSource extends DamageSource {
 	public final EntityVehicle aircraft;
 	
 	public VehicleDamageSource(String type, EntityVehicle aircraft) {
-		super(type);
+		super((Holder<DamageType>) DamageTypes.EXPLOSION);
 		this.aircraft = aircraft;
 	}
 	
@@ -27,11 +30,11 @@ public class VehicleDamageSource extends DamageSource {
 	}
 	
 	public static DamageSource fall(EntityVehicle aircraft) {
-		return new VehicleDamageSource(getFallDeath(), aircraft).setExplosion();
+		return new VehicleDamageSource(getFallDeath(), aircraft);
 	}
 	
 	public static DamageSource collide(EntityVehicle aircraft) {
-		return new VehicleDamageSource(getCollideDeath(), aircraft).setExplosion();
+		return new VehicleDamageSource(getCollideDeath(), aircraft);
 	}
 	
 	public static final String[] roadKillDeaths = {"roadkill1","roadkill2"};
@@ -52,9 +55,9 @@ public class VehicleDamageSource extends DamageSource {
 	}
 	
 	@Override
-	public Component getLocalizedDeathMessage(LivingEntity killed) {
+	public @NotNull Component getLocalizedDeathMessage(LivingEntity killed) {
 		Entity killer = aircraft.getControllingPassenger();
-		String s = "death.attack."+DSCombatMod.MODID+"."+msgId;
+		String s = "death.attack."+DSCombatMod.MODID+"."+getMsgId();
 		if (killer == null) {
 			return UtilMCText.translatable(s, killed.getDisplayName());
 		} else if (killed.equals(killer)) {

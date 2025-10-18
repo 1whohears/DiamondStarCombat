@@ -5,14 +5,14 @@ import com.onewhohears.dscombat.DSCombatMod;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.Registries;
 
 public class ModParticles {
 	
 	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(
-            DSCombatMod.MODID, Registry.PARTICLE_TYPE_REGISTRY);
+            DSCombatMod.MODID, Registries.PARTICLE_TYPE);
 	
     @ExpectPlatform
     public static SimpleParticleType createParticleType(boolean alwaysSpawn) {

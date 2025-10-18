@@ -6,14 +6,14 @@ import dev.architectury.core.fluid.ArchitecturyFluidAttributes;
 import dev.architectury.core.fluid.SimpleArchitecturyFluidAttributes;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 
 public class ModFluids {
 
-    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(DSCombatMod.MODID, Registry.FLUID_REGISTRY);
+    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(DSCombatMod.MODID, Registries.FLUID);
 
     public static RegistrySupplier<FlowingFluid> getOilFluidSource() {
         return OIL_FLUID_SOURCE;

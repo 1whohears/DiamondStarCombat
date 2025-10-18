@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.HudLayoutManager;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
@@ -10,6 +9,7 @@ import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import net.minecraft.client.gui.Gui;
 import org.jetbrains.annotations.NotNull;
 
@@ -475,7 +475,7 @@ public class ModernHudOverlay extends VehicleOverlayComponent {
         float pxPerDeg = 2.0f;
         ps.pushPose();
         ps.translate(x + w / 2.0, y + h / 2.0, 0);
-        ps.mulPose(Vector3f.ZP.rotationDegrees(-roll));
+        ps.mulPose(Vec3f.ZP.rotationDegrees(-roll).convert());
         int bandW = w - 10;
         int cy = (int)(pitch * pxPerDeg);
         // horizon line

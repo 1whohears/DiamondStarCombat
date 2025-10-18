@@ -15,7 +15,7 @@ import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
 
 import java.util.function.Supplier;
@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 public class ModItems {
 	
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(
-            DSCombatMod.MODID, Registry.ITEM_REGISTRY);
+            DSCombatMod.MODID, Registries.ITEM);
 
     @ExpectPlatform
     public static CreativeModeTab createTab(String name, Supplier<RegistrySupplier<? extends Item>> displayItem) {

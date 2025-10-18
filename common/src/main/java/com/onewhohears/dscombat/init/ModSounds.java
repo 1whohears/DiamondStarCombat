@@ -4,14 +4,14 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.data.sound.DSCSoundDefinitionGen;
 
 import dev.architectury.registry.registries.DeferredRegister;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
 public class ModSounds {
 	
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(
-            DSCombatMod.MODID, Registry.SOUND_EVENT_REGISTRY);
+            DSCombatMod.MODID, Registries.SOUND_EVENT);
 	
 	public static final SoundEvent ORANGE_TESLA = registerSoundEvent("orange_tesla", "music/orange_tesla", "sounds.dscombat.orange_tesla", true, 1);
 	public static final SoundEvent MISSILE_KNOWS_WHERE = registerSoundEvent("missile_knows_where", "music/missile_knows_where", "sounds.dscombat.missile_knows_where", true, 1);

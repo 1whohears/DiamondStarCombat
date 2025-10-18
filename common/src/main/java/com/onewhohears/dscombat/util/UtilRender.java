@@ -2,8 +2,6 @@ package com.onewhohears.dscombat.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
 import com.onewhohears.onewholibs.util.math.Mat3f;
 import com.onewhohears.onewholibs.util.math.Mat4f;
 import com.onewhohears.onewholibs.util.math.Vec3f;
@@ -12,6 +10,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class UtilRender {
 

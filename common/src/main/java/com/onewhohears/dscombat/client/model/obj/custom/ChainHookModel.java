@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.client.model.obj.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.onewhohears.dscombat.client.model.obj.ObjPartModel;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
@@ -13,6 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
 
 public class ChainHookModel extends ObjPartModel<EntityChainHook> {
 	

@@ -12,7 +12,7 @@ import com.onewhohears.onewholibs.util.UtilEntity;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -20,7 +20,7 @@ import net.minecraft.world.inventory.MenuType;
 public class ModContainers {
 	
 	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(
-            DSCombatMod.MODID, Registry.MENU_REGISTRY);
+            DSCombatMod.MODID, Registries.MENU);
 	
 	public static final RegistrySupplier<MenuType<VehiclePartsMenu>> VEHICLE_PARTS_MENU =
 			register("vehicle_parts_menu", MenuRegistry.ofExtended(

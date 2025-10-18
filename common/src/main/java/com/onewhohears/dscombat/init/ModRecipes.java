@@ -5,17 +5,16 @@ import com.onewhohears.dscombat.crafting.*;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 
 public class ModRecipes {
 	
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPES = DeferredRegister.create(
-            DSCombatMod.MODID, Registry.RECIPE_SERIALIZER_REGISTRY);
+            DSCombatMod.MODID, Registries.RECIPE_SERIALIZER);
 	
-	public static final RegistrySupplier<SimpleRecipeSerializer<WeaponPartLoadRecipe>> WEAPON_PART_LOAD = RECIPES.register("weapon_part_load_recipe", 
-			() -> new SimpleRecipeSerializer<>(WeaponPartLoadRecipe::new));
+	public static final RegistrySupplier<SimpleRecipeSerializer<WeaponPartLoadRecipe>> WEAPON_PART_LOAD = RECIPES.register("weapon_part_load_recipe",
+            () -> new SimpleRecipeSerializer<>(WeaponPartLoadRecipe::new));
 	public static final RegistrySupplier<SimpleRecipeSerializer<WeaponPartUnloadRecipe>> WEAPON_PART_UNLOAD = RECIPES.register("weapon_part_unload_recipe", 
 			() -> new SimpleRecipeSerializer<>(WeaponPartUnloadRecipe::new));
 	public static final RegistrySupplier<SimpleRecipeSerializer<FuelTankLoadRecipe>> FUEL_TANK_LOAD = RECIPES.register("fuel_tank_load_recipe", 

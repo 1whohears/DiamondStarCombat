@@ -9,7 +9,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -19,9 +19,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ModVillagers {
 	
 	public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(
-            DSCombatMod.MODID, Registry.POINT_OF_INTEREST_TYPE_REGISTRY);
+            DSCombatMod.MODID, Registries.POINT_OF_INTEREST_TYPE);
 	public static final DeferredRegister<VillagerProfession> VILLAGER_PROS = DeferredRegister.create(
-            DSCombatMod.MODID, Registry.VILLAGER_PROFESSION_REGISTRY);
+            DSCombatMod.MODID, Registries.VILLAGER_PROFESSION);
 	
 	public static final RegistrySupplier<PoiType> WEAPON_POI = POI_TYPES.register("weapon_workbench_poi",
 			() -> new PoiType(getBlockStates(ModBlocks.WEAPONS_BLOCK.get()), 1, 1));

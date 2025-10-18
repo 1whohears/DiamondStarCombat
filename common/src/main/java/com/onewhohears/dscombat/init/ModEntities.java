@@ -17,7 +17,7 @@ import com.onewhohears.dscombat.entity.weapon.*;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +26,7 @@ import net.minecraft.world.entity.MobCategory;
 public class ModEntities {
 	
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(
-            DSCombatMod.MODID, Registry.ENTITY_TYPE_REGISTRY);
+            DSCombatMod.MODID, Registries.ENTITY_TYPE);
 
 	public static final RegistrySupplier<EntityType<EntityWindTunnel>> WIND_TUNNEL = ENTITIES.register("wind_tunnel",
 			() -> createEntityType(EntityWindTunnel::new, EntityDimensions.fixed(16, 8)));

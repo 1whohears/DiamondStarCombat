@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.init;
 
 import com.onewhohears.dscombat.DSCombatMod;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -24,7 +24,7 @@ public class ModTags {
 		public static final TagKey<Block> VEHICLE_TRAMPLE = tag("vehicle_trample");
 		private static void init() {}
         public static TagKey<Block> tag(String name) {
-            return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(DSCombatMod.MODID, name));
         }
 	}
 	
@@ -60,7 +60,7 @@ public class ModTags {
 		public static final TagKey<EntityType<?>> TICKET_BOOKER = tag("ticket_booker");
 		private static void init() {}
         public static TagKey<EntityType<?>> tag(String name) {
-        	return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
+        	return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(DSCombatMod.MODID, name));
         }
 	}
 	
@@ -91,13 +91,13 @@ public class ModTags {
         public static final TagKey<Item> FABRIC_OIL_BUCKET = fabricTag("buckets/oil");
 		private static void init() {}
 		public static TagKey<Item> tag(String name) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(DSCombatMod.MODID, name));
         }
 		public static TagKey<Item> forgeTag(String name) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge", name));
+            return TagKey.create(Registries.ITEM, new ResourceLocation("forge", name));
         }
         public static TagKey<Item> fabricTag(String name) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", name));
+            return TagKey.create(Registries.ITEM, new ResourceLocation("c", name));
         }
 	}
 	
@@ -105,10 +105,10 @@ public class ModTags {
 		public static final TagKey<Fluid> OIL = tag("oil");
         public static final TagKey<Fluid> FORGE_OIL = forgeTag("oil");
 		public static TagKey<Fluid> tag(String name) {
-            return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation(DSCombatMod.MODID, name));
+            return TagKey.create(Registries.FLUID, new ResourceLocation(DSCombatMod.MODID, name));
 		}
 		public static TagKey<Fluid> forgeTag(String name) {
-            return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation("forge", name));
+            return TagKey.create(Registries.FLUID, new ResourceLocation("forge", name));
 		}
 	}
 	

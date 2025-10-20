@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import net.minecraft.network.chat.Component;
@@ -32,7 +31,7 @@ public class ItemCreativeWand extends Item implements VehicleInteractItem {
 	 * @param translatableTooltips translatable strings for info about this wand
 	 */
 	public ItemCreativeWand(Consumer<EntityVehicle> onServerInteract, String... translatableTooltips) {
-		super(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1));
+		super(new Item.Properties().stacksTo(1));
 		this.translatableTooltips = translatableTooltips;
 		this.onServerInteract = onServerInteract;
 	}

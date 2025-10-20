@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -15,7 +14,7 @@ public class ItemRepairTool extends Item implements VehicleInteractItem {
 	public final float repair;
 	
 	public ItemRepairTool(int durability, float repair) {
-		super(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1).durability(durability));
+		super(new Item.Properties().stacksTo(1).durability(durability));
 		this.repair = repair;
 	}
 

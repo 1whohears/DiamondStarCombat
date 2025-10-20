@@ -15,17 +15,21 @@ import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresetGenerator
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.client.WeaponClientPresetGenerator;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.forge.DataSerializersImpl;
 import com.onewhohears.dscombat.init.forge.ModArgumentTypesForge;
 import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.utils.Env;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.data.loading.DatagenModLoader;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -45,6 +49,7 @@ public class DSCombatModForge {
         loadingContext.registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
 
         modEventBus.addListener(this::onGatherData);
+        modEventBus.addListener(this::buildCreativeModeTabs);
 
         DSCombatMod.init();
         if (Platform.getEnvironment() == Env.CLIENT && !DatagenModLoader.isRunningDataGen()) {
@@ -76,6 +81,14 @@ public class DSCombatModForge {
             generator.addProvider(true, new PartClientPresetGenerator(generator));
             generator.addProvider(true, new WeaponClientPresetGenerator(generator));
         }
+    }
+
+    private void buildCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
+        ModItems.CREATIVE_TAB_MAP.forEach((tab, items) -> {
+            if (event.getTabKey() == tab) {
+                items.forEach(event::accept);
+            }
+        });
     }
 
     @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

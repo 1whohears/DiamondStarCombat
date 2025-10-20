@@ -11,6 +11,7 @@ import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.dscombat.util.UtilPresetParse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -41,11 +42,11 @@ public class ItemPart extends Item {
 	}
 	
 	public static Properties partProps(int stackSize) {
-		return new Item.Properties().tab(ModItems.PARTS).stacksTo(stackSize);
+		return new Item.Properties().stacksTo(stackSize);
 	}
 	
 	public static Properties itemProps(int stackSize) {
-		return new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(stackSize);
+		return new Item.Properties().stacksTo(stackSize);
 	}
 	
 	@Override
@@ -63,7 +64,7 @@ public class ItemPart extends Item {
 		items.add(stats.createFilledPartInstance("").getNewItemStack());
 	}
 	
-	public CreativeModeTab getCreativeTab() {
+	public ResourceKey<CreativeModeTab> getCreativeTab() {
 		return ModItems.PARTS;
 	}
 

@@ -4,9 +4,11 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.fabric.ClientEventHandlersFabric;
 import com.onewhohears.dscombat.common.event.fabric.CommonEventHandlersFabric;
+import com.onewhohears.dscombat.init.ModItems;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraftforge.ForgeConfigAPIPort;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.configured.ForgeConfigHelper;
@@ -19,6 +21,7 @@ public class DSCombatModFabric implements ModInitializer {
     public void onInitialize() {
         DSCombatMod.init();
         CommonEventHandlersFabric.init();
+        itemGroups();
         if (Platform.getEnvironment() == Env.CLIENT) {
             DSCombatMod.clientInit();
             ClientEventHandlersFabric.init();
@@ -26,5 +29,13 @@ public class DSCombatModFabric implements ModInitializer {
         ModLoadingContext.registerConfig(MODID, ModConfig.Type.CLIENT, Config.clientSpec);
         ModLoadingContext.registerConfig(MODID, ModConfig.Type.COMMON, Config.commonSpec);
         ModLoadingContext.registerConfig(MODID, ModConfig.Type.SERVER, Config.serverSpec);
+    }
+
+    public static void itemGroups() {
+        ModItems.CREATIVE_TAB_MAP.forEach((tab, items) -> {
+            ItemGroupEvents.modifyEntriesEvent(tab).register(entries -> {
+                items.forEach(item -> entries.accept(item.get()));
+            });
+        });
     }
 }

@@ -55,7 +55,7 @@ public class ItemVehicle extends Item implements ObjModelItem {
 	private final String defaultPreset;
 	
 	public ItemVehicle(String defaultPreset) {
-		super(new Item.Properties().tab(ModItems.VEHICLES).stacksTo(1));
+		super(new Item.Properties().stacksTo(1));
 		this.defaultPreset = defaultPreset;
 	}
 	

@@ -91,7 +91,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem 
 	}
 	
 	public static Properties weaponProps(int stackSize) {
-		return new Item.Properties().tab(ModItems.WEAPONS).stacksTo(stackSize);
+		return new Item.Properties().stacksTo(stackSize);
 	}
 
 	@Override

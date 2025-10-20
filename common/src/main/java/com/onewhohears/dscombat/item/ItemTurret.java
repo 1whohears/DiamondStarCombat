@@ -15,6 +15,7 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +68,7 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
 	}
 	
 	@Override
-	public CreativeModeTab getCreativeTab() {
+	public ResourceKey<CreativeModeTab> getCreativeTab() {
 		return ModItems.WEAPON_PARTS;
 	}
 

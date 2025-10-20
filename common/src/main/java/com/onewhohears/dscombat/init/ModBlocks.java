@@ -8,6 +8,7 @@ import dev.architectury.core.block.ArchitecturyLiquidBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -24,7 +25,7 @@ public class ModBlocks {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(DSCombatMod.MODID, Registries.BLOCK);
 	
     private static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> block,
-                                                                       CreativeModeTab tab) {
+                                                                       ResourceKey<CreativeModeTab> tab) {
         RegistrySupplier<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, tab);
         return toReturn;
@@ -32,8 +33,10 @@ public class ModBlocks {
 
     private static <T extends Block> RegistrySupplier<Item> registerBlockItem(String name,
                                                                               RegistrySupplier<T> block,
-                                                                              CreativeModeTab tab) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+                                                                              ResourceKey<CreativeModeTab> tab) {
+        Supplier<Item> blockItem = () -> new BlockItem(block.get(), new Item.Properties());
+        ModItems.addTabItem(tab, blockItem);
+        return ModItems.ITEMS.register(name, blockItem);
     }
 	
 	public static final RegistrySupplier<Block> WEAPONS_BLOCK = registerBlock("weapons_block",

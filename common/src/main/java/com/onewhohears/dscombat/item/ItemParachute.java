@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
@@ -20,13 +19,13 @@ import org.jetbrains.annotations.Nullable;
 public class ItemParachute extends Item {
 
 	public ItemParachute() {
-		super(new Item.Properties().tab(ModItems.DSC_ITEMS).stacksTo(1));
+		super(new Item.Properties().stacksTo(1));
 	}
 	
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		if (player.isOnGround()) return InteractionResultHolder.fail(itemstack);
+		if (player.onGround()) return InteractionResultHolder.fail(itemstack);
 		if (!level.isClientSide) createParachute((ServerLevel)level, player, itemstack);
 		else return InteractionResultHolder.pass(itemstack);
 		player.awardStat(Stats.ITEM_USED.get(this));

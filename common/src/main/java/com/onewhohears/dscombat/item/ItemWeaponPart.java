@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -83,7 +84,7 @@ public class ItemWeaponPart extends ItemPart implements ObjModelItem {
 	}
 	
 	@Override
-	public CreativeModeTab getCreativeTab() {
+	public ResourceKey<CreativeModeTab> getCreativeTab() {
 		return ModItems.WEAPON_PARTS;
 	}
 

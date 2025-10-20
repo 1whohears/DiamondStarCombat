@@ -93,7 +93,7 @@ public class ModSounds {
 	}
 
 	public static SoundEvent registerSoundEvent(String name, String subtitle, float volume, String... paths) {
-		SoundEvent soundEvent = new SoundEvent(new ResourceLocation(DSCombatMod.MODID, name));
+		SoundEvent soundEvent = SoundEvent.createVariableRangeEvent(new ResourceLocation(DSCombatMod.MODID, name));
 		SOUND_EVENTS.register(name, () -> soundEvent);
 		if (subtitle == null) subtitle = "";
 		DSCSoundDefinitionGen.registerSound(soundEvent, subtitle, volume, paths);
@@ -101,7 +101,7 @@ public class ModSounds {
 	}
 
 	public static SoundEvent registerSoundEvent(String name, String path, String subtitle, boolean stream, float volume) {
-		SoundEvent soundEvent = new SoundEvent(new ResourceLocation(DSCombatMod.MODID, name));
+		SoundEvent soundEvent = SoundEvent.createVariableRangeEvent(new ResourceLocation(DSCombatMod.MODID, name));
 		SOUND_EVENTS.register(name, () -> soundEvent);
 		if (path != null) {
 			if (subtitle == null) subtitle = "";

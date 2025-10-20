@@ -22,6 +22,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.flag.FeatureFlagSet;
 
 public class ModEntities {
 	
@@ -142,12 +143,12 @@ public class ModEntities {
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, 
-        		true, ImmutableSet.of(), size, 5, 3);
+        		true, ImmutableSet.of(), size, 5, 3, FeatureFlagSet.of());
     }
 	
 	private static <T extends Entity> EntityType<T> createEntityTypeFar(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, 
-        		true, ImmutableSet.of(), size, 16, 3);
+        		true, ImmutableSet.of(), size, 16, 3, FeatureFlagSet.of());
     }
 	
 	private static <T extends Entity> EntityType<T> createVehicleType(EntityType.EntityFactory<T> factory) {

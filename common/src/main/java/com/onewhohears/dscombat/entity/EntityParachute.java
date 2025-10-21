@@ -4,6 +4,7 @@ import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -96,7 +97,7 @@ public class EntityParachute extends Entity implements TrampleHandler {
 	}
 
 	@Override
-	public @NotNull Packet<?> getAddEntityPacket() {
+	public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
 	}
 

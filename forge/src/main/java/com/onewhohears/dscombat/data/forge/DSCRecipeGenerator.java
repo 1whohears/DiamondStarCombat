@@ -8,7 +8,7 @@ import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -19,12 +19,12 @@ import java.util.function.Consumer;
 
 public class DSCRecipeGenerator extends RecipeProvider {
 
-	public DSCRecipeGenerator(DataGenerator pGenerator) {
-		super(pGenerator);
+	public DSCRecipeGenerator(PackOutput output) {
+		super(output);
 	}
 
 	@Override
-	protected void buildCraftingRecipes(@NotNull Consumer<FinishedRecipe> finishedRecipeConsumer) {
+	protected void buildRecipes(@NotNull Consumer<FinishedRecipe> finishedRecipeConsumer) {
 		genAircraftRecipes(finishedRecipeConsumer);
 		genWeaponRecipes(finishedRecipeConsumer);
 		genWeaponPartRecipes(finishedRecipeConsumer);

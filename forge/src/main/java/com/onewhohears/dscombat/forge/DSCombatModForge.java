@@ -21,11 +21,14 @@ import com.onewhohears.dscombat.item.FillableItemCategory;
 import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.utils.Env;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.data.loading.DatagenModLoader;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -38,6 +41,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Mod(DSCombatMod.MODID)
 public class DSCombatModForge {
@@ -64,21 +68,24 @@ public class DSCombatModForge {
 
     private void onGatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
+        ExistingFileHelper fileHelper = event.getExistingFileHelper();
         if (event.includeServer()) {
+            PackOutput output = generator.getPackOutput();
+            CompletableFuture<HolderLookup.Provider> completableFuture = event.getLookupProvider();
             generator.addProvider(true, new VehiclePresetGenerator(generator));
             generator.addProvider(true, new WeaponPresetGenerator(generator));
             generator.addProvider(true, new RadarPresetGenerator(generator));
             generator.addProvider(true, new PartPresetGenerator(generator));
             DependencySafety.serverDataGen(generator);
-            generator.addProvider(true, new DSCRecipeGenerator(generator));
-            generator.addProvider(true, new EntityTypeTagGen(generator, event.getExistingFileHelper()));
-            BlockTagGen blockGen = new BlockTagGen(generator, event.getExistingFileHelper());
+            generator.addProvider(true, new DSCRecipeGenerator(output));
+            generator.addProvider(true, new EntityTypeTagGen(output, completableFuture, fileHelper));
+            BlockTagGen blockGen = new BlockTagGen(output, completableFuture, fileHelper);
             generator.addProvider(true, blockGen);
-            generator.addProvider(true, new ItemTagGen(generator, blockGen, event.getExistingFileHelper()));
-            generator.addProvider(true, new FluidTagGen(generator, event.getExistingFileHelper()));
+            generator.addProvider(true, new ItemTagGen(output, completableFuture, null, null, fileHelper));
+            generator.addProvider(true, new FluidTagGen(output, completableFuture, fileHelper));
         }
         if (event.includeClient()) {
-            generator.addProvider(true, new DSCSoundDefinitionGenImpl(generator, event.getExistingFileHelper()));
+            generator.addProvider(true, new DSCSoundDefinitionGenImpl(generator, fileHelper));
             generator.addProvider(true, new VehicleClientPresetGenerator(generator));
             generator.addProvider(true, new PartClientPresetGenerator(generator));
             generator.addProvider(true, new WeaponClientPresetGenerator(generator));

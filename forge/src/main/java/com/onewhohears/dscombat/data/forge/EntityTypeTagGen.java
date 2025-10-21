@@ -3,22 +3,27 @@ package com.onewhohears.dscombat.data.forge;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModTags;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
 
 public class EntityTypeTagGen extends EntityTypeTagsProvider {
 	
-	public EntityTypeTagGen(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-		super(generator, DSCombatMod.MODID, existingFileHelper);
+	public EntityTypeTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture,
+                            @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, completableFuture, DSCombatMod.MODID, existingFileHelper);
 	}
 	
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		// WEAPONS
 		tag(ModTags.EntityTypes.PROJECTILE)
 			.addTag(EntityTypeTags.IMPACT_PROJECTILES)

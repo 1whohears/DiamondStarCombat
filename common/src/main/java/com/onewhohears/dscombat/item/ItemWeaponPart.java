@@ -12,7 +12,6 @@ import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -72,12 +71,12 @@ public class ItemWeaponPart extends ItemPart implements ObjModelItem {
 	}
 	
 	@Override
-	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
+	protected void fillItemCategory(PartStats stats, List<ItemStack> items) {
 		List<String> list = WeaponPresets.get().getCompatibleWeapons(stats.getId());
         for (String s : list) addWeaponRack(stats, s, items);
 	}
 	
-	private void addWeaponRack(PartStats stats, String preset, NonNullList<ItemStack> items) {
+	private void addWeaponRack(PartStats stats, String preset, List<ItemStack> items) {
 		ItemStack rack = new ItemStack(this);
 		if (stats != null) rack.setTag(stats.createFilledPartInstance(preset).writeNBT());
 		items.add(rack);

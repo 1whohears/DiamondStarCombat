@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ItemPart extends Item {
+public class ItemPart extends Item implements FillableItemCategory {
 
 	@NotNull private String defaultPresetId = "";
 
@@ -50,8 +50,7 @@ public class ItemPart extends Item {
 	}
 	
 	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if (group != getCreativeTab() && group != CreativeModeTab.TAB_SEARCH) return;
+	public void fillItemCategory(@NotNull List<ItemStack> items) {
 		String itemId = UtilItem.getItemKeyString(this);
 		for (int i = 0; i < PartPresets.get().getNum(); ++i) {
 			PartStats stats = PartPresets.get().getAll()[i];
@@ -60,7 +59,7 @@ public class ItemPart extends Item {
 		}
 	}
 	
-	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
+	protected void fillItemCategory(PartStats stats, List<ItemStack> items) {
 		items.add(stats.createFilledPartInstance("").getNewItemStack());
 	}
 	

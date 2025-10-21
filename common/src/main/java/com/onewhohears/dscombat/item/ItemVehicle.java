@@ -5,14 +5,12 @@ import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -42,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class ItemVehicle extends Item implements ObjModelItem {
+public class ItemVehicle extends Item implements ObjModelItem, FillableItemCategory {
 
     @ExpectPlatform
     public static ItemVehicle create(String defaultPresetId) {
@@ -95,7 +93,7 @@ public class ItemVehicle extends Item implements ObjModelItem {
 					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
 					Entity entity = entityType.spawn((ServerLevel)level, 
 							spawn_data_stack, player, 
-							new BlockPos(pos).above(above), 
+							UtilGeometry.toBlockPos(pos).above(above),
 							MobSpawnType.SPAWN_EGG, 
 							false, false);
 					if (entity != null) {
@@ -197,8 +195,7 @@ public class ItemVehicle extends Item implements ObjModelItem {
 	}
 	
 	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if (group != ModItems.VEHICLES && group != CreativeModeTab.TAB_SEARCH) return;
+	public void fillItemCategory(@NotNull List<ItemStack> items) {
 		VehicleStats[] presets = VehiclePresets.get().getAll();
         for (VehicleStats preset : presets) {
             if (preset.getItem().is(this)) {

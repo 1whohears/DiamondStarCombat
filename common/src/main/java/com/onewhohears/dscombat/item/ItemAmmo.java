@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem {
+public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem, FillableItemCategory {
 
     @ExpectPlatform
     public static ItemAmmo create(int stackSize, String defaultWeaponId) {
@@ -43,8 +43,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem 
 	}
 	
 	@Override
-	public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-		if (group != ModItems.WEAPONS && group != CreativeModeTab.TAB_SEARCH) return;
+	public void fillItemCategory(@NotNull List<ItemStack> items) {
 		String itemId = UtilItem.getItemKeyString(this);
 		for (int i = 0; i < WeaponPresets.get().getNum(); ++i) {
 			WeaponStats w = WeaponPresets.get().getAll()[i];

@@ -56,12 +56,12 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
 	}
 	
 	@Override
-	protected void fillItemCategory(PartStats stats, NonNullList<ItemStack> items) {
+	protected void fillItemCategory(PartStats stats, List<ItemStack> items) {
 		List<String> list = WeaponPresets.get().getCompatibleWeapons(stats.getId());
         for (String s : list) addTurret(stats, s, items);
 	}
 	
-	private void addTurret(PartStats stats, String preset, NonNullList<ItemStack> items) {
+	private void addTurret(PartStats stats, String preset, List<ItemStack> items) {
 		ItemStack turret = new ItemStack(this);
 		if (stats != null) turret.setTag(stats.createFilledPartInstance(preset).writeNBT());
 		items.add(turret);

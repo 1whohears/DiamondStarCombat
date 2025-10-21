@@ -1,5 +1,8 @@
 package com.onewhohears.dscombat.crafting;
 
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
@@ -19,7 +22,7 @@ import net.minecraft.world.level.Level;
 public class VehiclePartRepairRecipe extends CustomRecipe {
 
 	public VehiclePartRepairRecipe(ResourceLocation id) {
-		super(id);
+		super(id, CraftingBookCategory.MISC);
 	}
 
 	@Override
@@ -35,14 +38,14 @@ public class VehiclePartRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+	public @NotNull ItemStack assemble(CraftingContainer container, RegistryAccess registry) {
 		ItemStack partItem = getVehiclePart(container).copy();
 		partItem.getOrCreateTag().putBoolean("damaged", false);
 		return partItem;
 	}
 	
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
+	public @NotNull NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
 		int repairIndex = getRepairToolIndex(container);
 		ItemStack repairTool = container.getItem(repairIndex).copy();
 		repairTool.setDamageValue(repairTool.getDamageValue()+5);
@@ -102,7 +105,7 @@ public class VehiclePartRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return ModRecipes.VEHICLE_PART_REPAIR.get();
 	}
 	

@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.item.ItemWeaponPart;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public class WeaponPartLoadRecipe extends PartItemLoadRecipe<WeaponPartInstance<?>> {
 
@@ -17,7 +18,7 @@ public class WeaponPartLoadRecipe extends PartItemLoadRecipe<WeaponPartInstance<
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return ModRecipes.WEAPON_PART_LOAD.get();
 	}
 

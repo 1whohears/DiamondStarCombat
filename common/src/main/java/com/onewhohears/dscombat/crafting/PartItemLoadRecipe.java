@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.onewhohears.onewholibs.util.UtilItem;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
@@ -24,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> extends CustomRecipe {
 
 	protected PartItemLoadRecipe(ResourceLocation id) {
-		super(id);
+		super(id, CraftingBookCategory.MISC);
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public abstract class PartItemLoadRecipe<I extends ReloadablePartInstance> exten
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+	public @NotNull ItemStack assemble(CraftingContainer container, RegistryAccess registry) {
 		ItemStack part = getPartItem(container);
 		I lpd = getLoadablePartDataFromItem(part);
 		if (fillPart(container, lpd)) return lpd.getNewItemStack();

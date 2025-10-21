@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.init.ModBlocks;
 import com.onewhohears.onewholibs.data.crafting.IngredientStack;
 import com.onewhohears.onewholibs.util.UtilItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -38,7 +39,7 @@ public class VehicleRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public @NotNull ItemStack assemble(Inventory container) {
+	public @NotNull ItemStack assemble(Inventory container, RegistryAccess registry) {
 		return getOutput();
 	}
 	
@@ -53,7 +54,7 @@ public class VehicleRecipe implements Recipe<Inventory> {
 	}
 
 	@Override
-	public @NotNull ItemStack getResultItem() {
+	public @NotNull ItemStack getResultItem(RegistryAccess registry) {
 		return getOutput().copy();
 	}
 	

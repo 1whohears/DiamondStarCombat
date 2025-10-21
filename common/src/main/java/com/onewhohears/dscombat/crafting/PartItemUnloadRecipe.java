@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 
 import com.onewhohears.onewholibs.util.UtilItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +28,7 @@ public abstract class PartItemUnloadRecipe<I extends ReloadablePartInstance> ext
 	}
 	
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+	public @NotNull ItemStack assemble(CraftingContainer container, RegistryAccess registry) {
 		ItemStack part = getPartItem(container);
 		I lpd = getLoadablePartDataFromItem(part);
 		if (lpd == null) return ItemStack.EMPTY;

@@ -1,12 +1,19 @@
 package com.onewhohears.dscombat.init;
 
+import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.crafting.*;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Function;
 
 public class ModRecipes {
 	
@@ -39,6 +46,25 @@ public class ModRecipes {
 
     public static void register() {
         RECIPES.register();
+    }
+
+    public static class SimpleRecipeSerializer<R extends Recipe<?>> implements RecipeSerializer<R> {
+        private final Function<ResourceLocation, R> constructor;
+        public SimpleRecipeSerializer(Function<ResourceLocation, R> constructor) {
+            this.constructor = constructor;
+        }
+        @Override
+        public @NotNull R fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+            return constructor.apply(resourceLocation);
+        }
+        @Override
+        public @NotNull R fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
+            return constructor.apply(resourceLocation);
+        }
+        @Override
+        public void toNetwork(FriendlyByteBuf buffer, R recipe) {
+
+        }
     }
 	
 }

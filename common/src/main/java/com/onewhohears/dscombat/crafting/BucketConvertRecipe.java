@@ -5,16 +5,18 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.onewholibs.util.UtilItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class BucketConvertRecipe extends CustomRecipe {
 	
@@ -24,7 +26,7 @@ public class BucketConvertRecipe extends CustomRecipe {
 	private final ItemStack output;
 	
 	public BucketConvertRecipe(ResourceLocation pId, Ingredient converter, NonNullList<Ingredient> ingredients, ItemStack output) {
-		super(pId);
+		super(pId, CraftingBookCategory.MISC);
 		this.allIngredients.add(Ingredient.of(Items.BUCKET));
 		this.allIngredients.add(converter);
 		this.allIngredients.addAll(ingredients);
@@ -39,7 +41,7 @@ public class BucketConvertRecipe extends CustomRecipe {
 	}
 	
 	@Override
-	public NonNullList<Ingredient> getIngredients() {
+	public @NotNull NonNullList<Ingredient> getIngredients() {
 		return allIngredients;
 	}
 	
@@ -48,7 +50,7 @@ public class BucketConvertRecipe extends CustomRecipe {
 	}
 	
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
+	public @NotNull NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
 		NonNullList<ItemStack> nonnulllist = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
 		for(int i = 0; i < nonnulllist.size(); ++i) {
 			ItemStack item = container.getItem(i);
@@ -64,7 +66,7 @@ public class BucketConvertRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container) {
+	public @NotNull ItemStack assemble(CraftingContainer container, RegistryAccess registry) {
 		return getOutput();
 	}
 
@@ -79,12 +81,12 @@ public class BucketConvertRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
 	}
 	
 	@Override
-	public ItemStack getResultItem() {
+	public @NotNull ItemStack getResultItem(RegistryAccess registry) {
 		return getOutput();
 	}
 	
@@ -100,7 +102,7 @@ public class BucketConvertRecipe extends CustomRecipe {
 		public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(DSCombatMod.MODID, "bucket_convert");
 		@Override
-		public BucketConvertRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
+		public @NotNull BucketConvertRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
 			JsonObject converter = serializedRecipe.get("converter").getAsJsonObject();
 			JsonArray ingredientsJson = serializedRecipe.get("ingredients").getAsJsonArray();
 			NonNullList<Ingredient> ingredients = NonNullList.create();
@@ -111,10 +113,10 @@ public class BucketConvertRecipe extends CustomRecipe {
 					ingredients, UtilItem.getItem(output).getDefaultInstance());
 		}
 		@Override
-		public @Nullable BucketConvertRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+		public @NotNull BucketConvertRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			Ingredient converter = Ingredient.fromNetwork(buffer);
-			NonNullList<Ingredient> ingredients = buffer.readCollection(size -> NonNullList.create(), 
-					buff -> Ingredient.fromNetwork(buff));
+			NonNullList<Ingredient> ingredients = buffer.readCollection(size -> NonNullList.create(),
+                    Ingredient::fromNetwork);
 			ItemStack output = buffer.readItem();
 			return new BucketConvertRecipe(recipeId, converter, ingredients, output);
 		}

@@ -20,7 +20,7 @@ public class WeaponPartUnloadRecipe extends PartItemUnloadRecipe<WeaponPartInsta
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return ModRecipes.WEAPON_PART_UNLOAD.get();
 	}
 

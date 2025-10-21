@@ -20,7 +20,7 @@ public class TurretUnloadRecipe extends PartItemUnloadRecipe<TurretInstance<?>> 
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return ModRecipes.TURRET_UNLOAD.get();
 	}
 

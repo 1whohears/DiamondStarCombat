@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.item.ItemGasCan;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public class FuelTankLoadRecipe extends PartItemLoadRecipe<FuelTankInstance<?>> {
 
@@ -16,7 +17,7 @@ public class FuelTankLoadRecipe extends PartItemLoadRecipe<FuelTankInstance<?>> 
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return ModRecipes.FUEL_TANK_LOAD.get();
 	}
 	

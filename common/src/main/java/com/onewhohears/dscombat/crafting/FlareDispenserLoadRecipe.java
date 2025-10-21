@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public class FlareDispenserLoadRecipe extends PartItemLoadRecipe<FlareDispenserInstance<?>> {
 
@@ -16,7 +17,7 @@ public class FlareDispenserLoadRecipe extends PartItemLoadRecipe<FlareDispenserI
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return ModRecipes.FLARE_LOAD.get();
 	}
 

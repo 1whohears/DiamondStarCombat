@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.item.ItemTurret;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public class TurretLoadRecipe extends PartItemLoadRecipe<TurretInstance<?>> {
 
@@ -17,7 +18,7 @@ public class TurretLoadRecipe extends PartItemLoadRecipe<TurretInstance<?>> {
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public @NotNull RecipeSerializer<?> getSerializer() {
 		return ModRecipes.TURRET_LOAD.get();
 	}
 

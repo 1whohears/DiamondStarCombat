@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilSound;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -149,7 +150,7 @@ public class VehicleSoundManager {
 	public static SoundEvent soundForHurt(DamageSource source) {
 		final SoundEvent toReturn;
 
-		if (source.isProjectile() || source.msgId.equals("bullet")) {
+		if (UtilVehicleEntity.isProjectile(source)) {
 			toReturn = ModSounds.VEHICLE_HURT_PROJECTILE_METAL;
 		} else {
 			// TODO: continue this and also create more SoundEvents (for fire, explosions, etc)

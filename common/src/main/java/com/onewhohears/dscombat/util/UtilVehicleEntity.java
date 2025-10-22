@@ -133,4 +133,9 @@ public class UtilVehicleEntity {
 
     }
 
+    public static boolean isProjectile(@NotNull DamageSource source) {
+        //source.isProjectile() || source.msgId.equals("bullet")
+        return source.is(DamageTypes.MOB_PROJECTILE) || source.is(DamageTypes.ARROW);
+    }
+
 }

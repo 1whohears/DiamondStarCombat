@@ -145,7 +145,7 @@ public class PassengerSoundPack extends JsonPresetStats {
         public PassengerSound(JsonObject json) {
             String soundId = UtilParse.getStringSafe(json, "sound", "");
             if (soundId.isEmpty()) sound = null;
-            else sound = new SoundEvent(new ResourceLocation(soundId));
+            else sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(soundId));
             volume = UtilParse.getFloatSafe(json, "volume", 1);
             pitch = UtilParse.getFloatSafe(json, "pitch", 1);
             repeat_rate = UtilParse.getIntSafe(json, "repeat_rate", 20);

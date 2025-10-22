@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.onewhohears.dscombat.client.texture.VehicleDynamicTextures;
 import com.onewhohears.onewholibs.client.model.obj.ObjBakedModel;
 import org.slf4j.Logger;
 
@@ -50,7 +51,7 @@ public class VehicleScreenMapReader {
 		}
 		for (int y = 0; y < image.getHeight(); ++y) for (int x = 0; x < image.getWidth(); ++x) {
 			int color = image.getPixelRGBA(x, y);
-			if (NativeImage.getA(color) == 0) continue;
+			if (VehicleDynamicTextures.getA(color) == 0) continue;
 			int screenType = EntityScreenTypes.getScreenTypeIdByColor(color);
 			if (screenType == -1) continue;
 			if (x != 0 && image.getPixelRGBA(x-1, y) == color) continue;

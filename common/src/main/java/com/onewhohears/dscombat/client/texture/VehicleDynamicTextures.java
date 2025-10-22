@@ -103,24 +103,24 @@ public class VehicleDynamicTextures {
 		return 0;
 	}
 
-    public static int getA(int color) {
-
+    public static int getA(int i) {
+        return i >> 24 & 255;
     }
 
-    public static int getR(int color) {
-
+    public static int getR(int i) {
+        return i & 255;
     }
 
-    public static int getG(int color) {
-
+    public static int getG(int i) {
+        return i >> 8 & 255;
     }
 
-    public static int getB(int color) {
-
+    public static int getB(int i) {
+        return i >> 16 & 255;
     }
 
     public static int combine(int a, int b, int g, int r) {
-
+        return (a & 255) << 24 | (b & 255) << 16 | (g & 255) << 8 | (r & 255);
     }
 	
 }

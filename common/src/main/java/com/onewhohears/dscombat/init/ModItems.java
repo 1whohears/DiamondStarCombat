@@ -29,6 +29,8 @@ public class ModItems {
 	
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(
             DSCombatMod.MODID, Registries.ITEM);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(
+            DSCombatMod.MODID, Registries.CREATIVE_MODE_TAB);
 
     public static final Map<ResourceKey<CreativeModeTab>, List<Supplier<? extends Item>>> CREATIVE_TAB_MAP = new HashMap<>();
 
@@ -452,5 +454,6 @@ public class ModItems {
 
     public static void register() {
         ITEMS.register();
+        CREATIVE_TABS.register();
     }
 }

@@ -15,6 +15,7 @@ import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 
 public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 	
@@ -132,7 +133,7 @@ public class VehiclePresetGenerator extends JsonPresetGenerator<VehicleStats> {
 		VillageDefenseVehiclePresetGen.generate();
 	}
     
-    public VehiclePresetGenerator(DataGenerator output) {
+    public VehiclePresetGenerator(PackOutput output) {
 		super(output, "vehicle");
 		INSTANCE = this;
 	}

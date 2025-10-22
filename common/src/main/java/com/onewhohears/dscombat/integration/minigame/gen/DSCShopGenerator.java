@@ -5,19 +5,14 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.minigames.data.shops.GameShop;
 import com.onewhohears.minigames.data.shops.MiniGameShopsGenerator;
 import com.onewhohears.minigames.data.shops.MiniGameShopsManager;
-
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 
 import static com.onewhohears.dscombat.integration.minigame.gen.DSCKitGenerator.createTaczGunItemJson;
 
 public class DSCShopGenerator extends MiniGameShopsGenerator {
 	
-	public static void register(DataGenerator generator) {
-		generator.addProvider(true, new DSCShopGenerator(generator));
-	}
-	
-	protected DSCShopGenerator(DataGenerator generator) {
-		super(generator);
+	public DSCShopGenerator(PackOutput output) {
+		super(output);
 	}
 
 	@Override

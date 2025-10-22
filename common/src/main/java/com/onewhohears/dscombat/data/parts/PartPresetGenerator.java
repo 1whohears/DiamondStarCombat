@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
@@ -467,7 +468,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.build());
 	}
 	
-	public PartPresetGenerator(DataGenerator output) {
+	public PartPresetGenerator(PackOutput output) {
 		super(output, "parts");
 		INSTANCE = this;
 	}

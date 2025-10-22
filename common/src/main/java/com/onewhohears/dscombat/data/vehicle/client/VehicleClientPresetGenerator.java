@@ -8,6 +8,7 @@ import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleClientStats> {
@@ -488,8 +489,8 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 				.build());
 	}
 	
-	public VehicleClientPresetGenerator(DataGenerator output) {
-		super(output, "vehicle_client", DataGenerator.Target.RESOURCE_PACK);
+	public VehicleClientPresetGenerator(PackOutput output) {
+		super(output, "vehicle_client", PackOutput.Target.RESOURCE_PACK);
 	}
 
 	@Override

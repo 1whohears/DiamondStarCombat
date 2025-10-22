@@ -69,26 +69,26 @@ public class DSCombatModForge {
     private void onGatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         ExistingFileHelper fileHelper = event.getExistingFileHelper();
+        PackOutput output = generator.getPackOutput();
         if (event.includeServer()) {
-            PackOutput output = generator.getPackOutput();
             CompletableFuture<HolderLookup.Provider> completableFuture = event.getLookupProvider();
-            generator.addProvider(true, new VehiclePresetGenerator(generator));
-            generator.addProvider(true, new WeaponPresetGenerator(generator));
-            generator.addProvider(true, new RadarPresetGenerator(generator));
-            generator.addProvider(true, new PartPresetGenerator(generator));
-            DependencySafety.serverDataGen(generator);
+            generator.addProvider(true, new VehiclePresetGenerator(output));
+            generator.addProvider(true, new WeaponPresetGenerator(output));
+            generator.addProvider(true, new RadarPresetGenerator(output));
+            generator.addProvider(true, new PartPresetGenerator(output));
+            DependencySafety.serverDataGen(output, gen -> generator.addProvider(true, gen));
             generator.addProvider(true, new DSCRecipeGenerator(output));
             generator.addProvider(true, new EntityTypeTagGen(output, completableFuture, fileHelper));
             BlockTagGen blockGen = new BlockTagGen(output, completableFuture, fileHelper);
             generator.addProvider(true, blockGen);
-            generator.addProvider(true, new ItemTagGen(output, completableFuture, null, null, fileHelper));
+            generator.addProvider(true, new ItemTagGen(output, completableFuture, null, null, fileHelper)); // FIXME add itemLookup and blockLookup
             generator.addProvider(true, new FluidTagGen(output, completableFuture, fileHelper));
         }
         if (event.includeClient()) {
-            generator.addProvider(true, new DSCSoundDefinitionGenImpl(generator, fileHelper));
-            generator.addProvider(true, new VehicleClientPresetGenerator(generator));
-            generator.addProvider(true, new PartClientPresetGenerator(generator));
-            generator.addProvider(true, new WeaponClientPresetGenerator(generator));
+            generator.addProvider(true, new DSCSoundDefinitionGenImpl(output, fileHelper));
+            generator.addProvider(true, new VehicleClientPresetGenerator(output));
+            generator.addProvider(true, new PartClientPresetGenerator(output));
+            generator.addProvider(true, new WeaponClientPresetGenerator(output));
         }
     }
 

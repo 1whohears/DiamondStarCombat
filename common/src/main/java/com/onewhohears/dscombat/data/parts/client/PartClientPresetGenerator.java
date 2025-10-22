@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.parts.client;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class PartClientPresetGenerator extends JsonPresetGenerator<PartClientStats<?>> {
@@ -113,8 +114,8 @@ public class PartClientPresetGenerator extends JsonPresetGenerator<PartClientSta
                 .build());
     }
 
-    public PartClientPresetGenerator(DataGenerator output) {
-        super(output, "part_client", DataGenerator.Target.RESOURCE_PACK);
+    public PartClientPresetGenerator(PackOutput output) {
+        super(output, "part_client", PackOutput.Target.RESOURCE_PACK);
     }
 
     @Override

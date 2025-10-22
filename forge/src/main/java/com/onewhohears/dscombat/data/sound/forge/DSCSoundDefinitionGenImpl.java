@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.sound.forge;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -15,7 +16,7 @@ public class DSCSoundDefinitionGenImpl extends SoundDefinitionsProvider {
 	
 	private static final Map<String, SoundDefinition> soundsFromRegistry = new LinkedHashMap<>();
 	
-	public DSCSoundDefinitionGenImpl(DataGenerator generator, ExistingFileHelper helper) {
+	public DSCSoundDefinitionGenImpl(PackOutput generator, ExistingFileHelper helper) {
 		super(generator, DSCombatMod.MODID, helper);
 	}
 

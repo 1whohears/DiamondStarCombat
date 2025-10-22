@@ -5,18 +5,12 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.minigames.data.kits.GameKit;
 import com.onewhohears.minigames.data.kits.MiniGameKitsGenerator;
 import com.onewhohears.minigames.data.shops.MiniGameShopsManager;
-
-import net.minecraft.data.DataGenerator;
-
+import net.minecraft.data.PackOutput;
 import org.jetbrains.annotations.Nullable;
 
 public class DSCKitGenerator extends MiniGameKitsGenerator {
 	
-	public static void register(DataGenerator generator) {
-		generator.addProvider(true, new DSCKitGenerator(generator));
-	}
-	
-	protected DSCKitGenerator(DataGenerator generator) {
+	public DSCKitGenerator(PackOutput generator) {
 		super(generator);
 	}
 

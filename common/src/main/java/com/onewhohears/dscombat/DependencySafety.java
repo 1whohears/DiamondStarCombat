@@ -5,11 +5,15 @@ import com.onewhohears.dscombat.integration.minigame.DSCMiniGames;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCKitGenerator;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCShopGenerator;
 
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 public class DependencySafety {
 	
@@ -18,10 +22,10 @@ public class DependencySafety {
 		if (DSCombatMod.distantPlayersLoaded) DSCDistantPlayers.register();
 	}
 	
-	public static void serverDataGen(DataGenerator generator) {
+	public static void serverDataGen(PackOutput output, Consumer<JsonPresetGenerator<?>> register) {
 		if (DSCombatMod.minigamesLoaded) {
-			DSCKitGenerator.register(generator);
-			DSCShopGenerator.register(generator);
+            register.accept(new DSCKitGenerator(output));
+            register.accept(new DSCShopGenerator(output));
 		}
 	}
 

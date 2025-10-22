@@ -4,7 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnimsBuilder;
 import com.onewhohears.onewholibs.client.model.obj.customanims.EntityModelTransform;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import org.jetbrains.annotations.NotNull;
 
 public class WeaponClientPresetGenerator extends JsonPresetGenerator<WeaponClientStats<?>> {
@@ -22,8 +22,8 @@ public class WeaponClientPresetGenerator extends JsonPresetGenerator<WeaponClien
         );
     }
 
-    public WeaponClientPresetGenerator(DataGenerator output) {
-        super(output, "weapon_client", DataGenerator.Target.RESOURCE_PACK);
+    public WeaponClientPresetGenerator(PackOutput output) {
+        super(output, "weapon_client", PackOutput.Target.RESOURCE_PACK);
     }
 
     @Override

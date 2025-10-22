@@ -1,18 +1,14 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
-import com.onewhohears.dscombat.data.weapon.stats.BombStats;
-import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
-import com.onewhohears.dscombat.data.weapon.stats.BunkerBusterStats;
-import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
-import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+import com.onewhohears.dscombat.data.weapon.stats.*;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.dscombat.init.ModSounds;
-
-import net.minecraft.data.DataGenerator;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
+import net.minecraft.data.PackOutput;
+import org.jetbrains.annotations.NotNull;
 
 public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 	
@@ -1001,13 +997,13 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		registerOther();
 	}	
 	
-	public WeaponPresetGenerator(DataGenerator output) {
+	public WeaponPresetGenerator(PackOutput output) {
 		super(output, "weapons");
 		INSTANCE = this;
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Weapons: "+DSCombatMod.MODID;
 	}
 	

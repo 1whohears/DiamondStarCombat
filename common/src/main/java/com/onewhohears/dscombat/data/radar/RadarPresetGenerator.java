@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 
 public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 
@@ -248,7 +249,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.build());
 	}
 	
-	public RadarPresetGenerator(DataGenerator output) {
+	public RadarPresetGenerator(PackOutput output) {
 		super(output, "radars");
 	}
 

@@ -59,7 +59,7 @@ public class VehicleDynamicTextures {
 			float blend = calcBlend(layers[i]);
 			for (int x = 0; x < layerImage.getWidth(); ++x) for (int y = 0; y < layerImage.getHeight(); ++y) {
 				int textureColor = layerImage.getPixelRGBA(x, y);
-				if (NativeImage.getA(textureColor) == 0) continue;
+				if (getA(textureColor) == 0) continue;
 				dynText.getPixels().setPixelRGBA(x, y, 
 					blendColors(textureColor, layers[i], blend));
 			}
@@ -71,15 +71,15 @@ public class VehicleDynamicTextures {
 	}
 	
 	private static int blendColors(int textureColor, TextureLayer layer, float blend) {
-		int red = NativeImage.getR(textureColor);
-		int green = NativeImage.getG(textureColor);
-		int blue = NativeImage.getB(textureColor);
+		int red = getR(textureColor);
+		int green = getG(textureColor);
+		int blue = getB(textureColor);
 		if (blend == 0 || (layer.getBlendMode() == BlendMode.ON_WHITE && red == 255 && green == 255 && blue == 255)) 
-			return NativeImage.combine(255, layer.getColor().getBlue(), 
+			return combine(255, layer.getColor().getBlue(),
 					layer.getColor().getGreen(), layer.getColor().getRed());
 		else if (blend == 1) 
 			return textureColor;
-		return NativeImage.combine(255, 
+		return combine(255,
 				blendColorChannel(blue, layer.getColor().getBlue(), blend), 
 				blendColorChannel(green, layer.getColor().getGreen(), blend), 
 				blendColorChannel(red, layer.getColor().getRed(), blend));
@@ -102,5 +102,25 @@ public class VehicleDynamicTextures {
 		}
 		return 0;
 	}
+
+    public static int getA(int color) {
+
+    }
+
+    public static int getR(int color) {
+
+    }
+
+    public static int getG(int color) {
+
+    }
+
+    public static int getB(int color) {
+
+    }
+
+    public static int combine(int a, int b, int g, int r) {
+
+    }
 	
 }

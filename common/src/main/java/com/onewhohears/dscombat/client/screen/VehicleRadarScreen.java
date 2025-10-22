@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
@@ -12,6 +11,7 @@ import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilScreen;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class VehicleRadarScreen extends VehicleSubScreen {
 
@@ -53,15 +54,15 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        super.render(poseStack, mouseX, mouseY, partialTick);
-        renderRadar(poseStack, mouseX, mouseY, partialTick);
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        super.render(graphics, mouseX, mouseY, partialTick);
+        renderRadar(graphics, mouseX, mouseY, partialTick);
     }
 
-    protected void renderRadar(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+    protected void renderRadar(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, RADAR_BG);
-        blit(poseStack, guiX+4, guiY+66, 110, 110, 0, 0,
+        graphics.blit(RADAR_BG, guiX+4, guiY+66, 110, 110, 0, 0,
                 127, 128, 127, 128);
         EntityVehicle vehicle = getVehicle();
         RadarSystem radar = vehicle.radarSystem;
@@ -81,7 +82,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
             int x = Mth.clamp((int)(-Mth.sin(yaw)*55*screen_dist), -50, 50) + centerX;
             int y = Mth.clamp((int)(Mth.cos(yaw)*55*screen_dist), -50, 50) + centerY;
             if (drawPingAtPos(ping, x, y, i == selected, i == hover,
-                    poseStack, mouseX, mouseY, partialTick, vehicle)) {
+                    graphics, mouseX, mouseY, partialTick, vehicle)) {
                 DSCClientInputs.setRadarHoverIndex(i);
                 hovering = true;
             }
@@ -92,13 +93,13 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     private static final int HALF_PS = PING_SIZE/2, SQUARE_PS = (PING_SIZE*2)^2, LEFT = PING_SIZE*3/2, UP = HALF_PS+10;
 
     protected boolean drawPingAtPos(RadarStats.RadarPing ping, int x, int y, boolean selected, boolean hover,
-                                 @NotNull PoseStack poseStack, int mouseX, int mouseY,
+                                 @NotNull GuiGraphics graphics, int mouseX, int mouseY,
                                  float partialTick, EntityVehicle vehicle) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (selected) RenderSystem.setShaderTexture(0, RADAR_PING_SELECT);
         else if (hover) RenderSystem.setShaderTexture(0, RADAR_PING_HOVER);
         else RenderSystem.setShaderTexture(0, RADAR_PING);
-        blit(poseStack, x-HALF_PS, y-HALF_PS, PING_SIZE, PING_SIZE, 0, 0,
+        graphics.blit(RADAR_PING, x-HALF_PS, y-HALF_PS, PING_SIZE, PING_SIZE, 0, 0,
                 200, 200, 200, 200);
         if (new Vec2(x,y).distanceToSqr(new Vec2(mouseX,mouseY)) > SQUARE_PS) return false;
         int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
@@ -106,20 +107,20 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         String text = dist + " | " + alt;
         Component comp = UtilMCText.literal(text);
         int width = font.width(comp);
-        font.draw(poseStack, comp, x-width/2f, y-UP, 0x00FF00);
+        graphics.drawString(font, comp, (int)(x-width/2f), y-UP, 0x00FF00);
         RenderSystem.setShaderTexture(0, PING_DATA);
-        blit(poseStack, x-LEFT, y-HALF_PS, PING_SIZE, PING_SIZE,
+        graphics.blit(PING_DATA, x-LEFT, y-HALF_PS, PING_SIZE, PING_SIZE,
                 ping.entityType.getIconIndex()*16, 0,
                 16, 16, 240, 16);
-        blit(poseStack, x+HALF_PS, y-HALF_PS, PING_SIZE, PING_SIZE,
+        graphics.blit(PING_DATA, x+HALF_PS, y-HALF_PS, PING_SIZE, PING_SIZE,
                 ping.terrainType.getIconIndex()*16, 0,
                 16, 16, 240, 16);
         if (ping.isFriendly) {
-            blit(poseStack, x-PING_SIZE, y+HALF_PS, PING_SIZE, PING_SIZE,
+            graphics.blit(PING_DATA, x-PING_SIZE, y+HALF_PS, PING_SIZE, PING_SIZE,
                     16*4, 0, 16, 16, 240, 16);
         }
         if (ping.isShared()) {
-            blit(poseStack, x, y+HALF_PS, PING_SIZE, PING_SIZE,
+            graphics.blit(PING_DATA, x, y+HALF_PS, PING_SIZE, PING_SIZE,
                     16*9, 0, 16, 16, 240, 16);
         }
         return true;
@@ -157,7 +158,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         // RADAR DISPLAY RANGE FIELD
         vertical_widget_shift = 34;
         COLUMNS = 4;
-        EditBox rangeBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+        EditBox rangeBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(rangeBox, ROWS, COLUMNS, 3, 2);
         rangeBox.setValue(DSCClientInputs.getRadarDisplayRange()+"");
         rangeBox.setTextColor(0xFFFFFF);
@@ -168,15 +169,15 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                         onPress -> {
                             DSCClientInputs.cycleRadarDisplayRange();
                             rangeBox.setValue(DSCClientInputs.getRadarDisplayRange()+"");
-                        }),
+                        }, Supplier::get),
                 ROWS, COLUMNS, 0, 2, 3);
         // CYCLE RADAR PING
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.cycle_radar_target"),
-                        onPress -> getVehicle().radarSystem.clientSelectNextTarget()),
+                        onPress -> getVehicle().radarSystem.clientSelectNextTarget(), Supplier::get),
                 ROWS, COLUMNS, 6, 2, 2);
         // CHANGE RADAR PING OVERLAY SIZE BOX
-        EditBox pingSizeBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+        EditBox pingSizeBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(pingSizeBox, ROWS, 6, 17, 2);
         pingSizeBox.setValue(Config.CLIENT.radarPingOverlaySize.get()+"");
         pingSizeBox.setTextColor(0xFFFFFF);
@@ -197,9 +198,9 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack poseStack) {
-        super.renderBackground(poseStack);
-        minecraft.font.draw(poseStack, UtilMCText.translatable("ui.dscombat.change_ping_size"),
+    public void renderBackground(@NotNull GuiGraphics graphics) {
+        super.renderBackground(graphics);
+        graphics.drawString(font, UtilMCText.translatable("ui.dscombat.change_ping_size"),
                 guiX+left_padding+126, guiY+top_padding+82, 0x555555);
     }
 

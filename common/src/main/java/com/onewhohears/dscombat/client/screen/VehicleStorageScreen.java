@@ -11,6 +11,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ChestMenu;
 
+import java.util.function.Supplier;
+
 public class VehicleStorageScreen extends ContainerScreen {
 
     private static int index = 0;
@@ -26,9 +28,9 @@ public class VehicleStorageScreen extends ContainerScreen {
         // Back to Main Menu
         Button backButton = new Button(0, 0, 60, 20,
                 UtilMCText.translatable("ui.dscombat.back"),
-                onPress -> { minecraft.setScreen(new VehicleMainScreen()); });
-        backButton.x = leftPos + 2;
-        backButton.y = topPos - 20;
+                onPress -> { minecraft.setScreen(new VehicleMainScreen()); }, Supplier::get);
+        backButton.setX(leftPos + 2);
+        backButton.setY(topPos - 20);
         addRenderableWidget(backButton);
         // Cycle Storage Left Button
         Button leftButton = new Button(0, 0, 20, 20,
@@ -36,9 +38,9 @@ public class VehicleStorageScreen extends ContainerScreen {
                     --index;
                     fixIndex();
                     VehicleScreen.sendSyncAction(new VehicleSyncAction.OpenStorageAction(index));
-                });
-        leftButton.x = leftPos + 133;
-        leftButton.y = topPos - 20;
+                }, Supplier::get);
+        leftButton.setX(leftPos + 133);
+        leftButton.setY(topPos - 20);
         addRenderableWidget(leftButton);
         // Cycle Storage Right Button
         Button rightButton = new Button(0, 0, 20, 20,
@@ -46,9 +48,9 @@ public class VehicleStorageScreen extends ContainerScreen {
                     ++index;
                     fixIndex();
                     VehicleScreen.sendSyncAction(new VehicleSyncAction.OpenStorageAction(index));
-                });
-        rightButton.x = leftPos + 153;
-        rightButton.y = topPos - 20;
+                }, Supplier::get);
+        rightButton.setX(leftPos + 153);
+        rightButton.setY(topPos - 20);
         addRenderableWidget(rightButton);
     }
 

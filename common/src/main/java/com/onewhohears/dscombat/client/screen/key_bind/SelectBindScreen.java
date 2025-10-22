@@ -1,11 +1,14 @@
 package com.onewhohears.dscombat.client.screen.key_bind;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.input.*;
+import com.onewhohears.dscombat.client.input.ActionInput;
+import com.onewhohears.dscombat.client.input.ActionInputHolder;
+import com.onewhohears.dscombat.client.input.ClientInputManager;
+import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.screen.VehicleSubScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
@@ -19,6 +22,7 @@ import org.lwjgl.glfw.GLFW;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends ActionInput> extends VehicleSubScreen {
 
@@ -41,7 +45,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 positive = data.positive;
             }
             // SET JOYSTICK ID
-            EditBox joystickIDBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox joystickIDBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(joystickIDBox, ROWS, 4, 4, 2);
             joystickIDBox.setValue(joystick_id+"");
             joystickIDBox.setTextColor(0xFFFFFF);
@@ -50,7 +54,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 catch(NumberFormatException ignored) {}
             });
             // SET AXIS ID
-            EditBox axisIDBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox axisIDBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(axisIDBox, ROWS, 4, 5, 2);
             axisIDBox.setValue(axis_id+"");
             axisIDBox.setTextColor(0xFFFFFF);
@@ -59,7 +63,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 catch(NumberFormatException ignored) {}
             });
             // SET DEAD ZONE
-            EditBox deadZoneBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox deadZoneBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(deadZoneBox, ROWS, 4, 6, 2);
             deadZoneBox.setValue(dead_zone+"");
             deadZoneBox.setTextColor(0xFFFFFF);
@@ -76,20 +80,20 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 }}, ROWS, 4, 7, 2);
         }
         @Override
-        public void renderBackground(@NotNull PoseStack poseStack) {
-            super.renderBackground(poseStack);
+        public void renderBackground(@NotNull GuiGraphics graphics) {
+            super.renderBackground(graphics);
             int ix = guiX+left_padding;
             int iy = guiY+top_padding+36;
             int w4 = imageWidth/4;
-            minecraft.font.draw(poseStack, "Joystick ID", ix, iy, infoColor);
-            minecraft.font.draw(poseStack, "Axis ID", ix+w4-1, iy, infoColor);
-            minecraft.font.draw(poseStack, "Dead Zone", ix+w4*2-2, iy, infoColor);
-            minecraft.font.draw(poseStack, "Positive", ix+w4*3-3, iy, infoColor);
+            graphics.drawString(font, "Joystick ID", ix, iy, infoColor);
+            graphics.drawString(font, "Axis ID", ix+w4-1, iy, infoColor);
+            graphics.drawString(font, "Dead Zone", ix+w4*2-2, iy, infoColor);
+            graphics.drawString(font, "Positive", ix+w4*3-3, iy, infoColor);
             float scale = 0.80f;
             float startY = (guiY + top_padding + 70) / scale;
             float startX = (guiX + left_padding) / scale;
-            poseStack.pushPose();
-            poseStack.scale(scale, scale, scale);
+            graphics.pose().pushPose();
+            graphics.pose().scale(scale, scale, scale);
             int k = 0;
             for (int j = 0; j < 16; ++j) {
                 if (!GLFW.glfwJoystickPresent(j)) continue;
@@ -102,11 +106,11 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                     float value = axes.get(a);
                     if (Mth.abs(value) < 0.1f) continue;
                     String text = name+" | ID:"+j+" | Axis:"+a+" | "+value;
-                    minecraft.font.draw(poseStack, text, startX, startY+k*10, infoColor);
+                    graphics.drawString(font, text, (int)startX, (int)startY+k*10, infoColor);
                     ++k;
                 }
             }
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
         @Override
         protected ActionInput.Button createNewInput() {
@@ -129,7 +133,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 button_id = data.button_id;
             }
             // SET JOYSTICK ID
-            EditBox joystickIDBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox joystickIDBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(joystickIDBox, ROWS, 2, 2, 2);
             joystickIDBox.setValue(joystick_id+"");
             joystickIDBox.setTextColor(0xFFFFFF);
@@ -138,7 +142,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 catch(NumberFormatException ignored) {}
             });
             // SET BUTTON
-            EditBox buttonBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox buttonBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(buttonBox, ROWS, 2, 3, 2);
             buttonBox.setValue(button_id+"");
             buttonBox.setTextColor(0xFFFFFF);
@@ -148,18 +152,18 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
             });
         }
         @Override
-        public void renderBackground(@NotNull PoseStack poseStack) {
-            super.renderBackground(poseStack);
+        public void renderBackground(@NotNull GuiGraphics graphics) {
+            super.renderBackground(graphics);
             int ix = guiX+left_padding;
             int iy = guiY+top_padding+36;
             int w2 = imageWidth/2;
-            minecraft.font.draw(poseStack, "Joystick ID", ix, iy, infoColor);
-            minecraft.font.draw(poseStack, "Button ID", ix+w2-1, iy, infoColor);
+            graphics.drawString(font, "Joystick ID", ix, iy, infoColor);
+            graphics.drawString(font, "Button ID", ix+w2-1, iy, infoColor);
             float scale = 0.80f;
             float startY = (guiY + top_padding + 70) / scale;
             float startX = (guiX + left_padding) / scale;
-            poseStack.pushPose();
-            poseStack.scale(scale, scale, scale);
+            graphics.pose().pushPose();
+            graphics.pose().scale(scale, scale, scale);
             int k = 0;
             for (int j = 0; j < 16; ++j) {
                 if (!GLFW.glfwJoystickPresent(j)) continue;
@@ -172,11 +176,11 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                     byte value = buttons.get(b);
                     if (value == 0) continue;
                     String text = name+" | ID:"+j+" | Button:"+b+" | ON";
-                    minecraft.font.draw(poseStack, text, startX, startY+k*10, infoColor);
+                    graphics.drawString(font, text, (int)startX, (int)startY+k*10, infoColor);
                     ++k;
                 }
             }
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
         @Override
         protected ActionInput.Button createNewInput() {
@@ -197,7 +201,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 key_mapping_id = data.key_mapping_id;
             }
             // KEY ID BOX
-            EditBox keyIDBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox keyIDBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(keyIDBox, ROWS, COLUMNS, 2, 2);
             keyIDBox.setValue(key_mapping_id);
             keyIDBox.setTextColor(0xFFFFFF);
@@ -211,23 +215,23 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
             });
         }
         @Override
-        public void renderBackground(@NotNull PoseStack poseStack) {
-            super.renderBackground(poseStack);
+        public void renderBackground(@NotNull GuiGraphics graphics) {
+            super.renderBackground(graphics);
             float scale = 0.70f;
             float startY = (guiY + top_padding + 60) / scale;
             float startX = (guiX + left_padding) / scale;
             float width2 = image_width / 2f / scale;
-            poseStack.pushPose();
-            poseStack.scale(scale, scale, scale);
+            graphics.pose().pushPose();
+            graphics.pose().scale(scale, scale, scale);
             int i = 0;
             Set<String> keys = DSCKeys.getKeyIds();
             for (String key : keys) {
                 int color = infoColor;
                 if (key.equals(key_mapping_id)) color = 0x00FF00;
-                minecraft.font.draw(poseStack, key, startX+width2*(i%2), startY+Mth.floor(i/2f)*10, color);
+                graphics.drawString(font, key, (int) (startX+width2*(i%2)), (int) (startY+Mth.floor(i/2f)*10), color);
                 ++i;
             }
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
         @Override
         protected ActionInput.Button createNewInput() {
@@ -251,7 +255,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 negative_button_id = data.negative_button_id;
             }
             // SET JOYSTICK ID
-            EditBox joystickIDBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox joystickIDBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(joystickIDBox, ROWS, 3, 3, 2);
             joystickIDBox.setValue(joystick_id+"");
             joystickIDBox.setTextColor(0xFFFFFF);
@@ -260,7 +264,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 catch(NumberFormatException ignored) {}
             });
             // SET POSITIVE BUTTON
-            EditBox positiveButtonBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox positiveButtonBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(positiveButtonBox, ROWS, 3, 4, 2);
             positiveButtonBox.setValue(positive_button_id+"");
             positiveButtonBox.setTextColor(0xFFFFFF);
@@ -269,7 +273,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 catch(NumberFormatException ignored) {}
             });
             // SET NEGATIVE BUTTON
-            EditBox negativeButtonBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox negativeButtonBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(negativeButtonBox, ROWS, 3, 5, 2);
             negativeButtonBox.setValue(negative_button_id+"");
             negativeButtonBox.setTextColor(0xFFFFFF);
@@ -279,19 +283,19 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
             });
         }
         @Override
-        public void renderBackground(@NotNull PoseStack poseStack) {
-            super.renderBackground(poseStack);
+        public void renderBackground(@NotNull GuiGraphics graphics) {
+            super.renderBackground(graphics);
             int ix = guiX+left_padding;
             int iy = guiY+top_padding+36;
             int w3 = imageWidth/3;
-            minecraft.font.draw(poseStack, "Joystick ID", ix, iy, infoColor);
-            minecraft.font.draw(poseStack, "Button +", ix+w3-1, iy, infoColor);
-            minecraft.font.draw(poseStack, "Button -", ix+w3*2-2, iy, infoColor);
+            graphics.drawString(font, "Joystick ID", ix, iy, infoColor);
+            graphics.drawString(font, "Button +", ix+w3-1, iy, infoColor);
+            graphics.drawString(font, "Button -", ix+w3*2-2, iy, infoColor);
             float scale = 0.80f;
             float startY = (guiY + top_padding + 70) / scale;
             float startX = (guiX + left_padding) / scale;
-            poseStack.pushPose();
-            poseStack.scale(scale, scale, scale);
+            graphics.pose().pushPose();
+            graphics.pose().scale(scale, scale, scale);
             int k = 0;
             for (int j = 0; j < 16; ++j) {
                 if (!GLFW.glfwJoystickPresent(j)) continue;
@@ -304,11 +308,11 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                     byte value = buttons.get(b);
                     if (value == 0) continue;
                     String text = name+" | ID:"+j+" | Button:"+b+" | ON";
-                    minecraft.font.draw(poseStack, text, startX, startY+k*10, infoColor);
+                    graphics.drawString(font, text, (int)startX, (int)startY+k*10, infoColor);
                     ++k;
                 }
             }
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
         @Override
         protected ActionInput.Axis createNewInput() {
@@ -335,7 +339,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 invert = data.invert;
             }
             // SET JOYSTICK ID
-            EditBox joystickIDBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox joystickIDBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(joystickIDBox, ROWS, 4, 4, 2);
             joystickIDBox.setValue(joystick_id+"");
             joystickIDBox.setTextColor(0xFFFFFF);
@@ -344,7 +348,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 catch(NumberFormatException ignored) {}
             });
             // SET AXIS ID
-            EditBox axisIDBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox axisIDBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(axisIDBox, ROWS, 4, 5, 2);
             axisIDBox.setValue(axis_id+"");
             axisIDBox.setTextColor(0xFFFFFF);
@@ -353,7 +357,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 catch(NumberFormatException ignored) {}
             });
             // SET DEAD ZONE
-            EditBox deadZoneBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox deadZoneBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(deadZoneBox, ROWS, 4, 6, 2);
             deadZoneBox.setValue(dead_zone+"");
             deadZoneBox.setTextColor(0xFFFFFF);
@@ -370,20 +374,20 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                                    }}, ROWS, 4, 7, 2);
         }
         @Override
-        public void renderBackground(@NotNull PoseStack poseStack) {
-            super.renderBackground(poseStack);
+        public void renderBackground(@NotNull GuiGraphics graphics) {
+            super.renderBackground(graphics);
             int ix = guiX+left_padding;
             int iy = guiY+top_padding+36;
             int w4 = imageWidth/4;
-            minecraft.font.draw(poseStack, "Joystick ID", ix, iy, infoColor);
-            minecraft.font.draw(poseStack, "Axis ID", ix+w4-1, iy, infoColor);
-            minecraft.font.draw(poseStack, "Dead Zone", ix+w4*2-2, iy, infoColor);
-            minecraft.font.draw(poseStack, "Invert", ix+w4*3-3, iy, infoColor);
+            graphics.drawString(font, "Joystick ID", ix, iy, infoColor);
+            graphics.drawString(font, "Axis ID", ix+w4-1, iy, infoColor);
+            graphics.drawString(font, "Dead Zone", ix+w4*2-2, iy, infoColor);
+            graphics.drawString(font, "Invert", ix+w4*3-3, iy, infoColor);
             float scale = 0.80f;
             float startY = (guiY + top_padding + 70) / scale;
             float startX = (guiX + left_padding) / scale;
-            poseStack.pushPose();
-            poseStack.scale(scale, scale, scale);
+            graphics.pose().pushPose();
+            graphics.pose().scale(scale, scale, scale);
             int k = 0;
             for (int j = 0; j < 16; ++j) {
                 if (!GLFW.glfwJoystickPresent(j)) continue;
@@ -396,11 +400,11 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                     float value = axes.get(a);
                     if (Mth.abs(value) < 0.1f) continue;
                     String text = name+" | ID:"+j+" | Axis:"+a+" | "+value;
-                    minecraft.font.draw(poseStack, text, startX, startY+k*10, infoColor);
+                    graphics.drawString(font, text, (int)startX, (int)startY+k*10, infoColor);
                     ++k;
                 }
             }
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
         @Override
         protected ActionInput.Axis createNewInput() {
@@ -435,7 +439,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                 key_mapping_id_positive = data.key_mapping_id_positive;
             }
             // KEY ID BOX
-            EditBox keyIDBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+            EditBox keyIDBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
             positionWidgetGrid(keyIDBox, ROWS, COLUMNS, 2, 2);
             if (positive) keyIDBox.setValue(key_mapping_id_positive);
             else keyIDBox.setValue(key_mapping_id_negative);
@@ -451,24 +455,24 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
             });
         }
         @Override
-        public void renderBackground(@NotNull PoseStack poseStack) {
-            super.renderBackground(poseStack);
+        public void renderBackground(@NotNull GuiGraphics graphics) {
+            super.renderBackground(graphics);
             float scale = 0.70f;
             float startY = (guiY + top_padding + 60) / scale;
             float startX = (guiX + left_padding) / scale;
             float width2 = image_width / 2f / scale;
-            poseStack.pushPose();
-            poseStack.scale(scale, scale, scale);
+            graphics.pose().pushPose();
+            graphics.pose().scale(scale, scale, scale);
             String test = positive ? key_mapping_id_positive : key_mapping_id_negative;
             int i = 0;
             Set<String> keys = DSCKeys.getKeyIds();
             for (String key : keys) {
                 int color = infoColor;
                 if (key.equals(test)) color = 0x00FF00;
-                minecraft.font.draw(poseStack, key, startX+width2*(i%2), startY+Mth.floor(i/2f)*10, color);
+                graphics.drawString(font, key, (int) (startX+width2*(i%2)), (int) (startY+Mth.floor(i/2f)*10), color);
                 ++i;
             }
-            poseStack.popPose();
+            graphics.pose().popPose();
         }
         @Override
         protected ActionInput.Axis createNewInput() {
@@ -523,7 +527,7 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
                             applyChanges();
                             ClientInputManager.saveKeyBinds();
                             Minecraft.getInstance().setScreen(getBackScreen());
-                        }),
+                        }, Supplier::get),
                 ROWS, COLUMNS, 1, padding);
     }
 
@@ -540,12 +544,12 @@ public abstract class SelectBindScreen<H extends ActionInputHolder<A>, A extends
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack poseStack) {
-        super.renderBackground(poseStack);
+    public void renderBackground(@NotNull GuiGraphics graphics) {
+        super.renderBackground(graphics);
         Component alt;
         if (primary) alt = UtilMCText.translatable("ui.dscombat.primary");
         else alt = UtilMCText.translatable("ui.dscombat.secondary");
-        minecraft.font.draw(poseStack, alt, guiX+image_width-60, guiY+top_padding, infoColor);
+        graphics.drawString(font, alt, guiX+image_width-60, guiY+top_padding, infoColor);
     }
 
 }

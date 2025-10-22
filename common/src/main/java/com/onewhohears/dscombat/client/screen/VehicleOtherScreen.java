@@ -11,6 +11,8 @@ import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.function.Supplier;
+
 public class VehicleOtherScreen extends VehicleSubScreen {
 
     public static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
@@ -50,7 +52,7 @@ public class VehicleOtherScreen extends VehicleSubScreen {
         // KEYBINDS BUTTON
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.key_binds"),
-                        onPress -> minecraft.setScreen(new VehicleKeyBindsScreen(0))),
+                        onPress -> minecraft.setScreen(new VehicleKeyBindsScreen(0)), Supplier::get),
                 ROWS, COLUMNS, 2, 2);
     }
 

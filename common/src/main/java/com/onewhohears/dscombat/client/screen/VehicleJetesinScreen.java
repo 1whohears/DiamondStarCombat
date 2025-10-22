@@ -1,11 +1,11 @@
 package com.onewhohears.dscombat.client.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class VehicleJetesinScreen extends VehicleSubScreen {
 
@@ -48,9 +49,9 @@ public class VehicleJetesinScreen extends VehicleSubScreen {
             if (part == null) continue;
             Button jetesin = new Button(0, 0, width, 20,
                     UtilMCText.translatable("ui.dscombat.drop"),
-                    button -> onJetesinButton(button, slot.getSlotId()));
-            jetesin.x = x;
-            jetesin.y = y + textHeight;
+                    button -> onJetesinButton(button, slot.getSlotId()), Supplier::get);
+            jetesin.setX(x);
+            jetesin.setY(y + textHeight);
             addRenderableWidget(jetesin);
             if (i % 3 == 2) {
                 y += textHeight + 20;
@@ -60,25 +61,25 @@ public class VehicleJetesinScreen extends VehicleSubScreen {
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack poseStack) {
-        super.renderBackground(poseStack);
-        poseStack.pushPose();
+    public void renderBackground(@NotNull GuiGraphics graphics) {
+        super.renderBackground(graphics);
+        graphics.pose().pushPose();
         float scale = 2f / 3f;
-        poseStack.scale(scale, scale, 1);
+        graphics.pose().scale(scale, scale, 1);
         int xStart = (int)((float)(guiX + left_padding) / scale) + 1, x = xStart;
         int y = (int)((float)(guiY + top_padding + vertical_widget_shift) / scale);
         int width = (int)((float)(image_width - left_padding - right_padding) / 3f / scale);
         for (int i = 0; i < slots.size(); ++i) {
             PartSlot slot = slots.get(i);
             PartInstance<?> part = slot.getPartData();
-            if (part != null) minecraft.font.draw(poseStack,
+            if (part != null) graphics.drawString(font,
                     part.getItemName().setStyle(style), x, y, 0xFFFFFF);
             if (i % 3 == 2) {
                 y += 40;
                 x = xStart;
             } else x += width;
         }
-        poseStack.popPose();
+        graphics.pose().popPose();
     }
 
     private void onJetesinButton(Button button, String slotId) {

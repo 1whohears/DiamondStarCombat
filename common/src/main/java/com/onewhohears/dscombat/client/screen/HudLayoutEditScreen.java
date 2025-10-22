@@ -1,20 +1,21 @@
 package com.onewhohears.dscombat.client.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.client.input.DSCKeys;
 import com.onewhohears.dscombat.client.overlay.HudLayoutManager;
 import com.onewhohears.dscombat.entity.vehicle.EntityHelicopter;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import com.onewhohears.dscombat.client.input.DSCKeys;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Simple layout edit screen that pauses camera and enables mouse.
@@ -75,7 +76,7 @@ public class HudLayoutEditScreen extends Screen {
         rects.put("bl", HudLayoutManager.get(vt(), "bl", new HudLayoutManager.Rect(defBlX/(double)sw, defBlY/(double)sh, defBlW/(double)sw, defBlH/(double)sh)));
 
         // Save & Close button (use constructor for cross-version compatibility)
-        addRenderableWidget(new Button(this.width - 130, 10, 120, 20, Component.literal("Save & Close"), b -> closeAndSave()));
+        addRenderableWidget(new Button(this.width - 130, 10, 120, 20, Component.literal("Save & Close"), b -> closeAndSave(), Supplier::get));
     }
 
     private String vt() {
@@ -87,39 +88,39 @@ public class HudLayoutEditScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack ps, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(ps);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(graphics);
         // Draw scaled HUD-space overlays
-        ps.pushPose();
-        ps.scale(scale, scale, 1f);
+        graphics.pose().pushPose();
+        graphics.pose().scale(scale, scale, 1f);
 
         // Title & instructions
-        drawString(ps, this.font, Component.literal("HUD Layout Edit"), 8, 8, Color.WHITE.getRGB());
-        drawString(ps, this.font, Component.literal("Drag to move, drag corner to resize. F6 or button to save."), 8, 20, 0xCCCCCC);
+        graphics.drawString(this.font, Component.literal("HUD Layout Edit"), 8, 8, Color.WHITE.getRGB());
+        graphics.drawString(this.font, Component.literal("Drag to move, drag corner to resize. F6 or button to save."), 8, 20, 0xCCCCCC);
 
         // Draw rectangles
-        drawRect(ps, "att", 0x66FFFFFF, 0xAAFFFFFF);
-        drawRect(ps, "head", 0x66FFFFFF, 0xAAFFFFFF);
-        drawRect(ps, "br", 0x66FFFFFF, 0xAAFFFFFF);
-        drawRect(ps, "bl", 0x66FFFFFF, 0xAAFFFFFF);
+        drawRect(graphics, "att", 0x66FFFFFF, 0xAAFFFFFF);
+        drawRect(graphics, "head", 0x66FFFFFF, 0xAAFFFFFF);
+        drawRect(graphics, "br", 0x66FFFFFF, 0xAAFFFFFF);
+        drawRect(graphics, "bl", 0x66FFFFFF, 0xAAFFFFFF);
 
-        ps.popPose();
-        super.render(ps, mouseX, mouseY, partialTick);
+        graphics.pose().popPose();
+        super.render(graphics, mouseX, mouseY, partialTick);
     }
 
-    private void drawRect(PoseStack ps, String id, int border, int handle) {
+    private void drawRect(GuiGraphics graphics, String id, int border, int handle) {
         HudLayoutManager.Rect r = rects.get(id);
         int x = (int) Math.round(r.x * sw), y = (int) Math.round(r.y * sh);
         int w = (int) Math.round(r.w * sw), h = (int) Math.round(r.h * sh);
         // border
-        fill(ps, x-1, y-1, x+w+1, y, border);
-        fill(ps, x-1, y+h, x+w+1, y+h+1, border);
-        fill(ps, x-1, y, x, y+h, border);
-        fill(ps, x+w, y, x+w+1, y+h, border);
+        graphics.fill(x-1, y-1, x+w+1, y, border);
+        graphics.fill(x-1, y+h, x+w+1, y+h+1, border);
+        graphics.fill(x-1, y, x, y+h, border);
+        graphics.fill(x+w, y, x+w+1, y+h, border);
         // label
-        drawString(ps, this.font, id, x+2, y-10, Color.WHITE.getRGB());
+        graphics.drawString(this.font, id, x+2, y-10, Color.WHITE.getRGB());
         // resize handle square
-        fill(ps, x+w-HANDLE/2, y+h-HANDLE/2, x+w+HANDLE/2, y+h+HANDLE/2, handle);
+        graphics.fill(x+w-HANDLE/2, y+h-HANDLE/2, x+w+HANDLE/2, y+h+HANDLE/2, handle);
     }
 
     @Override

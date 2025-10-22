@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class VehicleMainScreen extends VehicleScreen {
 
@@ -30,7 +31,7 @@ public class VehicleMainScreen extends VehicleScreen {
         super.init();
         int index = 0;
         // Vehicle Name
-        EditBox rangeBox = new EditBox(minecraft.font, 0, 0, 20, 20, UtilMCText.empty());
+        EditBox rangeBox = new EditBox(font, 0, 0, 20, 20, UtilMCText.empty());
         positionWidgetGrid(rangeBox, ROWS, COLUMNS, index++, 2);
         rangeBox.setValue(getVehicle().getCustomName() != null ? getVehicle().getCustomName().getString() : "");
         rangeBox.setTextColor(0xFFFFFF);
@@ -46,42 +47,42 @@ public class VehicleMainScreen extends VehicleScreen {
         // Open Parts Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_parts_screen"),
-                        onPress -> sendSyncAction(new VehicleSyncAction.OpenPartsAction())),
+                        onPress -> sendSyncAction(new VehicleSyncAction.OpenPartsAction()), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
         // Open Storage Inventory
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_inventory_screen"),
-                        onPress -> sendSyncAction(new VehicleSyncAction.OpenStorageAction(0))),
+                        onPress -> sendSyncAction(new VehicleSyncAction.OpenStorageAction(0)), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
         // Open Weapon Settings Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_weapon_screen"),
-                        onPress -> minecraft.setScreen(new VehicleWeaponScreen())),
+                        onPress -> minecraft.setScreen(new VehicleWeaponScreen()), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
         // Open Radar Settings Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_radar_screen"),
-                        onPress -> minecraft.setScreen(new VehicleRadarScreen())),
+                        onPress -> minecraft.setScreen(new VehicleRadarScreen()), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
         // Open Parts/Weapons Reload Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_reload_screen"),
-                        onPress -> minecraft.setScreen(new VehicleReloadScreen())),
+                        onPress -> minecraft.setScreen(new VehicleReloadScreen()), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
         // Open Jetesin Parts Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_jetesin_screen"),
-                        onPress -> minecraft.setScreen(new VehicleJetesinScreen())),
+                        onPress -> minecraft.setScreen(new VehicleJetesinScreen()), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
         // Open Vehicle Health Screen
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_health_screen"),
-                        onPress -> minecraft.setScreen(new VehicleHealthScreen())),
+                        onPress -> minecraft.setScreen(new VehicleHealthScreen()), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
         // Open Keybinds screen (include option to display reminder on top left)
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("screen.dscombat.vehicle_other_screen"),
-                        onPress -> minecraft.setScreen(new VehicleOtherScreen())),
+                        onPress -> minecraft.setScreen(new VehicleOtherScreen()), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
         // Landing Gear Toggle
         positionWidgetGrid(CycleButton.onOffBuilder(getVehicle().isLandingGear())
@@ -92,7 +93,7 @@ public class VehicleMainScreen extends VehicleScreen {
         // Turn Vehicle to Item
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.shrink_plane_button"),
-                        onPress -> onPlaneItemButton()),
+                        onPress -> onPlaneItemButton(), Supplier::get),
                 ROWS, COLUMNS, index++, 2);
     }
 

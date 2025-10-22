@@ -6,6 +6,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.function.Supplier;
+
 public abstract class VehicleSubScreen extends VehicleScreen {
     protected int padding = 2;
     protected VehicleSubScreen(Component title, ResourceLocation backgroundTexture, int imageWidth, int imageHeight, int textureWidth, int textureHeight) {
@@ -19,7 +21,7 @@ public abstract class VehicleSubScreen extends VehicleScreen {
         super.init();
         positionWidgetGrid(new Button(0, 0, 20, 20,
                         UtilMCText.translatable("ui.dscombat.back"),
-                        onPress -> minecraft.setScreen(getBackScreen())),
+                        onPress -> minecraft.setScreen(getBackScreen()), Supplier::get),
                 ROWS, COLUMNS, 0, padding);
     }
 

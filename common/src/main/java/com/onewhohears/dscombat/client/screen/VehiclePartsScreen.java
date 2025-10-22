@@ -1,18 +1,13 @@
 package com.onewhohears.dscombat.client.screen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.container.menu.VehiclePartsMenu;
 import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -22,6 +17,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu> {
 	
@@ -37,28 +38,28 @@ public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu
 	}
 	
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(poseStack);
-		super.render(poseStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(poseStack, mouseX, mouseY);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, partialTicks);
+        this.renderTooltip(graphics, mouseX, mouseY);
 	}
 	
 	@Override
-	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+	protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
 		if (!menu.getCarried().isEmpty() || hoveredSlot == null) return;
 		if (hoveredSlot.hasItem()) {
 			ItemStack stack = hoveredSlot.getItem();
-			renderTooltip(poseStack, getTooltipFromItem(stack), 
+            graphics.renderTooltip(font, getTooltipFromItem(minecraft, stack),
 					stack.getTooltipImage(), mouseX, mouseY);
 		} else {
-			renderTooltip(poseStack, getSlotTooltip(), 
+            graphics.renderTooltip(font, getSlotTooltip(),
 					Optional.empty(), mouseX, mouseY);
 		}
 	}
 	
 	@Override
-	public List<Component> getTooltipFromItem(ItemStack itemStack) {
-		List<Component> c = itemStack.getTooltipLines(this.minecraft.player, 
+	public @NotNull List<Component> getTooltipFromContainerItem(ItemStack itemStack) {
+		List<Component> c = itemStack.getTooltipLines(this.minecraft.player,
 				minecraft.options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
 		List<Component> slots = getSlotTooltip();
 		for (int i = 0; i < slots.size(); ++i) c.add(i, slots.get(i));
@@ -80,18 +81,18 @@ public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu
 	}
 	
 	@Override
-	protected void renderBg(PoseStack stack, float pTicks, int mouseX, int mouseY) {
+	protected void renderBg(GuiGraphics graphics, float pTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.setShaderTexture(0, BG_TEXTURE);
-		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		graphics.blit(BG_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		if (menu.getClientData() != null && menu.getClientData().getBackground() != null) {
 			RenderSystem.setShaderTexture(0, menu.getClientData().getBackground());
-			blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+            graphics.blit(menu.getClientData().getBackground(), leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		}
 		for (int i = 0; i < menu.slots.size(); ++i) {
 			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
 			RenderSystem.setShaderTexture(0, slot.data.getSlotType().getBgTexture());
-			blit(stack, leftPos+slot.x, topPos+slot.y, 
+            graphics.blit(slot.data.getSlotType().getBgTexture(), leftPos+slot.x, topPos+slot.y,
 					0, 0, 
 					16, 16, 
 					16, 16);
@@ -99,9 +100,9 @@ public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu
 	}
 
 	@Override
-	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		font.draw(stack, title, titleLabelX+38, titleLabelY, 0x404040);
-		font.draw(stack, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
+	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+		graphics.drawString(font, title, titleLabelX+38, titleLabelY, 0x404040);
+		graphics.drawString(font, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
 	}
 	
 	@Override
@@ -109,9 +110,9 @@ public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu
 		super.init();
 		Button backButton = new Button(0, 0, 60, 20,
 				UtilMCText.translatable("ui.dscombat.back"),
-				onPress -> { minecraft.setScreen(new VehicleMainScreen()); });
-		backButton.x = leftPos + titleLabelX+144;
-		backButton.y = topPos + titleLabelY+110;
+				onPress -> { minecraft.setScreen(new VehicleMainScreen()); }, Supplier::get);
+		backButton.setX(leftPos + titleLabelX+144);
+		backButton.setY(topPos + titleLabelY+110);
 		addRenderableWidget(backButton);
 	}
 

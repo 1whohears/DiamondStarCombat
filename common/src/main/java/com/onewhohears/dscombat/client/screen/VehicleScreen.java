@@ -1,10 +1,10 @@
 package com.onewhohears.dscombat.client.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.client.screen.BackgroundScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -54,11 +54,11 @@ public abstract class VehicleScreen extends BackgroundScreen {
         return (EntityVehicle) getPlayer().getRootVehicle();
     }
     @Override
-    public void renderBackground(@NotNull PoseStack poseStack) {
-        super.renderBackground(poseStack);
-        if (!titleText.isEmpty()) minecraft.font.draw(poseStack,
+    public void renderBackground(@NotNull GuiGraphics graphics) {
+        super.renderBackground(graphics);
+        if (!titleText.isEmpty()) graphics.drawString(font,
                 UtilMCText.translatable(titleText), guiX+left_padding, guiY+top_padding, infoColor);
-        if (info != null && infoTicks != 0) minecraft.font.draw(poseStack, info,
+        if (info != null && infoTicks != 0) graphics.drawString(font, info,
                 guiX+left_padding, guiY+top_padding+infoTextYOffset, infoColor);
     }
     public void setInfoText(String info_text, int display_time) {

@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class VehicleEditButtonBindScreen extends VehicleSubScreen {
 
@@ -60,26 +61,29 @@ public class VehicleEditButtonBindScreen extends VehicleSubScreen {
                 onPress -> {
                     action.setPrimaryAction(new ActionInput.UnboundButton());
                     ClientInputManager.saveKeyBinds();
-                });
+                }, Supplier::get);
         positionWidgetGrid(priUnboundButton, ROWS, 1, 2, padding);
         // DSC Key Button
         Button PRI_DSC_KEY = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.edit_dsc_key_button"),
-                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.DSCKeyButton(page, action, true)));
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.DSCKeyButton(page, action, true)),
+                Supplier::get);
         positionWidgetGrid(PRI_DSC_KEY, ROWS, 1, 2, padding);
         priDSCKeyButtons.clear();
         priDSCKeyButtons.add(PRI_DSC_KEY);
         // Controller Button
         Button PRI_CONTROLLER = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.edit_controller_button"),
-                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerButton(page, action, true)));
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerButton(page, action, true)),
+                Supplier::get);
         positionWidgetGrid(PRI_CONTROLLER, ROWS, 1, 2, padding);
         priControllerButtons.clear();
         priControllerButtons.add(PRI_CONTROLLER);
         // Controller Axis Button
         Button PRI_CONTROLLER_AXIS = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.edit_controller_axis_button"),
-                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerAxisButton(page, action, true)));
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerAxisButton(page, action, true)),
+                Supplier::get);
         positionWidgetGrid(PRI_CONTROLLER_AXIS, ROWS, 1, 2, padding);
         priControllerAxisButtons.clear();
         priControllerAxisButtons.add(PRI_CONTROLLER_AXIS);
@@ -99,26 +103,29 @@ public class VehicleEditButtonBindScreen extends VehicleSubScreen {
                 onPress -> {
                     action.setSecondaryAction(new ActionInput.UnboundButton());
                     ClientInputManager.saveKeyBinds();
-                });
+                }, Supplier::get);
         positionWidgetGrid(secUnboundButton, ROWS, 1, 4, padding);
         // DSC Key Button
         Button SEC_DSC_KEY = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.edit_dsc_key_button"),
-                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.DSCKeyButton(page, action, false)));
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.DSCKeyButton(page, action, false)),
+                Supplier::get);
         positionWidgetGrid(SEC_DSC_KEY, ROWS, 1, 4, padding);
         secDSCKeyButtons.clear();
         secDSCKeyButtons.add(SEC_DSC_KEY);
         // Controller Button
         Button SEC_CONTROLLER = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.edit_controller_button"),
-                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerButton(page, action, false)));
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerButton(page, action, false)),
+                Supplier::get);
         positionWidgetGrid(SEC_CONTROLLER, ROWS, 1, 4, padding);
         secControllerButtons.clear();
         secControllerButtons.add(SEC_CONTROLLER);
         // Controller Axis Button
         Button SEC_CONTROLLER_AXIS = new Button(0, 0, 20, 20,
                 UtilMCText.translatable("ui.dscombat.edit_controller_axis_button"),
-                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerAxisButton(page, action, false)));
+                onPress -> Minecraft.getInstance().setScreen(new SelectBindScreen.ControllerAxisButton(page, action, false)),
+                Supplier::get);
         positionWidgetGrid(SEC_CONTROLLER_AXIS, ROWS, 1, 4, padding);
         secControllerAxisButtons.clear();
         secControllerAxisButtons.add(SEC_CONTROLLER_AXIS);

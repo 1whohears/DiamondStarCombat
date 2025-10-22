@@ -10,6 +10,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.function.Supplier;
+
 public class VehicleKeyBindsScreen extends VehicleSubScreen {
 
     public static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
@@ -39,7 +41,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
             int p = page - 1;
             if (p < 0) p = maxPage;
             minecraft.setScreen(new VehicleKeyBindsScreen(p));
-        });
+        }, Supplier::get);
         positionWidgetGrid(leftButton, ROWS, 4, 2, 2);
         // PAGE UP
         Button rightButton = new Button(0, 0, 20, 20,
@@ -47,7 +49,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
             int p = page + 1;
             if (p > maxPage) p = 0;
             minecraft.setScreen(new VehicleKeyBindsScreen(p));
-        });
+        }, Supplier::get);
         positionWidgetGrid(rightButton, ROWS, 4, 3, 2);
         // DISPLAY 12 BIND BUTTONS BASED ON PAGE
         int firstBindIndex = page * 12, lastBindIndex = firstBindIndex + 12;
@@ -57,7 +59,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
             Button button = new Button(0, 0, 20, 20,
                     action.getName(), onPress -> {
                 minecraft.setScreen(new VehicleEditAxisBindScreen(page, action));
-            });
+            }, Supplier::get);
             positionWidgetGrid(button, ROWS, COLUMNS, a + 2, 2);
             ++k; ++a;
         }
@@ -66,7 +68,7 @@ public class VehicleKeyBindsScreen extends VehicleSubScreen {
             Button button = new Button(0, 0, 20, 20,
                     action.getName(), onPress -> {
                 minecraft.setScreen(new VehicleEditButtonBindScreen(page, action));
-            });
+            }, Supplier::get);
             positionWidgetGrid(button, ROWS, COLUMNS, a + 2, 2);
             ++k; ++a;
         }

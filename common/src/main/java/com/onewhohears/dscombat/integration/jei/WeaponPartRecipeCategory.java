@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -45,11 +46,6 @@ public class WeaponPartRecipeCategory implements IRecipeCategory<WeaponPartRecip
 	}
 
 	@Override
-	public @NotNull IDrawable getBackground() {
-		return background;
-	}
-
-	@Override
 	public IDrawable getIcon() {
 		return icon;
 	}
@@ -68,7 +64,7 @@ public class WeaponPartRecipeCategory implements IRecipeCategory<WeaponPartRecip
 			builder.addSlot(RecipeIngredientRole.INPUT, ix, iy).addIngredients(ingredients.get(i));
 			ix += space;
 		}
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 105, 61).addItemStack(recipe.getResultItem());
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 105, 61).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
 	}
 
 }

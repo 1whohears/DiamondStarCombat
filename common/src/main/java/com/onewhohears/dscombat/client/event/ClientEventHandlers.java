@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.client.event;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenIds;
 import com.onewhohears.dscombat.client.entityscreen.EntityScreenTypes;
 import com.onewhohears.dscombat.client.entityscreen.instance.*;
@@ -29,7 +28,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -59,7 +58,7 @@ public class ClientEventHandlers {
 
     public static CompoundEventResult<Component> receivedChat(ChatType.Bound bound, Component message) {
         ResourceLocation typeId = Minecraft.getInstance().level.registryAccess()
-                .registryOrThrow(Registry.CHAT_TYPE_REGISTRY)
+                .registryOrThrow(Registries.CHAT_TYPE)
                 .getKey(bound.chatType());
         if (typeId == null) return CompoundEventResult.pass();
         if (typeId.getPath().equals("chat")) return CompoundEventResult.pass();

@@ -1,13 +1,5 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import com.onewhohears.onewholibs.util.UtilEntity;
-import org.jetbrains.annotations.Nullable;
-
-import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.ChainHookInstance;
@@ -15,8 +7,8 @@ import com.onewhohears.dscombat.data.parts.stats.ChainHookStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilServerPacket;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
@@ -35,6 +27,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstance<ChainHookStats>> {
 	

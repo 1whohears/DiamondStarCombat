@@ -1,21 +1,19 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.AntiRadarMissileStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMissile<T> {
 	
@@ -86,7 +84,7 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 	
 	protected boolean basicCheck(Entity ping) {
 		//System.out.println("target? "+ping);
-		if (!ping.isOnGround()) {
+		if (!ping.onGround()) {
 			return false;
 		}
 		if (isAlliedTo(ping)) {

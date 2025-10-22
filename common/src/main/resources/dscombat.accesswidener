@@ -61,3 +61,5 @@ accessible field net/minecraft/client/KeyMapping ALL Ljava/util/Map;
 accessible field net/minecraft/client/KeyMapping MAP Ljava/util/Map;
 
 accessible field net/minecraft/client/KeyMapping clickCount I
+
+accessible field net/minecraft/world/entity/Entity maxUpStep F

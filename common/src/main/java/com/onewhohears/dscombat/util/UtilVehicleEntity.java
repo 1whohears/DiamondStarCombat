@@ -13,6 +13,8 @@ import dev.architectury.utils.value.IntValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -40,11 +43,11 @@ public class UtilVehicleEntity {
         if (entity.isPassenger()) {
             Entity rv = entity.getRootVehicle();
             if (rv.getType().is(ModTags.EntityTypes.ALWAYS_GROUNDED)) return true;
-            if (rv.isOnGround() || UtilEntity.isHeadAboveWater(rv)) return true;
+            if (rv.onGround() || UtilEntity.isHeadAboveWater(rv)) return true;
         }
         if (entity instanceof Player p && p.isFallFlying()) return false;
         if (!entity.isInWater() && entity.isSprinting() && entity.fallDistance < 1.15) return true;
-        if (entity.isOnGround() || UtilEntity.isHeadAboveWater(entity)) return true;
+        if (entity.onGround() || UtilEntity.isHeadAboveWater(entity)) return true;
         return false;
     }
 
@@ -99,7 +102,7 @@ public class UtilVehicleEntity {
         int dist;
         for(dist = 0; pos[1] >= l.getMinBuildHeight() && dist <= limit; ++dist) {
             BlockState block = l.getBlockState(new BlockPos(pos[0], pos[1], pos[2]));
-            if (block != null && !block.isAir() && (!ignoreWater || block.getMaterial().blocksMotion())) {
+            if (block != null && !block.isAir() && (!ignoreWater || UtilEntity.blocksMotion(block))) {
                 break;
             }
             pos[1]--;
@@ -116,6 +119,18 @@ public class UtilVehicleEntity {
     @ExpectPlatform
     public static void revive(Entity entity) {
         throw new AssertionError();
+    }
+
+    public static boolean isExplosion(@NotNull DamageSource source) {
+        return source.is(DamageTypes.EXPLOSION) || source.is(DamageTypes.PLAYER_EXPLOSION);
+    }
+
+    public static boolean isFire(@NotNull DamageSource source) {
+        return source.is(DamageTypes.IN_FIRE) || source.is(DamageTypes.ON_FIRE);
+    }
+
+    public static boolean isBypassArmor(@NotNull DamageSource source) {
+
     }
 
 }

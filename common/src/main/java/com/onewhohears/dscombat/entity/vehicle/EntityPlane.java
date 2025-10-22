@@ -211,7 +211,7 @@ public class EntityPlane extends EntityVehicle {
 	
 	@Override
 	public boolean isWeaponAngledDown() {
-		return getPlaneStats().canAimDown && !onGround && inputs.special2;
+		return getPlaneStats().canAimDown && !isOnGround() && inputs.special2;
 	}
 	
 	@Override

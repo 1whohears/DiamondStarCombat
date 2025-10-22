@@ -56,6 +56,7 @@ import dev.architectury.registry.menu.ExtendedMenuProvider;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -70,6 +71,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -486,7 +488,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		for (double x = box.minX; x < box.maxX+1; ++x) {
 			for (double z = box.minZ; z < box.maxZ+1; ++z) {
 				for (double y = box.minY; y < box.maxY+1; ++y) {
-					BlockPos pos = new BlockPos(x, y, z);
+					BlockPos pos = UtilGeometry.toBlockPos(new Vec3(x, y, z));
 					BlockState state = getWorld().getBlockState(pos);
 					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;
 					if (UtilVehicleEntity.vehicleHasPermissionToTrample(pos, state, getWorld(), controller))
@@ -552,8 +554,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void collideHurt(float amount, boolean isFall) {
 		if (!isClientSide() && tickCount > 200) {
-			if (isFall) hurt(DamageSource.FALL, amount);
-			else hurt(DamageSource.FLY_INTO_WALL, amount);
+			if (isFall) hurt(damageSources().fall(), amount);
+			else hurt(damageSources().flyIntoWall(), amount);
 		} else if (isClientSide() && isControlledByLocalInstance()) {
             new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
 		}
@@ -606,7 +608,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void waterDamage() {
 		if (tickCount % 20 == 0 && isInWater() && isOperational()) 
-			hurt(DamageSource.DROWN, 5);
+			hurt(damageSources().drown(), 5);
 	}
 	
 	/**
@@ -790,7 +792,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         Entity controller = getControllingPassenger();
         if (controller == null) return move;
         Vec3 nextPos = controller.position().add(move.normalize().scale(64));
-        ChunkPos nextChunk = new ChunkPos(new BlockPos(nextPos));
+        ChunkPos nextChunk = new ChunkPos(UtilGeometry.toBlockPos(nextPos));
         if (getWorld().hasChunk(nextChunk.x, nextChunk.z)) return move;
         LOGGER.warn("CHUNK AHEAD VEHICLE DOES NOT EXIST STOPPING MOVE FOR PILOT: {} | SPEED: {}",
                 controller.getScoreboardName(), move.length());
@@ -1347,9 +1349,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 * the part's position is set based on the vehicle's rotation.
 	 */
 	@Override
-    public void positionRider(@NotNull Entity passenger) {
+    public void positionRider(@NotNull Entity passenger, MoveFunction moveFunction) {
 		if (passenger instanceof EntityPart part) {
-			passenger.setPos(convertRelPos(part.getRelativePos()));
+            Vec3 pos = convertRelPos(part.getRelativePos());
+            moveFunction.accept(passenger, pos.x, pos.y, pos.z);
 			return;
 		}
 	}
@@ -1360,7 +1363,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	@Nullable
 	@Override
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         for (EntityRidablePart seat : getSeats())
         	if (seat.isPilotSeat()) 
         		return seat.getPlayer();
@@ -1501,7 +1504,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		if (isInvulnerableTo(source)) return false;
-		if (source.isFire()) hurtByFireTime = tickCount;
+		if (UtilVehicleEntity.isFire(source)) hurtByFireTime = tickCount;
 		soundManager.onHurt(source, amount);
 		damage(source, amount, hitbox, hurtRoot);
 		if (!isClientSide()) {
@@ -1526,7 +1529,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		/*if (shouldDebug(source)) 
 			System.out.println("D="+amount+" C?"+isClientSide()+" R?"+hurtRoot+" H="+hitbox+" source "+source);*/
-		if (!source.isExplosion() && source.getDirectEntity() != null
+		if (!UtilVehicleEntity.isExplosion(source) && source.getDirectEntity() != null
 				&& source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) {
 			amount = calcDamageFromBullet(source, amount);
 		}
@@ -1561,9 +1564,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public static float getHealthDamageWithArmorPercent(DamageSource source) {
-		if (source.isExplosion()) return 0.2f;
-		else if (source.isBypassArmor()) return 0.8f;
-		else if (source.isFire()) return 0.7f;
+		if (UtilVehicleEntity.isExplosion(source)) return 0.2f;
+		else if (UtilVehicleEntity.isBypassArmor(source)) return 0.8f;
+		else if (UtilVehicleEntity.isFire(source)) return 0.7f;
 		return 0; 
 	}
 	
@@ -1583,7 +1586,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	private boolean shouldDebug(DamageSource source) {
-		return !source.isFire();
+		return !UtilVehicleEntity.isFire(source);
 	}
 	
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
@@ -1598,7 +1601,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public boolean isInvulnerableTo(@NotNull DamageSource source) {
 		if (isTestMode()) return true;
 		if (super.isInvulnerableTo(source)) return true;
-		if (source.isFire() && (tickCount-hurtByFireTime) < 10) return true;
+		if (UtilVehicleEntity.isFire(source) && (tickCount-hurtByFireTime) < 10) return true;
 		if (isVehicleOf(source.getEntity())) return true;
 		return false;
 	}
@@ -1628,10 +1631,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	protected boolean checkExplodeWhenKilled(DamageSource source) {
-		if (source.getMsgId().equals(DamageSource.FALL.getMsgId())) {
+		if (source.is(DamageTypes.FALL)) {
 			explode(VehicleDamageSource.fall(this));
 			return true;
-		} else if (source.getMsgId().equals(DamageSource.FLY_INTO_WALL.getMsgId())) {
+		} else if (source.is(DamageTypes.FLY_INTO_WALL)) {
 			explode(VehicleDamageSource.collide(this));
 			return true;
 		}
@@ -1650,7 +1653,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		getWorld().explode(this, source,
 			null, getX(), getY(), getZ(), 
 			getStats().crashExplosionRadius, true,
-			Explosion.BlockInteraction.BREAK);
+			Level.ExplosionInteraction.TNT);
         explodeSeats(source);
         PacketHandler.sendToTrackers(new ToClientVehicleExplode(this), this);
 	}
@@ -3295,5 +3298,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
      */
     public @NotNull Level getWorld() {
         return UtilEntity.getLevel(this);
+    }
+
+    @Override
+    public boolean isOnGround() {
+        return onGround();
     }
 }

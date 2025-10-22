@@ -87,7 +87,7 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 			//System.out.println("spectator");
 			return false;
 		}
-		if (checkGround && ping.isOnGround()) {
+		if (checkGround && ping.onGround()) {
 			//System.out.println("on ground");
 			return false;
 		}

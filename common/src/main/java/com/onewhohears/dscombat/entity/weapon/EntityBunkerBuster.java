@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BunkerBusterStats;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -41,7 +42,7 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 		Entity owner = getOwner();
 		while (it.hasNext()) {
 			VoxelShape voxel = it.next();
-			BlockPos pos = new BlockPos(voxel.bounds().getCenter());
+			BlockPos pos = UtilGeometry.toBlockPos(voxel.bounds().getCenter());
 			BlockState state = getWorld().getBlockState(pos);
 			int hit_block_strength = getBlockStrength(pos, state);
 			if (getBlockStrength() >= hit_block_strength &&
@@ -53,7 +54,7 @@ public class EntityBunkerBuster<T extends BunkerBusterStats> extends EntityBomb<
 			}
 		}
 		Vec3 p = position().add(getDeltaMovement());
-		return BlockHitResult.miss(p, getDirection(), new BlockPos(p));
+		return BlockHitResult.miss(p, getDirection(), UtilGeometry.toBlockPos(p));
 	}
 	
 	protected int getBlockStrength(BlockPos pos, BlockState state) {

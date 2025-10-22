@@ -18,7 +18,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -80,9 +79,9 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	}
 	
 	@Override
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, MoveFunction moveFunction) {
 		if (!(getVehicle() instanceof EntityVehicle craft)) {
-			super.positionRider(passenger);
+			super.positionRider(passenger, moveFunction);
 			return;
 		}
 		if (tickCount % 20 == 0 && passenger instanceof Player player) {
@@ -97,7 +96,8 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
                         240, 0, false, false));
 			}
 		}
-		passenger.setPos(position().add(getPassengerRelPos(passenger, craft)));
+        Vec3 pos = position().add(getPassengerRelPos(passenger, craft));
+        moveFunction.accept(passenger, pos.x, pos.y, pos.z);
 	}
 	
 	protected Vec3 getPassengerRelPos(Entity passenger, EntityVehicle craft) {
@@ -167,7 +167,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	
 	@Nullable
 	@Override
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
 		Player p = getPlayer();
 		if (p == null) return super.getControllingPassenger();
 		return p;
@@ -181,7 +181,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 
     public void explode(DamageSource source, Entity parent) {
         getWorld().explode(parent, source, null, getX(), getY(), getZ(),
-                3, true, Explosion.BlockInteraction.BREAK);
+                3, true, Level.ExplosionInteraction.TNT);
     }
 	
 	public boolean hasAIUsingTurret() {

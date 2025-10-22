@@ -1,15 +1,12 @@
 package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
-
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -35,9 +32,9 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 		if (getAge() < minExplodeAge()) return;
 		if (!getWorld().hasChunk(chunkPosition().x, chunkPosition().z)) return;
 		if (!isClientSide() && getExplosive()) {
-			Explosion.BlockInteraction interact = Explosion.BlockInteraction.NONE;
+			Level.ExplosionInteraction interact = Level.ExplosionInteraction.NONE;
 			if (getTerrain() && getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS))
-				interact = Explosion.BlockInteraction.BREAK;
+				interact = Level.ExplosionInteraction.TNT;
 			for (int i = 0; i < getExplodeNum(); ++i) {
                 getWorld().explode(this, getExplosionDamageSource(),
 					null, getX(), getY(), getZ(), 

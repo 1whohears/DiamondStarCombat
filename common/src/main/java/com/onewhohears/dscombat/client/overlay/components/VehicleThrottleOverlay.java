@@ -1,11 +1,11 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,21 +21,21 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
     public static final int THROTTLE_RAIL_LENGTH = 70, THROTTLE_WIDTH = 10, THROTTLE_KNOB_HEIGHT = 10;
 
     @Override
-    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (com.onewhohears.dscombat.Config.CLIENT.enableModernHUD.get()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
     @Override
-    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
         assert vehicle != null;
 
         int xOrigin = screenWidth - STICK_BASE_SIZE - PADDING - THROTTLE_WIDTH - PADDING;
         int yOrigin = screenHeight - THROTTLE_RAIL_LENGTH - PADDING;
         RenderSystem.setShaderTexture(0, THROTTLE_RAIL);
-        blit(poseStack,
+        graphics.blit(THROTTLE_RAIL,
                 xOrigin, yOrigin,
                 0, 0,
                 THROTTLE_WIDTH, THROTTLE_RAIL_LENGTH,
@@ -47,7 +47,7 @@ public class VehicleThrottleOverlay extends VehicleOverlayComponent {
         float throttle = vehicle.inputs.getGoalThrottle(vehicle);
         if (vehicle.getStats().negativeThrottle) throttleYPos = throttleYPos-throttleLength/2-(int)(throttle*throttleLength/2);
         else throttleYPos = throttleYPos-(int)(throttle*throttleLength);
-        blit(poseStack,
+        graphics.blit(THROTTLE_HANDLE,
                 xOrigin, throttleYPos,
                 0, 0,
                 THROTTLE_WIDTH, THROTTLE_KNOB_HEIGHT,

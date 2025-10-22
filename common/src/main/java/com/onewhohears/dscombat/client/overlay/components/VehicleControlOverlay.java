@@ -1,11 +1,11 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,7 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
     public static final int STICK_BASE_SIZE = 60, STICK_KNOB_SIZE = STICK_BASE_SIZE / 6;
     protected static int PEDAL_HEIGHT = 25, PEDAL_WIDTH = 20;
     @Override
-    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (com.onewhohears.dscombat.Config.CLIENT.enableModernHUD.get() &&
                 !com.onewhohears.dscombat.Config.CLIENT.showControlsInModernHUD.get()) return false;
@@ -32,7 +32,7 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
         assert vehicle != null;
 
@@ -42,16 +42,17 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
         // rudder (yaw input)
         if (vehicle.isAircraft()) {
             yOrigin -= PEDAL_HEIGHT;
-            if (vehicle.inputs.yaw < 0) RenderSystem.setShaderTexture(0, RUDDER_PEDAL_PUSHED);
-            else RenderSystem.setShaderTexture(0, RUDDER_PEDAL);
-            blit(poseStack,
+            ResourceLocation texture;
+            if (vehicle.inputs.yaw < 0) texture = RUDDER_PEDAL_PUSHED;
+            else texture = RUDDER_PEDAL;
+            graphics.blit(texture,
                     xOrigin, yOrigin,
                     0, 0,
                     PEDAL_WIDTH, PEDAL_HEIGHT,
                     PEDAL_WIDTH, PEDAL_HEIGHT);
-            if (vehicle.inputs.yaw > 0) RenderSystem.setShaderTexture(0, RUDDER_PEDAL_PUSHED);
-            else RenderSystem.setShaderTexture(0, RUDDER_PEDAL);
-            blit(poseStack,
+            if (vehicle.inputs.yaw > 0) texture = RUDDER_PEDAL_PUSHED;
+            else texture = RUDDER_PEDAL;
+            graphics.blit(texture,
                     xOrigin + STICK_BASE_SIZE - PEDAL_WIDTH, yOrigin,
                     0, 0,
                     PEDAL_WIDTH, PEDAL_HEIGHT,
@@ -61,7 +62,7 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
         // stick (pitch roll input)
         RenderSystem.setShaderTexture(0, STICK_BASE);
         yOrigin -= STICK_BASE_SIZE;
-        blit(poseStack,
+        graphics.blit(STICK_BASE,
                 xOrigin, yOrigin,
                 0, 0,
                 STICK_BASE_SIZE, STICK_BASE_SIZE,
@@ -81,7 +82,7 @@ public class VehicleControlOverlay extends VehicleOverlayComponent {
             yinput = yinput / inputLength;
         }
 
-        blit(poseStack,
+        graphics.blit(STICK_KNOB,
                 xOrigin + baseSizeHalf - knobSizeHalf + (int) (xinput * baseSizeHalf),
                 yOrigin + baseSizeHalf - knobSizeHalf + (int) (yinput * baseSizeHalf),
                 0, 0,

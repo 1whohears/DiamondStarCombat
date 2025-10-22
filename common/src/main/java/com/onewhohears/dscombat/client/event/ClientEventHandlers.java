@@ -26,6 +26,7 @@ import dev.architectury.registry.client.particle.ParticleProviderRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
@@ -75,8 +76,8 @@ public class ClientEventHandlers {
             DSCClientInputs.planeArcadePhysicsMode = value;
     }
 
-    public static void onRenderHud(PoseStack poseStack, float partialTicks) {
-        OverlayController.onRenderHud(poseStack, partialTicks);
+    public static void onRenderHud(GuiGraphics graphics, float partialTicks) {
+        OverlayController.onRenderHud(graphics, partialTicks);
     }
 
     public static void onClientSetup(Minecraft minecraft) {

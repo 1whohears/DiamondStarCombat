@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
@@ -18,6 +17,7 @@ import com.onewhohears.onewholibs.util.math.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +36,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     protected static float PARTIAL_TICK;
 
     @Override
-    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (Minecraft.getInstance().screen != null) return false;
         if (!(getPlayerVehicle() instanceof EntityRidablePart seat)) return false;
@@ -51,7 +51,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntityRidablePart seat = (EntityRidablePart) getPlayerVehicle();
         assert seat != null;
 
@@ -67,14 +67,14 @@ public class RadarOverlay extends VehicleOverlayComponent {
         Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 view = cam.getPosition();
         float z_rot = UtilAngles.lerpAngle(PARTIAL_TICK, vehicle.zRotO, vehicle.zRot);
-        poseStack.pushPose();
+        graphics.pose().pushPose();
         QuaternionF q = Vec3f.ZP.rotationDegrees(z_rot);
         q.mul(Vec3f.XP.rotationDegrees(cam.getXRot()));
         q.mul(Vec3f.YP.rotationDegrees(cam.getYRot()+180f));
-        poseStack.mulPose(q.convert());
-        poseStack.translate(-view.x, -view.y, -view.z);
-        Mat4f view_mat = Mat4f.from(poseStack.last().pose().copy());
-        poseStack.popPose();
+        graphics.pose().mulPose(q.convert());
+        graphics.pose().translate(-view.x, -view.y, -view.z);
+        Mat4f view_mat = Mat4f.from(graphics.pose().last().pose());
+        graphics.pose().popPose();
         Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
         float cursorX = screenWidth / 2F, cursorY = screenHeight / 2F;
         boolean hovering = false;
@@ -106,38 +106,38 @@ public class RadarOverlay extends VehicleOverlayComponent {
             float x_win = screen_pos[0], y_win = screen_pos[1];
             float scale = (float) Math.max(min, max-(dist/max_dist*(max-min)));
             float adj = size*scale/2f, x_pos = x_win-adj, y_pos = y_win-adj;
-            poseStack.pushPose();
-            poseStack.translate(x_pos, y_pos, 0);
-            poseStack.scale(scale, scale, scale);
+            graphics.pose().pushPose();
+            graphics.pose().translate(x_pos, y_pos, 0);
+            graphics.pose().scale(scale, scale, scale);
             if (!ping.entityType.isMissile()) {
                 RenderSystem.setShaderTexture(0, PING_HUD);
-                blit(poseStack,
+                graphics.blit(PING_HUD,
                         0, 0, 0, hud_ping_offset,
                         size, size, size, size * 5);
             }
             RenderSystem.setShaderTexture(0, PING_ICONS);
             if (ping.entityType.isMissile()) {
-                blit(poseStack, iconMid, iconMid, icon_size, icon_size,
+                graphics.blit(PING_ICONS, iconMid, iconMid, icon_size, icon_size,
                         ICON_SIZE * 5, ICON_SIZE,
                         ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             }
-            blit(poseStack, iconLeft, iconMid, icon_size, icon_size,
+            graphics.blit(PING_ICONS, iconLeft, iconMid, icon_size, icon_size,
                     ping.entityType.getIconIndex() * ICON_SIZE, 0,
                     ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
-            blit(poseStack, iconRight, iconMid, icon_size, icon_size,
+            graphics.blit(PING_ICONS, iconRight, iconMid, icon_size, icon_size,
                     ping.terrainType.getIconIndex() * ICON_SIZE, 0,
                     ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             if (ping.isFriendly) {
-                blit(poseStack, iconMid, iconLeft, icon_size, icon_size,
+                graphics.blit(PING_ICONS, iconMid, iconLeft, icon_size, icon_size,
                         ICON_SIZE * 4, 0,
                         ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             }
             if (ping.isShared()) {
-                blit(poseStack, iconMid, iconRight, icon_size, icon_size,
+                graphics.blit(PING_ICONS, iconMid, iconRight, icon_size, icon_size,
                         ICON_SIZE * 9, 0,
                         ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             }
-            poseStack.popPose();
+            graphics.pose().popPose();
             if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj
                     && cursorY < y_win+adj && cursorY > y_win-adj) {
                 DSCClientInputs.setRadarHoverIndex(i);
@@ -164,7 +164,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
             		text += " | X";
             	}
             }
-            drawCenteredString(poseStack, FONT, text,
+            graphics.drawCenteredString(FONT, text,
                     screenWidth / 2, screenHeight / 2 - 20, color);
         }
     }

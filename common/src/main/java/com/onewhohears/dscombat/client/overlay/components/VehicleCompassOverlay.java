@@ -1,11 +1,11 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -38,14 +38,14 @@ public class VehicleCompassOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (com.onewhohears.dscombat.Config.CLIENT.enableModernHUD.get()) return false;
         return getPlayerRootVehicle() instanceof EntityVehicle;
     }
 
     @Override
-    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         // HEADING
         int y = 10, color = 0xe6e600;
         assert Minecraft.getInstance().player != null;
@@ -55,22 +55,22 @@ public class VehicleCompassOverlay extends VehicleOverlayComponent {
                 ? textByHeading((int) heading)
                 : String.valueOf((int) heading);
 
-        drawCenteredString(poseStack, FONT, stringHeading,
+        graphics.drawCenteredString(FONT, stringHeading,
                 screenWidth / 2, y + 40, color);
 
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, COMPASS);
 
-        poseStack.pushPose();
-        poseStack.translate(((double) (screenWidth - COMPASS_U_WIDTH) / 2) - 1, 30, 0);
+        graphics.pose().pushPose();
+        graphics.pose().translate(((double) (screenWidth - COMPASS_U_WIDTH) / 2) - 1, 30, 0);
 
-        blit(poseStack,
+        graphics.blit(COMPASS,
                 0, 0,
                 (Minecraft.getInstance().player.getYRot() * 2) - COMPASS_CORRECTIONAL_OFFSET, 0,
                 COMPASS_U_WIDTH, COMPASS_TEXTURE_HEIGHT,
                 COMPASS_TEXTURE_WIDTH, COMPASS_TEXTURE_HEIGHT);
 
-        poseStack.popPose();
+        graphics.pose().popPose();
     }
 
     @Override

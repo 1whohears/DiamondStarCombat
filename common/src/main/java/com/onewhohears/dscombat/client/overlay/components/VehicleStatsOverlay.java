@@ -1,11 +1,11 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -35,7 +35,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (Config.CLIENT.enableModernHUD.get()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityVehicle)) return false;
@@ -43,7 +43,7 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntityVehicle vehicle = (EntityVehicle) getPlayerRootVehicle();
         assert vehicle != null;
 
@@ -52,26 +52,26 @@ public class VehicleStatsOverlay extends VehicleOverlayComponent {
 
         if (vehicle.isAircraft()) yOrigin -= PEDAL_HEIGHT;
 
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 "m/s: "+String.format("%3.1f", vehicle.getDeltaMovement().length()*20),
                 xOrigin, yOrigin,
                 0x00ff00);
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 "A: "+ vehicle.getAltitude(),
                 xOrigin, yOrigin-10,
                 0x00ff00);
 
         float health = vehicle.getHealth(), maxHealth = vehicle.getMaxHealth();
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 "H: "+(int)health+"/"+(int)maxHealth,
                 xOrigin, yOrigin-20,
                 getHealthColor(health, maxHealth));
         float armor = vehicle.getArmor(), maxArmor = vehicle.getMaxTotalArmor();
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 "S: "+(int)armor+"/"+(int)maxArmor,
                 xOrigin, yOrigin-30,
                 getHealthColor(armor, maxArmor));
-        drawCenteredString(poseStack, FONT,
+        graphics.drawCenteredString(FONT,
                 "["+vehicle.getBlockX()+","+vehicle.getBlockY()+","+vehicle.getBlockZ()+"]",
                 screenWidth / 2, 0, 0x00ff00);
     }

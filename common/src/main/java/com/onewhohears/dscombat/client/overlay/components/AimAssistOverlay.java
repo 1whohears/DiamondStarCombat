@@ -12,6 +12,7 @@ import com.onewhohears.onewholibs.util.math.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
     private int prevTick = 0;
 
     @Override
-    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return false;
 
@@ -41,9 +42,10 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected void render(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return;
 
+        PoseStack stack = graphics.pose();
         WeaponInstance<?> data = vehicle.weaponSystem.getSelected();
 
         if (vehicle.tickCount != prevTick /*&& vehicle.tickCount % 2 == 0*/) {
@@ -61,7 +63,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
         q.mul(Vec3f.YP.rotationDegrees(cam.getYRot()+180f));
         stack.mulPose(q.convert());
         stack.translate(-view.x, -view.y, -view.z);
-        Mat4f view_mat = Mat4f.from(stack.last().pose().copy());
+        Mat4f view_mat = Mat4f.from(stack.last().pose());
         stack.popPose();
         Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
         float[] screen_pos = UtilGeometry.worldToScreenPos(targetWorldPos,
@@ -69,7 +71,7 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
         if (screen_pos[0] < 0 || screen_pos[1] < 0) return;
         float x_win = screen_pos[0], y_win = screen_pos[1];
         float adj = AIM_SIZE * 0.5f, x_pos = x_win - adj, y_pos = y_win - adj;
-        drawCrossHair(stack, x_pos, y_pos);
+        drawCrossHair(stack, x_pos, y_pos, graphics);
     }
 
     @Override
@@ -77,11 +79,11 @@ public class AimAssistOverlay extends VehicleOverlayComponent {
         return "dscombat_aim_assist";
     }
 	
-	protected void drawCrossHair(PoseStack poseStack, float x_pos, float y_pos) {
+	protected void drawCrossHair(PoseStack poseStack, float x_pos, float y_pos, GuiGraphics graphics) {
 		poseStack.pushPose();
         poseStack.translate(x_pos, y_pos, 0);
         RenderSystem.setShaderTexture(0, AIM_HUD);
-        blit(poseStack,
+        graphics.blit(AIM_HUD,
                 0, 0, 0, 0,
                 AIM_SIZE, AIM_SIZE,
                 AIM_SIZE, AIM_SIZE);

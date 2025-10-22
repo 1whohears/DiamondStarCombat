@@ -2,12 +2,13 @@ package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import com.onewhohears.onewholibs.util.math.Vec3f;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,12 +49,12 @@ public class HudOverlay extends VehicleOverlayComponent {
     /**
      * It's important to call this first as weird visual fuckshit happens otherwise
      */
-    private static void drawStrings(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
+    private static void drawStrings(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane, GuiGraphics graphics) {
         poseStack.pushPose();
         poseStack.translate((((double) screenWidth) / 2.0) + 30.0, ((((double) screenHeight) + ((double) VERTICAL_BOUNDS_WIDTH)) / 2.0) - 28.0, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 String.format("AOA: %3.1f", plane.getAOA()),
                 0, 0,
                 0x00ff00);
@@ -63,17 +64,17 @@ public class HudOverlay extends VehicleOverlayComponent {
         poseStack.translate((((double) screenWidth) / 2.0) - 56.0, ((((double) screenHeight) + ((double) VERTICAL_BOUNDS_WIDTH)) / 2.0) - 28.0, 0);
         poseStack.scale(0.7F, 0.7F, 1);
 
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 "m/s: " + String.format("%3.1f", plane.getDeltaMovement().length() * 20),
                 0, 0,
                 0x00ff00);
 
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 "A: " + plane.getAltitude(),
                 0, 10,
                 0x00ff00);
 
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 "[" + plane.getBlockX() + "," + plane.getBlockY() + "," + plane.getBlockZ() + "]",
                 0, 20, 0x00ff00);
 
@@ -81,7 +82,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     }
 
     // FIXME: behaviour near +-90 degrees pitch
-    private void drawAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane) {
+    private void drawAttitudeOverlay(PoseStack poseStack, int screenWidth, int screenHeight, EntityPlane plane, GuiGraphics graphics) {
         poseStack.pushPose();
 
         RenderSystem.setShaderTexture(0, ATTITUDE_TEXTURE);
@@ -95,7 +96,7 @@ public class HudOverlay extends VehicleOverlayComponent {
         // TODO: make this look less jarring
         poseStack.translate(-(plane.getYawRate() * 5.6), 0, 0);
 
-        blit(poseStack,
+        graphics.blit(ATTITUDE_TEXTURE,
                 -HORIZONTAL_BOUNDS_U_WIDTH / 2, -HORIZONTAL_BOUNDS_V_HEIGHT / 2,
                 0, HORIZONTAL_BOUNDS_V_OFFSET_0 + (int) (plane.getXRot() * 8 / 5),
                 ATTITUDE_TEXTURE_WIDTH, HORIZONTAL_BOUNDS_V_HEIGHT,
@@ -104,17 +105,6 @@ public class HudOverlay extends VehicleOverlayComponent {
         poseStack.popPose();
     }
 
-    /**
-     * Draws a 1-digit sexy HUD display number.
-     * @param number the number drawn from 0 to 9 inclusive
-     */
-    private void drawNumber(int number, PoseStack poseStack, int xOrigin, int yOrigin) throws IllegalArgumentException {
-        if (number > 9 || number < 0) throw new IllegalArgumentException("Argument MUST be between 0 to 9 inclusive");
-        blit(poseStack,
-                xOrigin, yOrigin,
-                ((number * 7) - (number - 1)), 0,
-                NUMBERS_UV_WIDTH, NUMBERS_UV_HEIGHT);
-    }
     private static int getHealthColor(float health, float max) {
         float healthPercent = health / max;
         if (healthPercent >= START) return GREEN_ME_SAY_ALONE_RAMP.getRGB();
@@ -128,7 +118,7 @@ public class HudOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (Config.CLIENT.enableModernHUD.get()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityPlane)) return false;
@@ -136,11 +126,12 @@ public class HudOverlay extends VehicleOverlayComponent {
     }
 
     @Override
-    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntityPlane plane = (EntityPlane) getPlayerRootVehicle();
         assert plane != null;
+        PoseStack poseStack = graphics.pose();
 
-        drawStrings(poseStack, screenWidth, screenHeight, plane);
+        drawStrings(poseStack, screenWidth, screenHeight, plane, graphics);
 
         RenderSystem.setShaderTexture(0, HUD);
         RenderSystem.enableDepthTest();
@@ -148,7 +139,7 @@ public class HudOverlay extends VehicleOverlayComponent {
 
         // TODO: vertical bounds change colour w/ vehicle health
         //noinspection SuspiciousNameCombination
-        blit(poseStack,
+        graphics.blit(HUD,
                 ((screenWidth - VERTICAL_BOUNDS_WIDTH) / 2), (screenHeight - VERTICAL_BOUNDS_WIDTH) / 2,
                 0, 0,
                 VERTICAL_BOUNDS_WIDTH, VERTICAL_BOUNDS_WIDTH);
@@ -159,21 +150,21 @@ public class HudOverlay extends VehicleOverlayComponent {
          */
         poseStack.pushPose();
         poseStack.translate(((((double) screenWidth) - 9.0) / 2.0), (((double) screenHeight) - 6.0) / 2.0, 0);
-        blit(poseStack, 0, 0, 150, 16, 9, 6);
+        graphics.blit(HUD, 0, 0, 150, 16, 9, 6);
         poseStack.popPose();
 
         poseStack.pushPose();
         poseStack.translate(((((double) screenWidth) - 22.0) / 2.0), ((((double) screenHeight) - 22.0) / 2.0), 0);
         int vOffsetForCircle = plane.radarSystem.isClientLocking() ? 38 : 16; // assuming this was intended
-        blit(poseStack, 0, 0, 128, vOffsetForCircle, 22, 22);
+        graphics.blit(HUD, 0, 0, 128, vOffsetForCircle, 22, 22);
         poseStack.popPose();
 
         poseStack.pushPose();
         poseStack.translate(((((double) screenWidth) - 25.0) / 2.0), ((((double) screenHeight) - 5.0) / 2.0), 0);
-        blit(poseStack, 0, 59, 128, 60, 25, 5);
+        graphics.blit(HUD, 0, 59, 128, 60, 25, 5);
         poseStack.popPose();
 
-        this.drawAttitudeOverlay(poseStack, screenWidth, screenHeight, plane);
+        this.drawAttitudeOverlay(poseStack, screenWidth, screenHeight, plane, graphics);
 
 
         RenderSystem.disableBlend();

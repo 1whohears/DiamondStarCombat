@@ -1,10 +1,10 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.entity.vehicle.EntityPlane;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
 import static com.onewhohears.dscombat.client.overlay.components.VehicleControlOverlay.PEDAL_HEIGHT;
@@ -13,14 +13,14 @@ import static com.onewhohears.dscombat.client.screen.VehicleHealthScreen.FUEL_GA
 
 public class PlaneDataOverlay extends VehicleOverlayComponent {
     @Override
-    protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityPlane)) return false;
         return !DSCClientInputs.isCameraLockedForward();
     }
 
     @Override
-    protected void render(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         EntityPlane plane = (EntityPlane) getPlayerRootVehicle();
         assert plane != null;
 
@@ -28,7 +28,7 @@ public class PlaneDataOverlay extends VehicleOverlayComponent {
         if (plane.isStalling()) color = 0xff0000;
         else if (plane.isAboutToStall()) color = 0xffff00;
 
-        drawString(poseStack, FONT,
+        graphics.drawString(FONT,
                 String.format("AOA: %3.1f", plane.getAOA()),
                 screenWidth - STICK_BASE_SIZE - PADDING,
                 screenHeight - STICK_BASE_SIZE - PEDAL_HEIGHT - FUEL_GAUGE_HEIGHT - PADDING *3-50,

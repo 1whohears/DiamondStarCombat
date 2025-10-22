@@ -1,12 +1,11 @@
 package com.onewhohears.dscombat.client.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.overlay.components.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
@@ -25,7 +24,7 @@ import java.lang.ref.WeakReference;
  * when information about the client state is needed (extrinsic "object" being the static fields).
  * @author kawaiicakes
  */
-public abstract class VehicleOverlayComponent extends GuiComponent {
+public abstract class VehicleOverlayComponent {
 
     public static final VehicleOverlayComponent[] OVERLAYS = new VehicleOverlayComponent[]{
             VehicleOverlayComponent.ManagerTicker.INSTANCE,
@@ -80,28 +79,28 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
         return isInSpectator();
     }
 
-    public static void renderAll(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
+    public static void renderAll(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         for (VehicleOverlayComponent overlay : OVERLAYS) {
-            overlay.renderBase(gui, stack, partialTick, screenWidth, screenHeight);
+            overlay.renderBase(gui, graphics, partialTick, screenWidth, screenHeight);
         }
     }
 
-    void renderBase(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
+    void renderBase(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         // TODO: vehicles declare what overlays they render and is taken into account independent of #shouldRender
-        if (!this.shouldRender(gui, stack, partialTick, screenWidth, screenHeight)) return;
+        if (!this.shouldRender(gui, graphics, partialTick, screenWidth, screenHeight)) return;
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        this.render(gui, stack, partialTick, screenWidth, screenHeight);
+        this.render(gui, graphics, partialTick, screenWidth, screenHeight);
     }
 
     /**
         This should only govern the most general conditions needed for this overlay to work; vehicle-specific requirements
         will be handled by whatever is checking for vehicle matches (L55).
      */
-    protected abstract boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight);
-    protected abstract void render(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight);
+    protected abstract boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight);
+    protected abstract void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight);
     /**
      * @return A short <code>String</code> uniquely identifying this overlay.
      */
@@ -115,14 +114,14 @@ public abstract class VehicleOverlayComponent extends GuiComponent {
         static VehicleOverlayComponent INSTANCE = new ManagerTicker();
 
         @Override
-        protected boolean shouldRender(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+        protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
             ROOT_VEHICLE = getPlayer() != null ? new WeakReference<>(getPlayer().getRootVehicle()) : null;
             VEHICLE = getPlayer() != null ? new WeakReference<>(getPlayer().getVehicle()) : null;
             return false;
         }
 
         @Override
-        protected void render(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {}
+        protected void render(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {}
 
         @Override
         protected @NotNull String componentId() {

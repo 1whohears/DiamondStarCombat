@@ -36,7 +36,7 @@ public class DebugSlotPosCommand {
 					return 0;
 				}
 				part.setRelativePos(rel_pos);
-				context.getSource().sendSuccess(UtilMCText.translatable("success.dscombat.changed_slot_position"), false);
+				context.getSource().sendSuccess(() -> UtilMCText.translatable("success.dscombat.changed_slot_position"), false);
 				return 1;
 			})
 		)));

@@ -11,15 +11,13 @@ import com.onewhohears.dscombat.command.argument.VehiclePresetArgument;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.onewholibs.util.UtilMCText;
-import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec3;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Optional;
 
 import static com.onewhohears.dscombat.util.UtilVehicleEntity.WIND_TUNNEL_SEARCH_RANGE;

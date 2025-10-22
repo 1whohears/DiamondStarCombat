@@ -42,7 +42,7 @@ public class DebugHitboxPosCommand {
 				hitbox.setTestPos(rel_pos);
 				hitbox.setTestSize(size);
                 PacketHandler.sendToTrackers(new ToClientDebugHitboxPos(vehicle, hitbox_name, rel_pos, size), vehicle);
-				context.getSource().sendSuccess(UtilMCText.translatable("success.dscombat.changed_hitbox_position"), false);
+				context.getSource().sendSuccess(() -> UtilMCText.translatable("success.dscombat.changed_hitbox_position"), false);
 				return 1;
 			})
 		))));

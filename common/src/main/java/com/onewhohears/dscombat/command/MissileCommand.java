@@ -111,7 +111,10 @@ public class MissileCommand {
 			++i;
 		}
 		if (i == 0) context.getSource().sendFailure(UtilMCText.translatable("error.dscombat.no_targets_found"));
-		else if (i > 0) context.getSource().sendSuccess(UtilMCText.translatable("success.dscombat.launched_missile", i), true);
+		else if (i > 0) {
+            int num = i;
+            context.getSource().sendSuccess(() -> UtilMCText.translatable("success.dscombat.launched_missile", num), true);
+        }
 		return 1;
 	}
 	

@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.Stat;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +26,7 @@ import java.util.Set;
  */
 public class FakePlayer extends ServerPlayer {
     public FakePlayer(ServerLevel level, GameProfile name) {
-        super(level.getServer(), level, name, null);
+        super(level.getServer(), level, name);
         this.connection = new FakePlayerNetHandler(level.getServer(), this);
     }
 
@@ -70,7 +71,7 @@ public class FakePlayer extends ServerPlayer {
         @Override public void handleBlockEntityTagQuery(ServerboundBlockEntityTagQuery packet) { }
         @Override public void handleMovePlayer(ServerboundMovePlayerPacket packet) { }
         @Override public void teleport(double x, double y, double z, float yaw, float pitch) { }
-        @Override public void teleport(double x, double y, double z, float yaw, float pitch, Set<ClientboundPlayerPositionPacket.RelativeArgument> flags) { }
+        @Override public void teleport(double x, double y, double z, float yaw, float pitch, Set<RelativeMovement> flags) { }
         @Override public void handlePlayerAction(ServerboundPlayerActionPacket packet) { }
         @Override public void handleUseItemOn(ServerboundUseItemOnPacket packet) { }
         @Override public void handleUseItem(ServerboundUseItemPacket packet) { }

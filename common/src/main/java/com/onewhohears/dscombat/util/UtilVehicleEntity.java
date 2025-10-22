@@ -13,8 +13,8 @@ import dev.architectury.utils.value.IntValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -122,20 +122,19 @@ public class UtilVehicleEntity {
     }
 
     public static boolean isExplosion(@NotNull DamageSource source) {
-        return source.is(DamageTypes.EXPLOSION) || source.is(DamageTypes.PLAYER_EXPLOSION);
+        return source.is(DamageTypeTags.IS_EXPLOSION);
     }
 
     public static boolean isFire(@NotNull DamageSource source) {
-        return source.is(DamageTypes.IN_FIRE) || source.is(DamageTypes.ON_FIRE);
+        return source.is(DamageTypeTags.IS_FIRE);
     }
 
     public static boolean isBypassArmor(@NotNull DamageSource source) {
-
+        return source.is(DamageTypeTags.BYPASSES_ARMOR);
     }
 
     public static boolean isProjectile(@NotNull DamageSource source) {
-        //source.isProjectile() || source.msgId.equals("bullet")
-        return source.is(DamageTypes.MOB_PROJECTILE) || source.is(DamageTypes.ARROW);
+        return source.is(DamageTypeTags.IS_PROJECTILE);
     }
 
 }

@@ -47,7 +47,7 @@ public class UtilRender {
         poseStack.pushPose();
         poseStack.translate(xPos, yPos, -0.005f);
         poseStack.scale(scale, scale, 1);
-        font.draw(poseStack, text, 0, 0, color);
+        font.drawInBatch(text, 0, 0, -1, true, poseStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, color);
         poseStack.popPose();
     }
 

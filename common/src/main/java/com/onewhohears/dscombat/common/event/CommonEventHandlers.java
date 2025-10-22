@@ -18,6 +18,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitboxes;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.common.event.OWLEvents;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -75,7 +76,7 @@ public class CommonEventHandlers {
     }
 
     public static float onLivingHurt(LivingEntity livingEntity, DamageSource damageSource, float amount) {
-        if (damageSource.isMagic())
+        if (UtilVehicleEntity.isBypassArmor(damageSource))
             return amount;
         if (!livingEntity.isPassenger() || !(livingEntity.getRootVehicle() instanceof EntityVehicle plane))
             return amount;

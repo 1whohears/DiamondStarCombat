@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.block.custom;
 
 import com.onewhohears.dscombat.block.entity.VehicleBlockEntity;
 import com.onewhohears.dscombat.common.container.menu.VehicleBlockContainerMenu;
-import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import dev.architectury.registry.menu.ExtendedMenuProvider;
@@ -37,6 +36,7 @@ public class VehicleBlock extends BaseEntityBlock {
 	
 	public VehicleBlock(Properties properties) {
 		super(properties);
+        this.registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.LIT, false));
 	}
 
     @Override
@@ -63,6 +63,7 @@ public class VehicleBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
+        builder.add(BlockStateProperties.LIT);
     }
     
     @Override

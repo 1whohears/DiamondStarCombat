@@ -6,13 +6,12 @@ import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
-import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.util.UtilPresetParse;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
@@ -29,8 +28,12 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
         throw new AssertionError();
     }
 
+    public static Properties weaponPartProps(int stackSize) {
+        return partProps(stackSize).arch$tab(ModCMTabs.WEAPON_PARTS);
+    }
+
 	public ItemTurret(int stackSize, String defaultPresetId) {
-		super(stackSize, defaultPresetId);
+		super(weaponPartProps(stackSize), defaultPresetId);
 	}
 	
 	@Override
@@ -69,7 +72,7 @@ public class ItemTurret extends ItemPart implements ObjModelItem {
 	
 	@Override
 	public ResourceKey<CreativeModeTab> getCreativeTab() {
-		return ModItems.WEAPON_PARTS;
+		return ModCMTabs.WEAPON_PARTS.getKey();
 	}
 
 	public TurretInstance<?> getTurretInstance(ItemStack stack) {

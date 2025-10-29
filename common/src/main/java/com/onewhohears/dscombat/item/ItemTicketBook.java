@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.entity.ai.goal.MoveToPassengerSeatGoal;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -28,7 +29,7 @@ public class ItemTicketBook extends Item implements VehicleInteractItem {
     public static final int VEHICLE_SEARCH_RANGE = 32;
 
     public ItemTicketBook() {
-        super(new Item.Properties().stacksTo(1));
+        super(new Item.Properties().stacksTo(1).arch$tab(ModCMTabs.DSC_ITEMS));
     }
 
     @Override

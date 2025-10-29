@@ -9,18 +9,7 @@ import com.onewhohears.dscombat.data.sound.VehiclePassengerSoundPacks;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.weapon.client.WeaponAssets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.init.ModBlockEntities;
-import com.onewhohears.dscombat.init.ModBlocks;
-import com.onewhohears.dscombat.init.ModContainers;
-import com.onewhohears.dscombat.init.ModEntities;
-import com.onewhohears.dscombat.init.ModFluids;
-import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.dscombat.init.ModParticles;
-import com.onewhohears.dscombat.init.ModRecipes;
-import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.dscombat.init.ModVillagers;
+import com.onewhohears.dscombat.init.*;
 
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.ReloadListenerRegistry;
@@ -51,6 +40,7 @@ public class DSCombatMod {
         distantPlayersLoaded = Platform.isModLoaded("distant_players");
 
         CommonEventHandlers.init();
+        ModCMTabs.register();
         ModFluids.register();
         ModBlocks.register();
         ModContainers.register();

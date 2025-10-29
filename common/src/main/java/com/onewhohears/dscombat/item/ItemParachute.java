@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.item;
 
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.init.ModEntities;
 
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class ItemParachute extends Item {
 
 	public ItemParachute() {
-		super(new Item.Properties().stacksTo(1));
+		super(new Item.Properties().stacksTo(1).arch$tab(ModCMTabs.DSC_ITEMS));
 	}
 	
 	@Override

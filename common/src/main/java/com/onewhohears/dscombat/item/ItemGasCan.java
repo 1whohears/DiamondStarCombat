@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.item;
 
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.init.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +22,7 @@ import net.minecraft.world.phys.HitResult;
 public class ItemGasCan extends Item {
 	
 	public ItemGasCan(int maxFuel) {
-		super(new Item.Properties().stacksTo(1).durability(maxFuel));
+		super(new Item.Properties().stacksTo(1).durability(maxFuel).arch$tab(ModCMTabs.DSC_ITEMS));
 	}
 	
 	@Override

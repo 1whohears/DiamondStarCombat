@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -24,7 +25,6 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -53,9 +53,14 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 	private final String defaultPreset;
 	
 	public ItemVehicle(String defaultPreset) {
-		super(new Item.Properties().stacksTo(1));
-		this.defaultPreset = defaultPreset;
+		this(new Item.Properties().stacksTo(1).arch$tab(ModCMTabs.VEHICLES), defaultPreset);
 	}
+
+    protected ItemVehicle(Item.Properties props, String defaultPreset) {
+        super(props);
+        this.defaultPreset = defaultPreset;
+        FillableItemCategory.onInit(this, props);
+    }
 	
 	@Override
 	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {

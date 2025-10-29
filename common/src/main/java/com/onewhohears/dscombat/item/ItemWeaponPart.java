@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.data.parts.instance.WeaponPartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
-import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.util.UtilPresetParse;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
@@ -26,6 +26,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static com.onewhohears.dscombat.item.ItemTurret.weaponPartProps;
+
 public class ItemWeaponPart extends ItemPart implements ObjModelItem {
 
     @ExpectPlatform
@@ -34,7 +36,7 @@ public class ItemWeaponPart extends ItemPart implements ObjModelItem {
     }
 
 	public ItemWeaponPart(int stackSize, String defaultPresetId) {
-		super(stackSize, defaultPresetId);
+		super(weaponPartProps(stackSize), defaultPresetId);
 	}
 	
 	@Override
@@ -84,7 +86,7 @@ public class ItemWeaponPart extends ItemPart implements ObjModelItem {
 	
 	@Override
 	public ResourceKey<CreativeModeTab> getCreativeTab() {
-		return ModItems.WEAPON_PARTS;
+		return ModCMTabs.WEAPON_PARTS.getKey();
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import com.onewhohears.dscombat.data.vehicle.VehiclePresetGenerator;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.client.WeaponClientPresetGenerator;
-import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.init.forge.DataSerializersImpl;
 import com.onewhohears.dscombat.init.forge.ModArgumentTypesForge;
 import com.onewhohears.dscombat.item.FillableItemCategory;
@@ -24,6 +24,7 @@ import dev.architectury.utils.Env;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -42,6 +43,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @Mod(DSCombatMod.MODID)
 public class DSCombatModForge {
@@ -93,16 +95,16 @@ public class DSCombatModForge {
     }
 
     private void buildCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
-        ModItems.CREATIVE_TAB_MAP.forEach((tab, items) -> {
-            if (event.getTabKey() == tab) {
-                items.forEach(item -> {
-                    event.accept(item);
-                    if (item.get() instanceof FillableItemCategory fill) {
-                        List<ItemStack> stacks = new ArrayList<>();
-                        fill.fillItemCategory(stacks);
-                        stacks.forEach(event::accept);
-                    }
-                });
+        List<Supplier<? extends Item>> items = ModCMTabs.CREATIVE_TAB_MAP.get(event.getTabKey());
+        if (items == null) return;
+        items.forEach(item -> {
+            if (item.get() instanceof FillableItemCategory fill) {
+                event.getEntries().remove(item.get().getDefaultInstance());
+                List<ItemStack> stacks = new ArrayList<>();
+                fill.fillItemCategory(stacks);
+                stacks.forEach(event::accept);
+            } else {
+                event.accept(item);
             }
         });
     }

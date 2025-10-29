@@ -35,23 +35,24 @@ public class ModBlocks {
                                                                               RegistrySupplier<T> block,
                                                                               ResourceKey<CreativeModeTab> tab) {
         Supplier<Item> blockItem = () -> new BlockItem(block.get(), new Item.Properties());
-        ModItems.addTabItem(tab, blockItem);
+        //ModItems.addTabItem(tab, blockItem);
         return ModItems.ITEMS.register(name, blockItem);
     }
 	
 	public static final RegistrySupplier<Block> WEAPONS_BLOCK = registerBlock("weapons_block",
 			() -> new WeaponsBlock(Block.Properties.copy(Blocks.BLAST_FURNACE).strength(1.5f)
-					.noOcclusion().explosionResistance(6f)), ModItems.WEAPONS);
+					.noOcclusion().explosionResistance(6f)), ModCMTabs.WEAPONS.getKey());
 	public static final RegistrySupplier<Block> AIRCRAFT_BLOCK = registerBlock("aircraft_block",
 			() -> new VehicleBlock(Block.Properties.copy(Blocks.BLAST_FURNACE).strength(1.5f)
-					.noOcclusion().explosionResistance(6f)), ModItems.VEHICLES);
+					.noOcclusion().explosionResistance(6f)), ModCMTabs.VEHICLES.getKey());
 	public static final RegistrySupplier<Block> WEAPON_PARTS_BLOCK = registerBlock("weapon_parts_block",
 			() -> new WeaponPartsBlock(Block.Properties.copy(Blocks.BLAST_FURNACE).strength(1.5f)
-					.noOcclusion().explosionResistance(6f)), ModItems.WEAPON_PARTS);
+					.noOcclusion().explosionResistance(6f)), ModCMTabs.WEAPON_PARTS.getKey());
 	
 	public static final RegistrySupplier<Block> ALUMINUM_BLOCK = registerBlock("aluminum_block",
 			() -> new Block(Block.Properties.copy(Blocks.IRON_BLOCK)
-                    .strength(1f).explosionResistance(2f).sound(SoundType.COPPER)), ModItems.DSC_ITEMS);
+                    .strength(1f).explosionResistance(2f).sound(SoundType.COPPER)),
+            ModCMTabs.DSC_ITEMS.getKey());
 	
 	public static final RegistrySupplier<LiquidBlock> OIL_LIQUID_BLOCK = BLOCKS.register("oil_block",
 			() -> new ArchitecturyLiquidBlock(ModFluids.getOilFluidSource(), BlockBehaviour.Properties.copy(Blocks.WATER)));

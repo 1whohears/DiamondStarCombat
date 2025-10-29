@@ -4,7 +4,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.event.fabric.ClientEventHandlersFabric;
 import com.onewhohears.dscombat.common.event.fabric.CommonEventHandlersFabric;
-import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.item.FillableItemCategory;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
@@ -37,14 +37,15 @@ public class DSCombatModFabric implements ModInitializer {
     }
 
     public static void itemGroups() {
-        ModItems.CREATIVE_TAB_MAP.forEach((tab, items) -> {
+        ModCMTabs.CREATIVE_TAB_MAP.forEach((tab, items) -> {
             ItemGroupEvents.modifyEntriesEvent(tab).register(entries -> {
                 items.forEach(item -> {
-                    entries.accept(item.get());
                     if (item.get() instanceof FillableItemCategory fill) {
                         List<ItemStack> stacks = new ArrayList<>();
                         fill.fillItemCategory(stacks);
                         stacks.forEach(entries::accept);
+                    } else {
+                        entries.accept(item.get());
                     }
                 });
             });

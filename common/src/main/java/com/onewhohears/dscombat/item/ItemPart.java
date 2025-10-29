@@ -1,15 +1,11 @@
 package com.onewhohears.dscombat.item;
 
-import java.util.List;
-
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
-import com.onewhohears.dscombat.init.ModItems;
-import com.onewhohears.onewholibs.util.UtilItem;
-
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.util.UtilPresetParse;
-import net.minecraft.core.NonNullList;
+import com.onewhohears.onewholibs.util.UtilItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,33 +16,36 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class ItemPart extends Item implements FillableItemCategory {
 
 	@NotNull private String defaultPresetId = "";
+
+    public ItemPart(Properties props, @NotNull String defaultPresetId) {
+        super(props);
+        this.defaultPresetId = defaultPresetId;
+        FillableItemCategory.onInit(this, props);
+    }
 
 	public ItemPart(int stackSize, @NotNull String defaultPresetId) {
 		this(partProps(stackSize), defaultPresetId);
 	}
 
-	public ItemPart(Properties props, @NotNull String defaultPresetId) {
-		super(props);
-		this.defaultPresetId = defaultPresetId;
-	}
-
 	public ItemPart(int stackSize) {
-		super(partProps(stackSize));
+		this(partProps(stackSize), "");
 	}
 	
 	public ItemPart(Properties props) {
-		super(props);
+        this(props, "");
 	}
 	
 	public static Properties partProps(int stackSize) {
-		return new Item.Properties().stacksTo(stackSize);
+		return new Item.Properties().stacksTo(stackSize).arch$tab(ModCMTabs.PARTS);
 	}
 	
 	public static Properties itemProps(int stackSize) {
-		return new Item.Properties().stacksTo(stackSize);
+		return new Item.Properties().stacksTo(stackSize).arch$tab(ModCMTabs.DSC_ITEMS);
 	}
 	
 	@Override
@@ -64,7 +63,7 @@ public class ItemPart extends Item implements FillableItemCategory {
 	}
 	
 	public ResourceKey<CreativeModeTab> getCreativeTab() {
-		return ModItems.PARTS;
+		return ModCMTabs.PARTS.getKey();
 	}
 
 	/**

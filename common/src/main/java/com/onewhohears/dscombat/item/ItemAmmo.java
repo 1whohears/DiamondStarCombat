@@ -6,19 +6,17 @@ import com.onewhohears.dscombat.data.weapon.client.WeaponClientStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.init.ModItems;
+import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
 import com.onewhohears.onewholibs.item.ObjModelItem;
 import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -90,7 +88,7 @@ public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem,
 	}
 	
 	public static Properties weaponProps(int stackSize) {
-		return new Item.Properties().stacksTo(stackSize);
+		return new Item.Properties().stacksTo(stackSize).arch$tab(ModCMTabs.WEAPONS);
 	}
 
 	@Override

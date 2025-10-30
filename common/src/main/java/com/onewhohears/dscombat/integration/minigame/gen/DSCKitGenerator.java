@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.minigames.data.kits.GameKit;
 import com.onewhohears.minigames.data.kits.MiniGameKitsGenerator;
-import com.onewhohears.minigames.data.shops.MiniGameShopsManager;
+import com.onewhohears.minigames.data.kits.MiniGameKitsManager;
 import net.minecraft.data.PackOutput;
 import org.jetbrains.annotations.Nullable;
 
@@ -202,7 +202,7 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 	
 	@Override
 	public String getName() {
-		return DSCombatMod.MODID+":"+MiniGameShopsManager.KIND;
+		return DSCombatMod.MODID+":"+ MiniGameKitsManager.KIND;
 	}
 
 }

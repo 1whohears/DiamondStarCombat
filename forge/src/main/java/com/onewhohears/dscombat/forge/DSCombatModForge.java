@@ -88,7 +88,7 @@ public class DSCombatModForge {
             generator.addProvider(true, new EntityTypeTagGen(output, completableFuture, fileHelper));
             BlockTagGen blockGen = new BlockTagGen(output, completableFuture, fileHelper);
             generator.addProvider(true, blockGen);
-            generator.addProvider(true, new ItemTagGen(output, completableFuture, null, null, fileHelper)); // FIXME add itemLookup and blockLookup
+            generator.addProvider(true, new ItemTagGen(output, completableFuture, blockGen.contentsGetter(), fileHelper));
             generator.addProvider(true, new FluidTagGen(output, completableFuture, fileHelper));
             generator.addProvider(true, new DatapackBuiltinEntriesProvider(
                     output, completableFuture,

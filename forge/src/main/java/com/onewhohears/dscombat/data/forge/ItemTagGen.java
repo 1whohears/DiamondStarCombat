@@ -8,7 +8,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -20,10 +19,9 @@ import java.util.concurrent.CompletableFuture;
 public class ItemTagGen extends ItemTagsProvider {
 
 	public ItemTagGen(PackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture,
-                      CompletableFuture<TagsProvider.TagLookup<Item>> itemLookup,
                       CompletableFuture<TagsProvider.TagLookup<Block>> blockLookup,
                       @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, completableFuture, itemLookup, blockLookup, DSCombatMod.MODID, existingFileHelper);
+		super(output, completableFuture, blockLookup, DSCombatMod.MODID, existingFileHelper);
 	}
 
 	@Override

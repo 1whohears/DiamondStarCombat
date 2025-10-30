@@ -15,7 +15,7 @@ public class DSCKitGenerator extends MiniGameKitsGenerator {
 	public static void register(DataGenerator generator) {
 		generator.addProvider(true, new DSCKitGenerator(generator));
 	}
-	
+
 	protected DSCKitGenerator(DataGenerator generator) {
 		super(generator);
 	}

@@ -1,22 +1,5 @@
 {
   "values": [
-    {
-      "id": "#forge:glass_panes",
-      "required": false
-    },
-    {
-      "id": "#forge:glass",
-      "required": false
-    },
-    {
-      "id": "#c:glass_blocks",
-      "required": false
-    },
-    {
-      "id": "#c:glass_panes",
-      "required": false
-    },
-    "#minecraft:candles",
     "minecraft:lily_pad",
     "minecraft:cocoa",
     "minecraft:end_rod",
@@ -36,6 +19,23 @@
     "minecraft:amethyst_cluster",
     "minecraft:lantern",
     "minecraft:soul_lantern",
-    "minecraft:pointed_dripstone"
+    "minecraft:pointed_dripstone",
+    {
+      "id": "#forge:glass_panes",
+      "required": false
+    },
+    {
+      "id": "#forge:glass",
+      "required": false
+    },
+    {
+      "id": "#c:glass_blocks",
+      "required": false
+    },
+    {
+      "id": "#c:glass_panes",
+      "required": false
+    },
+    "#minecraft:candles"
   ]
 }

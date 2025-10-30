@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresetGenerator
 import com.onewhohears.dscombat.data.weapon.WeaponPresetGenerator;
 import com.onewhohears.dscombat.data.weapon.client.WeaponClientPresetGenerator;
 import com.onewhohears.dscombat.init.ModCMTabs;
+import com.onewhohears.dscombat.init.ModDamageTypes;
 import com.onewhohears.dscombat.init.forge.DataSerializersImpl;
 import com.onewhohears.dscombat.init.forge.ModArgumentTypesForge;
 import com.onewhohears.dscombat.item.FillableItemCategory;
@@ -22,6 +23,8 @@ import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.utils.Env;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
@@ -29,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.data.loading.DatagenModLoader;
@@ -42,6 +46,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -85,6 +90,12 @@ public class DSCombatModForge {
             generator.addProvider(true, blockGen);
             generator.addProvider(true, new ItemTagGen(output, completableFuture, null, null, fileHelper)); // FIXME add itemLookup and blockLookup
             generator.addProvider(true, new FluidTagGen(output, completableFuture, fileHelper));
+            generator.addProvider(true, new DatapackBuiltinEntriesProvider(
+                    output, completableFuture,
+                    new RegistrySetBuilder().add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap),
+                    Set.of(DSCombatMod.MODID)
+            ));
+            generator.addProvider(true, new DamageTypeTagGen(output, completableFuture, fileHelper));
         }
         if (event.includeClient()) {
             generator.addProvider(true, new DSCSoundDefinitionGenImpl(output, fileHelper));

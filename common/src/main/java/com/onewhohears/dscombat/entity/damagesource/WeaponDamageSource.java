@@ -1,22 +1,19 @@
 package com.onewhohears.dscombat.entity.damagesource;
 
-import net.minecraft.core.Holder;
+import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.init.ModDamageTypes;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilParse;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.onewholibs.util.UtilMCText;
-
-import com.onewhohears.onewholibs.util.UtilParse;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class WeaponDamageSource extends DamageSource {
 	
@@ -25,23 +22,20 @@ public class WeaponDamageSource extends DamageSource {
 	protected final String deathMsgId;
 	
 	public WeaponDamageSource(WeaponDamageType type, @Nullable Entity shooter, @NotNull EntityWeapon<?> weapon) {
-		super(type.type, shooter);
+		super(ModDamageTypes.getDamageTypeHolder(weapon.level(), type.type), shooter);
 		this.type = type;
 		this.weapon = weapon;
-		//setProjectile();
-		//if (type.explosion) setExplosion();
-		//if (type.bypassArmor) bypassArmor();
 		this.deathMsgId = type.deathMessages.get();
 	}
 	
 	public enum WeaponDamageType {
-		BULLET("bullet", WeaponDamageSource::getBulletDeath, false, false, DamageTypes.ARROW),
-		BULLET_EXPLODE("bullet_explode", WeaponDamageSource::getBulletExplodeDeath, true, false, DamageTypes.EXPLOSION),
-		BOMB("bomb", WeaponDamageSource::getBombDeath, true, false, DamageTypes.EXPLOSION),
-		MISSILE_CONTACT("missile_contact", WeaponDamageSource::getMissileContactDeath, false, true, DamageTypes.ARROW),
-		MISSILE("missile", WeaponDamageSource::getMissileDeath, true, false, DamageTypes.EXPLOSION),
-		TORPEDO("tordepo", WeaponDamageSource::getTorpedoDeath, true, false, DamageTypes.EXPLOSION),
-		IR_MISSILE("ir_missile", WeaponDamageSource::getIRMissileDeath, true, false, DamageTypes.EXPLOSION);
+		BULLET(WeaponDamageSource::getBulletDeath, ModDamageTypes.BULLET),
+		BULLET_EXPLODE(WeaponDamageSource::getBulletExplodeDeath, ModDamageTypes.BULLET_EXPLODE),
+		BOMB(WeaponDamageSource::getBombDeath, ModDamageTypes.BOMB),
+		MISSILE_CONTACT(WeaponDamageSource::getMissileContactDeath, ModDamageTypes.MISSILE_CONTACT),
+		MISSILE(WeaponDamageSource::getMissileDeath, ModDamageTypes.MISSILE),
+		TORPEDO(WeaponDamageSource::getTorpedoDeath, ModDamageTypes.TORPEDO),
+		IR_MISSILE(WeaponDamageSource::getIRMissileDeath, ModDamageTypes.IR_MISSILE);
 		@Nullable
 		public static WeaponDamageType byId(String id) {
 			for (WeaponDamageType wdt : values()) if (wdt.damageTypeId.equals(id)) return wdt;
@@ -49,15 +43,11 @@ public class WeaponDamageSource extends DamageSource {
 		}
 		public final String damageTypeId;
 		public final RandomDeathMessageFactory deathMessages;
-		public final boolean explosion, bypassArmor;
-        public final Holder<DamageType> type;
-		WeaponDamageType(String damageTypeId, RandomDeathMessageFactory deathMessages,
-                         boolean explosion, boolean bypassArmor, ResourceKey<DamageType> type) {
-			this.damageTypeId = damageTypeId;
+        public final ResourceKey<DamageType> type;
+		WeaponDamageType(RandomDeathMessageFactory deathMessages, ResourceKey<DamageType> type) {
+			this.damageTypeId = type.location().getPath();
 			this.deathMessages = deathMessages;
-			this.explosion = explosion;
-			this.bypassArmor = bypassArmor;
-            this.type = (Holder<DamageType>) type;
+            this.type = type;
 		}
 		public WeaponDamageSource getSource(@Nullable Entity shooter, @NotNull EntityWeapon<?> weapon) {
 			return new WeaponDamageSource(this, shooter, weapon);

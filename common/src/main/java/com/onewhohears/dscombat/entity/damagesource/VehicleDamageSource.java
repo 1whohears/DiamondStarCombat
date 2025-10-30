@@ -2,17 +2,15 @@ package com.onewhohears.dscombat.entity.damagesource;
 
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModDamageTypes;
 import com.onewhohears.onewholibs.util.UtilMCText;
-
 import com.onewhohears.onewholibs.util.UtilParse;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,21 +18,21 @@ public class VehicleDamageSource extends DamageSource {
 	
 	public final EntityVehicle aircraft;
 	
-	public VehicleDamageSource(String type, EntityVehicle aircraft) {
-		super((Holder<DamageType>) DamageTypes.EXPLOSION);
+	public VehicleDamageSource(String type, EntityVehicle aircraft, ResourceKey<DamageType> damageType) {
+		super(ModDamageTypes.getDamageTypeHolder(aircraft.level(), damageType));
 		this.aircraft = aircraft;
 	}
 	
 	public static DamageSource roadKill(EntityVehicle aircraft) {
-		return new VehicleDamageSource(getRoadKillDeath(), aircraft);
+		return new VehicleDamageSource(getRoadKillDeath(), aircraft, ModDamageTypes.VEHICLE_ROAD_KILL);
 	}
 	
 	public static DamageSource fall(EntityVehicle aircraft) {
-		return new VehicleDamageSource(getFallDeath(), aircraft);
+		return new VehicleDamageSource(getFallDeath(), aircraft, ModDamageTypes.VEHICLE_FALL);
 	}
 	
 	public static DamageSource collide(EntityVehicle aircraft) {
-		return new VehicleDamageSource(getCollideDeath(), aircraft);
+		return new VehicleDamageSource(getCollideDeath(), aircraft, ModDamageTypes.VEHICLE_COLLIDE);
 	}
 	
 	public static final String[] roadKillDeaths = {"roadkill1","roadkill2"};

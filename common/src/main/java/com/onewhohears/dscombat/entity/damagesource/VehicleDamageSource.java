@@ -17,10 +17,12 @@ import org.jetbrains.annotations.Nullable;
 public class VehicleDamageSource extends DamageSource {
 	
 	public final EntityVehicle aircraft;
+    private final String msgId;
 	
 	public VehicleDamageSource(String type, EntityVehicle aircraft, ResourceKey<DamageType> damageType) {
 		super(ModDamageTypes.getDamageTypeHolder(aircraft.level(), damageType));
 		this.aircraft = aircraft;
+        this.msgId = type;
 	}
 	
 	public static DamageSource roadKill(EntityVehicle aircraft) {
@@ -55,7 +57,7 @@ public class VehicleDamageSource extends DamageSource {
 	@Override
 	public @NotNull Component getLocalizedDeathMessage(LivingEntity killed) {
 		Entity killer = aircraft.getControllingPassenger();
-		String s = "death.attack."+DSCombatMod.MODID+"."+getMsgId();
+		String s = "death.attack."+DSCombatMod.MODID+"."+msgId;
 		if (killer == null) {
 			return UtilMCText.translatable(s, killed.getDisplayName());
 		} else if (killed.equals(killer)) {

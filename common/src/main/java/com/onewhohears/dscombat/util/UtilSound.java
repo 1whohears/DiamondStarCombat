@@ -1,7 +1,11 @@
 package com.onewhohears.dscombat.util;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
-import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -11,10 +15,15 @@ import java.util.List;
 
 public class UtilSound {
 
-    @ExpectPlatform
-	public static SoundEvent getSoundById(String id, SoundEvent alt) {
-		throw new AssertionError();
+	public static SoundEvent getSoundById(String id, SoundEvent alt, RegistryAccess ra) {
+		Registry<SoundEvent> reg = ra.registryOrThrow(Registries.SOUND_EVENT);
+        ResourceLocation rl = ResourceLocation.tryParse(id);
+        return reg.getOptional(rl).orElse(alt);
 	}
+
+    public static SoundEvent getSoundByIdClient(String id, SoundEvent alt) {
+        return getSoundById(id, alt, Minecraft.getInstance().level.registryAccess());
+    }
 	
 	public static void sendDelayedSound(ServerLevel level, SoundEvent sound, Vec3 pos,
                                         float radius, float volume, float pitch) {

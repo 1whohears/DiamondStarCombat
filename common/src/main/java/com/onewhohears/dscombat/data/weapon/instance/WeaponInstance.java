@@ -154,7 +154,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	
 	public void playShootSound(Level level, Vec3 pos) {
         if (level.isClientSide()) return;
-		UtilSound.sendDelayedSound((ServerLevel) level, getStats().getShootSound(), pos, 160, 1, 1);
+		UtilSound.sendDelayedSound((ServerLevel) level, getStats().getShootSound(level.registryAccess()), pos, 160, 1, 1);
 	}
 	
 	public void updateClientAmmo(EntityVehicle vehicle) {

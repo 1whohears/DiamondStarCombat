@@ -152,7 +152,7 @@ public class UtilClientPacket {
 	 * -kawaiicakes
 	 */
 	public static void delayedSound(String soundId, Vec3 pos, float range, float volume, float pitch) {
-		SoundEvent sound = UtilSound.getSoundById(soundId, null);
+		SoundEvent sound = UtilSound.getSoundByIdClient(soundId, null);
 		if (sound == null) return;
 
 		Minecraft m = Minecraft.getInstance();

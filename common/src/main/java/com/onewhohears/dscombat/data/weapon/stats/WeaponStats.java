@@ -5,6 +5,7 @@ import static com.onewhohears.dscombat.DSCombatMod.MODID;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
@@ -120,9 +121,9 @@ public abstract class WeaponStats extends JsonPresetStats {
 		return entityType;
 	}
 	
-	public SoundEvent getShootSound() {
+	public SoundEvent getShootSound(RegistryAccess registryAccess) {
 		if (shootSound == null) {
-			shootSound = UtilSound.getSoundById(shootSoundKey, ModSounds.BULLET_SHOOT_1);
+			shootSound = UtilSound.getSoundById(shootSoundKey, ModSounds.BULLET_SHOOT_1, registryAccess);
 		}
 		return shootSound;
 	}

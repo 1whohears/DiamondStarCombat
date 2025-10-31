@@ -52,8 +52,8 @@ public abstract class VehicleLoopingSounds {
 		}
 		@Override
 		public void loadPreset(CompoundTag sounds) {
-			nonPassengerEngine = UtilSound.getSoundById(sounds.getString("nonPassengerEngine"), nonPassengerEngine);
-			passengerEngine = UtilSound.getSoundById(sounds.getString("passengerEngine"), passengerEngine);
+			nonPassengerEngine = UtilSound.getSoundByIdClient(sounds.getString("nonPassengerEngine"), nonPassengerEngine);
+			passengerEngine = UtilSound.getSoundByIdClient(sounds.getString("passengerEngine"), passengerEngine);
 		}
 		@Override
 		protected void tick() {
@@ -83,15 +83,15 @@ public abstract class VehicleLoopingSounds {
 		}
 		@Override
 		public void loadPreset(CompoundTag sounds) {
-			externalAfterBurnerClose = UtilSound.getSoundById(sounds.getString("externalAfterBurnerClose"), externalAfterBurnerClose);
-			externalAfterBurnerFar = UtilSound.getSoundById(sounds.getString("externalAfterBurnerFar"), externalAfterBurnerFar);
-			externalRPM = UtilSound.getSoundById(sounds.getString("externalRPM"), externalRPM);
-			externalWindClose = UtilSound.getSoundById(sounds.getString("externalWindClose"), externalWindClose);
-			externalWindFar = UtilSound.getSoundById(sounds.getString("externalWindFar"), externalWindFar);
-			cockpitRPM = UtilSound.getSoundById(sounds.getString("cockpitRPM"), cockpitRPM);
-			cockpitAfterBurner = UtilSound.getSoundById(sounds.getString("cockpitAfterBurner"), cockpitAfterBurner);
-			cockpitWindSlow = UtilSound.getSoundById(sounds.getString("cockpitWindSlow"), cockpitWindSlow);
-			cockpitWindFast = UtilSound.getSoundById(sounds.getString("cockpitWindFast"), cockpitWindFast);
+			externalAfterBurnerClose = UtilSound.getSoundByIdClient(sounds.getString("externalAfterBurnerClose"), externalAfterBurnerClose);
+			externalAfterBurnerFar = UtilSound.getSoundByIdClient(sounds.getString("externalAfterBurnerFar"), externalAfterBurnerFar);
+			externalRPM = UtilSound.getSoundByIdClient(sounds.getString("externalRPM"), externalRPM);
+			externalWindClose = UtilSound.getSoundByIdClient(sounds.getString("externalWindClose"), externalWindClose);
+			externalWindFar = UtilSound.getSoundByIdClient(sounds.getString("externalWindFar"), externalWindFar);
+			cockpitRPM = UtilSound.getSoundByIdClient(sounds.getString("cockpitRPM"), cockpitRPM);
+			cockpitAfterBurner = UtilSound.getSoundByIdClient(sounds.getString("cockpitAfterBurner"), cockpitAfterBurner);
+			cockpitWindSlow = UtilSound.getSoundByIdClient(sounds.getString("cockpitWindSlow"), cockpitWindSlow);
+			cockpitWindFast = UtilSound.getSoundByIdClient(sounds.getString("cockpitWindFast"), cockpitWindFast);
 		}
 		@Override
 		protected void tick() {

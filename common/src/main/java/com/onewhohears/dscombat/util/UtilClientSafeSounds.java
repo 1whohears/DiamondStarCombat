@@ -109,7 +109,7 @@ public class UtilClientSafeSounds {
 	
 	public static void aircraftRadio(EntityVehicle plane, String sound) {
 		try {
-			SoundEvent se = UtilSound.getSoundById(sound, SoundEvents.MUSIC_DISC_BLOCKS);
+			SoundEvent se = UtilSound.getSoundByIdClient(sound, SoundEvents.MUSIC_DISC_BLOCKS);
 			aircraftRadio(plane, se);
 		} catch (NoSuchElementException e) {
 			LOGGER.error("ERROR: "+sound+" does not exist!");

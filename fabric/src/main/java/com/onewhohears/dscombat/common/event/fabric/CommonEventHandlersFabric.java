@@ -4,10 +4,10 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.command.argument.VehiclePresetArgument;
 import com.onewhohears.dscombat.command.argument.WeaponArgument;
 import com.onewhohears.dscombat.common.event.CommonEventHandlers;
+import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.fml.event.config.ModConfigEvents;
 import net.minecraftforge.fml.config.ModConfig;
 
 public class CommonEventHandlersFabric {

@@ -8,12 +8,10 @@ import com.onewhohears.dscombat.init.ModCMTabs;
 import com.onewhohears.dscombat.item.FillableItemCategory;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
+import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.ForgeConfigAPIPort;
-import net.minecraftforge.api.ModLoadingContext;
-import net.minecraftforge.configured.ForgeConfigHelper;
 import net.minecraftforge.fml.config.ModConfig;
 
 import java.util.ArrayList;
@@ -31,9 +29,9 @@ public class DSCombatModFabric implements ModInitializer {
             DSCombatMod.clientInit();
             ClientEventHandlersFabric.init();
         }
-        ModLoadingContext.registerConfig(MODID, ModConfig.Type.CLIENT, Config.clientSpec);
-        ModLoadingContext.registerConfig(MODID, ModConfig.Type.COMMON, Config.commonSpec);
-        ModLoadingContext.registerConfig(MODID, ModConfig.Type.SERVER, Config.serverSpec);
+        ForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.CLIENT, Config.clientSpec);
+        ForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.COMMON, Config.commonSpec);
+        ForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.SERVER, Config.serverSpec);
     }
 
     public static void itemGroups() {

@@ -25,20 +25,8 @@ public class ModItems {
             DSCombatMod.MODID, Registries.ITEM);
 
     public static <R extends Item> RegistrySupplier<R> registerItem(String id, Supplier<? extends R> item) {
-        //addTabItem(item);
         return ITEMS.register(id, item);
     }
-
-    /*public static <R extends Item> void addTabItem(Supplier<? extends R> item) {
-        CreativeModeTab tab;
-        if (CREATIVE_TAB_MAP.containsKey(tab)) {
-            CREATIVE_TAB_MAP.get(tab).add(item);
-            return;
-        }
-        List<Supplier<? extends Item>> list = new ArrayList<>();
-        list.add(item);
-        CREATIVE_TAB_MAP.put(tab, list);
-    }*/
 
 	// DISCS
 	// IDEA 8.1 Jupiter Missiles and Anadyr from blowback ost

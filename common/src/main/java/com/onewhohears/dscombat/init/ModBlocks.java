@@ -34,8 +34,7 @@ public class ModBlocks {
     private static <T extends Block> RegistrySupplier<Item> registerBlockItem(String name,
                                                                               RegistrySupplier<T> block,
                                                                               ResourceKey<CreativeModeTab> tab) {
-        Supplier<Item> blockItem = () -> new BlockItem(block.get(), new Item.Properties());
-        //ModItems.addTabItem(tab, blockItem);
+        Supplier<Item> blockItem = () -> new BlockItem(block.get(), new Item.Properties().arch$tab(tab));
         return ModItems.ITEMS.register(name, blockItem);
     }
 	

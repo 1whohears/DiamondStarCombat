@@ -28,7 +28,6 @@ public interface FillableItemCategory {
             return;
         }
         ResourceKey<CreativeModeTab> tab = tabSupplier.getKey();
-        //CreativeTabRegistry.appendStack(tab, list.toArray(new ItemStack[0]));
         if (CREATIVE_TAB_MAP.containsKey(tab)) {
             CREATIVE_TAB_MAP.get(tab).add(item::asItem);
             return;

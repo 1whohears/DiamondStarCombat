@@ -36,9 +36,14 @@ public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem,
 	private final String defaultWeaponId;
 	
 	public ItemAmmo(int size, String defaultWeaponId) {
-		super(weaponProps(size));
-		this.defaultWeaponId = defaultWeaponId;
+		this(weaponProps(size), defaultWeaponId);
 	}
+
+    protected ItemAmmo(Item.Properties props, String defaultWeaponId) {
+        super(props);
+        this.defaultWeaponId = defaultWeaponId;
+        FillableItemCategory.onInit(this, props);
+    }
 	
 	@Override
 	public void fillItemCategory(@NotNull List<ItemStack> items) {

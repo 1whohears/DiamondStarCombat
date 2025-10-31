@@ -24,11 +24,11 @@ public class DSCombatModFabric implements ModInitializer {
     public void onInitialize() {
         DSCombatMod.init();
         CommonEventHandlersFabric.init();
-        itemGroups();
         if (Platform.getEnvironment() == Env.CLIENT) {
             DSCombatMod.clientInit();
             ClientEventHandlersFabric.init();
         }
+        itemGroups();
         ForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.CLIENT, Config.clientSpec);
         ForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.COMMON, Config.commonSpec);
         ForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.SERVER, Config.serverSpec);

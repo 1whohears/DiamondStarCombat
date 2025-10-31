@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "dscombat:missile_contact",
+      "required": false
+    }
+  ]
+}

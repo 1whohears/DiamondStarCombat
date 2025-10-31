@@ -22,20 +22,20 @@ public class DamageTypeTagGen extends DamageTypeTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         tag(DamageTypeTags.IS_PROJECTILE)
-                .add(ModDamageTypes.BULLET)
-                .add(ModDamageTypes.BULLET_EXPLODE)
-                .add(ModDamageTypes.BOMB)
-                .add(ModDamageTypes.MISSILE_CONTACT)
-                .add(ModDamageTypes.MISSILE)
-                .add(ModDamageTypes.TORPEDO)
-                .add(ModDamageTypes.IR_MISSILE);
+                .addOptional(ModDamageTypes.BULLET.location())
+                .addOptional(ModDamageTypes.BULLET_EXPLODE.location())
+                .addOptional(ModDamageTypes.BOMB.location())
+                .addOptional(ModDamageTypes.MISSILE_CONTACT.location())
+                .addOptional(ModDamageTypes.MISSILE.location())
+                .addOptional(ModDamageTypes.TORPEDO.location())
+                .addOptional(ModDamageTypes.IR_MISSILE.location());
         tag(DamageTypeTags.IS_EXPLOSION)
-                .add(ModDamageTypes.BULLET_EXPLODE)
-                .add(ModDamageTypes.BOMB)
-                .add(ModDamageTypes.MISSILE)
-                .add(ModDamageTypes.TORPEDO)
-                .add(ModDamageTypes.IR_MISSILE);
+                .addOptional(ModDamageTypes.BULLET_EXPLODE.location())
+                .addOptional(ModDamageTypes.BOMB.location())
+                .addOptional(ModDamageTypes.MISSILE.location())
+                .addOptional(ModDamageTypes.TORPEDO.location())
+                .addOptional(ModDamageTypes.IR_MISSILE.location());
         tag(DamageTypeTags.BYPASSES_ARMOR)
-                .add(ModDamageTypes.MISSILE_CONTACT);
+                .addOptional(ModDamageTypes.MISSILE_CONTACT.location());
     }
 }

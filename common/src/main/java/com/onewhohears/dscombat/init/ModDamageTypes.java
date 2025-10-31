@@ -45,7 +45,6 @@ public class ModDamageTypes {
         context.register(type, new DamageType(type.location().getPath(), 0));
     }
 
-
     public static Holder<DamageType> getDamageTypeHolder(Level level, ResourceKey<DamageType> key) {
         return level.registryAccess()
                 .registryOrThrow(Registries.DAMAGE_TYPE)

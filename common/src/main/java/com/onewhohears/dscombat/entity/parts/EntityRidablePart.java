@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.data.parts.stats.SeatStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -146,7 +148,15 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	@Override
     public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity entity) {
 		int minY = getWorld().getMinBuildHeight()+4;
-		Vec3 dis = super.getDismountLocationForPassenger(entity);
+        EntityHitResult ehr = UtilEntity.getEntityHitResultAtClip(getWorld(), entity,
+                position().add(0, 10, 0),
+                position(),
+                entity.getBoundingBox(),
+                e -> !e.equals(entity),
+                0.3f);
+        Vec3 dis;
+        if (ehr != null) dis = ehr.getLocation().add(0, 0.2, 0);
+        else dis = super.getDismountLocationForPassenger(entity);
 		if (dis.y() < minY) dis = new Vec3(dis.x(), minY, dis.z());
 		return dis;
 	}

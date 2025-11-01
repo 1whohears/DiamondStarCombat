@@ -6,41 +6,47 @@ import com.onewhohears.dscombat.DSCombatMod;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class DSCKeysImpl {
 
     public static final Map<String, NoConflictKeyMapping> DSC_ALL = Maps.newHashMap();
-    public static final Map<InputConstants.Key, NoConflictKeyMapping> DSC_MAP = Maps.newHashMap();
+    public static final Map<InputConstants.Key, Set<NoConflictKeyMapping>> DSC_MAP = Maps.newHashMap();
 
     public static void onKeyMappingClick(InputConstants.Key key) {
-        NoConflictKeyMapping keyMapping = DSC_MAP.get(key);
-        if (keyMapping != null) {
-            ++keyMapping.clickCount;
+        Set<NoConflictKeyMapping> keyMappings = DSC_MAP.get(key);
+        if (keyMappings != null) {
+            keyMappings.forEach(map -> ++map.clickCount);
         }
     }
 
     public static void onKeyMappingSet(InputConstants.Key key, boolean value) {
-        NoConflictKeyMapping keyMapping = DSC_MAP.get(key);
-        if (keyMapping != null) {
-            keyMapping.setDown(value);
+        Set<NoConflictKeyMapping> keyMappings = DSC_MAP.get(key);
+        if (keyMappings != null) {
+            keyMappings.forEach(map -> map.setDown(value));
         }
     }
 
     public static void onKeyMappingReset() {
         DSC_MAP.clear();
         for(NoConflictKeyMapping keyMapping : DSC_ALL.values()) {
-            DSC_MAP.put(keyMapping.key, keyMapping);
+            Set<NoConflictKeyMapping> keyMappings = DSC_MAP.get(keyMapping.key);
+            if (keyMappings != null) {
+                keyMappings.add(keyMapping);
+            } else {
+                keyMappings = new HashSet<>();
+                keyMappings.add(keyMapping);
+                DSC_MAP.put(keyMapping.key, keyMappings);
+            }
         }
     }
 
     public static KeyMapping registerKeyImpl(String name, String category, int keycode) {
-        //InputConstants.Key vanillaKey = InputConstants.Type.KEYSYM.getOrCreate(keycode);
-        //KeyMapping vanillaKeyMapping = KeyMapping.MAP.get(vanillaKey);
         final var key = new NoConflictKeyMapping("key."+ DSCombatMod.MODID+"."+name,
                 InputConstants.Type.KEYSYM, keycode, category);
         KeyBindingHelper.registerKeyBinding(key);
-        //KeyMappingRegistry.register(key);
         return key;
     }
 
@@ -48,7 +54,6 @@ public class DSCKeysImpl {
         final var key = new NoConflictKeyMapping("key."+DSCombatMod.MODID+"."+name,
                 InputConstants.Type.MOUSE, keycode, category);
         KeyBindingHelper.registerKeyBinding(key);
-        //KeyMappingRegistry.register(key);
         return key;
     }
 
@@ -58,7 +63,9 @@ public class DSCKeysImpl {
             KeyMapping.ALL.remove(name);
             KeyMapping.MAP.remove(this.key);
             DSC_ALL.put(name, this);
-            DSC_MAP.put(this.key, this);
+            Set<NoConflictKeyMapping> keyMappings = new HashSet<>();
+            keyMappings.add(this);
+            DSC_MAP.put(this.key, keyMappings);
         }
     }
 

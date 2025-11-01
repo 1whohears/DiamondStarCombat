@@ -8,6 +8,7 @@ import com.onewhohears.dscombat.init.ModItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
@@ -30,9 +31,10 @@ public class JEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
-		registration.addRecipeCategories(new VehicleRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-		registration.addRecipeCategories(new WeaponRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-		registration.addRecipeCategories(new WeaponPartRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
+		registration.addRecipeCategories(new VehicleRecipeCategory(guiHelper));
+		registration.addRecipeCategories(new WeaponRecipeCategory(guiHelper));
+		registration.addRecipeCategories(new WeaponPartRecipeCategory(guiHelper));
 	}
 
 	@Override

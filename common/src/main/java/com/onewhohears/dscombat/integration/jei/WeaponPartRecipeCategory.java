@@ -50,6 +50,11 @@ public class WeaponPartRecipeCategory implements IRecipeCategory<WeaponPartRecip
 		return icon;
 	}
 
+    @Override
+    public IDrawable getBackground() {
+        return background;
+    }
+
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, WeaponPartRecipe recipe, IFocusGroup focuses) {
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();

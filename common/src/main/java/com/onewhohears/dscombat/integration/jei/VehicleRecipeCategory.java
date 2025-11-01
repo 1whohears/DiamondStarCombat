@@ -20,13 +20,13 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
 public class VehicleRecipeCategory implements IRecipeCategory<VehicleRecipe> {
-	
+
 	public static final ResourceLocation UID = new ResourceLocation(DSCombatMod.MODID, "aircraft_workbench");
 	public static final RecipeType<VehicleRecipe> TYPE = RecipeType.create(UID.getNamespace(), UID.getPath(), VehicleRecipe.class);
 	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(DSCombatMod.MODID,
 			"textures/ui/vehicle_forge_ui.png");
-	
+
 	private final IDrawable background;
 	private final IDrawable icon;
 	
@@ -51,7 +51,10 @@ public class VehicleRecipeCategory implements IRecipeCategory<VehicleRecipe> {
 		return icon;
 	}
 
-    // FIXME how will the background render now?
+    @Override
+    public IDrawable getBackground() {
+        return background;
+    }
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, VehicleRecipe recipe, IFocusGroup focuses) {

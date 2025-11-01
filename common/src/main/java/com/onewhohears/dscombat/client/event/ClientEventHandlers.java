@@ -40,7 +40,6 @@ public class ClientEventHandlers {
         ClientLifecycleEvent.CLIENT_SETUP.register(ClientEventHandlers::onClientSetup);
         ClientGuiEvent.RENDER_HUD.register(ClientEventHandlers::onRenderHud);
         OWLEvents.SYNC_BOOL_GAME_RULE.register(ClientEventHandlers::onSyncGameRuleBool);
-        ClientChatEvent.RECEIVED.register(ClientEventHandlers::receivedChat);
         // TODO 4.3 thermal camera option
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(ClientInputEventHandlers::onClientPlayerJoin);
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientEventHandlers::onClientPlayerQuit);
@@ -54,18 +53,6 @@ public class ClientEventHandlers {
 
     public static void onClientPlayerQuit(@Nullable LocalPlayer localPlayer) {
         EntityScreenRenderer.clearCache();
-    }
-
-    public static CompoundEventResult<Component> receivedChat(ChatType.Bound bound, Component message) {
-        ResourceLocation typeId = Minecraft.getInstance().level.registryAccess()
-                .registryOrThrow(Registries.CHAT_TYPE)
-                .getKey(bound.chatType());
-        if (typeId == null) return CompoundEventResult.pass();
-        if (typeId.getPath().equals("chat")) return CompoundEventResult.pass();
-        Minecraft m = Minecraft.getInstance();
-        if (!(m.screen instanceof VehicleScreen screen)) return CompoundEventResult.pass();
-        screen.setInfoFromMessage(message, 60);
-        return CompoundEventResult.pass();
     }
 
     public static void onSyncGameRuleBool(String id, boolean value) {

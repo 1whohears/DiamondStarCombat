@@ -4,6 +4,8 @@ import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.client.screen.BackgroundScreen;
 import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -58,8 +60,9 @@ public abstract class VehicleScreen extends BackgroundScreen {
         super.renderBackground(graphics);
         if (!titleText.isEmpty()) graphics.drawString(font,
                 UtilMCText.translatable(titleText), guiX+left_padding, guiY+top_padding, infoColor);
-        if (info != null && infoTicks != 0) graphics.drawString(font, info,
-                guiX+left_padding, guiY+top_padding+infoTextYOffset, infoColor);
+        Gui gui = minecraft.gui;
+        if (gui.overlayMessageString != null && gui.overlayMessageTime > 0) graphics.drawString(font,
+                gui.overlayMessageString, guiX+left_padding, guiY+top_padding+infoTextYOffset, infoColor);
     }
     public void setInfoText(String info_text, int display_time) {
         info = UtilMCText.translatable(info_text);

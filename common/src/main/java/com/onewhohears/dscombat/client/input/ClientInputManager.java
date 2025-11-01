@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.input;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
+import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.data.radar.RadarStats;
@@ -292,7 +293,10 @@ public class ClientInputManager {
             DSCClientInputs.toggleGimbalMode();
         }
         // OPEN VEHICLE MENU
-        if (VEHICLE_MENU.isInitPressed()) {
+        /* the instanceof check was added because for some reason VEHICLE_MENU#isInitPressed was still true
+           when opening the VehicleKeyBindsScreen making it immediately go back to VehicleMainScreen.
+           this only happened in fabric 1.20.1 no idea why. */
+        if (VEHICLE_MENU.isInitPressed() && !(mc.screen instanceof VehicleScreen)) {
             mc.setScreen(new VehicleMainScreen());
         }
         // CAMERA LEAN

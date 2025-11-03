@@ -14,10 +14,6 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 		if (instance == null) instance = new StatGraphs();
 		return instance;
 	}
-	
-	public static void close() {
-		instance = null;
-	}
 
 	private List<AoaLiftKGraph> aoaLiftKGraphs;
 	private List<TurnRatesBySpeedGraph> turnRateGraphs;

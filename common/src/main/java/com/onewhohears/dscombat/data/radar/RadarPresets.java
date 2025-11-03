@@ -13,10 +13,6 @@ public class RadarPresets extends JsonPresetReloadListener<RadarStats> {
 		return instance;
 	}
 	
-	public static void close() {
-		instance = null;
-	}
-	
 	public RadarPresets() {
 		super("radars");
 	}

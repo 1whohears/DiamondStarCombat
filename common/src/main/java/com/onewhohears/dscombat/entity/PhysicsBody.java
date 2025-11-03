@@ -251,6 +251,22 @@ public interface PhysicsBody {
         return getDeltaMovement().normalize().scale(-getDragMag());
     }
 
+    default Vec3 calcTotalDrag(QuaternionF q) {
+        Vec3 d = getDragForce(q);
+        for (PhysicsComponentInstance<?> phy : getPhysicsInstances()) {
+            d = d.add(phy.getDragForce());
+        }
+        return d;
+    }
+
+    default Vec3 calcTotalLift(QuaternionF q) {
+        Vec3 l = Vec3.ZERO;
+        for (PhysicsComponentInstance<?> phy : getPhysicsInstances()) {
+            l = l.add(phy.getLiftForce());
+        }
+        return l;
+    }
+
     default double getDragMag() {
         // Drag = (drag coefficient) * (air density) * (speed)^2 * (drag area) / 2
         double speedSqr = getDeltaMovement().lengthSqr() * 400; // m/s
@@ -274,6 +290,12 @@ public interface PhysicsBody {
         }
         double massScale = 1/getTotalMass();
         return forces.scale(massScale).scale(getAccTimeScale());
+    }
+
+    default double getAccFromForce(double force, boolean horizontal) {
+        force = force / getTotalMass() * getAccTimeScale();
+        if (horizontal) return force * getHorizontalSpeedScale();
+        return force * getVerticalAccScale(force);
     }
 
     default void motionClamp() {

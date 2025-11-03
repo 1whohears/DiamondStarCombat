@@ -18,10 +18,6 @@ public class PartPresets extends JsonPresetReloadListener<PartStats> {
 		if (instance == null) instance = new PartPresets();
 		return instance;
 	}
-	
-	public static void close() {
-		instance = null;
-	}
 
 	private WeaponPartRecipe[] weaponPartRecipes;
 

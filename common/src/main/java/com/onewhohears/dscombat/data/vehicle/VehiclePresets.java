@@ -18,10 +18,6 @@ public class VehiclePresets extends JsonPresetReloadListener<VehicleStats> {
 		if (instance == null) instance = new VehiclePresets();
 		return instance;
 	}
-	
-	public static void close() {
-		instance = null;
-	}
 
 	private VehicleRecipe[] tanks, helis, planes, boats;
 	

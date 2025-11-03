@@ -24,10 +24,6 @@ public class WeaponPresets extends JsonPresetReloadListener<WeaponStats> {
 		return instance;
 	}
 	
-	public static void close() {
-		instance = null;
-	}
-	
 	private final Map<String, List<String>> compatiblePartMap = new HashMap<>();
 	private WeaponRecipe[] weaponRecipes;
 	

@@ -115,11 +115,6 @@ public class CommonEventHandlers {
     }
 
     public static void serverStoppingEvent(MinecraftServer server) {
-        VehiclePresets.close();
-        WeaponPresets.close();
-        RadarPresets.close();
-        PartPresets.close();
-        StatGraphs.close();
         RotableHitboxes.onServerStop();
     }
 

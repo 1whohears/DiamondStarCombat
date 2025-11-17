@@ -23,6 +23,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "10mm")
 				.setAssetId("12.7mm")
+                .setMass(0.01f)
 				.setSortFactor(1)
 				.setFireRate(1)
 				.setInaccuracy(2.2f)
@@ -45,6 +46,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "15mm")
 				.setAssetId("20mm")
+                .setMass(0.015f)
 				.setSortFactor(2)
 				.setFireRate(2)
 				.setInaccuracy(1.8f)
@@ -68,6 +70,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mm")
 				.setAssetId("20mm")
+                .setMass(0.020f)
 				.setSortFactor(3)
 				.setFireRate(1)
 				.setInaccuracy(1.1f)
@@ -90,6 +93,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "20mmhe")
 				.setAssetId("20mm")
+                .setMass(0.025f)
 				.setSortFactor(4)
 				.setFireRate(1)
 				.setInaccuracy(1.2f)
@@ -113,6 +117,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "30mmhe")
 				.setAssetId("20mm")
+                .setMass(0.1f)
 				.setSortFactor(5)
 				.setFireRate(2)
 				.setInaccuracy(1.1f)
@@ -136,6 +141,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "50mmhe")
 				.setAssetId("50mmhe")
+                .setMass(0.5f)
 				.setSortFactor(6)
 				.setFireRate(5)
 				.setInaccuracy(1.0f)
@@ -159,6 +165,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "120mmhe")
 				.setAssetId("120mmhe")
+                .setMass(10f)
 				.setSortFactor(7)
 				.setFireRate(40)
 				.setInaccuracy(0.4f)
@@ -181,6 +188,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "406mmhe")
 				.setAssetId("406mmhe")
+                .setMass(40f)
 				.setSortFactor(10)
 				.setFireRate(60)
 				.setInaccuracy(1.1f)
@@ -203,6 +211,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 		addPresetToGenerate(BulletStats.Builder
 				.bulletBuilder(DSCombatMod.MODID, "127mm")
 				.setAssetId("120mmhe")
+                .setMass(10f)
 				.setSortFactor(8)
 				.setFireRate(12)
 				.setInaccuracy(0.3f)

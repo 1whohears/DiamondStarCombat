@@ -25,7 +25,7 @@
   "landing_gear": true,
   "physics_components": [
     {
-      "area": 4.0,
+      "area": 6.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -34,7 +34,7 @@
       "input_type": "LEFT_FLAP",
       "lift_k_graph": "jason_lift_aoa",
       "pos": {
-        "x": 1.0,
+        "x": 1.5,
         "y": 0.0,
         "z": 0.0
       },
@@ -46,7 +46,7 @@
       "zero_lift_drag": 0.800000011920929
     },
     {
-      "area": 4.0,
+      "area": 6.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -55,7 +55,7 @@
       "input_type": "RIGHT_FLAP",
       "lift_k_graph": "jason_lift_aoa",
       "pos": {
-        "x": -1.0,
+        "x": -1.5,
         "y": 0.0,
         "z": 0.0
       },
@@ -67,7 +67,7 @@
       "zero_lift_drag": 0.800000011920929
     },
     {
-      "area": 1.0,
+      "area": 2.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -88,7 +88,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 1.0,
+      "area": 2.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -109,7 +109,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 1.0,
+      "area": 4.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -130,7 +130,7 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 2.0,
+      "area": 4.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -151,7 +151,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 1.0,
+      "area": 4.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -172,7 +172,7 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 5.0,
+      "area": 6.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -265,21 +265,21 @@
     "crashExplosionRadius": 3.0,
     "cross_sec_area": 2.0,
     "cruise_speed": 8.0,
-    "drag_area": 0.2,
+    "drag_area": 0.1,
     "entity_size_xz": 1.7,
     "entity_size_y": 1.7,
     "fuel_consume_per_engine": 0.003,
     "has_turn_assist": false,
     "heat_per_engine": 5.0,
     "idleheat": 1.0,
-    "inertiapitch": 30000.0,
-    "inertiaroll": 3000.0,
-    "inertiayaw": 35000.0,
+    "inertiapitch": 10000.0,
+    "inertiaroll": 1000.0,
+    "inertiayaw": 11000.0,
     "mass": 500.0,
     "max_altitude": 300.0,
     "max_ground_speed": 5.0,
     "max_health": 40.0,
-    "max_push_thrust_per_engine": 12000.0,
+    "max_push_thrust_per_engine": 14000.0,
     "max_speed": 8.0,
     "maxpitch": 3.0,
     "maxroll": 5.0,
@@ -287,7 +287,7 @@
     "plane": {
       "canAimDown": false,
       "drag_aoa_graph_key": "jason_drag_aoa",
-      "flapsAOABias": 8.0,
+      "flapsAOABias": 10.0,
       "fuselage_lift_area": 4.0,
       "fuselage_lift_k_graph": "fuselage",
       "turn_rates_graph": "wooden_plane_turn_rates",

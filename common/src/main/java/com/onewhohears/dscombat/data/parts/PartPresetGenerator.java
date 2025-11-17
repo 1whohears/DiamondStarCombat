@@ -389,7 +389,7 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		// EXTERNAL WEAPONS
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "xm12", ModItems.EXTERNAL_WEAPON_PART.getId(), PartType.EXTERNAL_WEAPON)
 				.setCompatibleSlotType(SlotType.PYLON_LIGHT)
-				.setWeight(500)
+				.setWeight(101)
 				.setExternalWeaponStats(300, 0)
 				.setSortFactor(1)
 				.addIngredientTag("dscombat:aluminum_ingot", 3)

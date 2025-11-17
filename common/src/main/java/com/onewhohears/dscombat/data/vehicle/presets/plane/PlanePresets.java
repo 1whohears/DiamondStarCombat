@@ -28,55 +28,55 @@ public class PlanePresets {
 			.setMass(500)
 			.setPlaneLiftAOAGraph("jason_lift_aoa")
 			.setDragAOAGraph("jason_drag_aoa")
-			.setPlaneFlapDownAOABias(8)
+			.setPlaneFlapDownAOABias(10)
 			.setTurnRateGraph("wooden_plane_turn_rates")
 			.setMaxTurnRates(5f, 3.0f, 2.0f)
 			.setThrottleRate(0.02f, 0.06f)
-			.setRotationalInertia(3000, 30000f, 35000f)
+			.setRotationalInertia(1000, 10000f, 11000f)
 			.setPlaneWingArea(8)
 			.setFuselageLiftArea(4)
 			.setMaxAltitude(300)
-			.setDragArea(0.2f)
-			.setPushEngineOverrideStats(12000, 5f, 0.003f)
+			.setDragArea(0.1f)
+			.setPushEngineOverrideStats(14000, 5f, 0.003f)
 			.setPlaneSpeeds(8, 8, 5.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
 			.setUseSpeedScales(true, true)
 			.setHasTurnAssist(false)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					10, 4, new Vec3(1, 0, 0), 0, 0, 0,
+					10, 6, new Vec3(1.5, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.LEFT_FLAP, "jason_lift_aoa",
 					"jason_drag_aoa", 0.8f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					10, 4, new Vec3(-1, 0, 0), 0, 0, 0,
+					10, 6, new Vec3(-1.5, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.RIGHT_FLAP, "jason_lift_aoa",
 					"jason_drag_aoa", 0.8f))
 			// elevators
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					20, 1, new Vec3(0.4, 0, -2.0), 0, 0, 0,
+					20, 2, new Vec3(0.4, 0, -2.0), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "jason_lift_aoa",
 					"jason_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					20, 1, new Vec3(-0.4, 0, -2.0), 0, 0, 0,
+					20, 2, new Vec3(-0.4, 0, -2.0), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "jason_lift_aoa",
 					"jason_drag_aoa", 0.4f))
 			// tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					4, 1, new Vec3(0, 0, -2.0), 0, 0, 90,
+					4, 4, new Vec3(0, 0, -2.0), 0, 0, 90,
 					LiftSurfaceData.InputType.STABILIZER, "jason_lift_aoa",
 					"jason_drag_aoa", 0.6f))
 			// nose to counter elevators and tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					0, 2, new Vec3(0, 0, 2.0), 0, 0, 0,
+					0, 4, new Vec3(0, 0, 2.0), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
 					"jason_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					0, 1, new Vec3(0, 0, 2.0), 0, 0, 90,
+					0, 4, new Vec3(0, 0, 2.0), 0, 0, 90,
 					LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
 					"jason_drag_aoa", 0.6f))
 			// fuselage
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
-					0, 5, new Vec3(0, 0, 0), 0, 0, 0,
+					0, 6, new Vec3(0, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
 					"jason_drag_aoa", 0.8f))
 
@@ -117,8 +117,8 @@ public class PlanePresets {
 	
 	public static final VehicleStats FIGHTER_WOODEN_PLANE = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "wooden_plane_fighter", DEFAULT_WOODEN_PLANE)
-			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "20mm", true)
-			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "20mm", true)
+			.setSlotItem("left_wing_1", ModItems.XM12.getId(), "10mm", true)
+			.setSlotItem("right_wing_1", ModItems.XM12.getId(), "10mm", true)
 			.addIngredient("minecraft:copper_ingot", 64)
 			.addIngredient(ModItems.XM12.getId(), 2)
 			.build();

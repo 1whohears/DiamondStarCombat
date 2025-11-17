@@ -26,6 +26,7 @@
     }
   ],
   "itemKey": "dscombat:bullet",
+  "mass": 10.0,
   "maxAge": 40,
   "presetId": "120mmhe",
   "presetType": "bullet",

@@ -25,6 +25,7 @@
     }
   ],
   "itemKey": "dscombat:20mm",
+  "mass": 0.1,
   "maxAge": 40,
   "presetId": "30mmhe",
   "presetType": "bullet",

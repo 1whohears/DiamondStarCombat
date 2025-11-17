@@ -19,7 +19,7 @@
     {
       "data": {
         "filled": true,
-        "param": "20mm",
+        "param": "10mm",
         "part": "xm12"
       },
       "name": "left_wing_1"
@@ -27,7 +27,7 @@
     {
       "data": {
         "filled": true,
-        "param": "20mm",
+        "param": "10mm",
         "part": "xm12"
       },
       "name": "right_wing_1"

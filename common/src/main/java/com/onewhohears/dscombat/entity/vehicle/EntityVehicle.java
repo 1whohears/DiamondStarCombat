@@ -871,7 +871,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	public double getDragArea() {
 		double a = getStats().drag_area;
-		if (canToggleLandingGear() && isLandingGear())
+		if (canToggleLandingGear() && isLandingGear() && !isOnGround())
 			a += DSCPhyCons.INCREASED_DRAG_AREA_LANDING_GEAR;
 		if (!isOperational())
 			a += DSCPhyCons.INCREASED_DRAG_AREA_DESTROYED;

@@ -149,7 +149,7 @@ public class PlanePresets {
 			.setPlaneWingArea(283)
 			.setFuselageLiftArea(80)
 			.setMaxAltitude(440)
-			.setDragArea(1.70f)
+			.setDragArea(0.90f)
 			.setPushEngineOverrideStats(96000, 20f, 0.006f)
 			.setPlaneSpeeds(11.86f, 11.86f, 8.0f)
 			.setBreakDeAcc(0.016f, 0.010f)
@@ -175,7 +175,7 @@ public class PlanePresets {
 					"e3sentry_drag_aoa", 0.4f))
 			// tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", false,
-					4, 30, new Vec3(0, 0, -14), 0, 0, 90,
+					4, 60, new Vec3(0, 0, -14), 0, 0, 90,
 					LiftSurfaceData.InputType.STABILIZER, "alexis_plane",
 					"e3sentry_drag_aoa", 0.6f))
 			// nose to counter elevators and tail

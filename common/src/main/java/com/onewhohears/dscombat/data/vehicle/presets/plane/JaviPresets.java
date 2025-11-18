@@ -27,7 +27,7 @@ public class JaviPresets {
 			.setMass(11321f)
 			.setPlaneLiftAOAGraph("javi_lift_aoa")
 			.setDragAOAGraph("javi_drag_aoa")
-			.setPlaneFlapDownAOABias(18)
+			.setPlaneFlapDownAOABias(20)
 			.setTurnRateGraph("javi_plane_turn_rates")
 			.setMaxTurnRates(4f, 2.1f, 1.1f)
 			.setRotationalInertia(12000f, 100000f, 105000f)
@@ -35,51 +35,52 @@ public class JaviPresets {
 			.setPlaneWingArea(47)
 			.setFuselageLiftArea(26)
 			.setMaxAltitude(685)
-			.setDragArea(0.70f)
-			.setPushEngineOverrideStats(40320, 10f, 0.004f)
+			.setDragArea(0.6f)
+            // FIXME real life thrust is 40320N but it feels so bad in minecraft for some reason
+			.setPushEngineOverrideStats(44000, 10f, 0.004f)
 			.setPlaneSpeeds(11.57f, 11.57f, 8.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
 			.setUseSpeedScales(true, true)
 			.setHasTurnAssist(true)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
-					18, 23.5, new Vec3(5.3, 0, 0), 0, 0, 0,
+					20, 23.5, new Vec3(5.3, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.LEFT_FLAP, "javi_lift_aoa",
 					"javi_drag_aoa", 0.8f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
-					18, 23.5, new Vec3(-5.3, 0, 0), 0, 0, 0,
+					20, 23.5, new Vec3(-5.3, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.RIGHT_FLAP, "javi_lift_aoa",
 					"javi_drag_aoa", 0.8f))
 			// elevators
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
-					20, 7, new Vec3(2, 0, -6.85), 0, 0, 0,
+					20, 10, new Vec3(2, 0, -6.85), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "javi_lift_aoa",
 					"javi_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
-					20, 7, new Vec3(-2, 0, -6.85), 0, 0, 0,
+					20, 10, new Vec3(-2, 0, -6.85), 0, 0, 0,
 					LiftSurfaceData.InputType.ELEVATOR, "javi_lift_aoa",
 					"javi_drag_aoa", 0.4f))
 			// tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
-					3, 7, new Vec3(4, 0, -6.85), 0, 0, 90,
+					3, 10, new Vec3(4, 0, -6.85), 0, 0, 90,
 					LiftSurfaceData.InputType.STABILIZER, "javi_lift_aoa",
 					"javi_drag_aoa", 0.6f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
-					3, 7, new Vec3(-4, 0, -6.85), 0, 0, 90,
+					3, 10, new Vec3(-4, 0, -6.85), 0, 0, 90,
 					LiftSurfaceData.InputType.STABILIZER, "javi_lift_aoa",
 					"javi_drag_aoa", 0.6f))
 			// nose to counter elevators and tail
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
-					0, 14, new Vec3(0, 0, 6.85), 0, 0, 0,
+					0, 20, new Vec3(0, 0, 6.85), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
 					"javi_drag_aoa", 0.4f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("nose", false,
-					0, 14, new Vec3(0, 0, 6.85), 0, 0, 90,
+					0, 20, new Vec3(0, 0, 6.85), 0, 0, 90,
 					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
 					"javi_drag_aoa", 0.6f))
 			// fuselage
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
-					0, 20, new Vec3(0, 0, 0), 0, 0, 0,
+					0, 30, new Vec3(0, 0, 0), 2, 0, 0,
 					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
 					"javi_drag_aoa", 0.8f))
 

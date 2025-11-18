@@ -121,7 +121,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 30.0,
+      "area": 60.0,
       "drag_graph": "e3sentry_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -509,7 +509,7 @@
     "crashExplosionRadius": 8.0,
     "cross_sec_area": 16.0,
     "cruise_speed": 11.86,
-    "drag_area": 1.7,
+    "drag_area": 0.9,
     "entity_size_xz": 4.0,
     "entity_size_y": 4.0,
     "fuel_consume_per_engine": 0.006,

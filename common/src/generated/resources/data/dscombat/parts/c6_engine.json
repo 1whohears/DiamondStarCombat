@@ -8,5 +8,5 @@
   "presetType": "internal_engine",
   "slotType": "spin_engine",
   "thrust": 60.0,
-  "weight": 300.0
+  "weight": 30.0
 }

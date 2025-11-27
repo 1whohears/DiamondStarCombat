@@ -255,7 +255,7 @@
       "zero_lift_drag": 0.800000011920929
     },
     {
-      "area": 1.0,
+      "area": 3.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "tail_flaps",
       "id": "lift_surface",
@@ -266,7 +266,7 @@
       "pos": {
         "x": 1.0,
         "y": 0.0,
-        "z": -4.0
+        "z": -6.0
       },
       "rotation": {
         "x": 0.0,
@@ -276,7 +276,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 1.0,
+      "area": 3.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "tail_flaps",
       "id": "lift_surface",
@@ -287,7 +287,7 @@
       "pos": {
         "x": -1.0,
         "y": 0.0,
-        "z": -4.0
+        "z": -6.0
       },
       "rotation": {
         "x": 0.0,
@@ -297,7 +297,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 2.0,
+      "area": 6.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "tail",
       "id": "lift_surface",
@@ -308,7 +308,7 @@
       "pos": {
         "x": 0.0,
         "y": 0.0,
-        "z": -4.0
+        "z": -6.0
       },
       "rotation": {
         "x": 0.0,
@@ -318,7 +318,7 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 2.0,
+      "area": 6.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "base",
       "id": "lift_surface",
@@ -329,7 +329,7 @@
       "pos": {
         "x": 0.0,
         "y": 0.0,
-        "z": 4.0
+        "z": 6.0
       },
       "rotation": {
         "x": 0.0,
@@ -339,7 +339,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 2.0,
+      "area": 6.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "base",
       "id": "lift_surface",
@@ -350,7 +350,7 @@
       "pos": {
         "x": 0.0,
         "y": 0.0,
-        "z": 4.0
+        "z": 6.0
       },
       "rotation": {
         "x": 0.0,
@@ -360,7 +360,7 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 11.0,
+      "area": 12.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -517,11 +517,12 @@
     "max_altitude": 400.0,
     "max_ground_speed": 5.0,
     "max_health": 60.0,
-    "max_push_thrust_per_engine": 18000.0,
+    "max_push_thrust_per_engine": 20000.0,
     "max_speed": 8.0,
     "maxpitch": 2.0,
     "maxroll": 4.0,
     "maxyaw": 1.5,
+    "min_drive_acc": 0.02,
     "plane": {
       "canAimDown": false,
       "drag_aoa_graph_key": "jason_drag_aoa",

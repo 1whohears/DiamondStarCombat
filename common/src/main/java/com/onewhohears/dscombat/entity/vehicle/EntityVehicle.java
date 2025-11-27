@@ -3200,12 +3200,17 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	@Override
 	public double getGroundBreaksDeAcceleration() {
-		return getStats().break_deacc_ground * DSCPhyCons.getIRLScale();
+		return getStats().break_deacc_ground * getHorizontalSpeedScaleOrOne();
 	}
+
+    @Override
+    public double getMinDriveAcc() {
+        return getStats().min_drive_acc * getHorizontalSpeedScaleOrOne() * getCurrentThrottle();
+    }
 
 	@Override
 	public double getAirBreaksDeAcceleration() {
-		return getStats().break_deacc_air * DSCPhyCons.getIRLScale();
+		return getStats().break_deacc_air * getHorizontalSpeedScaleOrOne();
 	}
 
 	@Override

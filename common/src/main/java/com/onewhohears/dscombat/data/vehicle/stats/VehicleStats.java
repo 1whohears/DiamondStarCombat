@@ -72,6 +72,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	public final float cruise_speed;
 	public final float break_deacc_ground;
 	public final float break_deacc_air;
+    public final float min_drive_acc;
 	private final PhysicsComponentData[] physics_components;
 	// appearance
 	public final int baseTextureVariants, textureLayers;
@@ -102,6 +103,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		max_ground_speed = UtilParse.getFloatSafe(stats, "max_ground_speed", max_speed);
 		break_deacc_ground = UtilParse.getFloatSafe(stats, "break_deacc_ground", 0.005f);
 		break_deacc_air = UtilParse.getFloatSafe(stats, "break_deacc_air", 0.001f);
+        min_drive_acc = UtilParse.getFloatSafe(stats, "min_drive_acc", 0);
 		mass = UtilParse.getFloatSafe(stats, "mass", 1000);
 		stealth = UtilParse.getFloatSafe(stats, "stealth", 1);
 		cross_sec_area = UtilParse.getFloatSafe(stats, "cross_sec_area", 10);
@@ -1275,6 +1277,10 @@ public abstract class VehicleStats extends JsonPresetStats {
 			setStatFloat("break_deacc_ground", break_deacc_ground);
 			return setStatFloat("break_deacc_air", break_deacc_air);
 		}
+
+        public Builder setMinDriveAcc(float min_drive_acc) {
+            return setStatFloat("min_drive_acc", min_drive_acc);
+        }
 
 		public Builder setBoolean(String key, boolean value) {
 			getData().addProperty(key, value);

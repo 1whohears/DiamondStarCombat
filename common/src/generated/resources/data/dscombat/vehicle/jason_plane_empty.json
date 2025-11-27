@@ -42,7 +42,7 @@
       "input_type": "LEFT_FLAP",
       "lift_k_graph": "jason_lift_aoa",
       "pos": {
-        "x": 2.5,
+        "x": 4.0,
         "y": 0.0,
         "z": 0.0
       },
@@ -63,7 +63,7 @@
       "input_type": "RIGHT_FLAP",
       "lift_k_graph": "jason_lift_aoa",
       "pos": {
-        "x": -2.5,
+        "x": -4.0,
         "y": 0.0,
         "z": 0.0
       },
@@ -75,7 +75,7 @@
       "zero_lift_drag": 0.800000011920929
     },
     {
-      "area": 2.0,
+      "area": 4.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -84,9 +84,9 @@
       "input_type": "ELEVATOR",
       "lift_k_graph": "jason_lift_aoa",
       "pos": {
-        "x": 1.2,
+        "x": 2.0,
         "y": 0.0,
-        "z": -4.0
+        "z": -6.0
       },
       "rotation": {
         "x": 0.0,
@@ -96,7 +96,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 2.0,
+      "area": 4.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -105,9 +105,9 @@
       "input_type": "ELEVATOR",
       "lift_k_graph": "jason_lift_aoa",
       "pos": {
-        "x": -1.2,
+        "x": -2.0,
         "y": 0.0,
-        "z": -4.0
+        "z": -6.0
       },
       "rotation": {
         "x": 0.0,
@@ -117,7 +117,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 5.0,
+      "area": 7.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -128,7 +128,7 @@
       "pos": {
         "x": 0.0,
         "y": 0.0,
-        "z": -4.0
+        "z": -6.0
       },
       "rotation": {
         "x": 0.0,
@@ -138,7 +138,7 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 4.0,
+      "area": 8.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -149,7 +149,7 @@
       "pos": {
         "x": 0.0,
         "y": 0.0,
-        "z": 4.0
+        "z": 6.0
       },
       "rotation": {
         "x": 0.0,
@@ -159,7 +159,7 @@
       "zero_lift_drag": 0.4000000059604645
     },
     {
-      "area": 5.0,
+      "area": 7.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -170,7 +170,7 @@
       "pos": {
         "x": 0.0,
         "y": 0.0,
-        "z": 4.0
+        "z": 6.0
       },
       "rotation": {
         "x": 0.0,
@@ -180,7 +180,7 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 11.0,
+      "area": 14.0,
       "drag_graph": "jason_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -314,11 +314,12 @@
     "max_altitude": 640.0,
     "max_ground_speed": 6.0,
     "max_health": 60.0,
-    "max_push_thrust_per_engine": 26000.0,
+    "max_push_thrust_per_engine": 30000.0,
     "max_speed": 9.86,
     "maxpitch": 3.0,
     "maxroll": 5.0,
     "maxyaw": 2.0,
+    "min_drive_acc": 0.024,
     "plane": {
       "canAimDown": false,
       "drag_aoa_graph_key": "jason_drag_aoa",

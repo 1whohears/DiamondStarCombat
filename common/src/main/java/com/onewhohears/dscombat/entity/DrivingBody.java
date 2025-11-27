@@ -23,11 +23,14 @@ public interface DrivingBody extends PhysicsBody {
     default void calcDriveMovement(QuaternionF q) {
         // drive physics
         Vec3 n = UtilAngles.rotationToVector(getYRot(), 0);
+        double driveAcc = getDriveAcc();
+        double minDriveAcc = getMinDriveAcc(); // FIXME any weird behavior without fuel/engines?
+        if (driveAcc < minDriveAcc) driveAcc = minDriveAcc;
         if (isSliding() || willSlideFromTurn()) {
-            setDeltaMovement(getDeltaMovement().add(n.scale(getDriveAcc() * getSlideAngleCos())));
+            setDeltaMovement(getDeltaMovement().add(n.scale(driveAcc * getSlideAngleCos())));
             addFrictionForce(getKineticFriction());
         } else {
-            setDeltaMovement(n.scale(getXZSpeed()*getXZSpeedDir() + getDriveAcc()));
+            setDeltaMovement(n.scale(getXZSpeed()*getXZSpeedDir() + driveAcc));
             if (getCurrentThrottle() == 0 && getXZSpeed() != 0) driveSlowDown(0.0002);
         }
         // turn physics
@@ -96,6 +99,7 @@ public interface DrivingBody extends PhysicsBody {
     float getCurrentThrottle();
     float getTurnRadius();
     boolean canFlattenOnGround();
+    double getMinDriveAcc();
 
     default void calcAirMovement(QuaternionF q) {
         if (canAirBrake() && isAirBreaking()) applyAirBreaks();

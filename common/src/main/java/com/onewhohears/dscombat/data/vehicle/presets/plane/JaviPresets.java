@@ -40,15 +40,16 @@ public class JaviPresets {
 			.setPushEngineOverrideStats(44000, 10f, 0.004f)
 			.setPlaneSpeeds(11.57f, 11.57f, 8.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
+            .setMinDriveAcc(0.004f * 8f)
 			.setUseSpeedScales(true, true)
 			.setHasTurnAssist(true)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
-					20, 23.5, new Vec3(5.3, 0, 0), 0, 0, 0,
+					20, 25, new Vec3(5.3, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.LEFT_FLAP, "javi_lift_aoa",
 					"javi_drag_aoa", 0.8f))
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("right_wing", false,
-					20, 23.5, new Vec3(-5.3, 0, 0), 0, 0, 0,
+					20, 25, new Vec3(-5.3, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.RIGHT_FLAP, "javi_lift_aoa",
 					"javi_drag_aoa", 0.8f))
 			// elevators
@@ -80,7 +81,7 @@ public class JaviPresets {
 					"javi_drag_aoa", 0.6f))
 			// fuselage
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
-					0, 30, new Vec3(0, 0, 0), 2, 0, 0,
+					0, 40, new Vec3(0, 0, 0), 0, 0, 0,
 					LiftSurfaceData.InputType.NONE, "javi_lift_aoa",
 					"javi_drag_aoa", 0.8f))
 
@@ -89,7 +90,7 @@ public class JaviPresets {
 					ModSounds.ALEXIS_CP_RPM, ModSounds.ALEXIS_CP_AFTERBURNER, ModSounds.ALEXIS_CP_WIND_SLOW, 
 					ModSounds.ALEXIS_CP_WIND_FAST)
 			.setCrashExplosionRadius(5)
-			.set3rdPersonCamDist(16)
+			.set3rdPersonCamDist(20)
 			.setPlaneNoseCanAimDown(true)
 			.setBaseTextureNum(2)
 			.setLayerTextureNum(2)

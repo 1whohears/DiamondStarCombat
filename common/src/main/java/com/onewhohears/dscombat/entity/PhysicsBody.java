@@ -445,6 +445,11 @@ public interface PhysicsBody {
         setAngularVel(new Vec3(x, av.y, z));
     }
 
+    default double getHorizontalSpeedScaleOrOne() {
+        if (applyHorizontalSpeedScale()) return getHorizontalSpeedScale();
+        return 1;
+    }
+
     void move(@NotNull MoverType type, @NotNull Vec3 move);
 
     List<PhysicsComponentInstance<?>> getPhysicsInstances();

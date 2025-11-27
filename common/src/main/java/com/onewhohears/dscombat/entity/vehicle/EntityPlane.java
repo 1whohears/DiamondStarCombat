@@ -56,7 +56,7 @@ public class EntityPlane extends EntityVehicle {
 		Vec3 u = getDeltaMovement();
 		Vec3 rollAxis = UtilAngles.getRollAxis(q);
 		double speed = UtilGeometry.vecCompByNormAxis(u, rollAxis).length();
-		double minTakeOffSpeed = getStats().cruise_speed * DSCPhyCons.getIRLScale() * 0.33;
+		double minTakeOffSpeed = getStats().cruise_speed * getHorizontalSpeedScaleOrOne() * 0.33;
 		arcadeIgnoreGravityFactor = Math.min(speed / minTakeOffSpeed, 1);
 	}
 

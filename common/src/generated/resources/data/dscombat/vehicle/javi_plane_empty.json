@@ -173,7 +173,7 @@
   "landing_gear": true,
   "physics_components": [
     {
-      "area": 23.5,
+      "area": 25.0,
       "drag_graph": "javi_drag_aoa",
       "hitbox": "left_wing",
       "id": "lift_surface",
@@ -194,7 +194,7 @@
       "zero_lift_drag": 0.800000011920929
     },
     {
-      "area": 23.5,
+      "area": 25.0,
       "drag_graph": "javi_drag_aoa",
       "hitbox": "right_wing",
       "id": "lift_surface",
@@ -341,7 +341,7 @@
       "zero_lift_drag": 0.6000000238418579
     },
     {
-      "area": 30.0,
+      "area": 40.0,
       "drag_graph": "javi_drag_aoa",
       "hitbox": "NONE",
       "id": "lift_surface",
@@ -355,7 +355,7 @@
         "z": 0.0
       },
       "rotation": {
-        "x": 2.0,
+        "x": 0.0,
         "y": 0.0,
         "z": 0.0
       },
@@ -538,7 +538,7 @@
     "base_armor": 100.0,
     "break_deacc_air": 0.016,
     "break_deacc_ground": 0.032,
-    "cameraDistance": 16.0,
+    "cameraDistance": 20.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 7.0,
     "cruise_speed": 11.57,
@@ -571,6 +571,7 @@
     "maxpitch": 2.1,
     "maxroll": 4.0,
     "maxyaw": 1.1,
+    "min_drive_acc": 0.032,
     "plane": {
       "canAimDown": true,
       "drag_aoa_graph_key": "javi_drag_aoa",

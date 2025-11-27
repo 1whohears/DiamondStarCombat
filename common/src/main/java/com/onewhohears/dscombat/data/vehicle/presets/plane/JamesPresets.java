@@ -36,9 +36,10 @@ public class JamesPresets {
             .setFuselageLiftArea(10)
             .setMaxAltitude(400)
             .setDragArea(0.3f)
-            .setPushEngineOverrideStats(18000, 5f, 0.003f)
+            .setPushEngineOverrideStats(20000, 5f, 0.003f)
             .setPlaneSpeeds(8, 8, 5)
             .setBreakDeAcc(0.032f, 0.016f)
+            .setMinDriveAcc(0.0025f * 8f)
             .setUseSpeedScales(true, true)
             .setHasTurnAssist(false)
             // wings
@@ -60,30 +61,30 @@ public class JamesPresets {
                     "jason_drag_aoa", 0.8f))
             // elevators
             .addPhysicsComponent(LiftSurfaceData.createJsonData("tail_flaps", false,
-                    20, 1, new Vec3(1, 0, -4.0), 0, 0, 0,
+                    20, 3, new Vec3(1, 0, -6.0), 0, 0, 0,
                     LiftSurfaceData.InputType.ELEVATOR, "jason_lift_aoa",
                     "jason_drag_aoa", 0.4f))
             .addPhysicsComponent(LiftSurfaceData.createJsonData("tail_flaps", false,
-                    20, 1, new Vec3(-1, 0, -4.0), 0, 0, 0,
+                    20, 3, new Vec3(-1, 0, -6.0), 0, 0, 0,
                     LiftSurfaceData.InputType.ELEVATOR, "jason_lift_aoa",
                     "jason_drag_aoa", 0.4f))
             // tail
             .addPhysicsComponent(LiftSurfaceData.createJsonData("tail", false,
-                    5, 2, new Vec3(0, 0, -4.0), 0, 0, 90,
+                    5, 6, new Vec3(0, 0, -6.0), 0, 0, 90,
                     LiftSurfaceData.InputType.STABILIZER, "jason_lift_aoa",
                     "jason_drag_aoa", 0.6f))
             // nose to counter elevators and tail
             .addPhysicsComponent(LiftSurfaceData.createJsonData("base", false,
-                    0, 2, new Vec3(0, 0, 4.0), 0, 0, 0,
+                    0, 6, new Vec3(0, 0, 6.0), 0, 0, 0,
                     LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
                     "jason_drag_aoa", 0.4f))
             .addPhysicsComponent(LiftSurfaceData.createJsonData("base", false,
-                    0, 2, new Vec3(0, 0, 4.0), 0, 0, 90,
+                    0, 6, new Vec3(0, 0, 6.0), 0, 0, 90,
                     LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
                     "jason_drag_aoa", 0.6f))
             // fuselage
             .addPhysicsComponent(LiftSurfaceData.createJsonData("NONE", true,
-                    0, 11, new Vec3(0, 0, 0), 0, 0, 0,
+                    0, 12, new Vec3(0, 0, 0), 0, 0, 0,
                     LiftSurfaceData.InputType.NONE, "jason_lift_aoa",
                     "jason_drag_aoa", 0.8f))
 

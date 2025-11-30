@@ -503,6 +503,7 @@
     "maxpitch": 2.15,
     "maxroll": 5.0,
     "maxyaw": 1.15,
+    "min_drive_acc": 0.024,
     "plane": {
       "canAimDown": false,
       "drag_aoa_graph_key": "felix_drag_aoa",

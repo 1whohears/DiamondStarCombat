@@ -40,6 +40,7 @@ public class FelixPresets {
 			.setPushEngineOverrideAfterburnerStats(40180, 69580,15, 0.006f)
 			.setPlaneSpeeds(30.21f, 18.06f, 8.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
+            .setMinDriveAcc(0.003f * 8f)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
 					18, 11.5, new Vec3(3.6, 0, 0), 0, 0, 0,

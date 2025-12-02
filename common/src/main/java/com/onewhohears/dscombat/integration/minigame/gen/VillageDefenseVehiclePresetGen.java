@@ -21,7 +21,7 @@ public class VillageDefenseVehiclePresetGen {
                 .setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
                 .setSlotItem("internal_5", ModItems.GR200.getId())
                 .setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
-                .setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm65l", true)
+                .setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
                 .build());
         // javi close air support
         VehiclePresetGenerator.INSTANCE.addPresetToGenerate(VehicleStats.Builder

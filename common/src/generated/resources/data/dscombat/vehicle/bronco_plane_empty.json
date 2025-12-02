@@ -365,6 +365,7 @@
     "maxpitch": 1.2,
     "maxroll": 2.5,
     "maxyaw": 0.9,
+    "min_drive_acc": 0.016,
     "plane": {
       "canAimDown": false,
       "drag_aoa_graph_key": "javi_drag_aoa",

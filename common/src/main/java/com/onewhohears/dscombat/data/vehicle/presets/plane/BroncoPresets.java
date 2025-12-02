@@ -42,6 +42,7 @@ public class BroncoPresets {
 			.setPushEngineOverrideStats(12000, 5f, 0.003f)
 			.setPlaneSpeeds(6.39f, 6.39f, 5.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
+            .setMinDriveAcc(0.002f * 8f)
 			.setUseSpeedScales(true, true)
 			.setHasTurnAssist(true)
 			// wings
@@ -127,7 +128,7 @@ public class BroncoPresets {
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
 			.setSlotItem("internal_5", ModItems.GR200.getId())
 			.setSlotItem("left_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
-			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm65l", true)
+			.setSlotItem("right_wing_1", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.addIngredient(ModItems.BASIC_FLARE_DISPENSER.getId())
 			.addIngredient(ModItems.GR200.getId())
 			.build();

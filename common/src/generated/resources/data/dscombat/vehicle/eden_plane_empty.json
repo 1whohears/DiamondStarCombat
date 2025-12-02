@@ -626,6 +626,7 @@
     "maxpitch": 2.25,
     "maxroll": 5.5,
     "maxyaw": 1.25,
+    "min_drive_acc": 0.028,
     "plane": {
       "canAimDown": false,
       "drag_aoa_graph_key": "eden_drag_aoa",

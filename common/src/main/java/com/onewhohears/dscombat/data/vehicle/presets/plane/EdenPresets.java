@@ -38,6 +38,7 @@ public class EdenPresets {
 			.setUseSpeedScales(true, true)
 			.setPlaneSpeeds(34.03f, 16.67f, 8.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
+            .setMinDriveAcc(0.0035f * 8f)
 			// wings
 			.addPhysicsComponent(LiftSurfaceData.createJsonData("left_wing", false,
 					18, 19, new Vec3(4.31, 0, 0), 0, 0, 0,

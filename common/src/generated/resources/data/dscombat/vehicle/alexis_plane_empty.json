@@ -546,6 +546,7 @@
     "maxpitch": 2.5,
     "maxroll": 6.0,
     "maxyaw": 1.5,
+    "min_drive_acc": 0.028,
     "plane": {
       "canAimDown": false,
       "drag_aoa_graph_key": "alexis_drag_aoa",

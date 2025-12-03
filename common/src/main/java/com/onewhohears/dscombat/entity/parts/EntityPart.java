@@ -229,14 +229,15 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
     public abstract boolean canGetHurt();
     
     @Override
-    protected AABB makeBoundingBox() {
-    	if (Mth.abs(getZRot()) <= 90) return super.makeBoundingBox();
+    protected @NotNull AABB makeBoundingBox() {
+    	//if (Mth.abs(getZRot()) <= 90) return super.makeBoundingBox();
+        if (!isStatsHolderLoaded()) return super.makeBoundingBox();
     	double pX = getX(), pY = getY(), pZ = getZ();
     	EntityDimensions d = getStats().getEntityDimensions();
     	double f = d.width / 2.0F;
         double f1 = d.height;
-        return new AABB(pX-f, pY-f1, pZ-f, 
-        		pX+f, pY, pZ+f);
+        if (Mth.abs(getZRot()) > 90) f1 *= -1;
+        return new AABB(pX-f, pY, pZ-f, pX+f, pY+f1, pZ+f);
     }
     
     public MastType getVehicleMastType() {

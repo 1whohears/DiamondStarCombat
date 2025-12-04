@@ -231,7 +231,6 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
     
     @Override
     protected @NotNull AABB makeBoundingBox() {
-    	//if (Mth.abs(getZRot()) <= 90) return super.makeBoundingBox();
         if (!isStatsHolderLoaded()) return super.makeBoundingBox();
     	double pX = getX(), pY = getY(), pZ = getZ();
     	EntityDimensions d = getStats().getEntityDimensions();

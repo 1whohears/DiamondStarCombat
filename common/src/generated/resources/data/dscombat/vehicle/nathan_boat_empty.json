@@ -104,7 +104,7 @@
       "slot_posx": 1.5,
       "slot_posy": 1.0,
       "slot_posz": 0.0,
-      "slot_type": "pylon_light",
+      "slot_type": "pylon_med",
       "zRot": -90.0
     },
     {
@@ -112,7 +112,7 @@
       "slot_posx": -1.5,
       "slot_posy": 1.0,
       "slot_posz": 0.0,
-      "slot_type": "pylon_light",
+      "slot_type": "pylon_med",
       "zRot": 90.0
     },
     {
@@ -164,7 +164,7 @@
     "cameraDistance": 4.0,
     "crashExplosionRadius": 2.0,
     "cross_sec_area": 4.5,
-    "entity_size_xz": 3.0,
+    "entity_size_xz": 4.0,
     "entity_size_y": 1.5,
     "fuel_consume_per_engine": 0.004,
     "hard_coded_rot_acc": {

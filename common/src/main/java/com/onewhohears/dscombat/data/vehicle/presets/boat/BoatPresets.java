@@ -46,13 +46,13 @@ public class BoatPresets {
 			.addSeatSlot("seat4", SlotType.MOUNT_LIGHT, -0.65, 1.2, 1.25)
 			.addSeatSlot("seat5", SlotType.MOUNT_LIGHT, 0.65, 1.2, -0.06)
 			.addSeatSlot("seat6", SlotType.MOUNT_LIGHT, -0.65, 1.2, -0.06)
-			.addEmptySlot("frame_1", SlotType.PYLON_LIGHT, 1.5, 1, 0, -90)
-			.addEmptySlot("frame_2", SlotType.PYLON_LIGHT, -1.5, 1, 0, 90)
+			.addEmptySlot("frame_1", SlotType.PYLON_MED, 1.5, 1, 0, -90)
+			.addEmptySlot("frame_2", SlotType.PYLON_MED, -1.5, 1, 0, 90)
 			.addEmptySlot("internal_1", SlotType.RADIAL_ENGINE)
 			.addEmptySlot("internal_2", SlotType.INTERNAL)
 			.addEmptySlot("internal_3", SlotType.INTERNAL)
 			.addEmptySlot("internal_4", SlotType.TECH_INTERNAL)
-			.setEntityMainHitboxSize(3, 1.5f)
+			.setEntityMainHitboxSize(4, 1.5f)
 			.build();
 	
 	public static final VehicleStats UNARMED_NATHAN_BOAT = VehicleStats.Builder
@@ -70,8 +70,8 @@ public class BoatPresets {
 			.addIngredient(ModItems.MINIGUN_TURRET.getId())
 			.addIngredient(ModItems.WR400.getId())
 			.setSlotItem("seat1", ModItems.MINIGUN_TURRET.getId(), true)
-			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
-			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "torpedo1", true)
+			.setSlotItem("frame_1", ModItems.HEAVY_MISSILE_RACK.getId(), "type91", true)
+			.setSlotItem("frame_2", ModItems.HEAVY_MISSILE_RACK.getId(), "type91", true)
 			.addIngredientTag("dscombat:aluminum_ingot", 64)
 			.addIngredient("minecraft:redstone", 24)
 			.addIngredient("minecraft:gunpowder", 60)

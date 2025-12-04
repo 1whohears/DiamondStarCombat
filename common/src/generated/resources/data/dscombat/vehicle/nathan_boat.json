@@ -42,7 +42,7 @@
     {
       "data": {
         "filled": true,
-        "param": "torpedo1",
+        "param": "type91",
         "part": "heavy_missile_rack"
       },
       "name": "frame_1"
@@ -50,7 +50,7 @@
     {
       "data": {
         "filled": true,
-        "param": "torpedo1",
+        "param": "type91",
         "part": "heavy_missile_rack"
       },
       "name": "frame_2"

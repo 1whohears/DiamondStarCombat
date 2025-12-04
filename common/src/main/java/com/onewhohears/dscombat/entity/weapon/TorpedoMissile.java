@@ -27,7 +27,7 @@ public class TorpedoMissile<T extends TorpedoStats> extends TrackEntityMissile<T
 		if (isInWater()) super.tickSetMove();
 		else {
 			Vec3 cm = getDeltaMovement();
-			cm = cm.add(0, -DSCPhyCons.GRAVITY, 0);
+			cm = cm.add(0, -DSCPhyCons.GRAVITY * DSCPhyCons.ACC_TIME_SCALE, 0);
 			setDeltaMovement(cm);
 		}
 	}

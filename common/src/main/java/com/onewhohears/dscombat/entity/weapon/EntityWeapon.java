@@ -143,6 +143,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 					System.out.println("BULLET "+this);
 					System.out.println("HIT "+hit);
 					System.out.println("OWNER "+owner);
+                    System.out.println("ALLIED "+isAlliedTo(hit));
 				}*/
 			}
 			if (hitresult != null && hitresult.getType() != HitResult.Type.MISS && !noPhysics) {
@@ -344,7 +345,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	@Override
 	public void remove(Entity.RemovalReason reason) {
 		super.remove(reason);
-		//System.out.println("REMOVED "+reason.toString()+" "+this);
+		System.out.println("REMOVED "+reason.toString()+" "+this);
 	}
 	
 	@Override

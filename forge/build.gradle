@@ -24,6 +24,8 @@ loom {
         }
     }
     forge {
+        convertAccessWideners = true
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
         mixinConfigs = [
                 "dscombat.mixins.json"
         ]

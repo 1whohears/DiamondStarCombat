@@ -118,4 +118,8 @@ public class ItemPart extends Item implements FillableItemCategory {
 		return stats.getId();
 	}
 
+    public @NotNull Item asItem() {
+        return this;
+    }
+
 }

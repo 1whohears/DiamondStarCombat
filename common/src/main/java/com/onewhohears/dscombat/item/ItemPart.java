@@ -119,4 +119,8 @@ public class ItemPart extends Item {
 		return stats.getId();
 	}
 
+    public @NotNull Item asItem() {
+        return this;
+    }
+
 }

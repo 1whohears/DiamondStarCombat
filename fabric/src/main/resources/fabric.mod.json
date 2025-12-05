@@ -29,6 +29,7 @@
     "dscombat.mixins.json",
     "dscombat.fabric.mixins.json"
   ],
+  "accessWidener": "dscombat-fabric.accesswidener",
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": ">=${fabric_api_version}",

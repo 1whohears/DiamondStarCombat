@@ -345,7 +345,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	@Override
 	public void remove(Entity.RemovalReason reason) {
 		super.remove(reason);
-		System.out.println("REMOVED "+reason.toString()+" "+this);
+		//System.out.println("REMOVED "+reason.toString()+" "+this);
 	}
 	
 	@Override

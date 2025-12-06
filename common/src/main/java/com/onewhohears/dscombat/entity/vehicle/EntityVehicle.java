@@ -486,7 +486,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		for (double x = box.minX; x < box.maxX+1; ++x) {
 			for (double z = box.minZ; z < box.maxZ+1; ++z) {
 				for (double y = box.minY; y < box.maxY+1; ++y) {
-					BlockPos pos = new BlockPos(x, y, z);
+					BlockPos pos = UtilGeometry.toBlockPos(new Vec3(x, y, z));
 					BlockState state = getWorld().getBlockState(pos);
 					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;
 					if (UtilVehicleEntity.vehicleHasPermissionToTrample(pos, state, getWorld(), controller))
@@ -790,7 +790,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
         Entity controller = getControllingPassenger();
         if (controller == null) return move;
         Vec3 nextPos = controller.position().add(move.normalize().scale(64));
-        ChunkPos nextChunk = new ChunkPos(new BlockPos(nextPos));
+        ChunkPos nextChunk = new ChunkPos(UtilGeometry.toBlockPos(nextPos));
         if (getWorld().hasChunk(nextChunk.x, nextChunk.z)) return move;
         LOGGER.warn("CHUNK AHEAD VEHICLE DOES NOT EXIST STOPPING MOVE FOR PILOT: {} | SPEED: {}",
                 controller.getScoreboardName(), move.length());
@@ -1501,7 +1501,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	public boolean hurtLogic(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		if (isInvulnerableTo(source)) return false;
-		if (source.isFire()) hurtByFireTime = tickCount;
+		if (UtilVehicleEntity.isFire(source)) hurtByFireTime = tickCount;
 		soundManager.onHurt(source, amount);
 		damage(source, amount, hitbox, hurtRoot);
 		if (!isClientSide()) {
@@ -1526,7 +1526,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	protected void damage(DamageSource source, float amount, @Nullable RotableHitbox hitbox, boolean hurtRoot) {
 		/*if (shouldDebug(source)) 
 			System.out.println("D="+amount+" C?"+isClientSide()+" R?"+hurtRoot+" H="+hitbox+" source "+source);*/
-		if (!source.isExplosion() && source.getDirectEntity() != null
+		if (!UtilVehicleEntity.isExplosion(source) && source.getDirectEntity() != null
 				&& source.getDirectEntity().getType().is(ModTags.EntityTypes.PROJECTILE)) {
 			amount = calcDamageFromBullet(source, amount);
 		}
@@ -1561,9 +1561,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	public static float getHealthDamageWithArmorPercent(DamageSource source) {
-		if (source.isExplosion()) return 0.2f;
-		else if (source.isBypassArmor()) return 0.8f;
-		else if (source.isFire()) return 0.7f;
+		if (UtilVehicleEntity.isExplosion(source)) return 0.2f;
+		else if (UtilVehicleEntity.isBypassArmor(source)) return 0.8f;
+		else if (UtilVehicleEntity.isFire(source)) return 0.7f;
 		return 0; 
 	}
 	
@@ -1583,7 +1583,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 	
 	private boolean shouldDebug(DamageSource source) {
-		return !source.isFire();
+		return !UtilVehicleEntity.isFire(source);
 	}
 	
 	protected float calcDamageFromBullet(DamageSource source, float amount) {
@@ -1598,7 +1598,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public boolean isInvulnerableTo(@NotNull DamageSource source) {
 		if (isTestMode()) return true;
 		if (super.isInvulnerableTo(source)) return true;
-		if (source.isFire() && (tickCount-hurtByFireTime) < 10) return true;
+		if (UtilVehicleEntity.isFire(source) && (tickCount-hurtByFireTime) < 10) return true;
 		if (isVehicleOf(source.getEntity())) return true;
 		return false;
 	}
@@ -3300,5 +3300,40 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
      */
     public @NotNull Level getWorld() {
         return UtilEntity.getLevel(this);
+    }
+
+    @Override
+    public boolean isOnGround() {
+        return onGround;
+    }
+
+    @Override
+    public boolean isInWater() {
+        return super.isInWater();
+    }
+
+    @Override
+    public float getXRot() {
+        return super.getXRot();
+    }
+
+    @Override
+    public float getYRot() {
+        return super.getYRot();
+    }
+
+    @Override
+    public @NotNull Vec3 getDeltaMovement() {
+        return super.getDeltaMovement();
+    }
+
+    @Override
+    public void setDeltaMovement(Vec3 move) {
+        super.setDeltaMovement(move);
+    }
+
+    @Override
+    public void setDeltaMovement(double x, double y, double z) {
+        super.setDeltaMovement(x, y, z);
     }
 }

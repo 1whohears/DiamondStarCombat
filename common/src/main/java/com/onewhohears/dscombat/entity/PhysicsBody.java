@@ -481,7 +481,13 @@ public interface PhysicsBody {
     QuaternionF getPrevQ();
     void setPrevQ(QuaternionF q);
 
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     float getXRot();
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     float getYRot();
     void setXRotNoQ(float rot);
     void setYRotNoQ(float rot);
@@ -490,8 +496,17 @@ public interface PhysicsBody {
     float getPrevZRot();
     void setPrevZRot(float rot);
 
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     Vec3 getDeltaMovement();
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     void setDeltaMovement(Vec3 move);
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     void setDeltaMovement(double x, double y, double z);
     Vec3 getPrevDeltaMove();
     void setPrevDeltaMove(Vec3 move);
@@ -513,7 +528,13 @@ public interface PhysicsBody {
     void setAngularVel(Vec3 av);
     Vec3 getLookAngle();
 
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     boolean isOnGround();
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     boolean isInWater();
     boolean isTestMode();
     boolean isArcadeMode();

@@ -3308,4 +3308,34 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     public boolean isOnGround() {
         return onGround();
     }
+
+    @Override
+    public boolean isInWater() {
+        return super.isInWater();
+    }
+
+    @Override
+    public float getXRot() {
+        return super.getXRot();
+    }
+
+    @Override
+    public float getYRot() {
+        return super.getYRot();
+    }
+
+    @Override
+    public @NotNull Vec3 getDeltaMovement() {
+        return super.getDeltaMovement();
+    }
+
+    @Override
+    public void setDeltaMovement(Vec3 move) {
+        super.setDeltaMovement(move);
+    }
+
+    @Override
+    public void setDeltaMovement(double x, double y, double z) {
+        super.setDeltaMovement(x, y, z);
+    }
 }

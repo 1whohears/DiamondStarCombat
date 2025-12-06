@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.entity.PhysicsBody;
-import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.nbt.CompoundTag;

@@ -450,6 +450,9 @@ public interface PhysicsBody {
         return 1;
     }
 
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     void move(@NotNull MoverType type, @NotNull Vec3 move);
 
     List<PhysicsComponentInstance<?>> getPhysicsInstances();
@@ -526,6 +529,9 @@ public interface PhysicsBody {
     void setMomentBetweenTicks(Vec3 moment);
     Vec3 getAngularVel();
     void setAngularVel(Vec3 av);
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ENTITY
+     */
     Vec3 getLookAngle();
 
     /**
@@ -544,7 +550,6 @@ public interface PhysicsBody {
     boolean isOperational();
     int getAge();
     boolean isClientSide();
-    boolean hasControllingPassenger();
 
     float getPitchInput();
     float getYawInput();

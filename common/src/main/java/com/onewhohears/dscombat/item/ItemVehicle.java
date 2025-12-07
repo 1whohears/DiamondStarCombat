@@ -241,4 +241,8 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 		if (vcs == null) return "";
 		return vcs.getModelId();
 	}
+
+    public @NotNull Item asItem() {
+        return this;
+    }
 }

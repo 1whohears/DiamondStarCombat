@@ -3338,4 +3338,9 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     public void setDeltaMovement(double x, double y, double z) {
         super.setDeltaMovement(x, y, z);
     }
+
+    @Override
+    public @NotNull Vec3 getLookAngle() {
+        return super.getLookAngle();
+    }
 }

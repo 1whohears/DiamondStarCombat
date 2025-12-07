@@ -137,4 +137,8 @@ public class ItemAmmo extends Item implements VehicleInteractItem, ObjModelItem,
 		//return ObjEntityModels.get().getModelOverride("ammo_item");
 		return ObjEntityModels.NO_OVERRIDES;
 	}
+
+    public @NotNull Item asItem() {
+        return this;
+    }
 }

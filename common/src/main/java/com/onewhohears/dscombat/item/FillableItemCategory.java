@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.item;
 
 import dev.architectury.impl.ItemPropertiesExtensionImpl;
-import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredSupplier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,6 +17,9 @@ import static com.onewhohears.dscombat.init.ModCMTabs.CREATIVE_TAB_MAP;
 
 public interface FillableItemCategory {
     void fillItemCategory(@NotNull List<ItemStack> items);
+    /**
+     * THIS METHOD MUST BE MANUALLY IMPLEMENTED IF CHILD CLASS IS ITEM
+     */
     Item asItem();
 
     static void onInit(FillableItemCategory item, Item.Properties props) {

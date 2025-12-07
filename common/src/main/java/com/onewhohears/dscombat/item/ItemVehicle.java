@@ -239,4 +239,8 @@ public class ItemVehicle extends Item implements ObjModelItem {
 		if (vcs == null) return "";
 		return vcs.getModelId();
 	}
+
+    public @NotNull Item asItem() {
+        return this;
+    }
 }

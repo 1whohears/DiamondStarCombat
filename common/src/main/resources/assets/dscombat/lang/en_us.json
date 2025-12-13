@@ -688,7 +688,7 @@
 	"preset.dscombat.turret_platform": "Turret Platform",
 	"preset.dscombat.tech_turret_platform": "Tech Turret Platform",
     "preset.dscombat.willy_jeep_empty": "Empty Willy Jeep",
-    "preset.dscombat.willy_jeep": "Willy Jeep",
+    "preset.dscombat.willy_jeep": "Default Willy Jeep",
 
 	"preset.dscombat.alexis_plane_escort": "Alexis Escort",
 	"preset.dscombat.alexis_plane_infiltrator": "Alexis Infiltrator",

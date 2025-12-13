@@ -56,10 +56,10 @@ public class DSCPhyCons {
 
 	public static final double PART_ROT_INERTIA_SCALE = 0.5;
 
-	public static final float STATIC_FRICTION = 2.0f;
-	public static final float KINETIC_FRICTION = 1.0f;
+	public static final float STATIC_FRICTION = 3.0f;
+	public static final float KINETIC_FRICTION = 1.5f;
 
-	public static final float DRIFT_FACTOR = 1E4f;
+	public static final float DRIFT_FACTOR = 5E6f;
 	
 	public static final float COLLIDE_SPEED = 0.5f;
 	public static final float COLLIDE_SPEED_GEAR = 1.5f;

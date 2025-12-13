@@ -1,63 +1,45 @@
 {
-  "armor": 40.0,
-  "displayName": "preset.dscombat.axcel_truck_empty",
-  "health": 40.0,
+  "armor": 45.0,
+  "displayName": "preset.dscombat.willy_jeep_empty",
+  "health": 45.0,
   "hitboxes": [
     {
       "damage_parts": false,
       "damage_root": true,
       "max_armor": 0.0,
       "max_health": 0.0,
-      "name": "cage",
-      "rel_pos": {
-        "x": 0.0,
-        "y": 1.6875,
-        "z": 0.9375
-      },
-      "remove_on_destroy": false,
-      "size": {
-        "x": 2.0,
-        "y": 2.25,
-        "z": 1.875
-      }
-    },
-    {
-      "damage_parts": true,
-      "damage_root": false,
-      "max_armor": 30.0,
-      "max_health": 30.0,
-      "name": "cargo_bed",
+      "name": "body",
       "rel_pos": {
         "x": 0.0,
         "y": 0.75,
-        "z": -1.9375
+        "z": 0.0
       },
       "remove_on_destroy": false,
       "size": {
-        "x": 2.0,
-        "y": 0.5,
-        "z": 3.875
+        "x": 2.5,
+        "y": 1.5,
+        "z": 4.0
       }
     }
   ],
   "ingredients": [
     {
       "item": "dscombat:seat",
-      "num": 2
+      "num": 4
     },
     {
       "item": "dscombat:wheel",
-      "num": 6
+      "num": 4
     },
     {
-      "num": 24,
+      "num": 16,
       "tag": "dscombat:aluminum_ingot"
     }
   ],
   "is_craftable": false,
   "item": "dscombat:vehicle",
   "landing_gear": true,
-  "presetId": "axcel_truck_empty",
+  "presetId": "willy_jeep_empty",
   "presetType": "car",
   "slots": [
     {
@@ -66,8 +48,8 @@
       },
       "name": "pilot_seat",
       "slot_posx": 0.5,
-      "slot_posy": 0.9,
-      "slot_posz": 1.0,
+      "slot_posy": 0.4,
+      "slot_posz": -0.4,
       "slot_type": "seat",
       "zRot": 0.0
     },
@@ -77,26 +59,31 @@
       },
       "name": "seat2",
       "slot_posx": -0.5,
-      "slot_posy": 0.9,
-      "slot_posz": 1.0,
+      "slot_posy": 0.4,
+      "slot_posz": -0.4,
       "slot_type": "seat",
       "zRot": 0.0
     },
     {
-      "linkedHitbox": "cargo_bed",
-      "name": "cargo_bed_1",
-      "slot_posx": 0.0,
-      "slot_posy": 1.0,
-      "slot_posz": -2.75,
-      "slot_type": "mount_heavy",
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat3",
+      "slot_posx": 0.5,
+      "slot_posy": 0.5,
+      "slot_posz": -1.5,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
-      "name": "frame_1",
-      "slot_posx": 0.0,
-      "slot_posy": 2.95,
-      "slot_posz": 1.0,
-      "slot_type": "mount_tech",
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat4",
+      "slot_posx": -0.5,
+      "slot_posy": 0.5,
+      "slot_posz": -1.5,
+      "slot_type": "seat",
       "zRot": 0.0
     },
     {
@@ -108,7 +95,6 @@
       "zRot": 0.0
     },
     {
-      "linkedHitbox": "cargo_bed",
       "name": "internal_2",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -117,7 +103,6 @@
       "zRot": 0.0
     },
     {
-      "linkedHitbox": "cargo_bed",
       "name": "internal_3",
       "slot_posx": 0.0,
       "slot_posy": 0.0,
@@ -126,15 +111,15 @@
       "zRot": 0.0
     },
     {
-      "name": "internal_4",
+      "name": "hitch_1",
       "slot_posx": 0.0,
-      "slot_posy": 0.0,
-      "slot_posz": 0.0,
-      "slot_type": "tech_internal",
-      "zRot": 0.0
+      "slot_posy": 0.59,
+      "slot_posz": -1.7,
+      "slot_type": "external_tough",
+      "zRot": 180.0
     }
   ],
-  "sort_factor": 5,
+  "sort_factor": 4,
   "sounds": {
     "loopSoundType": "basic",
     "nonPassengerEngine": "dscombat:tank_1",
@@ -143,25 +128,25 @@
   "stats": {
     "armor_damage_absorbtion": 0.2,
     "armor_damage_threshold": 4.0,
-    "assetId": "axcel_truck",
-    "base_armor": 40.0,
+    "assetId": "willy_jeep",
+    "base_armor": 45.0,
     "break_deacc_air": 0.0,
     "break_deacc_ground": 0.1,
-    "cameraDistance": 10.0,
+    "cameraDistance": 6.0,
     "car": {
       "isTank": false
     },
     "crashExplosionRadius": 3.0,
     "cross_sec_area": 7.5,
-    "entity_size_xz": 2.5,
-    "entity_size_y": 3.0,
+    "entity_size_xz": 2.0,
+    "entity_size_y": 0.5,
     "idleheat": 6.0,
-    "inertiapitch": 120000.0,
-    "inertiaroll": 8000.0,
-    "inertiayaw": 80000.0,
-    "mass": 6500.0,
-    "max_health": 40.0,
-    "max_speed": 4.8,
+    "inertiapitch": 100000.0,
+    "inertiaroll": 7000.0,
+    "inertiayaw": 70000.0,
+    "mass": 5000.0,
+    "max_health": 45.0,
+    "max_speed": 6.0,
     "maxpitch": 0.0,
     "maxroll": 0.0,
     "maxyaw": 4.0,
@@ -173,7 +158,7 @@
     "torquepitch": 0.0,
     "torqueroll": 0.0,
     "torqueyaw": 1.0,
-    "turn_radius": 11.0,
+    "turn_radius": 8.0,
     "use_horizontal_speed_scale": true,
     "use_vertical_speed_scale": true
   }

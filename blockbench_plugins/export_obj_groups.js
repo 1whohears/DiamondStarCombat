@@ -59,7 +59,7 @@
              */
 
             let materials = {};
-            let output = ['# Made in Blockbench ' + appVersion];
+            let output = ['# Made in Blockbench ' + Blockbench.version];
             let indexVertex = 0;
             let indexVertexUvs = 0;
             let indexNormals = 0;
@@ -415,7 +415,7 @@
 
             // mtl output
 
-            var mtlOutput = '# Made in Blockbench ' + appVersion + '\n'; ;
+            var mtlOutput = '# Made in Blockbench ' + Blockbench.version + '\n'; ;
 
             for (let key in materials) {
                 if (materials.hasOwnProperty(key) && materials[key]) {
@@ -538,7 +538,7 @@
         Plugin.register('export_obj_groups', {
             title: 'Export OBJ with Groups',
             author: '1whohears',
-            description: 'Exports Obj Models with g',
+            description: 'Exports Obj Models that use the g keyword',
             icon: 'icon-objects',
             version: '1.0.0',
             variant: 'both',

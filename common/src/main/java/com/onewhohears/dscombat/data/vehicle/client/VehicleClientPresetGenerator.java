@@ -486,6 +486,18 @@ public class VehicleClientPresetGenerator extends JsonPresetGenerator<VehicleCli
 						.build())
 				.setDontCull(true)
 				.build());
+        addPresetToGenerate(VehicleClientStats.Builder.create(DSCombatMod.MODID, "willy_jeep")
+                .setItemModelOverrides(1.0f, ONE, Vec3.ZERO, Vec3.ZERO)
+                .setCustomAnims(VehicleAnimsBuilder.create()
+                        .addInputBoundRotPixelAnim("wheel_front_right", -14, 7, 24, RotationAxis.Y, InputAxis.YAW, -40)
+                        .addInputBoundRotPixelAnim("wheel_front_left", 14, 7, 24, RotationAxis.Y, InputAxis.YAW, -40)
+                        .addWheelRotPixelAnim("wheel_front_right", -14, 7, 24, RotationAxis.X, wheel_rot_rate)
+                        .addWheelRotPixelAnim("wheel_front_left", 14, 7, 24, RotationAxis.X, wheel_rot_rate)
+                        .addWheelRotPixelAnim("wheel_back_right", -14, 7, -20.5f, RotationAxis.X, wheel_rot_rate)
+                        .addWheelRotPixelAnim("wheel_back_left", 14, 7, -20.5f, RotationAxis.X, wheel_rot_rate)
+                        .build())
+                .setDontCull(true)
+                .build());
 	}
 	
 	public VehicleClientPresetGenerator(DataGenerator output) {

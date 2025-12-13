@@ -27,7 +27,7 @@ public interface DrivingBody extends PhysicsBody {
         double minDriveAcc = getMinDriveAcc(); // FIXME any weird behavior without fuel/engines?
         if (Math.abs(driveAcc) < minDriveAcc) driveAcc = minDriveAcc * Math.signum(driveAcc);
         if (isSliding() || willSlideFromTurn()) {
-            setDeltaMovement(getDeltaMovement().add(n.scale(driveAcc * getSlideAngleCos())));
+            setDeltaMovement(getDeltaMovement().add(n.scale(driveAcc * 0.5)));
             addFrictionForce(getKineticFriction());
         } else {
             setDeltaMovement(n.scale(getXZSpeed()*getXZSpeedDir() + driveAcc));

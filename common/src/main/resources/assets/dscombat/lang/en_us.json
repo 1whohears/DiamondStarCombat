@@ -526,6 +526,7 @@
 	"item.dscombat.google_sub": "Neptune Sub",
 	"item.dscombat.eric_truck": "Eric Truck",
 	"item.dscombat.krait_chopper": "Krait Chopper",
+    "item.dscombat.willy_jeep": "Willy Jeep",
 	
 	"item.dscombat.the_missile_knows_disc": "Music Disc",
 	"item.dscombat.the_missile_knows_disc.desc": "US Air Force - The Missile Knows Where It Is",
@@ -686,6 +687,8 @@
 	"preset.dscombat.ewr4000": "Early Warning Radar 4000",
 	"preset.dscombat.turret_platform": "Turret Platform",
 	"preset.dscombat.tech_turret_platform": "Tech Turret Platform",
+    "preset.dscombat.willy_jeep_empty": "Empty Willy Jeep",
+    "preset.dscombat.willy_jeep": "Willy Jeep",
 
 	"preset.dscombat.alexis_plane_escort": "Alexis Escort",
 	"preset.dscombat.alexis_plane_infiltrator": "Alexis Infiltrator",

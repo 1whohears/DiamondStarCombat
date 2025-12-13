@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 public class VehicleBlock extends BaseEntityBlock {
 	
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 10, 16);
+	private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
 	
 	public VehicleBlock(Properties properties) {
 		super(properties);

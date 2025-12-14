@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.client.input.fabric;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.mixin.KeyMappingAccessor;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
 
@@ -61,7 +62,7 @@ public class DSCKeysImpl {
         public NoConflictKeyMapping(String name, InputConstants.Type type, int keycode, String category) {
             super(name, type, keycode, category);
             KeyMapping.ALL.remove(name);
-            KeyMapping.MAP.remove(this.key);
+            KeyMappingAccessor.getMap().remove(this.key);
             DSC_ALL.put(name, this);
             Set<NoConflictKeyMapping> keyMappings = new HashSet<>();
             keyMappings.add(this);

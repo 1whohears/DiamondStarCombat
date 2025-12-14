@@ -29,7 +29,7 @@ public class ModItems {
     public static CreativeModeTab createTab(String name, Supplier<RegistrySupplier<? extends Item>> displayItem) {
         throw new AssertionError();
     }
-	
+
 	public static final CreativeModeTab DSC_ITEMS = createTab("items", () -> ModItems.WRENCH);
     public static final CreativeModeTab PARTS = createTab("parts", () -> ModItems.C12_ENGINE);
     public static final CreativeModeTab WEAPONS = createTab("weapons", () -> ModItems.AIM9X);

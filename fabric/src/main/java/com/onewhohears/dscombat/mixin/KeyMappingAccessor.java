@@ -9,8 +9,14 @@ import java.util.Map;
 
 @Mixin(KeyMapping.class)
 public interface KeyMappingAccessor {
-    @Accessor("MAP")
-    static Map<InputConstants.Key, KeyMapping> getMap() {
+    @Accessor("ALL")
+    static Map<String, KeyMapping> dscombat$getAll() {
         throw new AssertionError();
     }
+    @Accessor("MAP")
+    static Map<InputConstants.Key, KeyMapping> dscombat$getMap() {
+        throw new AssertionError();
+    }
+    @Accessor("key")
+    InputConstants.Key dscombat$getKey();
 }

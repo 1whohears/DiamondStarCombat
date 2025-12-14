@@ -33,13 +33,13 @@ public class DSCKeysImpl {
     public static void onKeyMappingReset() {
         DSC_MAP.clear();
         for(NoConflictKeyMapping keyMapping : DSC_ALL.values()) {
-            Set<NoConflictKeyMapping> keyMappings = DSC_MAP.get(keyMapping.key);
+            Set<NoConflictKeyMapping> keyMappings = DSC_MAP.get(keyMapping.getKey());
             if (keyMappings != null) {
                 keyMappings.add(keyMapping);
             } else {
                 keyMappings = new HashSet<>();
                 keyMappings.add(keyMapping);
-                DSC_MAP.put(keyMapping.key, keyMappings);
+                DSC_MAP.put(keyMapping.getKey(), keyMappings);
             }
         }
     }
@@ -61,12 +61,15 @@ public class DSCKeysImpl {
     public static class NoConflictKeyMapping extends KeyMapping {
         public NoConflictKeyMapping(String name, InputConstants.Type type, int keycode, String category) {
             super(name, type, keycode, category);
-            KeyMapping.ALL.remove(name);
-            KeyMappingAccessor.getMap().remove(this.key);
+            KeyMappingAccessor.dscombat$getAll().remove(name);
+            KeyMappingAccessor.dscombat$getMap().remove(getKey());
             DSC_ALL.put(name, this);
             Set<NoConflictKeyMapping> keyMappings = new HashSet<>();
             keyMappings.add(this);
-            DSC_MAP.put(this.key, keyMappings);
+            DSC_MAP.put(getKey(), keyMappings);
+        }
+        public InputConstants.Key getKey() {
+            return ((KeyMappingAccessor)this).dscombat$getKey();
         }
     }
 

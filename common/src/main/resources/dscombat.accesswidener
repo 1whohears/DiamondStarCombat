@@ -57,6 +57,11 @@ accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer addL
 accessible field net/minecraft/client/Camera yRot F
 accessible field net/minecraft/client/Camera xRot F
 
-accessible field net/minecraft/client/KeyMapping ALL Ljava/util/Map;
-
 accessible field net/minecraft/client/KeyMapping clickCount I
+
+accessible field net/minecraft/world/entity/Entity maxUpStep F
+
+accessible method net/minecraft/client/gui/components/Button <init> (IIIILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;Lnet/minecraft/client/gui/components/Button$CreateNarration;)V
+
+accessible field net/minecraft/client/gui/Gui overlayMessageString Lnet/minecraft/network/chat/Component;
+accessible field net/minecraft/client/gui/Gui overlayMessageTime I

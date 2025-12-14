@@ -91,7 +91,7 @@ public class ModItems {
 	public static final RegistrySupplier<Item> PARACHUTE = registerItem("parachute",
             ItemParachute::new);
 	public static final RegistrySupplier<Item> SPRAYCAN = registerItem("spraycan",
-			() -> new Item(new Item.Properties().stacksTo(1)));
+			() -> new Item(new Item.Properties().stacksTo(1).arch$tab(ModCMTabs.DSC_ITEMS)));
 	public static final RegistrySupplier<Item> TICKET_BOOK = registerItem("ticket_book",
             ItemTicketBook::new);
 	

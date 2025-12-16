@@ -48,7 +48,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
-				p, plane, DSCPhyCons.VEL_SOUND, false, range, 0));
+				p, plane, DSCPhyCons.getVelSound(), false, range, 0));
 	}
 	
 	public static void nonPassengerVehicleEngineSound(EntityVehicle plane, SoundEvent sound) {
@@ -56,7 +56,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
-				p, plane, DSCPhyCons.VEL_SOUND, false));
+				p, plane, DSCPhyCons.getVelSound(), false));
 	}
 	
 	public static void passengerVehicleEngineSound(EntityVehicle plane, SoundEvent sound) {
@@ -64,7 +64,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleEngineSoundInstance(sound, 
-				p, plane, DSCPhyCons.VEL_SOUND, true));
+				p, plane, DSCPhyCons.getVelSound(), true));
 	}
 	
 	public static void nonPassengerAfterBurnerSound(EntityVehicle plane, SoundEvent sound, double range, float minDist) {
@@ -72,7 +72,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new AfterBurnerSoundInstance(sound, 
-				p, plane, DSCPhyCons.VEL_SOUND, false, range, minDist));
+				p, plane, DSCPhyCons.getVelSound(), false, range, minDist));
 	}
 	
 	public static void passengerAfterBurnerSound(EntityVehicle plane, SoundEvent sound) {
@@ -80,7 +80,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new AfterBurnerSoundInstance(sound, 
-				p, plane, DSCPhyCons.VEL_SOUND, true));
+				p, plane, DSCPhyCons.getVelSound(), true));
 	}
 	
 	public static void nonPassengerWindSound(EntityVehicle plane, SoundEvent sound, double range, float minDist) {
@@ -88,7 +88,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleWindSoundInstance(sound, 
-				p, plane, DSCPhyCons.VEL_SOUND, false, range, minDist, 0));
+				p, plane, DSCPhyCons.getVelSound(), false, range, minDist, 0));
 	}
 	
 	public static void passengerWindSound(EntityVehicle plane, SoundEvent sound, double minSpeed) {
@@ -96,7 +96,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new VehicleWindSoundInstance(sound, 
-				p, plane, DSCPhyCons.VEL_SOUND, true, minSpeed));
+				p, plane, DSCPhyCons.getVelSound(), true, minSpeed));
 	}
 	
 	public static void aircraftRadio(EntityVehicle plane, SoundEvent sound) {
@@ -104,7 +104,7 @@ public class UtilClientSafeSounds {
 		LocalPlayer p = m.player;
 		if (p == null) return;
 		m.getSoundManager().play(new PlaneMusicSoundInstance(sound, 
-				p, plane, DSCPhyCons.VEL_SOUND));
+				p, plane, DSCPhyCons.getVelSound()));
 	}
 	
 	public static void aircraftRadio(EntityVehicle plane, String sound) {
@@ -177,7 +177,7 @@ public class UtilClientSafeSounds {
 		Minecraft m = Minecraft.getInstance();
 		if (m.player == null) return false;
 		float size = mass / 8573f;
-		float pitch = getSonicBoomPitch(m.player, entity, DSCPhyCons.VEL_SOUND, size);
+		float pitch = getSonicBoomPitch(m.player, entity, DSCPhyCons.getVelSound(), size);
 		if (pitch <= 0) return false;
 		Vec3 diff = entity.position().subtract(m.player.position());
 		double distance = diff.length();

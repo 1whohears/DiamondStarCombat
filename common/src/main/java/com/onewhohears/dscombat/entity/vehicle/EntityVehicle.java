@@ -878,7 +878,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	}
 
 	public double getDragCoefficient() {
-		return DSCPhyCons.DRAG_SCALE;
+		return DSCPhyCons.getDragScale();
 	}
 
 	public double getRadarArea(Vec3 radarPos) {

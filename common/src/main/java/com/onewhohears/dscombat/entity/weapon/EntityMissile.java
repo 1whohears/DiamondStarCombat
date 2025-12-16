@@ -190,7 +190,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	private void engineSound() {
 		UtilClientSafeSounds.dopplerSound(this, 
 				ModSounds.MISSILE_ENGINE_1, 0.8F, 1.0F, 
-				DSCPhyCons.VEL_SOUND, false);
+				DSCPhyCons.getVelSound(), false);
 	}
 
     private boolean canSonicBoom() {

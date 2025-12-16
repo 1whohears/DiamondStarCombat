@@ -163,7 +163,7 @@ public class UtilClientPacket {
 		SimpleSoundInstance ssi = new SimpleSoundInstance(sound, SoundSource.PLAYERS, 
 				volume * attenuationCoefficient, pitch, RandomSource.create(UtilParticles.random.nextLong()),
 				pos.x, pos.y, pos.z);
-		int delay = (int)(dist  / DSCPhyCons.VEL_SOUND);
+		int delay = (int)(dist  / DSCPhyCons.getVelSound());
 
 		m.getSoundManager().playDelayed(ssi, delay);
 	}

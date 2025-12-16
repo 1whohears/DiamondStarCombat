@@ -45,7 +45,10 @@ public class DSCPhyCons {
 	public static final double INCREASED_DRAG_AREA_LANDING_GEAR = 100;
 	public static final double INCREASED_DRAG_AREA_DESTROYED = 1000;
 
-	public static final float DRAG_SCALE = 0.125f / (float)getIRLScale();
+    public static float getDragScale() {
+        float irlScale = (float)getIRLScale();
+        return 0.125f / (irlScale * irlScale);
+    }
 
 	public static final float ANGULAR_DRAG_C = 4E3f;
 
@@ -68,9 +71,14 @@ public class DSCPhyCons {
 	public static final double MAX_FALL_SPEED = 5;
 	public static final double MAX_CLIMB_SPEED = 2.5;
 	public static final double MAX_HELICOPTER_CLIMB_SPEED = 1.0;
-	
-	public static final float VEL_SOUND = (float) (17.0145 * getIRLScale()); // m/t
-	
+
+    /**
+     * @return speed of sound in meters per tick
+     */
+    public static float getVelSound() {
+        return (float) (17.0145 * getIRLScale());
+    }
+
 	public static final int EJECT_SAFETY_COOLDOWN = 100;
 	
 	public static final double EXP_FORCE_FACTOR = 1E7;

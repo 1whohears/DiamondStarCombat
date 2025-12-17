@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.util;
 
-import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -10,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;

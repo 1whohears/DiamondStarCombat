@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.util;
 
+import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -9,16 +10,30 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class UtilSound {
 
+    private static final Map<String, SoundEvent> cachedCustomSoundEvents = new HashMap<>();
+
 	public static SoundEvent getSoundById(String id, SoundEvent alt, RegistryAccess ra) {
+        if (id == null || id.isEmpty()) return alt;
+        if (cachedCustomSoundEvents.containsKey(id)) return cachedCustomSoundEvents.get(id);
 		Registry<SoundEvent> reg = ra.registryOrThrow(Registries.SOUND_EVENT);
         ResourceLocation rl = ResourceLocation.tryParse(id);
-        return reg.getOptional(rl).orElse(alt);
+        Optional<SoundEvent> sound = reg.getOptional(rl);
+        if (sound.isEmpty()) {
+            SoundEvent event = SoundEvent.createVariableRangeEvent(rl);
+            cachedCustomSoundEvents.put(id, event);
+            return event;
+        }
+        return sound.get();
 	}
 
     public static SoundEvent getSoundByIdClient(String id, SoundEvent alt) {

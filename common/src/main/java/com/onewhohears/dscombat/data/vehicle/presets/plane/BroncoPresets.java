@@ -40,7 +40,7 @@ public class BroncoPresets {
 			.setMaxAltitude(455)
 			.setDragArea(0.50f)
 			.setPushEngineOverrideStats(12000, 5f, 0.003f)
-			.setPlaneSpeeds(6.39f, 6.39f, 5.0f)
+			.setPlaneSpeeds(9f, 9f, 5.0f)
 			.setBreakDeAcc(0.032f, 0.016f)
             .setMinDriveAcc(0.002f * 8f)
 			.setUseSpeedScales(true, true)

@@ -328,9 +328,4 @@ public class EntityPlane extends EntityVehicle {
 		return super.canTurnViaTorque() && (physicsInstances.isEmpty() || isArcadeMode());
 	}
 
-    @Override
-    public double getMinDriveAcc() {
-        return super.getMinDriveAcc();
-    }
-
 }

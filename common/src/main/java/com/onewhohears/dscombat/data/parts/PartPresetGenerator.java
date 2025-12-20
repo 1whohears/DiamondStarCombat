@@ -94,46 +94,46 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
                 .setEntityHitboxSize(0.8f, 0.8f)
                 .build());
 		// ENGINES
-		addPresetToGenerate(PartBuilder.create(ModItems.C6_ENGINE.getId(), PartType.INTERNAL_ENGINE)
-				.setCompatibleSlotType(SlotType.SPIN_ENGINE)
-				.setWeight(300)
-				.setEngineStats(EngineType.SPIN, 60, 4, 0.005f)
-				.build());
-		addPresetToGenerate(PartBuilder.create(ModItems.C12_ENGINE.getId(), PartType.INTERNAL_ENGINE)
-				.setCompatibleSlotType(SlotType.SPIN_ENGINE)
-				.setWeight(700)
-				.setEngineStats(EngineType.SPIN, 130, 8, 0.011f)
-				.build());
-		addPresetToGenerate(PartBuilder.create(ModItems.TURBOFAN_F25.getId(), PartType.INTERNAL_ENGINE)
-				.setCompatibleSlotType(SlotType.PUSH_ENGINE)
-				.setWeight(500)
-				.setEngineStats(EngineType.PUSH, 180, 4, 0.005f)
-				.build());
-		addPresetToGenerate(PartBuilder.create(ModItems.TURBOFAN_F145.getId(), PartType.INTERNAL_ENGINE)
-				.setCompatibleSlotType(SlotType.PUSH_ENGINE)
-				.setWeight(1100)
-				.setEngineStats(EngineType.PUSH, 400, 8, 0.011f)
-				.build());
-		addPresetToGenerate(PartBuilder.create(ModItems.TURBOFAN_F39.getId(), PartType.INTERNAL_ENGINE)
-				.setCompatibleSlotType(SlotType.PUSH_ENGINE)
-				.setWeight(800)
-				.setEngineStats(EngineType.PUSH, 340, 5, 0.007f)
-				.build());
-		addPresetToGenerate(PartBuilder.create(ModItems.KLIMOV_RD33.getId(), PartType.INTERNAL_ENGINE)
-				.setCompatibleSlotType(SlotType.PUSH_ENGINE)
-				.setWeight(600)
-				.setEngineStats(EngineType.PUSH, 225, 6.5f, 0.006f)
-				.build());
-		addPresetToGenerate(PartBuilder.create(ModItems.CM_MANLY_52.getId(), PartType.INTERNAL_ENGINE)
-				.setCompatibleSlotType(SlotType.RADIAL_ENGINE)
-				.setWeight(200)
-				.setEngineStats(EngineType.PUSH, 40, 2, 0.004f)
-				.build());
-		addPresetToGenerate(PartBuilder.create(ModItems.ALLISON_V_1710.getId(), PartType.INTERNAL_ENGINE)
-				.setCompatibleSlotType(SlotType.RADIAL_ENGINE)
-				.setWeight(300)
-				.setEngineStats(EngineType.PUSH, 80, 2.5f, 0.009f)
-				.build());
+        addPresetToGenerate(PartBuilder.create(ModItems.C6_ENGINE.getId(), PartType.INTERNAL_ENGINE)
+                .setCompatibleSlotType(SlotType.SPIN_ENGINE)
+                .setWeight(30)
+                .setEngineStats(EngineType.SPIN, 60, 4, 0.005f)
+                .build());
+        addPresetToGenerate(PartBuilder.create(ModItems.C12_ENGINE.getId(), PartType.INTERNAL_ENGINE)
+                .setCompatibleSlotType(SlotType.SPIN_ENGINE)
+                .setWeight(70)
+                .setEngineStats(EngineType.SPIN, 130, 8, 0.011f)
+                .build());
+        addPresetToGenerate(PartBuilder.create(ModItems.TURBOFAN_F25.getId(), PartType.INTERNAL_ENGINE)
+                .setCompatibleSlotType(SlotType.PUSH_ENGINE)
+                .setWeight(50)
+                .setEngineStats(EngineType.PUSH, 180, 4, 0.005f)
+                .build());
+        addPresetToGenerate(PartBuilder.create(ModItems.TURBOFAN_F145.getId(), PartType.INTERNAL_ENGINE)
+                .setCompatibleSlotType(SlotType.PUSH_ENGINE)
+                .setWeight(110)
+                .setEngineStats(EngineType.PUSH, 400, 8, 0.011f)
+                .build());
+        addPresetToGenerate(PartBuilder.create(ModItems.TURBOFAN_F39.getId(), PartType.INTERNAL_ENGINE)
+                .setCompatibleSlotType(SlotType.PUSH_ENGINE)
+                .setWeight(80)
+                .setEngineStats(EngineType.PUSH, 340, 5, 0.007f)
+                .build());
+        addPresetToGenerate(PartBuilder.create(ModItems.KLIMOV_RD33.getId(), PartType.INTERNAL_ENGINE)
+                .setCompatibleSlotType(SlotType.PUSH_ENGINE)
+                .setWeight(60)
+                .setEngineStats(EngineType.PUSH, 225, 6.5f, 0.006f)
+                .build());
+        addPresetToGenerate(PartBuilder.create(ModItems.CM_MANLY_52.getId(), PartType.INTERNAL_ENGINE)
+                .setCompatibleSlotType(SlotType.RADIAL_ENGINE)
+                .setWeight(20)
+                .setEngineStats(EngineType.PUSH, 40, 2, 0.004f)
+                .build());
+        addPresetToGenerate(PartBuilder.create(ModItems.ALLISON_V_1710.getId(), PartType.INTERNAL_ENGINE)
+                .setCompatibleSlotType(SlotType.RADIAL_ENGINE)
+                .setWeight(30)
+                .setEngineStats(EngineType.PUSH, 80, 2.5f, 0.009f)
+                .build());
 		addPresetToGenerate(PartBuilder.create(ModItems.COMPOUND_TURBINE.getId(), PartType.INTERNAL_ENGINE)
 				.setCompatibleSlotType(SlotType.RADIAL_ENGINE)
 				.setWeight(3500)

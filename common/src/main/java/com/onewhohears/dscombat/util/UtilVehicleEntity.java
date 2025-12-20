@@ -13,6 +13,7 @@ import dev.architectury.utils.value.IntValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -116,6 +118,22 @@ public class UtilVehicleEntity {
     @ExpectPlatform
     public static void revive(Entity entity) {
         throw new AssertionError();
+    }
+
+    public static boolean isExplosion(@NotNull DamageSource source) {
+        return source.isExplosion();
+    }
+
+    public static boolean isFire(@NotNull DamageSource source) {
+        return source.isFire();
+    }
+
+    public static boolean isBypassArmor(@NotNull DamageSource source) {
+        return source.isBypassArmor();
+    }
+
+    public static boolean isProjectile(@NotNull DamageSource source) {
+        return source.isProjectile();
     }
 
 }

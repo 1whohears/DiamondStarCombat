@@ -6,7 +6,7 @@ import net.minecraft.sounds.SoundEvent;
 
 public class UtilSoundImpl {
 
-    public static SoundEvent getSoundById(String id, SoundEvent alt) {
+    public static SoundEvent getRegisteredSoundById(String id, SoundEvent alt) {
         return Registry.SOUND_EVENT.getOptional(ResourceLocation.tryParse(id)).orElse(alt);
     }
 

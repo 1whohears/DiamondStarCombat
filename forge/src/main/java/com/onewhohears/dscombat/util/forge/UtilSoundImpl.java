@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 public class UtilSoundImpl {
 
-    public static SoundEvent getSoundById(String id, SoundEvent alt) {
+    public static SoundEvent getRegisteredSoundById(String id, SoundEvent alt) {
         try {
             return ForgeRegistries.SOUND_EVENTS.getDelegate(ResourceLocation.tryParse(id)).get().get();
         } catch(NoSuchElementException e) {

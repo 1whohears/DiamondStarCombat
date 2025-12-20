@@ -47,7 +47,7 @@ public class DSCPhyCons {
 
     public static float getDragScale() {
         float irlScale = (float)getIRLScale();
-        return 0.125f / (irlScale * irlScale);
+        return 0.01525f / (irlScale * irlScale);
     }
 
 	public static final float ANGULAR_DRAG_C = 4E3f;

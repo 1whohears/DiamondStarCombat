@@ -4,28 +4,51 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityKeyframe {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-    public final Vec3 pos;
-    public final Vec3 vel;
-    public final float xRot, yRot;
+public class EntityKeyframe<E extends Entity> {
 
-    public EntityKeyframe(Entity entity) {
-        this.pos = entity.position();
-        this.vel = entity.getDeltaMovement();
-        this.xRot = entity.getXRot();
-        this.yRot = entity.getYRot();
+    private final Map<String, KeyframeValue<?,E>> values = new HashMap<>();
+
+    public final KeyframeValue.LongV<E> tick = registerLongValue("tick", entity -> UtilEntity.getLevel(entity).getGameTime());
+    public final KeyframeValue.Vec3V<E> pos = registerVec3Value("pos", Entity::position);
+    public final KeyframeValue.Vec3V<E> vel = registerVec3Value("vel", Entity::getDeltaMovement);
+    public final KeyframeValue.FloatV<E> xRot = registerFloatValue("xRot", Entity::getXRot);
+    public final KeyframeValue.FloatV<E> yRot = registerFloatValue("yRot", Entity::getYRot);
+
+    public EntityKeyframe(E entity) {
+        values.forEach((name, value) -> value.readFromEntity(entity));
+    }
+
+    protected <K extends KeyframeValue<?,E>> K registerValue(K value) {
+        values.put(value.name, value);
+        return value;
+    }
+
+    protected KeyframeValue.IntV<E> registerIntValue(String name, Function<E, Integer> entityReader) {
+        return registerValue(new KeyframeValue.IntV<>(name, entityReader));
+    }
+
+    protected KeyframeValue.LongV<E> registerLongValue(String name, Function<E, Long> entityReader) {
+        return registerValue(new KeyframeValue.LongV<>(name, entityReader));
+    }
+
+    protected KeyframeValue.FloatV<E> registerFloatValue(String name, Function<E, Float> entityReader) {
+        return registerValue(new KeyframeValue.FloatV<>(name, entityReader));
+    }
+
+    protected KeyframeValue.Vec3V<E> registerVec3Value(String name, Function<E, Vec3> entityReader) {
+        return registerValue(new KeyframeValue.Vec3V<>(name, entityReader));
     }
 
     public EntityKeyframe(JsonObject data) {
-        this.pos = UtilParse.readVec3(data, "pos");
-        this.vel = UtilParse.readVec3(data, "vel");
-        this.xRot = UtilParse.getFloatSafe(data, "xRot", 0);
-        this.yRot = UtilParse.getFloatSafe(data, "yRot", 0);
+        values.forEach((name, value) -> value.readFromData(data));
     }
 
     public final JsonObject getSaveData() {
@@ -35,87 +58,50 @@ public class EntityKeyframe {
     }
 
     protected void addSaveData(JsonObject data) {
-        UtilParse.writeVec3(data, "pos", pos);
-        UtilParse.writeVec3(data, "vel", pos);
-        data.addProperty("xRot", xRot);
-        data.addProperty("yRot", yRot);
+        values.forEach((name, value) -> value.writeToData(data));
     }
 
-    public static class VehicleKeyframe extends EntityKeyframe {
+    public static class VehicleKeyframe extends EntityKeyframe<EntityVehicle> {
 
-        public final float roll;
-        public final float fuel, fuelMax;
-        public final float mass;
+        public final KeyframeValue.FloatV<EntityVehicle> zRot = registerFloatValue("zRot", entity -> entity.zRot);
+        public final KeyframeValue.FloatV<EntityVehicle> fuel = registerFloatValue("fuel", EntityVehicle::getCurrentFuel);
+        public final KeyframeValue.FloatV<EntityVehicle> fuelMax = registerFloatValue("fuelMax", EntityVehicle::getMaxFuel);
+        public final KeyframeValue.FloatV<EntityVehicle> mass = registerFloatValue("mass", EntityVehicle::getTotalMass);
+        public final KeyframeValue.FloatV<EntityVehicle> health = registerFloatValue("health", EntityVehicle::getHealth);
+        public final KeyframeValue.FloatV<EntityVehicle> armor = registerFloatValue("armor", EntityVehicle::getArmor);
 
         public VehicleKeyframe(EntityVehicle vehicle) {
             super(vehicle);
-            this.roll = vehicle.zRot;
-            this.fuel = vehicle.getCurrentFuel();
-            this.fuelMax = vehicle.getMaxFuel();
-            this.mass = vehicle.getTotalMass();
         }
 
         public VehicleKeyframe(JsonObject data) {
             super(data);
-            this.roll = UtilParse.getFloatSafe(data, "roll", 0);
-            this.fuel = UtilParse.getFloatSafe(data, "fuel", 0);
-            this.fuelMax = UtilParse.getFloatSafe(data, "fuelMax", 0);
-            this.mass = UtilParse.getFloatSafe(data, "mass", 0);
-        }
-
-        @Override
-        protected void addSaveData(JsonObject data) {
-            super.addSaveData(data);
-            data.addProperty("roll", roll);
-            data.addProperty("fuel", fuel);
-            data.addProperty("fuelMax", fuelMax);
-            data.addProperty("mass", mass);
         }
     }
 
-    public static class WeaponKeyframe extends EntityKeyframe {
+    public static class WeaponKeyframe<E extends EntityWeapon> extends EntityKeyframe<E> {
 
-        public final int age;
-        public final int ageMax;
+        public final KeyframeValue.IntV<E> age = registerIntValue("age", EntityWeapon::getAge);
 
-        public WeaponKeyframe(EntityWeapon weapon) {
+        public WeaponKeyframe(E weapon) {
             super(weapon);
-            this.age = weapon.getAge();
-            this.ageMax = weapon.getMaxAge();
         }
 
         public WeaponKeyframe(JsonObject data) {
             super(data);
-            this.age = UtilParse.getIntSafe(data, "age", 0);
-            this.ageMax = UtilParse.getIntSafe(data, "ageMax", 0);
-        }
-
-        @Override
-        protected void addSaveData(JsonObject data) {
-            super.addSaveData(data);
-            data.addProperty("age", age);
-            data.addProperty("ageMax", ageMax);
         }
     }
 
-    public static class MissileKeyframe extends WeaponKeyframe {
+    public static class MissileKeyframe extends WeaponKeyframe<EntityMissile> {
 
-        public final Vec3 targetPos;
+        public final KeyframeValue.Vec3V<EntityMissile> targetPos = registerVec3Value("targetPos", EntityMissile::getTargetPos);
 
         public MissileKeyframe(EntityMissile missile) {
             super(missile);
-            this.targetPos = missile.getTargetPos();
         }
 
         public MissileKeyframe(JsonObject data) {
             super(data);
-            this.targetPos = UtilParse.readVec3(data, "targetPos");
-        }
-
-        @Override
-        protected void addSaveData(JsonObject data) {
-            super.addSaveData(data);
-            UtilParse.writeVec3(data, "targetPos", targetPos);
         }
     }
 

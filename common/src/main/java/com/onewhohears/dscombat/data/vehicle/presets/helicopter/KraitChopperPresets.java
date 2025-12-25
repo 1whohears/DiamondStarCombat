@@ -35,7 +35,7 @@ public class KraitChopperPresets {
 			// lower accel, higher decel for crisper stop and less float
 			.setHardCodedRotAcc(0.06f, 0.06f, 0.05f, 0.18f)
 			.setCrashExplosionRadius(4)
-			.set3rdPersonCamDist(10)
+			.set3rdPersonCamDist(14)
 			.setHeliAlwaysLandingGear(true)
 			// reduce lift factor to avoid over-eager climb response
 			.setHeliLiftFactor(1200)

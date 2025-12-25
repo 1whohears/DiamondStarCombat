@@ -49,6 +49,7 @@ public class DSCombatModForge {
         DSCombatMod.init();
         if (Platform.getEnvironment() == Env.CLIENT && !DatagenModLoader.isRunningDataGen()) {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> DSCombatMod::clientInit);
+            DSCEntityRenderers.register();
         }
 
         DataSerializersImpl.register(modEventBus);
@@ -82,7 +83,7 @@ public class DSCombatModForge {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-            DSCEntityRenderers.register();
+            //DSCEntityRenderers.register();
         }
         @SubscribeEvent
         public static void registerParticleFactory(RegisterParticleProvidersEvent event) {

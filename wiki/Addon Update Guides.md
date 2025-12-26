@@ -1,5 +1,11 @@
 The following is primarily for Addon Devs to see what I changed so you can update/fix your addons accordingly.
 
+# 0.13.0 -> 0.14.3
+
+## Additional Vehicle Stats
+
+- `min_drive_acc` | NUMBER | **0** | *The minimum ground acceleration applied to a vehicle when driving at full throttle. This can be used on any driving vehicle, but especially planes to help them reach take off speed faster.*
+
 # 0.12.9 -> 0.13.0
 
 - I unfortunately broke a lot of things in this one and I am going to try to be smarter about backwards compatibility in the future apologies.

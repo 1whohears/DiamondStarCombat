@@ -1,3 +1,50 @@
+# V0.14.3 beta | Dec 24, 2025
+
+- Fixed incorrect Entity Renderer Registry call placement in forge. Should fix a lot of strange incompatibility issues.
+- Fixed Eden Plane screen placement
+- Increased Krait Chopper 3rd person camera distance
+
+# V0.14.2 beta | Dec 20, 2025
+
+- Fixed bug introduced in 0.14.1 where planes stopped accelerating fast enough to take off
+- Corrected drag scale vs IRL scale calculation
+- increased Bronco Plane speed
+
+# V0.14.1 beta | Dec 17, 2025
+
+- Added Fabric Support!
+- Added the Willy Jeep! Model by **georkous**
+- Added **masterofgamzz** vehicle workbench model
+- Fixed not being able to drive backwards
+- Eden Plane Model Fixes
+- Fixed Spraycan not being accessible in creative mode tab
+- Fixed certain physics constants not updating based on server configuration
+- Fixed custom sounds from data packs not working
+
+# V0.14.0 beta | Dec 10, 2025
+
+**__Additions__**
+
+- 1.20.1 is now the new main development version!
+
+**__Changes__**
+
+- All planes have been significantly buffed. The goal is to make every plane controllable. Before only the jets were good. Further turn rate balancing will be done in a future update.
+    - At the default speed scale of 1/8th, all default presets will reach take off speed in 60 blocks or less at sea level.
+    - If you try to take off at higher altitudes, it may require longer run ways.
+    - Higher speed scales will require longer run ways.
+- Some performance changes are currently being made for radars. Trying to get the client to do radar ray casting. Expect further radar mechanic changes in the future.
+
+**__Fixes__**
+
+- Fixed vehicle models not being properly shaded when rotating upside down.
+- Fixed gun turret AI being very inaccurate at long ranges.
+- Fixed bullets not properly going through multiple layers of glass.
+- Fixed "you have not selected a target" error leading to many explosion particles if you hold down right click.
+- Fixed turret entity hitbox sizes all defaulting to small.
+- Somewhat fixed players falling out of their planes when the server lags.
+- Many many more...
+
 # V0.13.1 beta | Sep 11, 2025
 
 **__Additions__**

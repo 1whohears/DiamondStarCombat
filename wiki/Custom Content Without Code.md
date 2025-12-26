@@ -1,4 +1,4 @@
-This page is updated for v0.13.0. If anything is unclear please let me know in the discord so I can update this page!
+This page is updated for v0.14.3. If anything is unclear please let me know in the discord so I can update this page!
 
 # The JSON Preset System
 
@@ -159,6 +159,7 @@ Preset Inheritance is used a lot in vehicles. Each vehicle has a base/root prese
   and `cruise_speed` the real life speeds in `meters/tick` and also make the thrusts the real life values. Accelerations will be correctly scaled as well.*
 - `break_deacc_ground` | NUMBER | **0.005** | *The de-acceleration applied to a vehicle while using breaks on the ground in `meters/tick^2`*
 - `break_deacc_air` | NUMBER | **0.001** | *The de-acceleration applied to a vehicle while using breaks in the air in `meters/tick^2`*
+- `min_drive_acc` | NUMBER | **0** | *The minimum ground acceleration applied to a vehicle when driving at full throttle. This can be used on any driving vehicle, but especially planes to help them reach take off speed faster.*
 - `mass` | NUMBER | **1000** | *Determined the vehicle's weight. Must be positive!*
 - `stealth` | NUMBER | **1** | *A stealth value of 0 means the vehicle is invisible to radars. 1 means no stealth. Values greater than 1 make it easier for radars to see this vehicle. Values less than 1 make it harder for radars to see. Must be positive!*
 - `cross_sec_area` | NUMBER | **10** | *Larger values mean more air resistance and make it easier for a radar to detect. Must be positive!*

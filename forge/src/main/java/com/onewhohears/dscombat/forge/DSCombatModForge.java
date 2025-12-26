@@ -30,7 +30,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -123,10 +122,6 @@ public class DSCombatModForge {
 
     @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
-        @SubscribeEvent
-        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-            //DSCEntityRenderers.register();
-        }
         @SubscribeEvent
         public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
             ClientEventHandlers.registerParticleProvider();

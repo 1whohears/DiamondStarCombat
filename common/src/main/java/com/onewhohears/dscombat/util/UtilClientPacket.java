@@ -1,16 +1,14 @@
 package com.onewhohears.dscombat.util;
 
-import java.util.List;
-import java.util.Objects;
-
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
-import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
@@ -19,7 +17,6 @@ import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -31,6 +28,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
+import java.util.Objects;
 
 public class UtilClientPacket {
 	
@@ -233,7 +233,13 @@ public class UtilClientPacket {
 		}
 	}
 
-	public enum ShootType {
+    public static void setTargetPos(Vec3 targetPos) {
+        Config.CLIENT.targetPosX.set(targetPos.x);
+        Config.CLIENT.targetPosY.set(targetPos.y);
+        Config.CLIENT.targetPosZ.set(targetPos.z);
+    }
+
+    public enum ShootType {
 		TURRET,
 		WEAPON_RACK,
 		FLARE,

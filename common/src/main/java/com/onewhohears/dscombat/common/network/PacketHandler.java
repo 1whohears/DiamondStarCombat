@@ -73,6 +73,8 @@ public final class PacketHandler {
             "s2c_debug_hitbox_pos", ToClientDebugHitboxPos::new);
     public static final MessageType S2C_ON_SHOOT = INSTANCE.registerS2C(
             "s2c_on_shoot", ToClientOnShoot::new);
+    public static final MessageType S2C_SET_TARGET_POS = INSTANCE.registerS2C(
+            "s2c_set_target_pos", ToClientSetTargetPos::new);
 
     public static LevelChunk getEntityChunk(@NotNull Entity entity) {
         return UtilEntity.getLevel(entity).getChunkAt(entity.blockPosition());

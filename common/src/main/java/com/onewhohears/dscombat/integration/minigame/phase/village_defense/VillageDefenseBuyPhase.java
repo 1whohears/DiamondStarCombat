@@ -26,7 +26,7 @@ public class VillageDefenseBuyPhase extends KillFlagBuyPhase<VillageDefenseData>
     protected void setAttackerTargetPos(MinecraftServer server) {
         List<FlagEntity> flags = getGameData().getLivingFlags();
         if (flags.isEmpty()) return;
-        FlagEntity flag = flags.getFirst();
+        FlagEntity flag = flags.get(0);
         forEachPlayer(server, (data, agent) -> {
             if (agent.isTeam() || (agent.isPlayer() && !agent.isPlayerOnTeam())) {
                 return data.isAttacker(agent.getId());

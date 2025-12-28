@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.JsonPresetEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -181,7 +182,7 @@ public class EntityWindTunnel extends JsonPresetEntity<VehicleStats> {
         EntityVehicle vehicle = getSimulatedVehicle();
         vehicle.setTestMode(true);
         vehicle.setPos(position().multiply(1, 0, 1)
-                .add(0, getAltitude()+UtilEntity.getSeaLevel(getWorld()), 0));
+                .add(0, getAltitude()+UtilVehicleEntity.getSeaLevel(getWorld()), 0));
         vehicle.setQBySide(q);
         vehicle.setDeltaMovement(speed);
         vehicle.setCurrentThrottle(getThrottle());

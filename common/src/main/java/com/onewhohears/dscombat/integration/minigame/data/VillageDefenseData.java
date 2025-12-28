@@ -1,12 +1,12 @@
 package com.onewhohears.dscombat.integration.minigame.data;
 
+import com.onewhohears.dscombat.integration.minigame.phase.village_defense.VillageDefenseAttackPhase;
 import com.onewhohears.dscombat.integration.minigame.phase.village_defense.VillageDefenseBuyPhase;
 import com.onewhohears.minigames.minigame.data.KillFlagData;
 import com.onewhohears.minigames.minigame.param.MiniGameParamTypes;
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackAttackEndPhase;
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackEndPhase;
 import com.onewhohears.minigames.minigame.phase.buyattackrounds.BuyAttackSetupPhase;
-import com.onewhohears.minigames.minigame.phase.flag.KillFlagAttackPhase;
 
 public class VillageDefenseData extends KillFlagData {
 	
@@ -14,7 +14,7 @@ public class VillageDefenseData extends KillFlagData {
 		VillageDefenseData game = new VillageDefenseData(instanceId, gameTypeId);
 		game.setPhases(new BuyAttackSetupPhase<>(game),
 				new VillageDefenseBuyPhase(game),
-				new KillFlagAttackPhase<>(game),
+				new VillageDefenseAttackPhase(game),
 				new BuyAttackAttackEndPhase<>(game),
 				new BuyAttackEndPhase<>(game));
 		game.addKits("soldier", "scout", "demoman", "heavy", "sniper");

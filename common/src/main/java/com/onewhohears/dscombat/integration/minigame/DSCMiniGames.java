@@ -8,7 +8,6 @@ import com.onewhohears.minigames.minigame.MiniGameManager;
 public class DSCMiniGames {
 	
 	/**
-	 * called in {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent}
 	 * register all games here
 	 */
 	public static void registerGames() {

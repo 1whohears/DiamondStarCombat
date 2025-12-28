@@ -6,8 +6,7 @@ import com.onewhohears.minigames.data.shops.GameShop;
 import com.onewhohears.minigames.data.shops.MiniGameShopsGenerator;
 import com.onewhohears.minigames.data.shops.MiniGameShopsManager;
 import net.minecraft.data.PackOutput;
-
-import static com.onewhohears.dscombat.integration.minigame.gen.DSCKitGenerator.createTaczGunItemJson;
+import org.jetbrains.annotations.NotNull;
 
 public class DSCShopGenerator extends MiniGameShopsGenerator {
 	
@@ -18,7 +17,7 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 	@Override
 	protected void registerPresets() {
 		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "vehicle_attacker")
-				.addProduct("dscombat:big_gas_can", "minigames:money", 4)
+				.addProduct("dscombat:light_external_fuel_tank", "minigames:money", 3)
 				.addProduct("dscombat:vehicle", vehicleItem("bronco_plane_shitter"), "minigames:money", 8)
 				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper_door_knocker"), "minigames:money", 12)
 				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper_brawler"), "minigames:money", 12)
@@ -28,7 +27,7 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 				.addProduct("dscombat:vehicle", vehicleItem("alexis_plane_infiltrator"), "minigames:money", 32)
 				.build());
 		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "vehicle_defender")
-				.addProduct("dscombat:big_gas_can", "minigames:money", 4)
+				.addProduct("dscombat:light_external_fuel_tank", "minigames:money", 3)
 				.addProduct("dscombat:vehicle", vehicleItem("small_roller"), "minigames:money", 8)
 				.addProduct("dscombat:vehicle", vehicleItem("mrbudger_tank"), "minigames:money", 18)
 				.addProduct("dscombat:vehicle", vehicleItem("eric_truck"), "minigames:money", 32)
@@ -40,14 +39,14 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 		JsonObject healthPotionNbt = new JsonObject();
 		healthPotionNbt.addProperty("Potion", "minecraft:strong_healing");
 		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "military_misc")
-				.addProduct("tacz:modern_kinetic_gun", createTaczGunItemJson("yeet:m33a1",
+				/*.addProduct("tacz:modern_kinetic_gun", createTaczGunItemJson("yeet:m33a1",
 						6, "SEMI"), "minigames:money", 5)
 				.addProduct("tacz:modern_kinetic_gun", createTaczGunItemJson("yeet:shg43at",
 						2, "SEMI"), "minigames:money", 5)
 				.addProduct("tacz:modern_kinetic_gun", createTaczGunItemJson("yeet:m18",
-						3, "SEMI"), "minigames:money", 3)
+						3, "SEMI"), "minigames:money", 3)*/
 				.addProduct("dscombat:thick_wrench", "minigames:money", 2)
-				.addProduct("dscombat:big_gas_can", "minigames:money", 2)
+				.addProduct("dscombat:big_gas_can", "minigames:money", 4)
 				.addProduct("dscombat:chain_hook", "minigames:money", 1)
 				.addProduct("minecraft:chain", "minigames:money", 1)
 				.addProduct("dscombat:gpr100", "minigames:money", 10)
@@ -65,7 +64,7 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 	}
 	
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return DSCombatMod.MODID+":"+MiniGameShopsManager.KIND;
 	}
 

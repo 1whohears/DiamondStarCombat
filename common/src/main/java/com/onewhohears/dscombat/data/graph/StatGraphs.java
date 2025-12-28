@@ -18,6 +18,7 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 	private List<AoaLiftKGraph> aoaLiftKGraphs;
 	private List<TurnRatesBySpeedGraph> turnRateGraphs;
 	private List<FloatFloatGraph> floatFloatGraphs;
+    private List<SeaLevelsGraph> seaLevelsGraphs;
 	
 	public StatGraphs() {
 		super("stat_graph");
@@ -40,6 +41,12 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 			floatFloatGraphs = getPresetsOfType(GraphType.FLOATFLOAT);
 		return floatFloatGraphs;
 	}
+
+    public List<SeaLevelsGraph> getSeaLevelsGraphs() {
+        if (seaLevelsGraphs == null)
+            seaLevelsGraphs = getPresetsOfType(GraphType.SEA_LEVELS);
+        return seaLevelsGraphs;
+    }
 	
 	public AoaLiftKGraph getAoaLiftKGraph(String id) {
 		for (AoaLiftKGraph g : getAoaLiftKGraphs()) 
@@ -64,7 +71,15 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 		return null;
 	}
 
-	@Override
+    @Nullable
+    public SeaLevelsGraph getSeaLevelsGraph(String id) {
+        for (SeaLevelsGraph g : getSeaLevelsGraphs())
+            if (g.getId().equals(id))
+                return g;
+        return null;
+    }
+
+    @Override
 	public Graph<?, ?>[] getNewArray(int i) {
 		return new Graph[i];
 	}
@@ -80,5 +95,6 @@ public class StatGraphs extends JsonPresetReloadListener<Graph<?,?>> {
 		addPresetType(GraphType.AOALIFTK);
 		addPresetType(GraphType.FLOATFLOAT_MULTI);
 		addPresetType(GraphType.TURN_RATES_SPEED);
+        addPresetType(GraphType.SEA_LEVELS);
 	}
 }

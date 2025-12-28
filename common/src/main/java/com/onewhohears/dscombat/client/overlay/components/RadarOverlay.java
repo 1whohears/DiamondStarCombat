@@ -12,7 +12,7 @@ import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.util.math.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -149,7 +149,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (hover != -1 && hover < pings.size()) {
             RadarStats.RadarPing ping = pings.get(hover);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
-            int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.getWorld());
+            int alt = UtilVehicleEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.getWorld());
             String text = dist + " | " + alt;
             int color = 0xffff00;
             WeaponInstance<?> weapon = null;

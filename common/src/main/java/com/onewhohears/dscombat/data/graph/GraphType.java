@@ -36,6 +36,14 @@ public abstract class GraphType extends JsonPresetType {
 			super(ID, TurnRatesBySpeedGraph::new);
 		}
 	}
+    public static final SeaLevels SEA_LEVELS = SeaLevels.INSTANCE;
+    public static class SeaLevels extends GraphType {
+        public static final String ID = "sea_levels";
+        public static final SeaLevels INSTANCE = new SeaLevels();
+        public SeaLevels() {
+            super(ID, SeaLevelsGraph::new);
+        }
+    }
 	public GraphType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 		super(id, statsFactory);
 	}

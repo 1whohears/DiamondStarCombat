@@ -7,7 +7,7 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.UtilScreen;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -103,7 +103,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                 200, 200, 200, 200);
         if (new Vec2(x,y).distanceToSqr(new Vec2(mouseX,mouseY)) > SQUARE_PS) return false;
         int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
-        int alt = UtilEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.getWorld());
+        int alt = UtilVehicleEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.getWorld());
         String text = dist + " | " + alt;
         Component comp = UtilMCText.literal(text);
         int width = font.width(comp);

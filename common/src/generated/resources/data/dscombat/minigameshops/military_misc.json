@@ -6,54 +6,6 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 5
-      },
-      "product": {
-        "item": "tacz:modern_kinetic_gun",
-        "nbt": {
-          "GunCurrentAmmoCount": 6,
-          "GunFireMode": "SEMI",
-          "GunId": "yeet:m33a1",
-          "HasBulletInBarrel": true
-        },
-        "num": 1
-      }
-    },
-    {
-      "cost": {
-        "item": "minigames:money",
-        "num": 5
-      },
-      "product": {
-        "item": "tacz:modern_kinetic_gun",
-        "nbt": {
-          "GunCurrentAmmoCount": 2,
-          "GunFireMode": "SEMI",
-          "GunId": "yeet:shg43at",
-          "HasBulletInBarrel": true
-        },
-        "num": 1
-      }
-    },
-    {
-      "cost": {
-        "item": "minigames:money",
-        "num": 3
-      },
-      "product": {
-        "item": "tacz:modern_kinetic_gun",
-        "nbt": {
-          "GunCurrentAmmoCount": 3,
-          "GunFireMode": "SEMI",
-          "GunId": "yeet:m18",
-          "HasBulletInBarrel": true
-        },
-        "num": 1
-      }
-    },
-    {
-      "cost": {
-        "item": "minigames:money",
         "num": 2
       },
       "product": {
@@ -64,7 +16,7 @@
     {
       "cost": {
         "item": "minigames:money",
-        "num": 2
+        "num": 4
       },
       "product": {
         "item": "dscombat:big_gas_can",

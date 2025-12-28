@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.phys.Vec3;
@@ -36,7 +36,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
         double range = data.getStats().getMobTurretRange();
         Vec3 pos = Config.CLIENT.getTargetPos();
         int dist = (int) pos.distanceTo(vehicle.position());
-        int alt = UtilEntity.getDistFromSeaLevel(pos.y, vehicle.getWorld());
+        int alt = UtilVehicleEntity.getDistFromSeaLevel(pos.y, vehicle.getWorld());
         String text = dist + " | " + alt;
         int color;
         if (dist <= range) {

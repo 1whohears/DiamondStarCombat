@@ -1,6 +1,5 @@
 {
-	"presetId": "air_density_minecraft_the_nether",
-	"presetType": "floatfloat",
+	"presetType": "sea_levels",
 	"size": 5,
 	"keys":   [    0,  64,  128,   192,256],
 	"values": [2.021,1.838,1.668,1.251,0.0]

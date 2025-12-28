@@ -111,6 +111,19 @@ public class UtilVehicleEntity {
         return dist;
     }
 
+    public static int getDistFromSeaLevel(Entity e) {
+        return getDistFromSeaLevel(e.position().y, UtilEntity.getLevel(e));
+    }
+
+    public static int getDistFromSeaLevel(double yPos, Level level) {
+        int sea = getSeaLevel(level);
+        return (int)yPos - sea;
+    }
+
+    public static int getSeaLevel(Level level) {
+        return SeaLevels.getSeaLevel(level.dimension());
+    }
+
     @ExpectPlatform
     public static ServerPlayer createFakePlayer(ServerLevel level, GameProfile profile) {
         throw new AssertionError();

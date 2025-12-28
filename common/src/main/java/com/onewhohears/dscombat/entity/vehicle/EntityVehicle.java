@@ -752,7 +752,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	 */
 	public void calcMoveStatsPost(QuaternionF q) {
 		DrivingBody.super.calcMoveStatsPost(q);
-		currentAltitude = UtilEntity.getDistFromSeaLevel(this);
+		currentAltitude = UtilVehicleEntity.getDistFromSeaLevel(this);
 	}
 	
 	public float getXZSpeed() {

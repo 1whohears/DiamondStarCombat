@@ -371,7 +371,7 @@ public class ClientInputManager {
                 looker.setYRot(player.getYRot());
             }
         }
-        return UtilEntity.getLookingAtBlockPos(looker, 300);
+        return UtilEntity.getLookingAtBlockPos(looker, 512);
     }
 
     private static boolean playerCanShoot(Player player) {

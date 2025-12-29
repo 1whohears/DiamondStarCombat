@@ -699,7 +699,17 @@
 	"preset.dscombat.javi_plane_heavy_bomber": "Javi Heavy Bomber",
 	"preset.dscombat.krait_chopper_brawler": "Krait Brawler",
 	"preset.dscombat.krait_chopper_door_knocker": "Krait Door Knocker",
-	
+
+    "preset.dscombat.soldier": "Soldier",
+    "preset.dscombat.sniper": "Sniper",
+    "preset.dscombat.demoman": "Demoman",
+    "preset.dscombat.scout": "Scout",
+    "preset.dscombat.heavy": "Heavy",
+
+    "preset.dscombat.military_misc": "Military Miscellaneous",
+    "preset.dscombat.vehicle_attacker": "Attacker Vehicles",
+    "preset.dscombat.vehicle_defender": "Defender Vehicles",
+
 	"key.categories.vehicle_move_control": "Diamond Star Combat Vehicle Move Controls",
 	"key.categories.vehicle_control_util": "Diamond Star Combat Vehicle Control Utility",
 	"key.categories.vehicle_passenger_control": "Diamond Star Combat Vehicle Passenger Controls",

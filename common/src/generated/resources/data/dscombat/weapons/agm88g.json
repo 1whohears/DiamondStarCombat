@@ -16,7 +16,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": 80.0,
-  "fuelTicks": 300,
+  "fuelTicks": 500,
   "fuseDist": 2.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -39,7 +39,7 @@
   ],
   "itemKey": "dscombat:missile",
   "mass": 361.0,
-  "maxAge": 2976,
+  "maxAge": 1000,
   "presetId": "agm88g",
   "presetType": "anti_radar_missile",
   "scan_range": 41000.0,

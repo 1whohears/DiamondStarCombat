@@ -51,6 +51,7 @@ public class NonTickingMissileManager {
                 } catch (Exception e) {
                     LOGGER.error("FAILED TO REVIVE MISSILE {} {}", missile, e.getMessage());
                     e.printStackTrace();
+                    return false;
                 }
 			}
 		} else {

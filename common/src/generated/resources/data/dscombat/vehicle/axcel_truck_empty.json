@@ -161,7 +161,7 @@
     "inertiayaw": 80000.0,
     "mass": 6500.0,
     "max_health": 40.0,
-    "max_speed": 4.8,
+    "max_speed": 0.6,
     "maxpitch": 0.0,
     "maxroll": 0.0,
     "maxyaw": 4.0,

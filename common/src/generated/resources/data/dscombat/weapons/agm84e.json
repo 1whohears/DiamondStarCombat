@@ -18,7 +18,7 @@
   "explosive": true,
   "fireRate": 50,
   "fov": -1.0,
-  "fuelTicks": 300,
+  "fuelTicks": 450,
   "fuseDist": 2.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -41,13 +41,14 @@
   ],
   "itemKey": "dscombat:missile",
   "mass": 627.0,
-  "maxAge": 300,
+  "maxAge": 900,
   "presetId": "agm84e",
   "presetType": "track_missile",
   "seeThroBlock": 8,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 8,
-  "speed": 2.5,
+  "speed": 20.0,
   "targetType": "GROUND",
-  "turnRadius": 45.0
+  "turnRadius": 45.0,
+  "useSpeedScale": true
 }

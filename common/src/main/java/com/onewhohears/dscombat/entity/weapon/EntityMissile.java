@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.onewhohears.dscombat.entity.Revivable;
+import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DependencySafety;
@@ -30,6 +31,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -40,6 +42,8 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import static com.onewhohears.dscombat.data.radar.RadarInstance.RAY_CAST_TIMEOUT;
 
 public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> implements Revivable {
 	
@@ -144,19 +148,19 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		}
 		if (tickCount % 10 == 0) {
 			//System.out.println("check target range");
-			if (!checkTargetRange(target, 10000)) {
+			if (!checkTargetRange(target, 1000000)) {
 				target = null;
 				targetPos = null;
 				return;
 			}
 			//System.out.println("check can see");
-			if (!checkCanSee(target)) {
-				//System.out.println("can't see target");
-				target = null;
-				targetPos = null;
-				return;
-			}
+            DistantRayCastManager.distantRayCast((ServerLevel) getWorld(), this, target,
+                    (level, missile, targetEntity, pass) -> {
+                        if (!pass) resetTarget();
+                    }, RAY_CAST_TIMEOUT, 550,
+                    getWeaponStats().getSeeThroWater()+1, getWeaponStats().getSeeThroBlock());
 		}
+        if (target == null || targetPos == null) return;
 		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
 		if (UtilVehicleEntity.isOnGroundOrWater(target))
@@ -167,6 +171,11 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		//System.out.println("guide to position");
 		guideToPosition();
 	}
+
+    public void resetTarget() {
+        target = null;
+        targetPos = null;
+    }
 	
 	protected static boolean checkTargetRange(Entity weapon, Entity target, float fov, double range) {
 		if (fov == -1) return weapon.distanceTo(target) <= range;
@@ -183,7 +192,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	protected boolean checkCanSee(Entity target) {
 		// throWaterRange+1 is needed for ground radar to see boats in water
-		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(), 
+		return UtilEntity.canEntitySeeEntity(this, target, Config.COMMON.maxBlockCheckDepth.get(),
 				getWeaponStats().getSeeThroWater()+1, getWeaponStats().getSeeThroBlock());
 	}
 	

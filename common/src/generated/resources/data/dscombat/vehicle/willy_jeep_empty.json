@@ -158,8 +158,6 @@
     "torquepitch": 0.0,
     "torqueroll": 0.0,
     "torqueyaw": 1.0,
-    "turn_radius": 8.0,
-    "use_horizontal_speed_scale": true,
-    "use_vertical_speed_scale": true
+    "turn_radius": 8.0
   }
 }

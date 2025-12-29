@@ -1,15 +1,16 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.level.ChunkPos;
+import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * {@link EntityMissile} constructor adds itself to this manager on the server side. Every server tick this class 
@@ -18,7 +19,8 @@ import net.minecraft.world.level.ChunkPos;
  * @author 1whohears
  */
 public class NonTickingMissileManager {
-	
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 	private static final List<EntityMissile<?>> missiles = new ArrayList<>();
 	
 	public static void serverTick(MinecraftServer server) {
@@ -42,9 +44,14 @@ public class NonTickingMissileManager {
 			//System.out.println("MISSILE IN TICK RANGE");
 			if (isUnloaded(missile)) {
 				//System.out.println("MISSILE UNLOADED");
-				missile.invokeRevive();
-				missile.setUUID(UUID.randomUUID());
-				missile.getWorld().addFreshEntity(missile);
+                try {
+                    missile.invokeRevive();
+                    missile.setUUID(UUID.randomUUID());
+                    missile.getWorld().addFreshEntity(missile);
+                } catch (Exception e) {
+                    LOGGER.error("FAILED TO REVIVE MISSILE {} {}", missile, e.getMessage());
+                    e.printStackTrace();
+                }
 			}
 		} else {
 			//System.out.println("MISSILE OUT OF TICK RANGE");

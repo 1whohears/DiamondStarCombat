@@ -135,32 +135,36 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 	
 	public void guideToTarget() {
-		//System.out.println("target null check");
 		if (target == null) {
-			targetPos = null;
+            //System.out.println("target is null");
+            resetTarget();
 			return;
 		}
-		//System.out.println("target removed check");
 		if (target.isRemoved()) {
-			target = null;
-			targetPos = null;
+            //System.out.println("target is removed");
+            resetTarget();
 			return;
 		}
 		if (tickCount % 10 == 0) {
-			//System.out.println("check target range");
 			if (!checkTargetRange(target, 1000000)) {
-				target = null;
-				targetPos = null;
+                //System.out.println("target not in range");
+                resetTarget();
 				return;
 			}
 			//System.out.println("check can see");
             DistantRayCastManager.distantRayCast((ServerLevel) getWorld(), this, target,
                     (level, missile, targetEntity, pass) -> {
-                        if (!pass) resetTarget();
+                        if (!pass) {
+                            //System.out.println("target FAILED ray cast");
+                            resetTarget();
+                        }
                     }, RAY_CAST_TIMEOUT, 550,
                     getWeaponStats().getSeeThroWater()+1, getWeaponStats().getSeeThroBlock());
 		}
-        if (target == null || targetPos == null) return;
+        if (target == null) {
+            //System.out.println("target is null 2");
+            return;
+        }
 		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
 		if (UtilVehicleEntity.isOnGroundOrWater(target))

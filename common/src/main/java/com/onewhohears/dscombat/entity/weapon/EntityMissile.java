@@ -98,7 +98,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 				else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
 				if (target != null) setTargetId(target.getId());
 				else setTargetId(-1);
-				if (target != null && distanceTo(target) <= getWeaponStats().getFuseDist()) kill();
+				checkInterceptTarget();
 				TrackableEntitiesManager.addTrackableEntity(this);
 				DependencySafety.addExtraEntityToRDP(Objects.requireNonNull(getServer()), this);
 			} else {
@@ -114,6 +114,16 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			return;
 		}
 	}
+
+    protected void checkInterceptTarget() {
+        if (target == null) return;
+        double distance = distanceTo(target);
+        if (distance <= getWeaponStats().getFuseDist()) {
+            kill();
+            return;
+        }
+        // FIXME for high speeds, check if missile crosses the path of its target and then explode on that path.
+    }
 	
 	public void clientTickParticles() {
 		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(getWorld(), position(), getLookAngle().scale(-1));

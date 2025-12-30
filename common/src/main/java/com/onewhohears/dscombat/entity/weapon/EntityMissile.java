@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.onewhohears.dscombat.entity.Revivable;
+import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
@@ -118,6 +119,12 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
     protected void checkInterceptTarget() {
         if (target == null) return;
         double distance = distanceTo(target);
+        LOGGER.info("MISSILE {} P:{} V:{} TARGET P:{} V:{} D:{}", getAge(),
+                UtilPrint.printVec3SigFig(position(), 0),
+                UtilPrint.printVec3SigFig(getDeltaMovement(), 0),
+                UtilPrint.printVec3SigFig(target.position(), 0),
+                UtilPrint.printVec3SigFig(target.getDeltaMovement(), 0),
+                UtilPrint.printSigFig(distance, 0));
         if (distance <= getWeaponStats().getFuseDist()) {
             kill();
             return;

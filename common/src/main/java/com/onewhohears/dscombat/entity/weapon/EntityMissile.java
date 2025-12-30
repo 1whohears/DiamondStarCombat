@@ -254,9 +254,10 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		Vec3 cm = getDeltaMovement();
 		double cv = cm.length();
 		double max = getSpeed();
-		double B = getBleed() * UtilVehicleEntity.getAirDensity(this) * DSCPhyCons.MISSILE_BLEED_SCALE;
+		double B = getBleed() * UtilVehicleEntity.getAirDensity(this);
+        B *= DSCPhyCons.MISSILE_BLEED_SCALE / adjustedSpeedScale();
 		double turnBleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
-		double airRes = B * cv * DSCPhyCons.MISSILE_AIR_RES_SCALE;
+		double airRes = B * cv * DSCPhyCons.MISSILE_AIR_RES_SCALE / adjustedSpeedScale();
 		double vel = cv - turnBleed - airRes;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
 		double ga = Math.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm))*getGravityAcc()*DSCPhyCons.MISSILE_GRAV_ACC_SCALE;
@@ -267,6 +268,11 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		Vec3 nm = getLookAngle().scale(vel);
 		setDeltaMovement(nm);
 	}
+
+    private double adjustedSpeedScale() {
+        if (getStats().isUseSpeedScale()) return 8 * DSCPhyCons.getIRLScale();
+        return 1;
+    }
 
 	@Override
 	protected void tickSetAngle() {

@@ -89,8 +89,12 @@ public class BulletStats extends WeaponStats {
     }
 
     public double getSpeed() {
-        if (isUseSpeedScale()) return DSCPhyCons.getIRLScale() * getUnscaledSpeed();
-        return getUnscaledSpeed();
+        return getUnscaledSpeed() * getSpeedScale();
+    }
+
+    public double getSpeedScale() {
+        if (isUseSpeedScale()) return DSCPhyCons.getIRLScale();
+        return 1;
     }
 	
 	@Override

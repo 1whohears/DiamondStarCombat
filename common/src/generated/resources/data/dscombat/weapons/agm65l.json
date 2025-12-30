@@ -17,7 +17,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": -1.0,
-  "fuelTicks": 400,
+  "fuelTicks": 500,
   "fuseDist": 1.5,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -40,7 +40,7 @@
   ],
   "itemKey": "dscombat:missile",
   "mass": 250.0,
-  "maxAge": 800,
+  "maxAge": 1000,
   "presetId": "agm65l",
   "presetType": "pos_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",

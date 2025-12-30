@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.weapon.stats;
 import static com.onewhohears.dscombat.DSCombatMod.MODID;
 
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
@@ -41,5 +42,10 @@ public class PosMissileStats extends MissileStats {
 	public boolean isPosGuided() {
 		return true;
 	}
+
+    @Override
+    public double getMobTurretRange() {
+        return Math.min(160000* DSCPhyCons.getIRLScale(), getSpeed() * getMaxAge() * 0.8);
+    }
 
 }

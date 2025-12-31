@@ -13,12 +13,12 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.aim7mh",
   "entityTypeKey": "dscombat:track_missile",
-  "explosionRadius": 6.0,
+  "explosionRadius": 8.0,
   "explosive": true,
   "fireRate": 40,
   "fov": -1.0,
   "fuelTicks": 100,
-  "fuseDist": 3.0,
+  "fuseDist": 8.0,
   "inaccuracy": 0.0,
   "ingredients": [
     {

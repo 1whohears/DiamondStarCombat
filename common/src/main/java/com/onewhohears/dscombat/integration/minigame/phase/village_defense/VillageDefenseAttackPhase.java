@@ -22,6 +22,6 @@ public class VillageDefenseAttackPhase extends KillFlagAttackPhase<VillageDefens
         if (distanceSqr <= ffRadiusSqr) return false;
         if (!player.isPassenger()) return true;
         if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) return true;
-        return !vehicle.isOperational();
+        return !vehicle.isOperational() || vehicle.isOnGround();
     }
 }

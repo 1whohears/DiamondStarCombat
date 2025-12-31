@@ -125,6 +125,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	}
 	
 	protected void tickCheckCollide() {
+        if (isRemoved()) return;
 		Vec3 move = getDeltaMovement();
 		Vec3 pos = position();
 		Vec3 next_pos = pos.add(move);

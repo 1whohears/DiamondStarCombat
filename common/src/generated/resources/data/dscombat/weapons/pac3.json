@@ -13,12 +13,12 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.pac3",
   "entityTypeKey": "dscombat:track_missile",
-  "explosionRadius": 7.0,
+  "explosionRadius": 10.0,
   "explosive": true,
   "fireRate": 40,
   "fov": 40.0,
   "fuelTicks": 320,
-  "fuseDist": 3.0,
+  "fuseDist": 10.0,
   "inaccuracy": 0.0,
   "ingredients": [
     {

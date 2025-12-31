@@ -13,12 +13,12 @@
   "destroyTerrain": true,
   "displayName": "preset.dscombat.bgm109",
   "entityTypeKey": "dscombat:track_missile",
-  "explosionRadius": 3.5,
+  "explosionRadius": 5.0,
   "explosive": true,
   "fireRate": 25,
   "fov": -1.0,
   "fuelTicks": 200,
-  "fuseDist": 2.0,
+  "fuseDist": 5.0,
   "inaccuracy": 0.0,
   "ingredients": [
     {

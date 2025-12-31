@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import com.onewhohears.dscombat.entity.Revivable;
-import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
@@ -43,6 +42,7 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import static com.onewhohears.dscombat.data.radar.RadarInstance.RAY_CAST_TIMEOUT;
 
@@ -53,6 +53,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	public Entity target;
 	public Vec3 targetPos;
+
+    @Nullable
+    protected Vec3 explodeRelTargetNextTick = null;
 	
 	private boolean discardedButTicking, didSonicBoom;
 	private int prevTickCount, tickCountRepeats, repeatCoolDown, lerpSteps;
@@ -94,6 +97,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		yRotO = getYRot();
 		if (!isRemoved()) {
 			if (!isClientSide()) {
+                handleInterceptTarget();
 				tickGuide();
 				if (targetPos != null) setTargetPos(targetPos);
 				else setTargetPos(Vec3.ZERO.add(0, -1000, 0));
@@ -116,20 +120,39 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		}
 	}
 
-    protected void checkInterceptTarget() {
-        if (target == null) return;
-        double distance = distanceTo(target);
-        LOGGER.info("MISSILE {} P:{} V:{} TARGET P:{} V:{} D:{}", getAge(),
-                UtilPrint.printVec3SigFig(position(), 0),
-                UtilPrint.printVec3SigFig(getDeltaMovement(), 0),
-                UtilPrint.printVec3SigFig(target.position(), 0),
-                UtilPrint.printVec3SigFig(target.getDeltaMovement(), 0),
-                UtilPrint.printSigFig(distance, 0));
-        if (distance <= getWeaponStats().getFuseDist()) {
+    protected void handleInterceptTarget() {
+        if (target != null && explodeRelTargetNextTick != null) {
+            //System.out.println("EXPLODING CAUSE NEXT TICK");
+            moveTo(target.position().add(explodeRelTargetNextTick));
             kill();
             return;
         }
-        // FIXME for high speeds, check if missile crosses the path of its target and then explode on that path.
+    }
+
+    protected void checkInterceptTarget() {
+        if (target == null || explodeRelTargetNextTick != null) return;
+        double fuseDistSqr = getWeaponStats().getFuseDist() * getWeaponStats().getFuseDist();
+        Vec3 pr = target.position().subtract(position());
+        Vec3 vr = target.getDeltaMovement().subtract(getDeltaMovement());
+        double vr2 = vr.lengthSqr();
+        if (vr2 < 1e-9) {
+            if (pr.lengthSqr() <= fuseDistSqr) kill();
+            return;
+        }
+        double t = -pr.dot(vr) / vr2;
+        t = Math.max(0.0, Math.min(1.0, t));
+        Vec3 closest = pr.add(vr.scale(t));
+        double closestDist = closest.length();
+        //if (closestDist < 100) System.out.println("t = "+t+" closest = "+closestDist+" "+closest);
+        if (closest.lengthSqr() <= fuseDistSqr) {
+            //explodeRelTargetNextTick(target.position().add(target.getDeltaMovement()).subtract(closest));
+            explodeRelTargetNextTick(closest.scale(-1));
+        }
+    }
+
+    protected void explodeRelTargetNextTick(Vec3 pos) {
+        //System.out.println("EXPLODE AT NEXT TICK "+pos+" target "+target.position()+" "+target.getDeltaMovement());
+        explodeRelTargetNextTick = pos;
     }
 	
 	public void clientTickParticles() {
@@ -257,6 +280,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			kill();
 			return;
 		}
+        checkInterceptTarget();
 		//System.out.println("starting tick guide");
 		tickGuide();
 		//System.out.println("starting motion");

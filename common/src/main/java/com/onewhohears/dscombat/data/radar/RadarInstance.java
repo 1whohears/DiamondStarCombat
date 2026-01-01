@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
@@ -29,8 +30,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public static final long RAY_CAST_TIMEOUT = 550L;
 
@@ -109,23 +113,22 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
 	private void handleScanPlayerVehicle(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 										 double rangeSqr, boolean playersOnly, boolean vehiclesOnly,
-										 Entity entity, boolean player) {
+										 Entity entity, boolean isTargetPlayer) {
 		if (entity.isSpectator()) return;
-		if (playersOnly && !player) return;
+		if (playersOnly && !isTargetPlayer) return;
 
 		if (entity.distanceToSqr(radar) > rangeSqr) return;
 		if (!UtilEntity.getLevel(entity).dimension().equals(radar.getWorld().dimension())) return;
 
-		EntityVehicle vehicle = toTargetVehicle(entity, player);
+		EntityVehicle vehicle = toTargetVehicle(entity, isTargetPlayer);
 		if (vehiclesOnly && vehicle == null) return;
 
 		@NotNull Entity pingEntity = vehicle != null ? vehicle : entity;
-		if (!player) {
+		if (!isTargetPlayer) {
 			if (alreadyScanned(vehiclePings, pingEntity)) return;
 			if (vehicle == null) {
 				if (entity.getRootVehicle().getType().is(ModTags.EntityTypes.VEHICLE))
 					pingEntity = entity.getRootVehicle();
-				else return;
 			}
 		}
 
@@ -134,27 +137,48 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		if (isFailBasicCheck(radar, pingEntity, stealth, false)) return;
 
         DistantRayCastManager.distantRayCast((ServerLevel) UtilEntity.getLevel(radar), radar, pingEntity,
-                (level, eyeEntity, targetEntity, pass) -> {
-                    if (!pass) return;
-                    PingEntityType pingEntityType;
-                    if (player) {
-                        if (vehicle != null || targetEntity.getId() != entity.getId())
-                            pingEntityType = PingEntityType.VEHICLE_PLAYER;
-                        else pingEntityType = PingEntityType.PLAYER;
+                (event) -> {
+                    if (!event.pass()) return;
+                    @NotNull EntityVehicle radarVehicle;
+                    @NotNull Entity targetEntity;
+                    if (event.completeId() == event.eyeEntity().getId() && event.eyeEntity() instanceof EntityVehicle v) {
+                        radarVehicle = v;
+                        targetEntity = event.targetEntity();
+                    } else if (event.completeId() == event.targetEntity().getId() && event.targetEntity() instanceof EntityVehicle v) {
+                        radarVehicle = v;
+                        targetEntity = event.eyeEntity();
                     } else {
-                        if (vehicle != null || targetEntity.getId() != entity.getId())
-                            pingEntityType = PingEntityType.VEHICLE_BOT;
-                        else pingEntityType = PingEntityType.HOSTILE_MOB;
+                        LOGGER.error("Neither the eye or target entities are the radar {} {}", event.eyeEntity(), event.targetEntity());
+                        return;
                     }
+                    @Nullable Entity controllerEntity = radarVehicle.getControllingPlayerOrBot();
+                    @Nullable EntityVehicle targetVehicle = targetEntity instanceof EntityVehicle v ? v : null;
 
-                    RadarPing p = new RadarPing(targetEntity, checkFriendly(controller, targetEntity), pingEntityType);
+                    PingEntityType pingEntityType = getPingEntityType(isTargetPlayer, targetVehicle, targetEntity);
+
+                    RadarPing p = new RadarPing(targetEntity, checkFriendly(controllerEntity, targetEntity), pingEntityType);
                     vehiclePings.add(p);
                     pings.add(p);
 
-                    if (vehicle != null && !radar.isAlliedTo(vehicle)) vehicle.lockedOnto(radar);
-                }, RAY_CAST_TIMEOUT, getStats().getScanRate() * 50L + 50,
+                    if (targetVehicle != null && !radarVehicle.isAlliedTo(targetVehicle)) targetVehicle.lockedOnto(radarVehicle);
+                }, radar.getId(), RAY_CAST_TIMEOUT, getStats().getScanRate() * 50L + 50,
                 getStats().getThroWaterRange()+1, getStats().getThroGroundRange());
 	}
+
+    private static @NotNull PingEntityType getPingEntityType(boolean player, @Nullable EntityVehicle targetVehicle,
+                                                             @NotNull Entity targetEntity) {
+        PingEntityType pingEntityType;
+        if (player) {
+            if (targetVehicle != null || targetEntity.hasControllingPassenger())
+                pingEntityType = PingEntityType.VEHICLE_PLAYER;
+            else pingEntityType = PingEntityType.PLAYER;
+        } else {
+            if (targetVehicle != null || targetEntity.hasControllingPassenger())
+                pingEntityType = PingEntityType.VEHICLE_BOT;
+            else pingEntityType = PingEntityType.HOSTILE_MOB;
+        }
+        return pingEntityType;
+    }
 
     @Nullable
     private EntityVehicle toTargetVehicle(Entity entity, boolean player) {

@@ -86,7 +86,7 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 				VehicleStats vs = VehiclePresets.get().get(presetName);
 				if (vs == null) vs = VehiclePresets.get().get(defaultPreset);
 				EntityType<? extends EntityVehicle> entityType = vs.getEntityType();
-				ItemStack spawn_data_stack = spawnData(itemstack, player, vs.getId());
+				ItemStack spawn_data_stack = spawnData(itemstack, player, vs.getId(), player.getYRot(), null);
 				EntityVehicle e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
 				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
@@ -112,7 +112,8 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 		}
 	}
 	
-	private ItemStack spawnData(ItemStack itemstack, Player player, String preset) {
+	public ItemStack spawnData(ItemStack itemstack, Player player, String preset, float yRot,
+                               @Nullable CompoundTag additionalNbt) {
 		ItemStack copy = itemstack.copy();
 		CompoundTag tag = copy.getOrCreateTag();
 		if (!tag.contains("EntityTag", 10)) {
@@ -122,8 +123,9 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 			tag.put("EntityTag", et);
 		}
 		CompoundTag et = tag.getCompound("EntityTag");
+        et.merge(additionalNbt);
 		et.putString("preset", preset);
-		et.putFloat("yRot", player.getYRot());
+		et.putFloat("yRot", yRot);
 		et.putFloat("current_throttle", 0);
 		et.putBoolean("landing_gear", true);
 		if (tag.contains("display", 10)) {
@@ -135,8 +137,12 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 		}
 		return copy;
 	}
-	
-	public String getPresetName(ItemStack itemstack) {
+
+    public String getPresetName(ItemStack itemstack) {
+        return getPresetName(itemstack, defaultPreset);
+    }
+
+	public static String getPresetName(ItemStack itemstack, String defaultPreset) {
 		CompoundTag tag = itemstack.getTag();
 		if (tag == null) return defaultPreset;
 		if (tag.contains("preset")) return tag.getString("preset");

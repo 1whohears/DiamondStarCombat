@@ -16,8 +16,11 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 
 	@Override
 	protected void registerPresets() {
+        JsonObject externalFuelTankNbt = new JsonObject();
+        externalFuelTankNbt.addProperty("presetId", "light_external_fuel_tank");
+        externalFuelTankNbt.addProperty("fuel", 50f);
 		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "vehicle_attacker")
-				.addProduct("dscombat:light_external_fuel_tank", "minigames:money", 3)
+				.addProduct("dscombat:light_external_fuel_tank", externalFuelTankNbt, "minigames:money", 3)
 				.addProduct("dscombat:vehicle", vehicleItem("bronco_plane_shitter"), "minigames:money", 8)
 				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper_door_knocker"), "minigames:money", 12)
 				.addProduct("dscombat:vehicle", vehicleItem("krait_chopper_brawler"), "minigames:money", 12)
@@ -27,7 +30,7 @@ public class DSCShopGenerator extends MiniGameShopsGenerator {
 				.addProduct("dscombat:vehicle", vehicleItem("alexis_plane_infiltrator"), "minigames:money", 32)
 				.build());
 		addPresetToGenerate(GameShop.Builder.create(DSCombatMod.MODID, "vehicle_defender")
-				.addProduct("dscombat:light_external_fuel_tank", "minigames:money", 3)
+				.addProduct("dscombat:light_external_fuel_tank", externalFuelTankNbt, "minigames:money", 3)
 				.addProduct("dscombat:vehicle", vehicleItem("small_roller"), "minigames:money", 8)
 				.addProduct("dscombat:vehicle", vehicleItem("mrbudger_tank"), "minigames:money", 18)
 				.addProduct("dscombat:vehicle", vehicleItem("eric_truck"), "minigames:money", 32)

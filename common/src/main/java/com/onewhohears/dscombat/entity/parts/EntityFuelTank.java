@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.FuelTankExternalInstance;
 import com.onewhohears.dscombat.data.parts.stats.FuelTankExternalStats;
@@ -17,13 +16,8 @@ public class EntityFuelTank extends EntityPart<FuelTankExternalStats, FuelTankEx
 	public boolean shouldRender() {
 		return true;
 	}
-	
-	@Override
-	protected double getClientRenderDistance() {
-		return Config.CLIENT.renderEngineDistance.get();
-	}
 
-	@Override
+    @Override
 	public PartType getPartType() {
 		return PartType.EXTERNAL_FUEL_TANK;
 	}

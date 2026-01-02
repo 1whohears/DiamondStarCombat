@@ -39,6 +39,7 @@ public class DSCEntityRenderers {
         EntityRendererRegistry.register(ModEntities.EXTERNAL_WEAPON_PART, RendererCustomAnimObjEntity::new);
         EntityRendererRegistry.register(ModEntities.EXTERNAL_ENGINE, RendererCustomAnimObjEntity::new);
         EntityRendererRegistry.register(ModEntities.EXTERNAL_RADAR, RendererCustomAnimObjEntity::new);
+        EntityRendererRegistry.register(ModEntities.EXTERNAL_FUEL_TANK, RendererCustomAnimObjEntity::new);
         // OTHER
         EntityRendererRegistry.register(ModEntities.SEAT, RendererEntityInvisible::new);
         EntityRendererRegistry.register(ModEntities.FLARE, RendererEntityInvisible::new);

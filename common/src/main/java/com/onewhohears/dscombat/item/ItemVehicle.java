@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.item;
 
+import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientStats;
@@ -63,8 +64,13 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
     }
 	
 	@Override
-	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
-		ItemStack itemstack = player.getItemInHand(hand);
+	public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (!level.getGameRules().getBoolean(DSCGameRules.ALLOW_PLACING_VEHICLE_ITEMS)) {
+            player.sendSystemMessage(UtilMCText.translatable("error.dscombat.vehicle_items_disabled")
+                    .setStyle(Style.EMPTY.withColor(ChatFormatting.YELLOW)));
+            return InteractionResultHolder.fail(itemstack);
+        }
 		HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
 		if (hitresult.getType() == HitResult.Type.MISS) {
 			return InteractionResultHolder.pass(itemstack);
@@ -123,7 +129,7 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 			tag.put("EntityTag", et);
 		}
 		CompoundTag et = tag.getCompound("EntityTag");
-        et.merge(additionalNbt);
+        if (additionalNbt != null) et.merge(additionalNbt);
 		et.putString("preset", preset);
 		et.putFloat("yRot", yRot);
 		et.putFloat("current_throttle", 0);

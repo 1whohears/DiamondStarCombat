@@ -180,6 +180,7 @@
 	"error.dscombat.entity_already_passenger": "This entity is already a passenger.",
 	"error.dscombat.cant_item_while_moving": "Can't become an item while moving.",
 	"error.dscombat.cant_item_while_flying": "Can't become an item while flying.",
+    "error.dscombat.vehicle_items_disabled": "Server admins have disabled spawning vehicles with items with the game rule dscombat:canSpawnVehicleFromItem.",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",

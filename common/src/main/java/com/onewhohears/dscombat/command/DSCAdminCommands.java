@@ -119,7 +119,7 @@ public class DSCAdminCommands {
             return 0;
         }
         level.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
-        stack.shrink(1);
+        if (!player.isCreative()) stack.shrink(1);
         return 1;
     }
 }

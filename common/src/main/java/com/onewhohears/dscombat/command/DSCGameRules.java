@@ -33,6 +33,7 @@ public class DSCGameRules {
 	public static GameRules.Key<GameRules.BooleanValue> VEHICLE_TRAMPLE;
 	public static GameRules.Key<GameRules.BooleanValue> FORCE_PUBLIC_PERM;
 	public static GameRules.Key<GameRules.BooleanValue> CAN_ITEM_WHILE_MOVING;
+    public static GameRules.Key<GameRules.BooleanValue> ALLOW_PLACING_VEHICLE_ITEMS;
 	
 	public static void registerAll() {
 		CONSUME_FULE = CustomGameRules.registerBoolean("dscombat:consumeFuel", true, GameRules.Category.PLAYER);
@@ -61,6 +62,7 @@ public class DSCGameRules {
 		VEHICLE_TRAMPLE = CustomGameRules.registerSyncBoolean("dscombat:vehicleTrample", true, GameRules.Category.PLAYER);
 		FORCE_PUBLIC_PERM = CustomGameRules.registerSyncBoolean("dscombat:vehicleForcePublicPerm", false, GameRules.Category.PLAYER);
 		CAN_ITEM_WHILE_MOVING = CustomGameRules.registerBoolean("dscombat:canVehicleItemWhileMoving", false, GameRules.Category.PLAYER);
+        ALLOW_PLACING_VEHICLE_ITEMS = CustomGameRules.registerBoolean("dscombat:canSpawnVehicleFromItem", true, GameRules.Category.PLAYER);
 	}
 
 	public static boolean isPlaneArcadeMode(Level level) {

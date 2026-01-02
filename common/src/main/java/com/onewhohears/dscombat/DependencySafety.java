@@ -4,9 +4,7 @@ import com.onewhohears.dscombat.integration.distant_players.DSCDistantPlayers;
 import com.onewhohears.dscombat.integration.minigame.DSCMiniGames;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCKitGenerator;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCShopGenerator;
-
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;

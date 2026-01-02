@@ -1,0 +1,1 @@
+give @s minigames:event{event:function,params:{function:"dss:spawn_player_vehicle_item"},display:{Name:'{"text":"Spawn Vehicle"}'}} 2

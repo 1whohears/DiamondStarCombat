@@ -1,9 +1,6 @@
 package com.onewhohears.dscombat.data.radar;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
@@ -21,6 +18,8 @@ import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 
+import io.netty.util.collection.IntObjectHashMap;
+import io.netty.util.collection.IntObjectMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -42,7 +41,8 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private Vec3 pos = Vec3.ZERO;
 	private boolean freshTargets;
 	private int scanTicks;
-	private final List<RadarPing> pings = new ArrayList<>();
+	private final IntObjectMap<TimedPing> pings = new IntObjectHashMap<>();
+    private final Set<Integer> forRemoval = new HashSet<>();
 	
 	public RadarInstance(T stats) {
 		super(stats);
@@ -62,9 +62,16 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	
 	private int maxCheckDist = 150;
 	
-	public void resetPings(List<RadarPing> vehiclePings) {
-        for (RadarPing ping : pings) vehiclePings.remove(ping);
-		pings.clear();
+	public void resetPings(List<RadarPing> vehiclePings, long currentTime) {
+        pings.forEach((id, ping) -> {
+            long timeDiff = currentTime - ping.gameTime();
+            if (timeDiff > Math.max(getStats().getScanRate()+10, 20)) {
+                vehiclePings.remove(ping.ping());
+                forRemoval.add(id);
+            }
+        });
+        forRemoval.forEach(pings::remove);
+        forRemoval.clear();
 	}
 	
 	public void tickUpdateTargets(EntityVehicle radar, List<RadarPing> vehiclePings) {
@@ -76,7 +83,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 			return;
 		}
 		maxCheckDist = Config.COMMON.maxBlockCheckDepth.get();
-		resetPings(vehiclePings);
+		resetPings(vehiclePings, UtilEntity.getLevel(radar).getGameTime());
 		freshTargets = true;
 		Entity controller = radar.getControllingPlayerOrBot();
 		RadarMode mode = radar.getRadarMode();
@@ -138,7 +145,6 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
         DistantRayCastManager.distantRayCast((ServerLevel) UtilEntity.getLevel(radar), radar, pingEntity,
                 (event) -> {
-                    if (!event.pass()) return;
                     @NotNull EntityVehicle radarVehicle;
                     @NotNull Entity targetEntity;
                     if (event.completeId() == event.eyeEntity().getId() && event.eyeEntity() instanceof EntityVehicle v) {
@@ -151,19 +157,33 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
                         LOGGER.error("Neither the eye or target entities are the radar {} {}", event.eyeEntity(), event.targetEntity());
                         return;
                     }
+                    if (!event.pass()) {
+                        forRemoval.add(targetEntity.getId());
+                        return;
+                    }
                     @Nullable Entity controllerEntity = radarVehicle.getControllingPlayerOrBot();
                     @Nullable EntityVehicle targetVehicle = targetEntity instanceof EntityVehicle v ? v : null;
 
                     PingEntityType pingEntityType = getPingEntityType(isTargetPlayer, targetVehicle, targetEntity);
 
                     RadarPing p = new RadarPing(targetEntity, checkFriendly(controllerEntity, targetEntity), pingEntityType);
-                    vehiclePings.add(p);
-                    pings.add(p);
+                    putPing(vehiclePings, p);
+                    pings.put(p.id, new TimedPing(p, event.level().getGameTime()));
 
                     if (targetVehicle != null && !radarVehicle.isAlliedTo(targetVehicle)) targetVehicle.lockedOnto(radarVehicle);
                 }, radar.getId(), RAY_CAST_TIMEOUT, getStats().getScanRate() * 50L + 100,
                 getStats().getThroWaterRange()+1, getStats().getThroGroundRange());
 	}
+
+    private static void putPing(@NotNull List<RadarPing> vehiclePings, @NotNull RadarPing ping) {
+        for (int i = 0; i < vehiclePings.size(); ++i) {
+            if (vehiclePings.get(i).id == ping.id) {
+                vehiclePings.set(i, ping);
+                return;
+            }
+        }
+        vehiclePings.add(ping);
+    }
 
     private static @NotNull PingEntityType getPingEntityType(boolean player, @Nullable EntityVehicle targetVehicle,
                                                              @NotNull Entity targetEntity) {
@@ -205,8 +225,8 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
                 RadarPing p = new RadarPing(entity,
                         checkFriendly(controller, entity),
                         PingEntityType.FRIENDLY_MOB);
-                vehiclePings.add(p);
-                pings.add(p);
+                putPing(vehiclePings, p);
+                pings.put(p.id, new TimedPing(p, UtilEntity.getLevel(radar).getGameTime()));
             }
 		}
 	}
@@ -230,8 +250,8 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		RadarPing p = new RadarPing(target,
 				checkFriendly(controller, target),
 				PingEntityType.MISSILE);
-		vehiclePings.add(p);
-		pings.add(p);
+        putPing(vehiclePings, p);
+        pings.put(p.id, new TimedPing(p, UtilEntity.getLevel(radar).getGameTime()));
 	}
 	
 	private boolean checkFriendly(Entity controller, Entity target) {
@@ -327,5 +347,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		if (id == null) return false;
 		return getStatsId().equals(id) && slotId.equals(this.slotId);
 	}
+
+    public record TimedPing(RadarPing ping, long gameTime) {}
 
 }

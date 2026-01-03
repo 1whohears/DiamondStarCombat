@@ -100,7 +100,7 @@ public class RadarSystem {
 		// SEMI ACTIVE TRACK ROCKETS
 		updateSemiActiveTrackMissiles();
 		// PACKET
-		if (parent.tickCount % 20 == 0) {
+		if (parent.tickCount % 10 == 0) {
 			if (parent.isStationaryRadar()) parent.toTrackers(new ToClientRadarPings(parent.getId(), targets));
 			else parent.toClientPassengers(new ToClientRadarPings(parent.getId(), targets));
 		}
@@ -380,7 +380,7 @@ public class RadarSystem {
 	public boolean removeRadar(String id, String slotId) {
 		RadarInstance<?> radar = get(id, slotId);
 		if (radar == null) return false;
-		radar.resetPings(targets);
+		radar.resetPings(targets, UtilEntity.getLevel(parent).getGameTime());
 		return radars.remove(radar);
 	}
 	

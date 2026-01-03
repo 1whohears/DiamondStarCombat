@@ -10,7 +10,7 @@
   "scanMissiles": true,
   "scanMobs": true,
   "scanPlayers": true,
-  "scanRate": 30,
+  "scanRate": 20,
   "sensitivity": 0.7,
   "throGroundRange": 0.0,
   "throWaterRange": 0.0,

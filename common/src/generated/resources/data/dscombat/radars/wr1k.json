@@ -9,7 +9,7 @@
   "scanGround": false,
   "scanMobs": false,
   "scanPlayers": true,
-  "scanRate": 30,
+  "scanRate": 10,
   "sensitivity": 0.5,
   "throGroundRange": 0.0,
   "throWaterRange": 1000.0

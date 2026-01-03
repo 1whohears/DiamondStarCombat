@@ -36,7 +36,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final long RAY_CAST_TIMEOUT = 550L;
+    public static final long RAY_CAST_TIMEOUT = 600;
 
     private String slotId = "";
 	private Vec3 pos = Vec3.ZERO;
@@ -161,7 +161,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
                     pings.add(p);
 
                     if (targetVehicle != null && !radarVehicle.isAlliedTo(targetVehicle)) targetVehicle.lockedOnto(radarVehicle);
-                }, radar.getId(), RAY_CAST_TIMEOUT, getStats().getScanRate() * 50L + 50,
+                }, radar.getId(), RAY_CAST_TIMEOUT, getStats().getScanRate() * 50L + 100,
                 getStats().getThroWaterRange()+1, getStats().getThroGroundRange());
 	}
 

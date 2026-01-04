@@ -35,7 +35,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final long RAY_CAST_TIMEOUT = 600;
+    public static final long RAY_CAST_TIMEOUT = 1000;
 
     private String slotId = "";
 	private Vec3 pos = Vec3.ZERO;
@@ -66,8 +66,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
         pings.forEach((id, ping) -> {
             long timeDiff = currentTime - ping.gameTime();
             if (timeDiff > Math.max(getStats().getScanRate()+10, 20)) {
-                vehiclePings.remove(ping.ping());
-                forRemoval.add(id);
+                removePing(vehiclePings, id);
             }
         });
         forRemoval.forEach(pings::remove);
@@ -171,7 +170,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
                     pings.put(p.id, new TimedPing(p, event.level().getGameTime()));
 
                     if (targetVehicle != null && !radarVehicle.isAlliedTo(targetVehicle)) targetVehicle.lockedOnto(radarVehicle);
-                }, radar.getId(), RAY_CAST_TIMEOUT, getStats().getScanRate() * 50L + 100,
+                }, radar.getId(), RAY_CAST_TIMEOUT, Math.max(getStats().getScanRate() * 50L + 100, 1000),
                 getStats().getThroWaterRange()+1, getStats().getThroGroundRange());
 	}
 
@@ -186,11 +185,14 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
     }
 
     private void removePing(@NotNull List<RadarPing> vehiclePings, @NotNull Entity targetEntity) {
-        forRemoval.add(targetEntity.getId());
+        removePing(vehiclePings, targetEntity.getId());
+    }
+
+    private void removePing(@NotNull List<RadarPing> vehiclePings, int targetEntityId) {
+        forRemoval.add(targetEntityId);
         for (int i = 0; i < vehiclePings.size(); ++i) {
-            if (vehiclePings.get(i).id == targetEntity.getId()) {
-                vehiclePings.remove(i);
-                return;
+            if (vehiclePings.get(i).id == targetEntityId) {
+                vehiclePings.remove(i--);
             }
         }
     }

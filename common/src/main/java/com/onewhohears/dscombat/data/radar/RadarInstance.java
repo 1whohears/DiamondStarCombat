@@ -158,7 +158,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
                         return;
                     }
                     if (!event.pass()) {
-                        forRemoval.add(targetEntity.getId());
+                        removePing(vehiclePings, targetEntity);
                         return;
                     }
                     @Nullable Entity controllerEntity = radarVehicle.getControllingPlayerOrBot();
@@ -183,6 +183,16 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
             }
         }
         vehiclePings.add(ping);
+    }
+
+    private void removePing(@NotNull List<RadarPing> vehiclePings, @NotNull Entity targetEntity) {
+        forRemoval.add(targetEntity.getId());
+        for (int i = 0; i < vehiclePings.size(); ++i) {
+            if (vehiclePings.get(i).id == targetEntity.getId()) {
+                vehiclePings.remove(i);
+                return;
+            }
+        }
     }
 
     private static @NotNull PingEntityType getPingEntityType(boolean player, @Nullable EntityVehicle targetVehicle,

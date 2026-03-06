@@ -72,6 +72,7 @@ dependencies {
     modApi "com.onewhohears.minigames:minigames-forge-${rootProject.minecraft_version}:${rootProject.minigames_version}"
     // this is causing a File Name too Long Error
     //modApi "com.onewhohears.distant_players:distant_players-forge-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
+    modApi "com.onewhohears.tacview:tacticalviewer-forge-${rootProject.minecraft_version}:${rootProject.tacticalviewer_version}"
 
     modCompileOnly "curse.maven:timeless-and-classics-zero-1028108:$rootProject.tacz_id_forge"
 
@@ -81,6 +82,8 @@ dependencies {
     //modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_forge_id}"
 
     implementation(include("io.github.llamalad7:mixinextras-forge:0.5.0"))
+
+    modRuntimeOnly "maven.modrinth:DistantHorizons:$rootProject.distanthorizons_version"
 }
 
 processResources {

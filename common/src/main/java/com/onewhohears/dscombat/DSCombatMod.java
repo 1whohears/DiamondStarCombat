@@ -34,10 +34,12 @@ public class DSCombatMod {
 	
 	public static boolean minigamesLoaded = false;
 	public static boolean distantPlayersLoaded = false;
+	public static boolean tacViewLoaded = false;
 
     public static void init() {
         minigamesLoaded = Platform.isModLoaded("minigames");
         distantPlayersLoaded = Platform.isModLoaded("distant_players");
+        tacViewLoaded = Platform.isModLoaded("tacview");
 
         CommonEventHandlers.init();
         ModCMTabs.register();

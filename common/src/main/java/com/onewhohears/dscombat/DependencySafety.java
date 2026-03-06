@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.integration.distant_players.DSCDistantPlayers;
 import com.onewhohears.dscombat.integration.minigame.DSCMiniGames;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCKitGenerator;
 import com.onewhohears.dscombat.integration.minigame.gen.DSCShopGenerator;
+import com.onewhohears.dscombat.integration.tacview.DSCTacViewInit;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.server.MinecraftServer;
@@ -18,6 +19,7 @@ public class DependencySafety {
 	public static void fmlCommonSetup() {
 		if (DSCombatMod.minigamesLoaded) DSCMiniGames.registerGames();
 		if (DSCombatMod.distantPlayersLoaded) DSCDistantPlayers.register();
+		if (DSCombatMod.tacViewLoaded) DSCTacViewInit.registerDSCRecorders();
 	}
 	
 	public static void serverDataGen(PackOutput output, Consumer<JsonPresetGenerator<?>> register) {

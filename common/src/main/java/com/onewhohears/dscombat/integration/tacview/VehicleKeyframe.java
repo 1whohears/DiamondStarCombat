@@ -9,10 +9,13 @@ import org.jetbrains.annotations.NotNull;
 public abstract class VehicleKeyframe<E extends EntityVehicle> extends EntityKeyframe<E> {
 
     public final KeyframeValue.AngleV<E> zRot = registerAngleValue("zRot", EntityVehicle::getZRot, EntityVehicle::setZRot);
-    public final KeyframeValue.FloatV<E> health = registerFloatValue("health", EntityVehicle::getZRot, EntityVehicle::setZRot);
-    public final KeyframeValue.FloatV<E> shield = registerFloatValue("shield", EntityVehicle::getZRot, EntityVehicle::setZRot);
-    public final KeyframeValue.FloatV<E> throttle = registerFloatValue("throttle", EntityVehicle::getZRot, EntityVehicle::setZRot);
+    public final KeyframeValue.FloatV<E> health = registerFloatValue("health", EntityVehicle::getHealth, EntityVehicle::setHealth);
+    public final KeyframeValue.FloatV<E> shield = registerFloatValue("shield", EntityVehicle::getArmor, EntityVehicle::setArmor);
+    public final KeyframeValue.FloatV<E> throttle = registerFloatValue("throttle", EntityVehicle::getCurrentThrottle, EntityVehicle::setCurrentThrottle);
     public final KeyframeValue.BoolV<E> gear = registerBooleanValue("gear", EntityVehicle::isLandingGear, EntityVehicle::setLandingGear);
+    public final KeyframeValue.IntV<E> baseTextureIndex = registerIntValue("baseTextureIndex",
+            entity -> entity.textureManager.getBaseTextureIndex(),
+            (entity, value) -> entity.textureManager.setBaseTexture(value));
 
     protected VehicleKeyframe() {
         super();

@@ -1,11 +1,16 @@
 package com.onewhohears.dscombat.integration.tacview;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.tacview.common.core.EntityRecorder;
 import com.onewhohears.tacview.common.core.KeyframeValue;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +30,32 @@ public abstract class VehicleRecorder<K extends VehicleKeyframe<E>, E extends En
 
     public VehicleRecorder(@NotNull JsonObject data, @NotNull BiFunction<ServerLevel,UUID,E> entityFinder) {
         super(data, entityFinder);
+    }
+
+    @Override
+    public void onPlaybackEntitySetup(@NotNull E entity) {
+        super.onPlaybackEntitySetup(entity);
+        entity.setPreset(preset.get());
+        entity.updateClientStatsHolder();
+        entity.textureManager.setupTextureLocations();
+        entity.textureManager.setupDynamicTexture();
+    }
+
+    @Override
+    public void onPlaybackTick(@NotNull E entity) {
+        entity.tickClientLandingGear();
+        super.onPlaybackTick(entity);
+        entity.zRotO = entity.getZRot();
+    }
+
+    @Override
+    public void onPlaybackRender(@NotNull E entity, PoseStack stack, float yaw, @NotNull Vec3 renderPos,
+                                 float partialTick, MultiBufferSource buffer, int packedLight) {
+        super.onPlaybackRender(entity, stack, yaw, renderPos, partialTick, buffer, packedLight);
+        QuaternionF q = UtilAngles.toQuaternionF(entity.getYRot(), entity.getXRot(), entity.getZRot());
+        entity.setQ(q);
+        entity.setClientQ(q);
+        entity.setPrevQ(q);
     }
 
     public static class Generic extends VehicleRecorder<VehicleKeyframe.Generic, EntityVehicle> {

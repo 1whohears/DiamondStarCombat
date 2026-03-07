@@ -91,6 +91,8 @@ dependencies {
 }
 
 processResources {
+    from(project(":common").file("src/main/resources/dscombat.accesswidener"))
+
     inputs.property 'version', project.version
 
     filesMatching('fabric.mod.json') {

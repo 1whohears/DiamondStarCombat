@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.integration.tacview;
 
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModEntities;
+import com.onewhohears.tacview.common.core.EntityKeyframe;
 import com.onewhohears.tacview.common.core.EntityRecorders;
 
 public class DSCTacViewInit {
@@ -25,6 +26,8 @@ public class DSCTacViewInit {
         EntityRecorders.registerEntityRecorder(ModEntities.SUBMARINE.get(),
                 (entity, recordRate) -> new VehicleRecorder.Generic((EntityVehicle) entity, recordRate),
                 VehicleRecorder.Generic::new);
+        EntityKeyframe.VISIBLE_VALUES.add("shield");
+        EntityKeyframe.VISIBLE_VALUES.add("throttle");
     }
 
 }

@@ -242,7 +242,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		entityData.set(OWNER_ID, id);
 	}
 	
-	protected void setAge(int age) {
+	public void setAge(int age) {
 		entityData.set(AGE, age);
 	}
 	

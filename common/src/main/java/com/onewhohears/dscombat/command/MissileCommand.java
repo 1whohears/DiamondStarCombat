@@ -7,6 +7,7 @@ import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.argument.WeaponArgument;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -107,6 +108,7 @@ public class MissileCommand {
 				missile.targetPos = v.position();
 			}
 			level.addFreshEntity(ew);
+            DependencySafety.onWeaponShoot(ew);
 			//ew.tick();
 			++i;
 		}

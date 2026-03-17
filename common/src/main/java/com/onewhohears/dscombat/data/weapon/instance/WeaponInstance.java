@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.weapon.instance;
 
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
@@ -121,6 +122,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			ToClientOnShoot.onShootWeaponRack(rack, owner);
 		}
 		firedWeapon = w;
+        DependencySafety.onWeaponShoot(w);
 		return true;
 	}
 	
@@ -144,6 +146,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			}
 		}
 		firedWeapon = w;
+        DependencySafety.onWeaponShoot(w);
 		return true;
 	}
 

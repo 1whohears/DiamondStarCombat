@@ -1,15 +1,23 @@
 package com.onewhohears.dscombat.integration.tacview;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.tacview.client.core.ClientPlayback;
 import com.onewhohears.tacview.common.core.EntityRecorder;
 import com.onewhohears.tacview.common.core.KeyframeValue;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 import java.util.List;
 import java.util.UUID;
@@ -77,6 +85,37 @@ public abstract class WeaponRecorder<K extends WeaponKeyframe<E>, E extends Enti
         @Override
         protected WeaponKeyframe.Generic emptyKeyframe() {
             return new WeaponKeyframe.Generic();
+        }
+    }
+
+    public static class Missile extends WeaponRecorder<WeaponKeyframe.Missile, EntityMissile<?>> {
+        public static final BiFunction<ServerLevel,UUID,EntityMissile<?>> MISSILE_GETTER =
+                (level, uuid) -> NonTickingMissileManager.getMissile(uuid);
+        public Missile(@NotNull EntityMissile entity, int recordRate) {
+            super(entity, recordRate, MISSILE_GETTER);
+        }
+        public Missile(@NotNull JsonObject data) {
+            super(data, MISSILE_GETTER);
+        }
+        @Override
+        protected @Nullable WeaponKeyframe.Missile readKeyframe(@NotNull JsonObject data) {
+            return new WeaponKeyframe.Missile(data);
+        }
+        @Override
+        protected WeaponKeyframe.Missile newKeyframe(@NotNull EntityMissile weapon) {
+            return new WeaponKeyframe.Missile(weapon);
+        }
+        @Override
+        protected WeaponKeyframe.Missile emptyKeyframe() {
+            return new WeaponKeyframe.Missile();
+        }
+
+        @Override
+        public void onPlaybackRender(@NotNull EntityMissile<?> entity, @NotNull ClientPlayback playback,
+                                     PoseStack stack, float yaw, @NotNull Vec3 renderPos, float partialTick,
+                                     MultiBufferSource buffer, int packedLight) {
+            super.onPlaybackRender(entity, playback, stack, yaw, renderPos, partialTick, buffer, packedLight);
+
         }
     }
 }

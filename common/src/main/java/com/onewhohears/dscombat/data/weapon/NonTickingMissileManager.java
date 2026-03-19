@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.level.ChunkPos;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -93,6 +94,14 @@ public class NonTickingMissileManager {
 
 	public static List<EntityMissile<?>> getMissiles() {
 		return missiles;
+	}
+
+	@Nullable
+	public static EntityMissile<?> getMissile(UUID uuid) {
+		for (EntityMissile<?> missile : missiles)
+			if (missile.getUUID().equals(uuid))
+				return missile;
+		return null;
 	}
 	
 }

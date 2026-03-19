@@ -67,6 +67,11 @@ public abstract class WeaponRecorder<K extends WeaponKeyframe<E>, E extends Enti
         }
     }
 
+    @Override
+    protected boolean shouldRecord(@NotNull E entity) {
+        return super.shouldRecord(entity) || entity.isDiscardedButTicking();
+    }
+
     public static class Generic extends WeaponRecorder<WeaponKeyframe.Generic, EntityWeapon> {
         public Generic(@NotNull EntityWeapon entity, int recordRate) {
             super(entity, recordRate, DEFAULT_WEAPON_GETTER);

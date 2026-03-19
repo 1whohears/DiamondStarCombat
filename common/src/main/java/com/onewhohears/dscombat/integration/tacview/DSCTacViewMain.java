@@ -44,22 +44,22 @@ public class DSCTacViewMain {
                 WeaponRecorder.Generic::new);
         EntityRecorders.registerEntityRecorder(ModEntities.POS_MISSILE.get(),
                 (entity, recordRate) -> new WeaponRecorder.Missile((EntityMissile<?>) entity, recordRate),
-                WeaponRecorder.Generic::new);
+                WeaponRecorder.Missile::new);
         EntityRecorders.registerEntityRecorder(ModEntities.IR_MISSILE.get(),
                 (entity, recordRate) -> new WeaponRecorder.Missile((EntityMissile<?>) entity, recordRate),
-                WeaponRecorder.Generic::new);
+                WeaponRecorder.Missile::new);
         EntityRecorders.registerEntityRecorder(ModEntities.TRACK_MISSILE.get(),
                 (entity, recordRate) -> new WeaponRecorder.Missile((EntityMissile<?>) entity, recordRate),
-                WeaponRecorder.Generic::new);
+                WeaponRecorder.Missile::new);
         EntityRecorders.registerEntityRecorder(ModEntities.ANTI_RADAR_MISSILE.get(),
                 (entity, recordRate) -> new WeaponRecorder.Missile((EntityMissile<?>) entity, recordRate),
-                WeaponRecorder.Generic::new);
+                WeaponRecorder.Missile::new);
         EntityRecorders.registerEntityRecorder(ModEntities.TORPEDO_MISSILE.get(),
                 (entity, recordRate) -> new WeaponRecorder.Missile((EntityMissile<?>) entity, recordRate),
-                WeaponRecorder.Generic::new);
+                WeaponRecorder.Missile::new);
         EntityRecorders.registerEntityRecorder(ModEntities.DUMB_TORPEDO_MISSILE.get(),
                 (entity, recordRate) -> new WeaponRecorder.Missile((EntityMissile<?>) entity, recordRate),
-                WeaponRecorder.Generic::new);
+                WeaponRecorder.Missile::new);
         // visible values
         EntityKeyframe.VISIBLE_VALUES.add("shield");
         EntityKeyframe.VISIBLE_VALUES.add("throttle");

@@ -68,7 +68,16 @@ public class DSCTacViewMain {
 
     public static void onWeaponShoot(@NotNull EntityWeapon<?> weapon) {
         Entity owner = weapon.getOwner();
-        if (owner == null) return;
-        SessionManager.get().recordEvent(new ShootEvent(weapon), true, weapon, owner);
+        Entity target = weapon.getTarget();
+        if (target != null) {
+            Entity controller = target.getControllingPassenger();
+            if (controller != null) target = controller;
+        }
+        if (owner != null && target != null)
+            SessionManager.get().recordEvent(new ShootEvent(weapon), true, weapon, owner, target);
+        else if (owner != null)
+            SessionManager.get().recordEvent(new ShootEvent(weapon), true, weapon, owner);
+        else if (target != null)
+            SessionManager.get().recordEvent(new ShootEvent(weapon), true, weapon, target);
     }
 }

@@ -35,7 +35,7 @@ public class DependencySafety {
 		if (DSCombatMod.distantPlayersLoaded) DSCDistantPlayers.addExtraEntity(server, entity, visibleTo);
 	}
 
-    public static void onWeaponShoot(@NotNull EntityWeapon weapon) {
+    public static void onWeaponShoot(@NotNull EntityWeapon<?> weapon) {
         if (DSCombatMod.tacViewLoaded) DSCTacViewMain.onWeaponShoot(weapon);
     }
 	

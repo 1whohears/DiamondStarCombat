@@ -422,4 +422,9 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	public boolean isDiscardedButTicking() {
 		return false;
 	}
+
+	@Nullable
+	public Entity getTarget() {
+		return null;
+	}
 }

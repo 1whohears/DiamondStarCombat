@@ -510,4 +510,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		return WeaponStats.WeaponClientImpactType.MED_MISSILE_EXPLODE;
 	}
 
+	@Override
+	public Entity getTarget() {
+		return target;
+	}
+
 }

@@ -34,13 +34,13 @@ public class DSCTacViewMain {
                 VehicleRecorder.Generic::new);
         // weapon recorders
         EntityRecorders.registerEntityRecorder(ModEntities.BULLET.get(),
-                (entity, recordRate) -> new WeaponRecorder.Generic((EntityWeapon) entity, recordRate),
+                (entity, recordRate) -> new WeaponRecorder.Generic((EntityWeapon<?>) entity, recordRate),
                 WeaponRecorder.Generic::new);
         EntityRecorders.registerEntityRecorder(ModEntities.BOMB.get(),
-                (entity, recordRate) -> new WeaponRecorder.Generic((EntityWeapon) entity, recordRate),
+                (entity, recordRate) -> new WeaponRecorder.Generic((EntityWeapon<?>) entity, recordRate),
                 WeaponRecorder.Generic::new);
         EntityRecorders.registerEntityRecorder(ModEntities.BUNKER_BUSTER.get(),
-                (entity, recordRate) -> new WeaponRecorder.Generic((EntityWeapon) entity, recordRate),
+                (entity, recordRate) -> new WeaponRecorder.Generic((EntityWeapon<?>) entity, recordRate),
                 WeaponRecorder.Generic::new);
         EntityRecorders.registerEntityRecorder(ModEntities.POS_MISSILE.get(),
                 (entity, recordRate) -> new WeaponRecorder.Missile((EntityMissile<?>) entity, recordRate),
@@ -66,7 +66,7 @@ public class DSCTacViewMain {
         EntityKeyframe.VISIBLE_VALUES.add("age");
     }
 
-    public static void onWeaponShoot(@NotNull EntityWeapon weapon) {
+    public static void onWeaponShoot(@NotNull EntityWeapon<?> weapon) {
         Entity owner = weapon.getOwner();
         if (owner == null) return;
         SessionManager.get().recordEvent(new ShootEvent(weapon), true, weapon, owner);

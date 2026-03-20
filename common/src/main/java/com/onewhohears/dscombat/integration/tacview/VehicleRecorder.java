@@ -8,6 +8,7 @@ import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.tacview.client.core.ClientPlayback;
 import com.onewhohears.tacview.common.core.EntityRecorder;
 import com.onewhohears.tacview.common.core.KeyframeValue;
+import com.onewhohears.tacview.common.core.RecordingSession;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -30,8 +31,9 @@ public abstract class VehicleRecorder<K extends VehicleKeyframe<E>, E extends En
         super(entity, recordRate, entityFinder);
     }
 
-    public VehicleRecorder(@NotNull JsonObject data, @NotNull BiFunction<ServerLevel,UUID,E> entityFinder) {
-        super(data, entityFinder);
+    public VehicleRecorder(@NotNull JsonObject data, @NotNull BiFunction<ServerLevel,UUID,E> entityFinder,
+                           @NotNull RecordingSession session) {
+        super(data, entityFinder, session);
     }
 
     @Override
@@ -72,8 +74,8 @@ public abstract class VehicleRecorder<K extends VehicleKeyframe<E>, E extends En
         public Generic(@NotNull EntityVehicle entity, int recordRate) {
             super(entity, recordRate, DEFAULT_VEHICLE_GETTER);
         }
-        public Generic(@NotNull JsonObject data) {
-            super(data, DEFAULT_VEHICLE_GETTER);
+        public Generic(@NotNull JsonObject data, @NotNull RecordingSession session) {
+            super(data, DEFAULT_VEHICLE_GETTER, session);
         }
         @Override
         protected @Nullable VehicleKeyframe.Generic readKeyframe(@NotNull JsonObject data) {

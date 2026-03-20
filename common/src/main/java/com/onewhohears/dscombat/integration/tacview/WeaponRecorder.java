@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.tacview.client.core.ClientPlayback;
 import com.onewhohears.tacview.common.core.EntityRecorder;
 import com.onewhohears.tacview.common.core.KeyframeValue;
+import com.onewhohears.tacview.common.core.RecordingSession;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -39,8 +40,9 @@ public abstract class WeaponRecorder<K extends WeaponKeyframe<E>, E extends Enti
         super(entity, recordRate, entityFinder);
     }
 
-    public WeaponRecorder(@NotNull JsonObject data, @NotNull BiFunction<ServerLevel,UUID,E> entityFinder) {
-        super(data, entityFinder);
+    public WeaponRecorder(@NotNull JsonObject data, @NotNull BiFunction<ServerLevel,UUID,E> entityFinder,
+                          @NotNull RecordingSession session) {
+        super(data, entityFinder, session);
     }
 
     @Override
@@ -76,8 +78,8 @@ public abstract class WeaponRecorder<K extends WeaponKeyframe<E>, E extends Enti
         public Generic(@NotNull EntityWeapon entity, int recordRate) {
             super(entity, recordRate, DEFAULT_WEAPON_GETTER);
         }
-        public Generic(@NotNull JsonObject data) {
-            super(data, DEFAULT_WEAPON_GETTER);
+        public Generic(@NotNull JsonObject data, @NotNull RecordingSession session) {
+            super(data, DEFAULT_WEAPON_GETTER, session);
         }
         @Override
         protected @Nullable WeaponKeyframe.Generic readKeyframe(@NotNull JsonObject data) {
@@ -99,8 +101,8 @@ public abstract class WeaponRecorder<K extends WeaponKeyframe<E>, E extends Enti
         public Missile(@NotNull EntityMissile entity, int recordRate) {
             super(entity, recordRate, MISSILE_GETTER);
         }
-        public Missile(@NotNull JsonObject data) {
-            super(data, MISSILE_GETTER);
+        public Missile(@NotNull JsonObject data, @NotNull RecordingSession session) {
+            super(data, MISSILE_GETTER, session);
         }
         @Override
         protected @Nullable WeaponKeyframe.Missile readKeyframe(@NotNull JsonObject data) {

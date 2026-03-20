@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.integration.tacview;
 
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -68,8 +69,11 @@ public abstract class VehicleRecorder<K extends VehicleKeyframe<E>, E extends En
         entity.setQ(q);
         entity.setClientQ(q);
         entity.setPrevQ(q);
-        // TODO draw radar ping lines
-
+        List<RadarStats.RadarPing> pings = entity.radarSystem.getClientRadarPings();
+        for (RadarStats.RadarPing ping : pings) {
+            WeaponRecorder.drawLineFromFakeEntity(renderPos, entity.position(), ping.pos,
+                    stack, buffer, 0, 0, 0xff, 0xff);
+        }
     }
 
     public static class Generic extends VehicleRecorder<VehicleKeyframe.Generic, EntityVehicle> {

@@ -123,25 +123,31 @@ public abstract class WeaponRecorder<K extends WeaponKeyframe<E>, E extends Enti
                                      MultiBufferSource buffer, int packedLight) {
             super.onPlaybackRender(entity, playback, stack, yaw, renderPos, partialTick, buffer, packedLight);
             if (entity.targetPos == null || entity.targetPos.y == -1000) return;
-            Vec3 target = entity.targetPos.add(renderPos.subtract(entity.position()));
-            VertexConsumer consumer = buffer.getBuffer(RenderType.lines());
-            Matrix4f pose = stack.last().pose();
-            consumer.vertex(pose, (float) renderPos.x, (float) renderPos.y, (float) renderPos.z)
-                    .color(255, 0, 0, 255)
-                    .normal(0, 1, 0)
-                    .endVertex();
-            consumer.vertex(pose, (float) target.x, (float) target.y, (float) target.z)
-                    .color(255, 0, 0, 255)
-                    .normal(0, 1, 0)
-                    .endVertex();
-            consumer.vertex(pose, (float) renderPos.x, (float) renderPos.y, (float) renderPos.z)
-                    .color(255, 0, 0, 255)
-                    .normal(1, 0, 0)
-                    .endVertex();
-            consumer.vertex(pose, (float) target.x, (float) target.y, (float) target.z)
-                    .color(255, 0, 0, 255)
-                    .normal(1, 0, 0)
-                    .endVertex();
+            drawLineFromFakeEntity(renderPos, entity.position(), entity.targetPos, stack, buffer, 0xff, 0, 0, 0xff);
         }
+    }
+
+    public static void drawLineFromFakeEntity(Vec3 renderPos, Vec3 entityPos, Vec3 targetPos,
+                                              PoseStack stack, MultiBufferSource buffer,
+                                              int r, int g, int b, int a) {
+        Vec3 target = targetPos.add(renderPos.subtract(entityPos));
+        VertexConsumer consumer = buffer.getBuffer(RenderType.lines());
+        Matrix4f pose = stack.last().pose();
+        consumer.vertex(pose, (float) renderPos.x, (float) renderPos.y, (float) renderPos.z)
+                .color(r, g, b, a)
+                .normal(0, 1, 0)
+                .endVertex();
+        consumer.vertex(pose, (float) target.x, (float) target.y, (float) target.z)
+                .color(r, g, b, a)
+                .normal(0, 1, 0)
+                .endVertex();
+        consumer.vertex(pose, (float) renderPos.x, (float) renderPos.y, (float) renderPos.z)
+                .color(r, g, b, a)
+                .normal(1, 0, 0)
+                .endVertex();
+        consumer.vertex(pose, (float) target.x, (float) target.y, (float) target.z)
+                .color(r, g, b, a)
+                .normal(1, 0, 0)
+                .endVertex();
     }
 }

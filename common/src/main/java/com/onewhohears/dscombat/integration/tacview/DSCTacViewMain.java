@@ -10,6 +10,9 @@ import com.onewhohears.tacview.common.core.SessionManager;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DSCTacViewMain {
 
     public static void registerDSCRecorders() {
@@ -67,17 +70,26 @@ public class DSCTacViewMain {
     }
 
     public static void onWeaponShoot(@NotNull EntityWeapon<?> weapon) {
+        List<Entity> addEntities = new ArrayList<>();
+        addEntities.add(weapon);
         Entity owner = weapon.getOwner();
+        if (owner != null) {
+            addEntities.add(owner);
+            Entity vehicle = owner.getVehicle();
+            if (vehicle != null) {
+                addEntities.add(vehicle);
+                Entity root = owner.getRootVehicle();
+                if (!vehicle.equals(root)) {
+                    addEntities.add(root);
+                }
+            }
+        }
         Entity target = weapon.getTarget();
         if (target != null) {
             Entity controller = target.getControllingPassenger();
             if (controller != null) target = controller;
+            addEntities.add(target);
         }
-        if (owner != null && target != null)
-            SessionManager.get().recordEvent(new ShootEvent(weapon), true, weapon, owner, target);
-        else if (owner != null)
-            SessionManager.get().recordEvent(new ShootEvent(weapon), true, weapon, owner);
-        else if (target != null)
-            SessionManager.get().recordEvent(new ShootEvent(weapon), true, weapon, target);
+        SessionManager.get().recordEvent(new ShootEvent(weapon), true, addEntities.toArray(new Entity[0]));
     }
 }

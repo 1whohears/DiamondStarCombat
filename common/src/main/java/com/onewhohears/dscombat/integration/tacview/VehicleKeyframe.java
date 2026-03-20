@@ -16,6 +16,9 @@ public abstract class VehicleKeyframe<E extends EntityVehicle> extends EntityKey
     public final KeyframeValue.IntV<E> baseTextureIndex = registerIntValue("baseTextureIndex",
             entity -> entity.textureManager.getBaseTextureIndex(),
             (entity, value) -> entity.textureManager.setBaseTexture(value));
+    public final RadarKeyframeValue<E> pings = registerValue(new RadarKeyframeValue<>("pings",
+            entity -> entity.radarSystem.getServerPings(),
+            (entity, value) -> entity.radarSystem.readClientPingsFromServer(value)));
 
     protected VehicleKeyframe() {
         super();

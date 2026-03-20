@@ -136,7 +136,8 @@ public class RadarStats extends JsonPresetStats {
 			this.terrainType = PingTerrainType.getByEntity(ping);
 			this.entityType = entityType;
 		}
-		private RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared, PingTerrainType terrainType, PingEntityType entityType) {
+		public RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared,
+						  PingTerrainType terrainType, PingEntityType entityType) {
 			this.id = id;
 			this.pos = pos;
 			this.isFriendly = isFriendly;

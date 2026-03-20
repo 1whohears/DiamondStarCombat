@@ -68,6 +68,8 @@ public abstract class VehicleRecorder<K extends VehicleKeyframe<E>, E extends En
         entity.setQ(q);
         entity.setClientQ(q);
         entity.setPrevQ(q);
+        // TODO draw radar ping lines
+
     }
 
     public static class Generic extends VehicleRecorder<VehicleKeyframe.Generic, EntityVehicle> {

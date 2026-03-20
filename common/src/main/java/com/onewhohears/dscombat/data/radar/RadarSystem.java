@@ -505,5 +505,9 @@ public class RadarSystem {
 		if (!hasRadar()) return 0;
 		return 0;
 	}
+
+	public List<RadarPing> getServerPings() {
+		return targets;
+	}
 	
 }

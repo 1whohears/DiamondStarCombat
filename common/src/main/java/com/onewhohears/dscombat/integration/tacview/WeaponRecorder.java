@@ -125,6 +125,14 @@ public abstract class WeaponRecorder<K extends WeaponKeyframe<E>, E extends Enti
             if (entity.targetPos == null || entity.targetPos.y == -1000) return;
             drawLineFromFakeEntity(renderPos, entity.position(), entity.targetPos, stack, buffer, 0xff, 0, 0, 0xff);
         }
+
+        @Override
+        public void addOverlayInfo(@NotNull List<Component> overlayEntityInfo, @NotNull EntityMissile<?> entity,
+                                   @NotNull WeaponKeyframe.Missile keyframe) {
+            super.addOverlayInfo(overlayEntityInfo, entity, keyframe);
+            KeyframeValue.addOverlayValue(overlayEntityInfo, "fuel",
+                    ""+(Math.max(entity.getFuelTicks()-keyframe.age.get(), 0)));
+        }
     }
 
     public static void drawLineFromFakeEntity(Vec3 renderPos, Vec3 entityPos, Vec3 targetPos,

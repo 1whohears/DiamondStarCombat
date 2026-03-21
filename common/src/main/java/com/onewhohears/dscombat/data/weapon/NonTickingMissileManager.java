@@ -47,7 +47,6 @@ public class NonTickingMissileManager {
 				//System.out.println("MISSILE UNLOADED");
                 try {
                     missile.invokeRevive();
-                    missile.setUUID(UUID.randomUUID()); // FIXME is changing the missile uuid needed? it messes with the replay system
                     missile.getWorld().addFreshEntity(missile);
                 } catch (Exception e) {
                     LOGGER.error("FAILED TO REVIVE MISSILE {} {}", missile, e.getMessage());

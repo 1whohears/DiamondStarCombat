@@ -142,7 +142,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
         double t = -pr.dot(vr) / vr2;
         t = Math.max(0.0, Math.min(1.0, t));
         Vec3 closest = pr.add(vr.scale(t));
-        double closestDist = closest.length();
+        //double closestDist = closest.length();
         //if (closestDist < 100) System.out.println("t = "+t+" closest = "+closestDist+" "+closest);
         if (closest.lengthSqr() <= fuseDistSqr) {
             //explodeRelTargetNextTick(target.position().add(target.getDeltaMovement()).subtract(closest));

@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat;
 
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.integration.distant_players.DSCDistantPlayers;
 import com.onewhohears.dscombat.integration.minigame.DSCMiniGames;
@@ -21,7 +20,7 @@ public class DependencySafety {
 	public static void fmlCommonSetup() {
 		if (DSCombatMod.minigamesLoaded) DSCMiniGames.registerGames();
 		if (DSCombatMod.distantPlayersLoaded) DSCDistantPlayers.register();
-		if (DSCombatMod.tacViewLoaded) DSCTacViewMain.registerDSCRecorders();
+		if (DSCombatMod.tacViewLoaded) DSCTacViewMain.init();
 	}
 	
 	public static void serverDataGen(PackOutput output, Consumer<JsonPresetGenerator<?>> register) {

@@ -8,11 +8,9 @@ import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.tacview.common.core.EntityKeyframe;
 import com.onewhohears.tacview.common.core.EntityRecorders;
 import com.onewhohears.tacview.common.core.SessionManager;
-import com.onewhohears.tacview.common.event.TacviewEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +19,6 @@ public class DSCTacViewMain {
 
     public static void init() {
         registerDSCRecorders();
-        TacviewEvents.GET_PLAYER_VEHICLE_TO_SAVE_EVENT.register(DSCTacViewMain::onGetPlayerVehicleToSave);
-    }
-
-    private static @Nullable Entity onGetPlayerVehicleToSave(@NotNull Entity entity) {
-        if (entity.getRootVehicle() instanceof EntityVehicle vehicle) return vehicle;
-        return null;
     }
 
     public static void registerDSCRecorders() {

@@ -1413,7 +1413,8 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 
 	@Override
     protected void addPassenger(@NotNull Entity passenger) {
-        super.addPassenger(passenger);
+        if (passenger instanceof EntityPart part && getPartBySlotId(part.getSlot().getSlotId()) != null) return;
+		super.addPassenger(passenger);
 	}
 	
 	@Override
@@ -2422,6 +2423,12 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
     	if (!passengerCheck || hasControllingPassenger())
     		System.out.println(debug);
     }
+
+	public void debugIf(String debug, boolean condition) {
+		if (condition) {
+			System.out.println(debug);
+		}
+	}
     
     protected void debugTick() {
 		String side = "SERVER";
@@ -2517,6 +2524,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	protected void createRotableHitboxes(CompoundTag nbt) {
 		CompoundTag hitbox_data = nbt.getCompound("hitbox_data");
+		for (RotableHitbox hitbox : hitboxes) hitbox.discard();
 		hitboxes.clear();
 		hitboxes.addAll(getStats().createRotableHitboxes(this));
         for (RotableHitbox hitbox : hitboxes) {

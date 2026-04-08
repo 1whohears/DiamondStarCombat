@@ -89,11 +89,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable,
 	
 	@Override
 	public void tick() {
-		if (parent == null || parent.isRemoved()) {
-			discard();
-			return;
-		}
-		if (data == null || hitbox == null) {
+		if (shouldDiscard()) {
 			discard();
 			return;
 		}
@@ -103,6 +99,11 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable,
 		}
 		positionSelf();
 		firstTick = false;
+	}
+
+	protected boolean shouldDiscard() {
+		return parent == null || parent.isRemoved() || data == null || hitbox == null
+				|| (parent.tickCount == 0 && tickCount > 0);
 	}
 
     public boolean isClientSide() {
@@ -122,6 +123,10 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable,
 	}
 	
 	public Vec3 collide(Entity entity, AABB aabb, Vec3 move) {
+		if (shouldDiscard()) {
+			discard();
+			return move;
+		}
 		if (hitbox == null || getParent() == null) return move;
 		//System.out.println("==========");
 		//System.out.println("HANDLE COLLISION "+entity+" "+move+" "+this);
@@ -143,7 +148,7 @@ public class RotableHitbox extends Entity implements CustomExplosion, Revivable,
 		}
 		// FIXME 4.6 prevent entities from falling off when the chunks load
 		//System.out.println("==========");
-		//System.out.println("PRE COLLISION "+getHitboxName()+" "+getId()+" "+entity.isClientSide()+" "+getParent().tickCount+" "+entity.position()+" "+move+" "+entity.isOnGround());
+		//if (UtilEntity.isPlayer(entity)) System.out.println("PRE COLLISION "+getHitboxName()+" "+getId()+" "+entity.level().isClientSide+" "+tickCount+" "+getParent().tickCount+" "+entity.position()+" "+move+" "+entity.onGround());
 		//getParent().addEntityCollidedHitbox(entity);
 		if (isInside(entity)) {
 			//System.out.println("INSIDE");

@@ -164,6 +164,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot, previousThrottle;
 	private boolean wasInWater, hadControllingPassenger, wasPlayerOrBotRiding;
+	private boolean ignoreSyncMoveRot = false;
 	
 	protected boolean isDriverCameraLocked = false;
 	protected float throttle;
@@ -281,6 +282,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (nbt.contains("owner_id")) owner_uuid = nbt.getUUID("owner_id");
 		setPermMode(PermMode.values()[nbt.getInt("perm_mode")]);
 		maxXZ = nbt.getDouble("maxXZ");
+		ignoreSyncMoveRot = true;
 	}
 
 	@Override
@@ -1035,6 +1037,10 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	
 	private void syncMoveRot() {
 		if (!isClientSide() || tickCount % 10 != 0 || firstTick) return;
+		if (ignoreSyncMoveRot) {
+			ignoreSyncMoveRot = false;
+			return;
+		}
         new ToServerVehicleMoveRot(this).sendToServer();
 	}
 	

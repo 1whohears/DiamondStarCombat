@@ -6,7 +6,7 @@ import net.minecraft.network.FriendlyByteBuf;
 
 /**
  * used to centrally organize some vehicle's inputs.
- * see {@link com.onewhohears.dscombat.client.event.forgebus.ClientInputEvents} 
+ * see {@link com.onewhohears.dscombat.client.event.ClientInputEventHandlers}
  * to see how these inputs are sent to server.
  * @author 1whohears
  */

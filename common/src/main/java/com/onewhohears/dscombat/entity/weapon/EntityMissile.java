@@ -310,7 +310,6 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		tickSetMove();
 		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
-		++tickCount;
 	}
 	
 	public boolean dieIfNoTargetOutsideTickRange() {

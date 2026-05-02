@@ -18,6 +18,7 @@ allprojects {
         maven { url "https://repo.repsy.io/mvn/1whohears/1wholibs" }
         maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }
         maven { url "https://repo.repsy.io/mvn/1whohears/distant_players" }
+        maven { url "https://repo.repsy.io/mvn/1whohears/tactical_viewer" }
         maven {
             name = "Jared's maven"
             url = "https://maven.blamejared.com/"

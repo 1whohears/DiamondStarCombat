@@ -507,4 +507,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		return target;
 	}
 
+    @Override
+    public boolean isDiscardedButTicking() {
+        return isSimulateEnabled();
+    }
+
 }

@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -21,9 +20,11 @@ public class TrackEntityMissile<T extends TrackMissileStats> extends EntityMissi
 
 	@Override
 	public void tickGuide() {
+        System.out.println("tick guide "+this+" "+target+" "+targetPos);
 		if (!getWeaponStats().isActiveTrack() && !isClientSide()) notActiveCheckTarget();
 		guideToTarget();
 		if (!isClientSide() && tickCount % 10 == 0 && target instanceof EntityVehicle plane) {
+            System.out.println("plane tracked "+this);
 			plane.trackedByMissile(this);
 		}
 	}

@@ -4,10 +4,10 @@ import java.util.*;
 
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
+import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.PingEntityType;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
@@ -249,7 +249,9 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 			if (!target.getType().is(ModTags.EntityTypes.MISSILE)) continue;
 			handleMissile(radar, controller, vehiclePings, rangeSqr, target);
         }
-		for (EntityMissile<?> target : NonTickingMissileManager.getMissiles()) {
+        List<EntityMissile> missiles = SimulatedEntityManager.get().getAllOfClass(EntityMissile.class,
+                EntityMissile::isUnloaded);
+        for (EntityMissile target : missiles) {
 			handleMissile(radar, controller, vehiclePings, rangeSqr, target);
 		}
 	}

@@ -12,7 +12,6 @@ import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.dscombat.data.villager.DSCVillagerTrades;
-import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.entity.CustomExplosion;
@@ -103,7 +102,6 @@ public class CommonEventHandlers {
     }
 
     public static void onServerTickPre(MinecraftServer server) {
-        NonTickingMissileManager.serverTick(server);
         TrackableEntitiesManager.serverTick(server);
     }
 

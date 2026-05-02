@@ -3,9 +3,9 @@ package com.onewhohears.dscombat.integration.tacview;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
 import com.onewhohears.tacview.client.core.ClientPlayback;
 import com.onewhohears.tacview.common.core.EntityRecorder;
 import com.onewhohears.tacview.common.core.KeyframeValue;
@@ -97,7 +97,10 @@ public abstract class WeaponRecorder<K extends WeaponKeyframe<E>, E extends Enti
 
     public static class Missile extends WeaponRecorder<WeaponKeyframe.Missile, EntityMissile<?>> {
         public static final BiFunction<ServerLevel,UUID,EntityMissile<?>> MISSILE_GETTER =
-                (level, uuid) -> NonTickingMissileManager.getMissile(uuid);
+                (level, uuid) -> {
+                    if (SimulatedEntityManager.get().getByUUID(uuid) instanceof EntityMissile<?> m) return m;
+                    else return null;
+                };
         public Missile(@NotNull EntityMissile entity, int recordRate) {
             super(entity, recordRate, MISSILE_GETTER);
         }

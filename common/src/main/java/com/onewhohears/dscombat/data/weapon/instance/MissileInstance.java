@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 
+import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -27,6 +28,7 @@ public abstract class MissileInstance<T extends MissileStats> extends BulletInst
 		} else {
 			missile.setDeltaMovement(params.direction.scale(0.5));
 		}
+        SimulatedEntityManager.get().startSimulatingEntity(missile);
 		return missile;
 	}
 

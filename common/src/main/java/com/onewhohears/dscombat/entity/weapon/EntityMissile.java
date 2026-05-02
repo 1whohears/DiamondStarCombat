@@ -1,36 +1,33 @@
 package com.onewhohears.dscombat.entity.weapon;
 
-import java.util.List;
-import java.util.Objects;
-
-import com.onewhohears.dscombat.entity.Revivable;
-import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
-import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
-import com.onewhohears.dscombat.data.weapon.NonTickingMissileManager;
 import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
+import com.onewhohears.dscombat.entity.Revivable;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
+import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
+import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParticles;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -42,11 +39,15 @@ import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Objects;
 
 import static com.onewhohears.dscombat.data.radar.RadarInstance.RAY_CAST_TIMEOUT;
 
-public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> implements Revivable {
+public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> implements Revivable, SimulatedEntity {
 	
 	public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Vec3> TARGET_POS = SynchedEntityData.defineId(EntityMissile.class, DataSerializers.VEC3);
@@ -57,13 +58,13 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
     @Nullable
     protected Vec3 explodeRelTargetNextTick = null;
 	
-	private boolean discardedButTicking, didSonicBoom;
-	private int prevTickCount, tickCountRepeats, repeatCoolDown, lerpSteps;
+	private boolean didSonicBoom;
+	private int lerpSteps;
+    private long lastServerTick;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
 	
 	public EntityMissile(EntityType<? extends EntityMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
-		if (!isClientSide()) NonTickingMissileManager.addMissile(this);
 	}
 	
 	@Override
@@ -91,6 +92,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	@Override
 	public void tick() {
+        SimulatedEntity.super.onVanillaTick();
 		if (isClientSide()) clientTickParticles();
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
@@ -261,6 +263,27 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	public void checkDespawn() {
 		
 	}
+
+    @Override
+    public void onAlwaysTickPre(@NotNull MinecraftServer server) {
+
+    }
+
+    @Override
+    public void onSimulatedTick(@NotNull MinecraftServer server) {
+        tickOutRange();
+        DependencySafety.addExtraEntityToRDP(server, this);
+    }
+
+    @Override
+    public long getLastServerTick() {
+        return lastServerTick;
+    }
+
+    @Override
+    public void setLastServerTick(long tick) {
+        lastServerTick = tick;
+    }
 	
 	public void tickOutRange() {
 		xRotO = getXRot(); 
@@ -393,39 +416,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		entityData.set(TARGET_POS, pos);
 	}
 	
-	public void discardButTick() {
-		//System.out.println("discard but tick");
-		discard();
-		discardedButTicking = true;
-		repeatCoolDown = 5;
-	}
-	
-	@Override
-	public void kill() {
-		super.kill();
-		discardedButTicking = false;
-	}
-	
 	@Override
 	public void invokeRevive() {
         UtilVehicleEntity.revive(this);
-		discardedButTicking = false;
-	}
-
-	@Override
-	public boolean isDiscardedButTicking() {
-		return discardedButTicking;
-	}
-	
-	public int getTickCountRepeats() {
-		if (tickCount == prevTickCount) ++tickCountRepeats;
-		else if (tickCountRepeats > 0) tickCountRepeats = 0;
-		prevTickCount = tickCount;
-		if (repeatCoolDown > 0) {
-			--repeatCoolDown;
-			return 10;
-		}
-		return tickCountRepeats;
 	}
 	
 	@Override

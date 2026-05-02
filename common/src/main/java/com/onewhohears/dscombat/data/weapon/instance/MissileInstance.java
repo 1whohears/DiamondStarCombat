@@ -28,7 +28,6 @@ public abstract class MissileInstance<T extends MissileStats> extends BulletInst
 		} else {
 			missile.setDeltaMovement(params.direction.scale(0.5));
 		}
-        SimulatedEntityManager.get().startSimulatingEntity(missile);
 		return missile;
 	}
 

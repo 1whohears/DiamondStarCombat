@@ -12,7 +12,9 @@ import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.UtilSound;
+import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -113,6 +115,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 				direction, vehicle, false, false));
 		if (w == null) return false;
 		level.addFreshEntity(w);
+        if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);
 		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
@@ -136,6 +139,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 				pos, direction, vehicle, ignoreRecoil, true));
 		if (w == null) return false;
 		level.addFreshEntity(w);
+        if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);
 		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
 		if (vehicle != null && !ignoreRecoil) {

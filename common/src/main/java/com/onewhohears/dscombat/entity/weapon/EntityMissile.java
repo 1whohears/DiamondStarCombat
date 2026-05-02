@@ -294,12 +294,13 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 			kill();
 			return;
 		}
-		if (dieIfNoTargetOutsideTickRange() && targetPos == null) {
+		if (dieIfNoTargetOutsideTickRange() && targetPos == null && tickCount > 10) {
 			//System.out.println("no target pos");
 			kill();
 			return;
 		}
 		if (tickCount > 100 && getDeltaMovement().length() < 0.1) {
+            //System.out.println("slow");
 			kill();
 			return;
 		}

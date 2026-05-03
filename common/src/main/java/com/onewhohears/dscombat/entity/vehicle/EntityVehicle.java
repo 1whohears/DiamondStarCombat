@@ -45,6 +45,7 @@ import com.onewhohears.dscombat.util.math.UtilRandom;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.CustomAnimEntity;
+import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -62,6 +63,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -102,7 +104,9 @@ import java.util.function.Predicate;
  * @author 1whohears
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
-public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion, DrivingBody, TrampleHandler {
+public abstract class EntityVehicle
+        extends CustomAnimEntity<VehicleStats, VehicleClientStats>
+        implements IREmitter, CustomExplosion, DrivingBody, TrampleHandler, SimulatedEntity {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -165,6 +169,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot, previousThrottle;
 	private boolean wasInWater, hadControllingPassenger, wasPlayerOrBotRiding;
 	private boolean ignoreSyncMoveRot = false;
+    private long lastServerTick;
 	
 	protected boolean isDriverCameraLocked = false;
 	protected float throttle;
@@ -375,6 +380,7 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 	public void tick() {
 		if (UtilGeometry.vec3NAN(getDeltaMovement())) setDeltaMovement(Vec3.ZERO);
 		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
+        onVanillaTick();
 		super.tick();
 		// HANDLE SPECIAL INPUTS
 		controlSystem();
@@ -393,6 +399,76 @@ public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, Vehic
 		if (isClientSide()) clientTick();
 		else serverTick();
 	}
+
+    @Override
+    public void onAlwaysTickPre(@NotNull MinecraftServer server) {
+        tickCalcAIGoals(server);
+    }
+
+    @Override
+    public void onSimulatedTick(@NotNull MinecraftServer server) {
+        noPhysics = noPhysicsWhenSimulated();
+        tickPerformAIGoals(true);
+        controlSystem();
+        tickPhysics();
+        tickHitboxes();
+        tickParts();
+        tickWarnings();
+        serverTick();
+        tickSimulatedPassengers();
+    }
+
+    @Override
+    public void onVanillaTick() {
+        noPhysics = false;
+        if (!isClientSide()) {
+            SimulatedEntity.super.onVanillaTick();
+            tickPerformAIGoals(false);
+        }
+    }
+
+    /**
+     * determine what the AI vehicle's goals are here
+     */
+    public void tickCalcAIGoals(@NotNull MinecraftServer server) {
+
+    }
+
+    /**
+     * determine what inputs need to be pressed to achieve these goals.
+     * is only called on the server side.
+     * @param simulated true if the vehicle is in an unloaded chunk
+     */
+    public void tickPerformAIGoals(boolean simulated) {
+
+    }
+
+    @Override
+    public boolean isAutoStartSimulateOnVanillaTick() {
+        return false;
+    }
+
+    public boolean noPhysicsWhenSimulated() {
+        return true;
+    }
+
+    @Override
+    public long getLastServerTick() {
+        return lastServerTick;
+    }
+
+    @Override
+    public void setLastServerTick(long tick) {
+        lastServerTick = tick;
+    }
+
+    public void tickSimulatedPassengers() {
+        for (Entity entity : getPassengers()) {
+            //entity.rideTick(); // TODO should tickSimulatedPassengers call Entity#rideTick ?
+            entity.setDeltaMovement(Vec3.ZERO);
+            positionRider(entity);
+        }
+    }
 
 	@Override
 	public void calcAirMovement(QuaternionF q) {

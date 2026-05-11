@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
+import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
 import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -194,14 +195,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 				return;
 			}
 			//System.out.println("check can see");
-            DistantRayCastManager.distantRayCast((ServerLevel) getWorld(), this, target,
-                    (level, missile, targetEntity, pass) -> {
-                        if (!pass) {
-                            //System.out.println("target FAILED ray cast");
-                            resetTarget();
-                        }
-                    }, RAY_CAST_TIMEOUT, 550,
-                    getWeaponStats().getSeeThroWater()+1, getWeaponStats().getSeeThroBlock());
+            DistantVisibleManager.queryVisible(getServer(), this, target, MISSILE_SCAN_HANDLER);
 		}
         if (target == null) {
             //System.out.println("target is null 2");
@@ -217,6 +211,15 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		//System.out.println("guide to position");
 		guideToPosition();
 	}
+
+    // TODO bring back getWeaponStats().getSeeThroWater() and getWeaponStats().getSeeThroBlock()
+    public final DistantVisibleManager.VisibleRequestData MISSILE_SCAN_HANDLER = new DistantVisibleManager.VisibleRequestData(
+            0x2402, 30, 15, event -> {
+                if (!event.result().computeComplete || event.result().failed || event.result().passed) return;
+                if (event.entity1() instanceof EntityMissile<?> missile) {
+                    missile.resetTarget();
+                }
+    });
 
     public void resetTarget() {
         target = null;

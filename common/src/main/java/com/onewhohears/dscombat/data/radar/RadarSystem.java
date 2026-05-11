@@ -1,10 +1,5 @@
 package com.onewhohears.dscombat.data.radar;
 
-import java.util.*;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.command.DSCGameRules;
@@ -18,7 +13,6 @@ import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
-
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,6 +20,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
 
 /**
  * manages the radar/targeting/rwr system for {@link EntityVehicle}.
@@ -200,7 +198,7 @@ public class RadarSystem {
 	private void updateSemiActiveTrackMissiles() {
 		for (int i = 0; i < rockets.size(); ++i) {
 			EntityMissile<?> r = rockets.get(i);
-			if (r.isRemoved()) {
+			if (!r.isSimulateEnabled()) {
 				rockets.remove(i--);
 				continue;
 			}

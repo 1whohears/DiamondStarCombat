@@ -1,24 +1,20 @@
 package com.onewhohears.dscombat.data.radar;
 
-import java.util.*;
-
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
-import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
-import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
-import com.onewhohears.onewholibs.common.event.ServerHolder;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.dscombat.data.radar.RadarStats.PingEntityType;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModTags;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
+import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
-
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import net.minecraft.nbt.CompoundTag;
@@ -30,6 +26,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import java.util.*;
 
 public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
@@ -120,6 +118,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private void handleScanPlayerVehicle(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 										 double rangeSqr, boolean playersOnly, boolean vehiclesOnly,
 										 Entity entity, boolean isTargetPlayer) {
+        if (radar.getServer() == null) return;
 		if (entity.isSpectator()) return;
 		if (playersOnly && !isTargetPlayer) return;
 
@@ -142,7 +141,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		if (vehicle != null) stealth = vehicle.getStealth();
 		if (isFailBasicCheck(radar, pingEntity, stealth, false)) return;
 
-        DistantVisibleManager.queryVisible(ServerHolder.get(), radar, pingEntity, RADAR_SCAN_HANDLER);
+        DistantVisibleManager.queryVisible(radar.getServer(), radar, pingEntity, RADAR_SCAN_HANDLER);
 	}
 
     // TODO bring back getStats().getThroWaterRange() and getStats().getThroGroundRange()
@@ -160,11 +159,14 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
             LOGGER.error("Radar Visible Check Failed. Entity 1 is not a vehicle {} {}", event.entity1(), event.entity2());
             return;
         }
+
+        //LOGGER.info("RADAR VISIBLE RESULT {} {} {} {}", event.result(), event.approxObstructPos(), event.entity1(), event.entity2());
         List<RadarPing> vehiclePings = radarVehicle.radarSystem.getServerPings();
         if (!event.result().passed) {
             removePing(vehiclePings, targetEntity);
             return;
         }
+
         @Nullable Entity controllerEntity = radarVehicle.getControllingPlayerOrBot();
         @Nullable EntityVehicle targetVehicle = targetEntity instanceof EntityVehicle v ? v : null;
 

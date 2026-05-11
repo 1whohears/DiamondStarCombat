@@ -6,7 +6,11 @@ import com.onewhohears.dscombat.init.ModEntities;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.BiFunction;
 
 public class DSCDistantPlayers {
 
@@ -25,7 +29,8 @@ public class DSCDistantPlayers {
         ExtraInfoManager.register(ModEntities.POS_MISSILE.get(), DSCMissileRenderInfo::new);
     }
 
-    public static void addExtraEntity(@NotNull MinecraftServer server, @NotNull Entity entity, @NotNull ServerPlayer... visibleTo) {
+    public static void addExtraEntity(@NotNull MinecraftServer server, @NotNull Entity entity,
+                                      @NotNull ServerPlayer... visibleTo) {
         DPServerManager.get().addExtraTrackableEntity(server, entity, visibleTo);
     }
 

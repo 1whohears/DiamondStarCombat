@@ -14,7 +14,6 @@ import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
 import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
 import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -29,7 +28,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -45,8 +43,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
-
-import static com.onewhohears.dscombat.data.radar.RadarInstance.RAY_CAST_TIMEOUT;
 
 public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> implements Revivable, SimulatedEntity {
 	
@@ -274,8 +270,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 
     @Override
     public void onSimulatedTick(@NotNull MinecraftServer server) {
-        tickOutRange();
+        TrackableEntitiesManager.addTrackableEntity(this);
         DependencySafety.addExtraEntityToRDP(server, this);
+        tickOutRange();
     }
 
     @Override

@@ -11,8 +11,11 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public class DependencySafety {
@@ -30,7 +33,8 @@ public class DependencySafety {
 		}
 	}
 
-	public static void addExtraEntityToRDP(@NotNull MinecraftServer server, @NotNull Entity entity, @NotNull ServerPlayer... visibleTo) {
+	public static void addExtraEntityToRDP(@NotNull MinecraftServer server, @NotNull Entity entity,
+                                           @NotNull ServerPlayer... visibleTo) {
 		if (DSCombatMod.distantPlayersLoaded) DSCDistantPlayers.addExtraEntity(server, entity, visibleTo);
 	}
 

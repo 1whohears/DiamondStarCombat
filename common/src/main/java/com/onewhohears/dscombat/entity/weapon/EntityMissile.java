@@ -312,8 +312,20 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
 	}
-	
-	public boolean dieIfNoTargetOutsideTickRange() {
+
+    @Override
+    public boolean isStopSimulating() {
+        return SimulatedEntity.super.isStopSimulating() || tickCount > getMaxAge();
+    }
+
+    @Override
+    public void kill() {
+        super.kill();
+        TrackableEntitiesManager.removeTrackableEntity(this);
+        stopSimulate();
+    }
+
+    public boolean dieIfNoTargetOutsideTickRange() {
 		return true;
 	}
 	

@@ -355,7 +355,7 @@ public class RadarSystem {
 	}
 	
 	public boolean hasRadar() {
-		return radars.size() > 0;
+		return !radars.isEmpty();
 	}
 	
 	public boolean hasRadar(String id) {

@@ -63,13 +63,17 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	public void resetPings(List<RadarPing> vehiclePings, long currentTime) {
         pings.forEach((id, ping) -> {
             long timeDiff = currentTime - ping.gameTime();
-            if (timeDiff > Math.max(getStats().getScanRate()+10, 20)) {
+            if (timeDiff > getPingTimeOut()) {
                 removePing(vehiclePings, id);
             }
         });
         forRemoval.forEach(pings::remove);
         forRemoval.clear();
 	}
+
+    public int getPingTimeOut() {
+        return Math.max(getStats().getScanRate()*2, 40);
+    }
 	
 	public void tickUpdateTargets(EntityVehicle radar, List<RadarPing> vehiclePings) {
 		if (radar.getWorld().isClientSide()) return;
@@ -146,7 +150,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
     // TODO bring back getStats().getThroWaterRange() and getStats().getThroGroundRange()
     public final DistantVisibleManager.VisibleRequestData RADAR_SCAN_HANDLER = new DistantVisibleManager.VisibleRequestData(
-            0x2401, getStats().getScanRate()+10, getStats().getScanRate(), event -> {
+            0x2401, getPingTimeOut(), getStats().getScanRate(), event -> {
         if (!event.result().computeComplete || event.result().failed) {
             return;
         }

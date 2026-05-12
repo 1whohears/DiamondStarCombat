@@ -134,7 +134,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
 		@NotNull Entity pingEntity = vehicle != null ? vehicle : entity;
 		if (!isTargetPlayer) {
-			if (alreadyScanned(vehiclePings, pingEntity)) return;
+			//if (alreadyScanned(vehiclePings, pingEntity)) return;
 			if (vehicle == null) {
 				if (entity.getRootVehicle().getType().is(ModTags.EntityTypes.VEHICLE))
 					pingEntity = entity.getRootVehicle();
@@ -228,12 +228,12 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
         return null;
     }
 
-	private boolean alreadyScanned(List<RadarPing> vehiclePings, Entity entity) {
+	/*private boolean alreadyScanned(List<RadarPing> vehiclePings, Entity entity) {
 		for (RadarPing ping : vehiclePings)
 			if (ping.id == entity.getId())
 				return true;
 		return false;
-	}
+	}*/
 	
 	private void scanMobs(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea) {
 		//System.out.println("SCANNING MOBS");

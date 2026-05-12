@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.data.radar;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import org.jetbrains.annotations.NotNull;
 
 public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 
@@ -239,7 +239,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 				.setThroWaterRange(0f)
 				.setSensitivity(0.6f)
 				.setFieldOfView(-1f)
-				.setScanRate(10)
+				.setScanRate(20)
 				.setScanAircraft(true)
 				.setScanPlayers(true)
 				.setScanMobs(false)
@@ -254,7 +254,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Radars: "+DSCombatMod.MODID;
 	}
 

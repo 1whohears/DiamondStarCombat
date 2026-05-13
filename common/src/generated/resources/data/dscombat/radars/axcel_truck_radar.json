@@ -14,5 +14,6 @@
   "sensitivity": 0.8,
   "throGroundRange": 0.0,
   "throWaterRange": 0.0,
-  "useDistanceScale": true
+  "useDistanceScale": true,
+  "verticalRange": 2500.0
 }

@@ -58,6 +58,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "axcel_truck_radar")
 				.setRange(7000 * 8)
+				.setVerticalRange(2500)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
@@ -74,6 +75,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "ar20k")
 				.setRange(80000 * 8)
+				.setVerticalRange(4000)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
@@ -174,6 +176,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "air_scan_a")
 				.setRange(7000 * 8)
+				.setVerticalRange(3000)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
@@ -190,6 +193,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "air_scan_b")
 				.setRange(10000 * 8)
+				.setVerticalRange(3500)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
@@ -234,6 +238,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "ewr4000")
 				.setRange(20000 * 8)
+				.setVerticalRange(4000)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)

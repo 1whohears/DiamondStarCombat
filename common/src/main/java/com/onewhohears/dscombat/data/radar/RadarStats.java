@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 public class RadarStats extends JsonPresetStats {
 	
 	private final double range;
+	private final double verticalRange;
 	private final double sensitivity;
 	private final double fov;
 	private final int scanRate;
@@ -35,6 +36,7 @@ public class RadarStats extends JsonPresetStats {
 	public RadarStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		range = UtilParse.getFloatSafe(json, "range", 0);
+		verticalRange = UtilParse.getFloatSafe(json, "verticalRange", 2000);
 		sensitivity = UtilParse.getFloatSafe(json, "sensitivity", 0);
 		fov = UtilParse.getFloatSafe(json, "fov", 0);
 		scanRate = UtilParse.getIntSafe(json, "scanRate", 100);
@@ -65,6 +67,10 @@ public class RadarStats extends JsonPresetStats {
 	
 	public double getUnscaledRange() {
 		return range;
+	}
+
+	public double getVerticalRange() {
+		return verticalRange;
 	}
 
 	public double getFov() {
@@ -336,6 +342,9 @@ public class RadarStats extends JsonPresetStats {
 		}
 		public Builder setRange(float range) {
 			return setFloat("range", range);
+		}
+		public Builder setVerticalRange(float range) {
+			return setFloat("verticalRange", range);
 		}
 		public Builder setSensitivity(float sensitivity) {
 			return setFloat("sensitivity", sensitivity);

@@ -305,6 +305,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double stealth) {
+		if (Math.abs(radar.position().y - target.position().y) > getStats().getVerticalRange()) return false;
 		float dist = radar.distanceTo(target);
 		//System.out.println("dist = "+dist+" range = "+range);
 		if (getStats().getFov() == -1) {

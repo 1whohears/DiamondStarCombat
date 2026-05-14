@@ -13,6 +13,8 @@ import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
+import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
+import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -243,7 +245,11 @@ public class RadarSystem {
 	public Entity getSelectedTarget() {
 		if (selectedIndex == -1) return null;
 		int id = targets.get(selectedIndex).id;
-		return parent.getWorld().getEntity(id);
+		Entity entity = parent.getWorld().getEntity(id);
+		if (entity != null) return entity;
+		SimulatedEntity sim = SimulatedEntityManager.get().getById(id);
+		if (sim != null) return (Entity) sim;
+		return null;
 	}
 
 	@Nullable

@@ -64,10 +64,17 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
         pings.forEach((id, ping) -> {
             long timeDiff = currentTime - ping.gameTime();
             if (timeDiff > getPingTimeOut()) {
-                removePing(vehiclePings, id);
+                removePing(id);
             }
         });
-        forRemoval.forEach(pings::remove);
+        forRemoval.forEach(id -> {
+			for (int i = 0; i < vehiclePings.size(); ++i) {
+				if (vehiclePings.get(i).id == id) {
+					vehiclePings.remove(i--);
+				}
+			}
+			pings.remove(id);
+		});
         forRemoval.clear();
 	}
 
@@ -122,15 +129,29 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	private void handleScanPlayerVehicle(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 										 double rangeSqr, boolean playersOnly, boolean vehiclesOnly,
 										 Entity entity, boolean isTargetPlayer) {
-        if (radar.getServer() == null) return;
-		if (entity.isSpectator()) return;
-		if (playersOnly && !isTargetPlayer) return;
+        if (radar.getServer() == null || entity.isSpectator()) {
+			cancelVisibleQuery(radar, entity);
+			return;
+		}
+		if (playersOnly && !isTargetPlayer) {
+			cancelVisibleQuery(radar, entity);
+			return;
+		}
 
-		if (entity.distanceToSqr(radar) > rangeSqr) return;
-		if (!UtilEntity.getLevel(entity).dimension().equals(radar.getWorld().dimension())) return;
+		if (entity.distanceToSqr(radar) > rangeSqr) {
+			cancelVisibleQuery(radar, entity);
+			return;
+		}
+		if (!UtilEntity.getLevel(entity).dimension().equals(radar.getWorld().dimension())) {
+			cancelVisibleQuery(radar, entity);
+			return;
+		}
 
 		EntityVehicle vehicle = toTargetVehicle(entity, isTargetPlayer);
-		if (vehiclesOnly && vehicle == null) return;
+		if (vehiclesOnly && vehicle == null) {
+			cancelVisibleQuery(radar, entity);
+			return;
+		}
 
 		@NotNull Entity pingEntity = vehicle != null ? vehicle : entity;
 		if (!isTargetPlayer) {
@@ -143,15 +164,25 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
 		double stealth = 1;
 		if (vehicle != null) stealth = vehicle.getStealth();
-		if (isFailBasicCheck(radar, pingEntity, stealth, false)) return;
+		if (isFailBasicCheck(radar, pingEntity, stealth, false)) {
+			cancelVisibleQuery(radar, pingEntity);
+			return;
+		}
 
         DistantVisibleManager.queryVisible(radar.getServer(), radar, pingEntity, RADAR_SCAN_HANDLER);
 	}
 
+	private void cancelVisibleQuery(EntityVehicle radar, Entity target) {
+		removePing(target);
+		DistantVisibleManager.cancelFirstEntityQuery(radar.getId(), target.getId(), RADAR_SCAN_HANDLER.typeId());
+	}
+
     // TODO bring back getStats().getThroWaterRange() and getStats().getThroGroundRange()
+	private static final int REQUEST_ID = 0x2401;
     public final DistantVisibleManager.VisibleRequestData RADAR_SCAN_HANDLER = new DistantVisibleManager.VisibleRequestData(
-            0x2401, getPingTimeOut(), getStats().getScanRate(), event -> {
+			REQUEST_ID, getPingTimeOut(), getStats().getScanRate(), event -> {
         if (!event.result().computeComplete || event.result().failed) {
+			DistantVisibleManager.cancelFirstEntityQuery(event.data().entityId1, event.data().entityId2, REQUEST_ID);
             return;
         }
         @NotNull EntityVehicle radarVehicle;
@@ -160,14 +191,14 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
             radarVehicle = ev;
             targetEntity = event.entity2();
         }else {
+			DistantVisibleManager.cancelFirstEntityQuery(event.data().entityId1, event.data().entityId2, REQUEST_ID);
             LOGGER.error("Radar Visible Check Failed. Entity 1 is not a vehicle {} {}", event.entity1(), event.entity2());
             return;
         }
 
         //LOGGER.info("RADAR VISIBLE RESULT {} {} {} {}", event.result(), event.approxObstructPos(), event.entity1(), event.entity2());
-        List<RadarPing> vehiclePings = radarVehicle.radarSystem.getServerPings();
-        if (!event.result().passed) {
-            removePing(vehiclePings, targetEntity);
+        if (!event.result().passed || targetEntity.getRemovalReason() == Entity.RemovalReason.KILLED) {
+            removePing(targetEntity);
             return;
         }
 
@@ -177,7 +208,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
         PingEntityType pingEntityType = getPingEntityType(UtilEntity.isPlayer(targetEntity), targetVehicle, targetEntity);
 
         RadarPing p = new RadarPing(targetEntity, checkFriendly(controllerEntity, targetEntity), pingEntityType);
-        putPing(vehiclePings, p);
+        putPing(radarVehicle.radarSystem.getServerPings(), p);
         pings.put(p.id, new TimedPing(p, event.level().getGameTime()));
 
         if (targetVehicle != null && !radarVehicle.isAlliedTo(targetVehicle)) targetVehicle.lockedOnto(radarVehicle);
@@ -193,17 +224,12 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
         vehiclePings.add(ping);
     }
 
-    private void removePing(@NotNull List<RadarPing> vehiclePings, @NotNull Entity targetEntity) {
-        removePing(vehiclePings, targetEntity.getId());
+    private void removePing(@NotNull Entity targetEntity) {
+        removePing(targetEntity.getId());
     }
 
-    private void removePing(@NotNull List<RadarPing> vehiclePings, int targetEntityId) {
+    private void removePing(int targetEntityId) {
         forRemoval.add(targetEntityId);
-        for (int i = 0; i < vehiclePings.size(); ++i) {
-            if (vehiclePings.get(i).id == targetEntityId) {
-                vehiclePings.remove(i--);
-            }
-        }
     }
 
     private static @NotNull PingEntityType getPingEntityType(boolean player, @Nullable EntityVehicle targetVehicle,
@@ -287,6 +313,8 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		//System.out.println("RADAR CHECK "+ping);
 		if (radar.equals(ping)) return true;
 		//System.out.println("not equal");
+		if (ping.getRemovalReason() == Entity.RemovalReason.KILLED) return true;
+		//System.out.println("not dead");
 		if (!groundCheck(ping)) return true;
 		//System.out.println("passed ground check");
 		if (radar.isVehicleOf(ping)) return true;

@@ -43,7 +43,7 @@ public class TrackMissileInstance<T extends TrackMissileStats> extends MissileIn
 			setLaunchFail("error.dscombat.no_target_selected");
 			return null;
 		}
-		if (ping.entityType.isMissile()) {
+		/*if (ping.entityType.isMissile()) {
 			// FIXME currently cannot target missiles. this could be fixed...but balancing concerns.
 			// most missiles will ticked by the NonTickingMissileManager because they are outside render distances.
 			// these entities cannot be retrieved by level#getEntity(id) because they are not in loaded chunks.
@@ -55,7 +55,7 @@ public class TrackMissileInstance<T extends TrackMissileStats> extends MissileIn
 			// currently this mod allows for an incoming missile to be seen and for the radar to be turned off.
 			setLaunchFail("error.dscombat.cannot_target_missiles");
 			return null;
-		}
+		}*/
 		Entity target = radar.getSelectedTarget();
 		if (target == null) {
 			setLaunchFail("error.dscombat.no_target_selected");

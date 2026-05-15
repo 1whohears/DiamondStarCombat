@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
+import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
 import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -119,13 +120,14 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		}
 	}
 
-    protected void handleInterceptTarget() {
+    protected boolean handleInterceptTarget() {
         if (target != null && explodeRelTargetNextTick != null) {
-            //System.out.println("EXPLODING CAUSE NEXT TICK");
+            //System.out.println("EXPLODING CAUSE NEXT TICK "+isUnloaded());
             moveTo(target.position().add(explodeRelTargetNextTick));
             kill();
-            return;
+            return true;
         }
+		return false;
     }
 
     protected void checkInterceptTarget() {
@@ -179,7 +181,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
             resetTarget();
 			return;
 		}
-		if (target.isRemoved()) {
+		if (target.isRemoved() && !SimulatedEntityManager.get().isSimulated(target)) {
             //System.out.println("target is removed");
             resetTarget();
 			return;
@@ -218,6 +220,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
     });
 
     public void resetTarget() {
+		if (target != null) {
+			DistantVisibleManager.cancelFirstEntityQuery(getId(), target.getId(), MISSILE_SCAN_HANDLER.typeId());
+		}
         target = null;
         targetPos = null;
     }
@@ -288,6 +293,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	public void tickOutRange() {
 		xRotO = getXRot(); 
 		yRotO = getYRot();
+		if (handleInterceptTarget()) {
+			return;
+		}
 		// uses special kill override function. don't change to discard.
 		if (tickCount > getMaxAge()) { 
 			//System.out.println("old");
@@ -320,9 +328,16 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 
     @Override
     public void kill() {
+		boolean stopSimulate = isStopSimulating(); // needed to stop infinite loop I think
         super.kill();
-        TrackableEntitiesManager.removeTrackableEntity(this);
-        stopSimulate();
+		if (isUnloaded() && !stopSimulate) {
+			if (target != null && SimulatedEntityManager.get().isSimulated(target)) {
+				target.hurt(getExplosionDamageSource(), getDamage());
+				// TODO check if instanceof CustomExplosion and explode the hitboxes if vehicle
+			}
+		}
+		TrackableEntitiesManager.removeTrackableEntity(this);
+		stopSimulate();
     }
 
     public boolean dieIfNoTargetOutsideTickRange() {
@@ -384,7 +399,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		if (isRemoved()) return false;
+		if (isRemoved() && !isSimulateEnabled()) return false;
 		if (equals(source.getDirectEntity())) return false;
 		if (isAlliedTo(source.getEntity())) return false;
 		kill();

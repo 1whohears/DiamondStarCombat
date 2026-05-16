@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -30,7 +31,7 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 	
 	protected void checkExplode() {
 		if (getAge() < minExplodeAge()) return;
-		if (!getWorld().hasChunk(chunkPosition().x, chunkPosition().z)) return;
+		if (!UtilEntity.isChunkLoaded(getWorld(), chunkPosition())) return;
 		if (!isClientSide() && getExplosive()) {
 			Level.ExplosionInteraction interact = Level.ExplosionInteraction.NONE;
 			if (getTerrain() && getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS))

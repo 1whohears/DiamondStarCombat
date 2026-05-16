@@ -90,6 +90,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	@Override
 	public void tick() {
+		noPhysics = false;
         SimulatedEntity.super.onVanillaTick();
 		if (isClientSide()) clientTickParticles();
 		if (isTestMode()) return;
@@ -275,6 +276,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 
     @Override
     public void onSimulatedTick(@NotNull MinecraftServer server) {
+		noPhysics = true;
         TrackableEntitiesManager.addTrackableEntity(this);
         DependencySafety.addExtraEntityToRDP(server, this);
         tickOutRange();

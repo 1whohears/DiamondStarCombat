@@ -870,7 +870,7 @@ public abstract class EntityVehicle
         if (controller == null) return move;
         Vec3 nextPos = controller.position().add(move.normalize().scale(64));
         ChunkPos nextChunk = new ChunkPos(UtilGeometry.toBlockPos(nextPos));
-        if (getWorld().hasChunk(nextChunk.x, nextChunk.z)) return move;
+        if (UtilEntity.isChunkLoaded(getWorld(), nextChunk)) return move;
         LOGGER.warn("CHUNK AHEAD VEHICLE DOES NOT EXIST STOPPING MOVE FOR PILOT: {} | SPEED: {}",
                 controller.getScoreboardName(), move.length());
         // FIXME this seems to prevent players from getting ejected during lag, but lag back looks wierd.

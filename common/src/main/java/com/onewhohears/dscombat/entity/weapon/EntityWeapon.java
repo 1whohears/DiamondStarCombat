@@ -109,7 +109,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		tickSetAngle();
 		setPos(position().add(getDeltaMovement()).subtract(throughBlockMove));
         throughBlockMove = Vec3.ZERO;
-		checkInsideBlocks();
+		if (!isRemoved()) checkInsideBlocks();
 		tickAge();
 	}
 	

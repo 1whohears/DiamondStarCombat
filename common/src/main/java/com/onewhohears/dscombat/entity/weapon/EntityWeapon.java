@@ -224,7 +224,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
 	public void kill() {
-		if (!isClientSide() && tickCount > 4) {
+		if (!isClientSide() && tickCount > 4 && UtilEntity.isChunkLoaded(getWorld(), this)) {
             PacketHandler.sendToTrackers(new ToClientWeaponImpact(this, position()), this);
         }
 		super.kill();

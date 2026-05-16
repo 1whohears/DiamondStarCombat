@@ -31,8 +31,8 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 	
 	protected void checkExplode() {
 		if (getAge() < minExplodeAge()) return;
-		if (!UtilEntity.isChunkLoaded(getWorld(), chunkPosition())) return;
-		if (!isClientSide() && getExplosive()) {
+		if (!UtilEntity.isChunkLoaded(getWorld(), this)) return;
+		if (!isClientSide() && getExplosive() && canExplode()) {
 			Level.ExplosionInteraction interact = Level.ExplosionInteraction.NONE;
 			if (getTerrain() && getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS))
 				interact = Level.ExplosionInteraction.TNT;
@@ -42,6 +42,10 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 					getRadius(), getFire(), interact);
 			}
 		}
+	}
+
+	public boolean canExplode() {
+		return true;
 	}
 	
 	public int minExplodeAge() {

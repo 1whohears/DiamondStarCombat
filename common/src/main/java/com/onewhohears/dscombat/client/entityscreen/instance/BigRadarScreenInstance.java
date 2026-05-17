@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.entityscreen.instance;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -43,13 +43,13 @@ public class BigRadarScreenInstance extends RadarScreenInstance {
         drawLine(centerX, centerY, x2, y2, 9, 0xff00ff00);
         // render radar pings
         EntityVehicle vehicle = (EntityVehicle)entity;
-        List<RadarStats.RadarPing> pings = vehicle.radarSystem.getClientRadarPings();
+        List<RadarTarget> pings = vehicle.radarSystem.getClientRadarPings();
         int selected = vehicle.radarSystem.getClientSelectedPingIndex();
         int hover = DSCClientInputs.getRadarHoverIndex();
         // render all other pings first
         for (int i = 0; i < pings.size(); ++i) {
             if (i == selected || i == hover) continue;
-            RadarStats.RadarPing ping = pings.get(i);
+            RadarTarget ping = pings.get(i);
             drawPing(ping, vehicle, false, false);
         }
         // render hover next

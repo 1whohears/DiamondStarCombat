@@ -4,8 +4,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -66,14 +67,14 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                 127, 128, 127, 128);
         EntityVehicle vehicle = getVehicle();
         RadarSystem radar = vehicle.radarSystem;
-        List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
+        List<RadarTarget> pings = radar.getClientRadarPings();
         if (pings.isEmpty()) return;
         int selected = radar.getClientSelectedPingIndex();
         int hover = DSCClientInputs.getRadarHoverIndex();
         int centerX = guiX + 4 + 55, centerY = guiY + 66 + 55;
         boolean hovering = false;
         for (int i = 0; i < pings.size(); ++i) {
-            RadarStats.RadarPing ping = pings.get(i);
+            RadarTarget ping = pings.get(i);
             Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
             double dist = dp.horizontalDistance();
             double screen_dist = getScreenDistRatio(dist);
@@ -92,9 +93,9 @@ public class VehicleRadarScreen extends VehicleSubScreen {
 
     private static final int HALF_PS = PING_SIZE/2, SQUARE_PS = (PING_SIZE*2)^2, LEFT = PING_SIZE*3/2, UP = HALF_PS+10;
 
-    protected boolean drawPingAtPos(RadarStats.RadarPing ping, int x, int y, boolean selected, boolean hover,
-                                 @NotNull GuiGraphics graphics, int mouseX, int mouseY,
-                                 float partialTick, EntityVehicle vehicle) {
+    protected boolean drawPingAtPos(RadarTarget ping, int x, int y, boolean selected, boolean hover,
+                                    @NotNull GuiGraphics graphics, int mouseX, int mouseY,
+                                    float partialTick, EntityVehicle vehicle) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (selected) RenderSystem.setShaderTexture(0, RADAR_PING_SELECT);
         else if (hover) RenderSystem.setShaderTexture(0, RADAR_PING_HOVER);
@@ -134,7 +135,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (DSCClientInputs.isRadarHovering()) {
             RadarSystem radar = getVehicle().radarSystem;
-            List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
+            List<RadarTarget> pings = radar.getClientRadarPings();
             if (DSCClientInputs.getRadarHoverIndex() < pings.size()) {
                 radar.clientSelectTarget(pings.get(DSCClientInputs.getRadarHoverIndex()));
                 return true;
@@ -148,8 +149,8 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         vertical_widget_shift = 10;
         super.init();
         // RADAR MODE
-        positionWidgetGrid(CycleButton.<RadarStats.RadarMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
-                        .withValues(RadarStats.RadarMode.values())
+        positionWidgetGrid(CycleButton.<RadarFilterMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
+                        .withValues(RadarFilterMode.values())
                         .withInitialValue(DSCClientInputs.getPreferredRadarMode())
                         .create(0, 0, 20, 20,
                                 UtilMCText.translatable("ui.dscombat.radar_mode"),
@@ -204,7 +205,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                 guiX+left_padding+126, guiY+top_padding+82, 0x555555);
     }
 
-    private CycleButton.OnValueChange<RadarStats.RadarMode> onRadarModeCycle() {
+    private CycleButton.OnValueChange<RadarFilterMode> onRadarModeCycle() {
         return (button, value) -> DSCClientInputs.setPreferredRadarMode(value);
     }
 

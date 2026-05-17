@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.input;
 
-import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 
 import net.minecraft.client.Minecraft;
 
@@ -21,7 +21,7 @@ public class DSCClientInputs {
 	private static double LEAN_AMOUNT = 0;
 	
 	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
-	private static RadarMode PREFERRED_RADAR_MODE = RadarMode.ALL;
+	private static RadarFilterMode PREFERRED_RADAR_MODE = RadarFilterMode.ALL;
 	private static TargetMode TARGET_MODE = TargetMode.LOOK;
 	
 	private static boolean GIMBAL_MODE = false;
@@ -40,16 +40,16 @@ public class DSCClientInputs {
         return CAMERA_TRACK_TARGET;
     }
 
-	public static RadarMode getPreferredRadarMode() {
+	public static RadarFilterMode getPreferredRadarMode() {
 		return PREFERRED_RADAR_MODE;
 	}
 	
-	public static RadarMode cyclePreferredRadarMode() {
+	public static RadarFilterMode cyclePreferredRadarMode() {
 		PREFERRED_RADAR_MODE = PREFERRED_RADAR_MODE.cycle();
 		return PREFERRED_RADAR_MODE;
 	}
 	
-	public static void setPreferredRadarMode(RadarMode mode) {
+	public static void setPreferredRadarMode(RadarFilterMode mode) {
 		PREFERRED_RADAR_MODE = mode;
 	}
 	

@@ -1,31 +1,33 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
+import io.netty.util.collection.IntObjectHashMap;
+import io.netty.util.collection.IntObjectMap;
 import net.minecraft.network.FriendlyByteBuf;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ToClientRadarPings extends BaseS2CMessage {
 	
 	public final int id;
-	public final List<RadarPing> pings;
+	public final IntObjectMap<RadarTarget> pings;
 	
-	public ToClientRadarPings(int id, List<RadarPing> pings) {
+	public ToClientRadarPings(int id, IntObjectMap<RadarTarget> pings) {
 		this.id = id;
 		this.pings = pings;
 	}
 	
 	public ToClientRadarPings(FriendlyByteBuf buffer) {
 		id = buffer.readInt();
-		pings = new ArrayList<RadarPing>();
+		pings = new IntObjectHashMap<>();
 		int num = buffer.readInt();
-		for (int i = 0; i < num; ++i) pings.add(new RadarPing(buffer));
+		for (int i = 0; i < num; ++i) {
+			RadarTarget target = new RadarTarget(buffer);
+			pings.put(target.entityId, target);
+		}
 	}
 
     @Override

@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -67,7 +67,7 @@ public class ClientCameraEventHandlers {
         }
         if (isPilot) {
             boolean resetMousePressed = ClientInputManager.RESET_MOUSE.isPressed();
-            RadarStats.RadarPing target = vehicle.radarSystem.getClientSelectedPing();
+            RadarTarget target = vehicle.radarSystem.getClientSelectedPing();
             Entity camEntity = m.getCameraEntity();
             if (DSCClientInputs.isCameraTrackTarget() && target != null && !resetMousePressed && camEntity != null) {
                 Vec3 diff = target.pos.subtract(camEntity.getEyePosition(pt));

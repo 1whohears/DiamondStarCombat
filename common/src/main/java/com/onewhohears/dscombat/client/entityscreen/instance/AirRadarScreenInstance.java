@@ -5,7 +5,7 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
@@ -39,13 +39,13 @@ public class AirRadarScreenInstance extends RadarScreenInstance {
 	protected void updateTexture(Entity entity) {
 		clearDynamicPixels();
 		EntityVehicle vehicle = (EntityVehicle)entity;
-		List<RadarStats.RadarPing> pings = vehicle.radarSystem.getClientRadarPings();
+		List<RadarTarget> pings = vehicle.radarSystem.getClientRadarPings();
 		int selected = vehicle.radarSystem.getClientSelectedPingIndex();
 		int hover = DSCClientInputs.getRadarHoverIndex();
 		// render all other pings first
 		for (int i = 0; i < pings.size(); ++i) {
 			if (i == selected || i == hover) continue;
-			RadarStats.RadarPing ping = pings.get(i);
+			RadarTarget ping = pings.get(i);
 			if (!ping.terrainType.isAir()) continue;
 			drawPing(ping, vehicle, false, false);
 		}

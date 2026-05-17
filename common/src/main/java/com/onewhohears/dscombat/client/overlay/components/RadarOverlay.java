@@ -6,8 +6,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
-import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -46,7 +46,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (!radar.hasRadar()) return false;
         PARTIAL_TICK = partialTick;
         // LOOK AT PING DATA
-        List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
+        List<RadarTarget> pings = radar.getClientRadarPings();
         return !pings.isEmpty();
     }
 
@@ -59,7 +59,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         assert vehicle != null;
 
         RadarSystem radar = vehicle.radarSystem;
-        List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
+        List<RadarTarget> pings = radar.getClientRadarPings();
 
         int selected = radar.getClientSelectedPingIndex();
         int hover = DSCClientInputs.getRadarHoverIndex();
@@ -86,7 +86,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         int iconRight = size - icon_size - halfIconSize - sizeFraction;
         float min = 0.2f, max = 0.45f, max_dist = 1000f;
         for (int i = 0; i < pings.size(); ++i) {
-            RadarStats.RadarPing ping = pings.get(i);
+            RadarTarget ping = pings.get(i);
             // SCREEN
             Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
             double dist = dp.multiply(1, 0, 1).length();
@@ -147,7 +147,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (!hovering) DSCClientInputs.resetRadarHoverIndex();
         // LOOK AT PING DATA LAYER ORDER FIX
         if (hover != -1 && hover < pings.size()) {
-            RadarStats.RadarPing ping = pings.get(hover);
+            RadarTarget ping = pings.get(hover);
             int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
             int alt = UtilVehicleEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.getWorld());
             String text = dist + " | " + alt;

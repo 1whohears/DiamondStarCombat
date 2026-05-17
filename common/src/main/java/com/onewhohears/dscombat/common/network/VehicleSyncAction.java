@@ -3,7 +3,8 @@ package com.onewhohears.dscombat.common.network;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleSyncAction;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -65,7 +66,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new LandingGearAction(false));
         addVehicleSyncAction(new OpenStorageAction(0));
         addVehicleSyncAction(new OpenPartsAction());
-        addVehicleSyncAction(new SetRadarModeAction(RadarStats.RadarMode.ALL));
+        addVehicleSyncAction(new SetRadarModeAction(RadarFilterMode.ALL));
         addVehicleSyncAction(new PingSelectAction(null));
         addVehicleSyncAction(new ShootAction(-1, null, null));
         addVehicleSyncAction(new ToItemAction());
@@ -218,8 +219,8 @@ public abstract class VehicleSyncAction {
     }
 
     public static class SetRadarModeAction extends VehicleSyncAction {
-        private RadarStats.RadarMode mode;
-        public SetRadarModeAction(RadarStats.RadarMode mode) {
+        private RadarFilterMode mode;
+        public SetRadarModeAction(RadarFilterMode mode) {
             super(3);
             this.mode = mode;
         }
@@ -237,13 +238,13 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
-            return (buffer) -> mode = buffer.readEnum(RadarStats.RadarMode.class);
+            return (buffer) -> mode = buffer.readEnum(RadarFilterMode.class);
         }
     }
 
     public static class PingSelectAction extends VehicleSyncAction {
-        private RadarStats.RadarPing ping;
-        public PingSelectAction(RadarStats.RadarPing ping) {
+        private RadarTarget ping;
+        public PingSelectAction(RadarTarget ping) {
             super(4);
             this.ping = ping;
         }
@@ -261,15 +262,15 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
-            return (buffer) -> ping = new RadarStats.RadarPing(buffer);
+            return (buffer) -> ping = new RadarTarget(buffer);
         }
     }
 
     public static class ShootAction extends VehicleSyncAction {
         private int selectedWeaponIndex;
-        @Nullable private RadarStats.RadarPing ping;
+        @Nullable private RadarTarget ping;
         @Nullable private Vec3 targetPos;
-        public ShootAction(int selectedWeaponIndex, @Nullable RadarStats.RadarPing ping, @Nullable Vec3 targetPos) {
+        public ShootAction(int selectedWeaponIndex, @Nullable RadarTarget ping, @Nullable Vec3 targetPos) {
             super(5);
             this.selectedWeaponIndex = selectedWeaponIndex;
             this.ping = ping;
@@ -314,7 +315,7 @@ public abstract class VehicleSyncAction {
             return (buffer) -> {
                 selectedWeaponIndex = buffer.readInt();
                 if (buffer.readBoolean())
-                    ping = new RadarStats.RadarPing(buffer);
+                    ping = new RadarTarget(buffer);
                 else ping = null;
                 if (buffer.readBoolean())
                     targetPos = DataSerializers.VEC3.read(buffer);

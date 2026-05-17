@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.data.weapon.instance;
 
-import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
@@ -38,7 +38,7 @@ public class TrackMissileInstance<T extends TrackMissileStats> extends MissileIn
 			setLaunchFail("error.dscombat.no_radar");
 			return null;
 		}
-		RadarStats.RadarPing ping = radar.getServerSelectedPing();
+		RadarTarget ping = radar.getServerSelectedPing();
 		if (ping == null) {
 			setLaunchFail("error.dscombat.no_target_selected");
 			return null;

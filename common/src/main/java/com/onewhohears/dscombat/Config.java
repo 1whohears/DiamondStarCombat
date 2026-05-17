@@ -7,7 +7,7 @@ import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -32,7 +32,7 @@ public class Config {
 		public final ForgeConfigSpec.ConfigValue<String> passengerSoundPack;
 		// DISPLAY
 		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
-		public final ForgeConfigSpec.EnumValue<RadarMode> defaultRadarMode;
+		public final ForgeConfigSpec.EnumValue<RadarFilterMode> defaultRadarMode;
 		// RENDER DISTANCES
 		public final ForgeConfigSpec.IntValue maxRenderRackMissileNum;
 		public final ForgeConfigSpec.DoubleValue renderWeaponRackDistance;
@@ -61,7 +61,7 @@ public class Config {
 			radarPingOverlaySize = builder
 					.defineInRange("radarPingOverlaySize", 100, 10, 1000);
 			defaultRadarMode = builder
-					.defineEnum("defaultRadarMode", RadarMode.ALL);
+					.defineEnum("defaultRadarMode", RadarFilterMode.ALL);
 			builder.pop();
 			builder.push("mouse-joystick-settings");
 			mouseModeMaxRadius = builder

@@ -373,6 +373,4 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		return getStatsId().equals(id) && slotId.equals(this.slotId);
 	}
 
-    public record TimedPing(RadarTarget ping, long gameTime) {}
-
 }

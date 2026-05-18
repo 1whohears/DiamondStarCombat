@@ -127,7 +127,13 @@ public class RadarSystem {
     }
 
     public void removeTarget(int entityId) {
-        forRemoval.add(entityId);
+        RadarTarget target = targets.get(entityId);
+        if (target == null) return;
+        long currentTime = parent.getWorld().getGameTime();
+        long timeDiff = currentTime - target.getUpdateTime();
+        if (timeDiff > target.getExpireTime()) {
+            forRemoval.add(entityId);
+        }
     }
 
 	protected void updateVisibility() {
@@ -206,11 +212,11 @@ public class RadarSystem {
 	}
 	
 	private void refreshDataLink() {
-        targets.entrySet().removeIf(entry -> entry.getValue().isShared());
-        for (RadarTarget radarTarget : dataLinkBuffer) {
-            RadarTarget old = targets.get(radarTarget.entityId);
-            if (old != null) old.updateFromDataLink(radarTarget);
-            else targets.put(radarTarget.entityId, radarTarget);
+        for (RadarTarget dataLinkTarget : dataLinkBuffer) {
+            RadarTarget old = targets.get(dataLinkTarget.entityId);
+            if (old != null) old.updateFromDataLink(dataLinkTarget);
+            else targets.put(dataLinkTarget.entityId, dataLinkTarget);
+            forRemoval.remove(dataLinkTarget.entityId);
         }
 		dataLinkBuffer.clear();
 	}

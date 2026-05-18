@@ -13,7 +13,7 @@ public class RadarTarget {
     public boolean isFriendly;
     public PingTerrainType terrainType;
     public PingEntityType entityType;
-    private long updateTime;
+    private long updateTime, radarUpdateTime;
     private boolean isShared;
     private Vec3 clientPos;
     private int expireTime;
@@ -29,20 +29,30 @@ public class RadarTarget {
     }
 
     public void updateFromRadar(RadarTarget newTarget) {
-        updateFromDataLink(newTarget);
-        isShared = false;
+        update(newTarget, false);
     }
 
     public void updateFromDataLink(RadarTarget newTarget) {
+        update(newTarget, true);
+    }
+
+    protected void update(RadarTarget newTarget, boolean dataLink) {
         if (this.entityId != newTarget.entityId) return;
         if (this.updateTime >= newTarget.updateTime) return;
         this.pos = newTarget.pos;
         this.isFriendly = newTarget.isFriendly;
         this.terrainType = newTarget.terrainType;
         this.entityType = newTarget.entityType;
-        this.isShared = true;
         this.updateTime = newTarget.updateTime;
         if (newTarget.expireTime > this.expireTime) this.expireTime = newTarget.expireTime;
+        if (dataLink) {
+            if (this.radarUpdateTime - this.updateTime > this.expireTime) {
+                this.isShared = true;
+            }
+        } else {
+            this.radarUpdateTime = this.updateTime;
+            this.isShared = false;
+        }
     }
 
     public RadarTarget(int id, Vec3 pos, boolean isFriendly, boolean isShared,

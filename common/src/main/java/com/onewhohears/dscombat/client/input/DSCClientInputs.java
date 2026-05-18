@@ -12,7 +12,7 @@ public class DSCClientInputs {
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
 	
-	private static int hoverIndex = -1;
+	private static int hoverId = -1;
 	private static double radarDisplayRange = 10000;
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
@@ -98,28 +98,28 @@ public class DSCClientInputs {
 		mouseCenterY = y;
 	}
 	/**
-	 * @return the index of the ping the client's mouse is hovering over. -1 if {@link DSCClientInputs#isRadarHovering} is true.
+	 * @return the id of the ping the client's mouse is hovering over. -1 if {@link DSCClientInputs#isRadarHovering} is true.
 	 */
-	public static int getRadarHoverIndex() {
-		return hoverIndex;
+	public static int getRadarHoverId() {
+		return hoverId;
 	}
 	/**
-	 * @param index the index of the ping the client's mouse is hovering over
+	 * @param id the index of the ping the client's mouse is hovering over
 	 */
-	public static void setRadarHoverIndex(int index) {
-		hoverIndex = index;
+	public static void setRadarHoverId(int id) {
+		hoverId = id;
 	}
 	/**
 	 * called if the client's mouse isn't hovering over any pings on the hud
 	 */
-	public static void resetRadarHoverIndex() {
-		hoverIndex = -1;
+	public static void resetRadarHoverId() {
+		hoverId = -1;
 	}
 	/**
 	 * @return is the client's mouse hovering over a radar ping on the hud
 	 */
 	public static boolean isRadarHovering() {
-		return hoverIndex != -1;
+		return hoverId != -1;
 	}
 	/**
 	 * @return the max distance of a radar ping client radar screens will display

@@ -38,7 +38,7 @@ public class TrackMissileInstance<T extends TrackMissileStats> extends MissileIn
 			setLaunchFail("error.dscombat.no_radar");
 			return null;
 		}
-		RadarTarget ping = radar.getServerSelectedPing();
+		RadarTarget ping = radar.getServerSelectedTarget();
 		if (ping == null) {
 			setLaunchFail("error.dscombat.no_target_selected");
 			return null;
@@ -56,7 +56,7 @@ public class TrackMissileInstance<T extends TrackMissileStats> extends MissileIn
 			setLaunchFail("error.dscombat.cannot_target_missiles");
 			return null;
 		}*/
-		Entity target = radar.getSelectedTarget();
+		Entity target = radar.getSelectedTargetEntity();
 		if (target == null) {
 			setLaunchFail("error.dscombat.no_target_selected");
 			return null;

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.entityscreen.instance;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
@@ -38,22 +38,23 @@ public class GroundRadarScreenInstance extends RadarScreenInstance {
 	protected void updateTexture(Entity entity) {
 		clearDynamicPixels();
 		EntityVehicle vehicle = (EntityVehicle)entity;
-		List<RadarTarget> pings = vehicle.radarSystem.getClientRadarPings();
-		int selected = vehicle.radarSystem.getClientSelectedPingIndex();
-		int hover = DSCClientInputs.getRadarHoverIndex();
+        Collection<RadarTarget> targets = vehicle.radarSystem.getClientRadarPings();
+		int selected = vehicle.radarSystem.getClientSelectedTargetId();
+		int hover = DSCClientInputs.getRadarHoverId();
 		// render all other pings first
-		for (int i = 0; i < pings.size(); ++i) {
-			if (i == selected || i == hover) continue;
-			RadarTarget ping = pings.get(i);
-			if (ping.terrainType.isAir()) continue;
-			drawPing(ping, vehicle, false, false);
-		}
-		// render hover next
-		if (hover > -1 && hover < pings.size() && !pings.get(hover).terrainType.isAir()) 
-			drawPing(pings.get(hover), vehicle, false, true);
-		// render selected last
-		if (selected > -1 && selected < pings.size() && !pings.get(selected).terrainType.isAir()) 
-			drawPing(pings.get(selected), vehicle, true, false);
+        for (RadarTarget target : targets) {
+            if (target.entityId == selected || target.entityId == hover) continue;
+            if (target.terrainType.isAir()) continue;
+            drawPing(target, vehicle, false, false);
+        }
+        // render hover next
+        RadarTarget hoverTarget = vehicle.radarSystem.getClientTarget(hover);
+        if (hoverTarget != null && hoverTarget.terrainType.isAir())
+            drawPing(hoverTarget, vehicle, false, true);
+        // render selected last
+        RadarTarget selectedTarget = vehicle.radarSystem.getClientTarget(selected);
+        if (selectedTarget != null && selectedTarget.terrainType.isAir())
+            drawPing(selectedTarget, vehicle, true, false);
 	}
 	
 	@Override

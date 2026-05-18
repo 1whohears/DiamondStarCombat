@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Collection;
 
 public class RadarOverlay extends VehicleOverlayComponent {
     public static final ResourceLocation PING_HUD = new ResourceLocation(DSCombatMod.MODID,
@@ -46,7 +46,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
         if (!radar.hasRadar()) return false;
         PARTIAL_TICK = partialTick;
         // LOOK AT PING DATA
-        List<RadarTarget> pings = radar.getClientRadarPings();
+        Collection<RadarTarget> pings = radar.getClientRadarPings();
         return !pings.isEmpty();
     }
 
@@ -59,10 +59,10 @@ public class RadarOverlay extends VehicleOverlayComponent {
         assert vehicle != null;
 
         RadarSystem radar = vehicle.radarSystem;
-        List<RadarTarget> pings = radar.getClientRadarPings();
+        Collection<RadarTarget> targets = radar.getClientRadarPings();
 
-        int selected = radar.getClientSelectedPingIndex();
-        int hover = DSCClientInputs.getRadarHoverIndex();
+        int selected = radar.getClientSelectedTargetId();
+        int hover = DSCClientInputs.getRadarHoverId();
         // PINGS ON SCREEN AND HUD
         Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 view = cam.getPosition();
@@ -85,22 +85,21 @@ public class RadarOverlay extends VehicleOverlayComponent {
         int iconMid = halfSize - halfIconSize;
         int iconRight = size - icon_size - halfIconSize - sizeFraction;
         float min = 0.2f, max = 0.45f, max_dist = 1000f;
-        for (int i = 0; i < pings.size(); ++i) {
-            RadarTarget ping = pings.get(i);
+        for (RadarTarget target : targets) {
             // SCREEN
-            Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
+            Vec3 dp = target.getPosForClient().subtract(vehicle.position());
             double dist = dp.multiply(1, 0, 1).length();
             int hud_ping_offset = 0;
-            if (i == selected) {
+            if (target.entityId == selected) {
                 //color = 0xff0000;
                 hud_ping_offset = size * 4;
-            } else if (i == hover) {
+            } else if (target.entityId == hover) {
                 //color = 0xffff00;
                 assert getPlayer() != null;
                 hud_ping_offset = HUD_PING_ANIM[(getPlayer().tickCount/6)%6] * size;
             }
             // HUD
-            float[] screen_pos = UtilGeometry.worldToScreenPos(ping.getPosForClient(),
+            float[] screen_pos = UtilGeometry.worldToScreenPos(target.getPosForClient(),
                     view_mat, proj_mat, screenWidth, screenHeight);
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
             float x_win = screen_pos[0], y_win = screen_pos[1];
@@ -109,30 +108,30 @@ public class RadarOverlay extends VehicleOverlayComponent {
             graphics.pose().pushPose();
             graphics.pose().translate(x_pos, y_pos, 0);
             graphics.pose().scale(scale, scale, scale);
-            if (!ping.entityType.isMissile()) {
+            if (!target.entityType.isMissile()) {
                 RenderSystem.setShaderTexture(0, PING_HUD);
                 graphics.blit(PING_HUD,
                         0, 0, 0, hud_ping_offset,
                         size, size, size, size * 5);
             }
             RenderSystem.setShaderTexture(0, PING_ICONS);
-            if (ping.entityType.isMissile()) {
+            if (target.entityType.isMissile()) {
                 graphics.blit(PING_ICONS, iconMid, iconMid, icon_size, icon_size,
                         ICON_SIZE * 5, ICON_SIZE,
                         ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             }
             graphics.blit(PING_ICONS, iconLeft, iconMid, icon_size, icon_size,
-                    ping.entityType.getIconIndex() * ICON_SIZE, 0,
+                    target.entityType.getIconIndex() * ICON_SIZE, 0,
                     ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             graphics.blit(PING_ICONS, iconRight, iconMid, icon_size, icon_size,
-                    ping.terrainType.getIconIndex() * ICON_SIZE, 0,
+                    target.terrainType.getIconIndex() * ICON_SIZE, 0,
                     ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
-            if (ping.isFriendly) {
+            if (target.isFriendly) {
                 graphics.blit(PING_ICONS, iconMid, iconLeft, icon_size, icon_size,
                         ICON_SIZE * 4, 0,
                         ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
             }
-            if (ping.isShared()) {
+            if (target.isShared()) {
                 graphics.blit(PING_ICONS, iconMid, iconRight, icon_size, icon_size,
                         ICON_SIZE * 9, 0,
                         ICON_SIZE, ICON_SIZE, ICON_WIDTH, ICON_SIZE);
@@ -140,16 +139,16 @@ public class RadarOverlay extends VehicleOverlayComponent {
             graphics.pose().popPose();
             if (!hovering && cursorX < x_win+adj && cursorX > x_win-adj
                     && cursorY < y_win+adj && cursorY > y_win-adj) {
-                DSCClientInputs.setRadarHoverIndex(i);
+                DSCClientInputs.setRadarHoverId(target.entityId);
                 hovering = true;
             }
         }
-        if (!hovering) DSCClientInputs.resetRadarHoverIndex();
+        if (!hovering) DSCClientInputs.resetRadarHoverId();
         // LOOK AT PING DATA LAYER ORDER FIX
-        if (hover != -1 && hover < pings.size()) {
-            RadarTarget ping = pings.get(hover);
-            int dist = (int) ping.getPosForClient().distanceTo(vehicle.position());
-            int alt = UtilVehicleEntity.getDistFromSeaLevel(ping.getPosForClient().y, vehicle.getWorld());
+        RadarTarget hoverTarget = vehicle.radarSystem.getClientTarget(hover);
+        if (hoverTarget != null) {
+            int dist = (int) hoverTarget.getPosForClient().distanceTo(vehicle.position());
+            int alt = UtilVehicleEntity.getDistFromSeaLevel(hoverTarget.getPosForClient().y, vehicle.getWorld());
             String text = dist + " | " + alt;
             int color = 0xffff00;
             WeaponInstance<?> weapon = null;

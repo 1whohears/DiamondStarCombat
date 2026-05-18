@@ -35,7 +35,7 @@ public class RadarKeyframeValue<E extends EntityVehicle> extends KeyframeValue.L
         boolean isShared = UtilParse.getBooleanSafe(pingJson, "isShared", false);
         PingTerrainType terrainType = UtilParse.getEnumSafe(pingJson, "terrainType", PingTerrainType.class);
         PingEntityType entityType = UtilParse.getEnumSafe(pingJson, "entityType", PingEntityType.class);
-        return new RadarTarget(id, pos, isFriendly, isShared, terrainType, entityType, 0);
+        return new RadarTarget(id, pos, isFriendly, isShared, terrainType, entityType, 0, 40);
     }
 
     @Override

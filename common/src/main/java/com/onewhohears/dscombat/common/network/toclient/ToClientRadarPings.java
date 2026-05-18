@@ -39,7 +39,7 @@ public class ToClientRadarPings extends BaseS2CMessage {
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeInt(id);
 		buffer.writeInt(pings.size());
-		for (int i = 0; i < pings.size(); ++i) pings.get(i).write(buffer);
+        pings.forEach((id, target) -> target.write(buffer));
 	}
 
 	@Override

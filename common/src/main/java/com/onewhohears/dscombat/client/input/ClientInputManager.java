@@ -7,7 +7,6 @@ import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -250,9 +249,7 @@ public class ClientInputManager {
         // SELECT RADAR PING
         RadarSystem radar = vehicle.radarSystem;
         if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {
-            List<RadarTarget> pings = radar.getClientRadarPings();
-            if (DSCClientInputs.getRadarHoverIndex() < pings.size())
-                radar.clientSelectTarget(pings.get(DSCClientInputs.getRadarHoverIndex()));
+            radar.clientSelectTarget(DSCClientInputs.getRadarHoverId());
         }
         // CYCLE PING
         if (PING_CYCLE.isInitPressed()) radar.clientSelectNextTarget();

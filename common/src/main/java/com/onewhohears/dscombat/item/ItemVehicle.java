@@ -257,4 +257,9 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
     public @NotNull Item asItem() {
         return this;
     }
+
+    @Override
+    public boolean canFitInsideContainerItems() {
+        return false;
+    }
 }

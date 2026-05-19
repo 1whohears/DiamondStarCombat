@@ -64,7 +64,7 @@ public class PositionMarkerManager extends Serializable {
     }
 
     public void addTempMarker(@NotNull ServerPlayer player, @NotNull Vec3 position) {
-        addMarker(player.getScoreboardName()+":"+MARKER_ID_COUNTER+1, position,
+        addMarker(player.getScoreboardName()+":"+(MARKER_ID_COUNTER+1), position,
                 UtilEntity.getLevel(player).dimension(), player.getUUID(), MarkerType.TEMP);
     }
 

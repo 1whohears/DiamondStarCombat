@@ -53,6 +53,7 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
         graphics.pose().popPose();
         Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
         int size = 20;
+        float min = 0.3f, max = 0.7f, max_dist = 4000;
         // RENDER EACH
         Set<Integer> visibleIds = PositionMarkerManager.getClientVisibleMarkerIds(m);
         for (int id : visibleIds) {
@@ -63,8 +64,9 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
                     view_mat, proj_mat, screenWidth, screenHeight);
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
             float x_win = screen_pos[0], y_win = screen_pos[1];
-            float scale = 1;
-            float adj = size*scale, x_pos = x_win-adj*0.5f, y_pos = y_win-adj;
+            double distance = cam.getPosition().distanceTo(marker.getPosition());
+            float scale = (float) Math.max(min, max-(distance/max_dist*(max-min)));
+            float adj = size, x_pos = x_win-adj*0.5f, y_pos = y_win-adj;
             graphics.pose().pushPose();
             graphics.pose().translate(x_pos, y_pos, 0);
             graphics.pose().scale(scale, scale, scale);
@@ -74,6 +76,8 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
             graphics.setColor(1, 1, 1, 1);
             graphics.pose().translate(adj*0.5f, adj, 0);
             graphics.drawCenteredString(m.font, UtilMCText.literal(marker.getName()).setStyle(RED), 0, 0, 0);
+            graphics.pose().translate(0, 10, 0);
+            graphics.drawCenteredString(m.font, UtilMCText.literal((int)distance+"").setStyle(RED), 0, 0, 0);
             graphics.pose().popPose();
         }
     }

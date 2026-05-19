@@ -13,18 +13,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class ToClientPlayerMarkers extends BaseS2CMessage {
+public class ToClientPlayerMarkerData extends BaseS2CMessage {
 
     private final UUID uuid;
     private final FriendlyByteBuf bufferCopy;
 
-    public ToClientPlayerMarkers(@NotNull UUID playerUUID) {
+    public ToClientPlayerMarkerData(@NotNull UUID playerUUID) {
         uuid = playerUUID;
         bufferCopy = new FriendlyByteBuf(Unpooled.buffer());
         PositionMarkerManager.getServer().getPlayerData(uuid).writePacket(bufferCopy);
     }
 
-    public ToClientPlayerMarkers(FriendlyByteBuf buffer) {
+    public ToClientPlayerMarkerData(FriendlyByteBuf buffer) {
         uuid = buffer.readUUID();
         int bytes = buffer.readInt();
         ByteBuf buf = buffer.readBytes(bytes);
@@ -48,7 +48,7 @@ public class ToClientPlayerMarkers extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return PacketHandler.S2C_PLAYER_MARKERS;
+        return PacketHandler.S2C_PLAYER_MARKER_DATA;
     }
 
 }

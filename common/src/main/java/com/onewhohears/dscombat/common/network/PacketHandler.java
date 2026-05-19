@@ -42,6 +42,8 @@ public final class PacketHandler {
             "c2s_vehicle_sync_action", ToServerVehicleSyncAction::new);
     public static final MessageType C2S_CRAFT_WEAPON_PART = INSTANCE.registerC2S(
             "c2s_craft_weapon_part", ToServerCraftWeaponPart::new);
+    public static final MessageType C2S_REQ_POS_MARKERS = INSTANCE.registerC2S(
+            "c2s_request_pos_markers", ToServerRequestPositionMarkers::new);
 
     public static final MessageType S2C_VEHICLE_CONTROL = INSTANCE.registerS2C(
             "s2c_vehicle_control", ToClientVehicleControl::new);
@@ -75,8 +77,10 @@ public final class PacketHandler {
             "s2c_on_shoot", ToClientOnShoot::new);
     public static final MessageType S2C_SET_TARGET_POS = INSTANCE.registerS2C(
             "s2c_set_target_pos", ToClientSetTargetPos::new);
-    public static final MessageType S2C_PLAYER_MARKERS = INSTANCE.registerS2C(
-            "s2c_player_markers", ToClientPlayerMarkers::new);
+    public static final MessageType S2C_PLAYER_MARKER_DATA = INSTANCE.registerS2C(
+            "s2c_player_marker_data", ToClientPlayerMarkerData::new);
+    public static final MessageType S2C_SEND_POS_MARKERS = INSTANCE.registerS2C(
+            "s2c_send_pos_markers", ToClientPositionMarkers::new);
 
     public static LevelChunk getEntityChunk(@NotNull Entity entity) {
         return UtilEntity.getLevel(entity).getChunkAt(entity.blockPosition());

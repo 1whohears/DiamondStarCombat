@@ -2,7 +2,8 @@ package com.onewhohears.dscombat.common.core;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.onewhohears.dscombat.common.network.toclient.ToClientPlayerMarkers;
+import com.onewhohears.dscombat.common.network.toclient.ToClientPlayerMarkerData;
+import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPositionMarkers;
 import com.onewhohears.onewholibs.common.core.Serializable;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,6 +17,8 @@ public class PlayerPositionMarkers extends Serializable {
 
     private UUID uuid;
     private final Set<Integer> visibleIds = new HashSet<>();
+    private final Set<Integer> requested = new HashSet<>();
+    private final Set<Integer> toRequest = new HashSet<>();
 
     public void onServerTick(@NotNull MinecraftServer server, @NotNull PositionMarkerManager manager,
                              @NotNull ServerPlayer player) {
@@ -24,8 +27,19 @@ public class PlayerPositionMarkers extends Serializable {
         if (initVisibleNum != visibleIds.size()) setDirty();
         if (isDirty()) {
             resetDirty();
-            new ToClientPlayerMarkers(uuid).sendTo(player);
+            new ToClientPlayerMarkerData(uuid).sendTo(player);
         }
+    }
+
+    public void onClientTick() {
+        toRequest.clear();
+        for (int id : visibleIds) {
+            if (!PositionMarkerManager.getClient().hasMarker(id) && !requested.contains(id)) {
+                toRequest.add(id);
+                requested.add(id);
+            }
+        }
+        if (!toRequest.isEmpty()) new ToServerRequestPositionMarkers(toRequest).sendToServer();
     }
 
     public void setVisible(int id) {
@@ -67,5 +81,9 @@ public class PlayerPositionMarkers extends Serializable {
 
     public UUID getUUID() {
         return uuid;
+    }
+
+    public Set<Integer> getVisibleIds() {
+        return visibleIds;
     }
 }

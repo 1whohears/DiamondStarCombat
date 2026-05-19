@@ -47,6 +47,7 @@ public class CommonEventHandlers {
     public static void init() {
         OWLEvents.GET_JSON_PRESET_LISTENERS.register(CommonEventHandlers::registerPresetListeners);
         LifecycleEvent.SERVER_STOPPING.register(CommonEventHandlers::serverStoppingEvent);
+        LifecycleEvent.SERVER_STARTING.register(CommonEventHandlers::onServerStarting);
         LifecycleEvent.SETUP.register(CommonEventHandlers::onSetup);
         TickEvent.SERVER_PRE.register(CommonEventHandlers::onServerTickPre);
         TickEvent.PLAYER_POST.register(CommonEventHandlers::onPlayerTick);
@@ -117,6 +118,10 @@ public class CommonEventHandlers {
 
     public static void serverStoppingEvent(MinecraftServer server) {
         RotableHitboxes.onServerStop();
+    }
+
+    private static void onServerStarting(MinecraftServer server) {
+        PositionMarkerManager.initServer();
     }
 
     public static void onReadConfig(ModConfig modConfig) {

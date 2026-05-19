@@ -38,7 +38,7 @@ public class RadarOverlay extends VehicleOverlayComponent {
     @Override
     protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
         if (defaultRenderConditions()) return false;
-        //if (Minecraft.getInstance().screen != null) return false;
+        //if (Minecraft.getInstance().screen != null) return false; // FIXME what screens should radar pings be hidden?
         if (!(getPlayerVehicle() instanceof EntityRidablePart seat)) return false;
         EntityVehicle vehicle = seat.getParentVehicle();
         if (vehicle == null) return false;

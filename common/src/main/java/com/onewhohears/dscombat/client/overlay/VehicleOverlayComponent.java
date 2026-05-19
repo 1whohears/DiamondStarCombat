@@ -44,7 +44,8 @@ public abstract class VehicleOverlayComponent {
             new HeliStatusOverlay(),
             new ModernHudOverlay(),
             new VehicleWeaponsOverlay(),
-            new PosRangeOverlay()
+            new PosRangeOverlay(),
+            new PositionMarkerOverlay()
     };
 
     protected static boolean HIDE_GUI = Minecraft.getInstance().options.hideGui;

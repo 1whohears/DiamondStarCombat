@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.onewholibs.common.core.Serializable;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -50,6 +51,12 @@ public class PositionMarker extends Serializable {
     public static @NotNull PositionMarker create(@NotNull JsonObject posData) {
         PositionMarker data = new PositionMarker();
         data.loadSaveData(posData);
+        return data;
+    }
+
+    public static @NotNull PositionMarker create(@NotNull FriendlyByteBuf buffer) {
+        PositionMarker data = new PositionMarker();
+        data.readPacket(buffer);
         return data;
     }
 

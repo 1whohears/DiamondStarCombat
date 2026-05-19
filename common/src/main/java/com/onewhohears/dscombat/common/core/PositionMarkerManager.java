@@ -2,15 +2,22 @@ package com.onewhohears.dscombat.common.core;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.common.network.toclient.ToClientPositionMarkers;
 import com.onewhohears.onewholibs.common.core.Serializable;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LerpingModel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -56,6 +63,18 @@ public class PositionMarkerManager extends Serializable {
         markersForRemoval.forEach(MARKERS::remove);
     }
 
+    public void addTempMarker(@NotNull ServerPlayer player, @NotNull Vec3 position) {
+        addMarker(player.getScoreboardName()+":"+MARKER_ID_COUNTER+1, position,
+                UtilEntity.getLevel(player).dimension(), player.getUUID(), MarkerType.TEMP);
+    }
+
+    public void addMarker(@NotNull String name, @NotNull Vec3 position, @NotNull ResourceKey<Level> dimension,
+                          @Nullable UUID owner, @NotNull MarkerType type) {
+        int id = ++MARKER_ID_COUNTER;
+        PositionMarker marker = PositionMarker.create(id, name, position, dimension, owner, type);
+        MARKERS.put(marker.getId(), marker);
+    }
+
     public @NotNull PlayerPositionMarkers getPlayerData(UUID uuid) {
         return PLAYERS.computeIfAbsent(uuid, PlayerPositionMarkers::create);
     }
@@ -66,6 +85,33 @@ public class PositionMarkerManager extends Serializable {
 
     public boolean isMarkerRemoved(int id) {
         return markersForRemoval.contains(id) || !MARKERS.containsKey(id);
+    }
+
+    public @Nullable PositionMarker getMarker(int id) {
+        return MARKERS.get(id);
+    }
+
+    public boolean hasMarker(int id) {
+        return MARKERS.containsKey(id);
+    }
+
+    public void addClientMarkers(Collection<PositionMarker> markers) {
+        for (PositionMarker marker : markers) MARKERS.put(marker.getId(), marker);
+    }
+
+    public void handlePositionMarkersRequest(@NotNull ServerPlayer player, @NotNull Set<Integer> ids) {
+        ids.removeIf(id -> !hasMarker(id));
+        new ToClientPositionMarkers(ids).sendTo(player);
+    }
+
+    public static Set<Integer> getClientVisibleMarkerIds(Minecraft minecraft) {
+        return getClient().getPlayerData(minecraft.player.getUUID()).getVisibleIds();
+    }
+
+    public void resetClient() {
+        PLAYERS.clear();
+        MARKERS.clear();
+        markersForRemoval.clear();
     }
 
     @Override
@@ -99,8 +145,8 @@ public class PositionMarkerManager extends Serializable {
         }
     }
 
-    private static final PositionMarkerManager SERVER_INSTANCE = new PositionMarkerManager();
-    private static final PositionMarkerManager CLIENT_INSTANCE = new PositionMarkerManager();
+    private static PositionMarkerManager SERVER_INSTANCE;
+    private static PositionMarkerManager CLIENT_INSTANCE;
 
     public static PositionMarkerManager get(Entity entity) {
         return get(UtilEntity.getLevel(entity).isClientSide());
@@ -116,5 +162,18 @@ public class PositionMarkerManager extends Serializable {
 
     public static PositionMarkerManager getClient() {
         return CLIENT_INSTANCE;
+    }
+
+    public static void initServer() {
+        SERVER_INSTANCE = new PositionMarkerManager();
+    }
+
+    public static void initClient() {
+        CLIENT_INSTANCE = new PositionMarkerManager();
+    }
+
+    public void onClientTick(Minecraft minecraft) {
+        if (minecraft.player == null) return;
+        getPlayerData(minecraft.player.getUUID()).onClientTick();
     }
 }

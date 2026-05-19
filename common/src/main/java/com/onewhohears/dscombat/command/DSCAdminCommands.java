@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -13,9 +12,7 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.AngleArgument;
 import net.minecraft.commands.arguments.CompoundTagArgument;
-import net.minecraft.commands.arguments.NbtTagArgument;
 import net.minecraft.commands.arguments.coordinates.Coordinates;
 import net.minecraft.commands.arguments.coordinates.RotationArgument;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
@@ -42,6 +39,18 @@ public class DSCAdminCommands {
                                 return 0;
                             }
                             Vec3 position = Vec3Argument.getVec3(ctx, "pos");
+                            PositionMarkerManager.getServer().addTempMarker(player, position);
+                            return 1;
+                        })
+                )
+                .then(Commands.literal("look")
+                        .executes(ctx -> {
+                            ServerPlayer player = ctx.getSource().getPlayer();
+                            if (player == null) {
+                                ctx.getSource().sendFailure(UtilMCText.literal("Command must be used by a player!"));
+                                return 0;
+                            }
+                            Vec3 position = UtilEntity.getLookingAtBlockPos(player, 300);
                             PositionMarkerManager.getServer().addTempMarker(player, position);
                             return 1;
                         })

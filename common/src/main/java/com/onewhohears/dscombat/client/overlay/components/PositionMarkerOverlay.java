@@ -1,42 +1,32 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
-import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
-import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.radar.RadarTarget;
-import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
-import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
-import com.onewhohears.dscombat.entity.parts.EntityTurret;
-import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.onewholibs.util.math.*;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.math.Mat4f;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
+import com.onewhohears.onewholibs.util.math.Vec3f;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Set;
 
 public class PositionMarkerOverlay extends VehicleOverlayComponent {
-    public static final ResourceLocation PING_HUD = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/ping_hud.png");
-    public static final ResourceLocation PING_DATA = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/ping_data.png");
-    public static final ResourceLocation PING_ICONS = new ResourceLocation(DSCombatMod.MODID,
-            "textures/ui/ping_data_icons_color.png");
-    public static final int ICON_SIZE = 16, ICON_WIDTH = 240, DEFAULT_SIZE = 100;
-    protected static final int[] HUD_PING_ANIM = new int[] {0,1,2,3,2,1};
-    protected static float PARTIAL_TICK;
+    public static final Style RED = Style.EMPTY.withColor(ChatFormatting.RED);
+    public static final ResourceLocation POS_MARKER = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/pos_marker.png");
 
     @Override
     protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
@@ -62,7 +52,7 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
         Mat4f view_mat = Mat4f.from(graphics.pose().last().pose());
         graphics.pose().popPose();
         Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
-        int size = 25;
+        int size = 20;
         // RENDER EACH
         Set<Integer> visibleIds = PositionMarkerManager.getClientVisibleMarkerIds(m);
         for (int id : visibleIds) {
@@ -74,19 +64,22 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
             float x_win = screen_pos[0], y_win = screen_pos[1];
             float scale = 1;
-            float adj = size*scale/2f, x_pos = x_win-adj, y_pos = y_win-adj;
+            float adj = size*scale, x_pos = x_win-adj*0.5f, y_pos = y_win-adj;
             graphics.pose().pushPose();
             graphics.pose().translate(x_pos, y_pos, 0);
             graphics.pose().scale(scale, scale, scale);
-            graphics.blit(PING_HUD,
-                    0, 0, 0, 0,
-                    size, size, size, size * 5);
+            RenderSystem.enableBlend();
+            graphics.setColor(1, 0, 0, 1);
+            graphics.blit(POS_MARKER, 0, 0, 0, 0, size, size, size, size);
+            graphics.setColor(1, 1, 1, 1);
+            graphics.pose().translate(adj*0.5f, adj, 0);
+            graphics.drawCenteredString(m.font, UtilMCText.literal(marker.getName()).setStyle(RED), 0, 0, 0);
             graphics.pose().popPose();
         }
     }
 
     @Override
     protected @NotNull String componentId() {
-        return "dscombat_radar";
+        return "dscombat_position_markers";
     }
 }

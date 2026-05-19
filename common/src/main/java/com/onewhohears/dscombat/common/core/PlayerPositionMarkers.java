@@ -5,8 +5,11 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.common.network.toclient.ToClientPlayerMarkerData;
 import com.onewhohears.dscombat.common.network.toserver.ToServerRequestPositionMarkers;
 import com.onewhohears.onewholibs.common.core.Serializable;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -19,19 +22,26 @@ public class PlayerPositionMarkers extends Serializable {
     private final Set<Integer> visibleIds = new HashSet<>();
     private final Set<Integer> requested = new HashSet<>();
     private final Set<Integer> toRequest = new HashSet<>();
+    private int prevVisibleNum = 0;
 
     public void onServerTick(@NotNull MinecraftServer server, @NotNull PositionMarkerManager manager,
                              @NotNull ServerPlayer player) {
-        int initVisibleNum = visibleIds.size();
+        if (prevVisibleNum != visibleIds.size()) setDirty();
         visibleIds.removeIf(manager::isMarkerRemoved);
-        if (initVisibleNum != visibleIds.size()) setDirty();
+        if (prevVisibleNum != visibleIds.size()) setDirty();
         if (isDirty()) {
             resetDirty();
             new ToClientPlayerMarkerData(uuid).sendTo(player);
         }
+        prevVisibleNum = visibleIds.size();
     }
 
-    public void onClientTick() {
+    public void onClientTick(Minecraft minecraft) {
+        if (minecraft.level == null || minecraft.player == null) return;
+        if (prevVisibleNum < visibleIds.size()) {
+            minecraft.level.playLocalSound(minecraft.player.blockPosition(),
+                    SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1, 1, false);
+        }
         toRequest.clear();
         for (int id : visibleIds) {
             if (!PositionMarkerManager.getClient().hasMarker(id) && !requested.contains(id)) {
@@ -40,6 +50,7 @@ public class PlayerPositionMarkers extends Serializable {
             }
         }
         if (!toRequest.isEmpty()) new ToServerRequestPositionMarkers(toRequest).sendToServer();
+        prevVisibleNum = visibleIds.size();
     }
 
     public void setVisible(int id) {

@@ -128,6 +128,14 @@ public class PositionMarkerManager extends Serializable {
 
     @Override
     protected void readSaveData(@NotNull JsonObject data) {
+        MARKERS.clear();
+        JsonArray markerArray = data.has("markers") ? data.get("markers").getAsJsonArray() : new JsonArray();
+        for (int i = 0; i < markerArray.size(); ++i) {
+            JsonObject markerJson = markerArray.get(i).getAsJsonObject();
+            PositionMarker marker = PositionMarker.create(markerJson);
+            MARKERS.put(marker.getId(), marker);
+            if (marker.getId() >= MARKER_ID_COUNTER) MARKER_ID_COUNTER = marker.getId() + 1;
+        }
         PLAYERS.clear();
         JsonArray playerDataList = data.has("players") ?
                 data.get("players").getAsJsonArray() : new JsonArray();
@@ -135,13 +143,6 @@ public class PositionMarkerManager extends Serializable {
             JsonObject playerData = playerDataList.get(i).getAsJsonObject();
             PlayerPositionMarkers player = PlayerPositionMarkers.create(playerData);
             PLAYERS.put(player.getUUID(), player);
-        }
-        JsonArray markerArray = data.has("markers") ? data.get("markers").getAsJsonArray() : new JsonArray();
-        for (int i = 0; i < markerArray.size(); ++i) {
-            JsonObject markerJson = markerArray.get(i).getAsJsonObject();
-            PositionMarker marker = PositionMarker.create(markerJson);
-            MARKERS.put(marker.getId(), marker);
-            if (marker.getId() >= MARKER_ID_COUNTER) MARKER_ID_COUNTER = marker.getId() + 1;
         }
     }
 
@@ -174,6 +175,6 @@ public class PositionMarkerManager extends Serializable {
 
     public void onClientTick(Minecraft minecraft) {
         if (minecraft.player == null) return;
-        getPlayerData(minecraft.player.getUUID()).onClientTick();
+        getPlayerData(minecraft.player.getUUID()).onClientTick(minecraft);
     }
 }

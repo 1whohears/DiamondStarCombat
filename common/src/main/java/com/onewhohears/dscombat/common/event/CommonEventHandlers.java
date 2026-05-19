@@ -22,14 +22,12 @@ import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.common.event.OWLEvents;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.util.UtilEntity;
-import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.event.events.common.ExplosionEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.event.events.common.*;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,6 +51,11 @@ public class CommonEventHandlers {
         TickEvent.PLAYER_POST.register(CommonEventHandlers::onPlayerTick);
         ExplosionEvent.DETONATE.register(CommonEventHandlers::onExplosionDetonate);
         CommandRegistrationEvent.EVENT.register(CommonEventHandlers::registerCommands);
+        PlayerEvent.PLAYER_JOIN.register(CommonEventHandlers::onPlayerJoin);
+    }
+
+    private static void onPlayerJoin(ServerPlayer player) {
+        PositionMarkerManager.get(player).getPlayerData(player.getUUID()).setDirty();
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher,

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common.event;
 import com.mojang.brigadier.CommandDispatcher;
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.*;
+import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
@@ -103,6 +104,7 @@ public class CommonEventHandlers {
 
     public static void onServerTickPre(MinecraftServer server) {
         TrackableEntitiesManager.serverTick(server);
+        PositionMarkerManager.getServer().onServerTick(server);
     }
 
     public static void registerPresetListeners(List<JsonPresetReloadListener<?>> listeners) {

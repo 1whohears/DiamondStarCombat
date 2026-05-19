@@ -75,6 +75,8 @@ public final class PacketHandler {
             "s2c_on_shoot", ToClientOnShoot::new);
     public static final MessageType S2C_SET_TARGET_POS = INSTANCE.registerS2C(
             "s2c_set_target_pos", ToClientSetTargetPos::new);
+    public static final MessageType S2C_PLAYER_MARKERS = INSTANCE.registerS2C(
+            "s2c_player_markers", ToClientPlayerMarkers::new);
 
     public static LevelChunk getEntityChunk(@NotNull Entity entity) {
         return UtilEntity.getLevel(entity).getChunkAt(entity.blockPosition());

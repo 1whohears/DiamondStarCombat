@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.client.input;
 
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
 import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 
 import net.minecraft.client.Minecraft;
@@ -287,5 +289,18 @@ public class DSCClientInputs {
 
 	public static void toggleAfterBurner() {
 		AFTERBURNER = !AFTERBURNER;
+	}
+
+	public static MarkerDisplayMode getMarkerMode() {
+		return Config.CLIENT.defaultMarkerMode.get();
+	}
+
+	public static MarkerDisplayMode cycleMarkerMode() {
+		MarkerDisplayMode current = getMarkerMode();
+		int ordinal = current.ordinal() + 1;
+		if (ordinal >= MarkerDisplayMode.values().length) ordinal = 0;
+		MarkerDisplayMode next = MarkerDisplayMode.values()[ordinal];
+		Config.CLIENT.defaultMarkerMode.set(next);
+		return next;
 	}
 }

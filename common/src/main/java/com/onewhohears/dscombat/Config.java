@@ -2,6 +2,7 @@ package com.onewhohears.dscombat;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.phys.Vec3;
@@ -33,6 +34,7 @@ public class Config {
 		// DISPLAY
 		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
 		public final ForgeConfigSpec.EnumValue<RadarFilterMode> defaultRadarMode;
+		public final ForgeConfigSpec.EnumValue<MarkerDisplayMode> defaultMarkerMode;
 		// RENDER DISTANCES
 		public final ForgeConfigSpec.IntValue maxRenderRackMissileNum;
 		public final ForgeConfigSpec.DoubleValue renderWeaponRackDistance;
@@ -62,6 +64,8 @@ public class Config {
 					.defineInRange("radarPingOverlaySize", 100, 10, 1000);
 			defaultRadarMode = builder
 					.defineEnum("defaultRadarMode", RadarFilterMode.ALL);
+			defaultMarkerMode = builder
+					.defineEnum("defaultMarkerMode", MarkerDisplayMode.HOVER_BIG);
 			builder.pop();
 			builder.push("mouse-joystick-settings");
 			mouseModeMaxRadius = builder

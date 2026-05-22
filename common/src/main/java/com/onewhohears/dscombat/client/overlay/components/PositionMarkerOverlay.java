@@ -1,9 +1,11 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
+import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
 import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
@@ -27,6 +29,8 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
     public static final Style RED = Style.EMPTY.withColor(ChatFormatting.RED);
     public static final ResourceLocation POS_MARKER = new ResourceLocation(DSCombatMod.MODID,
             "textures/ui/pos_marker.png");
+    public static final ResourceLocation POS_MARKER_SMALL = new ResourceLocation(DSCombatMod.MODID,
+            "textures/ui/pos_marker_small.png");
 
     @Override
     protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
@@ -63,7 +67,9 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
         graphics.pose().popPose();
         Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
         int size = 20;
-        float min = 0.3f, max = 0.7f, max_dist = 4000;
+        float min = 0.3f, max = 0.6f, max_dist = 4000;
+        MarkerDisplayMode mode = Config.CLIENT.markerMode.get();
+        if (mode != MarkerDisplayMode.ALWAYS_BIG) { min *= 0.5f; max *= 0.5f; }
         // RENDER EACH
         Set<Integer> visibleIds = PositionMarkerManager.getClientVisibleMarkerIds(m);
         for (int id : visibleIds) {
@@ -74,22 +80,49 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
                     view_mat, proj_mat, screenWidth, screenHeight);
             if (screen_pos[0] < 0 || screen_pos[1] < 0) continue;
             float x_win = screen_pos[0], y_win = screen_pos[1];
-            double distance = cam.getPosition().distanceTo(marker.getPosition());
-            float scale = (float) Math.max(min, max-(distance/max_dist*(max-min)));
-            float adj = size, x_pos = x_win-adj*0.5f, y_pos = y_win-adj;
+            double dist = cam.getPosition().distanceTo(marker.getPosition());
+            int distance = (int) dist;
+            float scale = (float) Math.max(min, max-(dist/max_dist*(max-min)));
+            boolean hover = true;
             graphics.pose().pushPose();
-            graphics.pose().translate(x_pos, y_pos, 0);
-            graphics.pose().scale(scale, scale, scale);
-            RenderSystem.enableBlend();
-            graphics.setColor(1, 0, 0, 1);
-            graphics.blit(POS_MARKER, 0, 0, 0, 0, size, size, size, size);
-            graphics.setColor(1, 1, 1, 1);
-            graphics.pose().translate(adj*0.5f, adj, 0);
-            graphics.drawCenteredString(m.font, UtilMCText.literal(marker.getName()).setStyle(RED), 0, 0, 0);
-            graphics.pose().translate(0, 10, 0);
-            graphics.drawCenteredString(m.font, UtilMCText.literal((int)distance+"").setStyle(RED), 0, 0, 0);
+            if (mode == MarkerDisplayMode.ALWAYS_BIG || (mode == MarkerDisplayMode.HOVER_BIG && hover)) {
+                renderBig(m, graphics, marker, distance, size, x_win, y_win, scale);
+            } else {
+                renderSmall(m, graphics, marker, distance, size, x_win, y_win, scale);
+            }
             graphics.pose().popPose();
         }
+    }
+
+    private void renderSmall(Minecraft m, GuiGraphics graphics, PositionMarker marker,
+                             int distance, int size, float x_win, float y_win, float scale) {
+        //float adj = size, x_pos = x_win-adj*0.5f, y_pos = y_win-adj*0.5f;
+        float x_pos = x_win, y_pos = y_win;
+        graphics.pose().translate(x_pos, y_pos, 0);
+        graphics.pose().scale(scale, scale, scale);
+        RenderSystem.enableBlend();
+        graphics.setColor(1, 0, 0, 1);
+        graphics.blit(POS_MARKER_SMALL, 0, 0, 0, 0, size, size, size, size);
+        graphics.setColor(1, 1, 1, 1);
+        /*graphics.pose().translate(adj*0.5f, adj, 0);
+        graphics.drawCenteredString(m.font, UtilMCText.literal(marker.getName()).setStyle(RED), 0, 0, 0);
+        graphics.pose().translate(0, 10, 0);
+        graphics.drawCenteredString(m.font, UtilMCText.literal(distance+"").setStyle(RED), 0, 0, 0);*/
+    }
+
+    private void renderBig(Minecraft m, GuiGraphics graphics, PositionMarker marker,
+                           int distance, int size, float x_win, float y_win, float scale) {
+        float adj = size, x_pos = x_win-adj*0.5f, y_pos = y_win-adj;
+        graphics.pose().translate(x_pos, y_pos, 0);
+        graphics.pose().scale(scale, scale, scale);
+        RenderSystem.enableBlend();
+        graphics.setColor(1, 0, 0, 1);
+        graphics.blit(POS_MARKER, 0, 0, 0, 0, size, size, size, size);
+        graphics.setColor(1, 1, 1, 1);
+        graphics.pose().translate(adj*0.5f, adj, 0);
+        graphics.drawCenteredString(m.font, UtilMCText.literal(marker.getName()).setStyle(RED), 0, 0, 0);
+        graphics.pose().translate(0, 10, 0);
+        graphics.drawCenteredString(m.font, UtilMCText.literal(distance+"").setStyle(RED), 0, 0, 0);
     }
 
     @Override

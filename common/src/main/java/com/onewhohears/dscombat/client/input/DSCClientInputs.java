@@ -292,7 +292,7 @@ public class DSCClientInputs {
 	}
 
 	public static MarkerDisplayMode getMarkerMode() {
-		return Config.CLIENT.defaultMarkerMode.get();
+		return Config.CLIENT.markerMode.get();
 	}
 
 	public static MarkerDisplayMode cycleMarkerMode() {
@@ -300,7 +300,7 @@ public class DSCClientInputs {
 		int ordinal = current.ordinal() + 1;
 		if (ordinal >= MarkerDisplayMode.values().length) ordinal = 0;
 		MarkerDisplayMode next = MarkerDisplayMode.values()[ordinal];
-		Config.CLIENT.defaultMarkerMode.set(next);
+		Config.CLIENT.markerMode.set(next);
 		return next;
 	}
 }

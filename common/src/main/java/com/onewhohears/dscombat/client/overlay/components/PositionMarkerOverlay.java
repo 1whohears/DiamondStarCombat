@@ -116,7 +116,7 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
         } else if (hover) {
             r = 1; g = 1;
         } else {
-            g = 1;
+            b = 1;
         }
         graphics.setColor(r, g, b, 1);
         graphics.blit(POS_MARKER_SMALL, 0, 0, 0, 0, size, size, size, size);

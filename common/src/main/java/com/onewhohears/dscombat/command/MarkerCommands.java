@@ -33,9 +33,7 @@ public class MarkerCommands {
                                 ctx.getSource().sendFailure(UtilMCText.literal("Command must be used by a player!"));
                                 return 0;
                             }
-                            Vec3 pos = UtilEntity.getLookingAtBlockPos(player, 1000);
-                            pos = new Vec3(Math.floor(pos.x)+0.5, Math.floor(pos.y)+0.5, Math.floor(pos.z)+0.5);
-                            PositionMarkerManager.getServer().addTempMarker(player, pos);
+                            PositionMarkerManager.getServer().addQuickTempMarker(player);
                             return 1;
                         })
                 )

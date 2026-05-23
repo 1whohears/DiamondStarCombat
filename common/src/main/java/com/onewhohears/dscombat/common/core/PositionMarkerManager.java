@@ -65,6 +65,12 @@ public class PositionMarkerManager extends Serializable {
         markersForRemoval.forEach(MARKERS::remove);
     }
 
+    public void addQuickTempMarker(@NotNull ServerPlayer player) {
+        Vec3 pos = UtilEntity.getLookingAtBlockPos(player, 1000);
+        pos = new Vec3(Math.floor(pos.x)+0.5, Math.floor(pos.y)+0.5, Math.floor(pos.z)+0.5);
+        addTempMarker(player, pos);
+    }
+
     public void addTempMarker(@NotNull ServerPlayer player, @NotNull Vec3 position) {
         addMarker(getShortName(player)+":"+(MARKER_ID_COUNTER+1), position,
                 UtilEntity.getLevel(player).dimension(), player.getUUID(), MarkerType.TEMP);

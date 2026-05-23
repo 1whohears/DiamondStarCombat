@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class PacketHandler {
-	
-	private PacketHandler() {}
+
+    private PacketHandler() {}
 
     public static final SimpleNetworkManager INSTANCE = SimpleNetworkManager.create(DSCombatMod.MODID);
 
@@ -44,6 +44,8 @@ public final class PacketHandler {
             "c2s_craft_weapon_part", ToServerCraftWeaponPart::new);
     public static final MessageType C2S_REQ_POS_MARKERS = INSTANCE.registerC2S(
             "c2s_request_pos_markers", ToServerRequestPositionMarkers::new);
+    public static final MessageType C2S_MODIFY_MARKER = INSTANCE.registerC2S(
+            "c2s_modify_marker", ToServerModifyMarker::new);
 
     public static final MessageType S2C_VEHICLE_CONTROL = INSTANCE.registerS2C(
             "s2c_vehicle_control", ToClientVehicleControl::new);

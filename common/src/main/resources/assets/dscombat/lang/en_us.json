@@ -129,7 +129,8 @@
 	"action.dscombat.gimbal": "Gimbal",
 	"action.dscombat.chaff": "Chaff",
     "action.dscombat.camera_track_target": "Cam Follow",
-	
+    "action.dscombat.quick_marker": "Quick Marker",
+
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",
 	"screen.dscombat.vehicle_inventory_screen": "Cargo",
@@ -748,6 +749,7 @@
 	"key.dscombat.afterburner_toggle_key": "After Burner",
 	"key.dscombat.turn_assist_key": "Turn Assist",
     "key.dscombat.camera_track_target_key": "Track Target",
+    "key.dscombat.quick_marker_key": "Quick Marker",
 
 	"passenger_sound_pack.eng_non_binary_goober": "English Default",
 	"passenger_sound_pack.eng_generic_male": "English Generic Male",

@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
+import com.onewhohears.dscombat.common.network.toserver.ToServerModifyMarker;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
@@ -73,6 +74,7 @@ public class ClientInputManager {
     public static final ActionInputHolder.Button RADAR_MODE = registerButton("radar_mode", "radar_mode_key");
     public static final ActionInputHolder.Button PING_CYCLE = registerButton("ping_cycle", "ping_cycle_key");
     public static final ActionInputHolder.Button AFTERBURNER = registerButton("afterburner", "afterburner_toggle_key");
+    public static final ActionInputHolder.Button QUICK_MARKER = registerButton("quick_marker", "quick_marker_key");
 
     private static int leftTicks = 0;
     private static long radarModeUpdateTime = 0;
@@ -253,10 +255,6 @@ public class ClientInputManager {
         }
         // CYCLE PING
         if (PING_CYCLE.isInitPressed()) radar.clientSelectNextTarget();
-        // SELECT POSITION MARKER
-        if (DSCClientInputs.getMarkerHoverId() != -1 && leftTicks == 1) {
-            DSCClientInputs.setSelectedMarkerId(DSCClientInputs.getMarkerHoverId());
-        }
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
             sendSyncAction(new VehicleSyncAction.ShootAction(
@@ -308,6 +306,17 @@ public class ClientInputManager {
         else if (leanRight) DSCClientInputs.leanRight();
     }
 
+    private static void tickAlways() {
+        // CREATE QUICK MARKER
+        if (QUICK_MARKER.isInitPressed()) {
+            new ToServerModifyMarker().sendToServer();
+        }
+        // SELECT POSITION MARKER
+        if (DSCClientInputs.getMarkerHoverId() != -1 && leftTicks == 1) {
+            DSCClientInputs.setSelectedMarkerId(DSCClientInputs.getMarkerHoverId());
+        }
+    }
+
     private static void tickActions() {
         buttons.forEach((id, action) -> action.tick());
         axes.forEach((id, action) -> action.tick());
@@ -322,6 +331,7 @@ public class ClientInputManager {
             wasPilot = false;
             return;
         }
+        tickAlways();
         if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle vehicle)) {
             if (wasPilot) { smPitch = smRoll = smYaw = 0f; }
             wasPilot = false;

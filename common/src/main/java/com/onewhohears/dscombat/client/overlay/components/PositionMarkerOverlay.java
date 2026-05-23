@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
+import com.onewhohears.dscombat.common.core.MarkerType;
 import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
@@ -115,6 +116,8 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
             r = 1;
         } else if (hover) {
             r = 1; g = 1;
+        } else if (marker.getType() == MarkerType.TEMP) {
+            r = 1; b = 1;
         } else {
             b = 1;
         }
@@ -137,7 +140,9 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
             r = 1;
         } else if (hover) {
             r = 1; g = 1;
-        } else {
+        } else if (marker.getType() == MarkerType.TEMP) {
+            r = 1; b = 1;
+        }else {
             g = 1;
         }
         graphics.setColor(r, g, b, 1);

@@ -64,7 +64,7 @@ public class PositionMarkerManager extends Serializable {
     }
 
     public void addTempMarker(@NotNull ServerPlayer player, @NotNull Vec3 position) {
-        addMarker(player.getScoreboardName()+":"+(MARKER_ID_COUNTER+1), position,
+        addMarker(getShortName(player)+":"+(MARKER_ID_COUNTER+1), position,
                 UtilEntity.getLevel(player).dimension(), player.getUUID(), MarkerType.TEMP);
     }
 
@@ -73,6 +73,13 @@ public class PositionMarkerManager extends Serializable {
         int id = ++MARKER_ID_COUNTER;
         PositionMarker marker = PositionMarker.create(id, name, position, dimension, owner, type);
         MARKERS.put(marker.getId(), marker);
+    }
+
+    public static String getShortName(@NotNull ServerPlayer player) {
+        String name = player.getScoreboardName();
+        int maxLength = 5;
+        if (name.length() <= maxLength) return name;
+        return name.substring(0, maxLength);
     }
 
     public @NotNull PlayerPositionMarkers getPlayerData(UUID uuid) {

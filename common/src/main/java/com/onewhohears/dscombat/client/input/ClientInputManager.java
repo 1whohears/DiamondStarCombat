@@ -253,6 +253,10 @@ public class ClientInputManager {
         }
         // CYCLE PING
         if (PING_CYCLE.isInitPressed()) radar.clientSelectNextTarget();
+        // SELECT POSITION MARKER
+        if (DSCClientInputs.getMarkerHoverId() != -1 && leftTicks == 1) {
+            DSCClientInputs.setSelectedMarkerId(DSCClientInputs.getMarkerHoverId());
+        }
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
             sendSyncAction(new VehicleSyncAction.ShootAction(

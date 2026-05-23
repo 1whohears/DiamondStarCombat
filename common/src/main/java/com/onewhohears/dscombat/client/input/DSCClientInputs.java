@@ -2,9 +2,12 @@ package com.onewhohears.dscombat.client.input;
 
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
+import com.onewhohears.dscombat.common.core.PositionMarker;
+import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.Nullable;
 
 public class DSCClientInputs {
 	
@@ -16,6 +19,9 @@ public class DSCClientInputs {
 	
 	private static int hoverId = -1;
 	private static double radarDisplayRange = 10000;
+
+	private static int markerHoverId = -1;
+	private static int selectedMarkerId = -1;
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
 	private static long mountTime;
@@ -302,5 +308,31 @@ public class DSCClientInputs {
 		MarkerDisplayMode next = MarkerDisplayMode.values()[ordinal];
 		Config.CLIENT.markerMode.set(next);
 		return next;
+	}
+
+	public static int getMarkerHoverId() {
+		return markerHoverId;
+	}
+
+	public static void setMarkerHoverId(int id) {
+		markerHoverId = id;
+	}
+
+	public static int getSelectedMarkerId() {
+		return selectedMarkerId;
+	}
+
+	public static void setSelectedMarkerId(int id) {
+		selectedMarkerId = id;
+	}
+
+	public static @Nullable PositionMarker getSelectedMarker() {
+		if (selectedMarkerId == -1) return null;
+		PositionMarker marker = PositionMarkerManager.getClient().getMarker(selectedMarkerId);
+		if (marker == null) {
+			selectedMarkerId = -1;
+			return null;
+		}
+		return marker;
 	}
 }

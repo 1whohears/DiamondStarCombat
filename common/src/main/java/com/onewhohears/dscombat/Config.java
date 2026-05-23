@@ -65,7 +65,7 @@ public class Config {
 			defaultRadarMode = builder
 					.defineEnum("defaultRadarMode", RadarFilterMode.ALL);
 			markerMode = builder
-					.defineEnum("markerDisplayMode", MarkerDisplayMode.HOVER_BIG);
+					.defineEnum("markerDisplayMode", MarkerDisplayMode.SELECT_BIG);
 			builder.pop();
 			builder.push("mouse-joystick-settings");
 			mouseModeMaxRadius = builder

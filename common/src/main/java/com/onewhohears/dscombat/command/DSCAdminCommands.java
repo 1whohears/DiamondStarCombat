@@ -30,33 +30,6 @@ import org.jetbrains.annotations.Nullable;
 public class DSCAdminCommands {
 
     public DSCAdminCommands(CommandDispatcher<CommandSourceStack> d) {
-        d.register(Commands.literal("temp_marker").requires((stack) -> stack.hasPermission(2))
-                .then(Commands.argument("pos", Vec3Argument.vec3())
-                        .executes(ctx -> {
-                            ServerPlayer player = ctx.getSource().getPlayer();
-                            if (player == null) {
-                                ctx.getSource().sendFailure(UtilMCText.literal("Command must be used by a player!"));
-                                return 0;
-                            }
-                            Vec3 position = Vec3Argument.getVec3(ctx, "pos");
-                            PositionMarkerManager.getServer().addTempMarker(player, position);
-                            return 1;
-                        })
-                )
-                .then(Commands.literal("look")
-                        .executes(ctx -> {
-                            ServerPlayer player = ctx.getSource().getPlayer();
-                            if (player == null) {
-                                ctx.getSource().sendFailure(UtilMCText.literal("Command must be used by a player!"));
-                                return 0;
-                            }
-                            Vec3 pos = UtilEntity.getLookingAtBlockPos(player, 1000);
-                            pos = new Vec3(Math.floor(pos.x)+0.5, Math.floor(pos.y)+0.5, Math.floor(pos.z)+0.5);
-                            PositionMarkerManager.getServer().addTempMarker(player, pos);
-                            return 1;
-                        })
-                )
-        );
         d.register(Commands.literal("dsc_vehicle_to_item").requires((stack) -> stack.hasPermission(2))
                 .executes(context -> {
                     ServerPlayer player = context.getSource().getPlayer();

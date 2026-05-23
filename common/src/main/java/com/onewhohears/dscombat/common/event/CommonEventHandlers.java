@@ -67,6 +67,7 @@ public class CommonEventHandlers {
         new DebugHitboxPosCommand(dispatcher);
         new DSCAdminCommands(dispatcher);
         new WindTunnelCommand(dispatcher);
+        new MarkerCommands(dispatcher);
         //ConfigCommand.register(dispatcher);
     }
 

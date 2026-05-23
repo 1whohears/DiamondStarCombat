@@ -5,14 +5,15 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.common.network.toclient.ToClientPositionMarkers;
 import com.onewhohears.onewholibs.common.core.Serializable;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.UtilFile;
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LerpingModel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
@@ -23,6 +24,7 @@ import java.util.*;
 
 public class PositionMarkerManager extends Serializable {
 
+    public static String MARKER_PATH = "data/dscombat/markers.json";
     private static final long TEMP_MARKER_TIMEOUT = 30 * 1000;
 
     private final Map<UUID, PlayerPositionMarkers> PLAYERS = new HashMap<>();
@@ -153,6 +155,19 @@ public class PositionMarkerManager extends Serializable {
         }
     }
 
+    public void load(@NotNull ServerLevel level) {
+        if (!level.dimension().location().toString().equals("minecraft:overworld")) return;
+        MinecraftServer server = level.getServer();
+        JsonObject data = UtilFile.readJsonGamePath(MARKER_PATH, server);
+        loadSaveData(data);
+    }
+
+    public void save(@NotNull ServerLevel level) {
+        if (!level.dimension().location().toString().equals("minecraft:overworld")) return;
+        MinecraftServer server = level.getServer();
+        UtilFile.printGamePath(MARKER_PATH, getSaveData(), server);
+    }
+
     private static PositionMarkerManager SERVER_INSTANCE;
     private static PositionMarkerManager CLIENT_INSTANCE;
 
@@ -165,15 +180,12 @@ public class PositionMarkerManager extends Serializable {
     }
 
     public static PositionMarkerManager getServer() {
+        if (SERVER_INSTANCE == null) SERVER_INSTANCE = new PositionMarkerManager();
         return SERVER_INSTANCE;
     }
 
     public static PositionMarkerManager getClient() {
         return CLIENT_INSTANCE;
-    }
-
-    public static void initServer() {
-        SERVER_INSTANCE = new PositionMarkerManager();
     }
 
     public static void initClient() {

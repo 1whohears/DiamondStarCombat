@@ -27,6 +27,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -52,6 +53,16 @@ public class CommonEventHandlers {
         ExplosionEvent.DETONATE.register(CommonEventHandlers::onExplosionDetonate);
         CommandRegistrationEvent.EVENT.register(CommonEventHandlers::registerCommands);
         PlayerEvent.PLAYER_JOIN.register(CommonEventHandlers::onPlayerJoin);
+        LifecycleEvent.SERVER_LEVEL_LOAD.register(CommonEventHandlers::onServerLevelLoad);
+        LifecycleEvent.SERVER_LEVEL_SAVE.register(CommonEventHandlers::onServerLevelSave);
+    }
+
+    private static void onServerLevelSave(ServerLevel level) {
+        PositionMarkerManager.getServer().save(level);
+    }
+
+    private static void onServerLevelLoad(ServerLevel level) {
+        PositionMarkerManager.getServer().load(level);
     }
 
     private static void onPlayerJoin(ServerPlayer player) {
@@ -125,7 +136,7 @@ public class CommonEventHandlers {
     }
 
     private static void onServerStarting(MinecraftServer server) {
-        PositionMarkerManager.initServer();
+
     }
 
     public static void onReadConfig(ModConfig modConfig) {

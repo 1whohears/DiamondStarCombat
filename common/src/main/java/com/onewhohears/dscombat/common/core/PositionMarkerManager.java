@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.common.core;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.common.network.toclient.ToClientPositionMarkers;
 import com.onewhohears.onewholibs.common.core.Serializable;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -38,7 +39,8 @@ public class PositionMarkerManager extends Serializable {
         long currentTime = System.currentTimeMillis();
         teamVisibleIds.clear();
         MARKERS.forEach((id, marker) -> {
-            if (markersForRemoval.contains(id) || (marker.getType() == MarkerType.TEMP && currentTime - marker.getCreatedTime() > TEMP_MARKER_TIMEOUT)) {
+            if (markersForRemoval.contains(id) || (marker.getType() == MarkerType.TEMP
+                    && currentTime - marker.getCreatedTime() > TEMP_MARKER_TIMEOUT)) {
                 removeMarker(id);
                 return;
             }
@@ -65,22 +67,25 @@ public class PositionMarkerManager extends Serializable {
         markersForRemoval.forEach(MARKERS::remove);
     }
 
-    public void addQuickTempMarker(@NotNull ServerPlayer player) {
+    public PositionMarker addQuickTempMarker(@NotNull ServerPlayer player) {
         Vec3 pos = UtilEntity.getLookingAtBlockPos(player, 1000);
         pos = new Vec3(Math.floor(pos.x)+0.5, Math.floor(pos.y)+0.5, Math.floor(pos.z)+0.5);
-        addTempMarker(player, pos);
+        return addTempMarker(player, pos);
     }
 
-    public void addTempMarker(@NotNull ServerPlayer player, @NotNull Vec3 position) {
-        addMarker(getShortName(player)+":"+(MARKER_ID_COUNTER+1), position,
+    public PositionMarker addTempMarker(@NotNull ServerPlayer player, @NotNull Vec3 position) {
+        PositionMarker marker = addMarker(getShortName(player)+":"+(MARKER_ID_COUNTER+1), position,
                 UtilEntity.getLevel(player).dimension(), player.getUUID(), MarkerType.TEMP);
+        getPlayerData(player.getUUID()).setTempMarkerId(marker.getId());
+        return marker;
     }
 
-    public void addMarker(@NotNull String name, @NotNull Vec3 position, @NotNull ResourceKey<Level> dimension,
-                          @Nullable UUID owner, @NotNull MarkerType type) {
+    public PositionMarker addMarker(@NotNull String name, @NotNull Vec3 position, @NotNull ResourceKey<Level> dimension,
+                                    @Nullable UUID owner, @NotNull MarkerType type) {
         int id = ++MARKER_ID_COUNTER;
         PositionMarker marker = PositionMarker.create(id, name, position, dimension, owner, type);
         MARKERS.put(marker.getId(), marker);
+        return marker;
     }
 
     public static String getShortName(@NotNull ServerPlayer player) {
@@ -111,7 +116,13 @@ public class PositionMarkerManager extends Serializable {
     }
 
     public void addClientMarkers(Collection<PositionMarker> markers) {
-        for (PositionMarker marker : markers) MARKERS.put(marker.getId(), marker);
+        UUID localPlayer = Minecraft.getInstance().player.getUUID();
+        for (PositionMarker marker : markers) {
+            MARKERS.put(marker.getId(), marker);
+            if (marker.getOwner() != null && marker.getOwner().equals(localPlayer)) {
+                DSCClientInputs.setSelectedMarkerId(marker.getId());
+            }
+        }
     }
 
     public void handlePositionMarkersRequest(@NotNull ServerPlayer player, @NotNull Set<Integer> ids) {

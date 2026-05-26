@@ -23,6 +23,7 @@ public class PlayerPositionMarkers extends Serializable {
     private final Set<Integer> requested = new HashSet<>();
     private final Set<Integer> toRequest = new HashSet<>();
     private int prevVisibleNum = 0;
+    private int tempMarkerId = -1;
 
     public void onServerTick(@NotNull MinecraftServer server, @NotNull PositionMarkerManager manager,
                              @NotNull ServerPlayer player) {
@@ -34,6 +35,9 @@ public class PlayerPositionMarkers extends Serializable {
             new ToClientPlayerMarkerData(uuid).sendTo(player);
         }
         prevVisibleNum = visibleIds.size();
+        if (tempMarkerId != -1 && !manager.hasMarker(tempMarkerId)) {
+            tempMarkerId = -1;
+        }
     }
 
     public void onClientTick(Minecraft minecraft) {
@@ -96,5 +100,19 @@ public class PlayerPositionMarkers extends Serializable {
 
     public Set<Integer> getVisibleIds() {
         return visibleIds;
+    }
+
+    public int getTempMarkerId() {
+        return tempMarkerId;
+    }
+
+    public void setTempMarkerId(int tempMarkerId) {
+        if (tempMarkerId != this.tempMarkerId) {
+            PositionMarker marker = PositionMarkerManager.getServer().getMarker(this.tempMarkerId);
+            if (marker != null && marker.getType() == MarkerType.TEMP) {
+                PositionMarkerManager.getServer().removeMarker(this.tempMarkerId);
+            }
+        }
+        this.tempMarkerId = tempMarkerId;
     }
 }

@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
+import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toserver.ToServerModifyMarker;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
@@ -30,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ClientInputManager {
@@ -367,7 +367,12 @@ public class ClientInputManager {
         switch (DSCClientInputs.getTargetMode()) {
             case LOOK -> { return getLookPos(player, vehicle); }
             case COORDS -> {  return Config.CLIENT.getTargetPos(); }
-            case INDICATOR -> { return Vec3.ZERO; }
+            case MARKER -> {
+                PositionMarker marker = DSCClientInputs.getSelectedMarker();
+                if (marker == null) return Vec3.ZERO;
+                if (!UtilEntity.getLevel(player).dimension().equals(marker.getDimension())) return Vec3.ZERO;
+                return marker.getPosition();
+            }
         }
         return Vec3.ZERO;
     }

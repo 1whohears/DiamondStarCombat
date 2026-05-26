@@ -253,7 +253,7 @@ public class DSCClientInputs {
 	}
 
 	public enum TargetMode {
-		LOOK, COORDS, INDICATOR;
+		LOOK, COORDS, MARKER;
 		public String getTranslatable() {
 			return "targetmode.dscombat."+name().toLowerCase();
 		}

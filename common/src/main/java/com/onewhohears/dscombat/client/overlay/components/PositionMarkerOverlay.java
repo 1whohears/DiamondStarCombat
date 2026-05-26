@@ -55,15 +55,11 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
         Vec3 view = cam.getPosition();
         float z_rot = 0;
         if (vehicle != null) z_rot = UtilAngles.lerpAngle(partialTick, vehicle.zRotO, vehicle.zRot);
-        //float z_rot = (float) UtilAngles.toDegrees(QuaternionF.from(cam.rotation())).roll;
         graphics.pose().pushPose();
         QuaternionF q = Vec3f.ZP.rotationDegrees(z_rot);
         q.mul(Vec3f.XP.rotationDegrees(cam.getXRot()));
         q.mul(Vec3f.YP.rotationDegrees(cam.getYRot()+180f));
         graphics.pose().mulPose(q.convert());
-        /*Matrix4f mat4f = new Matrix4f();
-        RenderSystem.getInverseViewRotationMatrix().get(mat4f);
-        graphics.pose().mulPoseMatrix(mat4f);*/
         graphics.pose().translate(-view.x, -view.y, -view.z);
         Mat4f view_mat = Mat4f.from(graphics.pose().last().pose());
         graphics.pose().popPose();

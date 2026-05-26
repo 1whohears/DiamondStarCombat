@@ -194,7 +194,7 @@
 	
 	"targetmode.dscombat.look": "LOOK",
 	"targetmode.dscombat.coords": "COORDS",
-	"targetmode.dscombat.indicator": "INDICATOR",
+	"targetmode.dscombat.marker": "MARKER",
 	
 	"blendmode.dscombat.none": "NONE",
 	"blendmode.dscombat.on_white": "ON WHITE",

@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -34,7 +34,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
         assert data != null;
 
         double range = data.getStats().getMobTurretRange();
-        Vec3 pos = Config.CLIENT.getTargetPos();
+        Vec3 pos = ClientInputManager.getShootPos(getPlayer(), vehicle);
         int dist = (int) pos.distanceTo(vehicle.position());
         int alt = UtilVehicleEntity.getDistFromSeaLevel(pos.y, vehicle.getWorld());
         String text = dist + " | " + alt;

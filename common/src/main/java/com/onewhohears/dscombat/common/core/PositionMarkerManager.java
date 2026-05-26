@@ -31,6 +31,8 @@ public class PositionMarkerManager extends Serializable {
     private final Map<UUID, PlayerPositionMarkers> PLAYERS = new HashMap<>();
     private final IntObjectMap<PositionMarker> MARKERS = new IntObjectHashMap<>();
     private final Set<Integer> markersForRemoval = new HashSet<>();
+    private final Set<Integer> changedMarkers = new HashSet<>();
+    private final Set<Integer> playerChangedMarkers = new HashSet<>();
     private final Map<String, Set<Integer>> teamVisibleIds = new HashMap<>();
 
     private int MARKER_ID_COUNTER = 0;
@@ -38,6 +40,7 @@ public class PositionMarkerManager extends Serializable {
     public void onServerTick(@NotNull MinecraftServer server) {
         long currentTime = System.currentTimeMillis();
         teamVisibleIds.clear();
+        changedMarkers.clear();
         MARKERS.forEach((id, marker) -> {
             if (markersForRemoval.contains(id) || (marker.getType() == MarkerType.TEMP
                     && currentTime - marker.getCreatedTime() > TEMP_MARKER_TIMEOUT)) {
@@ -54,6 +57,10 @@ public class PositionMarkerManager extends Serializable {
                 Set<Integer> visibleIds = teamVisibleIds.computeIfAbsent(team.getName(), name -> new HashSet<>());
                 visibleIds.add(id);
             }
+            if (marker.isDirty()) {
+                changedMarkers.add(id);
+                marker.resetDirty();
+            }
         });
         PLAYERS.forEach((uuid, playerData) -> {
             ServerPlayer player = server.getPlayerList().getPlayer(uuid);
@@ -63,6 +70,13 @@ public class PositionMarkerManager extends Serializable {
                 if (ids != null) ids.forEach(playerData::setVisible);
             }
             playerData.onServerTick(server, this, player);
+            playerChangedMarkers.clear();
+            for (int id : changedMarkers) {
+                if (playerData.getVisibleIds().contains(id)) {
+                    playerChangedMarkers.add(id);
+                }
+            }
+            new ToClientPositionMarkers(playerChangedMarkers).sendTo(player);
         });
         markersForRemoval.forEach(MARKERS::remove);
     }
@@ -86,6 +100,15 @@ public class PositionMarkerManager extends Serializable {
         PositionMarker marker = PositionMarker.create(id, name, position, dimension, owner, type);
         MARKERS.put(marker.getId(), marker);
         return marker;
+    }
+
+    public @Nullable PositionMarker getMarkerByName(@NotNull String name, @Nullable UUID owner) {
+        for (PositionMarker marker : MARKERS.values()) {
+            if (!marker.getName().equals(name)) continue;
+            if (owner != null && marker.getOwner() != null && !marker.getOwner().equals(owner)) continue;
+            return marker;
+        }
+        return null;
     }
 
     public static String getShortName(@NotNull ServerPlayer player) {
@@ -119,7 +142,8 @@ public class PositionMarkerManager extends Serializable {
         UUID localPlayer = Minecraft.getInstance().player.getUUID();
         for (PositionMarker marker : markers) {
             MARKERS.put(marker.getId(), marker);
-            if (marker.getOwner() != null && marker.getOwner().equals(localPlayer)) {
+            if (marker.getOwner() != null && marker.getOwner().equals(localPlayer)
+                    && marker.getType() == MarkerType.TEMP) {
                 DSCClientInputs.setSelectedMarkerId(marker.getId());
             }
         }

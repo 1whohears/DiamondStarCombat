@@ -24,6 +24,12 @@ public class PositionMarker extends Serializable {
     private long created;
     private MarkerType type;
 
+    public void saveMarker(@NotNull String name) {
+        this.type = MarkerType.SAVE;
+        this.name = name;
+        this.setDirty();
+    }
+
     @Override
     protected void addSaveData(@NotNull JsonObject data) {
         data.addProperty("id", id);

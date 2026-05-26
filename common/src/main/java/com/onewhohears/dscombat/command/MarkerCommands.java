@@ -30,6 +30,24 @@ public class MarkerCommands {
                             PositionMarkerManager.getServer().addTempMarker(player, position);
                             return 1;
                         })
+                        .then(Commands.argument("name", StringArgumentType.word())
+                                .executes(ctx -> {
+                                    ServerPlayer player = ctx.getSource().getPlayer();
+                                    if (player == null) {
+                                        ctx.getSource().sendFailure(UtilMCText.literal("Command must be used by a player!"));
+                                        return 0;
+                                    }
+                                    String name = StringArgumentType.getString(ctx, "name");
+                                    if (PositionMarkerManager.getServer().getMarkerByName(name, player.getUUID()) != null) {
+                                        ctx.getSource().sendFailure(UtilMCText.literal("You cannot make multiple markers with the same name!"));
+                                        return 0;
+                                    }
+                                    Vec3 position = Vec3Argument.getVec3(ctx, "pos");
+                                    PositionMarker marker = PositionMarkerManager.getServer().addTempMarker(player, position);
+                                    marker.saveMarker(name);
+                                    return 1;
+                                })
+                        )
                 )
                 .then(Commands.literal("look")
                         .executes(ctx -> {
@@ -41,6 +59,23 @@ public class MarkerCommands {
                             PositionMarkerManager.getServer().addQuickTempMarker(player);
                             return 1;
                         })
+                        .then(Commands.argument("name", StringArgumentType.word())
+                                .executes(ctx -> {
+                                    ServerPlayer player = ctx.getSource().getPlayer();
+                                    if (player == null) {
+                                        ctx.getSource().sendFailure(UtilMCText.literal("Command must be used by a player!"));
+                                        return 0;
+                                    }
+                                    String name = StringArgumentType.getString(ctx, "name");
+                                    if (PositionMarkerManager.getServer().getMarkerByName(name, player.getUUID()) != null) {
+                                        ctx.getSource().sendFailure(UtilMCText.literal("You cannot make multiple markers with the same name!"));
+                                        return 0;
+                                    }
+                                    PositionMarker marker = PositionMarkerManager.getServer().addQuickTempMarker(player);
+                                    marker.saveMarker(name);
+                                    return 1;
+                                })
+                        )
                 )
                 .then(Commands.literal("save")
                         .then(Commands.argument("new_name", StringArgumentType.word())

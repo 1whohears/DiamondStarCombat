@@ -111,6 +111,15 @@ public class PositionMarkerManager extends Serializable {
         return null;
     }
 
+    public Set<String> getMarkerNames(@Nullable UUID owner) {
+        Set<String> names = new HashSet<>();
+        for (PositionMarker marker : MARKERS.values()) {
+            if (owner != null && marker.getOwner() != null && !marker.getOwner().equals(owner)) continue;
+            names.add(marker.getName());
+        }
+        return names;
+    }
+
     public static String getShortName(@NotNull ServerPlayer player) {
         String name = player.getScoreboardName();
         int maxLength = 5;

@@ -2,16 +2,18 @@ package com.onewhohears.dscombat.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.onewhohears.dscombat.common.core.MarkerType;
 import com.onewhohears.dscombat.common.core.PlayerPositionMarkers;
 import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
+import com.onewhohears.onewholibs.util.CommandUtil;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.UUID;
 
 public class MarkerCommands {
 
@@ -67,6 +69,12 @@ public class MarkerCommands {
                 )
                 .then(Commands.literal("remove")
                         .then(Commands.argument("name", StringArgumentType.word())
+                                .suggests((ctx, builder) -> {
+                                    ServerPlayer player = ctx.getSource().getPlayer();
+                                    UUID owner = player != null ? player.getUUID() : null;
+                                    CommandUtil.suggestStringToBuilder(builder, PositionMarkerManager.getServer().getMarkerNames(owner));
+                                    return builder.buildFuture();
+                                })
                                 .executes(ctx -> {
                                     ServerPlayer player = ctx.getSource().getPlayer();
                                     if (player == null) {
@@ -86,6 +94,10 @@ public class MarkerCommands {
                 )
                 .then(Commands.literal("remove_admin").requires((stack) -> stack.hasPermission(2))
                         .then(Commands.argument("name", StringArgumentType.word())
+                                .suggests((ctx, builder) -> {
+                                    CommandUtil.suggestStringToBuilder(builder, PositionMarkerManager.getServer().getMarkerNames(null));
+                                    return builder.buildFuture();
+                                })
                                 .executes(ctx -> {
                                     String name = StringArgumentType.getString(ctx, "name");
                                     PositionMarker marker = PositionMarkerManager.getServer().getMarkerByName(name, null);

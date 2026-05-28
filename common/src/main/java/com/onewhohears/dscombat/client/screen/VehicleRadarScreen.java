@@ -25,7 +25,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -149,7 +148,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         // RADAR MODE
         positionWidgetGrid(CycleButton.<RadarFilterMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
                         .withValues(RadarFilterMode.values())
-                        .withInitialValue(DSCClientInputs.getPreferredRadarMode())
+                        .withInitialValue(DSCClientInputs.getRadarFilterMode())
                         .create(0, 0, 20, 20,
                                 UtilMCText.translatable("ui.dscombat.radar_mode"),
                                 onRadarModeCycle()),
@@ -204,7 +203,7 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     }
 
     private CycleButton.OnValueChange<RadarFilterMode> onRadarModeCycle() {
-        return (button, value) -> DSCClientInputs.setPreferredRadarMode(value);
+        return (button, value) -> DSCClientInputs.setRadarFilterMode(value);
     }
 
     private Consumer<String> onRadarDisplayRangeChange() {

@@ -23,7 +23,7 @@ public class PosMissileInstance<T extends PosMissileStats> extends MissileInstan
 
 	@Override
 	public TargetMode fixTargetMode(TargetMode currentTargetMode, TargetMode preferedPosTargetMode) {
-		if (currentTargetMode != TargetMode.LOOK && currentTargetMode != TargetMode.COORDS && currentTargetMode != TargetMode.MARKER) {
+		if (!currentTargetMode.isPosition()) {
 			return preferedPosTargetMode;
 		}
 		return currentTargetMode;

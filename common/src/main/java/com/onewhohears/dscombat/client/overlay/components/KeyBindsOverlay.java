@@ -146,9 +146,9 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		if (isPilot || isCoPilot) displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.WEAPON_CYCLE);
 		// RADAR MODE
 		if (vehicle.radarSystem.hasRadar()) {
-			boolean warning = DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode();
+			boolean warning = DSCClientInputs.getRadarFilterMode() != vehicle.getRadarMode();
 			displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.RADAR_MODE,
-					warning, DSCClientInputs.getPreferredRadarMode().name());
+					warning, DSCClientInputs.getRadarFilterMode().name());
 		}
 		// SELECT RADAR PING
 		if (vehicle.radarSystem.hasRadar()) displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.PING_CYCLE);

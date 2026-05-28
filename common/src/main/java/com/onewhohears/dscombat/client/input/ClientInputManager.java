@@ -260,17 +260,21 @@ public class ClientInputManager {
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
             WeaponInstance<?> selectedWeapon = vehicle.weaponSystem.getSelected();
-            // TODO CONFIG PREFERRED MARKER MODE
-            // TODO also make current marker mode config so it saves
-            // TODO also make current radar mode config so it saves, instead of saving default radar mode
-            // TODO if in marker mode, dont allow position shoot if no marker is selected
-            TargetMode targetMode = selectedWeapon.fixTargetMode(DSCClientInputs.getTargetMode(), TargetMode.MARKER);
+            if (DSCClientInputs.getTargetMode().isPosition()) {
+                Config.CLIENT.preferredPositionTargetMode.set(DSCClientInputs.getTargetMode());
+            }
+            TargetMode targetMode = selectedWeapon.fixTargetMode(DSCClientInputs.getTargetMode(),
+                    Config.CLIENT.preferredPositionTargetMode.get());
             DSCClientInputs.setTargetMode(targetMode);
-            sendSyncAction(new VehicleSyncAction.ShootAction(
-                    vehicle.weaponSystem.getSelectedIndex(),
-                    radar.getClientSelectedPing(),
-                    getShootPos(player, vehicle),
-                    targetMode));
+            if (targetMode == TargetMode.MARKER && DSCClientInputs.getSelectedMarker() == null) {
+                player.displayClientMessage(UtilMCText.translatable("error.dscombat.must_select_marker"), true);
+            } else {
+                sendSyncAction(new VehicleSyncAction.ShootAction(
+                        vehicle.weaponSystem.getSelectedIndex(),
+                        radar.getClientSelectedPing(),
+                        getShootPos(player, vehicle),
+                        targetMode));
+            }
         }
         // DISMOUNT
         if (Config.CLIENT.customDismount.get() && DISMOUNT.isPressed()) {
@@ -290,11 +294,11 @@ public class ClientInputManager {
         // CYCLE RADAR MODE
         boolean cycleRadarMode = RADAR_MODE.isInitPressed();
         if (cycleRadarMode) {
-            DSCClientInputs.cyclePreferredRadarMode();
+            DSCClientInputs.cycleRadarFilterMode();
             if (!isRadarController) player.displayClientMessage(UtilMCText.translatable("info.dscombat.not_radar_controller"), true);
         }
-        if (isRadarController && DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
-            sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getPreferredRadarMode()));
+        if (isRadarController && DSCClientInputs.getRadarFilterMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
+            sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getRadarFilterMode()));
             radarModeUpdateTime = Util.getMillis();
         }
         // USE GIMBAL

@@ -18,7 +18,6 @@ public class ClientInputEventHandlers {
     }
 
     public static void onClientPlayerJoin(LocalPlayer localPlayer) {
-        DSCClientInputs.setPreferredRadarMode(Config.CLIENT.defaultRadarMode.get());
         ClientInputManager.loadKeyBinds();
         PositionMarkerManager.getClient().resetClient();
     }

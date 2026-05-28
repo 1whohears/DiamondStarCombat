@@ -378,7 +378,7 @@ public class RadarSystem {
     }
 	
 	private void removeUnwantedPings() {
-		RadarFilterMode mode = DSCClientInputs.getPreferredRadarMode();
+		RadarFilterMode mode = DSCClientInputs.getRadarFilterMode();
 		clientTargets.entrySet().removeIf(entry -> entry.getValue().dontDisplayByMode(mode));
 	}
 	

@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
 import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.data.radar.RadarFilterMode;
-
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +29,6 @@ public class DSCClientInputs {
 	private static double LEAN_AMOUNT = 0;
 	
 	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
-	private static RadarFilterMode PREFERRED_RADAR_MODE = RadarFilterMode.ALL;
-	private static TargetMode TARGET_MODE = TargetMode.LOOK;
 	
 	private static boolean GIMBAL_MODE = false;
 	private static boolean AFTERBURNER = false;
@@ -49,17 +46,17 @@ public class DSCClientInputs {
         return CAMERA_TRACK_TARGET;
     }
 
-	public static RadarFilterMode getPreferredRadarMode() {
-		return PREFERRED_RADAR_MODE;
+	public static RadarFilterMode getRadarFilterMode() {
+		return Config.CLIENT.radarFilterMode.get();
 	}
 	
-	public static RadarFilterMode cyclePreferredRadarMode() {
-		PREFERRED_RADAR_MODE = PREFERRED_RADAR_MODE.cycle();
-		return PREFERRED_RADAR_MODE;
+	public static RadarFilterMode cycleRadarFilterMode() {
+		setRadarFilterMode(getRadarFilterMode().cycle());
+		return getRadarFilterMode();
 	}
 	
-	public static void setPreferredRadarMode(RadarFilterMode mode) {
-		PREFERRED_RADAR_MODE = mode;
+	public static void setRadarFilterMode(RadarFilterMode mode) {
+		Config.CLIENT.radarFilterMode.set(mode);
 	}
 	
 	public static boolean isGimbalMode() {
@@ -254,11 +251,11 @@ public class DSCClientInputs {
 	}
 
 	public static TargetMode getTargetMode() {
-		return TARGET_MODE;
+		return Config.CLIENT.targetMode.get();
 	}
 
 	public static void setTargetMode(TargetMode targetMode) {
-		TARGET_MODE = targetMode;
+		Config.CLIENT.targetMode.set(targetMode);
 	}
 
 	public static void setLeanAmount(double leanAmount) {

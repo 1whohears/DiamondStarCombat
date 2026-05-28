@@ -82,7 +82,7 @@ public class PositionMarkerManager extends Serializable {
     }
 
     public PositionMarker addQuickTempMarker(@NotNull ServerPlayer player) {
-        Vec3 pos = UtilEntity.getLookingAtBlockPos(player, 1000);
+        Vec3 pos = UtilEntity.getLookingAtBlockPos(player, 1024);
         pos = new Vec3(Math.floor(pos.x)+0.5, Math.floor(pos.y)+0.5, Math.floor(pos.z)+0.5);
         return addTempMarker(player, pos);
     }

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common.core;
 import com.google.gson.JsonObject;
 import com.onewhohears.onewholibs.common.core.Serializable;
 import com.onewhohears.onewholibs.util.UtilParse;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
@@ -108,5 +109,10 @@ public class PositionMarker extends Serializable {
 
     public MarkerType getType() {
         return type;
+    }
+
+    public void setPosition(@NotNull Vec3 pos) {
+        if (!UtilGeometry.isEqual(this.position, pos)) setDirty();
+        this.position = pos;
     }
 }

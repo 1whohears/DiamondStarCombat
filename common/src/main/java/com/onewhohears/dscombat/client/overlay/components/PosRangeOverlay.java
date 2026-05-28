@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.onewhohears.dscombat.client.input.ClientInputManager;
-import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -15,8 +14,6 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
 
     @Override
     protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
-        if (DSCClientInputs.getTargetMode() == DSCClientInputs.TargetMode.LOOK) return false;
-
         if (defaultRenderConditions()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return false;
 

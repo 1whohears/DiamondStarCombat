@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.data.weapon.instance;
 
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.PosMissileStats;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;
 
@@ -18,6 +19,14 @@ public class PosMissileInstance<T extends PosMissileStats> extends MissileInstan
 		if (params.vehicle == null || !params.isPlayer) setTargetPosByLooker(params, missile);
 		else missile.targetPos = params.vehicle.weaponSystem.getTargetPos();
 		return missile;
+	}
+
+	@Override
+	public TargetMode fixTargetMode(TargetMode currentTargetMode, TargetMode preferedPosTargetMode) {
+		if (currentTargetMode != TargetMode.LOOK && currentTargetMode != TargetMode.COORDS && currentTargetMode != TargetMode.MARKER) {
+			return preferedPosTargetMode;
+		}
+		return currentTargetMode;
 	}
 
 }

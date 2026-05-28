@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.Nullable;
 
@@ -249,13 +250,6 @@ public class DSCClientInputs {
 		}
 		public boolean isFreeGlobal() {
 			return this == FREE_GLOBAL;
-		}
-	}
-
-	public enum TargetMode {
-		LOOK, COORDS, MARKER;
-		public String getTranslatable() {
-			return "targetmode.dscombat."+name().toLowerCase();
 		}
 	}
 

@@ -195,7 +195,9 @@
 	"targetmode.dscombat.look": "LOOK",
 	"targetmode.dscombat.coords": "COORDS",
 	"targetmode.dscombat.marker": "MARKER",
-	
+	"targetmode.dscombat.radar": "RADAR",
+	"targetmode.dscombat.optical": "OPTICAL",
+
 	"blendmode.dscombat.none": "NONE",
 	"blendmode.dscombat.on_white": "ON WHITE",
 	"blendmode.dscombat.on_all": "ON ALL",
@@ -570,7 +572,8 @@
 	"preset.type.dumb_torpedo": "Dumb Torpedo",
 	"preset.type.ir_missile": "IR Missile",
 	"preset.type.anti_radar_missile": "Anti Radar Missile",
-	
+	"preset.type.all_missile": "Universal Missile",
+
 	"preset.dscombat.no_weapon": "None",
 	"preset.dscombat.10mm": "10mm",
 	"preset.dscombat.15mm": "15mm",

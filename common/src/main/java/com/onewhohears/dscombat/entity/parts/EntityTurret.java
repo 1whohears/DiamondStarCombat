@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.parts;
 
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.onewholibs.util.math.QuaternionF;
@@ -264,8 +265,12 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 		if (instance == null) return null;
 		return instance.getWeaponData();
 	}
-	
+
 	public void shoot(Entity shooter) {
+		shoot(shooter, null);
+	}
+
+	public void shoot(Entity shooter, @Nullable TargetMode targetMode) {
 		WeaponInstance<?> data = getWeaponData();
 		if (isClientSide() || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
@@ -285,7 +290,8 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 		boolean consumeAmmo = getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		boolean couldShoot = data.checkRecoil();
 		data.setSlot(getSlotId());
-		data.shootFromTurret(getWorld(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo);
+		TargetMode mode = data.getDefaultTargetMode();
+		data.shootFromTurret(getWorld(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo, mode);
 		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo, data);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
@@ -308,13 +314,14 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	protected void specialShoot(Entity shooter, Vec3 pos, EntityVehicle parent, boolean consume, WeaponInstance<?> data) {
 		if (getShootType() == ShootType.NORMAL) return;
 		//System.out.println("SPECIAL SHOOT "+shootType);
+		TargetMode mode = data.getDefaultTargetMode();
 		if (getShootType() == ShootType.MARK7) {
 			float d = 1;
 			float yRad = getYRot() * Mth.DEG_TO_RAD;
 			Vec3 posL = pos.add(new Vec3(-d*Mth.cos(yRad), 0, -d*Mth.sign(yRad))); 
 			Vec3 posR = pos.add(new Vec3(d*Mth.cos(yRad), 0, d*Mth.sign(yRad)));
-			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posL, parent, consume, true);
-			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posR, parent, consume, true);
+			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posL, parent, consume, true, mode);
+			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posR, parent, consume, true, mode);
 		}
 	}
 

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.data.weapon;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.instance.NoWeaponInstance;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -34,6 +35,7 @@ public class WeaponSystem {
 	private int weaponIndex = 0;
 
 	private Vec3 targetPos = Vec3.ZERO;
+	private TargetMode targetMode = TargetMode.MARKER;
 	
 	public WeaponSystem(EntityVehicle parent) {
 		this.parent = parent;
@@ -87,10 +89,10 @@ public class WeaponSystem {
 		if (data == null) return false;
 		String name = data.getStatsId();
 		String reason = null;
-		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume);
+		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume, getTargetMode());
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponInstance<?> wd : weapons) if (wd.getStats().isBullet() && wd.getStatsId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shootFromVehicle(parent.getWorld(), controller, getShootDirection(wd), parent, consume);
+			wd.shootFromVehicle(parent.getWorld(), controller, getShootDirection(wd), parent, consume, getTargetMode());
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
@@ -174,5 +176,12 @@ public class WeaponSystem {
 	public void setTargetPos(Vec3 targetPos) {
 		this.targetPos = targetPos;
 	}
-	
+
+    public TargetMode getTargetMode() {
+        return targetMode;
+    }
+
+    public void setTargetMode(TargetMode targetMode) {
+        this.targetMode = targetMode;
+    }
 }

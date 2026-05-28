@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
+import com.onewhohears.dscombat.data.weapon.stats.RadarTargetType;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
@@ -176,7 +176,7 @@ public class AbstractWeaponBuilders {
 		/**
 		 * Track Missile only
 		 */
-		public C setTargetType(TargetType targetType) {
+		public C setTargetType(RadarTargetType targetType) {
 			return setEnum("targetType", targetType);
 		}
 		

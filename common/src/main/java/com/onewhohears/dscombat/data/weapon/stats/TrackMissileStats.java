@@ -17,19 +17,13 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 
 public class TrackMissileStats extends MissileStats {
-	
-	public enum TargetType {
-		AIR,
-		GROUND,
-		WATER
-	}
-	
-	private final TargetType targetType;
+
+	private final RadarTargetType targetType;
 	private final boolean active;
 
 	public TrackMissileStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		targetType = UtilParse.getEnumSafe(json, "targetType", TargetType.class);
+		targetType = UtilParse.getEnumSafe(json, "targetType", RadarTargetType.class);
 		active = UtilParse.getBooleanSafe(json, "activeTrack", true);
 	}
 	
@@ -43,7 +37,7 @@ public class TrackMissileStats extends MissileStats {
 		return new TrackMissileInstance<>(this);
 	}
 	
-	public TargetType getTargetType() {
+	public RadarTargetType getTargetType() {
 		return targetType;
 	}
 	

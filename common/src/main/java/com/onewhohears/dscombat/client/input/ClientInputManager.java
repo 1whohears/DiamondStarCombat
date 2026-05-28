@@ -9,6 +9,8 @@ import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toserver.ToServerModifyMarker;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -257,10 +259,18 @@ public class ClientInputManager {
         if (PING_CYCLE.isInitPressed()) radar.clientSelectNextTarget();
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
+            WeaponInstance<?> selectedWeapon = vehicle.weaponSystem.getSelected();
+            // TODO CONFIG PREFERRED MARKER MODE
+            // TODO also make current marker mode config so it saves
+            // TODO also make current radar mode config so it saves, instead of saving default radar mode
+            // TODO if in marker mode, dont allow position shoot if no marker is selected
+            TargetMode targetMode = selectedWeapon.fixTargetMode(DSCClientInputs.getTargetMode(), TargetMode.MARKER);
+            DSCClientInputs.setTargetMode(targetMode);
             sendSyncAction(new VehicleSyncAction.ShootAction(
                     vehicle.weaponSystem.getSelectedIndex(),
                     radar.getClientSelectedPing(),
-                    getShootPos(player, vehicle)));
+                    getShootPos(player, vehicle),
+                    targetMode));
         }
         // DISMOUNT
         if (Config.CLIENT.customDismount.get() && DISMOUNT.isPressed()) {

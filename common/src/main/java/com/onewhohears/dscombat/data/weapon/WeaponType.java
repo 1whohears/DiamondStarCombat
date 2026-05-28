@@ -127,6 +127,18 @@ public abstract class WeaponType extends JsonPresetType {
 			return ModEntities.ANTI_RADAR_MISSILE.get();
 		}
 	}
+	public static final AllMissile ALL_MISSILE = AllMissile.INSTANCE;
+	public static class AllMissile extends WeaponType {
+		public static final String ID = "all_missile";
+		public static final AllMissile INSTANCE = new AllMissile();
+		public AllMissile() {
+			super(ID, (key, data) -> new AllMissileStats(key, data));
+		}
+		@Override
+		public EntityType<?> getDefaultEntityType() {
+			return ModEntities.ALL_MISSILE.get();
+		}
+	}
 	public WeaponType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {
 		super(id, statsFactory);
 	}

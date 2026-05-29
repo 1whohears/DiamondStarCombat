@@ -115,4 +115,9 @@ public class PositionMarker extends Serializable {
         if (!UtilGeometry.isEqual(this.position, pos)) setDirty();
         this.position = pos;
     }
+
+    public void setDimension(ResourceKey<Level> dimension) {
+        if (!this.dimension.equals(dimension)) setDirty();
+        this.dimension = dimension;
+    }
 }

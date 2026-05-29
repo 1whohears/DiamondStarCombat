@@ -81,21 +81,30 @@ public class PositionMarkerManager extends Serializable {
         markersForRemoval.forEach(MARKERS::remove);
     }
 
-    public PositionMarker addQuickTempMarker(@NotNull ServerPlayer player) {
+    public @NotNull PositionMarker addQuickTempMarker(@NotNull ServerPlayer player) {
         Vec3 pos = UtilEntity.getLookingAtBlockPos(player, 1024);
         pos = new Vec3(Math.floor(pos.x)+0.5, Math.floor(pos.y)+0.5, Math.floor(pos.z)+0.5);
         return addTempMarker(player, pos);
     }
 
-    public PositionMarker addTempMarker(@NotNull ServerPlayer player, @NotNull Vec3 position) {
-        PositionMarker marker = addMarker(getShortName(player)+":"+(MARKER_ID_COUNTER+1), position,
-                UtilEntity.getLevel(player).dimension(), player.getUUID(), MarkerType.TEMP);
-        getPlayerData(player.getUUID()).setTempMarkerId(marker.getId());
+    public @NotNull PositionMarker addTempMarker(@NotNull ServerPlayer player, @NotNull Vec3 position) {
+        PlayerPositionMarkers playerData = getPlayerData(player.getUUID());
+        PositionMarker marker = playerData.getTempMarker();
+        ResourceKey<Level> dimension = UtilEntity.getLevel(player).dimension();
+        if (marker != null) {
+            marker.setPosition(position);
+            marker.setDimension(dimension);
+        } else {
+            marker = addMarker(getShortName(player)+":"+(MARKER_ID_COUNTER+1), position,
+                    dimension, player.getUUID(), MarkerType.TEMP);
+            getPlayerData(player.getUUID()).setTempMarkerId(marker.getId());
+        }
         return marker;
     }
 
-    public PositionMarker addMarker(@NotNull String name, @NotNull Vec3 position, @NotNull ResourceKey<Level> dimension,
-                                    @Nullable UUID owner, @NotNull MarkerType type) {
+    public @NotNull PositionMarker addMarker(@NotNull String name, @NotNull Vec3 position,
+                                             @NotNull ResourceKey<Level> dimension,
+                                             @Nullable UUID owner, @NotNull MarkerType type) {
         int id = ++MARKER_ID_COUNTER;
         PositionMarker marker = PositionMarker.create(id, name, position, dimension, owner, type);
         MARKERS.put(marker.getId(), marker);

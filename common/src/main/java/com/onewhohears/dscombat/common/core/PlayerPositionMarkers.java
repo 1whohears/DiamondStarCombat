@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -107,12 +108,22 @@ public class PlayerPositionMarkers extends Serializable {
     }
 
     public void setTempMarkerId(int tempMarkerId) {
-        if (tempMarkerId != this.tempMarkerId) {
+        if (tempMarkerId != -1 && tempMarkerId != this.tempMarkerId) {
             PositionMarker marker = PositionMarkerManager.getServer().getMarker(this.tempMarkerId);
             if (marker != null && marker.getType() == MarkerType.TEMP) {
                 PositionMarkerManager.getServer().removeMarker(this.tempMarkerId);
             }
         }
         this.tempMarkerId = tempMarkerId;
+    }
+
+    public @Nullable PositionMarker getTempMarker() {
+        if (tempMarkerId == -1) return null;
+        PositionMarker marker = PositionMarkerManager.getServer().getMarker(this.tempMarkerId);
+        if (marker == null || marker.getType() != MarkerType.TEMP) {
+            tempMarkerId = -1;
+            return null;
+        }
+        return marker;
     }
 }

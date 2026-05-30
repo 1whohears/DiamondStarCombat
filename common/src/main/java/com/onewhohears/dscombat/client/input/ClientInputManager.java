@@ -254,9 +254,15 @@ public class ClientInputManager {
         RadarSystem radar = vehicle.radarSystem;
         if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {
             radar.clientSelectTarget(DSCClientInputs.getRadarHoverId());
+            DSCClientInputs.setTargetMode(TargetMode.RADAR);
+            DSCClientInputs.setSelectedMarkerId(-1);
         }
         // CYCLE PING
-        if (PING_CYCLE.isInitPressed()) radar.clientSelectNextTarget();
+        if (PING_CYCLE.isInitPressed()) {
+            radar.clientSelectNextTarget();
+            DSCClientInputs.setTargetMode(TargetMode.RADAR);
+            DSCClientInputs.setSelectedMarkerId(-1);
+        }
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
             WeaponInstance<?> selectedWeapon = vehicle.weaponSystem.getSelected();

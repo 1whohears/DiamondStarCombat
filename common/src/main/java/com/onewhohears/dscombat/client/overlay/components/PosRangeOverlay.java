@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
 import com.onewhohears.dscombat.client.input.ClientInputManager;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -20,7 +21,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
         WeaponInstance<?> data = vehicle.weaponSystem.getSelected();
         if (data == null) return false;
 
-        return data.getStats().isPosGuided();
+        return data.getStats().isPosGuided() && DSCClientInputs.getTargetMode().isPosition();
     }
 
     @Override
@@ -44,7 +45,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
             text += " | X";
         }
 
-        graphics.drawCenteredString(FONT, text, screenWidth / 2, screenHeight / 2 - 20, color);
+        graphics.drawCenteredString(FONT, text, screenWidth / 2, screenHeight / 2 + 20, color);
     }
 
     @Override

@@ -315,6 +315,9 @@ public class DSCClientInputs {
 
 	public static void setSelectedMarkerId(int id) {
 		selectedMarkerId = id;
+		if (selectedMarkerId != -1) {
+			setTargetMode(TargetMode.MARKER);
+		}
 	}
 
 	public static @Nullable PositionMarker getSelectedMarker() {

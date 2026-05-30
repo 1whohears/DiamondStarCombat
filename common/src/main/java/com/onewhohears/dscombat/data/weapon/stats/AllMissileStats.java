@@ -91,7 +91,7 @@ public class AllMissileStats extends MissileStats {
 
 	@Override
 	public boolean isPosGuided() {
-		return true;
+		return isCanPositionGuide();
 	}
 
     @Override

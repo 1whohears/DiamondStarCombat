@@ -4,10 +4,13 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
+import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
+import com.onewhohears.dscombat.common.network.toserver.ToServerModifyMarker;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
-import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
@@ -30,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ClientInputManager {
@@ -74,6 +76,7 @@ public class ClientInputManager {
     public static final ActionInputHolder.Button RADAR_MODE = registerButton("radar_mode", "radar_mode_key");
     public static final ActionInputHolder.Button PING_CYCLE = registerButton("ping_cycle", "ping_cycle_key");
     public static final ActionInputHolder.Button AFTERBURNER = registerButton("afterburner", "afterburner_toggle_key");
+    public static final ActionInputHolder.Button QUICK_MARKER = registerButton("quick_marker", "quick_marker_key");
 
     private static int leftTicks = 0;
     private static long radarModeUpdateTime = 0;
@@ -250,18 +253,34 @@ public class ClientInputManager {
         // SELECT RADAR PING
         RadarSystem radar = vehicle.radarSystem;
         if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {
-            List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
-            if (DSCClientInputs.getRadarHoverIndex() < pings.size())
-                radar.clientSelectTarget(pings.get(DSCClientInputs.getRadarHoverIndex()));
+            radar.clientSelectTarget(DSCClientInputs.getRadarHoverId());
+            DSCClientInputs.setTargetMode(TargetMode.RADAR);
+            DSCClientInputs.setSelectedMarkerId(-1);
         }
         // CYCLE PING
-        if (PING_CYCLE.isInitPressed()) radar.clientSelectNextTarget();
+        if (PING_CYCLE.isInitPressed()) {
+            radar.clientSelectNextTarget();
+            DSCClientInputs.setTargetMode(TargetMode.RADAR);
+            DSCClientInputs.setSelectedMarkerId(-1);
+        }
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
-            sendSyncAction(new VehicleSyncAction.ShootAction(
-                    vehicle.weaponSystem.getSelectedIndex(),
-                    radar.getClientSelectedPing(),
-                    getShootPos(player, vehicle)));
+            WeaponInstance<?> selectedWeapon = vehicle.weaponSystem.getSelected();
+            if (DSCClientInputs.getTargetMode().isPosition()) {
+                Config.CLIENT.preferredPositionTargetMode.set(DSCClientInputs.getTargetMode());
+            }
+            TargetMode targetMode = selectedWeapon.fixTargetMode(DSCClientInputs.getTargetMode(),
+                    Config.CLIENT.preferredPositionTargetMode.get());
+            DSCClientInputs.setTargetMode(targetMode);
+            if (targetMode == TargetMode.MARKER && DSCClientInputs.getSelectedMarker() == null) {
+                player.displayClientMessage(UtilMCText.translatable("error.dscombat.must_select_marker"), true);
+            } else {
+                sendSyncAction(new VehicleSyncAction.ShootAction(
+                        vehicle.weaponSystem.getSelectedIndex(),
+                        radar.getClientSelectedPing(),
+                        getShootPos(player, vehicle),
+                        targetMode));
+            }
         }
         // DISMOUNT
         if (Config.CLIENT.customDismount.get() && DISMOUNT.isPressed()) {
@@ -281,11 +300,11 @@ public class ClientInputManager {
         // CYCLE RADAR MODE
         boolean cycleRadarMode = RADAR_MODE.isInitPressed();
         if (cycleRadarMode) {
-            DSCClientInputs.cyclePreferredRadarMode();
+            DSCClientInputs.cycleRadarFilterMode();
             if (!isRadarController) player.displayClientMessage(UtilMCText.translatable("info.dscombat.not_radar_controller"), true);
         }
-        if (isRadarController && DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
-            sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getPreferredRadarMode()));
+        if (isRadarController && DSCClientInputs.getRadarFilterMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
+            sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getRadarFilterMode()));
             radarModeUpdateTime = Util.getMillis();
         }
         // USE GIMBAL
@@ -307,6 +326,17 @@ public class ClientInputManager {
         else if (leanRight) DSCClientInputs.leanRight();
     }
 
+    private static void tickAlways() {
+        // CREATE QUICK MARKER
+        if (QUICK_MARKER.isInitPressed()) {
+            new ToServerModifyMarker().sendToServer();
+        }
+        // SELECT POSITION MARKER
+        if (DSCClientInputs.getMarkerHoverId() != -1 && leftTicks == 1) {
+            DSCClientInputs.setSelectedMarkerId(DSCClientInputs.getMarkerHoverId());
+        }
+    }
+
     private static void tickActions() {
         buttons.forEach((id, action) -> action.tick());
         axes.forEach((id, action) -> action.tick());
@@ -321,6 +351,7 @@ public class ClientInputManager {
             wasPilot = false;
             return;
         }
+        tickAlways();
         if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle vehicle)) {
             if (wasPilot) { smPitch = smRoll = smYaw = 0f; }
             wasPilot = false;
@@ -356,7 +387,12 @@ public class ClientInputManager {
         switch (DSCClientInputs.getTargetMode()) {
             case LOOK -> { return getLookPos(player, vehicle); }
             case COORDS -> {  return Config.CLIENT.getTargetPos(); }
-            case INDICATOR -> { return Vec3.ZERO; }
+            case MARKER -> {
+                PositionMarker marker = DSCClientInputs.getSelectedMarker();
+                if (marker == null) return Vec3.ZERO;
+                if (!UtilEntity.getLevel(player).dimension().equals(marker.getDimension())) return Vec3.ZERO;
+                return marker.getPosition();
+            }
         }
         return Vec3.ZERO;
     }

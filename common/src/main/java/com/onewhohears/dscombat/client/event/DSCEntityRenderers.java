@@ -34,6 +34,7 @@ public class DSCEntityRenderers {
         EntityRendererRegistry.register(ModEntities.ANTI_RADAR_MISSILE, RendererObjWeapon::new);
         EntityRendererRegistry.register(ModEntities.TORPEDO_MISSILE, RendererObjWeapon::new);
         EntityRendererRegistry.register(ModEntities.DUMB_TORPEDO_MISSILE, RendererObjWeapon::new);
+        EntityRendererRegistry.register(ModEntities.ALL_MISSILE, RendererObjWeapon::new);
         // PARTS
         EntityRendererRegistry.register(ModEntities.TURRET, RendererCustomAnimObjEntity::new);
         EntityRendererRegistry.register(ModEntities.EXTERNAL_WEAPON_PART, RendererCustomAnimObjEntity::new);

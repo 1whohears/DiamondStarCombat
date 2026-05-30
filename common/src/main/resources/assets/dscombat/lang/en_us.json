@@ -129,7 +129,8 @@
 	"action.dscombat.gimbal": "Gimbal",
 	"action.dscombat.chaff": "Chaff",
     "action.dscombat.camera_track_target": "Cam Follow",
-	
+    "action.dscombat.quick_marker": "Quick Marker",
+
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",
 	"screen.dscombat.vehicle_inventory_screen": "Cargo",
@@ -181,6 +182,10 @@
 	"error.dscombat.cant_item_while_moving": "Can't become an item while moving.",
 	"error.dscombat.cant_item_while_flying": "Can't become an item while flying.",
     "error.dscombat.vehicle_items_disabled": "Server admins have disabled spawning vehicles with items with the game rule dscombat:canSpawnVehicleFromItem.",
+    "error.dscombat.must_select_marker": "Must Select a Position Marker",
+    "error.dscombat.not_pos_missile": "Selected Weapon isn't Position Guided",
+    "error.dscombat.not_optical_missile": "Selected Weapon isn't Optical Guided",
+    "error.dscombat.not_radar_missile": "Selected Weapon isn't Radar Guided",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",
@@ -193,8 +198,11 @@
 	
 	"targetmode.dscombat.look": "LOOK",
 	"targetmode.dscombat.coords": "COORDS",
-	"targetmode.dscombat.indicator": "INDICATOR",
-	
+	"targetmode.dscombat.marker": "MARKER",
+	"targetmode.dscombat.radar": "RADAR",
+	"targetmode.dscombat.optical": "OPTICAL",
+	"targetmode.dscombat.none": "NONE",
+
 	"blendmode.dscombat.none": "NONE",
 	"blendmode.dscombat.on_white": "ON WHITE",
 	"blendmode.dscombat.on_all": "ON ALL",
@@ -569,7 +577,8 @@
 	"preset.type.dumb_torpedo": "Dumb Torpedo",
 	"preset.type.ir_missile": "IR Missile",
 	"preset.type.anti_radar_missile": "Anti Radar Missile",
-	
+	"preset.type.all_missile": "Universal Missile",
+
 	"preset.dscombat.no_weapon": "None",
 	"preset.dscombat.10mm": "10mm",
 	"preset.dscombat.15mm": "15mm",
@@ -748,6 +757,7 @@
 	"key.dscombat.afterburner_toggle_key": "After Burner",
 	"key.dscombat.turn_assist_key": "Turn Assist",
     "key.dscombat.camera_track_target_key": "Track Target",
+    "key.dscombat.quick_marker_key": "Quick Marker",
 
 	"passenger_sound_pack.eng_non_binary_goober": "English Default",
 	"passenger_sound_pack.eng_generic_male": "English Generic Male",

@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.common.event;
 import com.mojang.brigadier.CommandDispatcher;
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.*;
+import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.data.graph.StatGraphs;
@@ -21,14 +22,13 @@ import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.common.event.OWLEvents;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.util.UtilEntity;
-import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.event.events.common.ExplosionEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.event.events.common.*;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,11 +46,27 @@ public class CommonEventHandlers {
     public static void init() {
         OWLEvents.GET_JSON_PRESET_LISTENERS.register(CommonEventHandlers::registerPresetListeners);
         LifecycleEvent.SERVER_STOPPING.register(CommonEventHandlers::serverStoppingEvent);
+        LifecycleEvent.SERVER_STARTING.register(CommonEventHandlers::onServerStarting);
         LifecycleEvent.SETUP.register(CommonEventHandlers::onSetup);
         TickEvent.SERVER_PRE.register(CommonEventHandlers::onServerTickPre);
         TickEvent.PLAYER_POST.register(CommonEventHandlers::onPlayerTick);
         ExplosionEvent.DETONATE.register(CommonEventHandlers::onExplosionDetonate);
         CommandRegistrationEvent.EVENT.register(CommonEventHandlers::registerCommands);
+        PlayerEvent.PLAYER_JOIN.register(CommonEventHandlers::onPlayerJoin);
+        LifecycleEvent.SERVER_LEVEL_LOAD.register(CommonEventHandlers::onServerLevelLoad);
+        LifecycleEvent.SERVER_LEVEL_SAVE.register(CommonEventHandlers::onServerLevelSave);
+    }
+
+    private static void onServerLevelSave(ServerLevel level) {
+        PositionMarkerManager.getServer().save(level);
+    }
+
+    private static void onServerLevelLoad(ServerLevel level) {
+        PositionMarkerManager.getServer().load(level);
+    }
+
+    private static void onPlayerJoin(ServerPlayer player) {
+        PositionMarkerManager.get(player).getPlayerData(player.getUUID()).setDirty();
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher,
@@ -62,6 +78,7 @@ public class CommonEventHandlers {
         new DebugHitboxPosCommand(dispatcher);
         new DSCAdminCommands(dispatcher);
         new WindTunnelCommand(dispatcher);
+        new MarkerCommands(dispatcher);
         //ConfigCommand.register(dispatcher);
     }
 
@@ -103,6 +120,7 @@ public class CommonEventHandlers {
 
     public static void onServerTickPre(MinecraftServer server) {
         TrackableEntitiesManager.serverTick(server);
+        PositionMarkerManager.getServer().onServerTick(server);
     }
 
     public static void registerPresetListeners(List<JsonPresetReloadListener<?>> listeners) {
@@ -115,6 +133,10 @@ public class CommonEventHandlers {
 
     public static void serverStoppingEvent(MinecraftServer server) {
         RotableHitboxes.onServerStop();
+    }
+
+    private static void onServerStarting(MinecraftServer server) {
+
     }
 
     public static void onReadConfig(ModConfig modConfig) {

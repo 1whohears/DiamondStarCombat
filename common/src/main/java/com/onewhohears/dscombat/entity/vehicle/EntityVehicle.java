@@ -17,7 +17,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
-import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.vehicle.*;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
@@ -118,7 +118,7 @@ public abstract class EntityVehicle
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
+	public static final EntityDataAccessor<RadarFilterMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<PermMode> PERM_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.PERM_MODE);
 
@@ -227,7 +227,7 @@ public abstract class EntityVehicle
 		entityData.define(NO_CONSUME, false);
 		entityData.define(RADIO_SONG, "");
 		entityData.define(PLAY_IR_TONE, false);
-		entityData.define(RADAR_MODE, RadarMode.ALL);
+		entityData.define(RADAR_MODE, RadarFilterMode.ALL);
 		entityData.define(LANDING_GEAR, true);
 		entityData.define(PERM_MODE, PermMode.PUBLIC);
 	}
@@ -280,7 +280,7 @@ public abstract class EntityVehicle
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
-		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
+		setRadarMode(RadarFilterMode.values()[nbt.getInt("radar_mode")]);
 		setRadioSong(nbt.getString("radio_song"));
 		createRotableHitboxes(nbt);
 		if (nbt.contains("ingredientDropIndex")) ingredientDropIndex = nbt.getInt("ingredientDropIndex");
@@ -634,7 +634,8 @@ public abstract class EntityVehicle
 			if (isFall) hurt(damageSources().fall(), amount);
 			else hurt(damageSources().flyIntoWall(), amount);
 		} else if (isClientSide() && isControlledByLocalInstance()) {
-            new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
+			if (Minecraft.getInstance().getFrameTime() < 2f)
+            	new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
 		}
 	}
 	
@@ -1136,11 +1137,11 @@ public abstract class EntityVehicle
     	this.isDriverCameraLocked = driverCameraLocked;
     }
     
-    public RadarMode getRadarMode() {
+    public RadarFilterMode getRadarMode() {
     	return entityData.get(RADAR_MODE);
     }
     
-    public void setRadarMode(RadarMode mode) {
+    public void setRadarMode(RadarFilterMode mode) {
     	entityData.set(RADAR_MODE, mode);
     }
     

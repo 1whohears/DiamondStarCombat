@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
+import com.onewhohears.dscombat.data.weapon.stats.RadarTargetType;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
@@ -176,7 +176,7 @@ public class AbstractWeaponBuilders {
 		/**
 		 * Track Missile only
 		 */
-		public C setTargetType(TargetType targetType) {
+		public C setTargetType(RadarTargetType targetType) {
 			return setEnum("targetType", targetType);
 		}
 		
@@ -200,7 +200,42 @@ public class AbstractWeaponBuilders {
 		public C setScanRange(float scan_range) {
 			return setFloat("scan_range", scan_range);
 		}
-		
+
+		/**
+		 * All Missile Only
+		 */
+		public C setCanPositionGuide(boolean canPositionGuide) {
+			return setBoolean("canPositionGuide", canPositionGuide);
+		}
+
+		/**
+		 * All Missile Only
+		 */
+		public C setCanRadarGuide(boolean canRadarGuide) {
+			return setBoolean("canRadarGuide", canRadarGuide);
+		}
+
+		/**
+		 * All Missile Only
+		 */
+		public C setCanOpticalGuide(boolean canOpticalGuide) {
+			return setBoolean("canOpticalGuide", canOpticalGuide);
+		}
+
+		/**
+		 * All Missile Only
+		 */
+		public C setRadarTargetType(RadarTargetType radarTargetType) {
+			return setEnum("radarTargetType", radarTargetType);
+		}
+
+		/**
+		 * All Missile Only
+		 */
+		public C setIsRadarActive(boolean radarActive) {
+			return setBoolean("radarActive", radarActive);
+		}
+
 	}
 	
 }

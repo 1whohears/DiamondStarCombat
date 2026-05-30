@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.screen.widget.WeaponButton;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.gui.GuiGraphics;
@@ -40,8 +41,8 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
         padding = 0;
         super.init();
         // TARGET MODE
-        positionWidgetGrid(CycleButton.<DSCClientInputs.TargetMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
-                        .withValues(DSCClientInputs.TargetMode.values())
+        positionWidgetGrid(CycleButton.<TargetMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
+                        .withValues(TargetMode.values())
                         .withInitialValue(DSCClientInputs.getTargetMode())
                         .create(0, 0, 20, 20,
                                 UtilMCText.translatable("ui.dscombat.target_mode"),
@@ -88,7 +89,7 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
         return button -> getVehicle().weaponSystem.setSelected(weaponIndex);
     }
 
-    private CycleButton.OnValueChange<DSCClientInputs.TargetMode> onTargetModeCycle() {
+    private CycleButton.OnValueChange<TargetMode> onTargetModeCycle() {
         return (button, value) -> DSCClientInputs.setTargetMode(value);
     }
 
@@ -115,7 +116,7 @@ public class VehicleWeaponScreen extends VehicleSubScreen {
     @Override
     public void renderBackground(@NotNull GuiGraphics graphics) {
         super.renderBackground(graphics);
-        if (DSCClientInputs.getTargetMode() == DSCClientInputs.TargetMode.COORDS) {
+        if (DSCClientInputs.getTargetMode() == TargetMode.COORDS) {
             graphics.drawString(font, UtilMCText.translatable("info.dscombat.target_mode_pos"),
                     guiX + left_padding, guiY + top_padding + 38, infoColor);
             if (xPosBox != null) xPosBox.setVisible(true);

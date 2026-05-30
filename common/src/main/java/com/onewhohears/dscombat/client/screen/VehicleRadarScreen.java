@@ -4,8 +4,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -23,7 +24,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -66,35 +67,34 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                 127, 128, 127, 128);
         EntityVehicle vehicle = getVehicle();
         RadarSystem radar = vehicle.radarSystem;
-        List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
-        if (pings.isEmpty()) return;
-        int selected = radar.getClientSelectedPingIndex();
-        int hover = DSCClientInputs.getRadarHoverIndex();
+        Collection<RadarTarget> targets = radar.getClientRadarPings();
+        if (targets.isEmpty()) return;
+        int selected = radar.getClientSelectedTargetId();
+        int hover = DSCClientInputs.getRadarHoverId();
         int centerX = guiX + 4 + 55, centerY = guiY + 66 + 55;
         boolean hovering = false;
-        for (int i = 0; i < pings.size(); ++i) {
-            RadarStats.RadarPing ping = pings.get(i);
-            Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
+        for (RadarTarget target : targets) {
+            Vec3 dp = target.getPosForClient().subtract(vehicle.position());
             double dist = dp.horizontalDistance();
             double screen_dist = getScreenDistRatio(dist);
             if (screen_dist > 1) screen_dist = 1;
             float yaw = (UtilAngles.getYaw(dp)-vehicle.getYRot()+180)*Mth.DEG_TO_RAD;
             int x = Mth.clamp((int)(-Mth.sin(yaw)*55*screen_dist), -50, 50) + centerX;
             int y = Mth.clamp((int)(Mth.cos(yaw)*55*screen_dist), -50, 50) + centerY;
-            if (drawPingAtPos(ping, x, y, i == selected, i == hover,
+            if (drawPingAtPos(target, x, y, target.entityId == selected, target.entityId == hover,
                     graphics, mouseX, mouseY, partialTick, vehicle)) {
-                DSCClientInputs.setRadarHoverIndex(i);
+                DSCClientInputs.setRadarHoverId(target.entityId);
                 hovering = true;
             }
         }
-        if (!hovering) DSCClientInputs.resetRadarHoverIndex();
+        if (!hovering) DSCClientInputs.resetRadarHoverId();
     }
 
     private static final int HALF_PS = PING_SIZE/2, SQUARE_PS = (PING_SIZE*2)^2, LEFT = PING_SIZE*3/2, UP = HALF_PS+10;
 
-    protected boolean drawPingAtPos(RadarStats.RadarPing ping, int x, int y, boolean selected, boolean hover,
-                                 @NotNull GuiGraphics graphics, int mouseX, int mouseY,
-                                 float partialTick, EntityVehicle vehicle) {
+    protected boolean drawPingAtPos(RadarTarget ping, int x, int y, boolean selected, boolean hover,
+                                    @NotNull GuiGraphics graphics, int mouseX, int mouseY,
+                                    float partialTick, EntityVehicle vehicle) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (selected) RenderSystem.setShaderTexture(0, RADAR_PING_SELECT);
         else if (hover) RenderSystem.setShaderTexture(0, RADAR_PING_HOVER);
@@ -134,11 +134,9 @@ public class VehicleRadarScreen extends VehicleSubScreen {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (DSCClientInputs.isRadarHovering()) {
             RadarSystem radar = getVehicle().radarSystem;
-            List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
-            if (DSCClientInputs.getRadarHoverIndex() < pings.size()) {
-                radar.clientSelectTarget(pings.get(DSCClientInputs.getRadarHoverIndex()));
-                return true;
-            }
+            if (!radar.hasClientTarget(DSCClientInputs.getRadarHoverId())) return false;
+            radar.clientSelectTarget(DSCClientInputs.getRadarHoverId());
+            return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
@@ -148,9 +146,9 @@ public class VehicleRadarScreen extends VehicleSubScreen {
         vertical_widget_shift = 10;
         super.init();
         // RADAR MODE
-        positionWidgetGrid(CycleButton.<RadarStats.RadarMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
-                        .withValues(RadarStats.RadarMode.values())
-                        .withInitialValue(DSCClientInputs.getPreferredRadarMode())
+        positionWidgetGrid(CycleButton.<RadarFilterMode>builder(value -> UtilMCText.translatable(value.getTranslatable()))
+                        .withValues(RadarFilterMode.values())
+                        .withInitialValue(DSCClientInputs.getRadarFilterMode())
                         .create(0, 0, 20, 20,
                                 UtilMCText.translatable("ui.dscombat.radar_mode"),
                                 onRadarModeCycle()),
@@ -204,8 +202,8 @@ public class VehicleRadarScreen extends VehicleSubScreen {
                 guiX+left_padding+126, guiY+top_padding+82, 0x555555);
     }
 
-    private CycleButton.OnValueChange<RadarStats.RadarMode> onRadarModeCycle() {
-        return (button, value) -> DSCClientInputs.setPreferredRadarMode(value);
+    private CycleButton.OnValueChange<RadarFilterMode> onRadarModeCycle() {
+        return (button, value) -> DSCClientInputs.setRadarFilterMode(value);
     }
 
     private Consumer<String> onRadarDisplayRangeChange() {

@@ -11,6 +11,7 @@ import com.onewhohears.dscombat.client.particle.*;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.client.screen.*;
 import com.onewhohears.dscombat.command.DSCGameRules;
+import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.data.sound.PassengerSoundPack;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModFluids;
@@ -49,6 +50,7 @@ public class ClientEventHandlers {
     public static void onClientTickPre(Minecraft minecraft) {
         ClientInputEventHandlers.clientTickPilotControl(minecraft);
         ClientCameraEventHandlers.clientTickSetMouseCallback(minecraft);
+        PositionMarkerManager.getClient().onClientTick(minecraft);
     }
 
     public static void onClientPlayerQuit(@Nullable LocalPlayer localPlayer) {
@@ -73,6 +75,7 @@ public class ClientEventHandlers {
         setFluidRenderLayers();
         registerEntityScreens();
         PassengerSoundPack.registerBuiltInPassengerSoundTriggers();
+        PositionMarkerManager.initClient();
     }
 
     public static void registerParticleProvider() {

@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -18,9 +19,11 @@ public class WeaponShootParameters {
 	public final boolean ignoreRecoil;
 	public final boolean isTurret;
 	public final boolean isPlayer;
+	public final TargetMode targetMode;
 	
-	public WeaponShootParameters(Level level, Entity owner, Vec3 pos, Vec3 direction, 
-			@Nullable EntityVehicle vehicle, boolean ignoreRecoil, boolean isTurret) {
+	public WeaponShootParameters(Level level, Entity owner, Vec3 pos, Vec3 direction,
+                                 @Nullable EntityVehicle vehicle, boolean ignoreRecoil, boolean isTurret,
+								 TargetMode targetMode) {
 		this.level = level;
 		this.owner = owner;
 		this.pos = pos;
@@ -29,6 +32,7 @@ public class WeaponShootParameters {
 		this.ignoreRecoil = ignoreRecoil;
 		this.isTurret = isTurret;
 		this.isPlayer = owner instanceof Player;
-	}
+        this.targetMode = targetMode;
+    }
 	
 }

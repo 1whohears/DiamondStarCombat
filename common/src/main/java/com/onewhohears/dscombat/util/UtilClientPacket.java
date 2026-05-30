@@ -4,7 +4,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.screen.VehiclePaintScreen;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
-import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.data.radar.RadarSystem.RWRWarning;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
@@ -18,6 +18,7 @@ import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import io.netty.buffer.ByteBuf;
+import io.netty.util.collection.IntObjectMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.FriendlyByteBuf;
@@ -44,7 +45,7 @@ public class UtilClientPacket {
 		}
 	}
 	
-	public static void pingsPacket(int id, List<RadarPing> pings) {
+	public static void pingsPacket(int id, IntObjectMap<RadarTarget> pings) {
 		Minecraft m = Minecraft.getInstance();
 		Level world = m.level;
 		if (world.getEntity(id) instanceof EntityVehicle plane) {

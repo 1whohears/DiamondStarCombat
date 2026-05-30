@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.integration.tacview;
 
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -17,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiFunction;
@@ -69,8 +70,8 @@ public abstract class VehicleRecorder<K extends VehicleKeyframe<E>, E extends En
         entity.setQ(q);
         entity.setClientQ(q);
         entity.setPrevQ(q);
-        List<RadarStats.RadarPing> pings = entity.radarSystem.getClientRadarPings();
-        for (RadarStats.RadarPing ping : pings) {
+        Collection<RadarTarget> pings = entity.radarSystem.getClientRadarPings();
+        for (RadarTarget ping : pings) {
             WeaponRecorder.drawLineFromFakeEntity(renderPos, entity.position(), ping.pos,
                     stack, buffer, 0, 0, 0xff, 0xff);
         }

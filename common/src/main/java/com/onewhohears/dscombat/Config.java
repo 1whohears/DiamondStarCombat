@@ -2,12 +2,14 @@ package com.onewhohears.dscombat;
 
 import java.util.List;
 
+import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -26,13 +28,16 @@ public class Config {
 		public final ForgeConfigSpec.BooleanValue customDismount;
 		// TARGET POS
 		public final ForgeConfigSpec.DoubleValue targetPosX, targetPosY, targetPosZ;
+		public final ForgeConfigSpec.EnumValue<TargetMode> targetMode;
+		public final ForgeConfigSpec.EnumValue<TargetMode> preferredPositionTargetMode;
 		// VOLUME/SOUND
 		public final ForgeConfigSpec.DoubleValue rwrWarningVol, missileWarningVol, irTargetToneVol;
 		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
 		public final ForgeConfigSpec.ConfigValue<String> passengerSoundPack;
 		// DISPLAY
 		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
-		public final ForgeConfigSpec.EnumValue<RadarMode> defaultRadarMode;
+		public final ForgeConfigSpec.EnumValue<RadarFilterMode> radarFilterMode;
+		public final ForgeConfigSpec.EnumValue<MarkerDisplayMode> markerMode;
 		// RENDER DISTANCES
 		public final ForgeConfigSpec.IntValue maxRenderRackMissileNum;
 		public final ForgeConfigSpec.DoubleValue renderWeaponRackDistance;
@@ -60,8 +65,10 @@ public class Config {
 			builder.push("display");
 			radarPingOverlaySize = builder
 					.defineInRange("radarPingOverlaySize", 100, 10, 1000);
-			defaultRadarMode = builder
-					.defineEnum("defaultRadarMode", RadarMode.ALL);
+			radarFilterMode = builder
+					.defineEnum("defaultRadarMode", RadarFilterMode.ALL);
+			markerMode = builder
+					.defineEnum("markerDisplayMode", MarkerDisplayMode.SELECT_BIG);
 			builder.pop();
 			builder.push("mouse-joystick-settings");
 			mouseModeMaxRadius = builder
@@ -89,7 +96,11 @@ public class Config {
 					.comment("If enabled, your sneak key binding doesn't dismount you from DSC vehicles. " +
 							"You will have to you the diamond star combat dismount keybinding instead (H by default.)")
 					.define("customDismount", true);
-			builder.push("targetPos");
+			builder.push("targetMode");
+			targetMode = builder
+					.defineEnum("targetMode", TargetMode.LOOK);
+			preferredPositionTargetMode = builder
+					.defineEnum("preferredPositionTargetMode", TargetMode.LOOK);
 			targetPosX = builder.defineInRange("targetPosX", 0, Double.MIN_VALUE, Double.MAX_VALUE);
 			targetPosY = builder.defineInRange("targetPosY", 0, Double.MIN_VALUE, Double.MAX_VALUE);
 			targetPosZ = builder.defineInRange("targetPosZ", 0, Double.MIN_VALUE, Double.MAX_VALUE);

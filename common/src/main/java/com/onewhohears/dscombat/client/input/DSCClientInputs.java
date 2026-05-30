@@ -1,8 +1,13 @@
 package com.onewhohears.dscombat.client.input;
 
-import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
-
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
+import com.onewhohears.dscombat.common.core.PositionMarker;
+import com.onewhohears.dscombat.common.core.PositionMarkerManager;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.Nullable;
 
 public class DSCClientInputs {
 	
@@ -12,8 +17,11 @@ public class DSCClientInputs {
 	private static double mouseCenterX = 0;
 	private static double mouseCenterY = 0;
 	
-	private static int hoverIndex = -1;
+	private static int hoverId = -1;
 	private static double radarDisplayRange = 10000;
+
+	private static int markerHoverId = -1;
+	private static int selectedMarkerId = -1;
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
 	private static long mountTime;
@@ -21,8 +29,6 @@ public class DSCClientInputs {
 	private static double LEAN_AMOUNT = 0;
 	
 	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
-	private static RadarMode PREFERRED_RADAR_MODE = RadarMode.ALL;
-	private static TargetMode TARGET_MODE = TargetMode.LOOK;
 	
 	private static boolean GIMBAL_MODE = false;
 	private static boolean AFTERBURNER = false;
@@ -40,17 +46,17 @@ public class DSCClientInputs {
         return CAMERA_TRACK_TARGET;
     }
 
-	public static RadarMode getPreferredRadarMode() {
-		return PREFERRED_RADAR_MODE;
+	public static RadarFilterMode getRadarFilterMode() {
+		return Config.CLIENT.radarFilterMode.get();
 	}
 	
-	public static RadarMode cyclePreferredRadarMode() {
-		PREFERRED_RADAR_MODE = PREFERRED_RADAR_MODE.cycle();
-		return PREFERRED_RADAR_MODE;
+	public static RadarFilterMode cycleRadarFilterMode() {
+		setRadarFilterMode(getRadarFilterMode().cycle());
+		return getRadarFilterMode();
 	}
 	
-	public static void setPreferredRadarMode(RadarMode mode) {
-		PREFERRED_RADAR_MODE = mode;
+	public static void setRadarFilterMode(RadarFilterMode mode) {
+		Config.CLIENT.radarFilterMode.set(mode);
 	}
 	
 	public static boolean isGimbalMode() {
@@ -98,28 +104,28 @@ public class DSCClientInputs {
 		mouseCenterY = y;
 	}
 	/**
-	 * @return the index of the ping the client's mouse is hovering over. -1 if {@link DSCClientInputs#isRadarHovering} is true.
+	 * @return the id of the ping the client's mouse is hovering over. -1 if {@link DSCClientInputs#isRadarHovering} is true.
 	 */
-	public static int getRadarHoverIndex() {
-		return hoverIndex;
+	public static int getRadarHoverId() {
+		return hoverId;
 	}
 	/**
-	 * @param index the index of the ping the client's mouse is hovering over
+	 * @param id the index of the ping the client's mouse is hovering over
 	 */
-	public static void setRadarHoverIndex(int index) {
-		hoverIndex = index;
+	public static void setRadarHoverId(int id) {
+		hoverId = id;
 	}
 	/**
 	 * called if the client's mouse isn't hovering over any pings on the hud
 	 */
-	public static void resetRadarHoverIndex() {
-		hoverIndex = -1;
+	public static void resetRadarHoverId() {
+		hoverId = -1;
 	}
 	/**
 	 * @return is the client's mouse hovering over a radar ping on the hud
 	 */
 	public static boolean isRadarHovering() {
-		return hoverIndex != -1;
+		return hoverId != -1;
 	}
 	/**
 	 * @return the max distance of a radar ping client radar screens will display
@@ -244,19 +250,12 @@ public class DSCClientInputs {
 		}
 	}
 
-	public enum TargetMode {
-		LOOK, COORDS, INDICATOR;
-		public String getTranslatable() {
-			return "targetmode.dscombat."+name().toLowerCase();
-		}
-	}
-
 	public static TargetMode getTargetMode() {
-		return TARGET_MODE;
+		return Config.CLIENT.targetMode.get();
 	}
 
 	public static void setTargetMode(TargetMode targetMode) {
-		TARGET_MODE = targetMode;
+		Config.CLIENT.targetMode.set(targetMode);
 	}
 
 	public static void setLeanAmount(double leanAmount) {
@@ -287,5 +286,47 @@ public class DSCClientInputs {
 
 	public static void toggleAfterBurner() {
 		AFTERBURNER = !AFTERBURNER;
+	}
+
+	public static MarkerDisplayMode getMarkerMode() {
+		return Config.CLIENT.markerMode.get();
+	}
+
+	public static MarkerDisplayMode cycleMarkerMode() {
+		MarkerDisplayMode current = getMarkerMode();
+		int ordinal = current.ordinal() + 1;
+		if (ordinal >= MarkerDisplayMode.values().length) ordinal = 0;
+		MarkerDisplayMode next = MarkerDisplayMode.values()[ordinal];
+		Config.CLIENT.markerMode.set(next);
+		return next;
+	}
+
+	public static int getMarkerHoverId() {
+		return markerHoverId;
+	}
+
+	public static void setMarkerHoverId(int id) {
+		markerHoverId = id;
+	}
+
+	public static int getSelectedMarkerId() {
+		return selectedMarkerId;
+	}
+
+	public static void setSelectedMarkerId(int id) {
+		selectedMarkerId = id;
+		if (selectedMarkerId != -1) {
+			setTargetMode(TargetMode.MARKER);
+		}
+	}
+
+	public static @Nullable PositionMarker getSelectedMarker() {
+		if (selectedMarkerId == -1) return null;
+		PositionMarker marker = PositionMarkerManager.getClient().getMarker(selectedMarkerId);
+		if (marker == null) {
+			selectedMarkerId = -1;
+			return null;
+		}
+		return marker;
 	}
 }

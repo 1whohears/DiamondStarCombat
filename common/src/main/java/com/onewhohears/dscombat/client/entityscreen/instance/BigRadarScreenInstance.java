@@ -3,14 +3,14 @@ package com.onewhohears.dscombat.client.entityscreen.instance;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
-import java.util.List;
+import java.util.Collection;
 
 import static com.onewhohears.dscombat.util.UtilRender.drawText;
 
@@ -43,20 +43,21 @@ public class BigRadarScreenInstance extends RadarScreenInstance {
         drawLine(centerX, centerY, x2, y2, 9, 0xff00ff00);
         // render radar pings
         EntityVehicle vehicle = (EntityVehicle)entity;
-        List<RadarStats.RadarPing> pings = vehicle.radarSystem.getClientRadarPings();
-        int selected = vehicle.radarSystem.getClientSelectedPingIndex();
-        int hover = DSCClientInputs.getRadarHoverIndex();
+        Collection<RadarTarget> targets = vehicle.radarSystem.getClientRadarPings();
+        int selected = vehicle.radarSystem.getClientSelectedTargetId();
+        int hover = DSCClientInputs.getRadarHoverId();
         // render all other pings first
-        for (int i = 0; i < pings.size(); ++i) {
-            if (i == selected || i == hover) continue;
-            RadarStats.RadarPing ping = pings.get(i);
-            drawPing(ping, vehicle, false, false);
+        for (RadarTarget target : targets) {
+            if (target.entityId == selected || target.entityId == hover) continue;
+            drawPing(target, vehicle, false, false);
         }
         // render hover next
-        if (hover > -1 && hover < pings.size())
-            drawPing(pings.get(hover), vehicle, false, true);
+        RadarTarget hoverTarget = vehicle.radarSystem.getClientTarget(hover);
+        if (hoverTarget != null && hoverTarget.terrainType.isAir())
+            drawPing(hoverTarget, vehicle, false, true);
         // render selected last
-        if (selected > -1 && selected < pings.size())
-            drawPing(pings.get(selected), vehicle, true, false);
+        RadarTarget selectedTarget = vehicle.radarSystem.getClientTarget(selected);
+        if (selectedTarget != null && selectedTarget.terrainType.isAir())
+            drawPing(selectedTarget, vehicle, true, false);
     }
 }

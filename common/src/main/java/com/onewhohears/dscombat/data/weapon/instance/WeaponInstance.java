@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
@@ -108,11 +109,12 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		weapon.setYRot(yaw);
 	}
 	
-	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle, boolean consume) {
+	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle,
+									boolean consume, TargetMode targetMode) {
 		overrideGroundCheck = false;
 		EntityWeapon<?> w = getShootEntity(new WeaponShootParameters(level, owner, 
 				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
-				direction, vehicle, false, false));
+				direction, vehicle, false, false, targetMode));
 		if (w == null) return false;
 		level.addFreshEntity(w);
         if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);
@@ -129,14 +131,17 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		return true;
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume) {
-		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false);
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos,
+								   @Nullable EntityVehicle vehicle, boolean consume, TargetMode targetMode) {
+		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false, targetMode);
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume, boolean ignoreRecoil) {
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos,
+								   @Nullable EntityVehicle vehicle, boolean consume,
+								   boolean ignoreRecoil, TargetMode targetMode) {
 		overrideGroundCheck = true;
 		EntityWeapon<?> w = getShootEntity(new WeaponShootParameters(level, owner, 
-				pos, direction, vehicle, ignoreRecoil, true));
+				pos, direction, vehicle, ignoreRecoil, true, targetMode));
 		if (w == null) return false;
 		level.addFreshEntity(w);
         if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);
@@ -319,4 +324,11 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		return new Vec3(0, -DSCPhyCons.GRAVITY*DSCPhyCons.ACC_TIME_SCALE, 0);
 	}
 
+	public TargetMode fixTargetMode(TargetMode currentTargetMode, TargetMode preferedPosTargetMode) {
+		return currentTargetMode;
+	}
+
+	public TargetMode getDefaultTargetMode() {
+		return TargetMode.LOOK;
+	}
 }

@@ -135,6 +135,9 @@ public class ModEntities {
 	public static final RegistrySupplier<EntityType<EntityDumbTorpedo<?>>> DUMB_TORPEDO_MISSILE = ENTITIES.register("dumb_torpedo_missile",
 			() -> createEntityTypeFar((type, level) -> new EntityDumbTorpedo<>(type, level, "type91"),
 					EntityDimensions.scalable(1f, 1f)));
+	public static final RegistrySupplier<EntityType<AllEntityMissile<?>>> ALL_MISSILE = ENTITIES.register("all_missile",
+			() -> createEntityTypeFar((type, level) -> new AllEntityMissile<>(type, level, "agm114k"),
+					EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistrySupplier<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare",
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));

@@ -3,7 +3,9 @@ package com.onewhohears.dscombat.common.network;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleSyncAction;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
-import com.onewhohears.dscombat.data.radar.RadarStats;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -23,6 +25,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
@@ -65,9 +68,9 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new LandingGearAction(false));
         addVehicleSyncAction(new OpenStorageAction(0));
         addVehicleSyncAction(new OpenPartsAction());
-        addVehicleSyncAction(new SetRadarModeAction(RadarStats.RadarMode.ALL));
+        addVehicleSyncAction(new SetRadarModeAction(RadarFilterMode.ALL));
         addVehicleSyncAction(new PingSelectAction(null));
-        addVehicleSyncAction(new ShootAction(-1, null, null));
+        addVehicleSyncAction(new ShootAction(-1, null, null, TargetMode.LOOK));
         addVehicleSyncAction(new ToItemAction());
         addVehicleSyncAction(new DismountAction());
         addVehicleSyncAction(new SwitchSeatAction());
@@ -218,8 +221,8 @@ public abstract class VehicleSyncAction {
     }
 
     public static class SetRadarModeAction extends VehicleSyncAction {
-        private RadarStats.RadarMode mode;
-        public SetRadarModeAction(RadarStats.RadarMode mode) {
+        private RadarFilterMode mode;
+        public SetRadarModeAction(RadarFilterMode mode) {
             super(3);
             this.mode = mode;
         }
@@ -237,13 +240,13 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
-            return (buffer) -> mode = buffer.readEnum(RadarStats.RadarMode.class);
+            return (buffer) -> mode = buffer.readEnum(RadarFilterMode.class);
         }
     }
 
     public static class PingSelectAction extends VehicleSyncAction {
-        private RadarStats.RadarPing ping;
-        public PingSelectAction(RadarStats.RadarPing ping) {
+        private RadarTarget ping;
+        public PingSelectAction(RadarTarget ping) {
             super(4);
             this.ping = ping;
         }
@@ -261,19 +264,22 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
-            return (buffer) -> ping = new RadarStats.RadarPing(buffer);
+            return (buffer) -> ping = new RadarTarget(buffer);
         }
     }
 
     public static class ShootAction extends VehicleSyncAction {
         private int selectedWeaponIndex;
-        @Nullable private RadarStats.RadarPing ping;
+        @Nullable private RadarTarget ping;
         @Nullable private Vec3 targetPos;
-        public ShootAction(int selectedWeaponIndex, @Nullable RadarStats.RadarPing ping, @Nullable Vec3 targetPos) {
+        @NotNull private TargetMode targetMode;
+        public ShootAction(int selectedWeaponIndex, @Nullable RadarTarget ping, @Nullable Vec3 targetPos,
+                           @NotNull TargetMode targetMode) {
             super(5);
             this.selectedWeaponIndex = selectedWeaponIndex;
             this.ping = ping;
             this.targetPos = targetPos;
+            this.targetMode = targetMode;
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
@@ -286,12 +292,13 @@ public abstract class VehicleSyncAction {
                 if (ping != null) vehicle.radarSystem.selectTarget(ping);
                 if (targetPos != null) vehicle.weaponSystem.setTargetPos(targetPos);
                 if (seat.isTurret()) {
-                    ((EntityTurret)seat).shoot(player);
+                    ((EntityTurret)seat).shoot(player, targetMode);
                     return;
                 }
                 if (selectedWeaponIndex == -1) return;
                 if (!seat.canPassengerShootParentWeapon()) return;
                 vehicle.weaponSystem.setSelected(selectedWeaponIndex);
+                vehicle.weaponSystem.setTargetMode(targetMode);
                 vehicle.weaponSystem.shootSelected(player);
             };
         }
@@ -307,6 +314,7 @@ public abstract class VehicleSyncAction {
                     buffer.writeBoolean(true);
                     DataSerializers.VEC3.write(buffer, targetPos);
                 } else buffer.writeBoolean(false);
+                buffer.writeEnum(targetMode);
             };
         }
         @Override
@@ -314,11 +322,12 @@ public abstract class VehicleSyncAction {
             return (buffer) -> {
                 selectedWeaponIndex = buffer.readInt();
                 if (buffer.readBoolean())
-                    ping = new RadarStats.RadarPing(buffer);
+                    ping = new RadarTarget(buffer);
                 else ping = null;
                 if (buffer.readBoolean())
                     targetPos = DataSerializers.VEC3.read(buffer);
                 else targetPos = null;
+                targetMode = buffer.readEnum(TargetMode.class);
             };
         }
     }

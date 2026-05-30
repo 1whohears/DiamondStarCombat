@@ -1,7 +1,10 @@
 {
-  "acceleration": 0.035,
+  "acceleration": 0.28,
   "activeTrack": true,
-  "bleed": 0.02,
+  "bleed": 0.16,
+  "canOpticalGuide": true,
+  "canPositionGuide": true,
+  "canRadarGuide": true,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -12,7 +15,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm84e",
-  "entityTypeKey": "dscombat:track_missile",
+  "entityTypeKey": "dscombat:all_missile",
   "explodeNum": 2,
   "explosionRadius": 4.5,
   "explosive": true,
@@ -43,12 +46,12 @@
   "mass": 627.0,
   "maxAge": 1100,
   "presetId": "agm84e",
-  "presetType": "track_missile",
+  "presetType": "all_missile",
+  "radarTargetType": "GROUND",
   "seeThroBlock": 8,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 8,
-  "speed": 20.0,
-  "targetType": "GROUND",
+  "speed": 48.0,
   "turnRadius": 45.0,
   "useSpeedScale": true
 }

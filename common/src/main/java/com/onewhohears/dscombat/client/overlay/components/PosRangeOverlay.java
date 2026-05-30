@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.client.overlay.components;
 
-import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
@@ -15,15 +15,13 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
 
     @Override
     protected boolean shouldRender(Gui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
-        if (DSCClientInputs.getTargetMode() == DSCClientInputs.TargetMode.LOOK) return false;
-
         if (defaultRenderConditions()) return false;
         if (!(getPlayerRootVehicle() instanceof EntityVehicle vehicle)) return false;
 
         WeaponInstance<?> data = vehicle.weaponSystem.getSelected();
         if (data == null) return false;
 
-        return data.getStats().isPosGuided();
+        return data.getStats().isPosGuided() && DSCClientInputs.getTargetMode().isPosition();
     }
 
     @Override
@@ -34,7 +32,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
         assert data != null;
 
         double range = data.getStats().getMobTurretRange();
-        Vec3 pos = Config.CLIENT.getTargetPos();
+        Vec3 pos = ClientInputManager.getShootPos(getPlayer(), vehicle);
         int dist = (int) pos.distanceTo(vehicle.position());
         int alt = UtilVehicleEntity.getDistFromSeaLevel(pos.y, vehicle.getWorld());
         String text = dist + " | " + alt;
@@ -47,7 +45,7 @@ public class PosRangeOverlay extends VehicleOverlayComponent {
             text += " | X";
         }
 
-        graphics.drawCenteredString(FONT, text, screenWidth / 2, screenHeight / 2 - 20, color);
+        graphics.drawCenteredString(FONT, text, screenWidth / 2, screenHeight / 2 + 20, color);
     }
 
     @Override

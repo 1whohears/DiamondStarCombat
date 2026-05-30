@@ -29,6 +29,8 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
 			}
 		} else if (targetMode == TargetMode.OPTICAL) {
 			guideToPosition(); // TODO setup optical guidance system
+		} else {
+			guideToPosition();
 		}
 	}
 

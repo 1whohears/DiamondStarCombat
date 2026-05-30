@@ -201,6 +201,7 @@
 	"targetmode.dscombat.marker": "MARKER",
 	"targetmode.dscombat.radar": "RADAR",
 	"targetmode.dscombat.optical": "OPTICAL",
+	"targetmode.dscombat.none": "NONE",
 
 	"blendmode.dscombat.none": "NONE",
 	"blendmode.dscombat.on_white": "ON WHITE",

@@ -45,6 +45,9 @@ public class AllMissileInstance<T extends AllMissileStats> extends MissileInstan
             case OPTICAL -> {
 				return shootOpticalGuided(params, missile);
             }
+			case NONE -> {
+				return missile;
+			}
         }
 		return null;
 	}

@@ -634,7 +634,8 @@ public abstract class EntityVehicle
 			if (isFall) hurt(damageSources().fall(), amount);
 			else hurt(damageSources().flyIntoWall(), amount);
 		} else if (isClientSide() && isControlledByLocalInstance()) {
-            new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
+			if (Minecraft.getInstance().getFrameTime() < 2f)
+            	new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
 		}
 	}
 	

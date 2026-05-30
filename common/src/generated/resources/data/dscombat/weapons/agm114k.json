@@ -1,6 +1,8 @@
 {
   "acceleration": 0.4,
   "bleed": 0.16,
+  "canOpticalGuide": true,
+  "canPositionGuide": true,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -10,7 +12,7 @@
   "damage": 40.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm114k",
-  "entityTypeKey": "dscombat:pos_missile",
+  "entityTypeKey": "dscombat:all_missile",
   "explosionRadius": 3.5,
   "explosive": true,
   "fireRate": 20,
@@ -40,7 +42,7 @@
   "mass": 45.0,
   "maxAge": 700,
   "presetId": "agm114k",
-  "presetType": "pos_missile",
+  "presetType": "all_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 1,
   "speed": 32.0,

@@ -592,7 +592,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 	protected void registerAGMissiles() {
 		// max ammo cost: 18 iron, 6 tnt (30 gunpowder), 6 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileStats.Builder
-				.posMissileBuilder(DSCombatMod.MODID, "agm114k")
+				.allMissileBuilder(DSCombatMod.MODID, "agm114k")
+				.setCanPositionGuide(true)
+				.setCanOpticalGuide(true)
 				.setSortFactor(1)
 				.setMass(45f)
 				.setFireRate(20)
@@ -613,7 +615,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFuseDistance(2f)
 				.setFieldOfView(-1f)
 				.setItem(ModItems.MISSILE.getId())
-				.setEntityType(ModEntities.POS_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.LIGHT_MISSILE_RACK.getId())
 				.setCraftNum(1)
@@ -624,7 +625,9 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		// max ammo cost: 20 iron, 12 tnt (60 gunpowder), 8 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileStats.Builder
-				.posMissileBuilder(DSCombatMod.MODID, "agm65l")
+				.allMissileBuilder(DSCombatMod.MODID, "agm65l")
+				.setCanPositionGuide(true)
+				.setCanOpticalGuide(true)
 				.setSortFactor(4)
 				.setMass(250)
 				.setFireRate(40)
@@ -646,7 +649,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFieldOfView(-1f)
 				.setExplodeNum(2)
 				.setItem(ModItems.MISSILE.getId())
-				.setEntityType(ModEntities.POS_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.MLS.getId().getPath())
@@ -658,11 +660,15 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		// max ammo cost: 20 iron, 12 tnt (60 gunpowder), 8 coal block, 4 ti83 (8 redstone)
 		addPresetToGenerate(MissileStats.Builder
-				.trackMissileBuilder(DSCombatMod.MODID, "agm65g")
+				.allMissileBuilder(DSCombatMod.MODID, "agm65g")
+				.setCanPositionGuide(true)
+				.setCanOpticalGuide(true)
+				.setCanRadarGuide(true)
+				.setActiveTrack()
+				.setRadarTargetType(RadarTargetType.GROUND)
+				// TODO instead of radar...give agm65g IR tracking?
 				.setSortFactor(4)
 				.setMass(250)
-				.setActiveTrack()
-				.setTargetType(RadarTargetType.GROUND)
 				.setFireRate(40)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -682,7 +688,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFieldOfView(-1f)
 				.setExplodeNum(2)
 				.setItem(ModItems.MISSILE.getId())
-				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.MLS.getId().getPath())
@@ -694,11 +699,14 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		// max ammo cost: 18 iron, 9 tnt (45 gunpowder), 9 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileStats.Builder
-				.trackMissileBuilder(DSCombatMod.MODID, "agm84e")
+				.allMissileBuilder(DSCombatMod.MODID, "agm84e")
+				.setCanPositionGuide(true)
+				.setCanOpticalGuide(true)
+				.setCanRadarGuide(true)
+				.setActiveTrack()
+				.setRadarTargetType(RadarTargetType.GROUND)
 				.setSortFactor(8)
 				.setMass(627)
-				.setActiveTrack()
-				.setTargetType(RadarTargetType.GROUND)
 				.setFireRate(50)
 				.setInaccuracy(0f)
 				.setCanShootOnGround(false)
@@ -719,7 +727,6 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setSeeThroBlockNum(8)
 				.setExplodeNum(2)
 				.setItem(ModItems.MISSILE.getId())
-				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.HEAVY_MISSILE_RACK.getId().getPath(),
 						ModItems.MLS.getId().getPath())
@@ -803,7 +810,11 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.build());
 		// max ammo cost: 36 iron, 6 tnt (30 gunpowder), 12 coal block, 6 ti83 (12 redstone)
 		addPresetToGenerate(MissileStats.Builder
-				.trackMissileBuilder(DSCombatMod.MODID, "rgm84")
+				.allMissileBuilder(DSCombatMod.MODID, "rgm84")
+				.setCanPositionGuide(true)
+				.setCanOpticalGuide(true)
+				.setCanRadarGuide(true)
+				.setRadarTargetType(RadarTargetType.GROUND)
 				.setSortFactor(6)
 				.setMass(691)
 				.setAssetId("agm84e")
@@ -826,9 +837,7 @@ public class WeaponPresetGenerator extends JsonPresetGenerator<WeaponStats>{
 				.setFieldOfView(60f)
 				.setSeeThroWaterNum(100)
 				.setExplodeNum(2)
-				.setTargetType(RadarTargetType.GROUND)
 				.setItem(ModItems.MISSILE.getId())
-				.setEntityType(ModEntities.TRACK_MISSILE.getId())
 				.setShootSound(ModSounds.MISSILE_LAUNCH_1.getLocation())
 				.setCompatibleWeaponPart(ModItems.ADL.getId().getPath(), 
 						ModItems.HEAVY_MISSILE_RACK.getId().getPath(),

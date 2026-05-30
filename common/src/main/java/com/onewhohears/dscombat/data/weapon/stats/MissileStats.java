@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -20,25 +21,39 @@ public abstract class MissileStats extends BulletStats {
 			super(namespace, name, type);
 		}
 		public static Builder posMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, WeaponType.POS_MISSILE);
+			Builder builder = new Builder(namespace, name, WeaponType.POS_MISSILE);
+			builder.setEntityType(ModEntities.POS_MISSILE.getId());
+			return builder;
 		}
 		public static Builder irMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, WeaponType.IR_MISSILE);
+			Builder builder = new Builder(namespace, name, WeaponType.IR_MISSILE);
+			builder.setEntityType(ModEntities.IR_MISSILE.getId());
+			return builder;
 		}
 		public static Builder trackMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, WeaponType.TRACK_MISSILE);
+			Builder builder = new Builder(namespace, name, WeaponType.TRACK_MISSILE);
+			builder.setEntityType(ModEntities.TRACK_MISSILE.getId());
+			return builder;
 		}
 		public static Builder torpedoBuilder(String namespace, String name) {
-			return new Builder(namespace, name, WeaponType.TORPEDO);
+			Builder builder = new Builder(namespace, name, WeaponType.TORPEDO);
+			builder.setEntityType(ModEntities.TORPEDO_MISSILE.getId());
+			return builder;
 		}
 		public static Builder antiRadarMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, WeaponType.ANTI_RADAR_MISSILE);
+			Builder builder = new Builder(namespace, name, WeaponType.ANTI_RADAR_MISSILE);
+			builder.setEntityType(ModEntities.ANTI_RADAR_MISSILE.getId());
+			return builder;
 		}
 		public static Builder dumbTorpedoBuilder(String namespace, String name) {
-			return new Builder(namespace, name, WeaponType.DUMB_TORPEDO);
+			Builder builder = new Builder(namespace, name, WeaponType.DUMB_TORPEDO);
+			builder.setEntityType(ModEntities.DUMB_TORPEDO_MISSILE.getId());
+			return builder;
 		}
 		public static Builder allMissileBuilder(String namespace, String name) {
-			return new Builder(namespace, name, WeaponType.ALL_MISSILE);
+			Builder builder = new Builder(namespace, name, WeaponType.ALL_MISSILE);
+			builder.setEntityType(ModEntities.ALL_MISSILE.getId());
+			return builder;
 		}
 	}
 	

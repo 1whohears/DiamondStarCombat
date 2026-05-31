@@ -272,7 +272,8 @@ public class ClientInputManager {
             TargetMode targetMode = selectedWeapon.fixTargetMode(DSCClientInputs.getTargetMode(),
                     Config.CLIENT.preferredPositionTargetMode.get());
             DSCClientInputs.setTargetMode(targetMode);
-            if (targetMode == TargetMode.MARKER && DSCClientInputs.getSelectedMarker() == null) {
+            if (targetMode == TargetMode.MARKER && selectedWeapon.getStats().isPosGuided() &&
+                    DSCClientInputs.getSelectedMarker() == null) {
                 player.displayClientMessage(UtilMCText.translatable("error.dscombat.must_select_marker"), true);
             } else {
                 sendSyncAction(new VehicleSyncAction.ShootAction(

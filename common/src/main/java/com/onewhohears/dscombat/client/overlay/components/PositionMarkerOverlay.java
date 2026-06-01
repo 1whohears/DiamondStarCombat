@@ -65,7 +65,7 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
         graphics.pose().popPose();
         Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
         int size = 20;
-        float min = 0.25f, max = 0.4f, max_dist = 4000;
+        float min = 0.4f, max = 0.5f, max_dist = 4000;
         MarkerDisplayMode mode = Config.CLIENT.markerMode.get();
         int sw2 = screenWidth / 2, sh2 = screenHeight / 2;
         int hoverId = -1;
@@ -103,7 +103,7 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
                              int distance, int size, float x_win, float y_win, float scale,
                              boolean hover, boolean selected) {
         graphics.pose().pushPose();
-        float adj = size, x_pos = x_win-adj*0.5f*scale, y_pos = y_win-adj*0.5f*scale;
+        float adj = size*0.5f, x_pos = x_win-adj*scale, y_pos = y_win-adj*scale;
         graphics.pose().translate(x_pos, y_pos, 0);
         graphics.pose().scale(scale, scale, scale);
         RenderSystem.enableBlend();
@@ -119,7 +119,13 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
         }
         graphics.setColor(r, g, b, 1);
         graphics.blit(POS_MARKER_SMALL, 0, 0, 0, 0, size, size, size, size);
-        graphics.setColor(1, 1, 1, 1);
+        graphics.pose().translate(adj, adj*0.5f, 0);
+        graphics.pose().scale(1.5f, 1.5f, 1.5f);
+        graphics.setColor(1, 1, 1, 0.8f);
+        String name = marker.getName();
+        if (!name.isEmpty()) {
+            graphics.drawCenteredString(m.font,UtilMCText.literal(name.substring(0,1)).setStyle(WHITE),0,0,0);
+        }
         graphics.pose().popPose();
     }
 

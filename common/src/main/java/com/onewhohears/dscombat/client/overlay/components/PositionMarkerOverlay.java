@@ -65,7 +65,7 @@ public class PositionMarkerOverlay extends VehicleOverlayComponent {
         graphics.pose().popPose();
         Mat4f proj_mat = OverlayController.PROJECTION_MATRIX;
         int size = 20;
-        float min = 0.1f, max = 0.4f, max_dist = 4000;
+        float min = 0.25f, max = 0.4f, max_dist = 4000;
         MarkerDisplayMode mode = Config.CLIENT.markerMode.get();
         int sw2 = screenWidth / 2, sh2 = screenHeight / 2;
         int hoverId = -1;

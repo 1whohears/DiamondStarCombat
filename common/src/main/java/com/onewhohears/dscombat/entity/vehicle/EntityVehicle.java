@@ -288,6 +288,7 @@ public abstract class EntityVehicle
 		setPermMode(PermMode.values()[nbt.getInt("perm_mode")]);
 		maxXZ = nbt.getDouble("maxXZ");
 		ignoreSyncMoveRot = true;
+        firstTick = true;
 	}
 
 	@Override
@@ -1496,13 +1497,19 @@ public abstract class EntityVehicle
 
 	@Override
     protected void addPassenger(@NotNull Entity passenger) {
-        if (passenger instanceof EntityPart part && getPartBySlotId(part.getSlot().getSlotId()) != null) return;
+        if (passenger instanceof EntityPart part) {
+            EntityPart oldPart = getPartBySlotId(part.getSlotId());
+            if (oldPart != null) {
+                oldPart.stopRiding();
+                oldPart.discard();
+            }
+        }
 		super.addPassenger(passenger);
 	}
 	
 	@Override
     protected boolean canAddPassenger(@NotNull Entity passenger) {
-		return passenger instanceof EntityPart;
+        return passenger instanceof EntityPart part && getPartBySlotId(part.getSlotId()) == null;
 	}
 	
 	@Override

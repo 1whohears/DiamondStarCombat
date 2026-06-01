@@ -98,6 +98,22 @@ public class ClientCameraEventHandlers {
                 }
                 prevQ = qPT;
                 wasTrackingTarget = false;
+            } else if (DSCClientInputs.isCameraFreeGlobal()) {
+                if (resetMousePressed) {
+                    lookForward(angles, player, mirrored, pt, vehicle);
+                }
+                float x, y;
+                if (wasTrackingTarget) {
+                    x = DSCClientInputs.xRotPreTrack;
+                    y = DSCClientInputs.yRotPreTrack;
+                } else {
+                    x = player.getXRot();
+                    y = player.getYRot();
+                }
+                setAngles(angles, player, x, y, mirrored);
+                DSCClientInputs.xRotPreTrack = player.getXRot();
+                DSCClientInputs.yRotPreTrack = player.getYRot();
+                wasTrackingTarget = false;
             }
         }
         float zi = UtilAngles.lerpAngle(pt, vehicle.zRotO, vehicle.zRot);

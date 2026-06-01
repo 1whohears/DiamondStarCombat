@@ -233,6 +233,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue heliSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue carSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue boatSpeedFactor;
+		public final ForgeConfigSpec.DoubleValue chainLength;
 		// HELICOPTER HANDLING
 		public final ForgeConfigSpec.DoubleValue heliLateralDampingXZ;
 		public final ForgeConfigSpec.DoubleValue heliHoverDamping;
@@ -271,6 +272,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue etlTrimGain;
 		public final ForgeConfigSpec.BooleanValue scaleTorqueWithRotorPower;
 		public Server(ForgeConfigSpec.Builder builder) {
+            chainLength = builder.defineInRange("chainLength", 10.0, 1.0, Double.MAX_VALUE);
 			builder.push("speed_factors");
             universalIRLScale = builder.comment("The percent of the IRL top speed vehicle's travel at. " +
                             "1/8th (0.125) by default.")

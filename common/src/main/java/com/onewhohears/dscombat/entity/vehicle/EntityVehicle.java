@@ -1259,7 +1259,7 @@ public abstract class EntityVehicle
 	
 	protected InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
 		List<EntityChainHook> hooks = getWorld().getEntitiesOfClass(EntityChainHook.class,
-				getBoundingBox().inflate(EntityChainHook.CHAIN_LENGTH), hook -> hook.isPlayerConnected(player));
+				getBoundingBox().inflate(EntityChainHook.getChainLength()), hook -> hook.isPlayerConnected(player));
 		/*if (hooks.size() == 0) {
 			chainToPlayer(player);
 			return InteractionResult.sidedSuccess(isClientSide());

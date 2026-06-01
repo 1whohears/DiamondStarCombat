@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.entity.weapon;
 
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.AllMissileStats;
+import com.onewhohears.dscombat.data.weapon.stats.RadarTargetType;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.world.entity.Entity;
@@ -55,5 +56,10 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
 	public WeaponType getWeaponType() {
 		return WeaponType.ALL_MISSILE;
 	}
+
+    @Override
+    public boolean isDieInWater() {
+        return getStats().getRadarTargetType() != RadarTargetType.WATER;
+    }
 
 }

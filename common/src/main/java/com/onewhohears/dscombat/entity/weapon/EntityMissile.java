@@ -5,6 +5,7 @@ import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
+import com.onewhohears.dscombat.data.vehicle.physics.SeaLevels;
 import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.Revivable;
@@ -15,6 +16,7 @@ import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
+import com.onewhohears.onewholibs.common.core.HeightMapManager;
 import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
 import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -28,6 +30,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -60,6 +63,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	private int lerpSteps;
     private long lastServerTick;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
+    private short heightMapHeightOld = Short.MIN_VALUE;
 	
 	public EntityMissile(EntityType<? extends EntityMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
@@ -321,7 +325,25 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		tickSetMove();
 		//System.out.println("starting set pos");
 		setPos(position().add(getDeltaMovement()));
+        ResourceKey<Level> dimension = UtilEntity.getLevel(this).dimension();
+        short height = HeightMapManager.getHeight(dimension, position());
+        if (isDieInWater()) {
+            height = (short) Math.max(SeaLevels.getSeaLevel(dimension), height);
+        }
+        if (heightMapHeightOld != Short.MIN_VALUE) {
+            if ((getY() <= height && yOld > heightMapHeightOld) || (getY() >= height && yOld < heightMapHeightOld)) {
+                kill();
+            }
+            xOld = getX();
+            yOld = getY();
+            zOld = getZ();
+        }
+        heightMapHeightOld = height;
 	}
+
+    public boolean isDieInWater() {
+        return true;
+    }
 
     @Override
     public boolean isStopSimulating() {

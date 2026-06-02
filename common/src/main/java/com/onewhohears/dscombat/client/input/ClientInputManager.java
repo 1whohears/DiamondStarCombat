@@ -398,17 +398,24 @@ public class ClientInputManager {
         return Vec3.ZERO;
     }
 
+    private static Vec3 lookPos = Vec3.ZERO;
+    private static int lookPosCalcTime = -1;
+
     public static Vec3 getLookPos(Player player, EntityVehicle vehicle) {
-        Entity looker = player;
-        if (DSCClientInputs.isGimbalMode()) {
-            Entity gimbal = vehicle.getGimbalForPilotCamera();
-            if (gimbal != null) {
-                looker = gimbal;
-                looker.setXRot(player.getXRot());
-                looker.setYRot(player.getYRot());
+        if (player.tickCount != lookPosCalcTime) {
+            Entity looker = player;
+            if (DSCClientInputs.isGimbalMode()) {
+                Entity gimbal = vehicle.getGimbalForPilotCamera();
+                if (gimbal != null) {
+                    looker = gimbal;
+                    looker.setXRot(player.getXRot());
+                    looker.setYRot(player.getYRot());
+                }
             }
+            lookPos = UtilEntity.getLookingAtBlockPos(looker, 1024);
+            lookPosCalcTime = player.tickCount;
         }
-        return UtilEntity.getLookingAtBlockPos(looker, 512);
+        return lookPos;
     }
 
     private static boolean playerCanShoot(Player player) {

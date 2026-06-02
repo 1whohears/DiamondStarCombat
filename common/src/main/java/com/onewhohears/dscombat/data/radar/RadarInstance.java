@@ -171,7 +171,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
         if (event.entity1() instanceof EntityVehicle ev) {
             radarVehicle = ev;
             targetEntity = event.entity2();
-        }else {
+        } else {
 			DistantVisibleManager.cancelFirstEntityQuery(event.data().entityId1, event.data().entityId2, REQUEST_ID);
             LOGGER.error("Radar Visible Check Failed. Entity 1 is not a vehicle {} {}", event.entity1(), event.entity2());
             return;

@@ -39,6 +39,7 @@ public class DSCTacViewMain {
         registerMissileRecorder(ModEntities.ANTI_RADAR_MISSILE.get());
         registerMissileRecorder(ModEntities.TORPEDO_MISSILE.get());
         registerMissileRecorder(ModEntities.DUMB_TORPEDO_MISSILE.get());
+        registerMissileRecorder(ModEntities.ALL_MISSILE.get());
         // part recorders
         registerEntityPartRecorder(ModEntities.SEAT.get());
         registerEntityPartRecorder(ModEntities.TURRET.get());

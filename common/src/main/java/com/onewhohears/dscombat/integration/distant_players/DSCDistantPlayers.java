@@ -27,6 +27,7 @@ public class DSCDistantPlayers {
         ExtraInfoManager.register(ModEntities.TORPEDO_MISSILE.get(), DSCMissileRenderInfo::new);
         ExtraInfoManager.register(ModEntities.TRACK_MISSILE.get(), DSCMissileRenderInfo::new);
         ExtraInfoManager.register(ModEntities.POS_MISSILE.get(), DSCMissileRenderInfo::new);
+        ExtraInfoManager.register(ModEntities.ALL_MISSILE.get(), DSCMissileRenderInfo::new);
     }
 
     public static void addExtraEntity(@NotNull MinecraftServer server, @NotNull Entity entity,

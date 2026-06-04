@@ -3441,4 +3441,10 @@ public abstract class EntityVehicle
     public @NotNull Vec3 getLookAngle() {
         return super.getLookAngle();
     }
+
+	@Override
+	public @NotNull String getScoreboardName() {
+		if (getCustomName() != null) return getCustomName().getString();
+		return super.getScoreboardName();
+	}
 }

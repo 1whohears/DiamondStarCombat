@@ -17,7 +17,7 @@
   "explosive": true,
   "fireRate": 40,
   "fov": 40.0,
-  "fuelTicks": 320,
+  "fuelTicks": 180,
   "fuseDist": 10.0,
   "inaccuracy": 0.0,
   "ingredients": [
@@ -51,6 +51,6 @@
   "sort_factor": 9,
   "speed": 85.75,
   "targetType": "AIR",
-  "turnRadius": 190.0,
+  "turnRadius": 1520.0,
   "useSpeedScale": true
 }

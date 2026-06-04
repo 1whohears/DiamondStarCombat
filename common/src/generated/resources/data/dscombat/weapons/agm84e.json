@@ -52,6 +52,6 @@
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 8,
   "speed": 48.0,
-  "turnRadius": 45.0,
+  "turnRadius": 360.0,
   "useSpeedScale": true
 }

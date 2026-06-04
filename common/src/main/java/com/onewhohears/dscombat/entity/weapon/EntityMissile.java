@@ -376,12 +376,12 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		double B = getBleed() * UtilVehicleEntity.getAirDensity(this);
         B *= DSCPhyCons.MISSILE_BLEED_SCALE / adjustedSpeedScale();
 		double turnBleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
-		double airRes = B * cv * DSCPhyCons.MISSILE_AIR_RES_SCALE / adjustedSpeedScale();
+		double airRes = B * cv * DSCPhyCons.MISSILE_AIR_RES_SCALE;
 		double vel = cv - turnBleed - airRes;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
-		double ga = Math.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm))*getGravityAcc()*DSCPhyCons.MISSILE_GRAV_ACC_SCALE;
-		double gravityAcc = Math.max(0, ga);
-		vel += gravityAcc;
+		//double ga = Math.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm))*getGravityAcc()*DSCPhyCons.MISSILE_GRAV_ACC_SCALE;
+		//double gravityAcc = Math.max(0, ga);
+		//vel += gravityAcc;
 		if (vel > max) vel = max;
 		else if (vel < 0.1) vel = 0.1;
 		Vec3 nm = getLookAngle().scale(vel);
@@ -448,7 +448,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 	
 	public float getTurnRadius() {
-		return getWeaponStats().getTurnRadius();
+		return getWeaponStats().getTurnRadius() * (float) DSCPhyCons.getIRLScale();
 	}
 	
 	public int getTargetId() {

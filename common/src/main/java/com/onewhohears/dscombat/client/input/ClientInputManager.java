@@ -238,9 +238,10 @@ public class ClientInputManager {
          * so the server thinks the seat is outside the player render distance and sends a discard packet to the client
          * is there a way to fix this without the ToServerSeatPos packet?
          */
-        if (player.tickCount % Config.CLIENT.syncSeatPosRate.get() == 0) {
+        new ToServerSeatPos(seat.position()).sendToServer();
+        /*if (player.tickCount % Config.CLIENT.syncSeatPosRate.get() == 0) {
             new ToServerSeatPos(seat.position()).sendToServer();
-        }
+        }*/
         // SWITCH SEAT
         if (CHANGE_SEAT.isInitPressed()) {
             sendSyncAction(new VehicleSyncAction.SwitchSeatAction());

@@ -47,7 +47,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue renderOtherExternalPartDistance;
 		// OTHER
 		public final ForgeConfigSpec.BooleanValue debugMode;
-		public final ForgeConfigSpec.IntValue syncSeatPosRate;
+		//public final ForgeConfigSpec.IntValue syncSeatPosRate;
 		// HUD
 		public final ForgeConfigSpec.BooleanValue enableModernHUD;
 		public final ForgeConfigSpec.DoubleValue modernHudOpacity;
@@ -131,7 +131,7 @@ public class Config {
 			debugMode = builder
 					.comment("Stats for nerds.")
 					.define("debugMode", false);
-			syncSeatPosRate = builder
+			/*syncSeatPosRate = builder
 					.comment("Sometimes when the server lags, the server side position of the player's seat " +
 							"entity doesn't get updated. Eventually the server thinks the seat is outside " +
 							"of the player's render distance and sends a discard packet. This causes the player " +
@@ -140,7 +140,7 @@ public class Config {
 							"how often (in ticks) this sync packet is sent from the client to the server. This used " +
 							"to be set to 40 for everyone, but some have exceptionally poor connections and may " +
 							"need this value to be lowered.")
-					.defineInRange("syncSeatPosRate", 10, 0, 200);
+					.defineInRange("syncSeatPosRate", 10, 0, 200);*/
 			builder.push("entity-render-distance");
 			renderWeaponRackDistance = builder
 					.defineInRange("renderWeaponRackDistance", 256.0, 0, 1000);

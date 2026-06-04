@@ -21,6 +21,8 @@ public class AllMissileStats extends MissileStats {
 	private final boolean canPositionGuide;
 	private final boolean canRadarGuide;
 	private final boolean canOpticalGuide;
+	// TODO IR guided All Missile Option
+	// TODO TV guided All Missile Option
 
 	private final RadarTargetType radarTargetType;
 	private final boolean radarActive;
@@ -37,7 +39,14 @@ public class AllMissileStats extends MissileStats {
 	@Override
 	public void addToolTips(List<Component> tips, boolean advanced) {
 		super.addToolTips(tips, advanced);
+		if (isCanPositionGuide()) {
+			tips.add(UtilMCText.translatable("info.dscombat.position_guided").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+		}
+		if (isCanOpticalGuide()) {
+			tips.add(UtilMCText.translatable("info.dscombat.optical_guided").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+		}
 		if (isCanRadarGuide()) {
+			tips.add(UtilMCText.translatable("info.dscombat.radar_guided").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			switch (getRadarTargetType()) {
 				case AIR:
 					tips.add(UtilMCText.translatable("info.dscombat.targets_flying").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));

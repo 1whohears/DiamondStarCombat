@@ -55,7 +55,10 @@
 	"info.dscombat.items": "Items",
 	"info.dscombat.flares": "Flares",
 	"info.dscombat.ticket_linked_to": "Linked to %1$s",
-	
+	"info.dscombat.position_guided": "Position Guided",
+	"info.dscombat.optical_guided": "Optical Guided",
+	"info.dscombat.radar_guided": "Radar Guided",
+
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",
 	"ui.dscombat.ingredients": "Materials",

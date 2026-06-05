@@ -80,6 +80,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		super.writeSpawnData(buffer);
 		DataSerializers.VEC3.write(buffer, getDeltaMovement());
+		// TODO set the rotations?
 	}
 
 	@Override
@@ -300,6 +301,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		xRotO = getXRot(); 
 		yRotO = getYRot();
 		if (handleInterceptTarget()) {
+			//System.out.println("handle intercept target");
 			return;
 		}
 		// uses special kill override function. don't change to discard.
@@ -334,11 +336,11 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
             if ((getY() <= height && yOld > heightMapHeightOld) || (getY() >= height && yOld < heightMapHeightOld)) {
                 kill();
             }
-            xOld = getX();
-            yOld = getY();
-            zOld = getZ();
         }
         heightMapHeightOld = height;
+		xOld = getX();
+		yOld = getY();
+		zOld = getZ();
 	}
 
     public boolean isDieInWater() {

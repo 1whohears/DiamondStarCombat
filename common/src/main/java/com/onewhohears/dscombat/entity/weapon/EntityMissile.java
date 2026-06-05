@@ -25,7 +25,6 @@ import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -74,19 +73,6 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		super.defineSynchedData();
 		entityData.define(TARGET_ID, -1);
 		entityData.define(TARGET_POS, Vec3.ZERO.add(0, -1000, 0));
-	}
-	
-	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
-		super.writeSpawnData(buffer);
-		DataSerializers.VEC3.write(buffer, getDeltaMovement());
-		// TODO set the rotations?
-	}
-
-	@Override
-	public void readSpawnData(FriendlyByteBuf buffer) {
-		super.readSpawnData(buffer);
-		setDeltaMovement(DataSerializers.VEC3.read(buffer));
 	}
 	
 	@Override

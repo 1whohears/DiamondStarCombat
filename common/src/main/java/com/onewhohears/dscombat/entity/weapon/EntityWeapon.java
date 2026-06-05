@@ -21,6 +21,7 @@ import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -294,12 +295,27 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
 	public void lerpMotion(double x, double y, double z) {
-        if (getAge() > getLerpWaitTicks()) super.lerpMotion(x, y, z);
+        //if (getAge() > getLerpWaitTicks()) super.lerpMotion(x, y, z);
+		// FIXME is EntityWeapon#lerpMotion needed to sync speeds between server anc client?
 	}
 
-    protected int getLerpWaitTicks() {
-        return 4;
-    }
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		super.writeSpawnData(buffer);
+		DataSerializers.VEC3.write(buffer, getDeltaMovement());
+		buffer.writeFloat(getXRot());
+		buffer.writeFloat(getYRot());
+	}
+
+	@Override
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		super.readSpawnData(buffer);
+		setDeltaMovement(DataSerializers.VEC3.read(buffer));
+		setXRot(buffer.readFloat());
+		setYRot(buffer.readFloat());
+		xRotO = getXRot();
+		yRotO = getYRot();
+	}
 	
 	@Override
 	public Entity getOwner() {

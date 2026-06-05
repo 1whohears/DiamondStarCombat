@@ -22,16 +22,6 @@ public class EntityBomb<T extends BombStats> extends EntityBullet<T> {
 	@Override
 	public void init() {	
 	}
-
-    @Override
-    protected int getLerpWaitTicks() {
-        return 0;
-    }
-
-    @Override
-    protected int getSetAngleTicks() {
-        return 0;
-    }
 	
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {

@@ -267,10 +267,6 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	}
 
 	public void shoot(Entity shooter) {
-		shoot(shooter, null);
-	}
-
-	public void shoot(Entity shooter, @Nullable TargetMode targetMode) {
 		WeaponInstance<?> data = getWeaponData();
 		if (isClientSide() || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
@@ -291,8 +287,13 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 		boolean couldShoot = data.checkRecoil();
 		data.setSlot(getSlotId());
 		TargetMode mode = data.getDefaultTargetMode();
-		data.shootFromTurret(getWorld(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo, mode);
-		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo, data);
+        int selectedMarkerId = -1;
+        if (parent != null) {
+            mode = parent.weaponSystem.getTargetMode();
+            selectedMarkerId = parent.weaponSystem.getSelectedMarkerId();
+        }
+		data.shootFromTurret(getWorld(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo, mode, selectedMarkerId);
+		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo, data, mode, selectedMarkerId);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
 					UtilMCText.translatable(data.getFailedLaunchReason()), 
@@ -311,17 +312,19 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 		return data.getFiredWeapon();
 	}
 	
-	protected void specialShoot(Entity shooter, Vec3 pos, EntityVehicle parent, boolean consume, WeaponInstance<?> data) {
+	protected void specialShoot(Entity shooter, Vec3 pos, EntityVehicle parent, boolean consume, WeaponInstance<?> data,
+                                TargetMode targetMode, int selectedMarkerId) {
 		if (getShootType() == ShootType.NORMAL) return;
 		//System.out.println("SPECIAL SHOOT "+shootType);
-		TargetMode mode = data.getDefaultTargetMode();
 		if (getShootType() == ShootType.MARK7) {
 			float d = 1;
 			float yRad = getYRot() * Mth.DEG_TO_RAD;
 			Vec3 posL = pos.add(new Vec3(-d*Mth.cos(yRad), 0, -d*Mth.sign(yRad))); 
 			Vec3 posR = pos.add(new Vec3(d*Mth.cos(yRad), 0, d*Mth.sign(yRad)));
-			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posL, parent, consume, true, mode);
-			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posR, parent, consume, true, mode);
+			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posL, parent, consume,
+                    true, targetMode, selectedMarkerId);
+			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posR, parent, consume,
+                    true, targetMode, selectedMarkerId);
 		}
 	}
 

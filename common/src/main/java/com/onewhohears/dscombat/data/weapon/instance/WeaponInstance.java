@@ -110,11 +110,11 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	}
 	
 	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle,
-									boolean consume, TargetMode targetMode) {
+									boolean consume, TargetMode targetMode, int selectedMarkerId) {
 		overrideGroundCheck = false;
 		EntityWeapon<?> w = getShootEntity(new WeaponShootParameters(level, owner, 
 				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
-				direction, vehicle, false, false, targetMode));
+				direction, vehicle, false, false, targetMode, selectedMarkerId));
 		if (w == null) return false;
 		level.addFreshEntity(w);
         if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);
@@ -132,16 +132,17 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	}
 	
 	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos,
-								   @Nullable EntityVehicle vehicle, boolean consume, TargetMode targetMode) {
-		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false, targetMode);
+								   @Nullable EntityVehicle vehicle, boolean consume,
+                                   TargetMode targetMode, int selectMarkerId) {
+		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false, targetMode, selectMarkerId);
 	}
 	
 	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos,
 								   @Nullable EntityVehicle vehicle, boolean consume,
-								   boolean ignoreRecoil, TargetMode targetMode) {
+								   boolean ignoreRecoil, TargetMode targetMode, int selectedMarkerId) {
 		overrideGroundCheck = true;
 		EntityWeapon<?> w = getShootEntity(new WeaponShootParameters(level, owner, 
-				pos, direction, vehicle, ignoreRecoil, true, targetMode));
+				pos, direction, vehicle, ignoreRecoil, true, targetMode, selectedMarkerId));
 		if (w == null) return false;
 		level.addFreshEntity(w);
         if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);

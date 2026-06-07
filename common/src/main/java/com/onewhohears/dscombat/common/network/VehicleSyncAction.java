@@ -70,7 +70,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new OpenPartsAction());
         addVehicleSyncAction(new SetRadarModeAction(RadarFilterMode.ALL));
         addVehicleSyncAction(new PingSelectAction(null));
-        addVehicleSyncAction(new ShootAction(-1, null, null, TargetMode.LOOK));
+        addVehicleSyncAction(new ShootAction(-1, null, null, TargetMode.LOOK, -1));
         addVehicleSyncAction(new ToItemAction());
         addVehicleSyncAction(new DismountAction());
         addVehicleSyncAction(new SwitchSeatAction());
@@ -273,13 +273,15 @@ public abstract class VehicleSyncAction {
         @Nullable private RadarTarget ping;
         @Nullable private Vec3 targetPos;
         @NotNull private TargetMode targetMode;
+        private int selectedMarkerId = -1;
         public ShootAction(int selectedWeaponIndex, @Nullable RadarTarget ping, @Nullable Vec3 targetPos,
-                           @NotNull TargetMode targetMode) {
+                           @NotNull TargetMode targetMode, int selectedMarkerId) {
             super(5);
             this.selectedWeaponIndex = selectedWeaponIndex;
             this.ping = ping;
             this.targetPos = targetPos;
             this.targetMode = targetMode;
+            this.selectedMarkerId = selectedMarkerId;
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
@@ -291,14 +293,15 @@ public abstract class VehicleSyncAction {
                 if (!(player.getVehicle() instanceof EntityRidablePart seat)) return;
                 if (ping != null) vehicle.radarSystem.selectTarget(ping);
                 if (targetPos != null) vehicle.weaponSystem.setTargetPos(targetPos);
+                vehicle.weaponSystem.setTargetMode(targetMode);
+                vehicle.weaponSystem.setSelectedMarkerId(selectedMarkerId);
                 if (seat.isTurret()) {
-                    ((EntityTurret)seat).shoot(player, targetMode);
+                    ((EntityTurret)seat).shoot(player);
                     return;
                 }
                 if (selectedWeaponIndex == -1) return;
                 if (!seat.canPassengerShootParentWeapon()) return;
                 vehicle.weaponSystem.setSelected(selectedWeaponIndex);
-                vehicle.weaponSystem.setTargetMode(targetMode);
                 vehicle.weaponSystem.shootSelected(player);
             };
         }
@@ -315,6 +318,7 @@ public abstract class VehicleSyncAction {
                     DataSerializers.VEC3.write(buffer, targetPos);
                 } else buffer.writeBoolean(false);
                 buffer.writeEnum(targetMode);
+                buffer.writeInt(selectedMarkerId);
             };
         }
         @Override
@@ -328,6 +332,7 @@ public abstract class VehicleSyncAction {
                     targetPos = DataSerializers.VEC3.read(buffer);
                 else targetPos = null;
                 targetMode = buffer.readEnum(TargetMode.class);
+                selectedMarkerId = buffer.readInt();
             };
         }
     }

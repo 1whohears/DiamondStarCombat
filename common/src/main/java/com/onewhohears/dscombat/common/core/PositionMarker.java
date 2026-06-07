@@ -114,10 +114,12 @@ public class PositionMarker extends Serializable {
     public void setPosition(@NotNull Vec3 pos) {
         if (!UtilGeometry.isEqual(this.position, pos)) setDirty();
         this.position = pos;
+        this.created = System.currentTimeMillis();
     }
 
     public void setDimension(ResourceKey<Level> dimension) {
         if (!this.dimension.equals(dimension)) setDirty();
         this.dimension = dimension;
+        this.created = System.currentTimeMillis();
     }
 }

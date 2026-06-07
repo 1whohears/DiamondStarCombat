@@ -31,11 +31,12 @@ public class WeaponSystem {
 	
 	private final EntityVehicle parent;
 	private boolean readData = false;
-	private List<WeaponInstance<?>> weapons = new ArrayList<>();
+	private final List<WeaponInstance<?>> weapons = new ArrayList<>();
 	private int weaponIndex = 0;
 
 	private Vec3 targetPos = Vec3.ZERO;
 	private TargetMode targetMode = TargetMode.MARKER;
+    private int selectedMarkerId = -1;
 	
 	public WeaponSystem(EntityVehicle parent) {
 		this.parent = parent;
@@ -89,10 +90,12 @@ public class WeaponSystem {
 		if (data == null) return false;
 		String name = data.getStatsId();
 		String reason = null;
-		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume, getTargetMode());
+		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume,
+                getTargetMode(), getSelectedMarkerId());
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponInstance<?> wd : weapons) if (wd.getStats().isBullet() && wd.getStatsId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shootFromVehicle(parent.getWorld(), controller, getShootDirection(wd), parent, consume, getTargetMode());
+			wd.shootFromVehicle(parent.getWorld(), controller, getShootDirection(wd), parent, consume,
+                    getTargetMode(), getSelectedMarkerId());
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
@@ -183,5 +186,13 @@ public class WeaponSystem {
 
     public void setTargetMode(TargetMode targetMode) {
         this.targetMode = targetMode;
+    }
+
+    public int getSelectedMarkerId() {
+        return selectedMarkerId;
+    }
+
+    public void setSelectedMarkerId(int selectedMarkerId) {
+        this.selectedMarkerId = selectedMarkerId;
     }
 }

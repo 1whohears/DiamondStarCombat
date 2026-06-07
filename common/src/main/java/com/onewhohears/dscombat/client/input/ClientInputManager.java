@@ -281,7 +281,7 @@ public class ClientInputManager {
                         vehicle.weaponSystem.getSelectedIndex(),
                         radar.getClientSelectedPing(),
                         getShootPos(player, vehicle),
-                        targetMode));
+                        targetMode, DSCClientInputs.getSelectedMarkerId()));
             }
         }
         // DISMOUNT

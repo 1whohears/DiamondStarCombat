@@ -35,6 +35,7 @@ public class AllMissileInstance<T extends AllMissileStats> extends MissileInstan
 		AllEntityMissile<?> missile = (AllEntityMissile<?>) super.getShootEntity(params);
 		if (missile == null) return null;
 		missile.targetMode = params.targetMode;
+        missile.selectedMarkerId = params.markerId;
 		switch (params.targetMode) {
             case LOOK, COORDS, MARKER -> {
 				return shootPosGuided(params, missile);

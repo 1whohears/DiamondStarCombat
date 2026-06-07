@@ -20,10 +20,11 @@ public class WeaponShootParameters {
 	public final boolean isTurret;
 	public final boolean isPlayer;
 	public final TargetMode targetMode;
+    public final int markerId;
 	
 	public WeaponShootParameters(Level level, Entity owner, Vec3 pos, Vec3 direction,
                                  @Nullable EntityVehicle vehicle, boolean ignoreRecoil, boolean isTurret,
-								 TargetMode targetMode) {
+                                 TargetMode targetMode, int markerId) {
 		this.level = level;
 		this.owner = owner;
 		this.pos = pos;
@@ -33,6 +34,7 @@ public class WeaponShootParameters {
 		this.isTurret = isTurret;
 		this.isPlayer = owner instanceof Player;
         this.targetMode = targetMode;
+        this.markerId = markerId;
     }
 	
 }

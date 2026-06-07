@@ -37,7 +37,6 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
                 plane.trackedByMissile(this);
             }
         } else if (targetMode == TargetMode.OPTICAL) {
-            guideToTarget();
             if (target != null && tickCount % 15 == 0) {
                 Entity owner = getOwner();
                 if (owner == null) {
@@ -55,6 +54,7 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
                 }
                 DistantVisibleManager.queryVisible(getServer(), vehicle, target, MISSILE_SCAN_HANDLER);
             }
+            guideToTarget();
         } else if (targetMode.isPosition()) {
             guideToPosition();
         } else {

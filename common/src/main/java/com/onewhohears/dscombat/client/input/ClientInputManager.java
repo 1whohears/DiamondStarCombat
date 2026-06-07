@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.input;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
 import com.onewhohears.dscombat.common.core.PositionMarker;
@@ -295,9 +296,8 @@ public class ClientInputManager {
                         nearestDistSqr = distSqr;
                     }
                 }
-                // TODO if nearest null find a render distant entity within the cone
                 if (nearest == null) {
-                    DSCClientInputs.setOpticalTrackedEntityId(-1);
+                    DSCClientInputs.setOpticalTrackedEntityId(DependencySafety.getClientDistantLookingAtEntityId(gimbal));
                 } else {
                     DSCClientInputs.setOpticalTrackedEntityId(nearest.getId());
                 }

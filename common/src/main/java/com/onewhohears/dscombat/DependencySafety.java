@@ -11,11 +11,10 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public class DependencySafety {
@@ -40,6 +39,16 @@ public class DependencySafety {
 
     public static void onWeaponShoot(@NotNull EntityWeapon<?> weapon) {
         if (DSCombatMod.tacViewLoaded) DSCTacViewMain.onWeaponShoot(weapon);
+    }
+
+    public static int getClientDistantLookingAtEntityId(@NotNull Entity looker) {
+        if (DSCombatMod.distantPlayersLoaded) return DSCDistantPlayers.getClientDistantLookingAtEntityId(looker);
+        return -1;
+    }
+
+    public static @Nullable Vec3 getClientDistantEntityPos(int id) {
+        if (DSCombatMod.distantPlayersLoaded) return DSCDistantPlayers.getClientDistantEntityPos(id);
+        return null;
     }
 	
 }

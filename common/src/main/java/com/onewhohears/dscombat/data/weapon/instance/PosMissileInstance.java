@@ -16,8 +16,7 @@ public class PosMissileInstance<T extends PosMissileStats> extends MissileInstan
 	public EntityWeapon<?> getShootEntity(WeaponShootParameters params) {
 		PositionMissile<?> missile = (PositionMissile<?>) super.getShootEntity(params);
 		if (missile == null) return null;
-		if (params.vehicle == null || !params.isPlayer) setTargetPosByLooker(params, missile);
-		else missile.targetPos = params.vehicle.weaponSystem.getTargetPos();
+		missile.targetPos = params.targetParams.targetPos;
 		return missile;
 	}
 

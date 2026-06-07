@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
+import com.onewhohears.dscombat.data.weapon.WeaponTargetParameters;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetInstance<T> {
@@ -97,7 +99,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		EntityWeapon<?> w = getEntity(params.level);
 		if (w == null) return null;
 		w.setOwner(params.owner);
-		w.setPos(params.pos);
+		w.setPos(params.launchPos);
 		setDirection(w, params.direction);
 		return w;
 	}
@@ -110,11 +112,11 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	}
 	
 	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle,
-									boolean consume, TargetMode targetMode, int selectedMarkerId) {
+									boolean consume, @NotNull WeaponTargetParameters targetParams) {
 		overrideGroundCheck = false;
 		EntityWeapon<?> w = getShootEntity(new WeaponShootParameters(level, owner, 
 				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
-				direction, vehicle, false, false, targetMode, selectedMarkerId));
+				direction, vehicle, false, false, targetParams));
 		if (w == null) return false;
 		level.addFreshEntity(w);
         if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);
@@ -133,16 +135,16 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 	
 	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos,
 								   @Nullable EntityVehicle vehicle, boolean consume,
-                                   TargetMode targetMode, int selectMarkerId) {
-		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false, targetMode, selectMarkerId);
+                                   @NotNull WeaponTargetParameters targetParams) {
+		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false, targetParams);
 	}
 	
 	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos,
 								   @Nullable EntityVehicle vehicle, boolean consume,
-								   boolean ignoreRecoil, TargetMode targetMode, int selectedMarkerId) {
+								   boolean ignoreRecoil, @NotNull WeaponTargetParameters targetParams) {
 		overrideGroundCheck = true;
 		EntityWeapon<?> w = getShootEntity(new WeaponShootParameters(level, owner, 
-				pos, direction, vehicle, ignoreRecoil, true, targetMode, selectedMarkerId));
+				pos, direction, vehicle, ignoreRecoil, true, targetParams));
 		if (w == null) return false;
 		level.addFreshEntity(w);
         if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);

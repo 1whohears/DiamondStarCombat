@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toserver.ToServerModifyMarker;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.weapon.WeaponTargetParameters;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
@@ -264,6 +265,10 @@ public class ClientInputManager {
             DSCClientInputs.setTargetMode(TargetMode.RADAR);
             DSCClientInputs.setSelectedMarkerId(-1);
         }
+        // OPTICAL TARGET
+        if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL) {
+
+        }
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
             WeaponInstance<?> selectedWeapon = vehicle.weaponSystem.getSelected();
@@ -279,9 +284,11 @@ public class ClientInputManager {
             } else {
                 sendSyncAction(new VehicleSyncAction.ShootAction(
                         vehicle.weaponSystem.getSelectedIndex(),
-                        radar.getClientSelectedPing(),
-                        getShootPos(player, vehicle),
-                        targetMode, DSCClientInputs.getSelectedMarkerId()));
+                        new WeaponTargetParameters(radar.getClientSelectedPing(),
+                                getShootPos(player, vehicle), targetMode,
+                                DSCClientInputs.getSelectedMarkerId(),
+                                -1)
+                ));
             }
         }
         // DISMOUNT

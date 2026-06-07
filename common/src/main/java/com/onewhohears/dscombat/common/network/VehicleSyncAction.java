@@ -5,11 +5,11 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
 import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 import com.onewhohears.dscombat.data.radar.RadarTarget;
+import com.onewhohears.dscombat.data.weapon.WeaponTargetParameters;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemParachute;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -70,7 +70,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new OpenPartsAction());
         addVehicleSyncAction(new SetRadarModeAction(RadarFilterMode.ALL));
         addVehicleSyncAction(new PingSelectAction(null));
-        addVehicleSyncAction(new ShootAction(-1, null, null, TargetMode.LOOK, -1));
+        addVehicleSyncAction(new ShootAction(-1, new WeaponTargetParameters(null, null, TargetMode.NONE, -1, -1)));
         addVehicleSyncAction(new ToItemAction());
         addVehicleSyncAction(new DismountAction());
         addVehicleSyncAction(new SwitchSeatAction());
@@ -270,18 +270,12 @@ public abstract class VehicleSyncAction {
 
     public static class ShootAction extends VehicleSyncAction {
         private int selectedWeaponIndex;
-        @Nullable private RadarTarget ping;
-        @Nullable private Vec3 targetPos;
-        @NotNull private TargetMode targetMode;
-        private int selectedMarkerId = -1;
-        public ShootAction(int selectedWeaponIndex, @Nullable RadarTarget ping, @Nullable Vec3 targetPos,
-                           @NotNull TargetMode targetMode, int selectedMarkerId) {
+        private @NotNull WeaponTargetParameters targetParams;
+
+        public ShootAction(int selectedWeaponIndex, @NotNull WeaponTargetParameters targetParams) {
             super(5);
             this.selectedWeaponIndex = selectedWeaponIndex;
-            this.ping = ping;
-            this.targetPos = targetPos;
-            this.targetMode = targetMode;
-            this.selectedMarkerId = selectedMarkerId;
+            this.targetParams = targetParams;
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
@@ -291,48 +285,29 @@ public abstract class VehicleSyncAction {
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
                 if (!(player.getVehicle() instanceof EntityRidablePart seat)) return;
-                if (ping != null) vehicle.radarSystem.selectTarget(ping);
-                if (targetPos != null) vehicle.weaponSystem.setTargetPos(targetPos);
-                vehicle.weaponSystem.setTargetMode(targetMode);
-                vehicle.weaponSystem.setSelectedMarkerId(selectedMarkerId);
+                vehicle.weaponSystem.setTargetParameters(targetParams);
                 if (seat.isTurret()) {
-                    ((EntityTurret)seat).shoot(player);
+                    ((EntityTurret)seat).shoot(player, targetParams);
                     return;
                 }
                 if (selectedWeaponIndex == -1) return;
                 if (!seat.canPassengerShootParentWeapon()) return;
                 vehicle.weaponSystem.setSelected(selectedWeaponIndex);
-                vehicle.weaponSystem.shootSelected(player);
+                vehicle.weaponSystem.shootSelected(player, targetParams);
             };
         }
         @Override
         protected Consumer<FriendlyByteBuf> getWriteData() {
             return (buffer) -> {
                 buffer.writeInt(selectedWeaponIndex);
-                if (ping != null) {
-                    buffer.writeBoolean(true);
-                    ping.write(buffer);
-                } else buffer.writeBoolean(false);
-                if (targetPos != null) {
-                    buffer.writeBoolean(true);
-                    DataSerializers.VEC3.write(buffer, targetPos);
-                } else buffer.writeBoolean(false);
-                buffer.writeEnum(targetMode);
-                buffer.writeInt(selectedMarkerId);
+                targetParams.write(buffer);
             };
         }
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
             return (buffer) -> {
                 selectedWeaponIndex = buffer.readInt();
-                if (buffer.readBoolean())
-                    ping = new RadarTarget(buffer);
-                else ping = null;
-                if (buffer.readBoolean())
-                    targetPos = DataSerializers.VEC3.read(buffer);
-                else targetPos = null;
-                targetMode = buffer.readEnum(TargetMode.class);
-                selectedMarkerId = buffer.readInt();
+                targetParams = new WeaponTargetParameters(buffer);
             };
         }
     }

@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
+import com.onewhohears.dscombat.data.weapon.WeaponTargetParameters;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.onewhohears.onewholibs.util.math.QuaternionF;
@@ -266,7 +267,11 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 		return instance.getWeaponData();
 	}
 
-	public void shoot(Entity shooter) {
+    public void shoot(Entity shooter) {
+        shoot(shooter, null);
+    }
+
+	public void shoot(Entity shooter, @Nullable WeaponTargetParameters targetParams) {
 		WeaponInstance<?> data = getWeaponData();
 		if (isClientSide() || data == null || newRiderCoolDown > 0) return;
 		boolean consume = true;
@@ -286,14 +291,12 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 		boolean consumeAmmo = getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
 		boolean couldShoot = data.checkRecoil();
 		data.setSlot(getSlotId());
-		TargetMode mode = data.getDefaultTargetMode();
-        int selectedMarkerId = -1;
-        if (parent != null) {
-            mode = parent.weaponSystem.getTargetMode();
-            selectedMarkerId = parent.weaponSystem.getSelectedMarkerId();
+        if (targetParams == null) {
+            targetParams = new WeaponTargetParameters(null, null,
+                    data.getDefaultTargetMode(), -1, -1);
         }
-		data.shootFromTurret(getWorld(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo, mode, selectedMarkerId);
-		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo, data, mode, selectedMarkerId);
+		data.shootFromTurret(getWorld(), shooter, getLookAngle(), pos, parent, consume && consumeAmmo, targetParams);
+		if (couldShoot) specialShoot(shooter, pos, parent, consume && consumeAmmo, data, targetParams);
 		if (data.isFailedLaunch()) {
 			if (p != null) p.displayClientMessage(
 					UtilMCText.translatable(data.getFailedLaunchReason()), 
@@ -313,7 +316,7 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 	}
 	
 	protected void specialShoot(Entity shooter, Vec3 pos, EntityVehicle parent, boolean consume, WeaponInstance<?> data,
-                                TargetMode targetMode, int selectedMarkerId) {
+                                @NotNull WeaponTargetParameters targetParams) {
 		if (getShootType() == ShootType.NORMAL) return;
 		//System.out.println("SPECIAL SHOOT "+shootType);
 		if (getShootType() == ShootType.MARK7) {
@@ -321,10 +324,8 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 			float yRad = getYRot() * Mth.DEG_TO_RAD;
 			Vec3 posL = pos.add(new Vec3(-d*Mth.cos(yRad), 0, -d*Mth.sign(yRad))); 
 			Vec3 posR = pos.add(new Vec3(d*Mth.cos(yRad), 0, d*Mth.sign(yRad)));
-			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posL, parent, consume,
-                    true, targetMode, selectedMarkerId);
-			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posR, parent, consume,
-                    true, targetMode, selectedMarkerId);
+			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posL, parent, consume, true, targetParams);
+			data.shootFromTurret(getWorld(), shooter, getLookAngle(), posR, parent, consume, true, targetParams);
 		}
 	}
 

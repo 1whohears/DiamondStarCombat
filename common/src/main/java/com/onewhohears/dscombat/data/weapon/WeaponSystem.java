@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -33,10 +34,6 @@ public class WeaponSystem {
 	private boolean readData = false;
 	private final List<WeaponInstance<?>> weapons = new ArrayList<>();
 	private int weaponIndex = 0;
-
-	private Vec3 targetPos = Vec3.ZERO;
-	private TargetMode targetMode = TargetMode.MARKER;
-    private int selectedMarkerId = -1;
 	
 	public WeaponSystem(EntityVehicle parent) {
 		this.parent = parent;
@@ -77,25 +74,23 @@ public class WeaponSystem {
 		return weaponIndex;
 	}
 	
-	public boolean shootSelected(Entity controller) {
+	public boolean shootSelected(Entity controller, @NotNull WeaponTargetParameters targetParams) {
 		boolean consume = true;
 		if (parent.isNoConsume()) consume = false;
 		else if (controller instanceof Player p && p.isCreative()) consume = false;
 		boolean consumeAmmo = parent.getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
-		return shootSelected(controller, consume && consumeAmmo);
+		return shootSelected(controller, consume && consumeAmmo, targetParams);
 	}
 	
-	public boolean shootSelected(Entity controller, boolean consume) {
+	public boolean shootSelected(Entity controller, boolean consume, @NotNull WeaponTargetParameters targetParams) {
 		WeaponInstance<?> data = getSelected();
 		if (data == null) return false;
 		String name = data.getStatsId();
 		String reason = null;
-		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume,
-                getTargetMode(), getSelectedMarkerId());
+		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume, targetParams);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
 		for (WeaponInstance<?> wd : weapons) if (wd.getStats().isBullet() && wd.getStatsId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shootFromVehicle(parent.getWorld(), controller, getShootDirection(wd), parent, consume,
-                    getTargetMode(), getSelectedMarkerId());
+			wd.shootFromVehicle(parent.getWorld(), controller, getShootDirection(wd), parent, consume, targetParams);
 			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
 		}
 		if (reason != null && controller instanceof ServerPlayer player) {
@@ -172,27 +167,7 @@ public class WeaponSystem {
 		}
 	}
 
-	public Vec3 getTargetPos() {
-		return targetPos;
-	}
-
-	public void setTargetPos(Vec3 targetPos) {
-		this.targetPos = targetPos;
-	}
-
-    public TargetMode getTargetMode() {
-        return targetMode;
-    }
-
-    public void setTargetMode(TargetMode targetMode) {
-        this.targetMode = targetMode;
-    }
-
-    public int getSelectedMarkerId() {
-        return selectedMarkerId;
-    }
-
-    public void setSelectedMarkerId(int selectedMarkerId) {
-        this.selectedMarkerId = selectedMarkerId;
+    public void setTargetParameters(@NotNull WeaponTargetParameters targetParams) {
+        if (targetParams.ping != null) parent.radarSystem.selectTarget(targetParams.ping);
     }
 }

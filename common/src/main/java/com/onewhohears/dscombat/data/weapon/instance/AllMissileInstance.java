@@ -34,9 +34,9 @@ public class AllMissileInstance<T extends AllMissileStats> extends MissileInstan
 	public EntityWeapon<?> getShootEntity(WeaponShootParameters params) {
 		AllEntityMissile<?> missile = (AllEntityMissile<?>) super.getShootEntity(params);
 		if (missile == null) return null;
-		missile.targetMode = params.targetMode;
-        missile.selectedMarkerId = params.markerId;
-		switch (params.targetMode) {
+		missile.targetMode = params.targetParams.targetMode;
+        missile.selectedMarkerId = params.targetParams.selectedMarkerId;
+		switch (params.targetParams.targetMode) {
             case LOOK, COORDS, MARKER -> {
 				return shootPosGuided(params, missile);
             }
@@ -59,8 +59,7 @@ public class AllMissileInstance<T extends AllMissileStats> extends MissileInstan
 			setLaunchFail("error.dscombat.not_pos_missile");
 			return null;
 		}
-		if (params.vehicle == null || !params.isPlayer) setTargetPosByLooker(params, missile);
-		else missile.targetPos = params.vehicle.weaponSystem.getTargetPos();
+		missile.targetPos = params.targetParams.targetPos;
 		return missile;
 	}
 

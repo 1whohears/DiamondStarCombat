@@ -12,9 +12,11 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.weapon.WeaponTargetParameters;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
+import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -27,13 +29,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ClientInputManager {
@@ -266,8 +273,37 @@ public class ClientInputManager {
             DSCClientInputs.setSelectedMarkerId(-1);
         }
         // OPTICAL TARGET
-        if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL) {
-
+        if (player.tickCount % 10 == 0) {
+            if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL && mc.level != null
+                    && vehicle.getGimbalForPilotCamera() != null) {
+                EntityGimbal gimbal = vehicle.getGimbalForPilotCamera();
+                Vec3 lookPos = getLookPos(player, vehicle);
+                AABB aabb = new AABB(lookPos.subtract(4, 4, 4), lookPos.add(4, 4, 4));
+                List<Entity> list = mc.level.getEntities(player, aabb, entity -> {
+                    if (entity.isSpectator() || entity.isInvisible() || entity.isPassenger()) return false;
+                    if (!UtilEntity.isPlayer(entity) && !entity.getType().is(ModTags.EntityTypes.VEHICLE)
+                            && !(entity instanceof Mob)) return false;
+                    return UtilEntity.getLevel(entity).clip(new ClipContext(gimbal.getEyePosition(), entity.getEyePosition(),
+                            ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getType() == HitResult.Type.MISS;
+                });
+                Entity nearest = null;
+                double nearestDistSqr = Double.MAX_VALUE;
+                for (Entity entity : list) {
+                    double distSqr = player.distanceToSqr(entity);
+                    if (distSqr < nearestDistSqr) {
+                        nearest = entity;
+                        nearestDistSqr = distSqr;
+                    }
+                }
+                // TODO if nearest null find a render distant entity within the cone
+                if (nearest == null) {
+                    DSCClientInputs.setOpticalTrackedEntityId(-1);
+                } else {
+                    DSCClientInputs.setOpticalTrackedEntityId(nearest.getId());
+                }
+            } else {
+                DSCClientInputs.setOpticalTrackedEntityId(-1);
+            }
         }
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
@@ -281,13 +317,15 @@ public class ClientInputManager {
             if (targetMode == TargetMode.MARKER && selectedWeapon.getStats().isPosGuided() &&
                     DSCClientInputs.getSelectedMarker() == null) {
                 player.displayClientMessage(UtilMCText.translatable("error.dscombat.must_select_marker"), true);
+            } else if (targetMode == TargetMode.OPTICAL && vehicle.getGimbalForPilotCamera() == null) {
+                player.displayClientMessage(UtilMCText.translatable("error.dscombat.optical_requires_gimbal"), true);
             } else {
                 sendSyncAction(new VehicleSyncAction.ShootAction(
                         vehicle.weaponSystem.getSelectedIndex(),
                         new WeaponTargetParameters(radar.getClientSelectedPing(),
                                 getShootPos(player, vehicle), targetMode,
                                 DSCClientInputs.getSelectedMarkerId(),
-                                -1)
+                                DSCClientInputs.getOpticalTrackedEntityId())
                 ));
             }
         }

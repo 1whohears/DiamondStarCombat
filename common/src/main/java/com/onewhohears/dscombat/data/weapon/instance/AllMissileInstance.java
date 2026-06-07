@@ -9,6 +9,7 @@ import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.weapon.AllEntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,7 +70,14 @@ public class AllMissileInstance<T extends AllMissileStats> extends MissileInstan
 			setLaunchFail("error.dscombat.not_optical_missile");
 			return null;
 		}
-
+        if (params.vehicle == null) return missile;
+        Entity target = UtilEntity.getLevel(missile).getEntity(params.targetParams.opticalTargetEntityId);
+        if (target == null) {
+            setLaunchFail("error.dscombat.no_target_selected");
+            return null;
+        }
+        missile.targetPos = target.position();
+        missile.target = target;
 		return missile;
 	}
 

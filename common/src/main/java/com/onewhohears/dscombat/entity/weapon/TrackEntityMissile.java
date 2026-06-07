@@ -44,4 +44,9 @@ public class TrackEntityMissile<T extends TrackMissileStats> extends EntityMissi
 		}
 	}
 
+    @Override
+    public boolean isCheckTargetEntityVisible() {
+        return getWeaponStats().isActiveTrack();
+    }
+
 }

@@ -185,7 +185,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 				return;
 			}
 			//System.out.println("check can see");
-            DistantVisibleManager.queryVisible(getServer(), this, target, MISSILE_SCAN_HANDLER);
+            if (isCheckTargetEntityVisible()) {
+                DistantVisibleManager.queryVisible(getServer(), this, target, MISSILE_SCAN_HANDLER);
+            }
 		}
         if (target == null) {
             //System.out.println("target is null 2");
@@ -202,6 +204,10 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		guideToPosition();
 	}
 
+    public boolean isCheckTargetEntityVisible() {
+        return true;
+    }
+
     // TODO bring back getWeaponStats().getSeeThroWater() and getWeaponStats().getSeeThroBlock()
     public final DistantVisibleManager.VisibleRequestData MISSILE_SCAN_HANDLER = new DistantVisibleManager.VisibleRequestData(
             0x2402, 30, 15, event -> {
@@ -212,7 +218,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
     });
 
     public void resetTarget() {
-		if (target != null) {
+		if (target != null && isCheckTargetEntityVisible()) {
 			DistantVisibleManager.cancelFirstEntityQuery(getId(), target.getId(), MISSILE_SCAN_HANDLER.typeId());
 		}
         target = null;

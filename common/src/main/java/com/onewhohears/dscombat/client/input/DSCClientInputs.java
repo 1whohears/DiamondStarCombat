@@ -22,6 +22,7 @@ public class DSCClientInputs {
 
 	private static int markerHoverId = -1;
 	private static int selectedMarkerId = -1;
+    private static int opticalTrackedEntityId = -1;
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
 	private static long mountTime;
@@ -64,11 +65,12 @@ public class DSCClientInputs {
 	}
 	
 	public static void toggleGimbalMode() {
-		GIMBAL_MODE = !GIMBAL_MODE;
+		setGimbalMode(!GIMBAL_MODE);
 	}
 
 	public static void setGimbalMode(boolean mode) {
 		GIMBAL_MODE = mode;
+        if (GIMBAL_MODE) setTargetMode(TargetMode.OPTICAL);
 	}
 	/**
 	 * set mouseCenterX and mouseCenterY to the mouse's current position.
@@ -329,4 +331,12 @@ public class DSCClientInputs {
 		}
 		return marker;
 	}
+
+    public static int getOpticalTrackedEntityId() {
+        return opticalTrackedEntityId;
+    }
+
+    public static void setOpticalTrackedEntityId(int id) {
+        opticalTrackedEntityId = id;
+    }
 }

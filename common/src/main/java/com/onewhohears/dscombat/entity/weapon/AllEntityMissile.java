@@ -7,6 +7,7 @@ import com.onewhohears.dscombat.data.weapon.stats.AllMissileStats;
 import com.onewhohears.dscombat.data.weapon.stats.RadarTargetType;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -24,7 +25,7 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
 	@Override
 	public void tickGuide() {
         if (targetMode == TargetMode.MARKER) {
-            if (selectedMarkerId != -1 && tickCount % 5 == 0) {
+            if (!isClientSide() && selectedMarkerId != -1 && tickCount % 5 == 0) {
                 PositionMarker marker = PositionMarkerManager.getServer().getMarker(selectedMarkerId);
                 if (marker != null) targetPos = marker.getPosition();
             }
@@ -36,7 +37,24 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
                 plane.trackedByMissile(this);
             }
         } else if (targetMode == TargetMode.OPTICAL) {
-            guideToPosition(); // TODO setup optical guidance system
+            guideToTarget();
+            if (target != null && tickCount % 15 == 0) {
+                Entity owner = getOwner();
+                if (owner == null) {
+                    resetTarget();
+                    return;
+                }
+                if (!(owner.getRootVehicle() instanceof EntityVehicle vehicle)) {
+                    resetTarget();
+                    return;
+                }
+                if (vehicle.getGimbalForPilotCamera() == null) {
+                    DistantVisibleManager.cancelFirstEntityQuery(vehicle.getId(), target.getId(), MISSILE_SCAN_HANDLER.typeId());
+                    resetTarget();
+                    return;
+                }
+                DistantVisibleManager.queryVisible(getServer(), vehicle, target, MISSILE_SCAN_HANDLER);
+            }
         } else if (targetMode.isPosition()) {
             guideToPosition();
         } else {
@@ -69,6 +87,13 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
     @Override
     public boolean isDieInWater() {
         return getStats().getRadarTargetType() != RadarTargetType.WATER;
+    }
+
+    @Override
+    public boolean isCheckTargetEntityVisible() {
+        if (targetMode == TargetMode.OPTICAL) return false;
+        if (targetMode == TargetMode.RADAR) return getWeaponStats().isRadarActive();
+        return true;
     }
 
 }

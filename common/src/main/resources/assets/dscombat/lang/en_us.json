@@ -189,6 +189,7 @@
     "error.dscombat.not_pos_missile": "Selected Weapon isn't Position Guided",
     "error.dscombat.not_optical_missile": "Selected Weapon isn't Optical Guided",
     "error.dscombat.not_radar_missile": "Selected Weapon isn't Radar Guided",
+    "error.dscombat.optical_requires_gimbal": "Optical Mode Requires Gimbal Camera",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",

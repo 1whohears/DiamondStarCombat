@@ -45,6 +45,7 @@ public class OpticalTargetOverlay extends VehicleOverlayComponent {
 
         @Nullable EntityRidablePart seat = null;
         if (getPlayerVehicle() instanceof EntityRidablePart s) seat = s;
+        if (seat == null) return;
         @Nullable EntityVehicle vehicle = null;
         if (seat != null) vehicle = seat.getParentVehicle();
 

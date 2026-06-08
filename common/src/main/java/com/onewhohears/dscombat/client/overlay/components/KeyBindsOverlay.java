@@ -144,6 +144,9 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		//		DSCKeys.chaffKey, vehicle.getChaffNum()+"");
 		// CYCLE WEAPON
 		if (isPilot || isCoPilot) displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.WEAPON_CYCLE);
+        // TARGET MODE
+        displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.TARGET_MODE,
+                false, DSCClientInputs.getTargetMode().name());
 		// RADAR MODE
 		if (vehicle.radarSystem.hasRadar()) {
 			boolean warning = DSCClientInputs.getRadarFilterMode() != vehicle.getRadarMode();

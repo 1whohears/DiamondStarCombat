@@ -86,6 +86,7 @@ public class ClientInputManager {
     public static final ActionInputHolder.Button PING_CYCLE = registerButton("ping_cycle", "ping_cycle_key");
     public static final ActionInputHolder.Button AFTERBURNER = registerButton("afterburner", "afterburner_toggle_key");
     public static final ActionInputHolder.Button QUICK_MARKER = registerButton("quick_marker", "quick_marker_key");
+    public static final ActionInputHolder.Button TARGET_MODE = registerButton("target_mode", "target_mode_key");
 
     private static int leftTicks = 0;
     private static long radarModeUpdateTime = 0;
@@ -260,6 +261,10 @@ public class ClientInputManager {
         if (WEAPON_CYCLE_INVERSE.isInitPressed()) selectNextWeapon = -1;
         else if (WEAPON_CYCLE.isInitPressed()) selectNextWeapon = 1;
         vehicle.weaponSystem.selectNextWeapon(selectNextWeapon);
+        // CYCLE TARGET MODE
+        if (TARGET_MODE.isInitPressed()) {
+            DSCClientInputs.cycleTargetMode();
+        }
         // SELECT RADAR PING
         RadarSystem radar = vehicle.radarSystem;
         if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {

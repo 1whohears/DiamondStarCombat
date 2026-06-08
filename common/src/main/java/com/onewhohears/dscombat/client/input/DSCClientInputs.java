@@ -260,6 +260,10 @@ public class DSCClientInputs {
 		Config.CLIENT.targetMode.set(targetMode);
 	}
 
+    public static void cycleTargetMode() {
+        setTargetMode(getTargetMode().cycle());
+    }
+
 	public static void setLeanAmount(double leanAmount) {
 		LEAN_AMOUNT = leanAmount;
 	}

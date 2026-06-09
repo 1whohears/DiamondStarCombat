@@ -43,6 +43,21 @@
       "slot_ui_y": 100
     },
     {
+      "slot_name": "left_tech_mount",
+      "slot_ui_x": 100,
+      "slot_ui_y": 21
+    },
+    {
+      "slot_name": "right_tech_mount",
+      "slot_ui_x": 140,
+      "slot_ui_y": 21
+    },
+    {
+      "slot_name": "frame_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 57
+    },
+    {
       "slot_name": "left_wing_1",
       "slot_ui_x": 93,
       "slot_ui_y": 57

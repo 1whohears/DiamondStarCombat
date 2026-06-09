@@ -450,6 +450,30 @@
       "zRot": 180.0
     },
     {
+      "name": "frame_1",
+      "slot_posx": 0.0,
+      "slot_posy": -0.7,
+      "slot_posz": -0.1,
+      "slot_type": "pylon_med",
+      "zRot": 180.0
+    },
+    {
+      "name": "left_tech_mount",
+      "slot_posx": 0.685,
+      "slot_posy": -0.685,
+      "slot_posz": 4.0,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
+    },
+    {
+      "name": "right_tech_mount",
+      "slot_posx": -0.685,
+      "slot_posy": -0.685,
+      "slot_posz": 4.0,
+      "slot_type": "pylon_light",
+      "zRot": 180.0
+    },
+    {
       "linkedHitbox": "engine",
       "name": "internal_1",
       "slot_posx": 0.0,

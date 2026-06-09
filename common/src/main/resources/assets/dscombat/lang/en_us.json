@@ -301,6 +301,8 @@
 	"slotname.dscombat.nose_gun": "Nose Gun",
 	"slotname.dscombat.internal_gun": "Internal Gun",
 	"slotname.dscombat.hitch_1": "Hitch 1",
+	"slotname.dscombat.left_tech_mount": "Left Tech Mount",
+	"slotname.dscombat.right_tech_mount": "Right Tech Mount",
 
 	"entity.dscombat.plane": "Plane",
 	"entity.dscombat.helicopter": "Helicopter",

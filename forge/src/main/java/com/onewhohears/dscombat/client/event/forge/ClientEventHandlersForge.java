@@ -82,4 +82,9 @@ public class ClientEventHandlersForge {
             event.setRoll(CAMERA_ANGLES.getRoll());
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void fovChange(ViewportEvent.ComputeFov event) {
+        ClientCameraEventHandlers.computeFOV(event::setFOV);
+    }
+
 }

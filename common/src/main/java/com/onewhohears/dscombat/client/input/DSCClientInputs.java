@@ -38,6 +38,8 @@ public class DSCClientInputs {
 
     public static float xRotPreTrack, yRotPreTrack;
 
+    private static float ZOOM = 2;
+
     public static boolean isCameraTrackTarget() {
         return CAMERA_TRACK_TARGET;
     }
@@ -342,5 +344,14 @@ public class DSCClientInputs {
 
     public static void setOpticalTrackedEntityId(int id) {
         opticalTrackedEntityId = id;
+    }
+
+    public static float getZoom() {
+        return ZOOM;
+    }
+
+    public static void cycleZoom() {
+        ZOOM *= 2;
+        if (ZOOM > 64) ZOOM = 2;
     }
 }

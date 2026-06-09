@@ -1,5 +1,7 @@
 package com.onewhohears.dscombat.mixin;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.event.ClientCameraEventHandlers;
 import com.onewhohears.onewholibs.util.math.Vec3f;
@@ -35,5 +37,11 @@ public abstract class GameRendererMixin {
             mainCamera.yRot = CAMERA_ANGLES.getYaw();
         if (CAMERA_ANGLES.isRollChanged())
             poseStack.mulPose(Vec3f.ZP.rotationDegrees(CAMERA_ANGLES.getRoll()).convert());
+    }
+    @ModifyReturnValue(method = "getFov", at = @At(value = "RETURN", ordinal = 1))
+    private double dscombat_fabric_modifyFOVForZoom(double original) {
+        AtomicDouble fov = new AtomicDouble(original);
+        ClientCameraEventHandlers.computeFOV(fov::set);
+        return fov.get();
     }
 }

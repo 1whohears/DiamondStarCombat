@@ -72,6 +72,7 @@ public class ClientInputManager {
     public static final ActionInputHolder.Button CHANGE_SEAT = registerButton("change_seat", "change_seat_key");
     public static final ActionInputHolder.Button LANDING_GEAR = registerButton("landing_gear", "landing_gear_key");
     public static final ActionInputHolder.Button GIMBAL = registerButton("gimbal", "gimbal_key");
+    public static final ActionInputHolder.Button ZOOM = registerButton("zoom", "zoom_key");
     public static final ActionInputHolder.Button SPECIAL1 = registerButton("special1", "special_key");
     public static final ActionInputHolder.Button SPECIAL2 = registerButton("special2", "special_2_key");
     public static final ActionInputHolder.Button EJECT = registerButton("eject", "eject_key");
@@ -362,6 +363,9 @@ public class ClientInputManager {
         // USE GIMBAL
         if (GIMBAL.isInitPressed()) {
             DSCClientInputs.toggleGimbalMode();
+        }
+        if (ZOOM.isInitPressed()) {
+            DSCClientInputs.cycleZoom();
         }
         // OPEN VEHICLE MENU
         /* the instanceof check was added because for some reason VEHICLE_MENU#isInitPressed was still true

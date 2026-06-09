@@ -19,9 +19,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
+
+import java.util.function.Consumer;
 
 public class ClientCameraEventHandlers {
 
@@ -204,5 +207,18 @@ public class ClientCameraEventHandlers {
             m.mouseHandler.onMove(window, xn, yn);
         });
     };
+
+    public static void computeFOV(@NotNull Consumer<Float> fovChanger) {
+        if (!DSCClientInputs.isGimbalMode()) return;
+        Minecraft m = Minecraft.getInstance();
+        final var player = m.player;
+        if (player == null) return;
+        if (!player.isPassenger()) return;
+        if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+        if (vehicle.getGimbalForPilotCamera() == null) return;
+        float zoom = DSCClientInputs.getZoom();
+        float newZoom = 60 / zoom;
+        fovChanger.accept(newZoom);
+    }
 
 }

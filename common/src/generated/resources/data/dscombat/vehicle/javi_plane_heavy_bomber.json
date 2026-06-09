@@ -32,7 +32,9 @@
     },
     {
       "data": {
-        "part": "gimbal_camera"
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_4"
     },
@@ -102,6 +104,12 @@
         "part": "basic_flare_dispenser"
       },
       "name": "internal_4"
+    },
+    {
+      "data": {
+        "part": "gimbal_camera"
+      },
+      "name": "right_tech_mount"
     }
   ],
   "textures": {

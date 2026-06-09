@@ -62,7 +62,9 @@
     },
     {
       "data": {
-        "part": "gimbal_camera"
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
       },
       "name": "left_wing_3"
     },
@@ -89,6 +91,12 @@
         "part": "light_missile_rack"
       },
       "name": "right_wing_3"
+    },
+    {
+      "data": {
+        "part": "gimbal_camera"
+      },
+      "name": "right_tech_mount"
     },
     {
       "data": {

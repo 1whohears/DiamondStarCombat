@@ -28,7 +28,6 @@ public class VillageDefenseVehiclePresetGen {
                 .createFromCopy("dscombat", "javi_plane_close_air", UNARMED_JAVI_PLANE)
                 .setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
                 .setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
-                .setSlotItem("left_wing_3", ModItems.GIMBAL_CAMERA.getId())
                 .setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
                 .setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9p5", true)
                 .setSlotItem("internal_gun", "gau_avenger", "30mmhe", true)
@@ -36,6 +35,7 @@ public class VillageDefenseVehiclePresetGen {
                 .setSlotItem("internal_5", ModItems.AR500.getId())
                 .setSlotItem("internal_6", ModItems.GPR20.getId())
                 .setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
+                .setSlotItem("right_tech_mount", ModItems.GIMBAL_CAMERA.getId())
                 .build());
         // javi heavy bomber
         VehiclePresetGenerator.INSTANCE.addPresetToGenerate(VehicleStats.Builder
@@ -43,7 +43,7 @@ public class VillageDefenseVehiclePresetGen {
                 .setSlotItem("left_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
                 .setSlotItem("left_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm84e", true)
                 .setSlotItem("left_wing_3", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
-                .setSlotItem("left_wing_4", ModItems.GIMBAL_CAMERA.getId())
+                .setSlotItem("left_wing_4", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
                 .setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm88g", true)
                 .setSlotItem("right_wing_2", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
                 .setSlotItem("right_wing_3", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
@@ -53,6 +53,7 @@ public class VillageDefenseVehiclePresetGen {
                 .setSlotItem("internal_5", ModItems.AR500.getId())
                 .setSlotItem("internal_6", ModItems.GPR20.getId())
                 .setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)
+                .setSlotItem("right_tech_mount", ModItems.GIMBAL_CAMERA.getId())
                 .setDefaultBaseTexture(1)
                 .build());
         // alexis escort

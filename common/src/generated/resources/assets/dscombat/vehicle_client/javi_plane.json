@@ -13,8 +13,13 @@
       "slot_ui_y": 9
     },
     {
-      "slot_name": "seat2",
-      "slot_ui_x": 124,
+      "slot_name": "left_tech_mount",
+      "slot_ui_x": 114,
+      "slot_ui_y": 27
+    },
+    {
+      "slot_name": "right_tech_mount",
+      "slot_ui_x": 134,
       "slot_ui_y": 27
     },
     {

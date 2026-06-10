@@ -193,16 +193,27 @@ public class ClientCameraEventHandlers {
         m.execute(() -> {
             double xn = x, yn = y;
             if (window != m.getWindow().getWindow()) return;
-            if (DSCClientInputs.isCameraFree()
-                    && m.player != null && m.screen == null
-                    && m.player.getRootVehicle() instanceof EntityVehicle craft) {
-                double r = Math.toRadians(craft.zRot);
+            if (m.player != null && m.screen == null && m.player.getRootVehicle() instanceof EntityVehicle craft) {
+                boolean customMouse = false;
                 double dx = x - m.mouseHandler.xpos();
                 double dy = y - m.mouseHandler.ypos();
-                double cosR = Math.cos(r), sinR = Math.sin(r);
-                xn = dx*cosR - dy*sinR + m.mouseHandler.xpos();
-                yn = dy*cosR + dx*sinR + m.mouseHandler.ypos();
-                GLFW.glfwSetCursorPos(window, xn, yn);
+                if (DSCClientInputs.isGimbalMode() && craft.getGimbalForPilotCamera() != null) {
+                    dx /= DSCClientInputs.getZoom();
+                    dy /= DSCClientInputs.getZoom();
+                    xn = dx + m.mouseHandler.xpos();
+                    yn = dy + m.mouseHandler.ypos();
+                    customMouse = true;
+                }
+                if (DSCClientInputs.isCameraFree()) {
+                    double r = Math.toRadians(craft.zRot);
+                    double cosR = Math.cos(r), sinR = Math.sin(r);
+                    xn = dx*cosR - dy*sinR + m.mouseHandler.xpos();
+                    yn = dy*cosR + dx*sinR + m.mouseHandler.ypos();
+                    customMouse = true;
+                }
+                if (customMouse) {
+                    GLFW.glfwSetCursorPos(window, xn, yn);
+                }
             }
             m.mouseHandler.onMove(window, xn, yn);
         });
@@ -211,6 +222,7 @@ public class ClientCameraEventHandlers {
     public static void computeFOV(@NotNull Consumer<Float> fovChanger) {
         if (!DSCClientInputs.isGimbalMode()) return;
         Minecraft m = Minecraft.getInstance();
+        if (!m.options.getCameraType().isFirstPerson()) return;
         final var player = m.player;
         if (player == null) return;
         if (!player.isPassenger()) return;

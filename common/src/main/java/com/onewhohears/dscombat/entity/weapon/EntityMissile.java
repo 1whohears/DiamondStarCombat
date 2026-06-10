@@ -15,6 +15,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.dscombat.util.math.UtilRandom;
 import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
 import com.onewhohears.onewholibs.common.core.HeightMapManager;
 import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
@@ -33,6 +34,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -195,13 +197,28 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
         }
 		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
-		if (UtilVehicleEntity.isOnGroundOrWater(target))
+		boolean targetOnGroundWater = UtilVehicleEntity.isOnGroundOrWater(target);
+		if (targetOnGroundWater) {
 			tVel = tVel.multiply(1, 0, 1);
-        targetPos = UtilGeometry.interceptPos(
-            position(), getDeltaMovement(),
-            target.getBoundingBox().getCenter(), tVel);
+		}
+		Vec3 tPos = target.getBoundingBox().getCenter();
+		if (!targetOnGroundWater && !isAccurateTrackAirTargets()) {
+			// FIXME make a better way to make optical not work as well against air targets
+			RandomSource random = UtilEntity.getLevel(this).getRandom();
+			float radius = (float) tVel.length() * 100;
+			float randX = Mth.randomBetween(random, -radius, radius);
+			float randY = Mth.randomBetween(random, -radius, radius);
+			float randZ = Mth.randomBetween(random, -radius, radius);
+			tPos = tPos.add(randX, randY, randZ);
+			tVel = tVel.add(randX*0.1, randY*0.1, randZ*0.1);
+		}
+        targetPos = UtilGeometry.interceptPos(position(), getDeltaMovement(), tPos, tVel);
 		//System.out.println("guide to position");
 		guideToPosition();
+	}
+
+	public boolean isAccurateTrackAirTargets() {
+		return true;
 	}
 
     public boolean isCheckTargetEntityVisible() {

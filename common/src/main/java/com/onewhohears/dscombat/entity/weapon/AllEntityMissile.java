@@ -96,4 +96,9 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
         return true;
     }
 
+    @Override
+    public boolean isAccurateTrackAirTargets() {
+        return targetMode == TargetMode.RADAR;
+    }
+
 }

@@ -469,16 +469,16 @@
     },
     {
       "name": "left_tech_mount",
-      "slot_posx": 0.67,
-      "slot_posy": -0.27,
+      "slot_posx": 0.6,
+      "slot_posy": -0.35,
       "slot_posz": 6.0,
       "slot_type": "pylon_light",
       "zRot": 180.0
     },
     {
       "name": "right_tech_mount",
-      "slot_posx": -0.67,
-      "slot_posy": -0.27,
+      "slot_posx": -0.6,
+      "slot_posy": -0.35,
       "slot_posz": 6.0,
       "slot_type": "pylon_light",
       "zRot": 180.0

@@ -239,7 +239,8 @@ public class ClientInputManager {
         }
     }
 
-    private static void passengerTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle, @NotNull EntityRidablePart seat) {
+    private static void passengerTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle,
+                                      @NotNull EntityRidablePart seat) {
         boolean isRadarController = player.equals(vehicle.getControllingPlayerOrBot());
         if (DSCClientInputs.disable3rdPersonVehicle) mc.options.setCameraType(CameraType.FIRST_PERSON);
         /*
@@ -303,7 +304,8 @@ public class ClientInputManager {
                     }
                 }
                 if (nearest == null) {
-                    DSCClientInputs.setOpticalTrackedEntityId(DependencySafety.getClientDistantLookingAtEntityId(gimbal));
+                    int id = DependencySafety.getClientDistantLookingAtEntityId(gimbal);
+                    DSCClientInputs.setOpticalTrackedEntityId(id);
                 } else {
                     DSCClientInputs.setOpticalTrackedEntityId(nearest.getId());
                 }

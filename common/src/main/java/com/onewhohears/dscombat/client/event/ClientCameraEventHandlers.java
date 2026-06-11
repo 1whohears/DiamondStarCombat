@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.data.radar.RadarTarget;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.parts.EntityGimbal;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
@@ -32,6 +33,7 @@ public class ClientCameraEventHandlers {
     @Nullable
     static private QuaternionF prevQ;
     private static boolean wasTrackingTarget = false;
+    private static boolean wasGimbal = false;
 
     public static final CameraAngles CAMERA_ANGLES = new CameraAngles();
 
@@ -59,21 +61,40 @@ public class ClientCameraEventHandlers {
             m.setCameraEntity(player);
             prevGimbal = null;
         }
+        boolean isGimbal = false;
         if (DSCClientInputs.isGimbalMode() && (isPilot || isCopilot || camYOffset == 0)
                 && vehicle.getGimbalForPilotCamera() != null) {
+            if (!wasGimbal && DSCClientInputs.xRotLastGimbal != 0 && DSCClientInputs.yRotLastGimbal != 0) {
+                player.setXRot(DSCClientInputs.xRotLastGimbal);
+                player.setYRot(DSCClientInputs.yRotLastGimbal);
+            }
             EntityGimbal gimbal = vehicle.getGimbalForPilotCamera();
             if (!isCameraEntityEqual(m, gimbal)) m.setCameraEntity(gimbal);
             gimbal.setXRot(player.getViewXRot(pt));
             gimbal.setYRot(player.getViewYRot(pt));
             prevGimbal = gimbal;
             camYOffset = -0.2f;
+            isGimbal = true;
+        } else if (wasGimbal) {
+            wasTrackingTarget = true;
         }
         if (isPilot) {
             boolean resetMousePressed = ClientInputManager.RESET_MOUSE.isPressed();
-            RadarTarget target = vehicle.radarSystem.getClientSelectedPing();
+            Vec3 targetPos = null;
+            if (DSCClientInputs.getTargetMode() == TargetMode.RADAR) {
+                RadarTarget target = vehicle.radarSystem.getClientSelectedPing();
+                if (target != null) targetPos = target.getPosForClient();
+            } else if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL && isGimbal) {
+                // FIXME can continue to track even if no longer visible
+                if (wasGimbal && DSCClientInputs.getOpticalTrackedEntityId() == -1) {
+                    targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
+                } else {
+                    targetPos = DSCClientInputs.getOpticalTrackedEntityPos();
+                }
+            }
             Entity camEntity = m.getCameraEntity();
-            if (DSCClientInputs.isCameraTrackTarget() && target != null && !resetMousePressed && camEntity != null) {
-                Vec3 diff = target.pos.subtract(camEntity.getEyePosition(pt));
+            if (DSCClientInputs.isCameraTrackTarget() && !resetMousePressed && camEntity != null && targetPos != null) {
+                Vec3 diff = targetPos.subtract(camEntity.getEyePosition(pt));
                 float x = UtilAngles.getPitch(diff);
                 float y = UtilAngles.getYaw(diff);
                 setAngles(angles, player, x, y, mirrored);
@@ -96,8 +117,10 @@ public class ClientCameraEventHandlers {
                     float x = globalAngles[0];
                     float y = globalAngles[1];
                     setAngles(angles, player, x, y, mirrored);
-                    DSCClientInputs.xRotPreTrack = relativeAngles[0];
-                    DSCClientInputs.yRotPreTrack = relativeAngles[1];
+                    if (!isGimbal) {
+                        DSCClientInputs.xRotPreTrack = relativeAngles[0];
+                        DSCClientInputs.yRotPreTrack = relativeAngles[1];
+                    }
                 }
                 prevQ = qPT;
                 wasTrackingTarget = false;
@@ -114,11 +137,18 @@ public class ClientCameraEventHandlers {
                     y = player.getYRot();
                 }
                 setAngles(angles, player, x, y, mirrored);
-                DSCClientInputs.xRotPreTrack = player.getXRot();
-                DSCClientInputs.yRotPreTrack = player.getYRot();
+                if (!isGimbal) {
+                    DSCClientInputs.xRotPreTrack = player.getXRot();
+                    DSCClientInputs.yRotPreTrack = player.getYRot();
+                }
                 wasTrackingTarget = false;
             }
         }
+        if (isGimbal) {
+            DSCClientInputs.xRotLastGimbal = angles.getPitch();
+            DSCClientInputs.yRotLastGimbal = angles.getYaw();
+        }
+        wasGimbal = isGimbal;
         float zi = UtilAngles.lerpAngle(pt, vehicle.zRotO, vehicle.zRot);
         if (detached && mirrored) zi *= -1;
         angles.setRoll(zi);

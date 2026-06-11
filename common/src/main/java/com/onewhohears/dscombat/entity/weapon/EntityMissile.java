@@ -15,7 +15,6 @@ import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.dscombat.util.math.UtilRandom;
 import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
 import com.onewhohears.onewholibs.common.core.HeightMapManager;
 import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;

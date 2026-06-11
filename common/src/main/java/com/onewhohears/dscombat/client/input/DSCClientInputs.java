@@ -1,12 +1,15 @@
 package com.onewhohears.dscombat.client.input;
 
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
 import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.data.radar.RadarFilterMode;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class DSCClientInputs {
@@ -22,7 +25,11 @@ public class DSCClientInputs {
 
 	private static int markerHoverId = -1;
 	private static int selectedMarkerId = -1;
-    private static int opticalTrackedEntityId = -1;
+
+	private static int opticalTrackedEntityId = -1;
+	private static int opticalTrackedEntityIdOld = -1;
+	private static Vec3 opticalTrackedEntityPos = null;
+	private static long prevOpticalPosUpdateTime;
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
 	private static long mountTime;
@@ -37,6 +44,7 @@ public class DSCClientInputs {
     private static boolean CAMERA_TRACK_TARGET = false;
 
     public static float xRotPreTrack, yRotPreTrack;
+    public static float xRotLastGimbal, yRotLastGimbal;
 
     private static float ZOOM = 2;
 
@@ -342,9 +350,37 @@ public class DSCClientInputs {
         return opticalTrackedEntityId;
     }
 
+	public static @Nullable Vec3 getOpticalTrackedEntityPos() {
+		if (opticalTrackedEntityId == -1) return null;
+		if (System.currentTimeMillis() - prevOpticalPosUpdateTime > 50) {
+			opticalTrackedEntityPos = getClientEntityPosition(opticalTrackedEntityId);
+			prevOpticalPosUpdateTime = System.currentTimeMillis();
+		}
+		return opticalTrackedEntityPos;
+	}
+
+	public static @Nullable Vec3 getClientEntityPosition(int id) {
+		Minecraft m = Minecraft.getInstance();
+		if (m.level == null) return null;
+		Entity targetEntity = m.level.getEntity(id);
+		if (targetEntity != null) {
+			// FIXME not smooth on client need to interpolate
+			Vec3 center = targetEntity.getBoundingBox().getCenter();
+			return new Vec3(center.x, targetEntity.getBoundingBox().minY, center.z);
+		}
+		else return DependencySafety.getClientDistantEntityPos(id);
+	}
+
     public static void setOpticalTrackedEntityId(int id) {
+		if (id != opticalTrackedEntityId && opticalTrackedEntityId != -1) {
+			opticalTrackedEntityIdOld = opticalTrackedEntityId;
+		}
         opticalTrackedEntityId = id;
     }
+
+	public static int getOpticalTrackedEntityIdOld() {
+		return opticalTrackedEntityIdOld;
+	}
 
     public static float getZoom() {
         return ZOOM;

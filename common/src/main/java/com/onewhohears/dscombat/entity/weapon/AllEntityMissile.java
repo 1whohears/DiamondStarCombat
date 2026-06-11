@@ -4,7 +4,7 @@ import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.AllMissileStats;
-import com.onewhohears.dscombat.data.weapon.stats.RadarTargetType;
+import com.onewhohears.dscombat.data.weapon.stats.TargetDomainType;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
@@ -86,7 +86,7 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
 
     @Override
     public boolean isDieInWater() {
-        return getStats().getRadarTargetType() != RadarTargetType.WATER;
+        return getStats().getTargetType() != TargetDomainType.WATER;
     }
 
     @Override
@@ -94,11 +94,6 @@ public class AllEntityMissile<T extends AllMissileStats> extends EntityMissile<T
         if (targetMode == TargetMode.OPTICAL) return false;
         if (targetMode == TargetMode.RADAR) return getWeaponStats().isRadarActive();
         return true;
-    }
-
-    @Override
-    public boolean isAccurateTrackAirTargets() {
-        return targetMode == TargetMode.RADAR;
     }
 
 }

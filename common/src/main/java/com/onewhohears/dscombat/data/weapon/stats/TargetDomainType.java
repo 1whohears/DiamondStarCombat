@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.weapon.stats;
 
-public enum RadarTargetType {
+public enum TargetDomainType {
     AIR,
     GROUND,
     WATER

@@ -4,7 +4,7 @@ import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.radar.RadarTarget;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.AllMissileStats;
-import com.onewhohears.dscombat.data.weapon.stats.RadarTargetType;
+import com.onewhohears.dscombat.data.weapon.stats.TargetDomainType;
 import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.weapon.AllEntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
@@ -24,10 +24,10 @@ public class AllMissileInstance<T extends AllMissileStats> extends MissileInstan
 		if (!super.couldRadarWeaponTargetEntity(entity, radar)) return false;
 		if (!getStats().isCanRadarGuide()) return false;
 		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(entity);
-		RadarTargetType targetType = getStats().getRadarTargetType();
-		if (targetType == RadarTargetType.AIR && groundWater) return false;
-		else if (targetType == RadarTargetType.GROUND && !groundWater) return false;
-		else if (targetType == RadarTargetType.WATER && !entity.isInWater()) return false;
+		TargetDomainType targetType = getStats().getTargetType();
+		if (targetType == TargetDomainType.AIR && groundWater) return false;
+		else if (targetType == TargetDomainType.GROUND && !groundWater) return false;
+		else if (targetType == TargetDomainType.WATER && !entity.isInWater()) return false;
 		return true;
 	}
 
@@ -76,6 +76,18 @@ public class AllMissileInstance<T extends AllMissileStats> extends MissileInstan
             setLaunchFail("error.dscombat.no_target_selected");
             return null;
         }
+		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(target);
+		TargetDomainType targetType = getStats().getTargetType();
+		if (targetType == TargetDomainType.AIR && groundWater) {
+			setLaunchFail("error.dscombat.air_target_only");
+			return null;
+		} else if (targetType == TargetDomainType.GROUND && !groundWater) {
+			setLaunchFail("error.dscombat.ground_target_only");
+			return null;
+		} else if (targetType == TargetDomainType.WATER && !target.isInWater()) {
+			setLaunchFail("error.dscombat.water_target_only");
+			return null;
+		}
         missile.targetPos = target.position();
         missile.target = target;
 		return missile;
@@ -104,14 +116,14 @@ public class AllMissileInstance<T extends AllMissileStats> extends MissileInstan
 			return null;
 		}
 		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(target);
-		RadarTargetType targetType = getStats().getRadarTargetType();
-		if (targetType == RadarTargetType.AIR && groundWater) {
+		TargetDomainType targetType = getStats().getTargetType();
+		if (targetType == TargetDomainType.AIR && groundWater) {
 			setLaunchFail("error.dscombat.air_target_only");
 			return null;
-		} else if (targetType == RadarTargetType.GROUND && !groundWater) {
+		} else if (targetType == TargetDomainType.GROUND && !groundWater) {
 			setLaunchFail("error.dscombat.ground_target_only");
 			return null;
-		} else if (targetType == RadarTargetType.WATER && !target.isInWater()) {
+		} else if (targetType == TargetDomainType.WATER && !target.isInWater()) {
 			setLaunchFail("error.dscombat.water_target_only");
 			return null;
 		}

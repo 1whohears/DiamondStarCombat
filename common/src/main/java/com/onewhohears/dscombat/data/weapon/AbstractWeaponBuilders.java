@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import com.onewhohears.dscombat.data.weapon.stats.RadarTargetType;
+import com.onewhohears.dscombat.data.weapon.stats.TargetDomainType;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
@@ -176,7 +176,7 @@ public class AbstractWeaponBuilders {
 		/**
 		 * Track Missile only
 		 */
-		public C setTargetType(RadarTargetType targetType) {
+		public C setTargetType(TargetDomainType targetType) {
 			return setEnum("targetType", targetType);
 		}
 		
@@ -225,8 +225,8 @@ public class AbstractWeaponBuilders {
 		/**
 		 * All Missile Only
 		 */
-		public C setRadarTargetType(RadarTargetType radarTargetType) {
-			return setEnum("radarTargetType", radarTargetType);
+		public C setTargetDomainType(TargetDomainType targetType) {
+			return setEnum("targetType", targetType);
 		}
 
 		/**

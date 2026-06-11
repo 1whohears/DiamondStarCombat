@@ -18,12 +18,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TrackMissileStats extends MissileStats {
 
-	private final RadarTargetType targetType;
+	private final TargetDomainType targetType;
 	private final boolean active;
 
 	public TrackMissileStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		targetType = UtilParse.getEnumSafe(json, "targetType", RadarTargetType.class);
+		targetType = UtilParse.getEnumSafe(json, "targetType", TargetDomainType.class);
 		active = UtilParse.getBooleanSafe(json, "activeTrack", true);
 	}
 	
@@ -37,7 +37,7 @@ public class TrackMissileStats extends MissileStats {
 		return new TrackMissileInstance<>(this);
 	}
 	
-	public RadarTargetType getTargetType() {
+	public TargetDomainType getTargetType() {
 		return targetType;
 	}
 	

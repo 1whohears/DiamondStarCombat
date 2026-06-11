@@ -24,7 +24,7 @@ public class AllMissileStats extends MissileStats {
 	// TODO IR guided All Missile Option
 	// TODO TV guided All Missile Option
 
-	private final RadarTargetType radarTargetType;
+	private final TargetDomainType targetType;
 	private final boolean radarActive;
 
 	public AllMissileStats(ResourceLocation key, JsonObject json) {
@@ -32,7 +32,7 @@ public class AllMissileStats extends MissileStats {
 		canPositionGuide = UtilParse.getBooleanSafe(json, "canPositionGuide", false);
 		canRadarGuide = UtilParse.getBooleanSafe(json, "canRadarGuide", false);
 		canOpticalGuide = UtilParse.getBooleanSafe(json, "canOpticalGuide", false);
-		radarTargetType = UtilParse.getEnumSafe(json, "radarTargetType", RadarTargetType.class);
+		targetType = UtilParse.getEnumSafe(json, "targetType", TargetDomainType.class);
 		radarActive = UtilParse.getBooleanSafe(json, "radarActive", true);
 	}
 
@@ -47,7 +47,7 @@ public class AllMissileStats extends MissileStats {
 		}
 		if (isCanRadarGuide()) {
 			tips.add(UtilMCText.translatable("info.dscombat.radar_guided").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
-			switch (getRadarTargetType()) {
+			switch (getTargetType()) {
 				case AIR:
 					tips.add(UtilMCText.translatable("info.dscombat.targets_flying").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 					break;
@@ -70,7 +70,7 @@ public class AllMissileStats extends MissileStats {
 	@Override
 	public String getWeaponTypeCode() {
 		if (isCanRadarGuide()) {
-			switch (getRadarTargetType()) {
+			switch (getTargetType()) {
 				case AIR:
 					if (radarActive) return UtilMCText.transString("weapon_code.dscombat.fox3");
 					else return UtilMCText.transString("weapon_code.dscombat.fox1");
@@ -120,8 +120,8 @@ public class AllMissileStats extends MissileStats {
         return canOpticalGuide;
     }
 
-    public RadarTargetType getRadarTargetType() {
-        return radarTargetType;
+    public TargetDomainType getTargetType() {
+        return targetType;
     }
 
     public boolean isRadarActive() {

@@ -47,11 +47,11 @@
   "maxAge": 1100,
   "presetId": "agm84e",
   "presetType": "all_missile",
-  "radarTargetType": "GROUND",
   "seeThroBlock": 8,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 8,
   "speed": 48.0,
+  "targetType": "GROUND",
   "turnRadius": 360.0,
   "useSpeedScale": true
 }

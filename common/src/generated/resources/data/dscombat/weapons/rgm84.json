@@ -49,10 +49,10 @@
   "maxAge": 600,
   "presetId": "rgm84",
   "presetType": "all_missile",
-  "radarTargetType": "GROUND",
   "seeThroWater": 100,
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 6,
   "speed": 2.5,
+  "targetType": "GROUND",
   "turnRadius": 80.0
 }

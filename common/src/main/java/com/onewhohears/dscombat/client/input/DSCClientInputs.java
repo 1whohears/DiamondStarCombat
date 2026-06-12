@@ -29,6 +29,7 @@ public class DSCClientInputs {
 	private static int opticalTrackedEntityId = -1;
 	private static int opticalTrackedEntityIdOld = -1;
 	private static Vec3 opticalTrackedEntityPos = null;
+	private static Vec3 opticalTrackedEntityPosOld = null;
 	private static long prevOpticalPosUpdateTime;
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
@@ -350,13 +351,15 @@ public class DSCClientInputs {
         return opticalTrackedEntityId;
     }
 
-	public static @Nullable Vec3 getOpticalTrackedEntityPos() {
+	public static @Nullable Vec3 getOpticalTrackedEntityPos(float partialTick) {
 		if (opticalTrackedEntityId == -1) return null;
 		if (System.currentTimeMillis() - prevOpticalPosUpdateTime > 50) {
+			opticalTrackedEntityPosOld = opticalTrackedEntityPos;
 			opticalTrackedEntityPos = getClientEntityPosition(opticalTrackedEntityId);
 			prevOpticalPosUpdateTime = System.currentTimeMillis();
 		}
-		return opticalTrackedEntityPos;
+		if (opticalTrackedEntityPosOld == null) return opticalTrackedEntityPos;
+		return opticalTrackedEntityPosOld.lerp(opticalTrackedEntityPos, partialTick);
 	}
 
 	public static @Nullable Vec3 getClientEntityPosition(int id) {
@@ -364,7 +367,6 @@ public class DSCClientInputs {
 		if (m.level == null) return null;
 		Entity targetEntity = m.level.getEntity(id);
 		if (targetEntity != null) {
-			// FIXME not smooth on client need to interpolate
 			Vec3 center = targetEntity.getBoundingBox().getCenter();
 			return new Vec3(center.x, targetEntity.getBoundingBox().minY, center.z);
 		}

@@ -35,7 +35,7 @@ public class OpticalTargetOverlay extends VehicleOverlayComponent {
         Minecraft m = Minecraft.getInstance();
         if (m.level == null) return;
 
-        Vec3 targetPos = DSCClientInputs.getOpticalTrackedEntityPos();
+        Vec3 targetPos = DSCClientInputs.getOpticalTrackedEntityPos(partialTick);
         if (targetPos == null) return;
 
         @Nullable EntityRidablePart seat = null;

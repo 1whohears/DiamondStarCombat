@@ -95,7 +95,7 @@ public class ClientCameraEventHandlers {
                         targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
                     }
                 } else {
-                    targetPos = DSCClientInputs.getOpticalTrackedEntityPos();
+                    targetPos = DSCClientInputs.getOpticalTrackedEntityPos(pt);
                 }
             }
             Entity camEntity = m.getCameraEntity();

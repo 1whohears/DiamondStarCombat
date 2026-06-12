@@ -284,6 +284,8 @@ public class ClientInputManager {
         if (player.tickCount % 10 == 0) {
             if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL && mc.level != null
                     && vehicle.getGimbalForPilotCamera() != null) {
+                // FIXME once a gimbal target is found, and in camera track target mode,
+                //  should only do a visibility check and not do a whole entity raycast operation
                 EntityGimbal gimbal = vehicle.getGimbalForPilotCamera();
                 Vec3 lookPos = getLookPos(player, vehicle);
                 AABB aabb = new AABB(lookPos.subtract(4, 4, 4), lookPos.add(4, 4, 4));

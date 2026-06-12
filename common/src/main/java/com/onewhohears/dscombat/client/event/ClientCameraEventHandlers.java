@@ -87,12 +87,11 @@ public class ClientCameraEventHandlers {
                 RadarTarget target = vehicle.radarSystem.getClientSelectedPing();
                 if (target != null) targetPos = target.getPosForClient();
             } else if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL && isGimbal) {
-                // FIXME can continue to track even if no longer visible
                 if (DSCClientInputs.getOpticalTrackedEntityId() == -1) {
                     if (!wasGimbal) {
                         targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
                         initGimbalLockTime = System.currentTimeMillis();
-                    } else if (System.currentTimeMillis() - initGimbalLockTime >= 50) {
+                    } else if (System.currentTimeMillis() - initGimbalLockTime <= 50) {
                         targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
                     }
                 } else {

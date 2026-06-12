@@ -43,6 +43,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class ClientInputManager {
 
@@ -284,32 +285,45 @@ public class ClientInputManager {
         if (player.tickCount % 10 == 0) {
             if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL && mc.level != null
                     && vehicle.getGimbalForPilotCamera() != null) {
-                // FIXME once a gimbal target is found, and in camera track target mode,
-                //  should only do a visibility check and not do a whole entity raycast operation
                 EntityGimbal gimbal = vehicle.getGimbalForPilotCamera();
-                Vec3 lookPos = getLookPos(player, vehicle);
-                AABB aabb = new AABB(lookPos.subtract(4, 4, 4), lookPos.add(4, 4, 4));
-                List<Entity> list = mc.level.getEntities(player, aabb, entity -> {
+                Predicate<Entity> canGimbalSee = entity -> {
                     if (entity.isSpectator() || entity.isInvisible() || entity.isPassenger()) return false;
                     if (!UtilEntity.isPlayer(entity) && !entity.getType().is(ModTags.EntityTypes.VEHICLE)
                             && !(entity instanceof Mob)) return false;
                     return UtilEntity.getLevel(entity).clip(new ClipContext(gimbal.getEyePosition(), entity.getEyePosition(),
                             ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getType() == HitResult.Type.MISS;
-                });
-                Entity nearest = null;
-                double nearestDistSqr = Double.MAX_VALUE;
-                for (Entity entity : list) {
-                    double distSqr = player.distanceToSqr(entity);
-                    if (distSqr < nearestDistSqr) {
-                        nearest = entity;
-                        nearestDistSqr = distSqr;
+                };
+                int opticalTrackedId = DSCClientInputs.getOpticalTrackedEntityId();
+                if (opticalTrackedId == -1 || !DSCClientInputs.isCameraTrackTarget()) {
+                    Vec3 lookPos = getLookPos(player, vehicle);
+                    AABB aabb = new AABB(lookPos.subtract(4, 4, 4), lookPos.add(4, 4, 4));
+                    List<Entity> list = mc.level.getEntities(player, aabb, canGimbalSee);
+                    Entity nearest = null;
+                    double nearestDistSqr = Double.MAX_VALUE;
+                    for (Entity entity : list) {
+                        double distSqr = player.distanceToSqr(entity);
+                        if (distSqr < nearestDistSqr) {
+                            nearest = entity;
+                            nearestDistSqr = distSqr;
+                        }
                     }
-                }
-                if (nearest == null) {
-                    int id = DependencySafety.getClientDistantLookingAtEntityId(gimbal);
-                    DSCClientInputs.setOpticalTrackedEntityId(id);
+                    if (nearest == null) {
+                        int id = DependencySafety.getClientDistantLookingAtEntityId(gimbal);
+                        DSCClientInputs.setOpticalTrackedEntityId(id);
+                    } else {
+                        DSCClientInputs.setOpticalTrackedEntityId(nearest.getId());
+                    }
                 } else {
-                    DSCClientInputs.setOpticalTrackedEntityId(nearest.getId());
+                    Entity entity = mc.level.getEntity(opticalTrackedId);
+                    if (entity != null) {
+                        if (!canGimbalSee.test(entity)) {
+                            DSCClientInputs.setOpticalTrackedEntityId(-1);
+                        }
+                    } else {
+                        if (DependencySafety.getClientDistantEntityPos(opticalTrackedId) == null) {
+                            DSCClientInputs.setOpticalTrackedEntityId(-1);
+                        }
+                    }
                 }
             } else {
                 DSCClientInputs.setOpticalTrackedEntityId(-1);

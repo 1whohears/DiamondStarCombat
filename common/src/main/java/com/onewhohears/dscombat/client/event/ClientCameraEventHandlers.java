@@ -34,6 +34,7 @@ public class ClientCameraEventHandlers {
     static private QuaternionF prevQ;
     private static boolean wasTrackingTarget = false;
     private static boolean wasGimbal = false;
+    private static long initGimbalLockTime;
 
     public static final CameraAngles CAMERA_ANGLES = new CameraAngles();
 
@@ -75,7 +76,8 @@ public class ClientCameraEventHandlers {
             prevGimbal = gimbal;
             camYOffset = -0.2f;
             isGimbal = true;
-        } else if (wasGimbal) {
+        }
+        if (!isGimbal && wasGimbal) {
             wasTrackingTarget = true;
         }
         if (isPilot) {
@@ -86,8 +88,13 @@ public class ClientCameraEventHandlers {
                 if (target != null) targetPos = target.getPosForClient();
             } else if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL && isGimbal) {
                 // FIXME can continue to track even if no longer visible
-                if (wasGimbal && DSCClientInputs.getOpticalTrackedEntityId() == -1) {
-                    targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
+                if (DSCClientInputs.getOpticalTrackedEntityId() == -1) {
+                    if (!wasGimbal) {
+                        targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
+                        initGimbalLockTime = System.currentTimeMillis();
+                    } else if (System.currentTimeMillis() - initGimbalLockTime >= 50) {
+                        targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
+                    }
                 } else {
                     targetPos = DSCClientInputs.getOpticalTrackedEntityPos();
                 }
@@ -106,7 +113,7 @@ public class ClientCameraEventHandlers {
                 QuaternionF qPT = vehicle.getClientQ(pt);
                 if (resetMousePressed) {
                     lookForward(angles, player, mirrored, pt, vehicle);
-                } else if (prevQ != null) {
+                } else if (prevQ != null && !(wasTrackingTarget && isGimbal)) {
                     float[] relativeAngles;
                     if (wasTrackingTarget) {
                         relativeAngles = new float[] {DSCClientInputs.xRotPreTrack, DSCClientInputs.yRotPreTrack};

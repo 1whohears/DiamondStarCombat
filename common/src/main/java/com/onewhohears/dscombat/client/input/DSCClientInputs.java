@@ -28,8 +28,8 @@ public class DSCClientInputs {
 
 	private static int opticalTrackedEntityId = -1;
 	private static int opticalTrackedEntityIdOld = -1;
-	private static Vec3 opticalTrackedEntityPos = null;
-	private static Vec3 opticalTrackedEntityPosOld = null;
+	private static @Nullable Vec3 opticalTrackedEntityPos = null;
+	private static @Nullable Vec3 opticalTrackedEntityPosOld = null;
 	private static long prevOpticalPosUpdateTime;
 	
 	public static final long MOUNT_SHOOT_COOLDOWN = 500;
@@ -353,12 +353,17 @@ public class DSCClientInputs {
 
 	public static @Nullable Vec3 getOpticalTrackedEntityPos(float partialTick) {
 		if (opticalTrackedEntityId == -1) return null;
-		if (System.currentTimeMillis() - prevOpticalPosUpdateTime > 50) {
+		Minecraft m = Minecraft.getInstance();
+		if (m.level == null) return null;
+		long current = m.level.getGameTime();
+		if (current != prevOpticalPosUpdateTime) {
 			opticalTrackedEntityPosOld = opticalTrackedEntityPos;
 			opticalTrackedEntityPos = getClientEntityPosition(opticalTrackedEntityId);
-			prevOpticalPosUpdateTime = System.currentTimeMillis();
+			prevOpticalPosUpdateTime = current;
 		}
-		if (opticalTrackedEntityPosOld == null) return opticalTrackedEntityPos;
+		if (opticalTrackedEntityPosOld == null || opticalTrackedEntityPos == null) {
+			return opticalTrackedEntityPos;
+		}
 		return opticalTrackedEntityPosOld.lerp(opticalTrackedEntityPos, partialTick);
 	}
 

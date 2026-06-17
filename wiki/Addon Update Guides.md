@@ -1,5 +1,9 @@
 The following is primarily for Addon Devs to see what I changed so you can update/fix your addons accordingly.
 
+# 0.14.3 -> 0.15.0
+
+WIP
+
 # 0.13.0 -> 0.14.3
 
 ## Additional Vehicle Stats

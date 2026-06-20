@@ -1,3 +1,35 @@
+# V0.15.0 beta | June 15, 2026
+
+This update mainly hooks into the new 1wholibs Raycast system. Should help with performance and stability a lot. There are a few little treats in here though.
+
+- Added more Target Modes: `NONE, LOOK, MARKER, COORDS, RADAR, OPTICAL`
+  - `OPTICAL` requires a Gimbal Camera to be mounted on the aircraft. The missile will be guided to the target as long as the gimbal camera can see the target entity. As the pilot, simply look at the target entities feet until a purple plus appears. Then pull the trigger with an optical guided missile.
+  - Note: Due to the superiority of `OPTICAL` in air to ground, the plan is to phase out radar guided AGMs. Get rid of the ground radar visual clutter.
+  - Press "U" to open the Vehicle Menu -> Weapon System -> Cycle the Target Mode button.
+  - Please take note of the relevant key binds: Gimbal Mode, Gimbal Zoom, Target Mode
+  - All AGMs now support the Position target modes (`LOOK, MARKER, COORDS`) instead of some being radar only.
+  - Automatically switch between target modes when you click on radar pings and position pings.
+  - `NONE` just shoots the missile straight forward with no guidance.
+  - Currently only the AGMs pay attention to the Target Mode. The plan is to allow all missiles to support multiple modes and also add other targeting modes like IR. Different HUD elements may appear based on what target mode is selected in the future.
+- Added a fortnite POSITION MARKER system.
+  - Press "," by default to place a temporary marker at the block you are looking at.
+  - All of your team mates will see it automatically.
+  - Save the temp marker with `/marker save <new_name>` to make it permanent.
+  - Switch to Target Mode `MARKER`, click on the marker, then shoot an AGM missile and the missile will try to go there.
+- The Gimbal Camera will now follow entities that you look at when you turn Camera Track on and are in Optical Target Mode. Right Shift key by default.
+- Added support for Tactical Viewer
+- Now Requires 1wholibs 2.4.20
+  - Using the new Simulated Entity system for missile. Currently experimenting with a simulated vehicle system. Will be useful for BVR fights against vehicle AI.
+  - Radars now use the new Distant Visible system. Radars can't see behind mountains in unloaded chunks if they have been processed by the new Height Map system.
+- Missiles can now be shot down by radar guided missiles. It is not always reliable due to missiles being so fast. But it is possible.
+- Missiles can now die in unloaded chunks if they fly into a mountain on the Height Map.
+- Fixed some air to ground missiles being super slow.
+- Radar filter mode is now saved in client config so it doesnt reset after every relog.
+- Fixed Free Global Camera mode not working in 3rd person
+- The Chain Hook Length is now configurable in server config.
+- Turret AI now uses the Distant Visible system. This should help with performance.
+- A million other bug fixes.
+
 # V0.14.3 beta | Dec 24, 2025
 
 - Fixed incorrect Entity Renderer Registry call placement in forge. Should fix a lot of strange incompatibility issues.

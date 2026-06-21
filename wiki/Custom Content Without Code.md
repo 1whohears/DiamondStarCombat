@@ -1,4 +1,4 @@
-This page is updated for v0.14.3. If anything is unclear please let me know in the discord so I can update this page!
+This page is updated for v0.15.0. If anything is unclear please let me know in the discord so I can update this page!
 
 # The JSON Preset System
 
@@ -463,6 +463,7 @@ The following is a description of each Custom Animation Type, and what parameter
 - `torpedo`: Same as track missile, but it doesn't explode in water.
 - `dumb_torpedo`: Does nothing in the air, goes straight when it touches water.
 - `anti_radar_missile`: These missiles target radar sources.
+- `all_missile`: Missile that is capable of position, and entity tracking guidance, depending on what settings are enabled. This type will eventually fully replace `pos_missile`, and `track_missile`.
 
 ### All Weapons Parameter List
 
@@ -593,6 +594,24 @@ Includes all stats listed in **All Weapons Parameter List**, **Bullet Parameter 
 Includes all stats listed in **All Weapons Parameter List**, **Bullet Parameter List**, and **Missile Parameter List**.
 
 `scan_range` | NUMBER | **0** | *How far in blocks can this missile see radar sources.*
+
+### All Missile Parameter List
+
+`presetType` = `all_missile`
+
+`entityTypeKey` = `dscombat:all_missile`
+
+Includes all stats listed in **All Weapons Parameter List**, **Bullet Parameter List**, and **Missile Parameter List**.
+
+`canPositionGuide` | BOOLEAN | **false** | *If enabled, the missile can use position related target modes like `LOOK`, `MARKER`, or `COORDS`.*
+
+`canRadarGuide` | BOOLEAN | **false** | *If enabled, the missile can track an entity target using radar.*
+
+`canOpticalGuide` | BOOLEAN | **false** | *If enabled, the missile can track entities "visually" using the owner vehicle's Gimbal Camera.*
+
+`targetType` | ENUM | **AIR** | *Select from `AIR`, `GROUND`, or `WATER`. This decides if what domain the target entity must be in order for the missile to be allowed to target it.*
+
+`radarActive` | BOOLEAN | **true** | *If enabled, radar missiles will track the target on their own (shoot and forget). If false, radar missiles will only properly guide to the target if the owner vehicle's radar can still see the target.*
 
 ### Weapon Recipes
 

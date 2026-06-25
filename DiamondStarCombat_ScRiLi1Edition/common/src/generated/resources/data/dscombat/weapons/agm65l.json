@@ -1,0 +1,54 @@
+{
+  "acceleration": 0.2,
+  "bleed": 0.16,
+  "canOpticalGuide": true,
+  "canPositionGuide": true,
+  "canShootOnGround": false,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "heavy_missile_rack",
+    "mls"
+  ],
+  "craftNum": 1,
+  "damage": 60.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.agm65l",
+  "entityTypeKey": "dscombat:all_missile",
+  "explodeNum": 2,
+  "explosionRadius": 5.5,
+  "explosive": true,
+  "fireRate": 40,
+  "fov": -1.0,
+  "fuelTicks": 500,
+  "fuseDist": 1.5,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 5,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 8
+    },
+    {
+      "item": "minecraft:coal_block",
+      "num": 2
+    },
+    {
+      "item": "dscombat:ti83",
+      "num": 1
+    }
+  ],
+  "itemKey": "dscombat:missile",
+  "mass": 250.0,
+  "maxAge": 1000,
+  "presetId": "agm65l",
+  "presetType": "all_missile",
+  "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 4,
+  "speed": 40.0,
+  "targetType": "GROUND",
+  "turnRadius": 480.0,
+  "useSpeedScale": true
+}

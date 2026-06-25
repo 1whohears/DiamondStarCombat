@@ -1,0 +1,39 @@
+{
+  "assetId": "anm30",
+  "canShootOnGround": false,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "bomb_rack"
+  ],
+  "craftNum": 3,
+  "damage": 20.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.napalm",
+  "entityTypeKey": "dscombat:bomb",
+  "explosionRadius": 2.0,
+  "explosive": true,
+  "fireRate": 3,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 3,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 2
+    },
+    {
+      "item": "minecraft:blaze_powder",
+      "num": 1
+    }
+  ],
+  "itemKey": "dscombat:bomb",
+  "mass": 30.0,
+  "maxAge": 200,
+  "presetId": "napalm",
+  "presetType": "bomb",
+  "shootSoundKey": "dscombat:bomb_shoot_1",
+  "sort_factor": 1,
+  "speed": 0.0
+}

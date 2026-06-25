@@ -1,0 +1,116 @@
+{
+  "copyId": "alexis_plane_unarmed",
+  "displayName": "preset.dscombat.alexis_plane_sniper",
+  "ingredients": [
+    {
+      "item": "dscombat:ar2k",
+      "num": 1
+    },
+    {
+      "item": "dscombat:heavy_missile_rack",
+      "num": 4
+    },
+    {
+      "item": "dscombat:light_missile_rack",
+      "num": 1
+    },
+    {
+      "item": "dscombat:basic_flare_dispenser",
+      "num": 1
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 64
+    },
+    {
+      "item": "dscombat:aluminum_ingot",
+      "num": 64
+    },
+    {
+      "item": "minecraft:redstone",
+      "num": 64
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 64
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "alexis_plane_sniper",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "meteor",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120c",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120b",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "meteor",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim120c",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9x",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_3"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "20mm",
+        "part": "m61a1_vulcan"
+      },
+      "name": "internal_gun"
+    },
+    {
+      "data": {
+        "part": "ar2k"
+      },
+      "name": "internal_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_3"
+    }
+  ],
+  "textures": {
+    "baseTexture": 1
+  }
+}

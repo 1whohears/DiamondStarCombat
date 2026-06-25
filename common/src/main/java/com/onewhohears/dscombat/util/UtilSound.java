@@ -1,7 +1,7 @@
 package com.onewhohears.dscombat.util;
 
 import com.onewhohears.dscombat.common.network.toclient.ToClientDelayedSound;
-import net.minecraft.client.Minecraft;
+import com.onewhohears.dscombat.common.network.toclient.ToClientDistantGunfire;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -33,15 +33,29 @@ public class UtilSound {
         }
         return sound.get();
 	}
-
-    public static SoundEvent getSoundByIdClient(String id, SoundEvent alt) {
-        return getSoundById(id, alt, Minecraft.getInstance().level.registryAccess());
-    }
 	
 	public static void sendDelayedSound(ServerLevel level, SoundEvent sound, Vec3 pos,
                                         float radius, float volume, float pitch) {
         List<ServerPlayer> players = UtilServerPacket.getPlayersWithinRadius(level, pos, radius);
         new ToClientDelayedSound(sound, pos, radius, volume, pitch).sendTo(players);
+	}
+	
+	/**
+	 * Sends a distant gunfire/cannon sound to all players within range.
+	 * Creates a "cannonade" effect that can be heard from far away.
+	 * 
+	 * @param level The server level
+	 * @param sound The distant gunfire sound to play
+	 * @param pos Position where the shot was fired
+	 * @param radius Maximum hearing distance (recommended: 800)
+	 * @param volume Base volume (will be attenuated by distance)
+	 * @param pitch Base pitch (will be slightly lowered for distance)
+	 * @param durationTicks How long the sound should play (in ticks, recommended: 20-40)
+	 */
+	public static void sendDistantGunfire(ServerLevel level, SoundEvent sound, Vec3 pos,
+										  float radius, float volume, float pitch, int durationTicks) {
+		List<ServerPlayer> players = UtilServerPacket.getPlayersWithinRadius(level, pos, radius);
+		new ToClientDistantGunfire(sound, pos, volume, pitch, durationTicks).sendTo(players);
 	}
 	
 }

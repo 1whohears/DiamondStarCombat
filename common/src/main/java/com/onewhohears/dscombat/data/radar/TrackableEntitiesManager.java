@@ -1,11 +1,9 @@
 package com.onewhohears.dscombat.data.radar;
 
-import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,18 +27,13 @@ public class TrackableEntitiesManager {
         trackMap.remove(entity.getId());
     }
 
-    @Nullable
-    public static Entity getById(int id) {
-        return trackMap.get(id);
-    }
-
     public static void serverTick(MinecraftServer server) {
-        if (server.getTickCount() % 20 == 0) {
-            trackMap.entrySet().removeIf(entry -> {
-                if (entry.getValue() instanceof SimulatedEntity sim) return !sim.isSimulateEnabled();
-                return entry.getValue().isRemoved();
-            });
-        }
+        if (server.getTickCount() % 20 == 0)
+            trackMap.entrySet().removeIf(entry -> entry.getValue().isRemoved());
+    }
+    
+    public static void onServerStop() {
+        trackMap.clear();
     }
 
 }

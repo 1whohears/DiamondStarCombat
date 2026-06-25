@@ -1,0 +1,12 @@
+{
+  "presetId": "rpg29_grenade",
+  "presetType": "standard",
+  "model_data": {
+    "model_id": "rpg29"
+  },
+  "item_model_overrides": {
+    "rotation": { "x": 45.0, "y": 0.0, "z": 0.0 },
+    "translate": { "x": 0.0, "y": 0.0, "z": 0.0 },
+    "scale_all": 1.0
+  }
+}

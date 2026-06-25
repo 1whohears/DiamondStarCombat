@@ -1,15 +1,16 @@
 package com.onewhohears.dscombat.client.input.fabric;
 
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import net.minecraft.client.Minecraft;
 
 public class ClientInputManagerImpl {
 
     public static double getMouseYVelocity(Minecraft mc) {
-        return mc.mouseHandler.accumulatedDY;
+        return DSCClientInputs.getAndResetMouseDeltaY();
     }
 
     public static double getMouseXVelocity(Minecraft mc) {
-        return mc.mouseHandler.accumulatedDX;
+        return DSCClientInputs.getAndResetMouseDeltaX();
     }
 
 }

@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.data.vehicle.presets.helicopter.NoahChopperPrese
 import com.onewhohears.dscombat.data.vehicle.presets.plane.*;
 import com.onewhohears.dscombat.data.vehicle.presets.submarine.SubPresets;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.entity.weapon.EntityMine;
 import com.onewhohears.dscombat.item.*;
 import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -92,6 +93,8 @@ public class ModItems {
             ItemParachute::new);
 	public static final RegistrySupplier<Item> SPRAYCAN = registerItem("spraycan",
 			() -> new Item(new Item.Properties().stacksTo(1).arch$tab(ModCMTabs.DSC_ITEMS)));
+	public static final RegistrySupplier<ItemDecal> DECAL = registerItem("decal",
+			() -> new ItemDecal(new Item.Properties().stacksTo(16).arch$tab(ModCMTabs.DSC_ITEMS)));
 	public static final RegistrySupplier<Item> TICKET_BOOK = registerItem("ticket_book",
             ItemTicketBook::new);
 	
@@ -129,6 +132,8 @@ public class ModItems {
 			() -> new ItemPart(64));
 	public static final RegistrySupplier<ItemPart> ARMOR_PIECE = registerItem("armor_piece",
 			() -> new ItemPart(64));
+	public static final RegistrySupplier<ItemPart> ECM_JAMMER = registerItem("ecm_jammer",
+			() -> new ItemPart(16));
 	
 	// GIMBALS
 	public static final RegistrySupplier<ItemPart> GIMBAL_CAMERA = registerItem("gimbal_camera",
@@ -247,6 +252,16 @@ public class ModItems {
 	// FLARE DISPENSERS
 	public static final RegistrySupplier<ItemPart> BASIC_FLARE_DISPENSER = registerItem("basic_flare_dispenser",
 			() -> new ItemPart(16));
+
+	// SMOKE GRENADE DISPENSERS
+	public static final RegistrySupplier<ItemPart> SMOKE_GRENADE_DISPENSER = registerItem("smoke_grenade_dispenser",
+			() -> new ItemPart(16));
+
+	// MINE DISPENSERS
+	public static final RegistrySupplier<ItemPart> BASIC_MINE_DISPENSER = registerItem("basic_mine_dispenser",
+			() -> new ItemPart(16));
+	public static final RegistrySupplier<ItemPart> NAVAL_MINE_DISPENSER = registerItem("naval_mine_dispenser",
+			() -> new ItemPart(16));
 	
 	// WEAPON PARTS
 	public static final RegistrySupplier<ItemPart> EXTERNAL_WEAPON_PART = registerItem("external_weapon_part",
@@ -288,11 +303,26 @@ public class ModItems {
 			() -> ItemAmmo.create(16, "aim9p5"));
 	public static final RegistrySupplier<Item> POS_MISSILE = registerItem("pos_missile",
 			() -> ItemAmmo.create(16, "agm114k"));
+	public static final RegistrySupplier<Item> BALLISTIC_MISSILE = registerItem("ballistic_missile",
+			() -> ItemAmmo.create(1, "agm114k"));
 	public static final RegistrySupplier<Item> TORPEDO = registerItem("torpedo",
 			() -> ItemAmmo.create(16, "mk13"));
 	public static final RegistrySupplier<Item> ANTIRADAR_MISSILE = registerItem("antiradar_missile",
 			() -> ItemAmmo.create(16, "agm88g"));
 	
+	// MINES
+	public static final RegistrySupplier<Item> ANTI_PERSONNEL_MINE = registerItem("anti_personnel_mine",
+			() -> ItemMine.create(EntityMine.MineType.ANTI_PERSONNEL));
+	public static final RegistrySupplier<Item> ANTI_TANK_MINE = registerItem("anti_tank_mine",
+			() -> ItemMine.create(EntityMine.MineType.ANTI_TANK));
+	public static final RegistrySupplier<Item> MINE_DEFUSER = registerItem("mine_defuser",
+			ItemMineDefuser::create);
+	// Алиасы для обратной совместимости (не добавляются во вкладку)
+	public static final RegistrySupplier<Item> RPG7_GRENADE = registerItem("rpg7_grenade",
+			() -> new Item(new Item.Properties().stacksTo(16)));
+	public static final RegistrySupplier<Item> M203_GRENADE = registerItem("m203_grenade_item",
+			() -> new Item(new Item.Properties().stacksTo(16)));
+
 	public static final RegistrySupplier<Item> B_20MM = registerItem("20mm",
 			() -> ItemAmmo.create(64, "20mm"));
 	public static final RegistrySupplier<Item> B_50MMHE = registerItem("50mmhe",

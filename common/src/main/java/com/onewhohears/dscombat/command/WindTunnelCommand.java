@@ -29,8 +29,8 @@ public class WindTunnelCommand {
         d.register(Commands.literal("windtunnel").requires((stack) -> stack.hasPermission(2))
                 .then(Commands.literal("set_all")
                         .then(Commands.argument("preset", VehiclePresetArgument.vehiclePreset())
-                                .then(Commands.argument("speed", Vec3Argument.vec3(false))
-                                        .then(Commands.argument("rotation", Vec3Argument.vec3(false))
+                                .then(Commands.argument("speed", Vec3Argument.vec3())
+                                        .then(Commands.argument("rotation", Vec3Argument.vec3())
                                                 .then(Commands.argument("throttle", FloatArgumentType.floatArg(0, 1))
                                                         .then(Commands.argument("afterburner", BoolArgumentType.bool())
                                                                 .executes(((IWindTunnelCommand)(context, tunnel) ->

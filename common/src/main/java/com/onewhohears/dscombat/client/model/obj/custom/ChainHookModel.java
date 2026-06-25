@@ -33,7 +33,6 @@ public class ChainHookModel extends ObjPartModel<EntityChainHook> {
 			Vec3 hookPos = entity.getPosition(partialTicks).add(chainOffset);
 			poseStack.translate(chainOffset.x, chainOffset.y, chainOffset.z);
             Matrix4f matrix4f = poseStack.last().pose();
-            double chainLength = EntityChainHook.getChainLength();
 			for (EntityChainHook.ChainConnection chain : entity.getConnections()) {
 				Entity connector = chain.getEntity();
 				if (connector == null || connector.isRemoved()) continue;
@@ -43,7 +42,7 @@ public class ChainHookModel extends ObjPartModel<EntityChainHook> {
 				Vec3 pitchAxis = UtilAngles.rotateVector(chainDiffNorm, Vec3f.YP.rotationDegrees(90));
 				Vec3 yawAxis = UtilAngles.rotateVector(chainDiffNorm, Vec3f.XN.rotationDegrees(90));
 				float t = 0.1f;
-				float l = (float) (chainDiff.length() / chainLength);
+				float l = (float) (chainDiff.length() / EntityChainHook.CHAIN_LENGTH);
 				drawChainSide(vertexconsumer, matrix4f, chainDiff, pitchAxis, t, l, lightmap);
 				drawChainSide(vertexconsumer, matrix4f, chainDiff, pitchAxis.scale(-1), t, l, lightmap);
 				drawChainSide(vertexconsumer, matrix4f, chainDiff, yawAxis, t, l, lightmap);

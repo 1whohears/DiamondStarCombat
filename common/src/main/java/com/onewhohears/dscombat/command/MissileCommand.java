@@ -7,14 +7,12 @@ import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.argument.WeaponArgument;
 import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
-import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
@@ -107,10 +105,8 @@ public class MissileCommand {
 				Entity v = e.getRootVehicle();
 				missile.target = v;
 				missile.targetPos = v.position();
-                SimulatedEntityManager.get().startSimulatingEntity(missile);
 			}
 			level.addFreshEntity(ew);
-            DependencySafety.onWeaponShoot(ew);
 			//ew.tick();
 			++i;
 		}

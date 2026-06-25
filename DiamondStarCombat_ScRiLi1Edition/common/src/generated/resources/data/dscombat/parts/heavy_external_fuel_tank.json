@@ -1,0 +1,12 @@
+{
+  "displayName": "item.dscombat.heavy_external_fuel_tank",
+  "externalEntity": "dscombat:external_fuel_tank",
+  "hitbox_height": 0.8,
+  "hitbox_width": 0.8,
+  "item": "dscombat:heavy_external_fuel_tank",
+  "max": 150.0,
+  "presetId": "heavy_external_fuel_tank",
+  "presetType": "external_fuel_tank",
+  "slotType": "pylon_med",
+  "weight": 250.0
+}

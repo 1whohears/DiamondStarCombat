@@ -30,8 +30,52 @@ public interface DrivingBody extends PhysicsBody {
             setDeltaMovement(getDeltaMovement().add(n.scale(driveAcc * 0.5)));
             addFrictionForce(getKineticFriction());
         } else {
-            setDeltaMovement(n.scale(getXZSpeed()*getXZSpeedDir() + driveAcc));
-            if (getCurrentThrottle() == 0 && getXZSpeed() != 0) driveSlowDown(0.0002);
+            double currentSpeed = getXZSpeed() * getXZSpeedDir();
+            double maxSpeed = getMaxSpeedForMotion();
+            double targetSpeed = getCurrentThrottle() * maxSpeed;
+
+            // Hard-clamp speed to max allowed in current direction (handles reverse speed limit)
+            double speedLimit = maxSpeed;
+            if (Math.abs(currentSpeed) > speedLimit) {
+                currentSpeed = speedLimit * Math.signum(currentSpeed);
+            }
+
+            // --- РЕАЛИЗМ: влияние уклона на скорость ---
+            // xRot > 0 = нос вниз (спуск) -> ускорение, xRot < 0 = нос вверх (подъём) -> замедление
+            double slopeFactor = Math.sin(Math.toRadians(-getXRot()));
+            double slopeAcc = slopeFactor * DSCPhyCons.GRAVITY * 0.05;
+            // Применяем только если едем вперёд или уклон помогает
+            if (getXZSpeedDir() == 1 || slopeAcc * Math.signum(currentSpeed) > 0) {
+                driveAcc += slopeAcc;
+            }
+
+            // --- РЕАЛИЗМ: инерция — скорость нарастает/падает постепенно ---
+            // Вместо мгновенного прыжка к targetSpeed используем ускорение как ограничитель
+            double speedDiff = targetSpeed - currentSpeed;
+            double maxAccThisTick = Math.abs(driveAcc);
+            double appliedAcc;
+            if (Math.abs(speedDiff) <= maxAccThisTick) {
+                // Уже близко к цели — дотягиваемся точно
+                appliedAcc = speedDiff;
+            } else {
+                // Ограничиваем изменение скорости за тик
+                appliedAcc = maxAccThisTick * Math.signum(speedDiff);
+            }
+
+            // --- РЕАЛИЗМ: торможение двигателем при снятии газа ---
+            float throttle = Math.abs(getCurrentThrottle());
+            if (throttle < 0.05f && getXZSpeed() > 0.001f) {
+                // Двигатель тормозит при нулевом газе (engine braking)
+                double engineBraking = isNoPilotBraking() ? 0.008 : 0.0015;
+                appliedAcc -= engineBraking * Math.signum(currentSpeed);
+            }
+
+            double newSpeed = currentSpeed + appliedAcc;
+            // Не даём перескочить через ноль при торможении
+            if (Math.signum(newSpeed) != Math.signum(currentSpeed) && Math.abs(targetSpeed) < 0.001) {
+                newSpeed = 0;
+            }
+            setDeltaMovement(n.scale(newSpeed));
         }
         // turn physics
         if (dontUseDriveTurnPhysics()) return;
@@ -41,7 +85,17 @@ public interface DrivingBody extends PhysicsBody {
             if (!isSliding()) setAngularVel(av.multiply(1, 0, 1));
             return;
         }
-        float tr = 1 / getYawInput() * max_tr;
+        // Prevent division by very small numbers that could cause extreme values
+        float yawInput = getYawInput();
+        if (Math.abs(yawInput) < 0.01f) {
+            if (!isSliding()) setAngularVel(av.multiply(1, 0, 1));
+            return;
+        }
+        // --- РЕАЛИЗМ: радиус поворота растёт с увеличением скорости ---
+        // При высокой скорости машина поворачивает менее охотно
+        float speedRatio = Math.min(getXZSpeed() / Math.max((float) getMaxSpeedForMotion(), 0.001f), 1f);
+        float dynamicTurnRadius = max_tr * (1f + speedRatio * 0.6f);
+        float tr = 1 / yawInput * dynamicTurnRadius;
         float turn = getXZSpeed() / tr * getXZSpeedDir();
         float turnDeg = turn * Mth.RAD_TO_DEG;
         if (!isSliding()) av = av
@@ -55,7 +109,7 @@ public interface DrivingBody extends PhysicsBody {
         double max_tr = getTurnRadius();
         if (getYawInput() != 0 && max_tr != 0) { // IF TURNING
             double tr = max_tr * 1 / Math.abs(getYawInput()); // inputed turn radius
-            double cen_acc = getXZSpeed() * getXZSpeed() / tr * 400; // cen_acc needed to complete turn (m/s/s)
+            double cen_acc = getXZSpeed() * getXZSpeed() / tr * 150; // cen_acc needed to complete turn (m/s/s)
             double cen_force = cen_acc * getTotalMass(); // friction force needed to not slide
             //debug(cen_force+" >? "+staticFric);
             return cen_force >= getStaticFriction(); // if cen_force >= static-friction-threshold slide
@@ -100,6 +154,11 @@ public interface DrivingBody extends PhysicsBody {
     float getTurnRadius();
     boolean canFlattenOnGround();
     double getMinDriveAcc();
+
+    /** Returns true when there is no pilot and the vehicle should brake faster. */
+    default boolean isNoPilotBraking() {
+        return false;
+    }
 
     default void calcAirMovement(QuaternionF q) {
         if (canAirBrake() && isAirBreaking()) applyAirBreaks();

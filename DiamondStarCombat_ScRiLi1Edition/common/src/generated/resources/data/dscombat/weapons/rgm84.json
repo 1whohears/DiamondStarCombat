@@ -1,0 +1,58 @@
+{
+  "acceleration": 0.04,
+  "activeTrack": true,
+  "assetId": "agm84e",
+  "bleed": 0.05,
+  "canOpticalGuide": true,
+  "canPositionGuide": true,
+  "canRadarGuide": true,
+  "canShootOnGround": true,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "adl",
+    "heavy_missile_rack",
+    "mls"
+  ],
+  "craftNum": 1,
+  "damage": 50.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.rgm84",
+  "entityTypeKey": "dscombat:all_missile",
+  "explodeNum": 2,
+  "explosionRadius": 4.0,
+  "explosive": true,
+  "fireRate": 40,
+  "fov": 60.0,
+  "fuelTicks": 400,
+  "fuseDist": 2.0,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 12,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 5
+    },
+    {
+      "item": "minecraft:coal_block",
+      "num": 4
+    },
+    {
+      "item": "dscombat:ti83",
+      "num": 2
+    }
+  ],
+  "itemKey": "dscombat:missile",
+  "mass": 691.0,
+  "maxAge": 600,
+  "presetId": "rgm84",
+  "presetType": "all_missile",
+  "seeThroWater": 100,
+  "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 6,
+  "speed": 2.5,
+  "targetType": "GROUND",
+  "turnRadius": 80.0
+}

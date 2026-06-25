@@ -96,10 +96,57 @@ public class FlareDispenserInstance<T extends FlareDispenserStats> extends PartI
 		if (getParent() == null) return false;
 		if (getFlares() <= 0) return false;
 		Level level = getParent().getWorld();
-		EntityFlare flare = new EntityFlare(level, getStats().getInitHeat(), getStats().getMaxAge(), 3);
-		flare.setPos(getParent().position().add(getRelPos()));
-		flare.setDeltaMovement(getParent().getDeltaMovement());
-		level.addFreshEntity(flare);
+
+		// Build proper right vector using yaw only (pitch doesn't affect left/right axis)
+		float yawRad = (float) Math.toRadians(getParent().getYRot());
+		// In Minecraft: yaw=0 faces south (+Z), yaw=90 faces west (-X)
+		// Right vector (perpendicular, 90 degrees clockwise from forward)
+		double rightX = Math.cos(yawRad);
+		double rightY = 0;
+		double rightZ = -Math.sin(yawRad);
+
+		// Down vector along the vehicle's local Y axis (accounts for pitch and roll)
+		float pitchRad = (float) Math.toRadians(getParent().getXRot());
+		float yaw = yawRad;
+		// Local down = rotated (0,-1,0) by pitch around right axis, then yaw
+		double downX = Math.sin(yaw) * Math.sin(pitchRad);
+		double downY = -Math.cos(pitchRad);
+		double downZ = Math.cos(yaw) * Math.sin(pitchRad);
+
+		double sideOffset = 1.5;
+		double sideVelocity = 0.3;
+		double downOffset = 0.3; // eject slightly downward relative to vehicle
+
+		java.util.Random rand = new java.util.Random();
+
+		// Right flare
+		EntityFlare flareRight = new EntityFlare(level, getStats().getInitHeat(), getStats().getMaxAge(), 3);
+		flareRight.setPos(getParent().position()
+				.add(getRelPos())
+				.add(rightX * sideOffset + downX * downOffset,
+					 rightY * sideOffset + downY * downOffset + rand.nextDouble() * 0.2,
+					 rightZ * sideOffset + downZ * downOffset));
+		double randomVelR = sideVelocity + (rand.nextDouble() - 0.5) * 0.1;
+		flareRight.setDeltaMovement(getParent().getDeltaMovement().add(
+				rightX * randomVelR + downX * 0.1 + (rand.nextDouble() - 0.5) * 0.05,
+				rightY * randomVelR + downY * 0.1 + (rand.nextDouble() - 0.5) * 0.05,
+				rightZ * randomVelR + downZ * 0.1 + (rand.nextDouble() - 0.5) * 0.05));
+		level.addFreshEntity(flareRight);
+
+		// Left flare
+		EntityFlare flareLeft = new EntityFlare(level, getStats().getInitHeat(), getStats().getMaxAge(), 3);
+		flareLeft.setPos(getParent().position()
+				.add(getRelPos())
+				.add(-rightX * sideOffset + downX * downOffset,
+					 -rightY * sideOffset + downY * downOffset + rand.nextDouble() * 0.2,
+					 -rightZ * sideOffset + downZ * downOffset));
+		double randomVelL = sideVelocity + (rand.nextDouble() - 0.5) * 0.1;
+		flareLeft.setDeltaMovement(getParent().getDeltaMovement().add(
+				-rightX * randomVelL + downX * 0.1 + (rand.nextDouble() - 0.5) * 0.05,
+				-rightY * randomVelL + downY * 0.1 + (rand.nextDouble() - 0.5) * 0.05,
+				-rightZ * randomVelL + downZ * 0.1 + (rand.nextDouble() - 0.5) * 0.05));
+		level.addFreshEntity(flareLeft);
+
 		if (consume) addFlares(-1);
 		return true;
 	}

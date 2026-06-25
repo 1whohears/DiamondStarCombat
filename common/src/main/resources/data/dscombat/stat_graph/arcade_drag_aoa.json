@@ -1,0 +1,7 @@
+{
+	"presetId": "arcade_drag_aoa",
+	"presetType": "floatfloat",
+	"size": 9,
+	"keys":   [  0,   5,  10,  15,  20,  30,  45,  60,  90],
+	"values": [0.3, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7, 0.8]
+}

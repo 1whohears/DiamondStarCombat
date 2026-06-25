@@ -1,0 +1,12 @@
+# Blender 3.3.21 MTL File: 'untitled5.blend'
+# www.blender.org
+
+newmtl URAL4320_MILITARY_TEX_1.png.003
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd smvpack:entity/vehicle/urals/ural_rls
+map_d smvpack:entity/vehicle/urals/ural_rls

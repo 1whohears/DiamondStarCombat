@@ -81,6 +81,11 @@
     "inertiapitch": 120000.0,
     "inertiaroll": 8000.0,
     "inertiayaw": 80000.0,
+    "left_track_pos": {
+      "x": -0.7,
+      "y": -0.4,
+      "z": 0.0
+    },
     "mass": 600.0,
     "max_health": 30.0,
     "max_speed": 0.2,
@@ -88,12 +93,19 @@
     "maxroll": 0.0,
     "maxyaw": 3.0,
     "negativeThrottle": true,
+    "reverseSpeedMultiplier": 0.4,
+    "right_track_pos": {
+      "x": 0.7,
+      "y": -0.4,
+      "z": 0.0
+    },
     "stealth": 1.0,
     "throttledown": 0.08,
     "throttleup": 0.08,
     "torquepitch": 0.0,
     "torqueroll": 0.0,
     "torqueyaw": 6000.0,
+    "track_textures": true,
     "turn_radius": 0.0
   }
 }

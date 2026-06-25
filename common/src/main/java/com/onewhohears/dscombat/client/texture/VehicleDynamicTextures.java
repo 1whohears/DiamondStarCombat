@@ -23,14 +23,18 @@ public class VehicleDynamicTextures {
 	
 	/**
 	 * CALL ON CLIENT ONLY!
-	 * creates a new texture that has all vehicle layers combined into one. 
-	 * previous layer rendering involved rending the same model on top of itself (extremely slow). 
+	 * creates or updates a dynamic texture that has all vehicle layers combined into one. 
 	 * @param vehicle
-	 * @return the location of a texture with all layers combined into one
+	 * @param existingTexture if not null, updates this texture in-place instead of creating new
+	 * @return the DynamicTexture object (new or updated)
 	 */
-	public static ResourceLocation createVehicleDynamicTexture(EntityVehicle vehicle) {
+	public static net.minecraft.client.renderer.texture.DynamicTexture createOrUpdateVehicleDynamicTexture(
+			EntityVehicle vehicle, net.minecraft.client.renderer.texture.DynamicTexture existingTexture) {
 		ResourceLocation baseTexLoc = vehicle.textureManager.getBaseTexture();
-		if (vehicle.textureManager.isAllLayersDisabled()) return baseTexLoc;
+		boolean noLayers = vehicle.textureManager.isAllLayersDisabled();
+		float dirtLevel = vehicle.clientDirtLevel;
+		boolean noDirt = dirtLevel < 0.005f;
+		if (noLayers && noDirt) return null; // no dynamic texture needed
 		Minecraft m = Minecraft.getInstance();
 		NativeImage baseImage;
 		try {
@@ -38,9 +42,18 @@ public class VehicleDynamicTextures {
 			baseImage = NativeImage.read(stream);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return baseTexLoc;
+			return null;
 		}
-		DynamicTexture dynText = new DynamicTexture(baseImage);
+		net.minecraft.client.renderer.texture.DynamicTexture dynText = 
+			existingTexture != null ? existingTexture : new net.minecraft.client.renderer.texture.DynamicTexture(baseImage);
+		// If reusing existing texture, copy base image into it
+		if (existingTexture != null) {
+			for (int x = 0; x < baseImage.getWidth(); ++x) {
+				for (int y = 0; y < baseImage.getHeight(); ++y) {
+					dynText.getPixels().setPixelRGBA(x, y, baseImage.getPixelRGBA(x, y));
+				}
+			}
+		}
 		TextureLayer[] layers = vehicle.textureManager.getTextureLayers();
 		for (int i = 0; i < layers.length; ++i) {
 			if (!layers[i].canRender()) continue;
@@ -64,10 +77,42 @@ public class VehicleDynamicTextures {
 					blendColors(textureColor, layers[i], blend));
 			}
 		}
+		// Bake dirt overlay into the dynamic texture
+		if (!noDirt) {
+			String namespace = vehicle.getStats().getNameSpace();
+			String assetId = vehicle.getAssetId();
+			ResourceLocation dirtTexLoc = new ResourceLocation(namespace,
+					"textures/entity/vehicle/" + assetId + "/dirt.png");
+			try {
+				var resource = m.getResourceManager().getResource(dirtTexLoc);
+				if (resource.isEmpty()) { /* no dirt texture, skip */ }
+				else {
+				InputStream stream = resource.get().open();
+				NativeImage dirtImage = NativeImage.read(stream);
+				if (dynText.getPixels().getWidth() == dirtImage.getWidth()
+						&& dynText.getPixels().getHeight() == dirtImage.getHeight()) {
+					for (int x = 0; x < dirtImage.getWidth(); ++x) {
+						for (int y = 0; y < dirtImage.getHeight(); ++y) {
+							int dirtColor = dirtImage.getPixelRGBA(x, y);
+							int dirtA = getA(dirtColor);
+							if (dirtA == 0) continue;
+							// blend dirt over base using dirtLevel as strength
+							float alpha = (dirtA / 255f) * dirtLevel;
+							int baseColor = dynText.getPixels().getPixelRGBA(x, y);
+							int r = (int)(getR(baseColor) * (1 - alpha) + getR(dirtColor) * alpha);
+							int g = (int)(getG(baseColor) * (1 - alpha) + getG(dirtColor) * alpha);
+							int b = (int)(getB(baseColor) * (1 - alpha) + getB(dirtColor) * alpha);
+							dynText.getPixels().setPixelRGBA(x, y, combine(getA(baseColor), b, g, r));
+						}
+					}
+				}
+				} // end else (resource present)
+			} catch (IOException e) {
+				// dirt.png not found — skip silently
+			}
+		}
 		dynText.upload();
-		ResourceLocation textLoc = new ResourceLocation(DSCombatMod.MODID, "vehicle_layers_"+vehicle.getId());
-		m.getTextureManager().register(textLoc, dynText);
-		return textLoc;
+		return dynText;
 	}
 	
 	private static int blendColors(int textureColor, TextureLayer layer, float blend) {

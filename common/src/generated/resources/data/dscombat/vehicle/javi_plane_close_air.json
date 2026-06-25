@@ -24,6 +24,12 @@
     },
     {
       "data": {
+        "part": "gimbal_camera"
+      },
+      "name": "left_wing_3"
+    },
+    {
+      "data": {
         "filled": true,
         "param": "agm65l",
         "part": "heavy_missile_rack"
@@ -72,12 +78,6 @@
         "part": "basic_flare_dispenser"
       },
       "name": "internal_4"
-    },
-    {
-      "data": {
-        "part": "gimbal_camera"
-      },
-      "name": "right_tech_mount"
     }
   ]
 }

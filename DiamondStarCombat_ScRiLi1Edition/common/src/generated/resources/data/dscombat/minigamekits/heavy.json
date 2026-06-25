@@ -1,0 +1,136 @@
+{
+  "displayName": "preset.dscombat.heavy",
+  "kitItems": [
+    {
+      "distinguishByNBT": "GunId",
+      "item": "tacz:modern_kinetic_gun",
+      "keep": true,
+      "nbt": {
+        "GunCurrentAmmoCount": 75,
+        "GunFireMode": "AUTO",
+        "GunId": "tacz:m249",
+        "HasBulletInBarrel": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "distinguishByNBT": "GunId",
+      "item": "tacz:modern_kinetic_gun",
+      "keep": true,
+      "nbt": {
+        "GunCurrentAmmoCount": 17,
+        "GunFireMode": "SEMI",
+        "GunId": "tacz:glock_17",
+        "HasBulletInBarrel": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_axe",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_pickaxe",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_shovel",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:bread",
+      "keep": true,
+      "num": 32,
+      "refill": true
+    },
+    {
+      "item": "minecraft:iron_helmet",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:diamond_chestplate",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_leggings",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "item": "minecraft:iron_boots",
+      "keep": true,
+      "nbt": {
+        "Unbreakable": true,
+        "kitOnly": "heavy"
+      },
+      "num": 1
+    },
+    {
+      "item": "dscombat:parachute",
+      "keep": true,
+      "num": 1,
+      "refill": true
+    },
+    {
+      "checkCountByNBT": "AmmoCount",
+      "distinguishByNBT": "AmmoId",
+      "item": "tacz:ammo_box",
+      "keep": true,
+      "nbt": {
+        "AmmoCount": 180,
+        "AmmoId": "tacz:556x45",
+        "Level": 0,
+        "kitOnly": "heavy"
+      },
+      "num": 1,
+      "refill": true
+    },
+    {
+      "checkCountByNBT": "AmmoCount",
+      "distinguishByNBT": "AmmoId",
+      "item": "tacz:ammo_box",
+      "keep": true,
+      "nbt": {
+        "AmmoCount": 180,
+        "AmmoId": "tacz:9mm",
+        "Level": 0,
+        "kitOnly": "heavy"
+      },
+      "num": 1,
+      "refill": true
+    }
+  ],
+  "presetId": "heavy",
+  "presetType": "gamekit"
+}

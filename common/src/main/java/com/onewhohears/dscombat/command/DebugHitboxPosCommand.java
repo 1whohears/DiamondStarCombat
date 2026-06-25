@@ -19,8 +19,8 @@ public class DebugHitboxPosCommand {
 	public DebugHitboxPosCommand(CommandDispatcher<CommandSourceStack> d) {
 		d.register(Commands.literal("debughitboxpos").requires((stack) -> { return stack.hasPermission(2);})
 			.then(Commands.argument("hitbox_name", StringArgumentType.string())
-			.then(Commands.argument("size", Vec3Argument.vec3(false))
-			.then(Commands.argument("rel_pos", Vec3Argument.vec3(false))
+			.then(Commands.argument("size", Vec3Argument.vec3())
+			.then(Commands.argument("rel_pos", Vec3Argument.vec3())
 			.executes((context) -> {
 				String hitbox_name = StringArgumentType.getString(context, "hitbox_name");
 				Vec3 rel_pos = Vec3Argument.getVec3(context, "rel_pos");

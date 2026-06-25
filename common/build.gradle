@@ -17,8 +17,7 @@ dependencies {
 
     modApi "com.onewhohears.onewholibs:onewholibs-common-${rootProject.minecraft_version}:${rootProject.onewholibs_version}"
     modApi "com.onewhohears.minigames:minigames-common-${rootProject.minecraft_version}:${rootProject.minigames_version}"
-    modApi "com.onewhohears.distant_players:distant_players-common-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
-    modApi "com.onewhohears.tacview:tacticalviewer-common-${rootProject.minecraft_version}:${rootProject.tacticalviewer_version}"
+    // modApi "com.onewhohears.distant_players:distant_players-common-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
 
     modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
     modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-common:${rootProject.jei_version}"
@@ -26,8 +25,6 @@ dependencies {
     api "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forgeconfigapiport_version}"
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
-
-    modCompileOnly "maven.modrinth:DistantHorizonsApi:${rootProject.distanthorizons_api_version}"
 }
 
 tasks.register("commonShadowJar", ShadowJar) {

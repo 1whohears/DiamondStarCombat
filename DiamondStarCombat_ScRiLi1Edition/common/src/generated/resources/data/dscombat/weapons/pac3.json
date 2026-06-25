@@ -1,0 +1,56 @@
+{
+  "acceleration": 0.64,
+  "activeTrack": true,
+  "bleed": 1.6,
+  "canShootOnGround": false,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "sam_launcher",
+    "mlrs"
+  ],
+  "craftNum": 1,
+  "damage": 90.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.pac3",
+  "entityTypeKey": "dscombat:track_missile",
+  "explosionRadius": 10.0,
+  "explosive": true,
+  "fireRate": 40,
+  "fov": 40.0,
+  "fuelTicks": 180,
+  "fuseDist": 10.0,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 14,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 6
+    },
+    {
+      "item": "minecraft:coal_block",
+      "num": 3
+    },
+    {
+      "item": "minecraft:ender_eye",
+      "num": 1
+    },
+    {
+      "item": "dscombat:intel_pentium",
+      "num": 1
+    }
+  ],
+  "itemKey": "dscombat:missile",
+  "mass": 318.0,
+  "maxAge": 1867,
+  "presetId": "pac3",
+  "presetType": "track_missile",
+  "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 9,
+  "speed": 85.75,
+  "targetType": "AIR",
+  "turnRadius": 1520.0,
+  "useSpeedScale": true
+}

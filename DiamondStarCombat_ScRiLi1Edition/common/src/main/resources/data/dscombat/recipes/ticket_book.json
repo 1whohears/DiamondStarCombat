@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"W": {
+			"item": "minecraft:writable_book"
+		},
+		"D": {
+			"item": "minecraft:diamond"
+		}
+	},
+	"pattern": [
+		"D",
+		"W"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:ticket_book"
+	}
+}

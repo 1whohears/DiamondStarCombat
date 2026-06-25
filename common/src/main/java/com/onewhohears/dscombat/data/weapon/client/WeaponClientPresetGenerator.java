@@ -20,6 +20,7 @@ public class WeaponClientPresetGenerator extends JsonPresetGenerator<WeaponClien
                         .build()
                 ).build()
         );
+        addPresetToGenerate(WeaponClientStats.Builder.createStandard("scud_b").build());
     }
 
     public WeaponClientPresetGenerator(PackOutput output) {

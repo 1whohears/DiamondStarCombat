@@ -1,0 +1,318 @@
+{
+  "displayName": "bmd2_tank",
+  "inventory_background": "smvpack:textures/ui/vehicle_inventory_backgrounds/rus_tank_backround.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 110,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "turret",
+      "slot_ui_x": 130,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "seat1",
+      "slot_ui_x": 130,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "seat2",
+      "slot_ui_x": 110,
+      "slot_ui_y": 70
+    },
+    {
+      "slot_name": "seat3",
+      "slot_ui_x": 130,
+      "slot_ui_y": 85
+    },
+    {
+      "slot_name": "seat4",
+      "slot_ui_x": 110,
+      "slot_ui_y": 85
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 111,
+      "slot_ui_y": 30
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 129,
+      "slot_ui_y": 30
+    },
+    {
+      "slot_name": "ptur_bmd",
+      "slot_ui_x": 130,
+      "slot_ui_y": 50
+    }
+  ],
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 0.9,
+    "translate": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w1",
+        "pivot": {
+          "x": -1.57026875,
+          "y": 0.8399,
+          "z": 1.66250625
+        },
+        "rot_axis": "X",
+        "rot_rate": 1.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w2",
+        "pivot": {
+          "x": 1.57026875,
+          "y": 0.8399,
+          "z": 1.66250625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w3",
+        "pivot": {
+          "x": -1.56065,
+          "y": 0.3209625,
+          "z": 0.8750875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w4",
+        "pivot": {
+          "x": 1.56065,
+          "y": 0.3209625,
+          "z": 0.8750875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w5",
+        "pivot": {
+          "x": 1.56065,
+          "y": 0.3209625,
+          "z": -0.0436625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w6",
+        "pivot": {
+          "x": -1.56065,
+          "y": 0.3209625,
+          "z": -0.0436625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w7",
+        "pivot": {
+          "x": 1.56065,
+          "y": 0.3209625,
+          "z": -0.9436625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w8",
+        "pivot": {
+          "x": -1.56065,
+          "y": 0.3209625,
+          "z": -0.9436625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w9",
+        "pivot": {
+          "x": -1.56065,
+          "y": 0.3209625,
+          "z": -1.8561625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w10",
+        "pivot": {
+          "x": 1.56065,
+          "y": 0.3209625,
+          "z": -1.8561625
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w11",
+        "pivot": {
+          "x": -1.56065,
+          "y": 0.32096875,
+          "z": -2.7749125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w12",
+        "pivot": {
+          "x": 1.56065,
+          "y": 0.32096875,
+          "z": -2.7749125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w13",
+        "pivot": {
+          "x": -1.5764375,
+          "y": 0.7660125,
+          "z": -3.520825
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w14",
+        "pivot": {
+          "x": 1.5764375,
+          "y": 0.7660125,
+          "z": -3.520825
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w15",
+        "pivot": {
+          "x": -1.47249375,
+          "y": 0.9948125,
+          "z": 0.41471875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w16",
+        "pivot": {
+          "x": 1.47249375,
+          "y": 0.9948125,
+          "z": 0.41471875
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w17",
+        "pivot": {
+          "x": 1.47249375,
+          "y": 0.9948125,
+          "z": -0.49248125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w18",
+        "pivot": {
+          "x": 1.47249375,
+          "y": 0.9948125,
+          "z": -0.49248125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w19",
+        "pivot": {
+          "x": 1.47249375,
+          "y": 0.9948125,
+          "z": -1.40913125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w20",
+        "pivot": {
+          "x": 1.47249375,
+          "y": 0.9948125,
+          "z": -1.40913125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w21",
+        "pivot": {
+          "x": 1.47249375,
+          "y": 0.9948125,
+          "z": -2.31633125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w22",
+        "pivot": {
+          "x": 1.47249375,
+          "y": 0.9948125,
+          "z": -2.31633125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+	  }
+    ],
+    "model_id": "bmd"
+  },
+  "presetId": "bmd2_tank",
+  "presetType": "standard"
+}

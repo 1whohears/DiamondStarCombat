@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.aircraft_carrier",
+  "model_data": {
+    "model_id": "carrier"
+  },
+  "presetId": "aircraft_carrier",
+  "presetType": "standard"
+}

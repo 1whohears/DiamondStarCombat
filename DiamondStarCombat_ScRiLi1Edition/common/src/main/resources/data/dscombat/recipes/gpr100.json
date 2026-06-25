@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"G": {
+			"item": "dscombat:gpr20"
+		},
+		"D": {
+			"item": "minecraft:diamond"
+		}
+	},
+	"pattern": [
+		" G ",
+		"DDD"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:gpr100"
+	}
+}

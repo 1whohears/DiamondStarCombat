@@ -1,0 +1,12 @@
+# Blender 3.3.21 MTL File: 'None'
+# www.blender.org
+
+newmtl mat4.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 3
+map_Kd smvpack:entity/vehicle/su34/base0
+map_d C:/Users/Vladimir/Desktop/mcheli-Planes/textures/items/su-33.png

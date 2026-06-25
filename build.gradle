@@ -18,7 +18,6 @@ allprojects {
         maven { url "https://repo.repsy.io/mvn/1whohears/1wholibs" }
         maven { url "https://repo.repsy.io/mvn/1whohears/minigames" }
         maven { url "https://repo.repsy.io/mvn/1whohears/distant_players" }
-        maven { url "https://repo.repsy.io/mvn/1whohears/tactical_viewer" }
         maven {
             name = "Jared's maven"
             url = "https://maven.blamejared.com/"
@@ -81,14 +80,12 @@ subprojects {
             }
         }
 
+        // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
         repositories {
-            maven {
-                credentials {
-                    username = rootProject.ext.localProps.repsyMavenUsername
-                    password = rootProject.ext.localProps.repsyMavenPassword
-                }
-                url "https://repo.repsy.io/mvn/1whohears/dscombat"
-            }
+            // Add repositories to publish to here.
+            // Notice: This block does NOT have the same function as the block in the top level.
+            // The repositories here will be used for publishing your artifact, not for
+            // retrieving dependencies.
         }
     }
 }

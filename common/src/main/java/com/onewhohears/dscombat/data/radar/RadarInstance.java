@@ -1,20 +1,28 @@
 package com.onewhohears.dscombat.data.radar;
 
+import java.util.*;
+
 import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.data.weapon.MissileChunkLoadingManager;
+import com.onewhohears.dscombat.entity.weapon.EntityMissile;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
+import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
+import com.onewhohears.dscombat.data.radar.RadarStats.PingEntityType;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.weapon.RadarTargetTypes;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
-import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
-import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
+
+import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
@@ -23,18 +31,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.util.*;
-
 public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private final Set<Integer> forRemoval = new HashSet<>();
+    public static final long RAY_CAST_TIMEOUT = 1000;
 
     private String slotId = "";
 	private Vec3 pos = Vec3.ZERO;
 	private boolean freshTargets;
 	private int scanTicks;
+	private final IntObjectMap<TimedPing> pings = new IntObjectHashMap<>();
+    private final Set<Integer> forRemoval = new HashSet<>();
 	
 	public RadarInstance(T stats) {
 		super(stats);
@@ -54,16 +62,18 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	
 	private int maxCheckDist = 150;
 	
-	public void resetPings(EntityVehicle radar) {
-        forRemoval.forEach(radar.radarSystem::removeTarget);
+	public void resetPings(List<RadarPing> vehiclePings, long currentTime) {
+        pings.forEach((id, ping) -> {
+            long timeDiff = currentTime - ping.gameTime();
+            if (timeDiff > Math.max(getStats().getScanRate()+10, 20)) {
+                removePing(vehiclePings, id);
+            }
+        });
+        forRemoval.forEach(pings::remove);
         forRemoval.clear();
 	}
-
-    public int getPingTimeOut() {
-        return Math.max(getStats().getScanRate()*2, 40);
-    }
 	
-	public void tickUpdateTargets(EntityVehicle radar, IntObjectMap<RadarTarget> vehiclePings) {
+	public void tickUpdateTargets(EntityVehicle radar, List<RadarPing> vehiclePings) {
 		if (radar.getWorld().isClientSide()) return;
 		if (scanTicks > getStats().getScanRate()) scanTicks = 0;
 		else {
@@ -72,71 +82,56 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 			return;
 		}
 		maxCheckDist = Config.COMMON.maxBlockCheckDepth.get();
-		resetPings(radar);
+		resetPings(vehiclePings, UtilEntity.getLevel(radar).getGameTime());
 		freshTargets = true;
 		Entity controller = radar.getControllingPlayerOrBot();
-		RadarFilterMode mode = radar.getRadarMode();
+		RadarMode mode = radar.getRadarMode();
 		if (mode.isOff()) return;
 		AABB radarArea = getRadarBoundingBox(radar);
 		double rangeSqr = getStats().getRange()*getStats().getRange();
-		if (getStats().isScanPlayers() && (mode.isPlayersOrBots() || mode.canScan(RadarFilterMode.VEHICLES))) {
-			scanPlayersVehicles(radar, controller, rangeSqr,
+		if (getStats().isScanPlayers() && (mode.isPlayersOrBots() || mode.canScan(RadarMode.VEHICLES))) {
+			scanPlayersVehicles(radar, controller, vehiclePings, rangeSqr,
 					mode.isPlayersOnly(), mode.isVehiclesOnly());
 		}
-		if (getStats().isScanMobs() && mode.canScan(RadarFilterMode.MOBS)) {
-			scanMobs(radar, controller, radarArea);
+		if (getStats().isScanMobs() && mode.canScan(RadarMode.MOBS)) {
+			scanMobs(radar, controller, vehiclePings, radarArea);
 		}
 		if (getStats().isScanMissiles() && mode.isOn()) {
-			scanMissiles(radar, controller, rangeSqr);
+			scanMissiles(radar, controller, vehiclePings, rangeSqr);
 		}
 	}
 
-	private void scanPlayersVehicles(EntityVehicle radar, Entity controller,
+	private void scanPlayersVehicles(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 									 double rangeSqr, boolean playersOnly, boolean vehiclesOnly) {
 		MinecraftServer server = radar.getWorld().getServer();
 		if (server == null) return;
 		List<ServerPlayer> players = server.getPlayerList().getPlayers();
 		for (ServerPlayer player : players) {
-			handleScanPlayerVehicle(radar, controller, rangeSqr, playersOnly,
+			handleScanPlayerVehicle(radar, controller, vehiclePings, rangeSqr, playersOnly,
 					vehiclesOnly, player, true);
 		}
 		Collection<Entity> entities = TrackableEntitiesManager.getTrackableEntities();
 		for (Entity entity : entities) {
-			handleScanPlayerVehicle(radar, controller, rangeSqr, playersOnly,
+			handleScanPlayerVehicle(radar, controller, vehiclePings, rangeSqr, playersOnly,
 					vehiclesOnly, entity, false);
 		}
 	}
 
-	private void handleScanPlayerVehicle(EntityVehicle radar, Entity controller,
+	private void handleScanPlayerVehicle(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 										 double rangeSqr, boolean playersOnly, boolean vehiclesOnly,
 										 Entity entity, boolean isTargetPlayer) {
-        if (radar.getServer() == null || entity.isSpectator()) {
-			cancelVisibleQuery(radar, entity);
-			return;
-		}
-		if (playersOnly && !isTargetPlayer) {
-			cancelVisibleQuery(radar, entity);
-			return;
-		}
+		if (entity.isSpectator()) return;
+		if (playersOnly && !isTargetPlayer) return;
 
-		if (entity.distanceToSqr(radar) > rangeSqr) {
-			cancelVisibleQuery(radar, entity);
-			return;
-		}
-		if (!UtilEntity.getLevel(entity).dimension().equals(radar.getWorld().dimension())) {
-			cancelVisibleQuery(radar, entity);
-			return;
-		}
+		if (entity.distanceToSqr(radar) > rangeSqr) return;
+		if (!UtilEntity.getLevel(entity).dimension().equals(radar.getWorld().dimension())) return;
 
 		EntityVehicle vehicle = toTargetVehicle(entity, isTargetPlayer);
-		if (vehiclesOnly && vehicle == null) {
-			cancelVisibleQuery(radar, entity);
-			return;
-		}
+		if (vehiclesOnly && vehicle == null) return;
 
 		@NotNull Entity pingEntity = vehicle != null ? vehicle : entity;
 		if (!isTargetPlayer) {
-			//if (alreadyScanned(vehiclePings, pingEntity)) return;
+			if (alreadyScanned(vehiclePings, pingEntity)) return;
 			if (vehicle == null) {
 				if (entity.getRootVehicle().getType().is(ModTags.EntityTypes.VEHICLE))
 					pingEntity = entity.getRootVehicle();
@@ -145,66 +140,60 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 
 		double stealth = 1;
 		if (vehicle != null) stealth = vehicle.getStealth();
-		if (isFailBasicCheck(radar, pingEntity, stealth, false)) {
-			cancelVisibleQuery(radar, pingEntity);
-			return;
-		}
+		if (isFailBasicCheck(radar, pingEntity, stealth, false)) return;
 
-        DistantVisibleManager.queryVisible(radar.getServer(), radar, pingEntity, RADAR_SCAN_HANDLER);
+		// ADD PING IMMEDIATELY - this ensures targets show up on radar right away
+		PingEntityType pingEntityType = getPingEntityType(isTargetPlayer, vehicle, pingEntity);
+		RadarPing p = new RadarPing(pingEntity, checkFriendly(controller, pingEntity), pingEntityType);
+		putPing(vehiclePings, p);
+		pings.put(p.id, new TimedPing(p, UtilEntity.getLevel(radar).getGameTime()));
+		
+		if (vehicle != null && !radar.isAlliedTo(vehicle)) vehicle.lockedOnto(radar);
+
+		// VERIFY WITH RAYCAST - remove ping if raycast fails
+        DistantRayCastManager.distantRayCast((ServerLevel) UtilEntity.getLevel(radar), radar, pingEntity,
+                (event) -> {
+                    @NotNull EntityVehicle radarVehicle;
+                    @NotNull Entity targetEntity;
+                    if (event.completeId() == event.eyeEntity().getId() && event.eyeEntity() instanceof EntityVehicle v) {
+                        radarVehicle = v;
+                        targetEntity = event.targetEntity();
+                    } else if (event.completeId() == event.targetEntity().getId() && event.targetEntity() instanceof EntityVehicle v) {
+                        radarVehicle = v;
+                        targetEntity = event.eyeEntity();
+                    } else {
+                        LOGGER.error("Neither the eye or target entities are the radar {} {}", event.eyeEntity(), event.targetEntity());
+                        return;
+                    }
+                    if (!event.pass()) {
+                        removePing(vehiclePings, targetEntity);
+                        return;
+                    }
+                }, radar.getId(), RAY_CAST_TIMEOUT, Math.max(getStats().getScanRate() * 50L + 100, 1000),
+                getStats().getThroWaterRange()+1, getStats().getThroGroundRange());
 	}
 
-	private void cancelVisibleQuery(EntityVehicle radar, Entity target) {
-		removePing(target);
-		DistantVisibleManager.cancelFirstEntityQuery(radar.getId(), target.getId(), RADAR_SCAN_HANDLER.typeId());
-	}
-
-    // TODO bring back getStats().getThroWaterRange() and getStats().getThroGroundRange()
-	private static final int REQUEST_ID = 0x2401;
-    public final DistantVisibleManager.VisibleRequestData RADAR_SCAN_HANDLER = new DistantVisibleManager.VisibleRequestData(
-			REQUEST_ID, getPingTimeOut(), getStats().getScanRate(), event -> {
-        if (!event.result().computeComplete || event.result().failed) {
-			DistantVisibleManager.cancelFirstEntityQuery(event.data().entityId1, event.data().entityId2, REQUEST_ID);
-            return;
+    private static void putPing(@NotNull List<RadarPing> vehiclePings, @NotNull RadarPing ping) {
+        for (int i = 0; i < vehiclePings.size(); ++i) {
+            if (vehiclePings.get(i).id == ping.id) {
+                vehiclePings.set(i, ping);
+                return;
+            }
         }
-        @NotNull EntityVehicle radarVehicle;
-        @NotNull Entity targetEntity;
-        if (event.entity1() instanceof EntityVehicle ev) {
-            radarVehicle = ev;
-            targetEntity = event.entity2();
-        } else {
-			DistantVisibleManager.cancelFirstEntityQuery(event.data().entityId1, event.data().entityId2, REQUEST_ID);
-            LOGGER.error("Radar Visible Check Failed. Entity 1 is not a vehicle {} {}", event.entity1(), event.entity2());
-            return;
-        }
-
-        //LOGGER.info("RADAR VISIBLE RESULT {} {} {} {}", event.result(), event.approxObstructPos(), event.entity1(), event.entity2());
-        if (!event.result().passed || targetEntity.getRemovalReason() == Entity.RemovalReason.KILLED) {
-            removePing(targetEntity);
-            return;
-        }
-
-        @Nullable Entity controllerEntity = radarVehicle.getControllingPlayerOrBot();
-        @Nullable EntityVehicle targetVehicle = targetEntity instanceof EntityVehicle v ? v : null;
-
-        PingEntityType pingEntityType = getPingEntityType(UtilEntity.isPlayer(targetEntity), targetVehicle, targetEntity);
-
-        RadarTarget p = new RadarTarget(targetEntity, checkFriendly(controllerEntity, targetEntity), pingEntityType, getPingTimeOut());
-        putPing(radarVehicle, p);
-
-        if (targetVehicle != null && !radarVehicle.isAlliedTo(targetVehicle)) targetVehicle.lockedOnto(radarVehicle);
-    });
-
-    private void putPing(@NotNull EntityVehicle radar, @NotNull RadarTarget target) {
-        radar.radarSystem.addUpdateTarget(target);
-        forRemoval.remove(target.entityId);
+        vehiclePings.add(ping);
     }
 
-    private void removePing(@NotNull Entity targetEntity) {
-        removePing(targetEntity.getId());
+    private void removePing(@NotNull List<RadarPing> vehiclePings, @NotNull Entity targetEntity) {
+        removePing(vehiclePings, targetEntity.getId());
     }
 
-    private void removePing(int targetEntityId) {
+    private void removePing(@NotNull List<RadarPing> vehiclePings, int targetEntityId) {
         forRemoval.add(targetEntityId);
+        for (int i = 0; i < vehiclePings.size(); ++i) {
+            if (vehiclePings.get(i).id == targetEntityId) {
+                vehiclePings.remove(i--);
+            }
+        }
     }
 
     private static @NotNull PingEntityType getPingEntityType(boolean player, @Nullable EntityVehicle targetVehicle,
@@ -229,14 +218,14 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
         return null;
     }
 
-	/*private boolean alreadyScanned(List<RadarPing> vehiclePings, Entity entity) {
+	private boolean alreadyScanned(List<RadarPing> vehiclePings, Entity entity) {
 		for (RadarPing ping : vehiclePings)
 			if (ping.id == entity.getId())
 				return true;
 		return false;
-	}*/
+	}
 	
-	private void scanMobs(EntityVehicle radar, Entity controller, AABB radarArea) {
+	private void scanMobs(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, AABB radarArea) {
 		//System.out.println("SCANNING MOBS");
 		for (int j = 0; j < RadarTargetTypes.get().getRadarMobClasses().size(); ++j) {
 			Class<? extends Entity> clazz = RadarTargetTypes.get().getRadarMobClasses().get(j);
@@ -244,36 +233,36 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
             for (Entity entity : list) {
                 if (entity.isPassenger()) continue;
                 if (isFailBasicCheck(radar, entity, 1, true)) continue;
-                RadarTarget p = new RadarTarget(entity,
+                RadarPing p = new RadarPing(entity,
                         checkFriendly(controller, entity),
-                        PingEntityType.FRIENDLY_MOB, getPingTimeOut());
-                putPing(radar, p);
+                        PingEntityType.FRIENDLY_MOB);
+                putPing(vehiclePings, p);
+                pings.put(p.id, new TimedPing(p, UtilEntity.getLevel(radar).getGameTime()));
             }
 		}
 	}
 
-	private void scanMissiles(EntityVehicle radar, Entity controller, double rangeSqr) {
+	private void scanMissiles(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings, double rangeSqr) {
 		Collection<Entity> list = TrackableEntitiesManager.getTrackableEntities();
         for (Entity target : list) {
 			if (!target.getType().is(ModTags.EntityTypes.MISSILE)) continue;
-			handleMissile(radar, controller, rangeSqr, target);
+			handleMissile(radar, controller, vehiclePings, rangeSqr, target);
         }
-        List<EntityMissile> missiles = SimulatedEntityManager.get().getAllOfClass(EntityMissile.class,
-                EntityMissile::isUnloaded);
-        for (EntityMissile target : missiles) {
-			handleMissile(radar, controller, rangeSqr, target);
+		for (EntityMissile<?> target : MissileChunkLoadingManager.getActiveMissiles()) {
+			handleMissile(radar, controller, vehiclePings, rangeSqr, target);
 		}
 	}
 
-	private void handleMissile(EntityVehicle radar, Entity controller,
+	private void handleMissile(EntityVehicle radar, Entity controller, List<RadarPing> vehiclePings,
 							   double rangeSqr, Entity target) {
 		if (target.distanceToSqr(radar) > rangeSqr) return;
 		if (!UtilEntity.getLevel(target).dimension().equals(radar.getWorld().dimension())) return;
 		if (isFailBasicCheck(radar, target, -1, true)) return;
-		RadarTarget p = new RadarTarget(target,
+		RadarPing p = new RadarPing(target,
 				checkFriendly(controller, target),
-				PingEntityType.MISSILE, getPingTimeOut());
-        putPing(radar, p);
+				PingEntityType.MISSILE);
+        putPing(vehiclePings, p);
+        pings.put(p.id, new TimedPing(p, UtilEntity.getLevel(radar).getGameTime()));
 	}
 	
 	private boolean checkFriendly(Entity controller, Entity target) {
@@ -286,8 +275,6 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		//System.out.println("RADAR CHECK "+ping);
 		if (radar.equals(ping)) return true;
 		//System.out.println("not equal");
-		if (ping.getRemovalReason() == Entity.RemovalReason.KILLED) return true;
-		//System.out.println("not dead");
 		if (!groundCheck(ping)) return true;
 		//System.out.println("passed ground check");
 		if (radar.isVehicleOf(ping)) return true;
@@ -306,7 +293,6 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 	}
 	
 	private boolean checkTargetRange(Entity radar, Entity target, double stealth) {
-		if (Math.abs(radar.position().y - target.position().y) > getStats().getVerticalRange()) return false;
 		float dist = radar.distanceTo(target);
 		//System.out.println("dist = "+dist+" range = "+range);
 		if (getStats().getFov() == -1) {
@@ -372,5 +358,7 @@ public class RadarInstance<T extends RadarStats> extends JsonPresetInstance<T> {
 		if (id == null) return false;
 		return getStatsId().equals(id) && slotId.equals(this.slotId);
 	}
+
+    public record TimedPing(RadarPing ping, long gameTime) {}
 
 }

@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"W": {
+			"item": "dscombat:wrench"
+		},
+		"S": {
+			"item": "minecraft:smithing_table"
+		},
+		"F": {
+			"item": "minecraft:blast_furnace"
+		}
+	},
+	"pattern": [
+		"SWF"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:weapon_parts_block"
+	}
+}

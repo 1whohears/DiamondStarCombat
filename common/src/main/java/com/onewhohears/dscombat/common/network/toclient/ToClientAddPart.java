@@ -3,8 +3,6 @@ package com.onewhohears.dscombat.common.network.toclient;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilClientPacket;
-
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -43,7 +41,7 @@ public class ToClientAddPart extends BaseS2CMessage {
 	@Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            UtilClientPacket.addPartPacket(id, slotId, data);
+            com.onewhohears.dscombat.client.util.UtilClientPacket.addPartPacket(id, slotId, data);
 		});
 	}
 

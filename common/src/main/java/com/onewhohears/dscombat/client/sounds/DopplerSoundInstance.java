@@ -46,7 +46,8 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 		this.pitch = initPitch;
 		this.initPitch = initPitch;
 		this.velocitySound = velSound;
-		this.volDecreaseRate = (float) (1/(range*range));
+		// Changed: use linear attenuation rate instead of quadratic
+		this.volDecreaseRate = (float) (1.0 / range); // Linear instead of 1/(range*range)
 		this.minDistSqr = minDist*minDist;
 	}
 
@@ -60,23 +61,37 @@ public class DopplerSoundInstance extends AbstractTickableSoundInstance {
 		x = entity.getX();
 		y = entity.getY();
 		z = entity.getZ();
-		// volume
-		float minLess = minDistSqr - 400;
+		
+		// Cache distance calculation - used multiple times
 		float d2 = (float)player.distanceToSqr(entity);
+		
+		// volume - linear distance attenuation
+		float minLess = minDistSqr - 400;
+		
 		if (d2 <= minLess) {
 			volume = MIN_VOL;
 		} else if (d2 > minLess && d2 < minDistSqr) {
 			volume = Math.max(MIN_VOL, initVolume * (d2 - minLess) *  0.01f);
 		} else {
-			volume = Math.max(MIN_VOL, initVolume - d2 * volDecreaseRate);
+			// Linear attenuation: volume decreases with distance, not distance squared
+			// Use cached sqrt calculation
+			float distance = (float)Math.sqrt(d2);
+			volume = Math.max(MIN_VOL, initVolume * (1.0f - distance * volDecreaseRate));
 		}
-		// pitch
+		
+		// pitch - Doppler effect calculation
 		Vec3 dPos = entity.position().subtract(player.position());
 		float velPlayer = (float)UtilGeometry.vecCompMagDirByAxis(player.getDeltaMovement(), dPos);
 		float velEntity = (float)UtilGeometry.vecCompMagDirByAxis(entity.getDeltaMovement(), dPos);
+		
+		// Cache velocity squared calculation
+		double entityVelSqr = entity.getDeltaMovement().lengthSqr();
+		double velSoundSqr = velocitySound * velocitySound;
+		
 		pitch = initPitch * ((velocitySound + velPlayer)/(velocitySound + velEntity));
+		
 		// if traveling faster than the speed of sound and towards the player
-		if (entity.getDeltaMovement().lengthSqr() > velocitySound*velocitySound && velEntity <= 0) volume = MIN_VOL;
+		if (entityVelSqr > velSoundSqr && velEntity <= 0) volume = MIN_VOL;
 	}
 
 }

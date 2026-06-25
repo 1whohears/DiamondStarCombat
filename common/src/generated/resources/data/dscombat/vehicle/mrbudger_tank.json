@@ -15,7 +15,19 @@
     {
       "data": {
         "filled": true,
-        "part": "heavy_tank_turret"
+        "param": "120mmhe",
+        "part": "heavy_tank_turret",
+        "extra_weapons": [
+          {
+            "name": "turret_mg_left",
+            "weapon": "10mm",
+            "pos": {
+              "x": 0.35,
+              "y": 0.3,
+              "z": 1.5
+            }
+          }
+        ]
       },
       "name": "pilot_seat"
     }

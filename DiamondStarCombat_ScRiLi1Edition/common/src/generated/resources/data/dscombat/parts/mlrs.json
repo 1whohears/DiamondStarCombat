@@ -1,0 +1,46 @@
+{
+  "displayName": "item.dscombat.mlrs",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 2.0,
+  "hitbox_width": 2.0,
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "num": 60,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 60
+    }
+  ],
+  "item": "dscombat:turret",
+  "maxAmmo": 10,
+  "maxHealth": 80.0,
+  "passenger_offset": {
+    "x": 1.8,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "presetId": "mlrs",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 15
+    }
+  ],
+  "rotBounds": {
+    "maxRotX": 0.0,
+    "minRotX": -35.0,
+    "rotRate": 0.8
+  },
+  "shootType": "NORMAL",
+  "slotType": "mount_super_heavy",
+  "sort_factor": 18,
+  "weaponOffset": 2.0,
+  "weight": 8000.0
+}

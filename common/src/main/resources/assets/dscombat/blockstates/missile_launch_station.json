@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "dscombat:block/missile_launch_station"
+    },
+    "facing=south": {
+      "model": "dscombat:block/missile_launch_station",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dscombat:block/missile_launch_station",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "dscombat:block/missile_launch_station",
+      "y": 90
+    }
+  }
+}

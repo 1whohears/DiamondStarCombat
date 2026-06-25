@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
-import static com.onewhohears.dscombat.util.UtilRender.drawTextureCentered;
+import static com.onewhohears.dscombat.client.util.UtilRender.drawTextureCentered;
 
 public class AttitudeScreenInstance extends EntityScreenInstance {
 

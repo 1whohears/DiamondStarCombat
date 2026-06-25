@@ -6,6 +6,7 @@ import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.event.ClientEventHandlers;
 import com.onewhohears.dscombat.client.event.DSCEntityRenderers;
 import com.onewhohears.dscombat.data.forge.*;
+import com.onewhohears.dscombat.data.mine.MinePresetGenerator;
 import com.onewhohears.dscombat.data.parts.PartPresetGenerator;
 import com.onewhohears.dscombat.data.parts.client.PartClientPresetGenerator;
 import com.onewhohears.dscombat.data.radar.RadarPresetGenerator;
@@ -52,13 +53,34 @@ import java.util.function.Supplier;
 @Mod(DSCombatMod.MODID)
 public class DSCombatModForge {
 
+    // MAGMA FIX: Add no-args constructor for compatibility
+    public DSCombatModForge() {
+        this(FMLJavaModLoadingContext.get());
+    }
+
     public DSCombatModForge(FMLJavaModLoadingContext loadingContext) {
         IEventBus modEventBus = loadingContext.getModEventBus();
         EventBuses.registerModEventBus(DSCombatMod.MODID, modEventBus);
 
-        loadingContext.registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
-        loadingContext.registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
-        loadingContext.registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
+        // MAGMA/MOHIST FIX: Try-catch for config registration compatibility
+        try {
+            loadingContext.registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
+            loadingContext.registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
+            loadingContext.registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
+        } catch (NoSuchMethodError e) {
+            // Magma/Mohist uses different method signature - try alternative
+            try {
+                // Try with file name parameter (Magma variant)
+                java.lang.reflect.Method method = loadingContext.getClass().getMethod(
+                    "registerConfig", ModConfig.Type.class, 
+                    net.minecraftforge.fml.config.IConfigSpec.class, String.class);
+                method.invoke(loadingContext, ModConfig.Type.CLIENT, Config.clientSpec, "dscombat-client.toml");
+                method.invoke(loadingContext, ModConfig.Type.COMMON, Config.commonSpec, "dscombat-common.toml");
+                method.invoke(loadingContext, ModConfig.Type.SERVER, Config.serverSpec, "dscombat-server.toml");
+            } catch (Exception ex) {
+                System.err.println("Failed to register configs: " + ex.getMessage());
+            }
+        }
 
         modEventBus.addListener(this::onGatherData);
         modEventBus.addListener(this::buildCreativeModeTabs);
@@ -83,6 +105,7 @@ public class DSCombatModForge {
             generator.addProvider(true, new WeaponPresetGenerator(output));
             generator.addProvider(true, new RadarPresetGenerator(output));
             generator.addProvider(true, new PartPresetGenerator(output));
+            generator.addProvider(true, new MinePresetGenerator(output));
             DependencySafety.serverDataGen(output, gen -> generator.addProvider(true, gen));
             generator.addProvider(true, new DSCRecipeGenerator(output));
             generator.addProvider(true, new EntityTypeTagGen(output, completableFuture, fileHelper));

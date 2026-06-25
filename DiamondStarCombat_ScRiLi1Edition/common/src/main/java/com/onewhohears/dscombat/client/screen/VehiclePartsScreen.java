@@ -1,0 +1,134 @@
+package com.onewhohears.dscombat.client.screen;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.common.container.menu.VehiclePartsMenu;
+import com.onewhohears.dscombat.common.container.slot.PartItemSlot;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+
+public class VehiclePartsScreen extends AbstractContainerScreen<VehiclePartsMenu> {
+	
+	private static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
+			"textures/ui/aircraft_screen.png");
+	
+	public VehiclePartsScreen(VehiclePartsMenu pMenu, Inventory pPlayerInventory, Component title) {
+		super(pMenu, pPlayerInventory, title);
+		this.leftPos = 0;
+		this.topPos = 0;
+		this.imageWidth = 256;
+		this.imageHeight = 256;
+	}
+	
+	@Override
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, partialTicks);
+        this.renderTooltip(graphics, mouseX, mouseY);
+	}
+	
+	@Override
+	protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+		if (!menu.getCarried().isEmpty() || hoveredSlot == null) return;
+		if (hoveredSlot.hasItem()) {
+			ItemStack stack = hoveredSlot.getItem();
+            graphics.renderTooltip(font, getTooltipFromItem(minecraft, stack),
+					stack.getTooltipImage(), mouseX, mouseY);
+		} else {
+            graphics.renderTooltip(font, getSlotTooltip(),
+					Optional.empty(), mouseX, mouseY);
+		}
+	}
+	
+	@Override
+	public @NotNull List<Component> getTooltipFromContainerItem(ItemStack itemStack) {
+		List<Component> c = itemStack.getTooltipLines(this.minecraft.player,
+				minecraft.options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
+		List<Component> slots = getSlotTooltip();
+		for (int i = 0; i < slots.size(); ++i) c.add(i, slots.get(i));
+		return c;
+	}
+	
+	public List<Component> getSlotTooltip() {
+		List<Component> c = new ArrayList<Component>();
+		if (this.hoveredSlot instanceof PartItemSlot slot) {
+			c.add(UtilMCText.translatable(slot.data.getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFF55FF)));
+			c.add(UtilMCText.translatable(slot.data.getSlotType().getTranslatableName()).setStyle(Style.EMPTY.withColor(0xFFAA00)));
+			if (slot.data.isLocked()) c.add(UtilMCText.translatable("info.dscombat.locked").setStyle(Style.EMPTY.withColor(0xAA0000)));
+			if (slot.data.isOnlyCompatWithOnePart()) 
+				c.add(UtilMCText.translatable("info.dscombat.only_compatible").append(" ")
+						.append(UtilMCText.translatable("item.dscombat."+slot.data.getOnlyCompatPartId()))
+						.setStyle(Style.EMPTY.withColor(0x0000AA)));
+		}
+		return c;
+	}
+	
+	@Override
+	protected void renderBg(GuiGraphics graphics, float pTicks, int mouseX, int mouseY) {
+		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+		RenderSystem.setShaderTexture(0, BG_TEXTURE);
+		graphics.blit(BG_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		if (menu.getClientData() != null && menu.getClientData().getBackground() != null) {
+			RenderSystem.setShaderTexture(0, menu.getClientData().getBackground());
+            graphics.blit(menu.getClientData().getBackground(), leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		}
+		for (int i = 0; i < menu.slots.size(); ++i) {
+			if (!(menu.slots.get(i) instanceof PartItemSlot slot)) continue;
+			RenderSystem.setShaderTexture(0, slot.data.getSlotType().getBgTexture());
+            graphics.blit(slot.data.getSlotType().getBgTexture(), leftPos+slot.x, topPos+slot.y,
+					0, 0, 
+					16, 16, 
+					16, 16);
+		}
+	}
+
+	@Override
+	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+		graphics.drawString(font, title, titleLabelX+38, titleLabelY, 0x404040);
+		graphics.drawString(font, playerInventoryTitle, inventoryLabelX+38, inventoryLabelY+56, 0x404040);
+	}
+	
+	@Override
+	protected void init() {
+		super.init();
+		Button backButton = new Button(0, 0, 60, 20,
+				UtilMCText.translatable("ui.dscombat.back"),
+				onPress -> { minecraft.setScreen(new VehicleMainScreen()); }, Supplier::get);
+		backButton.setX(leftPos + titleLabelX+144);
+		backButton.setY(topPos + titleLabelY+110);
+		addRenderableWidget(backButton);
+	}
+
+	@Override
+	public void containerTick() {
+		super.containerTick();
+		Minecraft m = Minecraft.getInstance();
+		if (m.player == null) {
+			m.setScreen(null);
+			return;
+		}
+		Entity rv = m.player.getRootVehicle();
+		if (!(rv instanceof EntityVehicle plane)) {
+			m.setScreen(null);
+			return;
+		}
+	}
+
+}

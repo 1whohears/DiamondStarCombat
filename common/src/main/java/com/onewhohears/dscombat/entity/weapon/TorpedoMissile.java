@@ -36,11 +36,6 @@ public class TorpedoMissile<T extends TorpedoStats> extends TrackEntityMissile<T
 	public Fluid getFluidClipContext() {
 		return ClipContext.Fluid.NONE;
 	}
-
-    @Override
-    public boolean isDieInWater() {
-        return false;
-    }
 	
 	@Override
 	protected WeaponDamageSource getImpactDamageSource() {

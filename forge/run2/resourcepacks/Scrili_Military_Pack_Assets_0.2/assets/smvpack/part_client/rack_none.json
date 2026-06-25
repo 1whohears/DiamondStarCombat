@@ -1,0 +1,33 @@
+{
+  "displayName": "rack_none",
+  "weapon_pos": [
+    {
+      "x": -0.3,
+      "y": 0.0,
+      "z": 0.0
+    }
+  ],
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 0.5,
+    "translate": {
+      "x": 0.3,
+      "y": 0.3,
+      "z": 0.0
+    }
+  },
+  "model_data": {
+    "model_id": "rack_none"
+  },
+  "presetId": "rack_none",
+  "presetType": "weapon_rack"
+}

@@ -1,6 +1,7 @@
 {
   "displayName": "item.dscombat.heavy_tank_turret",
   "externalEntity": "dscombat:turret",
+  "hidePlayer": true,
   "hitbox_height": 1.0,
   "hitbox_width": 2.0,
   "ingredients": [
@@ -20,6 +21,7 @@
   "item": "dscombat:turret",
   "maxAmmo": 16,
   "maxHealth": 120.0,
+  "muzzleParticleOffset": 0.5,
   "passenger_offset": {
     "x": 0.0,
     "y": 0.0,
@@ -41,6 +43,20 @@
   "shootType": "NORMAL",
   "slotType": "mount_med",
   "sort_factor": 11,
-  "weaponOffset": 0.3,
-  "weight": 4000.0
+  "weaponOffset": {
+    "x": 0.0,
+    "y": 0.4,
+    "z": 7.0
+  },
+  "weight": 4000.0,
+  "crosshair": "default",
+  "zoom": 1.5,
+  "max_smoke_grenades": 8,
+  "smoke_launchers": [
+    {
+      "pos": { "x": -1.5, "y": 1.0, "z": 0.0 },
+      "yaw": 0,
+      "pitch": 25
+    }
+  ]
 }

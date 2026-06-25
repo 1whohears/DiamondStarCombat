@@ -1,0 +1,20 @@
+{
+  "changeLaunchPitch": 0.0,
+  "displayName": "item.dscombat.heavy_missile_rack",
+  "externalEntity": "dscombat:external_weapon_part",
+  "hitbox_height": 0.1,
+  "hitbox_width": 0.1,
+  "ingredients": [
+    {
+      "num": 10,
+      "tag": "dscombat:aluminum_ingot"
+    }
+  ],
+  "item": "dscombat:external_weapon_part",
+  "max": 2,
+  "presetId": "heavy_missile_rack",
+  "presetType": "external_weapon",
+  "slotType": "pylon_med",
+  "sort_factor": 3,
+  "weight": 30.0
+}

@@ -12,10 +12,12 @@ import net.minecraft.resources.ResourceLocation;
 public class WeaponExternalStats extends WeaponPartStats {
 	
 	private final float changeLaunchPitch;
+	private final double muzzleParticleOffset;
 	
 	public WeaponExternalStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		changeLaunchPitch = UtilParse.getFloatSafe(json, "changeLaunchPitch", 0);
+		muzzleParticleOffset = UtilParse.getFloatSafe(json, "muzzleParticleOffset", 0.2f);
 	}
 
 	@Override
@@ -30,6 +32,13 @@ public class WeaponExternalStats extends WeaponPartStats {
 
 	public float getChangeLaunchPitch() {
 		return changeLaunchPitch;
+	}
+
+	/**
+	 * Offset along barrel for particle emission (in blocks). Configurable per preset.
+	 */
+	public double getMuzzleParticleOffset() {
+		return muzzleParticleOffset;
 	}
 
 	@Override

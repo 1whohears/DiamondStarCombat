@@ -40,22 +40,17 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 	protected List<ARTarget> targets = new ArrayList<ARTarget>();
 	
 	protected void findARTarget() {
-		// IDEA 7 make anti radar missile target entity type configurable so entities other mod entities can be targeted
 		targets.clear();
-		// players
 		MinecraftServer server = getWorld().getServer();
 		if (server == null) return;
 		double rangeSqr = getWeaponStats().getScanRange() * getWeaponStats().getScanRange();
 		List<ServerPlayer> players = server.getPlayerList().getPlayers();
 		for (ServerPlayer player : players) checkEntity(player, rangeSqr);
-		// others
 		Collection<Entity> entities = TrackableEntitiesManager.getTrackableEntities();
 		for (Entity entity : entities) checkEntity(entity, rangeSqr);
-		// pick target
 		if (targets.isEmpty()) {
 			this.target = null;
 			this.targetPos = null;
-			//System.out.println("NO TARGET");
 			return;
 		}
 		ARTarget max = targets.get(0);
@@ -74,32 +69,26 @@ public class AntiRadarMissile<T extends AntiRadarMissileStats> extends EntityMis
 		if (entity instanceof EntityVehicle ev) vehicle = ev;
 		else if (entity.getRootVehicle() instanceof EntityVehicle ev) vehicle = ev;
 		else return;
-		if (!vehicle.radarSystem.hasRadar()) return;
-		if (vehicle.getRadarMode().isOff()) return;
-		if (!vehicle.radarSystem.canServerTick()) return;
+		if (isAlliedTo(vehicle)) return;
 		if (!basicCheck(vehicle)) return;
 		float distSqr = (float)distanceToSqr(vehicle);
-		targets.add(new ARTarget(vehicle, (float)vehicle.radarSystem.getMaxAirRange() / distSqr));
+		// Radar source
+		boolean hasActiveRadar = vehicle.radarSystem.hasRadar()
+				&& !vehicle.getRadarMode().isOff()
+				&& vehicle.radarSystem.canServerTick();
+		// ECM jammer source
+		boolean hasActiveJammer = vehicle.partsManager.getActiveJammerStrength() > 0f;
+		if (!hasActiveRadar && !hasActiveJammer) return;
+		float radiation = hasActiveRadar
+				? (float) vehicle.radarSystem.getMaxAirRange() / distSqr
+				: vehicle.partsManager.getActiveJammerStrength() * 10000f / distSqr;
+		targets.add(new ARTarget(vehicle, radiation));
 	}
 	
 	protected boolean basicCheck(Entity ping) {
-		//System.out.println("target? "+ping);
-		if (!ping.onGround()) {
-			return false;
-		}
-		if (isAlliedTo(ping)) {
-			//System.out.println("is allied");
-			return false;
-		}
-		if (!checkTargetRange(ping, getWeaponStats().getScanRange())) {
-			//System.out.println("not in cone");
-			return false;
-		}
-		if (!checkCanSee(ping)) {
-			//System.out.println("can't see");
-			return false;
-		}
-		//System.out.println("POSSIBLE");
+		if (isAlliedTo(ping)) return false;
+		if (!checkTargetRange(ping, getWeaponStats().getScanRange())) return false;
+		if (!checkCanSee(ping)) return false;
 		return true;
 	}
 	

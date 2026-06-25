@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"tag": "dscombat:aluminum_ingot"
+		},
+		"C": {
+			"item": "dscombat:aluminum_block"
+		}
+	},
+	"pattern": [
+		"S ",
+		"CC"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:heavy_fuel_tank"
+	}
+}

@@ -1,0 +1,39 @@
+{
+  "copyId": "bronco_plane_unarmed",
+  "displayName": "preset.dscombat.bronco_plane_shitter",
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "bronco_plane_shitter",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_4"
+    },
+    {
+      "data": {
+        "part": "gr200"
+      },
+      "name": "internal_5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_1"
+    }
+  ]
+}

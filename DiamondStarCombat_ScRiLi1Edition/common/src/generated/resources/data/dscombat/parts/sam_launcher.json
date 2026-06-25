@@ -1,0 +1,42 @@
+{
+  "displayName": "item.dscombat.sam_launcher",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 3.0,
+  "hitbox_width": 2.0,
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "num": 16,
+      "tag": "dscombat:aluminum_ingot"
+    }
+  ],
+  "item": "dscombat:turret",
+  "maxAmmo": 4,
+  "maxHealth": 60.0,
+  "passenger_offset": {
+    "x": 1.2,
+    "y": 0.4,
+    "z": 0.0
+  },
+  "presetId": "sam_launcher",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 9
+    }
+  ],
+  "rotBounds": {
+    "maxRotX": 25.0,
+    "minRotX": -25.0,
+    "rotRate": 1.3
+  },
+  "shootType": "NORMAL",
+  "slotType": "mount_heavy",
+  "sort_factor": 17,
+  "weaponOffset": 2.7,
+  "weight": 6000.0
+}

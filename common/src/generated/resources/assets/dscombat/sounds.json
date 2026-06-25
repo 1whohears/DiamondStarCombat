@@ -389,6 +389,12 @@
     ],
     "subtitle": "sounds.dscombat.tank_1"
   },
+  "tank_idle": {
+    "sounds": [
+      "dscombat:vehicle/engine/tank_idle"
+    ],
+    "subtitle": "sounds.dscombat.tank_idle"
+  },
   "targets_found": {
     "sounds": [
       "dscombat:cockpit/radar/targets_found"
@@ -412,5 +418,47 @@
       "dscombat:vehicle/hurt/projectile/metal_01"
     ],
     "subtitle": "sounds.dscombat.vehicle.hurt.projectile_metal"
+  },
+  "vehicle_explosion": {
+    "sounds": [
+      "dscombat:vehicle/explosion/vehicle_explosion"
+    ],
+    "subtitle": "sounds.dscombat.vehicle_explosion"
+  },
+  "ballistic_explosion": {
+    "sounds": [
+      "dscombat:vehicle/explosion/ballistic_explosion"
+    ],
+    "subtitle": "sounds.dscombat.ballistic_explosion"
+  },
+  "distant_cannon": {
+    "sounds": [
+      "dscombat:weapon/distant/cannon"
+    ],
+    "subtitle": "sounds.dscombat.distant_cannon"
+  },
+  "smoke_grenade_shoot": {
+    "sounds": [
+      "dscombat:weapon/smoke_grenade_shoot"
+    ],
+    "subtitle": "sounds.dscombat.smoke_grenade_shoot"
+  },
+  "smoke_grenade_deploy": {
+    "sounds": [
+      "dscombat:weapon/smoke_grenade_deploy"
+    ],
+    "subtitle": "sounds.dscombat.smoke_grenade_deploy"
+  },
+  "distant_gunfire": {
+    "sounds": [
+      "dscombat:weapon/distant/gunfire"
+    ],
+    "subtitle": "sounds.dscombat.distant_gunfire"
+  },
+  "distant_tank_fire": {
+    "sounds": [
+      "dscombat:weapon/distant/tank_fire"
+    ],
+    "subtitle": "sounds.dscombat.distant_tank_fire"
   }
 }

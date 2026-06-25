@@ -1,0 +1,16 @@
+{
+  "displayName": "preset.dscombat.gpr20",
+  "fov": -1.0,
+  "presetId": "gpr20",
+  "presetType": "standard",
+  "range": 500.0,
+  "scanAir": false,
+  "scanAircraft": true,
+  "scanGround": true,
+  "scanMobs": true,
+  "scanPlayers": true,
+  "scanRate": 50,
+  "sensitivity": 0.8,
+  "throGroundRange": 20.0,
+  "throWaterRange": 0.0
+}

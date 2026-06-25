@@ -1,0 +1,78 @@
+package com.onewhohears.dscombat.data.weapon.instance;
+
+import com.onewhohears.dscombat.data.radar.RadarSystem;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
+import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
+import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
+import com.onewhohears.dscombat.data.weapon.stats.TargetDomainType;
+import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+import com.onewhohears.dscombat.entity.weapon.TrackEntityMissile;
+import com.onewhohears.dscombat.util.UtilVehicleEntity;
+
+import net.minecraft.world.entity.Entity;
+
+public class TrackMissileInstance<T extends TrackMissileStats> extends MissileInstance<T> {
+
+	public TrackMissileInstance(T stats) {
+		super(stats);
+	}
+	
+	@Override
+	public boolean couldRadarWeaponTargetEntity(Entity entity, Entity radar) {
+		if (!super.couldRadarWeaponTargetEntity(entity, radar)) return false;
+		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(entity);
+		TargetDomainType targetType = getStats().getTargetType();
+		if (targetType == TargetDomainType.AIR && groundWater) return false;
+		else if (targetType == TargetDomainType.GROUND && !groundWater) return false;
+		else if (targetType == TargetDomainType.WATER && !entity.isInWater()) return false;
+		return true;
+	}
+	
+	@Override
+	public EntityWeapon<?> getShootEntity(WeaponShootParameters params) {
+		TrackEntityMissile<?> missile = (TrackEntityMissile<?>) super.getShootEntity(params);
+		if (missile == null) return null;
+		if (params.vehicle == null) return missile;
+		RadarSystem radar = params.vehicle.radarSystem;
+		if (!radar.hasRadar()) {
+			setLaunchFail("error.dscombat.no_radar");
+			return null;
+		}
+		RadarTarget ping = radar.getServerSelectedTarget();
+		if (ping == null) {
+			setLaunchFail("error.dscombat.no_target_selected");
+			return null;
+		}
+		Entity target = radar.getSelectedTargetEntity();
+		if (target == null) {
+			setLaunchFail("error.dscombat.no_target_selected");
+			return null;
+		}
+		boolean groundWater = UtilVehicleEntity.isOnGroundOrWater(target);
+		TargetDomainType targetType = getStats().getTargetType();
+		if (targetType == TargetDomainType.AIR && groundWater) {
+			setLaunchFail("error.dscombat.air_target_only");
+			return null;
+		} else if (targetType == TargetDomainType.GROUND && !groundWater) {
+			setLaunchFail("error.dscombat.ground_target_only");
+			return null;
+		} else if (targetType == TargetDomainType.WATER && !target.isInWater()) {
+			setLaunchFail("error.dscombat.water_target_only");
+			return null;
+		}
+		missile.target = target;
+		return missile;
+	}
+
+	@Override
+	public TargetMode fixTargetMode(TargetMode currentTargetMode, TargetMode preferedPosTargetMode) {
+		return TargetMode.RADAR;
+	}
+
+	@Override
+	public TargetMode getDefaultTargetMode() {
+		return TargetMode.RADAR;
+	}
+
+}

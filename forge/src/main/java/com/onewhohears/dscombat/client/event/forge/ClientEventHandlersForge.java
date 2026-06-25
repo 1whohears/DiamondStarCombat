@@ -25,8 +25,18 @@ import static net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.*;
 @Mod.EventBusSubscriber(modid = DSCombatMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEventHandlersForge {
 
+    @SubscribeEvent
+    public static void registerClientCommands(net.minecraftforge.client.event.RegisterClientCommandsEvent event) {
+        new com.onewhohears.dscombat.client.command.GenerateTrackPathCommand(event.getDispatcher());
+        new com.onewhohears.dscombat.client.command.TrackPointCommand(event.getDispatcher());
+    }
+    
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void playerRenderPre(RenderPlayerEvent.Pre event) {
+        if (ClientRenderEventHandlers.shouldHidePlayer(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
         ClientRenderEventHandlers.onRenderPlayerPre(event.getEntity(), event.getPartialTick(), event.getPoseStack());
     }
 
@@ -45,6 +55,14 @@ public class ClientEventHandlersForge {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRIPWIRE_BLOCKS) return;
         OverlayController.PROJECTION_MATRIX = Mat4f.from(event.getProjectionMatrix());
         ObjWeaponRackModel.renderedRackWeaponNum = 0;
+        
+        // Render track marks
+        com.onewhohears.dscombat.client.renderer.TrackMarkManager.renderTrackMarks(
+            event.getPoseStack(),
+            Minecraft.getInstance().renderBuffers().bufferSource(),
+            event.getCamera().getPosition(),
+            event.getLevelRenderer().getTicks()
+        );
     }
 
     // TODO: register our overlays under more IDs in case modders/us in the future need to selectively disable overlays
@@ -82,9 +100,12 @@ public class ClientEventHandlersForge {
             event.setRoll(CAMERA_ANGLES.getRoll());
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void fovChange(ViewportEvent.ComputeFov event) {
-        ClientCameraEventHandlers.computeFOV(event::setFOV);
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void computeFov(ViewportEvent.ComputeFov event) {
+        float zoom = ClientCameraEventHandlers.getTurretZoom();
+        if (zoom != 1.0f) {
+            event.setFOV(event.getFOV() / zoom);
+        }
     }
 
 }

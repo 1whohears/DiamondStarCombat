@@ -25,8 +25,8 @@ public class DumbTorpedoStats extends MissileStats {
         return new DumbTorpedoInstance<>(this);
     }
 
-    public TargetDomainType getTargetType() {
-        return TargetDomainType.WATER;
+    public TrackMissileStats.TargetType getTargetType() {
+        return TrackMissileStats.TargetType.WATER;
     }
 
     @Override

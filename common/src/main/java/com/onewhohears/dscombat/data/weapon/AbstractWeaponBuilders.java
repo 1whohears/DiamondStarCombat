@@ -1,6 +1,6 @@
 package com.onewhohears.dscombat.data.weapon;
 
-import com.onewhohears.dscombat.data.weapon.stats.TargetDomainType;
+import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats.TargetType;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.util.UtilParse;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +24,11 @@ public class AbstractWeaponBuilders {
 		public C setFireRate(int fireRate) {
 			return setInt("fireRate", fireRate);
 		}
-		
+
+		public C setMaxAmmo(int maxAmmo) {
+			return setInt("maxAmmo", maxAmmo);
+		}
+
 		public C setCanShootOnGround(boolean canShootOnGround) {
 			return setBoolean("canShootOnGround", canShootOnGround);
 		}
@@ -39,6 +43,14 @@ public class AbstractWeaponBuilders {
 		
 		public C setShootSound(ResourceLocation shootSoundKey) {
 			return setString("shootSoundKey", shootSoundKey.toString());
+		}
+		
+		public C setEngineSound(ResourceLocation engineSoundKey) {
+			return setString("engineSoundKey", engineSoundKey.toString());
+		}
+		
+		public C setDistantSound(ResourceLocation distantSoundKey) {
+			return setString("distantSoundKey", distantSoundKey.toString());
 		}
 		
 		public C setCompatibleWeaponPart(String... compatibleWeaponPart) {
@@ -104,6 +116,10 @@ public class AbstractWeaponBuilders {
 
         public C setUseSpeedScale(boolean use) {
             return setBoolean("useSpeedScale", use);
+        }
+        
+        public C setSpeedFly(float speedFly) {
+        	return setFloat("speed_fly", speedFly);
         }
 		
 	}
@@ -176,7 +192,7 @@ public class AbstractWeaponBuilders {
 		/**
 		 * Track Missile only
 		 */
-		public C setTargetType(TargetDomainType targetType) {
+		public C setTargetType(TargetType targetType) {
 			return setEnum("targetType", targetType);
 		}
 		
@@ -200,42 +216,15 @@ public class AbstractWeaponBuilders {
 		public C setScanRange(float scan_range) {
 			return setFloat("scan_range", scan_range);
 		}
-
-		/**
-		 * All Missile Only
-		 */
-		public C setCanPositionGuide(boolean canPositionGuide) {
-			return setBoolean("canPositionGuide", canPositionGuide);
+		
+		public C setShowAfterBurner(boolean showAfterBurner) {
+			return setBoolean("showAfterBurner", showAfterBurner);
 		}
-
-		/**
-		 * All Missile Only
-		 */
-		public C setCanRadarGuide(boolean canRadarGuide) {
-			return setBoolean("canRadarGuide", canRadarGuide);
+		
+		public C setShowTrail(boolean showTrail) {
+			return setBoolean("showTrail", showTrail);
 		}
-
-		/**
-		 * All Missile Only
-		 */
-		public C setCanOpticalGuide(boolean canOpticalGuide) {
-			return setBoolean("canOpticalGuide", canOpticalGuide);
-		}
-
-		/**
-		 * All Missile Only
-		 */
-		public C setTargetDomainType(TargetDomainType targetType) {
-			return setEnum("targetType", targetType);
-		}
-
-		/**
-		 * All Missile Only
-		 */
-		public C setIsRadarActive(boolean radarActive) {
-			return setBoolean("radarActive", radarActive);
-		}
-
+		
 	}
 	
 }

@@ -51,6 +51,7 @@ public class WeaponRecipeCategory implements IRecipeCategory<WeaponRecipe> {
 		return icon;
 	}
 
+	@SuppressWarnings("removal")
     @Override
     public IDrawable getBackground() {
         return background;

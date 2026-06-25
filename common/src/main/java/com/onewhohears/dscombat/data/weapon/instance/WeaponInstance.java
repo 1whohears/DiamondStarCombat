@@ -6,17 +6,13 @@ import com.onewhohears.dscombat.common.network.toclient.ToClientOnShoot;
 import com.onewhohears.dscombat.common.network.toclient.ToClientWeaponAmmo;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
-import com.onewhohears.dscombat.data.weapon.WeaponTargetParameters;
-import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.parts.EntityWeaponRack;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.util.UtilSound;
-import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
-import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -27,7 +23,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetInstance<T> {
@@ -99,7 +94,7 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		EntityWeapon<?> w = getEntity(params.level);
 		if (w == null) return null;
 		w.setOwner(params.owner);
-		w.setPos(params.launchPos);
+		w.setPos(params.pos);
 		setDirection(w, params.direction);
 		return w;
 	}
@@ -111,15 +106,14 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		weapon.setYRot(yaw);
 	}
 	
-	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle,
-									boolean consume, @NotNull WeaponTargetParameters targetParams) {
+	public boolean shootFromVehicle(Level level, Entity owner, Vec3 direction, EntityVehicle vehicle, boolean consume) {
 		overrideGroundCheck = false;
+		Vec3 shootPos = vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ()));
 		EntityWeapon<?> w = getShootEntity(new WeaponShootParameters(level, owner, 
-				vehicle.position().add(UtilAngles.rotateVector(getLaunchPos(), vehicle.getQ())), 
-				direction, vehicle, false, false, targetParams));
+				shootPos, 
+				direction, vehicle, false, false));
 		if (w == null) return false;
 		level.addFreshEntity(w);
-        if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);
 		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
 		updateClientAmmo(vehicle);
@@ -128,26 +122,47 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			rack.lastShootTime = rack.tickCount;
 			ToClientOnShoot.onShootWeaponRack(rack, owner);
 		}
+		
+		// Spawn muzzle flash for vehicle weapons
+		if (!level.isClientSide && !isFailedLaunch()) {
+			com.onewhohears.dscombat.data.weapon.MuzzleSmokeData[] smokeData = getStats().getMuzzleSmokeData();
+			if (smokeData != null && smokeData.length > 0) {
+				for (com.onewhohears.dscombat.data.weapon.MuzzleSmokeData smoke : smokeData) {
+					if (smoke.flashLifetime > 0) {
+						com.onewhohears.dscombat.entity.weapon.EntityMuzzleFlash flash = 
+							new com.onewhohears.dscombat.entity.weapon.EntityMuzzleFlash(
+								com.onewhohears.dscombat.init.ModEntities.MUZZLE_FLASH.get(), 
+								level
+							);
+						flash.setPos(shootPos);
+						// Use direction to calculate angles
+						float pitch = UtilAngles.getPitch(direction);
+						float yaw = UtilAngles.getYaw(direction);
+						flash.setXRot(pitch);
+						flash.setYRot(yaw);
+						flash.setShootDirection(direction);
+						flash.setScale(smoke.flashScale);
+						flash.setMaxLifetime(smoke.flashLifetime);
+						level.addFreshEntity(flash);
+					}
+				}
+			}
+		}
+		
 		firedWeapon = w;
-        DependencySafety.onWeaponShoot(w);
 		return true;
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos,
-								   @Nullable EntityVehicle vehicle, boolean consume,
-                                   @NotNull WeaponTargetParameters targetParams) {
-		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false, targetParams);
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume) {
+		return shootFromTurret(level, owner, direction, pos, vehicle, consume, false);
 	}
 	
-	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos,
-								   @Nullable EntityVehicle vehicle, boolean consume,
-								   boolean ignoreRecoil, @NotNull WeaponTargetParameters targetParams) {
+	public boolean shootFromTurret(Level level, Entity owner, Vec3 direction, Vec3 pos, @Nullable EntityVehicle vehicle, boolean consume, boolean ignoreRecoil) {
 		overrideGroundCheck = true;
 		EntityWeapon<?> w = getShootEntity(new WeaponShootParameters(level, owner, 
-				pos, direction, vehicle, ignoreRecoil, true, targetParams));
+				pos, direction, vehicle, ignoreRecoil, true));
 		if (w == null) return false;
 		level.addFreshEntity(w);
-        if (w instanceof SimulatedEntity sim) SimulatedEntityManager.get().startSimulatingEntity(sim);
 		playShootSound(level, w.position());
 		setLaunchSuccess(1, owner, consume);
 		if (vehicle != null && !ignoreRecoil) {
@@ -158,7 +173,6 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 			}
 		}
 		firedWeapon = w;
-        DependencySafety.onWeaponShoot(w);
 		return true;
 	}
 
@@ -327,11 +341,4 @@ public abstract class WeaponInstance<T extends WeaponStats> extends JsonPresetIn
 		return new Vec3(0, -DSCPhyCons.GRAVITY*DSCPhyCons.ACC_TIME_SCALE, 0);
 	}
 
-	public TargetMode fixTargetMode(TargetMode currentTargetMode, TargetMode preferedPosTargetMode) {
-		return currentTargetMode;
-	}
-
-	public TargetMode getDefaultTargetMode() {
-		return TargetMode.LOOK;
-	}
 }

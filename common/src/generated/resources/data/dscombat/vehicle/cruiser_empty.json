@@ -308,6 +308,7 @@
     "maxroll": 0.0,
     "maxyaw": 1.2,
     "negativeThrottle": true,
+    "reverseSpeedMultiplier": 0.3,
     "stealth": 0.9,
     "throttledown": 0.1,
     "throttleup": 0.05,

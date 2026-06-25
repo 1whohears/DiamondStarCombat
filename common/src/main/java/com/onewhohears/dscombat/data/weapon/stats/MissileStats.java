@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.AbstractWeaponBuilders;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
-import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.onewholibs.util.UtilMCText;
 
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -21,39 +20,25 @@ public abstract class MissileStats extends BulletStats {
 			super(namespace, name, type);
 		}
 		public static Builder posMissileBuilder(String namespace, String name) {
-			Builder builder = new Builder(namespace, name, WeaponType.POS_MISSILE);
-			builder.setEntityType(ModEntities.POS_MISSILE.getId());
-			return builder;
+			return new Builder(namespace, name, WeaponType.POS_MISSILE);
 		}
 		public static Builder irMissileBuilder(String namespace, String name) {
-			Builder builder = new Builder(namespace, name, WeaponType.IR_MISSILE);
-			builder.setEntityType(ModEntities.IR_MISSILE.getId());
-			return builder;
+			return new Builder(namespace, name, WeaponType.IR_MISSILE);
 		}
 		public static Builder trackMissileBuilder(String namespace, String name) {
-			Builder builder = new Builder(namespace, name, WeaponType.TRACK_MISSILE);
-			builder.setEntityType(ModEntities.TRACK_MISSILE.getId());
-			return builder;
+			return new Builder(namespace, name, WeaponType.TRACK_MISSILE);
 		}
 		public static Builder torpedoBuilder(String namespace, String name) {
-			Builder builder = new Builder(namespace, name, WeaponType.TORPEDO);
-			builder.setEntityType(ModEntities.TORPEDO_MISSILE.getId());
-			return builder;
+			return new Builder(namespace, name, WeaponType.TORPEDO);
 		}
 		public static Builder antiRadarMissileBuilder(String namespace, String name) {
-			Builder builder = new Builder(namespace, name, WeaponType.ANTI_RADAR_MISSILE);
-			builder.setEntityType(ModEntities.ANTI_RADAR_MISSILE.getId());
-			return builder;
+			return new Builder(namespace, name, WeaponType.ANTI_RADAR_MISSILE);
 		}
 		public static Builder dumbTorpedoBuilder(String namespace, String name) {
-			Builder builder = new Builder(namespace, name, WeaponType.DUMB_TORPEDO);
-			builder.setEntityType(ModEntities.DUMB_TORPEDO_MISSILE.getId());
-			return builder;
+			return new Builder(namespace, name, WeaponType.DUMB_TORPEDO);
 		}
-		public static Builder allMissileBuilder(String namespace, String name) {
-			Builder builder = new Builder(namespace, name, WeaponType.ALL_MISSILE);
-			builder.setEntityType(ModEntities.ALL_MISSILE.getId());
-			return builder;
+		public static Builder ballisticMissileBuilder(String namespace, String name) {
+			return new Builder(namespace, name, WeaponType.BALLISTIC_MISSILE);
 		}
 	}
 	
@@ -65,6 +50,8 @@ public abstract class MissileStats extends BulletStats {
 	private final int fuelTicks;
 	private final int seeThroWater;
 	private final int seeThroBlock;
+	private final boolean showAfterBurner;
+	private final boolean showTrail;
 	
 	public MissileStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
@@ -76,6 +63,8 @@ public abstract class MissileStats extends BulletStats {
 		fuelTicks = UtilParse.getIntSafe(json, "fuelTicks", getMaxAge());
 		seeThroWater = UtilParse.getIntSafe(json, "seeThroWater", 0);
 		seeThroBlock = UtilParse.getIntSafe(json, "seeThroBlock", 0);
+		showAfterBurner = UtilParse.getBooleanSafe(json, "showAfterBurner", true);
+		showTrail = UtilParse.getBooleanSafe(json, "showTrail", true);
 	}
 
 	public float getTurnRadius() {
@@ -108,6 +97,14 @@ public abstract class MissileStats extends BulletStats {
 	
 	public int getSeeThroBlock() {
 		return seeThroBlock;
+	}
+	
+	public boolean isShowAfterBurner() {
+		return showAfterBurner;
+	}
+	
+	public boolean isShowTrail() {
+		return showTrail;
 	}
 
     public double getAcceleration() {

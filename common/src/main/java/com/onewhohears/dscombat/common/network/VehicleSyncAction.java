@@ -1,15 +1,14 @@
 package com.onewhohears.dscombat.common.network;
 
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleSyncAction;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
-import com.onewhohears.dscombat.data.radar.RadarFilterMode;
-import com.onewhohears.dscombat.data.radar.RadarTarget;
-import com.onewhohears.dscombat.data.weapon.WeaponTargetParameters;
-import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.dscombat.item.ItemParachute;
 import com.onewhohears.onewholibs.util.UtilEntity;
@@ -22,17 +21,20 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
 public abstract class VehicleSyncAction {
+	
+	private static final Logger LOGGER = LogUtils.getLogger();
 
     public static final BiPredicate<Player, EntityVehicle> PILOT_CHECK = (player, vehicle) -> {
         if (!vehicle.isPilotOrCopilot(player)) {
@@ -68,9 +70,9 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new LandingGearAction(false));
         addVehicleSyncAction(new OpenStorageAction(0));
         addVehicleSyncAction(new OpenPartsAction());
-        addVehicleSyncAction(new SetRadarModeAction(RadarFilterMode.ALL));
+        addVehicleSyncAction(new SetRadarModeAction(RadarStats.RadarMode.ALL));
         addVehicleSyncAction(new PingSelectAction(null));
-        addVehicleSyncAction(new ShootAction(-1, new WeaponTargetParameters(null, null, TargetMode.NONE, -1, -1)));
+        addVehicleSyncAction(new ShootAction(-1, 0, null, null));
         addVehicleSyncAction(new ToItemAction());
         addVehicleSyncAction(new DismountAction());
         addVehicleSyncAction(new SwitchSeatAction());
@@ -78,6 +80,7 @@ public abstract class VehicleSyncAction {
         addVehicleSyncAction(new JetesinAction(""));
         addVehicleSyncAction(new SetPermModeAction(EntityVehicle.PermMode.PUBLIC));
         addVehicleSyncAction(new SetCustomNameAction(Component.empty()));
+        addVehicleSyncAction(new SmokeGrenadeAction());
     }
 
     public static void sendSyncAction(VehicleSyncAction action) {
@@ -221,8 +224,8 @@ public abstract class VehicleSyncAction {
     }
 
     public static class SetRadarModeAction extends VehicleSyncAction {
-        private RadarFilterMode mode;
-        public SetRadarModeAction(RadarFilterMode mode) {
+        private RadarStats.RadarMode mode;
+        public SetRadarModeAction(RadarStats.RadarMode mode) {
             super(3);
             this.mode = mode;
         }
@@ -240,13 +243,13 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
-            return (buffer) -> mode = buffer.readEnum(RadarFilterMode.class);
+            return (buffer) -> mode = buffer.readEnum(RadarStats.RadarMode.class);
         }
     }
 
     public static class PingSelectAction extends VehicleSyncAction {
-        private RadarTarget ping;
-        public PingSelectAction(RadarTarget ping) {
+        private RadarStats.RadarPing ping;
+        public PingSelectAction(RadarStats.RadarPing ping) {
             super(4);
             this.ping = ping;
         }
@@ -264,18 +267,21 @@ public abstract class VehicleSyncAction {
         }
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
-            return (buffer) -> ping = new RadarTarget(buffer);
+            return (buffer) -> ping = new RadarStats.RadarPing(buffer);
         }
     }
 
     public static class ShootAction extends VehicleSyncAction {
         private int selectedWeaponIndex;
-        private @NotNull WeaponTargetParameters targetParams;
-
-        public ShootAction(int selectedWeaponIndex, @NotNull WeaponTargetParameters targetParams) {
+        private int turretWeaponIndex;
+        @Nullable private RadarStats.RadarPing ping;
+        @Nullable private Vec3 targetPos;
+        public ShootAction(int selectedWeaponIndex, int turretWeaponIndex, @Nullable RadarStats.RadarPing ping, @Nullable Vec3 targetPos) {
             super(5);
             this.selectedWeaponIndex = selectedWeaponIndex;
-            this.targetParams = targetParams;
+            this.turretWeaponIndex = turretWeaponIndex;
+            this.ping = ping;
+            this.targetPos = targetPos;
         }
         @Override
         protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
@@ -285,29 +291,46 @@ public abstract class VehicleSyncAction {
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
                 if (!(player.getVehicle() instanceof EntityRidablePart seat)) return;
-                vehicle.weaponSystem.setTargetParameters(targetParams);
+                if (ping != null) vehicle.radarSystem.selectTarget(ping);
+                if (targetPos != null) vehicle.weaponSystem.setTargetPos(targetPos);
                 if (seat.isTurret()) {
-                    ((EntityTurret)seat).shoot(player, targetParams);
+                    EntityTurret turret = (EntityTurret) seat;
+                    turret.setWeaponIndex(turretWeaponIndex);
+                    turret.shoot(player);
                     return;
                 }
                 if (selectedWeaponIndex == -1) return;
                 if (!seat.canPassengerShootParentWeapon()) return;
                 vehicle.weaponSystem.setSelected(selectedWeaponIndex);
-                vehicle.weaponSystem.shootSelected(player, targetParams);
+                vehicle.weaponSystem.shootSelected(player);
             };
         }
         @Override
         protected Consumer<FriendlyByteBuf> getWriteData() {
             return (buffer) -> {
                 buffer.writeInt(selectedWeaponIndex);
-                targetParams.write(buffer);
+                buffer.writeInt(turretWeaponIndex);
+                if (ping != null) {
+                    buffer.writeBoolean(true);
+                    ping.write(buffer);
+                } else buffer.writeBoolean(false);
+                if (targetPos != null) {
+                    buffer.writeBoolean(true);
+                    DataSerializers.VEC3.write(buffer, targetPos);
+                } else buffer.writeBoolean(false);
             };
         }
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
             return (buffer) -> {
                 selectedWeaponIndex = buffer.readInt();
-                targetParams = new WeaponTargetParameters(buffer);
+                turretWeaponIndex = buffer.readInt();
+                if (buffer.readBoolean())
+                    ping = new RadarStats.RadarPing(buffer);
+                else ping = null;
+                if (buffer.readBoolean())
+                    targetPos = DataSerializers.VEC3.read(buffer);
+                else targetPos = null;
             };
         }
     }
@@ -332,7 +355,8 @@ public abstract class VehicleSyncAction {
             return (player, vehicle) -> {
                 ItemStack item = vehicle.getItem();
                 if (player.getInventory().getFreeSlot() != -1 && player.addItem(item)) {
-                    vehicle.discard();
+                    vehicle.setAllowRemoval(true);
+                    vehicle.remove(Entity.RemovalReason.DISCARDED);
                     return;
                 }
                 vehicle.becomeItem(player.position());
@@ -364,6 +388,26 @@ public abstract class VehicleSyncAction {
         @Override
         protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
             return (player, vehicle) -> {
+                // MOHIST FIX: Restore player visibility BEFORE dismounting
+                if (player.getVehicle() instanceof EntityRidablePart<?, ?> seat) {
+                    if (seat.getStats().shouldHidePlayer()) {
+                        for (int i = 0; i < 3; i++) {
+                            player.setInvisible(false);
+                        }
+                        
+                        // Schedule delayed checks
+                        if (player.getServer() != null) {
+                            for (int delay : new int[]{1, 5, 10, 20}) {
+                                player.getServer().tell(new net.minecraft.server.TickTask(delay, () -> {
+                                    if (!player.isPassenger()) {
+                                        player.setInvisible(false);
+                                    }
+                                }));
+                            }
+                        }
+                    }
+                }
+                
                 if (eject && player.getVehicle() instanceof EntityRidablePart seat && seat.canEject()) {
                     seat.useEject();
                     player.stopRiding();
@@ -544,6 +588,32 @@ public abstract class VehicleSyncAction {
         @Override
         protected Consumer<FriendlyByteBuf> getReadData() {
             return (buffer) -> name = buffer.readComponent();
+        }
+    }
+
+    /** Fires all smoke grenade launchers on the vehicle. */
+    public static class SmokeGrenadeAction extends VehicleSyncAction {
+        public SmokeGrenadeAction() {
+            super(13);
+        }
+        @Override
+        protected BiPredicate<Player, EntityVehicle> getPermissionCheck() {
+            return PERMISSION_CHECK;
+        }
+        @Override
+        protected BiConsumer<ServerPlayer, EntityVehicle> getServerAction() {
+            return (player, vehicle) -> {
+                System.out.println("DEBUG: SmokeGrenadeAction.getServerAction called for vehicle: " + vehicle.getStatsId());
+                vehicle.fireSmokeGrenades(player);
+            };
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getWriteData() {
+            return (buffer) -> {};
+        }
+        @Override
+        protected Consumer<FriendlyByteBuf> getReadData() {
+            return (buffer) -> {};
         }
     }
 }

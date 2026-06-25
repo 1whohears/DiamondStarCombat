@@ -1,0 +1,21 @@
+{
+  "presetId": "smoke_grenade",
+  "presetType": "smoke_grenade",
+  "entityTypeKey": "dscombat:smoke_grenade",
+  "maxAmmo": 12,
+  "fireRate": 20,
+  "maxAge": 200,
+  "canShootOnGround": true,
+  "mass": 1.0,
+  "shootSoundKey": "dscombat:smoke_grenade_shoot",
+  "deploy_sound_key": "dscombat:smoke_grenade_deploy",
+  "fuse_ticks": 27,
+  "smoke_duration": 300,
+  "smoke_radius": 7.0,
+  "itemKey": "dscombat:ammo",
+  "craftNum": 4,
+  "ingredients": [
+    { "item": "minecraft:gunpowder", "num": 2 },
+    { "item": "minecraft:gravel", "num": 1 }
+  ]
+}

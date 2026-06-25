@@ -19,7 +19,6 @@ import net.minecraft.world.phys.Vec3;
 public class RadarStats extends JsonPresetStats {
 	
 	private final double range;
-	private final double verticalRange;
 	private final double sensitivity;
 	private final double fov;
 	private final int scanRate;
@@ -36,7 +35,6 @@ public class RadarStats extends JsonPresetStats {
 	public RadarStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		range = UtilParse.getFloatSafe(json, "range", 0);
-		verticalRange = UtilParse.getFloatSafe(json, "verticalRange", 2000);
 		sensitivity = UtilParse.getFloatSafe(json, "sensitivity", 0);
 		fov = UtilParse.getFloatSafe(json, "fov", 0);
 		scanRate = UtilParse.getIntSafe(json, "scanRate", 100);
@@ -67,10 +65,6 @@ public class RadarStats extends JsonPresetStats {
 	
 	public double getUnscaledRange() {
 		return range;
-	}
-
-	public double getVerticalRange() {
-		return verticalRange;
 	}
 
 	public double getFov() {
@@ -126,6 +120,222 @@ public class RadarStats extends JsonPresetStats {
         return getUnscaledRange();
     }
 
+	public static class RadarPing {
+		public final int id;
+		public final Vec3 pos;
+		public final boolean isFriendly;
+		public final PingTerrainType terrainType;
+		public final PingEntityType entityType;
+		private boolean isShared;
+		private boolean isJamming; // true when this jammer is actively jamming missiles
+		private Vec3 clientPos;
+		public RadarPing(Entity ping, boolean isFriendly, PingEntityType entityType) {
+			id = ping.getId();
+			pos = ping.getBoundingBox().getCenter();
+			this.isFriendly = isFriendly;
+			this.isShared = false;
+			this.isJamming = false;
+			this.terrainType = PingTerrainType.getByEntity(ping);
+			this.entityType = entityType;
+		}
+		private RadarPing(int id, Vec3 pos, boolean isFriendly, boolean isShared, boolean isJamming, PingTerrainType terrainType, PingEntityType entityType) {
+			this.id = id;
+			this.pos = pos;
+			this.isFriendly = isFriendly;
+			this.isShared = isShared;
+			this.isJamming = isJamming;
+			this.terrainType = terrainType;
+			this.entityType = entityType;
+		}
+		public RadarPing(FriendlyByteBuf buffer) {
+			id = buffer.readInt();
+			pos = DataSerializers.VEC3.read(buffer);
+			isFriendly = buffer.readBoolean();
+			isShared = buffer.readBoolean();
+			isJamming = buffer.readBoolean();
+			terrainType = PingTerrainType.getById(buffer.readByte());
+			entityType = PingEntityType.getById(buffer.readByte());
+		}
+		public void write(FriendlyByteBuf buffer) {
+			buffer.writeInt(id);
+			DataSerializers.VEC3.write(buffer, pos);
+			buffer.writeBoolean(isFriendly);
+			buffer.writeBoolean(isShared);
+			buffer.writeBoolean(isJamming);
+			buffer.writeByte(terrainType.id);
+			buffer.writeByte(entityType.id);
+		}
+		public boolean isShared() {
+			return this.isShared;
+		}
+		public boolean isJamming() {
+			return this.isJamming;
+		}
+		public void setJamming(boolean jamming) {
+			this.isJamming = jamming;
+		}
+		public RadarPing getCopy(boolean isShared) {
+			return new RadarPing(id, pos, isFriendly, isShared, isJamming, terrainType, entityType);
+		}
+		public Vec3 getPosForClient() {
+			if (clientPos != null) return clientPos;
+			return pos;
+		}
+		public void setClientPos(Level level) {
+			Entity e = level.getEntity(id);
+			if (e == null) {
+				clientPos = null;
+				return;
+			}
+			clientPos = e.getBoundingBox().getCenter();
+		}
+		@Override
+		public String toString() {
+			return "PING["+(int)pos.x+","+(int)pos.y+","+(int)pos.z+"]";
+		}
+		@Override
+		public boolean equals(Object o) {
+			if (o instanceof RadarPing ping && ping.id == this.id) return true;
+			return false;
+		}
+		public boolean dontDisplayByMode(RadarMode mode) {
+			if (mode.isOff()) return true;
+			if (mode.isAll()) return false;
+			if (entityType.isMissile()) return false;
+			if (mode.isMobsOnly()) return !entityType.isMob();
+			if (mode.isPlayersOnly()) return !entityType.isPlayer();
+			if (mode.isPlayersOrBots()) return !entityType.isBot();
+			if (mode.isVehiclesOnly()) return !entityType.isVehicle();
+			return false;
+		}
+	}
+	
+	public enum PingTerrainType {
+		GROUND((byte)0, 6),
+		AIR((byte)1, 8),
+		WATER((byte)2, 7);
+		public final byte id;
+		public final int index;
+		PingTerrainType(byte id, int index) {
+			this.id = id;
+			this.index = index;
+		}
+		public int getIconIndex() {
+			return index;
+		}
+		public boolean isGround() {
+			return this == GROUND;
+		}
+		public boolean isAir() {
+			return this == AIR;
+		}
+		public boolean isWater() {
+			return this == WATER;
+		}
+		public static PingTerrainType getById(byte id) {
+			for (int i = 0; i < values().length; ++i) 
+				if (values()[i].id == id) 
+					return values()[i];
+			return GROUND;
+		}
+		public static PingTerrainType getByEntity(Entity e) {
+			if (e.isInWater()) return WATER;
+			if (UtilVehicleEntity.isOnGroundOrWater(e)) return GROUND;
+			return AIR;
+		}
+	}
+	
+	public enum PingEntityType {
+		PLAYER((byte)0, 0),
+		HOSTILE_MOB((byte)1, 1),
+		FRIENDLY_MOB((byte)2, 2),
+		VEHICLE((byte)3, 3),
+		VEHICLE_PLAYER((byte)4, 3),
+		VEHICLE_BOT((byte)5, 3),
+		MISSILE((byte)6, 5),
+		JAMMER((byte)7, 3);
+		public final byte id;
+		public final int index;
+		PingEntityType(byte id, int index) {
+			this.id = id;
+			this.index = index;
+		}
+		public int getIconIndex() {
+			return index;
+		}
+		public boolean isMob() {
+			return this == HOSTILE_MOB || this == FRIENDLY_MOB;
+		}
+		public boolean isVehicle() {
+			return this == VEHICLE || this == VEHICLE_PLAYER || this == VEHICLE_BOT;
+		}
+		public boolean isPlayer() {
+			return this == PLAYER || this == VEHICLE_PLAYER;
+		}
+		public boolean isBot() {
+			return this == PLAYER || this == VEHICLE_PLAYER || this == VEHICLE_BOT;
+		}
+		public boolean isMissile() {
+			return this == MISSILE;
+		}
+		public boolean isJammer() {
+			return this == JAMMER;
+		}
+		public static PingEntityType getById(byte id) {
+			for (int i = 0; i < values().length; ++i) 
+				if (values()[i].id == id) 
+					return values()[i];
+			return FRIENDLY_MOB;
+		}
+	}
+	
+	public enum RadarMode {
+		ALL,
+		PLAYERS,
+		BOTS,
+		VEHICLES,
+		MOBS,
+		OFF;
+		public RadarMode cycle() {
+			int i = this.ordinal();
+			++i;
+			if (i >= RadarMode.values().length) i = 0;
+			return RadarMode.values()[i];
+		}
+		public boolean canScan(RadarMode mode) {
+			if (this == ALL) return true;
+			return this == mode;
+		}
+		public boolean isPlayersOnly() {
+			return this == PLAYERS;
+		}
+		public boolean isPlayersOrBots() {
+			return isPlayersOnly() || this == BOTS;
+		}
+		public boolean isMobsOnly() {
+			return this == MOBS;
+		}
+		public boolean isVehiclesOnly() {
+			return this == VEHICLES;
+		}
+		public boolean isOff() {
+			return this == OFF;
+		}
+		public boolean isOn() {
+			return !isOff();
+		}
+		public boolean isAll() {
+			return this == ALL;
+		}
+		public String getTranslatable() {
+			return "radarmode.dscombat."+name().toLowerCase();
+		}
+		public static RadarMode byId(int id) {
+			if (id < 0 || id >= values().length) return ALL;
+			return values()[id];
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "["+getId()+":"+fov+":"+range+"]";
@@ -140,9 +350,6 @@ public class RadarStats extends JsonPresetStats {
 		}
 		public Builder setRange(float range) {
 			return setFloat("range", range);
-		}
-		public Builder setVerticalRange(float range) {
-			return setFloat("verticalRange", range);
 		}
 		public Builder setSensitivity(float sensitivity) {
 			return setFloat("sensitivity", sensitivity);

@@ -58,6 +58,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 	// control
 	public final float throttleup, throttledown;
 	public final boolean negativeThrottle, has_turn_assist;
+	public final float reverseSpeedMultiplier;
 	public final double cameraDistance, max_altitude;
 	// physics
 	public final float crashExplosionRadius;
@@ -77,11 +78,19 @@ public abstract class VehicleStats extends JsonPresetStats {
 	// appearance
 	public final int baseTextureVariants, textureLayers;
 	public final Vec3[] afterBurnerSmokePos;
+	public final ExhaustSmokeData[] exhaustSmokePos;
 	public final MastType mastType;
+	public final boolean showRadarOnHUD;
 	// hitbox
 	public final EntityDimensions dimensions;
 	public final boolean rootHitboxNoCollide;
 	public final String[] controllPitchHitboxNames, controllYawHitboxNames, controllRollHitboxNames;
+	// track textures
+	private final com.onewhohears.dscombat.data.vehicle.TrackTextureData trackTextureData;
+	// crawler tracks (OBJ-based, with UV scroll animation)
+	private final List<com.onewhohears.dscombat.data.vehicle.CrawlerTrackPath> crawlerTrackPaths;
+	// hull extra weapons
+	private final com.onewhohears.dscombat.data.weapon.ExtraWeaponData[] hullExtraWeapons;
 	
 	private final boolean isCraftable;
 	private final int defaultPaintJob;
@@ -115,6 +124,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		throttleup = UtilParse.getFloatSafe(stats, "throttleup", 0.01f);
 		throttledown = UtilParse.getFloatSafe(stats, "throttledown", 0.01f);
 		negativeThrottle = UtilParse.getBooleanSafe(stats, "negativeThrottle", false);
+		reverseSpeedMultiplier = UtilParse.getFloatSafe(stats, "reverseSpeedMultiplier", 1.0f);
 		has_turn_assist = UtilParse.getBooleanSafe(stats, "has_turn_assist", false);
 		turn_radius = UtilParse.getFloatSafe(stats, "turn_radius", 100);
 		maxroll = UtilParse.getFloatSafe(stats, "maxroll", 0);
@@ -134,6 +144,7 @@ public abstract class VehicleStats extends JsonPresetStats {
 		rootHitboxNoCollide = UtilParse.getBooleanSafe(stats, "rootHitboxNoCollide", false);
 		if (stats.has("mastType")) mastType = MastType.valueOf(stats.get("mastType").getAsString());
 		else mastType = MastType.NONE;
+		showRadarOnHUD = UtilParse.getBooleanSafe(stats, "showRadarOnHUD", true);
 		float entity_size_xz = UtilParse.getFloatSafe(stats, "entity_size_xz", 4);
 		float entity_size_y = UtilParse.getFloatSafe(stats, "entity_size_y", 4);
 		max_altitude = UtilParse.getFloatSafe(stats, "max_altitude", 330);
@@ -165,12 +176,63 @@ public abstract class VehicleStats extends JsonPresetStats {
 				afterBurnerSmokePos[i] = UtilParse.readVec3(jo, "pos");
 			}
 		} else afterBurnerSmokePos = new Vec3[0];
+		
+		if (json.has("exhaust_smoke")) {
+			JsonArray ja = json.get("exhaust_smoke").getAsJsonArray();
+			exhaustSmokePos = new ExhaustSmokeData[ja.size()];
+			for (int i = 0; i < exhaustSmokePos.length; ++i) {
+				JsonObject jo = ja.get(i).getAsJsonObject();
+				Vec3 pos = UtilParse.readVec3(jo, "pos");
+				float count = UtilParse.getFloatSafe(jo, "particle_count", 1.0f);
+				exhaustSmokePos[i] = new ExhaustSmokeData(pos, count);
+			}
+		} else exhaustSmokePos = new ExhaustSmokeData[0];
 		isCraftable = UtilParse.getBooleanSafe(json, "is_craftable", false);
 		defaultPaintJob = UtilParse.getIntSafe(json, "paintjob_color", 0);
 		controllPitchHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_pitch");
 		controllYawHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_yaw");
 		controllRollHitboxNames = UtilParse.getStringArraySafe(stats, "hitboxes_control_roll");
 		display_name_base = UtilParse.getStringSafe(json, "display_name_base", "item.dscombat."+getAssetId());
+		// Parse track texture data
+		if (stats.has("track_textures")) {
+			trackTextureData = new com.onewhohears.dscombat.data.vehicle.TrackTextureData(stats);
+		} else {
+			trackTextureData = com.onewhohears.dscombat.data.vehicle.TrackTextureData.getDefault();
+		}
+		// Parse crawler track paths for OBJ-based track rendering
+		crawlerTrackPaths = new ArrayList<>();
+		if (json.has("crawler_tracks")) {
+			JsonArray tracksArr = json.get("crawler_tracks").getAsJsonArray();
+			for (int i = 0; i < tracksArr.size(); i++) {
+				JsonObject t = tracksArr.get(i).getAsJsonObject();
+				boolean reverse = UtilParse.getBooleanSafe(t, "reverse", false);
+				float segLen = UtilParse.getFloatSafe(t, "segment_length", 0.3f);
+				float zOffset = UtilParse.getFloatSafe(t, "z_offset", 0f);
+				JsonArray pts = t.has("control_points") ? t.get("control_points").getAsJsonArray() : new JsonArray();
+				if (pts.size() >= 4) {
+					double[] cx = new double[pts.size()];
+					double[] cy = new double[pts.size()];
+					for (int j = 0; j < pts.size(); j++) {
+						String[] xy = pts.get(j).getAsString().split("/");
+						cx[j] = xy.length > 0 ? Double.parseDouble(xy[0].trim()) : 0;
+						cy[j] = xy.length > 1 ? Double.parseDouble(xy[1].trim()) : 0;
+					}
+					crawlerTrackPaths.add(new com.onewhohears.dscombat.data.vehicle.CrawlerTrackPath(
+							cx, cy, segLen, zOffset, reverse));
+				}
+			}
+		}
+		// Parse hull extra weapons
+		if (json.has("hull_extra_weapons")) {
+			JsonArray ja = json.get("hull_extra_weapons").getAsJsonArray();
+			hullExtraWeapons = new com.onewhohears.dscombat.data.weapon.ExtraWeaponData[ja.size()];
+			for (int i = 0; i < hullExtraWeapons.length; ++i) {
+				JsonObject jo = ja.get(i).getAsJsonObject();
+				hullExtraWeapons[i] = new com.onewhohears.dscombat.data.weapon.ExtraWeaponData(jo);
+			}
+		} else {
+			hullExtraWeapons = new com.onewhohears.dscombat.data.weapon.ExtraWeaponData[0];
+		}
 		if (json.has("physics_components")) {
 			JsonArray ja = json.get("physics_components").getAsJsonArray();
 			physics_components = new PhysicsComponentData[ja.size()];
@@ -309,6 +371,18 @@ public abstract class VehicleStats extends JsonPresetStats {
 
 	public PhysicsComponentData[] getPhysicsComponents() {
 		return physics_components;
+	}
+	
+	public com.onewhohears.dscombat.data.vehicle.TrackTextureData getTrackTextureData() {
+		return trackTextureData;
+	}
+
+	public List<com.onewhohears.dscombat.data.vehicle.CrawlerTrackPath> getCrawlerTrackPaths() {
+		return crawlerTrackPaths;
+	}
+	
+	public com.onewhohears.dscombat.data.weapon.ExtraWeaponData[] getHullExtraWeapons() {
+		return hullExtraWeapons;
 	}
 	
 	@Override
@@ -801,6 +875,13 @@ public abstract class VehicleStats extends JsonPresetStats {
 			}
 			return getData().get("after_burner_smoke").getAsJsonArray();
 		}
+		
+		protected JsonArray getExhaustSmokes() {
+			if (!getData().has("exhaust_smoke")) {
+				getData().add("exhaust_smoke", new JsonArray());
+			}
+			return getData().get("exhaust_smoke").getAsJsonArray();
+		}
 		/**
 		 * all vehicles
 		 */
@@ -808,6 +889,16 @@ public abstract class VehicleStats extends JsonPresetStats {
 			JsonObject smoke = new JsonObject();
 			UtilParse.writeVec3(smoke, "pos", new Vec3(posX, posY, posZ));
 			getAfterBurnerSmokes().add(smoke);
+			return this;
+		}
+		
+		/**
+		 * ground vehicles - exhaust smoke
+		 */
+		public Builder addExhaustSmokePos(double posX, double posY, double posZ) {
+			JsonObject smoke = new JsonObject();
+			UtilParse.writeVec3(smoke, "pos", new Vec3(posX, posY, posZ));
+			getExhaustSmokes().add(smoke);
 			return this;
 		}
 		public JsonObject getStats() {
@@ -952,6 +1043,13 @@ public abstract class VehicleStats extends JsonPresetStats {
 			return setStatBoolean("negativeThrottle", negativeThrottle);
 		}
 		/**
+		 * all vehicles with negative throttle (reverse)
+		 * @param multiplier speed multiplier when going in reverse (0.0-1.0), default 1.0
+		 */
+		public Builder setReverseSpeedMultiplier(float multiplier) {
+			return setStatFloat("reverseSpeedMultiplier", multiplier);
+		}
+		/**
 		 * all vehicles
 		 */
 		public Builder setHasTurnAssist(boolean has_turn_assist) {
@@ -1090,6 +1188,36 @@ public abstract class VehicleStats extends JsonPresetStats {
 		 */
 		public Builder setBasicEngineSounds(SoundEvent nonPassengerEngine, SoundEvent passengerEngine) {
 			return setBasicEngineSounds(nonPassengerEngine.getLocation(), passengerEngine.getLocation());
+		}
+		/**
+		 * Set idle engine sounds (played when vehicle is stationary with fuel)
+		 * all vehicles 
+		 */
+		public Builder setIdleEngineSounds(ResourceLocation nonPassengerIdle, ResourceLocation passengerIdle) {
+			getSounds().addProperty("nonPassengerIdle", nonPassengerIdle.toString());
+			getSounds().addProperty("passengerIdle", passengerIdle.toString());
+			return this;
+		}
+		/**
+		 * Set idle engine sounds (played when vehicle is stationary with fuel)
+		 * all vehicles 
+		 */
+		public Builder setIdleEngineSounds(ResourceLocation idle) {
+			return setIdleEngineSounds(idle, idle);
+		}
+		/**
+		 * Set idle engine sounds (played when vehicle is stationary with fuel)
+		 * all vehicles 
+		 */
+		public Builder setIdleEngineSounds(SoundEvent idle) {
+			return setIdleEngineSounds(idle.getLocation());
+		}
+		/**
+		 * Set idle engine sounds (played when vehicle is stationary with fuel)
+		 * all vehicles 
+		 */
+		public Builder setIdleEngineSounds(SoundEvent nonPassengerIdle, SoundEvent passengerIdle) {
+			return setIdleEngineSounds(nonPassengerIdle.getLocation(), passengerIdle.getLocation());
 		}
 		/**
 		 * all vehicles 
@@ -1281,6 +1409,30 @@ public abstract class VehicleStats extends JsonPresetStats {
         public Builder setMinDriveAcc(float min_drive_acc) {
             return setStatFloat("min_drive_acc", min_drive_acc);
         }
+		
+		public Builder setTrackTextures(boolean enabled, double leftX, double leftY, double leftZ, 
+										double rightX, double rightY, double rightZ) {
+			JsonObject stats = getStats();
+			stats.addProperty("track_textures", enabled);
+			
+			JsonObject leftTrack = new JsonObject();
+			leftTrack.addProperty("x", leftX);
+			leftTrack.addProperty("y", leftY);
+			leftTrack.addProperty("z", leftZ);
+			stats.add("left_track_pos", leftTrack);
+			
+			JsonObject rightTrack = new JsonObject();
+			rightTrack.addProperty("x", rightX);
+			rightTrack.addProperty("y", rightY);
+			rightTrack.addProperty("z", rightZ);
+			stats.add("right_track_pos", rightTrack);
+			
+			return this;
+		}
+		
+		public Builder enableTrackTextures() {
+			return setTrackTextures(true, -1.5, -1.0, 0.0, 1.5, -1.0, 0.0);
+		}
 
 		public Builder setBoolean(String key, boolean value) {
 			getData().addProperty(key, value);
@@ -1302,5 +1454,14 @@ public abstract class VehicleStats extends JsonPresetStats {
 			return this;
 		}
 	}
-	
+
+	public static class ExhaustSmokeData {
+		public final Vec3 pos;
+		public final float particleCount;
+		public ExhaustSmokeData(Vec3 pos, float particleCount) {
+			this.pos = pos;
+			this.particleCount = particleCount;
+		}
+	}
+
 }

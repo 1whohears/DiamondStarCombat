@@ -16,10 +16,12 @@ import net.minecraft.world.phys.Vec3;
 public class SeatStats extends PartStats {
 
 	private final Vec3 passenger_offset;
+	private final boolean hidePlayer;
 
 	public SeatStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		passenger_offset = UtilParse.readVec3(json, "passenger_offset");
+		hidePlayer = UtilParse.getBooleanSafe(json, "hidePlayer", false);
 	}
 
 	@Override
@@ -49,5 +51,9 @@ public class SeatStats extends PartStats {
 
 	public Vec3 getPassengerOffsets() {
 		return passenger_offset;
+	}
+
+	public boolean shouldHidePlayer() {
+		return hidePlayer;
 	}
 }

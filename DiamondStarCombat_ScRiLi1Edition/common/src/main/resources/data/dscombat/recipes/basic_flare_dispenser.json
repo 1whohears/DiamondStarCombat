@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"L": {
+			"item": "minecraft:lever"
+		},
+		"D": {
+			"item": "minecraft:dropper"
+		},
+		"B": {
+			"item": "minecraft:blaze_rod"
+		}
+	},
+	"pattern": [
+		"L",
+		"D",
+		"B"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:basic_flare_dispenser"
+	}
+}

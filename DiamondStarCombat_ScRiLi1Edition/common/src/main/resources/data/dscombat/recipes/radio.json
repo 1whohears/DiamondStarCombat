@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"T": {
+			"item": "dscombat:ti83"
+		},
+		"J": {
+			"item": "minecraft:jukebox"
+		}
+	},
+	"pattern": [
+		"T",
+		"J"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:radio"
+	}
+}

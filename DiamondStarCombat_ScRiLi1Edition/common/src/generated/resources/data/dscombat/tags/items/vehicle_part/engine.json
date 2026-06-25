@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#dscombat:vehicle_part/engine/external_push",
+    "#dscombat:vehicle_part/engine/internal_push",
+    "#dscombat:vehicle_part/engine/internal_radial",
+    "#dscombat:vehicle_part/engine/internal_spin"
+  ]
+}

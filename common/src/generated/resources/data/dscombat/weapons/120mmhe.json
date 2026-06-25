@@ -28,6 +28,19 @@
   "itemKey": "dscombat:bullet",
   "mass": 10.0,
   "maxAge": 40,
+  "muzzle_smoke": [
+    {
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "particle_count": 8.0,
+      "spread_distance": 0.8,
+      "flash_scale": 1.5,
+      "flash_lifetime": 2
+    }
+  ],
   "presetId": "120mmhe",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:cannon_shoot_2",

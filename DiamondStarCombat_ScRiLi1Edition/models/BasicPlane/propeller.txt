@@ -1,0 +1,2 @@
+
+public static final AnimationDefinition BASIC_PLANE_PROPELLER = AnimationDefinition.Builder.withLength(0.08333333333333333f).looping().addAnimation("undefined", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.08333333333333333f, KeyframeAnimations.degreeVec(0f, 0f, 360 f), AnimationChannel.Interpolations.LINEAR))).build();

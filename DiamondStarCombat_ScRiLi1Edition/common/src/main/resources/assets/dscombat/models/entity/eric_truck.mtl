@@ -1,0 +1,6 @@
+# Made in Blockbench 4.11.2
+newmtl m_8129fcfb-228d-0589-e3b3-e2983117f36c
+map_Kd dscombat:entity/vehicle/eric_truck/base0 
+newmtl m_43face54-1146-e3f1-7d11-1fbd6d376d47
+map_Kd dscombat:entity/vehicle/eric_truck/extra_0_0
+newmtl none

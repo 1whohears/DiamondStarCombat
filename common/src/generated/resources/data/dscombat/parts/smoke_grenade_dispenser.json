@@ -1,0 +1,33 @@
+{
+  "displayName": "item.dscombat.smoke_grenade_dispenser",
+  "item": "dscombat:smoke_grenade_dispenser",
+  "presetId": "smoke_grenade_dispenser",
+  "presetType": "smoke_grenade_dispenser",
+  "slotType": "internal",
+  "weight": 80.0,
+  "max_grenades": 12,
+  "fuse_ticks": 40,
+  "smoke_duration": 300,
+  "smoke_radius": 5.0,
+  "launchers": [
+    {
+      "pos": { "x": 1.5, "y": 0.5, "z": 0.0 },
+      "yaw": 90,
+      "pitch": 15
+    },
+    {
+      "pos": { "x": -1.5, "y": 0.5, "z": 0.0 },
+      "yaw": -90,
+      "pitch": 15
+    }
+  ],
+  "ingredients": [
+    { "item": "minecraft:gunpowder", "num": 8 },
+    { "item": "minecraft:gravel", "num": 4 },
+    { "tag": "dscombat:aluminum_ingot", "num": 4 }
+  ],
+  "repair_cost": [
+    { "item": "minecraft:gunpowder", "num": 2 }
+  ],
+  "sort_factor": 5
+}

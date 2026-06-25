@@ -36,6 +36,21 @@ public class ModParticles {
 	
 	public static final RegistrySupplier<SimpleParticleType> FLARE = PARTICLE_TYPES.register(
             "flare", () -> createParticleType(true));
+	
+	public static final RegistrySupplier<SimpleParticleType> TRACER = PARTICLE_TYPES.register(
+            "tracer", () -> createParticleType(true));
+
+	public static final RegistrySupplier<SimpleParticleType> TANK_DUST = PARTICLE_TYPES.register(
+            "tank_dust", () -> createParticleType(true));
+
+	public static final RegistrySupplier<SimpleParticleType> SMOKE_GRENADE_CLOUD = PARTICLE_TYPES.register(
+            "smoke_grenade_cloud", () -> createParticleType(true));
+
+	public static final RegistrySupplier<SimpleParticleType> EXPLOSION_CORE = PARTICLE_TYPES.register(
+            "explosion_core", () -> createParticleType(true));
+
+	public static final RegistrySupplier<SimpleParticleType> EXPLOSION_SMOKE = PARTICLE_TYPES.register(
+            "explosion_smoke", () -> createParticleType(true));
 
     public static void register() {
         PARTICLE_TYPES.register();

@@ -1,0 +1,52 @@
+{
+  "displayName": "turretpancsir",
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 1.0,
+    "translate": {
+      "x": 0.0,
+      "y": -0.1,
+      "z": 0.0
+    }
+  },
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "turret_rotation",
+		"bound": -15.0,
+        "model_part_key": "gun",
+        "pivot": {
+          "x": 0.000225,
+          "y": 1.46286875,
+          "z": -1.27008125
+        },
+		"rot_axis": "X",
+        "rot_rate": 15.0
+      },
+      {
+        "anim_id": "continuous_rotation",
+        "model_part_key": "radar",
+        "pivot": {
+          "x": 0.013975,
+          "y": 1.88809375,
+          "z": -1.67145
+        },
+		"rot_axis": "Y",
+        "rot_rate": 5.0
+      } 
+    ],
+	"dont_cull": true,
+    "model_id": "turret_pancsir"
+  },
+  "presetId": "turret_pancsir",
+  "presetType": "turret"
+}

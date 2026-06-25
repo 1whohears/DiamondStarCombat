@@ -1,0 +1,106 @@
+package com.onewhohears.dscombat.client.screen;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.onewhohears.dscombat.DSCombatMod;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager;
+import com.onewhohears.dscombat.data.vehicle.VehicleTextureManager.BlendMode;
+import com.onewhohears.onewholibs.client.screen.BackgroundScreen;
+import com.onewhohears.onewholibs.util.UtilMCText;
+import com.onewhohears.onewholibs.util.UtilParse;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.CycleButton.OnValueChange;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
+
+public class VehiclePaintScreen extends BackgroundScreen {
+	
+	public static final ResourceLocation BG_TEXTURE = new ResourceLocation(DSCombatMod.MODID,
+			"textures/ui/paintjob_screen.png");
+	
+	private static final int imageWidth = 176, imageHeight = 136;
+	private static final int textureSize = 256;
+	
+	public final VehicleTextureManager textures;
+	
+	public VehiclePaintScreen(VehicleTextureManager textures) {
+		super("screen.dscombat.vehicle_paint_screen", BG_TEXTURE,
+				imageWidth, imageHeight, textureSize, textureSize);
+		this.textures = textures;
+	}
+	
+	@Override
+	protected void init() {
+		super.init();
+		int widgetX = guiX + 4, widgetY = guiY + 4;
+		addRenderableWidget(CycleButton.<Integer>builder((base) -> UtilMCText.literal(base+""))
+				.withValues(count(textures.getBaseTextureNum()))
+				.withInitialValue(textures.getBaseTextureIndex())
+				.create(widgetX, widgetY, 168, 20, 
+						UtilMCText.translatable("info.dscombat.base_texture"),
+					onBaseChange()));
+		int layerX = widgetX, layerY = widgetY + 20;
+		for (int i = 0; i < textures.getTextureLayers().length; ++i) {
+			addRenderableWidget(CycleButton.onOffBuilder(textures.getTextureLayers()[i].canRender())
+				.create(layerX, layerY, 44, 20,
+						UtilMCText.translatable("info.dscombat.see_layer_texture"),
+					onRenderLayerToggle(i)));
+			addRenderableWidget(CycleButton.<BlendMode>builder((mode) -> UtilMCText.translatable(mode.getTranslatable()))
+				.withValues(BlendMode.values())
+				.withInitialValue(textures.getTextureLayers()[i].getBlendMode())
+				.create(layerX+44, layerY, 74, 20,
+						UtilMCText.translatable("info.dscombat.color_mix"),
+					onBlendModeChange(i)));
+			EditBox colorBox = new EditBox(font, layerX+118, layerY,
+					50, 20, UtilMCText.empty());
+			colorBox.setValue(UtilParse.toColorString(textures.getTextureLayers()[i].getColor()));
+			colorBox.setTextColor(textures.getTextureLayers()[i].getColorInt());
+			colorBox.setResponder(layerColorBoxResponder(colorBox, i));
+			addRenderableWidget(colorBox);
+			layerY += 20;
+		}
+	}
+	
+	private OnValueChange<Integer> onBaseChange() {
+		return (button, base) -> textures.setBaseTexture(base);
+	}
+	
+	private OnValueChange<Boolean> onRenderLayerToggle(int layer) {
+		return (button, render) -> textures.getTextureLayers()[layer].setCanRender(render);
+	}
+	
+	private OnValueChange<BlendMode> onBlendModeChange(int layer) {
+		return (button, mode) -> textures.getTextureLayers()[layer].setBlendMode(mode);
+	}
+	
+	private Consumer<String> layerColorBoxResponder(EditBox colorBox, int layer) {
+		return (color) -> {
+			textures.getTextureLayers()[layer].setColor(color);
+			colorBox.setTextColor(textures.getTextureLayers()[layer].getColorInt());
+		};
+	}
+	
+	private Integer[] count(int num) {
+		Integer[] r = new Integer[num];
+		for (int i = 0; i < num; ++i) r[i] = i;
+		return r;
+	}
+	
+	@Override
+	public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+		renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, partialTick);
+	}
+	
+	@Override
+	public void renderBackground(@NotNull GuiGraphics graphics) {
+		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+		RenderSystem.setShaderTexture(0, BG_TEXTURE);
+        graphics.blit(BG_TEXTURE, guiX, guiY, 0, 0,
+			imageWidth, imageHeight, textureSize, textureSize);
+	}
+
+}

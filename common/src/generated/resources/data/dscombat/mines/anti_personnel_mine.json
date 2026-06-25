@@ -1,0 +1,10 @@
+{
+  "armTime": 40,
+  "chainReaction": true,
+  "damage": 20.0,
+  "displayName": "preset.dscombat.anti_personnel_mine",
+  "mineType": "anti_personnel",
+  "presetId": "anti_personnel_mine",
+  "presetType": "mine",
+  "radius": 2.5
+}

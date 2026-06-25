@@ -36,8 +36,35 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	
 	public void tick() {
 		super.tick();
-		if (!isClientSide() && getWorld().getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES))
-			tickRideCollision();
+		if (!isClientSide()) {
+			if (getWorld().getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES))
+				tickRideCollision();
+			// MOHIST FIX: Ensure player visibility is restored if they're not in a hidePlayer seat
+			// This fixes the issue where players remain invisible after dismounting on Magma/Mohist servers
+			if (tickCount % 20 == 0) { // Check every second
+				checkPlayerVisibility();
+			}
+		}
+	}
+	
+	/**
+	 * MOHIST FIX: Check and restore player visibility if needed
+	 * On Magma/Mohist servers, players can remain invisible after dismounting from hidePlayer seats
+	 */
+	protected void checkPlayerVisibility() {
+		// Only check if this seat has hidePlayer enabled
+		if (!getStats().shouldHidePlayer()) return;
+		
+		// Get the current passenger
+		Entity passenger = getPassenger();
+		if (!(passenger instanceof Player player)) return;
+		
+		// If player is riding this seat, they should be invisible
+		// If they're not riding but still invisible, restore visibility
+		if (!player.isInvisible()) {
+			// Player should be invisible but isn't - make them invisible
+			player.setInvisible(true);
+		}
 	}
 	
 	protected void tickRideCollision() {
@@ -116,6 +143,29 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 			if (vehicle != null && !vehicle.hasOwner()) {
 				vehicle.setOwner(passenger);
 			}
+			// MOHIST FIX: Handle player visibility based on seat configuration
+			if (passenger instanceof Player player) {
+				if (getStats().shouldHidePlayer()) {
+					// This seat requires hiding player
+					player.setInvisible(true);
+				} else {
+					// This seat does NOT require hiding player - restore visibility
+					for (int i = 0; i < 3; i++) {
+						player.setInvisible(false);
+					}
+					
+					// Schedule delayed checks
+					if (getWorld().getServer() != null) {
+						for (int delay : new int[]{1, 5, 10}) {
+							getWorld().getServer().tell(new net.minecraft.server.TickTask(delay, () -> {
+								if (player.isPassenger()) {
+									player.setInvisible(false);
+								}
+							}));
+						}
+					}
+				}
+			}
 		} else {
             ClientInputEventHandlers.onEntityMountVehicle(passenger);
         }
@@ -140,6 +190,23 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	protected void removePassenger(Entity passenger) {
 		super.removePassenger(passenger);
 		if (isClientSide()) return;
+		// MOHIST FIX: Restore player visibility if it was hidden
+		if (passenger instanceof Player player && getStats().shouldHidePlayer()) {
+			for (int i = 0; i < 3; i++) {
+				player.setInvisible(false);
+			}
+			
+			// Schedule checks at 1, 5, 10, and 20 ticks
+			if (getWorld().getServer() != null) {
+				for (int delay : new int[]{1, 5, 10, 20}) {
+					getWorld().getServer().tell(new net.minecraft.server.TickTask(delay, () -> {
+						if (!player.isPassenger()) {
+							player.setInvisible(false);
+						}
+					}));
+				}
+			}
+		}
 		EntityVehicle vehicle = getParentVehicle();
 		if (vehicle == null) return;
 		vehicle.onSeatDismount(passenger);
@@ -148,14 +215,33 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 	@Override
     public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity entity) {
 		int minY = getWorld().getMinBuildHeight()+4;
-        EntityHitResult ehr = UtilEntity.getEntityHitResultAtClip(getWorld(), entity,
-                position().add(0, 10, 0),
-                position(),
+		// MOHIST FIX: Search downward first, then upward for dismount location
+		// This prevents players from appearing on top of the vehicle
+		Vec3 currentPos = position();
+		
+		// Try downward first (more natural for ground vehicles)
+		EntityHitResult ehrDown = UtilEntity.getEntityHitResultAtClip(getWorld(), entity,
+                currentPos,
+                currentPos.add(0, -10, 0),
                 entity.getBoundingBox(),
                 e -> !e.equals(entity),
                 0.3f);
+        
+		if (ehrDown != null) {
+			Vec3 dis = ehrDown.getLocation().add(0, 0.2, 0);
+			if (dis.y() >= minY) return dis;
+		}
+		
+		// If downward didn't work, try upward
+        EntityHitResult ehrUp = UtilEntity.getEntityHitResultAtClip(getWorld(), entity,
+                currentPos.add(0, 10, 0),
+                currentPos,
+                entity.getBoundingBox(),
+                e -> !e.equals(entity),
+                0.3f);
+        
         Vec3 dis;
-        if (ehr != null) dis = ehr.getLocation().add(0, 0.2, 0);
+        if (ehrUp != null) dis = ehrUp.getLocation().add(0, 0.2, 0);
         else dis = super.getDismountLocationForPassenger(entity);
 		if (dis.y() < minY) dis = new Vec3(dis.x(), minY, dis.z());
 		return dis;

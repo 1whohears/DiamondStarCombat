@@ -1,0 +1,51 @@
+{
+  "acceleration": 0.32,
+  "bleed": 0.8,
+  "canShootOnGround": false,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "heavy_missile_rack",
+    "mls"
+  ],
+  "craftNum": 1,
+  "damage": 60.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.agm88g",
+  "entityTypeKey": "dscombat:anti_radar_missile",
+  "explosionRadius": 8.0,
+  "explosive": true,
+  "fireRate": 40,
+  "fov": 80.0,
+  "fuelTicks": 500,
+  "fuseDist": 2.0,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 12,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 5
+    },
+    {
+      "item": "minecraft:coal_block",
+      "num": 5
+    },
+    {
+      "item": "dscombat:intel_pentium",
+      "num": 1
+    }
+  ],
+  "itemKey": "dscombat:missile",
+  "mass": 361.0,
+  "maxAge": 1000,
+  "presetId": "agm88g",
+  "presetType": "anti_radar_missile",
+  "scan_range": 41000.0,
+  "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 10,
+  "speed": 49.74,
+  "turnRadius": 1280.0,
+  "useSpeedScale": true
+}

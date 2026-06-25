@@ -1,0 +1,14 @@
+{
+  "values": [
+    "dscombat:oil_fluid_source",
+    "dscombat:oil_fluid_flowing",
+    {
+      "id": "createindustry:crude_oil_fluid",
+      "required": false
+    },
+    {
+      "id": "#forge:oil",
+      "required": false
+    }
+  ]
+}

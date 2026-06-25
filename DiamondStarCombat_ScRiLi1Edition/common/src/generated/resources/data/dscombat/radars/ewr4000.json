@@ -1,0 +1,19 @@
+{
+  "displayName": "preset.dscombat.ewr4000",
+  "fov": -1.0,
+  "presetId": "ewr4000",
+  "presetType": "standard",
+  "range": 160000.0,
+  "scanAir": true,
+  "scanAircraft": true,
+  "scanGround": false,
+  "scanMissiles": true,
+  "scanMobs": false,
+  "scanPlayers": true,
+  "scanRate": 20,
+  "sensitivity": 0.6,
+  "throGroundRange": 0.0,
+  "throWaterRange": 0.0,
+  "useDistanceScale": true,
+  "verticalRange": 4000.0
+}

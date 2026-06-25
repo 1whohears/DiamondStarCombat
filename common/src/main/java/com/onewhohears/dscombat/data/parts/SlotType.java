@@ -31,6 +31,7 @@ public class SlotType {
 	public static SlotType MOUNT_SUPER_HEAVY = registerExternalSlotType("mount_super_heavy", MOUNT_HEAVY);
 	
 	public static SlotType MOUNT_TECH = registerExternalSlotType("mount_tech", MOUNT_LIGHT);
+	public static SlotType MOUNT_GRENADE = registerExternalSlotType("mount_grenade", MOUNT_LIGHT);
 	
 	public static SlotType PYLON_LIGHT = registerExternalSlotType("pylon_light", EXTERNAL);
 	public static SlotType PYLON_MED = registerExternalSlotType("pylon_med", PYLON_LIGHT);

@@ -2,14 +2,12 @@ package com.onewhohears.dscombat;
 
 import java.util.List;
 
-import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
-import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.onewhohears.dscombat.data.radar.RadarFilterMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -22,22 +20,24 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue mouseXReturnRate;
 		public final ForgeConfigSpec.IntValue mouseYSteps;
 		public final ForgeConfigSpec.IntValue mouseXSteps;
+		// MOUSE DIRECT SETTINGS
+		public final ForgeConfigSpec.DoubleValue mouseDirectPitchSensitivity;
+		public final ForgeConfigSpec.DoubleValue mouseDirectRollSensitivity;
+		public final ForgeConfigSpec.DoubleValue mouseDirectReturnRate;
+		public final ForgeConfigSpec.DoubleValue mouseDirectHeliReturnRate;
 		// CONTROLS
 		public final ForgeConfigSpec.BooleanValue invertY;
 		public final ForgeConfigSpec.BooleanValue cameraTurnRelativeToVehicle;
 		public final ForgeConfigSpec.BooleanValue customDismount;
 		// TARGET POS
 		public final ForgeConfigSpec.DoubleValue targetPosX, targetPosY, targetPosZ;
-		public final ForgeConfigSpec.EnumValue<TargetMode> targetMode;
-		public final ForgeConfigSpec.EnumValue<TargetMode> preferredPositionTargetMode;
 		// VOLUME/SOUND
 		public final ForgeConfigSpec.DoubleValue rwrWarningVol, missileWarningVol, irTargetToneVol;
 		public final ForgeConfigSpec.DoubleValue cockpitVoiceLineVol;
 		public final ForgeConfigSpec.ConfigValue<String> passengerSoundPack;
 		// DISPLAY
 		public final ForgeConfigSpec.IntValue radarPingOverlaySize;
-		public final ForgeConfigSpec.EnumValue<RadarFilterMode> radarFilterMode;
-		public final ForgeConfigSpec.EnumValue<MarkerDisplayMode> markerMode;
+		public final ForgeConfigSpec.EnumValue<RadarMode> defaultRadarMode;
 		// RENDER DISTANCES
 		public final ForgeConfigSpec.IntValue maxRenderRackMissileNum;
 		public final ForgeConfigSpec.DoubleValue renderWeaponRackDistance;
@@ -47,7 +47,7 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue renderOtherExternalPartDistance;
 		// OTHER
 		public final ForgeConfigSpec.BooleanValue debugMode;
-		//public final ForgeConfigSpec.IntValue syncSeatPosRate;
+		public final ForgeConfigSpec.IntValue syncSeatPosRate;
 		// HUD
 		public final ForgeConfigSpec.BooleanValue enableModernHUD;
 		public final ForgeConfigSpec.DoubleValue modernHudOpacity;
@@ -60,15 +60,19 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue heliPitchSmoothingStep;
 		public final ForgeConfigSpec.DoubleValue heliRollSmoothingStep;
 		public final ForgeConfigSpec.DoubleValue heliYawSmoothingStep;
+		// TANK TRACK TEXTURES
+		public final ForgeConfigSpec.BooleanValue enableTrackGroundTextures;
+		public final ForgeConfigSpec.BooleanValue trackDebugMode;
+		public final ForgeConfigSpec.DoubleValue trackTextureOffsetX;
+		public final ForgeConfigSpec.DoubleValue trackTextureOffsetY;
+		public final ForgeConfigSpec.DoubleValue trackTextureOffsetZ;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("display");
 			radarPingOverlaySize = builder
 					.defineInRange("radarPingOverlaySize", 100, 10, 1000);
-			radarFilterMode = builder
-					.defineEnum("defaultRadarMode", RadarFilterMode.ALL);
-			markerMode = builder
-					.defineEnum("markerDisplayMode", MarkerDisplayMode.SELECT_BIG);
+			defaultRadarMode = builder
+					.defineEnum("defaultRadarMode", RadarMode.ALL);
 			builder.pop();
 			builder.push("mouse-joystick-settings");
 			mouseModeMaxRadius = builder
@@ -85,6 +89,23 @@ public class Config {
 			mouseXSteps = builder
 					.defineInRange("stickRollSteps", 5, 1, 100);
 			builder.pop();
+			builder.push("mouse-direct-settings");
+			mouseDirectPitchSensitivity = builder
+					.comment("Mouse Direct mode: how much mouse Y movement maps to pitch input per pixel. " +
+							"Higher = more sensitive. Default 0.015.")
+					.defineInRange("mouseDirectPitchSensitivity", 0.006d, 0.0001d, 1.0d);
+			mouseDirectRollSensitivity = builder
+					.comment("Mouse Direct mode: how much mouse X movement maps to roll input per pixel. " +
+							"Higher = more sensitive. Default 0.015.")
+					.defineInRange("mouseDirectRollSensitivity", 0.006d, 0.0001d, 1.0d);
+			mouseDirectReturnRate = builder
+					.comment("Mouse Direct mode: per-tick rate at which pitch/roll input decays to zero " +
+							"when mouse is not moving (0 = no decay, 1 = instant snap to zero). Default 0.02.")
+					.defineInRange("mouseDirectReturnRate", 0.02d, 0.0d, 1.0d);
+			mouseDirectHeliReturnRate = builder
+					.comment("Mouse Direct mode return rate for helicopters. Lower = input holds longer after releasing mouse. Default 0.005.")
+					.defineInRange("mouseDirectHeliReturnRate", 0.005d, 0.0d, 1.0d);
+			builder.pop();
 			builder.push("control");
 			invertY = builder
 					.comment("Invert vertical inputs.")
@@ -96,11 +117,7 @@ public class Config {
 					.comment("If enabled, your sneak key binding doesn't dismount you from DSC vehicles. " +
 							"You will have to you the diamond star combat dismount keybinding instead (H by default.)")
 					.define("customDismount", true);
-			builder.push("targetMode");
-			targetMode = builder
-					.defineEnum("targetMode", TargetMode.LOOK);
-			preferredPositionTargetMode = builder
-					.defineEnum("preferredPositionTargetMode", TargetMode.LOOK);
+			builder.push("targetPos");
 			targetPosX = builder.defineInRange("targetPosX", 0, Double.MIN_VALUE, Double.MAX_VALUE);
 			targetPosY = builder.defineInRange("targetPosY", 0, Double.MIN_VALUE, Double.MAX_VALUE);
 			targetPosZ = builder.defineInRange("targetPosZ", 0, Double.MIN_VALUE, Double.MAX_VALUE);
@@ -131,7 +148,7 @@ public class Config {
 			debugMode = builder
 					.comment("Stats for nerds.")
 					.define("debugMode", false);
-			/*syncSeatPosRate = builder
+			syncSeatPosRate = builder
 					.comment("Sometimes when the server lags, the server side position of the player's seat " +
 							"entity doesn't get updated. Eventually the server thinks the seat is outside " +
 							"of the player's render distance and sends a discard packet. This causes the player " +
@@ -140,7 +157,7 @@ public class Config {
 							"how often (in ticks) this sync packet is sent from the client to the server. This used " +
 							"to be set to 40 for everyone, but some have exceptionally poor connections and may " +
 							"need this value to be lowered.")
-					.defineInRange("syncSeatPosRate", 10, 0, 200);*/
+					.defineInRange("syncSeatPosRate", 10, 0, 200);
 			builder.push("entity-render-distance");
 			renderWeaponRackDistance = builder
 					.defineInRange("renderWeaponRackDistance", 256.0, 0, 1000);
@@ -167,6 +184,24 @@ public class Config {
 			heliYawSmoothingStep = builder
 				.comment("Per-tick approach step for heli yaw input smoothing. Smaller = smoother (0-1).")
 				.defineInRange("heliYawSmoothingStep", 0.04d, 0.0d, 1.0d);
+			builder.pop();
+			// Tank track ground textures
+			builder.push("tank-tracks");
+			enableTrackGroundTextures = builder
+				.comment("Enable dynamic ground textures on tank tracks.")
+				.define("enableTrackGroundTextures", true);
+			trackDebugMode = builder
+				.comment("Enable debug visualization for track texture positions (colored markers and text).")
+				.define("trackDebugMode", false);
+			trackTextureOffsetX = builder
+				.comment("X offset for track texture sampling position.")
+				.defineInRange("trackTextureOffsetX", 0.0d, -10.0d, 10.0d);
+			trackTextureOffsetY = builder
+				.comment("Y offset for track texture sampling position (height below vehicle).")
+				.defineInRange("trackTextureOffsetY", -1.0d, -10.0d, 10.0d);
+			trackTextureOffsetZ = builder
+				.comment("Z offset for track texture sampling position.")
+				.defineInRange("trackTextureOffsetZ", 0.0d, -10.0d, 10.0d);
 			builder.pop();
 			// Modern HUD settings
 			builder.push("hud");
@@ -233,7 +268,6 @@ public class Config {
 		public final ForgeConfigSpec.DoubleValue heliSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue carSpeedFactor;
 		public final ForgeConfigSpec.DoubleValue boatSpeedFactor;
-		public final ForgeConfigSpec.DoubleValue chainLength;
 		// HELICOPTER HANDLING
 		public final ForgeConfigSpec.DoubleValue heliLateralDampingXZ;
 		public final ForgeConfigSpec.DoubleValue heliHoverDamping;
@@ -271,8 +305,11 @@ public class Config {
 		public final ForgeConfigSpec.BooleanValue enableETLTrimAssist;
 		public final ForgeConfigSpec.DoubleValue etlTrimGain;
 		public final ForgeConfigSpec.BooleanValue scaleTorqueWithRotorPower;
+		// Plane auto-trim
+		public final ForgeConfigSpec.BooleanValue enablePlaneAutoTrim;
+		public final ForgeConfigSpec.DoubleValue planeAutoTrimRollRate;
+		public final ForgeConfigSpec.DoubleValue planeAutoTrimPitchRate;
 		public Server(ForgeConfigSpec.Builder builder) {
-            chainLength = builder.defineInRange("chainLength", 10.0, 1.0, Double.MAX_VALUE);
 			builder.push("speed_factors");
             universalIRLScale = builder.comment("The percent of the IRL top speed vehicle's travel at. " +
                             "1/8th (0.125) by default.")
@@ -378,6 +415,17 @@ public class Config {
 			scaleTorqueWithRotorPower = builder
 				.comment("Scale applied control torques by rotor power (alternative to control moment scaling).")
 				.define("scaleTorqueWithRotorPower", false);
+			builder.pop();
+			builder.push("plane-auto-trim");
+			enablePlaneAutoTrim = builder
+				.comment("Auto-trim for planes: gently levels roll and pitch when no input is given.")
+				.define("enablePlaneAutoTrim", true);
+			planeAutoTrimRollRate = builder
+				.comment("Max roll correction per tick when no roll input (degrees). Higher = snappier leveling.")
+				.defineInRange("planeAutoTrimRollRate", 0.3d, 0.0d, 10.0d);
+			planeAutoTrimPitchRate = builder
+				.comment("Max pitch correction per tick when no pitch input (degrees). Higher = snappier leveling.")
+				.defineInRange("planeAutoTrimPitchRate", 0.1d, 0.0d, 10.0d);
 			builder.pop();
 		}
 	}

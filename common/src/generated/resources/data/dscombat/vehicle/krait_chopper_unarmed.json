@@ -9,10 +9,6 @@
     {
       "item": "dscombat:heavy_fuel_tank",
       "num": 1
-    },
-    {
-      "item": "dscombat:gimbal_camera",
-      "num": 1
     }
   ],
   "is_craftable": true,
@@ -20,12 +16,6 @@
   "presetId": "krait_chopper_unarmed",
   "presetType": "helicopter",
   "slots": [
-    {
-      "data": {
-        "part": "gimbal_camera"
-      },
-      "name": "nose_tech"
-    },
     {
       "data": {
         "part": "c12_engine"

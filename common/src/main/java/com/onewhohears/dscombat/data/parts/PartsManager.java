@@ -495,6 +495,40 @@ public class PartsManager {
 		return false;
 	}
 
+	/**
+	 * Returns the strongest active (non-damaged) jammer jam_strength on this vehicle,
+	 * or 0 if no jammer is installed.
+	 */
+	public float getActiveJammerStrength() {
+		float best = 0f;
+		for (PartSlot p : slots) {
+			if (!p.filled()) continue;
+			if (p.getPartData().isDamaged()) continue;
+			if (p.getPartData().getStats().getType().is(PartType.JAMMER)) {
+				com.onewhohears.dscombat.data.parts.stats.JammerStats js =
+						(com.onewhohears.dscombat.data.parts.stats.JammerStats) p.getPartData().getStats();
+				if (js.getJamStrength() > best) best = js.getJamStrength();
+			}
+		}
+		return best;
+	}
+
+	/**
+	 * Returns the largest jam radius among active jammers on this vehicle, or 0.
+	 */
+	public float getActiveJammerRadius() {
+		float best = 0f;
+		for (PartSlot p : slots) {
+			if (!p.filled() || p.getPartData().isDamaged()) continue;
+			if (p.getPartData().getStats().getType().is(PartType.JAMMER)) {
+				com.onewhohears.dscombat.data.parts.stats.JammerStats js =
+						(com.onewhohears.dscombat.data.parts.stats.JammerStats) p.getPartData().getStats();
+				if (js.getJamRadius() > best) best = js.getJamRadius();
+			}
+		}
+		return best;
+	}
+
 	public int getStorageIndex() {
 		return storageIndex;
 	}

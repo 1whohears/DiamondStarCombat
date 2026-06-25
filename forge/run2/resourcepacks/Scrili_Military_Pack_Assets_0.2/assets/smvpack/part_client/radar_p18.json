@@ -1,0 +1,21 @@
+{
+  "displayName": "radarp18",
+  "model_data": {
+	"custom_anims": [
+      {
+        "anim_id": "continuous_rotation",
+        "model_part_key": "antenna",
+        "pivot": {
+          "x": -0.06254375,
+          "y": 3.88195625,
+          "z": -0.00535
+        },
+		"rot_axis": "Y",
+        "rot_rate": 5.0
+      } 
+    ],
+    "model_id": "radar_p18"
+  },
+  "presetId": "radar_p18",
+  "presetType": "standard"
+}

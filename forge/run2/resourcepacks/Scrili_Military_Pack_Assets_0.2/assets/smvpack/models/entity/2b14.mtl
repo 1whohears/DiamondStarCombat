@@ -1,0 +1,12 @@
+# Blender 3.6.23 MTL File: 'None'
+# www.blender.org
+
+newmtl m_ccf1fe98-c5a2-63c0-ab0d-a3eda1a7b8c1
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd smvpack:entity/vehicle/2b14/base0

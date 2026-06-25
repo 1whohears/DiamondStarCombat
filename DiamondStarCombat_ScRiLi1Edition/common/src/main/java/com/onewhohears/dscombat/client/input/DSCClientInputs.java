@@ -1,0 +1,400 @@
+package com.onewhohears.dscombat.client.input;
+
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.DependencySafety;
+import com.onewhohears.dscombat.common.core.MarkerDisplayMode;
+import com.onewhohears.dscombat.common.core.PositionMarker;
+import com.onewhohears.dscombat.common.core.PositionMarkerManager;
+import com.onewhohears.dscombat.data.radar.RadarFilterMode;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+public class DSCClientInputs {
+	
+	public static boolean disable3rdPersonVehicle = false;
+	public static boolean planeArcadePhysicsMode = false;
+	
+	private static double mouseCenterX = 0;
+	private static double mouseCenterY = 0;
+	
+	private static int hoverId = -1;
+	private static double radarDisplayRange = 10000;
+
+	private static int markerHoverId = -1;
+	private static int selectedMarkerId = -1;
+
+	private static int opticalTrackedEntityId = -1;
+	private static int opticalTrackedEntityIdOld = -1;
+	private static @Nullable Vec3 opticalTrackedEntityPos = null;
+	private static @Nullable Vec3 opticalTrackedEntityPosOld = null;
+	private static long prevOpticalPosUpdateTime;
+	
+	public static final long MOUNT_SHOOT_COOLDOWN = 500;
+	private static long mountTime;
+
+	private static double LEAN_AMOUNT = 0;
+	
+	private static MouseMode CURRENT_MOUSE_MODE = MouseMode.FREE_RELATIVE;
+	
+	private static boolean GIMBAL_MODE = false;
+	private static boolean AFTERBURNER = false;
+	private static boolean TURN_ASSIST = true;
+    private static boolean CAMERA_TRACK_TARGET = false;
+
+    public static float xRotPreTrack, yRotPreTrack;
+    public static float xRotLastGimbal, yRotLastGimbal;
+
+    private static float ZOOM = 2;
+
+    public static boolean isCameraTrackTarget() {
+        return CAMERA_TRACK_TARGET;
+    }
+
+    public static boolean toggleCameraTrackTarget() {
+        CAMERA_TRACK_TARGET = !CAMERA_TRACK_TARGET;
+        return CAMERA_TRACK_TARGET;
+    }
+
+	public static RadarFilterMode getRadarFilterMode() {
+		return Config.CLIENT.radarFilterMode.get();
+	}
+	
+	public static RadarFilterMode cycleRadarFilterMode() {
+		setRadarFilterMode(getRadarFilterMode().cycle());
+		return getRadarFilterMode();
+	}
+	
+	public static void setRadarFilterMode(RadarFilterMode mode) {
+		Config.CLIENT.radarFilterMode.set(mode);
+	}
+	
+	public static boolean isGimbalMode() {
+		return GIMBAL_MODE;
+	}
+	
+	public static void toggleGimbalMode() {
+		setGimbalMode(!GIMBAL_MODE);
+	}
+
+	public static void setGimbalMode(boolean mode) {
+		GIMBAL_MODE = mode;
+        if (GIMBAL_MODE) setTargetMode(TargetMode.OPTICAL);
+	}
+	/**
+	 * set mouseCenterX and mouseCenterY to the mouse's current position.
+	 * used to move the "joystick" back to the middle when in LOCKED_FORWARD MouseMode.
+	 */
+	public static void centerMousePos() {
+		Minecraft m = Minecraft.getInstance();
+		mouseCenterX = m.mouseHandler.xpos();
+		mouseCenterY = m.mouseHandler.ypos();
+	}
+	/**
+	 * @return the mouse x position related to the "joystick's" origin when in LOCKED_FORWARD MouseMode.
+	 */
+	public static double getMouseCenterX() {
+		return mouseCenterX;
+	}
+	/**
+	 * @return the mouse y position related to the "joystick's" origin when in LOCKED_FORWARD MouseMode.
+	 */
+	public static double getMouseCenterY() {
+		return mouseCenterY;
+	}
+	/**
+	 * @param x the mouse x position related to the "joystick's" origin when in LOCKED_FORWARD MouseMode.
+	 */
+	public static void setMouseCenterX(double x) {
+		mouseCenterX = x;
+	}
+	/**
+	 * @param y the mouse y position related to the "joystick's" origin when in LOCKED_FORWARD MouseMode.
+	 */
+	public static void setMouseCenterY(double y) {
+		mouseCenterY = y;
+	}
+	/**
+	 * @return the id of the ping the client's mouse is hovering over. -1 if {@link DSCClientInputs#isRadarHovering} is true.
+	 */
+	public static int getRadarHoverId() {
+		return hoverId;
+	}
+	/**
+	 * @param id the index of the ping the client's mouse is hovering over
+	 */
+	public static void setRadarHoverId(int id) {
+		hoverId = id;
+	}
+	/**
+	 * called if the client's mouse isn't hovering over any pings on the hud
+	 */
+	public static void resetRadarHoverId() {
+		hoverId = -1;
+	}
+	/**
+	 * @return is the client's mouse hovering over a radar ping on the hud
+	 */
+	public static boolean isRadarHovering() {
+		return hoverId != -1;
+	}
+	/**
+	 * @return the max distance of a radar ping client radar screens will display
+	 */
+	public static double getRadarDisplayRange() {
+		return radarDisplayRange;
+	}
+	
+	public static void setRadarDisplayRange(double range) {
+		if (range < 10) range = 10;
+		radarDisplayRange = range;
+	}
+
+	public static void cycleRadarDisplayRange() {
+		double range = getRadarDisplayRange();
+		if (range <= 250) range = 1000;
+		else if (range <= 1000) range = 2000;
+		else if (range <= 2000) range = 5000;
+		else if (range <= 5000) range = 10000;
+        else if (range <= 10000) range = 20000;
+        else if (range <= 20000) range = 50000;
+        else if (range <= 50000) range = 250;
+		else range = 250;
+		setRadarDisplayRange(range);
+	}
+	/**
+	 * @return the last time in millis the client mounted a vehicle
+ 	 */
+	public static long getClientMountTime() {
+		return mountTime;
+	}
+	/**
+	 * @param time the last time in millis the client mounted a vehicle
+	 */
+	public static void setClientMountTime(long time) {
+		mountTime = time;
+	}
+	/**
+	 * @return {@link MouseMode#FREE_RELATIVE}, {@link MouseMode#FREE_GLOBAL}, or {@link MouseMode#LOCKED_FORWARD}
+	 */
+	public static MouseMode getMouseMode() {
+		return CURRENT_MOUSE_MODE;
+	}
+	/**
+	 * sets CURRENT_MOUSE_MODE to the next MouseMode option.
+	 * @return the new current Mouse Mode option.
+	 */
+	public static MouseMode cycleMouseMode() {
+		CURRENT_MOUSE_MODE = CURRENT_MOUSE_MODE.cycle();
+		return CURRENT_MOUSE_MODE;
+	}
+	/**
+	 * MOUSE INPUTS CONTROL VEHICLE.
+	 * CAMERA LOCKED TOWARDS VEHICLE FORWARD DIRECTION. 
+	 */
+	public static boolean isCameraLockedForward() {
+		return CURRENT_MOUSE_MODE.isLockedForward();
+	}
+	/**
+	 * MOUSE INPUTS DONT CONTROL VEHICLE.
+	 * CAMERA CAN MOVE FREELY.
+	 * TRUE IF FREE RELATIVE OR FREE GLOBAL.
+	 */
+	public static boolean isCameraFree() {
+		return CURRENT_MOUSE_MODE.isFree();
+	}
+	/**
+	 * MOUSE INPUTS DONT CONTROL VEHICLE.
+	 * CAMERA CAN MOVE FREELY.
+	 * CAMERA WILL MOVE WITH PLANE.
+	 */
+	public static boolean isCameraFreeRelative() {
+		return CURRENT_MOUSE_MODE.isFreeRelative();
+	}
+	/**
+	 * MOUSE INPUTS DONT CONTROL VEHICLE.
+	 * CAMERA CAN MOVE FREELY.
+	 * NOT EFFECTED BY PLANE ROTATING.
+	 */
+	public static boolean isCameraFreeGlobal() {
+		return CURRENT_MOUSE_MODE.isFreeGlobal();
+	}
+
+	public static boolean isTurnAssist() {
+		return TURN_ASSIST;
+	}
+
+	public static void toggleTurnAssist() {
+		TURN_ASSIST = !TURN_ASSIST;
+	}
+
+	public enum MouseMode {
+		/**
+		 * Camera can move freely but turns when the vehicle turns.
+		 * Keeps the camera's angle the same relative angle to the vehicle. 
+		 */
+		FREE_RELATIVE, 
+		/**
+		 * Camera moves freely. Is not effected by the vehicle's rotation.
+		 */
+		FREE_GLOBAL,
+		/**
+		 * Camera is locked towards the vehicle's forward direction.
+		 */
+		LOCKED_FORWARD;
+		public MouseMode cycle() {
+			int index = ordinal();
+			if (index == values().length-1) return values()[0];
+			else return values()[++index];
+		}
+		public boolean isLockedForward() {
+			return this == LOCKED_FORWARD;
+		}
+		public boolean isFree() {
+			return this == FREE_RELATIVE || this == FREE_GLOBAL;
+		}
+		public boolean isFreeRelative() {
+			return this == FREE_RELATIVE;
+		}
+		public boolean isFreeGlobal() {
+			return this == FREE_GLOBAL;
+		}
+	}
+
+	public static TargetMode getTargetMode() {
+		return Config.CLIENT.targetMode.get();
+	}
+
+	public static void setTargetMode(TargetMode targetMode) {
+		Config.CLIENT.targetMode.set(targetMode);
+	}
+
+    public static void cycleTargetMode() {
+        setTargetMode(getTargetMode().cycle());
+    }
+
+	public static void setLeanAmount(double leanAmount) {
+		LEAN_AMOUNT = leanAmount;
+	}
+
+	public static double getLeanAmount() {
+		return LEAN_AMOUNT;
+	}
+
+	public static void leanLeft() {
+		if (getLeanAmount() < 0) leanNot();
+		else setLeanAmount(-0.6);
+	}
+
+	public static void leanRight() {
+		if (getLeanAmount() > 0) leanNot();
+		else setLeanAmount(0.6);
+	}
+
+	public static void leanNot() {
+		setLeanAmount(0);
+	}
+
+	public static boolean isAfterBurner() {
+		return AFTERBURNER;
+	}
+
+	public static void toggleAfterBurner() {
+		AFTERBURNER = !AFTERBURNER;
+	}
+
+	public static MarkerDisplayMode getMarkerMode() {
+		return Config.CLIENT.markerMode.get();
+	}
+
+	public static MarkerDisplayMode cycleMarkerMode() {
+		MarkerDisplayMode current = getMarkerMode();
+		int ordinal = current.ordinal() + 1;
+		if (ordinal >= MarkerDisplayMode.values().length) ordinal = 0;
+		MarkerDisplayMode next = MarkerDisplayMode.values()[ordinal];
+		Config.CLIENT.markerMode.set(next);
+		return next;
+	}
+
+	public static int getMarkerHoverId() {
+		return markerHoverId;
+	}
+
+	public static void setMarkerHoverId(int id) {
+		markerHoverId = id;
+	}
+
+	public static int getSelectedMarkerId() {
+		return selectedMarkerId;
+	}
+
+	public static void setSelectedMarkerId(int id) {
+		selectedMarkerId = id;
+		if (selectedMarkerId != -1) {
+			setTargetMode(TargetMode.MARKER);
+		}
+	}
+
+	public static @Nullable PositionMarker getSelectedMarker() {
+		if (selectedMarkerId == -1) return null;
+		PositionMarker marker = PositionMarkerManager.getClient().getMarker(selectedMarkerId);
+		if (marker == null) {
+			selectedMarkerId = -1;
+			return null;
+		}
+		return marker;
+	}
+
+    public static int getOpticalTrackedEntityId() {
+        return opticalTrackedEntityId;
+    }
+
+	public static @Nullable Vec3 getOpticalTrackedEntityPos(float partialTick) {
+		if (opticalTrackedEntityId == -1) return null;
+		Minecraft m = Minecraft.getInstance();
+		if (m.level == null) return null;
+		long current = m.level.getGameTime();
+		if (current != prevOpticalPosUpdateTime) {
+			opticalTrackedEntityPosOld = opticalTrackedEntityPos;
+			opticalTrackedEntityPos = getClientEntityPosition(opticalTrackedEntityId);
+			prevOpticalPosUpdateTime = current;
+		}
+		if (opticalTrackedEntityPosOld == null || opticalTrackedEntityPos == null) {
+			return opticalTrackedEntityPos;
+		}
+		return opticalTrackedEntityPosOld.lerp(opticalTrackedEntityPos, partialTick);
+	}
+
+	public static @Nullable Vec3 getClientEntityPosition(int id) {
+		Minecraft m = Minecraft.getInstance();
+		if (m.level == null) return null;
+		Entity targetEntity = m.level.getEntity(id);
+		if (targetEntity != null) {
+			Vec3 center = targetEntity.getBoundingBox().getCenter();
+			return new Vec3(center.x, targetEntity.getBoundingBox().minY, center.z);
+		}
+		else return DependencySafety.getClientDistantEntityPos(id);
+	}
+
+    public static void setOpticalTrackedEntityId(int id) {
+		if (id != opticalTrackedEntityId && opticalTrackedEntityId != -1) {
+			opticalTrackedEntityIdOld = opticalTrackedEntityId;
+		}
+        opticalTrackedEntityId = id;
+    }
+
+	public static int getOpticalTrackedEntityIdOld() {
+		return opticalTrackedEntityIdOld;
+	}
+
+    public static float getZoom() {
+        return ZOOM;
+    }
+
+    public static void cycleZoom() {
+        ZOOM *= 2;
+        if (ZOOM > 64) ZOOM = 2;
+    }
+}

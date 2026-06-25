@@ -8,8 +8,10 @@ import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.IRMissileStats;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -29,8 +31,20 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 	
 	@Override
 	public void tickGuide() {
-		if (tickCount % 10 == 0) findIrTarget();
+		if (tickCount % 10 == 0) {
+			findIrTarget();
+			if (!level().isClientSide()) notifyNearbyJammerVehicles();
+		}
 		if (target != null) guideToTarget();
+	}
+
+	/** Every 10 ticks, broadcast to any vehicle with an active jammer that is within jam radius of this missile */
+	protected void notifyNearbyJammerVehicles() {
+		EntityVehicle jammer = findJammerNearMissile(this);
+		if (jammer != null) {
+			new com.onewhohears.dscombat.common.network.toclient.ToClientEcmJam()
+					.sendToChunkListeners(com.onewhohears.dscombat.common.network.PacketHandler.getEntityChunk(jammer));
+		}
 	}
 	
 	protected List<IrTarget> targets = new ArrayList<>();
@@ -65,16 +79,26 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
 		if (targets.isEmpty()) {
 			this.target = null;
 			this.targetPos = null;
-			//System.out.println("NO TARGET");
 			return;
 		}
 		IrTarget max = targets.get(0);
 		for (int i = 1; i < targets.size(); ++i) {
 			if (targets.get(i).heat > max.heat) max = targets.get(i);
 		}
+		// ECM jammer check: if the best target has an active jammer, lose lock
+		if (isJammed(this, max.entity)) {
+			// notify the jammed vehicle's passengers via broadcast to chunk trackers
+			if (!level().isClientSide() && max.entity instanceof EntityVehicle jv) {
+				// send to all chunk trackers — client will filter by checking if player is in a jammer vehicle
+				new com.onewhohears.dscombat.common.network.toclient.ToClientEcmJam().sendToChunkListeners(
+						com.onewhohears.dscombat.common.network.PacketHandler.getEntityChunk(jv));
+			}
+			this.target = null;
+			this.targetPos = null;
+			return;
+		}
 		this.target = max.entity;
 		this.targetPos = max.entity.position();
-		//System.out.println("TARGET FOUND "+missile.target);
 	}
 	
 	protected static boolean basicCheck(Entity weapon, Entity ping, boolean checkGround, float fov) {
@@ -106,6 +130,44 @@ public class IRMissile<T extends IRMissileStats> extends EntityMissile<T> {
     }
 	
 	public static final double IR_RANGE = 300d;
+	
+	/**
+	 * Returns true if the missile is within range of any active ECM jammer.
+	 * Searches for jammer vehicles near the missile itself, not the target.
+	 * Works for IR, Track, and Ballistic missiles.
+	 */
+	public static boolean isJammed(Entity missile, Entity target) {
+		// Anti-radar missiles are immune to ECM jammers
+		if (missile instanceof AntiRadarMissile) return false;
+		return findJammerNearMissile(missile) != null;
+	}
+
+	/**
+	 * Finds the strongest active jammer vehicle within jam radius of the missile.
+	 * Returns null if none found.
+	 */
+	@Nullable
+	public static EntityVehicle findJammerNearMissile(Entity missile) {
+		double searchR = 512;
+		AABB box = new AABB(missile.getX() + searchR, missile.getY() + searchR, missile.getZ() + searchR,
+				missile.getX() - searchR, missile.getY() - searchR, missile.getZ() - searchR);
+		EntityVehicle best = null;
+		float bestStrength = 0f;
+		for (Entity e : missile.level().getEntities(missile, box)) {
+			if (!(e instanceof EntityVehicle vehicle)) continue;
+			float strength = vehicle.partsManager.getActiveJammerStrength();
+			if (strength <= 0f) continue;
+			float radius = vehicle.partsManager.getActiveJammerRadius();
+			double dist = missile.distanceTo(vehicle);
+			if (dist <= radius && strength > bestStrength) {
+				if (missile.level().getRandom().nextFloat() < strength) {
+					best = vehicle;
+					bestStrength = strength;
+				}
+			}
+		}
+		return best;
+	}
 	
 	public static AABB getIrBoundingBox(Entity e) {
 		double x = e.getX();

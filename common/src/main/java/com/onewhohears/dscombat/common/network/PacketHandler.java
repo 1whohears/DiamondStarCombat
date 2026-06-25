@@ -3,6 +3,8 @@ package com.onewhohears.dscombat.common.network;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.toclient.*;
 import com.onewhohears.dscombat.common.network.toserver.*;
+import com.onewhohears.dscombat.common.network.toclient.ToClientVehicleDecal;
+import com.onewhohears.dscombat.common.network.toserver.ToServerVehicleDecal;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -13,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class PacketHandler {
-
-    private PacketHandler() {}
+	
+	private PacketHandler() {}
 
     public static final SimpleNetworkManager INSTANCE = SimpleNetworkManager.create(DSCombatMod.MODID);
 
@@ -42,10 +44,14 @@ public final class PacketHandler {
             "c2s_vehicle_sync_action", ToServerVehicleSyncAction::new);
     public static final MessageType C2S_CRAFT_WEAPON_PART = INSTANCE.registerC2S(
             "c2s_craft_weapon_part", ToServerCraftWeaponPart::new);
-    public static final MessageType C2S_REQ_POS_MARKERS = INSTANCE.registerC2S(
-            "c2s_request_pos_markers", ToServerRequestPositionMarkers::new);
-    public static final MessageType C2S_MODIFY_MARKER = INSTANCE.registerC2S(
-            "c2s_modify_marker", ToServerModifyMarker::new);
+    public static final MessageType C2S_MISSILE_STATION_LAUNCH = INSTANCE.registerC2S(
+            "c2s_missile_station_launch", ToServerMissileStationLaunch::new);
+    public static final MessageType C2S_MISSILE_STATION_TOGGLE_ARMED = INSTANCE.registerC2S(
+            "c2s_missile_station_toggle_armed", ToServerMissileStationToggleArmed::new);
+    public static final MessageType C2S_MISSILE_STATION_SET_TARGET = INSTANCE.registerC2S(
+            "c2s_missile_station_set_target", ToServerMissileStationSetTarget::new);
+    public static final MessageType C2S_VEHICLE_DECAL = INSTANCE.registerC2S(
+            "c2s_vehicle_decal", ToServerVehicleDecal::new);
 
     public static final MessageType S2C_VEHICLE_CONTROL = INSTANCE.registerS2C(
             "s2c_vehicle_control", ToClientVehicleControl::new);
@@ -65,10 +71,16 @@ public final class PacketHandler {
             "s2c_vehicle_texture", ToClientVehicleTexture::new);
     public static final MessageType S2C_VEHICLE_EXPLODE = INSTANCE.registerS2C(
             "s2c_vehicle_explode", ToClientVehicleExplode::new);
+    public static final MessageType S2C_REMOVE_FIRE_COLUMN = INSTANCE.registerS2C(
+            "s2c_remove_fire_column", ToClientRemoveFireColumn::new);
+    public static final MessageType S2C_MINE_EXPLODE = INSTANCE.registerS2C(
+            "s2c_mine_explode", ToClientMineExplode::new);
     public static final MessageType S2C_WEAPON_IMPACT = INSTANCE.registerS2C(
             "s2c_weapon_impact", ToClientWeaponImpact::new);
     public static final MessageType S2C_DELAYED_SOUND = INSTANCE.registerS2C(
             "s2c_delayed_sound", ToClientDelayedSound::new);
+    public static final MessageType S2C_DISTANT_GUNFIRE = INSTANCE.registerS2C(
+            "s2c_distant_gunfire", ToClientDistantGunfire::new);
     public static final MessageType S2C_VEHICLE_CHAIN_UPDATE = INSTANCE.registerS2C(
             "s2c_vehicle_chain_update", ToClientVehicleChainUpdate::new);
     public static final MessageType S2C_SYNC_PART = INSTANCE.registerS2C(
@@ -79,10 +91,12 @@ public final class PacketHandler {
             "s2c_on_shoot", ToClientOnShoot::new);
     public static final MessageType S2C_SET_TARGET_POS = INSTANCE.registerS2C(
             "s2c_set_target_pos", ToClientSetTargetPos::new);
-    public static final MessageType S2C_PLAYER_MARKER_DATA = INSTANCE.registerS2C(
-            "s2c_player_marker_data", ToClientPlayerMarkerData::new);
-    public static final MessageType S2C_SEND_POS_MARKERS = INSTANCE.registerS2C(
-            "s2c_send_pos_markers", ToClientPositionMarkers::new);
+    public static final MessageType S2C_BALLISTIC_EXPLOSION = INSTANCE.registerS2C(
+            "s2c_ballistic_explosion", ToClientBallisticExplosion::new);
+    public static final MessageType S2C_ECM_JAM = INSTANCE.registerS2C(
+            "s2c_ecm_jam", ToClientEcmJam::new);
+    public static final MessageType S2C_VEHICLE_DECAL = INSTANCE.registerS2C(
+            "s2c_vehicle_decal", ToClientVehicleDecal::new);
 
     public static LevelChunk getEntityChunk(@NotNull Entity entity) {
         return UtilEntity.getLevel(entity).getChunkAt(entity.blockPosition());

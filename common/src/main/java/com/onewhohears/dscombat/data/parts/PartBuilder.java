@@ -85,6 +85,13 @@ public class PartBuilder extends IngredientStackBuilder<PartBuilder> {
 		setInt("age", age);
 		return setFloat("heat", heat);
 	}
+
+	public PartBuilder setMineDispenserStats(int max, float damage, float radius, int armTime) {
+		setInt("max", max);
+		setFloat("damage", damage);
+		setFloat("radius", radius);
+		return setInt("armTime", armTime);
+	}
 	
 	public PartBuilder setFuelTankStats(float max) {
 		return setFloat("max", max);
@@ -100,11 +107,18 @@ public class PartBuilder extends IngredientStackBuilder<PartBuilder> {
 	
 	public PartBuilder setTurretStats(int maxAmmo, float maxHealth, Vec3 passengerOffset, double weaponOffset,
 									  TurretStats.RotBounds rotBounds, EntityTurret.ShootType shootType, float width, float height) {
+		return setTurretStats(maxAmmo, maxHealth, passengerOffset, weaponOffset, 0.2, rotBounds, shootType, width, height);
+	}
+
+	public PartBuilder setTurretStats(int maxAmmo, float maxHealth, Vec3 passengerOffset, double weaponOffset,
+									  double muzzleParticleOffset, TurretStats.RotBounds rotBounds, EntityTurret.ShootType shootType, float width, float height) {
 		setFloat("maxHealth", maxHealth);
 		setEntityHitboxSize(width, height);
 		setExternalEntityType(ModEntities.TURRET.getId());
 		UtilParse.writeVec3(getData(), "passenger_offset", passengerOffset);
+		// Сохраняем weaponOffset как число (старый формат для обратной совместимости)
 		setFloat("weaponOffset", (float)weaponOffset);
+		setFloat("muzzleParticleOffset", (float)muzzleParticleOffset);
 		rotBounds.writeToJson(getData());
 		UtilParse.writeEnum(getData(), "shootType", shootType);
 		return setInt("maxAmmo", maxAmmo);
@@ -113,6 +127,11 @@ public class PartBuilder extends IngredientStackBuilder<PartBuilder> {
 	public PartBuilder setTurretStats(int maxAmmo, float maxHealth, Vec3 passengerOffset, double weaponOffset,
 									  TurretStats.RotBounds rotBounds, float width, float height) {
 		return setTurretStats(maxAmmo, maxHealth, passengerOffset, weaponOffset, rotBounds, EntityTurret.ShootType.NORMAL, width, height);
+	}
+
+	public PartBuilder setTurretStats(int maxAmmo, float maxHealth, Vec3 passengerOffset, double weaponOffset,
+									  double muzzleParticleOffset, TurretStats.RotBounds rotBounds, float width, float height) {
+		return setTurretStats(maxAmmo, maxHealth, passengerOffset, weaponOffset, muzzleParticleOffset, rotBounds, EntityTurret.ShootType.NORMAL, width, height);
 	}
 	
 	public PartBuilder setWeaponStats(int max) {
@@ -124,6 +143,10 @@ public class PartBuilder extends IngredientStackBuilder<PartBuilder> {
 		setEntityHitboxSize(0.1f, 0.1f);
 		setExternalEntityType(ModEntities.EXTERNAL_WEAPON_PART.getId());
 		return setFloat("changeLaunchPitch", changeLaunchPitch);
+	}
+
+	public PartBuilder setHidePlayer(boolean hidePlayer) {
+		return setBoolean("hidePlayer", hidePlayer);
 	}
 
 }

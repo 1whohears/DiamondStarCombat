@@ -3,8 +3,8 @@ package com.onewhohears.dscombat.data.radar;
 import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetGenerator;
 
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import org.jetbrains.annotations.NotNull;
 
 public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 
@@ -58,7 +58,6 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "axcel_truck_radar")
 				.setRange(7000 * 8)
-				.setVerticalRange(2500)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
@@ -75,7 +74,6 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "ar20k")
 				.setRange(80000 * 8)
-				.setVerticalRange(4000)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
@@ -176,7 +174,6 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "air_scan_a")
 				.setRange(7000 * 8)
-				.setVerticalRange(3000)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
@@ -193,7 +190,6 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "air_scan_b")
 				.setRange(10000 * 8)
-				.setVerticalRange(3500)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
@@ -238,13 +234,12 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 		addPresetToGenerate(RadarStats.Builder
 				.create(DSCombatMod.MODID, "ewr4000")
 				.setRange(20000 * 8)
-				.setVerticalRange(4000)
                 .setUseDistanceScale(true)
 				.setThroGroundRange(0f)
 				.setThroWaterRange(0f)
 				.setSensitivity(0.6f)
 				.setFieldOfView(-1f)
-				.setScanRate(20)
+				.setScanRate(10)
 				.setScanAircraft(true)
 				.setScanPlayers(true)
 				.setScanMobs(false)
@@ -259,7 +254,7 @@ public class RadarPresetGenerator extends JsonPresetGenerator<RadarStats> {
 	}
 
 	@Override
-	public @NotNull String getName() {
+	public String getName() {
 		return "Radars: "+DSCombatMod.MODID;
 	}
 

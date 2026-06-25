@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
-import static com.onewhohears.dscombat.util.UtilRender.drawTextureCentered;
+import static com.onewhohears.dscombat.client.util.UtilRender.drawTextureCentered;
 
 public class AltimeterScreenInstance extends SpinMeterScreenInstance {
 

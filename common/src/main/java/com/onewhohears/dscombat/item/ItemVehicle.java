@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.item;
 
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.vehicle.VehiclePresets;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
@@ -13,6 +14,7 @@ import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -22,6 +24,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -37,6 +40,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -48,6 +52,7 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
         throw new AssertionError();
     }
 
+	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS
 			.and(Entity::isPickable);
 	
@@ -93,21 +98,26 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 				if (vs == null) vs = VehiclePresets.get().get(defaultPreset);
 				EntityType<? extends EntityVehicle> entityType = vs.getEntityType();
 				ItemStack spawn_data_stack = spawnData(itemstack, player, vs.getId(), player.getYRot(), null);
-				EntityVehicle e = entityType.create(level);
 				Vec3 pos = hitresult.getLocation();
-				if (e.isCustomBoundingBox()) e.setPos(pos.add(0, e.getBbHeight()/2d, 0));
-				else e.setPos(pos);
-				if (!level.noCollision(e, e.getBoundingBox())) 
-					return InteractionResultHolder.fail(itemstack);
+				
+				double spawnY = Math.floor(pos.y) + 1.0; // Spawn at top of clicked block
+				
+				Vec3 spawnVec = new Vec3(pos.x, spawnY, pos.z);
+				// Skip collision check - let the vehicle spawn and handle collisions naturally
+				// This fixes aircraft placement issues where large hitboxes prevent spawning
 				if (!level.isClientSide()) {
-					int above = 0;
-					if (e.isCustomBoundingBox()) above = (int)(e.getBbHeight()/2d)+1;
-					Entity entity = entityType.spawn((ServerLevel)level, 
-							spawn_data_stack, player, 
-							UtilGeometry.toBlockPos(pos).above(above),
-							MobSpawnType.SPAWN_EGG, 
-							false, false);
-					if (entity != null) {
+					// Direct spawn via NBT + addFreshEntity
+					EntityVehicle vehicle = entityType.create(level);
+					if (vehicle == null) {
+						return InteractionResultHolder.fail(itemstack);
+					}
+					CompoundTag nbt = spawn_data_stack.getTagElement("EntityTag");
+					if (nbt != null) vehicle.load(nbt);
+					vehicle.setPos(spawnVec.x, spawnVec.y, spawnVec.z);
+					vehicle.setYRot(player.getYRot());
+					
+					boolean added = level.addFreshEntity(vehicle);
+					if (added && !vehicle.isRemoved()) {
 						level.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
 						itemstack.shrink(1);
 					}
@@ -256,10 +266,5 @@ public class ItemVehicle extends Item implements ObjModelItem, FillableItemCateg
 
     public @NotNull Item asItem() {
         return this;
-    }
-
-    @Override
-    public boolean canFitInsideContainerItems() {
-        return false;
     }
 }

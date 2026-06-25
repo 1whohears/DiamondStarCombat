@@ -9,7 +9,9 @@ import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
+import com.onewhohears.dscombat.data.weapon.MuzzleSmokeData;
 import com.onewhohears.dscombat.init.ModItems;
 import com.onewhohears.onewholibs.data.crafting.IngredientStackBuilder;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
@@ -20,7 +22,7 @@ import com.onewhohears.dscombat.init.ModSounds;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
-import com.onewhohears.dscombat.util.UtilParticles;
+import com.onewhohears.dscombat.client.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilSound;
 
 import com.onewhohears.onewholibs.util.UtilParse;
@@ -46,34 +48,57 @@ public abstract class WeaponStats extends JsonPresetStats {
 	private final int craftNum;
 	private final int maxAge;
 	private final int fireRate;
+	private final int maxAmmo;
 	private final boolean canShootOnGround;
+	private final boolean renderModel;
 	private final float mass;
 	private final String entityTypeKey;
 	private final String shootSoundKey;
+	private final String engineSoundKey;
+	private final String distantSoundKey;
 	private final String[] compatibleWeaponPart;
 	private final String itemKey;
 	private final String assetId;
 	private final ResourceLocation icon;
+	public final MuzzleSmokeData[] muzzleSmokeData;
 	
 	private NonNullList<Ingredient> ingredients;
 	private EntityType<?> entityType;
 	private SoundEvent shootSound;
+	private SoundEvent engineSound;
+	private SoundEvent distantSound;
 	
 	public WeaponStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
 		this.craftNum = UtilParse.getIntSafe(json, "craftNum", 0);
 		this.maxAge = UtilParse.getIntSafe(json, "maxAge", 0);
 		this.fireRate = UtilParse.getIntSafe(json, "fireRate", 0);
+		this.maxAmmo = UtilParse.getIntSafe(json, "maxAmmo", 0);
 		this.canShootOnGround = UtilParse.getBooleanSafe(json, "canShootOnGround", false);
+		this.renderModel = UtilParse.getBooleanSafe(json, "renderModel", true);
 		this.mass = UtilParse.getFloatSafe(json, "mass", 1);
 		this.entityTypeKey = UtilParse.getStringSafe(json, "entityTypeKey", "");
 		this.shootSoundKey = UtilParse.getStringSafe(json, "shootSoundKey", "");
+		this.engineSoundKey = UtilParse.getStringSafe(json, "engineSoundKey", "dscombat:rocket_engine_1");
+		this.distantSoundKey = UtilParse.getStringSafe(json, "distantSoundKey", "");
 		this.compatibleWeaponPart = UtilParse.getStringArraySafe(json, "compatibleWeaponPart");
 		this.itemKey = UtilParse.getStringSafe(json, "itemKey", "");
 		if (json.has("assetId")) this.assetId = json.get("assetId").getAsString();
 		else if (json.has("modelId")) this.assetId = json.get("modelId").getAsString();
 		else this.assetId = getId();
 		this.icon = new ResourceLocation(UtilParse.getStringSafe(json, "icon", getDefaultIconLocation()));
+		
+		// Parse muzzle_smoke with new structure
+		if (json.has("muzzle_smoke")) {
+			JsonArray ja = json.get("muzzle_smoke").getAsJsonArray();
+			muzzleSmokeData = new MuzzleSmokeData[ja.size()];
+			for (int i = 0; i < muzzleSmokeData.length; ++i) {
+				JsonObject jo = ja.get(i).getAsJsonObject();
+				muzzleSmokeData[i] = new MuzzleSmokeData(jo);
+			}
+		} else {
+			muzzleSmokeData = new MuzzleSmokeData[0];
+		}
 	}
 	
 	public WeaponInstance<?> createWeaponInstance() {
@@ -102,9 +127,20 @@ public abstract class WeaponStats extends JsonPresetStats {
 	public int getFireRate() {
 		return fireRate;
 	}
-	
+
+	/**
+	 * @return maxAmmo defined in weapon JSON, or 0 if not set (use turret's maxAmmo as fallback)
+	 */
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+
 	public boolean canShootOnGround() {
 		return canShootOnGround;
+	}
+	
+	public boolean shouldRenderModel() {
+		return renderModel;
 	}
 	
 	public abstract double getMobTurretRange();
@@ -126,6 +162,22 @@ public abstract class WeaponStats extends JsonPresetStats {
 			shootSound = UtilSound.getSoundById(shootSoundKey, ModSounds.BULLET_SHOOT_1, registryAccess);
 		}
 		return shootSound;
+	}
+	
+	public SoundEvent getEngineSound(RegistryAccess registryAccess) {
+		if (engineSound == null) {
+			engineSound = UtilSound.getSoundById(engineSoundKey, ModSounds.MISSILE_ENGINE_1, registryAccess);
+		}
+		return engineSound;
+	}
+	
+	@Nullable
+	public SoundEvent getDistantSound(RegistryAccess registryAccess) {
+		if (distantSoundKey == null || distantSoundKey.isEmpty()) return null;
+		if (distantSound == null) {
+			distantSound = UtilSound.getSoundById(distantSoundKey, null, registryAccess);
+		}
+		return distantSound;
 	}
 	
 	private Item item;
@@ -230,6 +282,10 @@ public abstract class WeaponStats extends JsonPresetStats {
 
 	public float getMass() {
 		return mass;
+	}
+	
+	public MuzzleSmokeData[] getMuzzleSmokeData() {
+		return muzzleSmokeData;
 	}
 	
 	public enum WeaponClientImpactType {

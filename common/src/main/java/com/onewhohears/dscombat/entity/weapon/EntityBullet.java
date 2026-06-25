@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
-import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -29,23 +28,31 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 		setDeltaMovement(dir.scale(getSpeed()));
 	}
 	
+	@Override
+	public void tick() {
+		super.tick();
+	}
+	
 	protected void checkExplode() {
 		if (getAge() < minExplodeAge()) return;
-		if (!UtilEntity.isChunkLoaded(getWorld(), this)) return;
-		if (!isClientSide() && getExplosive() && canExplode()) {
+		if (!getWorld().hasChunk(chunkPosition().x, chunkPosition().z)) return;
+		if (!isClientSide() && getExplosive()) {
 			Level.ExplosionInteraction interact = Level.ExplosionInteraction.NONE;
 			if (getTerrain() && getWorld().getGameRules().getBoolean(DSCGameRules.WEAPONS_BREAK_BLOCKS))
 				interact = Level.ExplosionInteraction.TNT;
+			
+			// Use separate damage radius if configured
+			float explosionRadius = getRadius();
+			float damageRadius = getWeaponStats().getExplosionDamageRadius();
+			float damageMultiplier = getWeaponStats().getExplosionDamageMultiplier();
+			
 			for (int i = 0; i < getExplodeNum(); ++i) {
-                getWorld().explode(this, getExplosionDamageSource(),
-					null, getX(), getY(), getZ(), 
-					getRadius(), getFire(), interact);
+                com.onewhohears.dscombat.util.UtilExplosion.createExplosionWithDamageRadius(
+					getWorld(), this, getExplosionDamageSource(),
+					getX(), getY(), getZ(), 
+					explosionRadius, damageRadius, damageMultiplier, getFire(), interact);
 			}
 		}
-	}
-
-	public boolean canExplode() {
-		return true;
 	}
 	
 	public int minExplodeAge() {
@@ -72,6 +79,16 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 	public float getRadius() {
 		return getWeaponStats().getExplosionRadius();
 	}
+
+	@Override
+	public float getExplosionRadius() {
+		return getWeaponStats().getExplosionRadius();
+	}
+
+	@Override
+	public boolean isCausesFire() {
+		return getWeaponStats().isCausesFire();
+	}
 	
 	public double getSpeed() {
 		return getWeaponStats().getSpeed();
@@ -83,6 +100,7 @@ public class EntityBullet<T extends BulletStats> extends EntityWeapon<T> {
 	
 	@Override
 	public void kill() {
+		if (isRemoved()) return; // guard against double-kill
 		// ORDER MATTERS
 		super.kill();
 		checkExplode();

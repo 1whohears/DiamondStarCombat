@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -36,7 +35,7 @@ public class ToClientRemovePart extends BaseS2CMessage {
 	@Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            UtilClientPacket.removePartPacket(id, slotId);
+            com.onewhohears.dscombat.client.util.UtilClientPacket.removePartPacket(id, slotId);
 		});
 	}
 

@@ -29,7 +29,7 @@ public class CarStats extends VehicleStats {
 	
 	@Override
 	public boolean isTank() {
-		return true;
+		return isTank;
 	}
 
 }

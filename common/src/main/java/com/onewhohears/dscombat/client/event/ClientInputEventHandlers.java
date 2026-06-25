@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.client.event;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.input.ClientInputManager;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -15,11 +14,13 @@ public class ClientInputEventHandlers {
     public static void clientTickPilotControl(Minecraft minecraft) {
         ClientInputManager.clientTickFirst();
         ClientInputManager.clientTickSecond();
+        // Handle zoom key
+        DSCClientInputs.setZoomIn(com.onewhohears.dscombat.client.input.DSCKeys.zoomInKey.isDown());
     }
 
     public static void onClientPlayerJoin(LocalPlayer localPlayer) {
+        DSCClientInputs.setPreferredRadarMode(Config.CLIENT.defaultRadarMode.get());
         ClientInputManager.loadKeyBinds();
-        PositionMarkerManager.getClient().resetClient();
     }
 
     public static boolean isCancelShiftInput(Player player) {

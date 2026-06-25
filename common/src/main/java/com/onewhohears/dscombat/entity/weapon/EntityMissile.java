@@ -1,36 +1,37 @@
 package com.onewhohears.dscombat.entity.weapon;
 
+import java.util.List;
+import java.util.Objects;
+
+import com.onewhohears.dscombat.entity.Revivable;
+import com.onewhohears.onewholibs.common.core.DistantRayCastManager;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.radar.TrackableEntitiesManager;
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
-import com.onewhohears.dscombat.data.vehicle.physics.SeaLevels;
+import com.onewhohears.dscombat.data.weapon.MissileChunkLoadingManager;
 import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
-import com.onewhohears.dscombat.entity.Revivable;
 import com.onewhohears.dscombat.entity.damagesource.WeaponDamageSource;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.util.UtilClientSafeSounds;
-import com.onewhohears.dscombat.util.UtilParticles;
+import com.onewhohears.dscombat.client.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
-import com.onewhohears.onewholibs.common.core.DistantVisibleManager;
-import com.onewhohears.onewholibs.common.core.HeightMapManager;
-import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
-import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
-import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.dscombat.client.util.UtilParticles;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import com.onewhohears.onewholibs.util.math.UtilGeometry;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -39,15 +40,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Objects;
+import static com.onewhohears.dscombat.data.radar.RadarInstance.RAY_CAST_TIMEOUT;
 
-public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> implements Revivable, SimulatedEntity {
+public abstract class EntityMissile<T extends MissileStats> extends EntityBullet<T> implements Revivable {
 	
 	public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(EntityMissile.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Vec3> TARGET_POS = SynchedEntityData.defineId(EntityMissile.class, DataSerializers.VEC3);
@@ -58,14 +58,14 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
     @Nullable
     protected Vec3 explodeRelTargetNextTick = null;
 	
-	private boolean didSonicBoom;
+	private boolean discardedButTicking, didSonicBoom;
+	private int prevTickCount, tickCountRepeats, repeatCoolDown;
 	private int lerpSteps;
-    private long lastServerTick;
 	private double lerpX, lerpY, lerpZ, lerpXRot, lerpYRot;
-    private short heightMapHeightOld = Short.MIN_VALUE;
 	
 	public EntityMissile(EntityType<? extends EntityMissile<?>> type, Level level, String defaultWeaponId) {
 		super(type, level, defaultWeaponId);
+		if (!isClientSide()) MissileChunkLoadingManager.registerMissile(this);
 	}
 	
 	@Override
@@ -76,17 +76,40 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 	
 	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		super.writeSpawnData(buffer);
+		DataSerializers.VEC3.write(buffer, getDeltaMovement());
+		// Sync rotation to prevent missiles appearing horizontal on spawn
+		buffer.writeFloat(getXRot());
+		buffer.writeFloat(getYRot());
+	}
+
+	@Override
+	public void readSpawnData(FriendlyByteBuf buffer) {
+		super.readSpawnData(buffer);
+		setDeltaMovement(DataSerializers.VEC3.read(buffer));
+		// Read rotation to prevent missiles appearing horizontal on spawn
+		setXRot(buffer.readFloat());
+		setYRot(buffer.readFloat());
+	}
+	
+	@Override
 	public void init() {
 	}
 	
 	@Override
 	public void tick() {
-		noPhysics = false;
-        SimulatedEntity.super.onVanillaTick();
 		if (isClientSide()) clientTickParticles();
 		if (isTestMode()) return;
 		xRotO = getXRot(); 
 		yRotO = getYRot();
+		
+		// CRITICAL: Kill missiles that go underground to prevent getting stuck
+		if (!isClientSide() && getY() < -60) {
+			kill();
+			return;
+		}
+		
 		if (!isRemoved()) {
 			if (!isClientSide()) {
                 handleInterceptTarget();
@@ -96,8 +119,11 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 				if (target != null) setTargetId(target.getId());
 				else setTargetId(-1);
 				checkInterceptTarget();
-				TrackableEntitiesManager.addTrackableEntity(this);
-				DependencySafety.addExtraEntityToRDP(Objects.requireNonNull(getServer()), this);
+				// Only update tracking/RDP every 5 ticks — these are not needed every single tick
+				if (tickCount % 5 == 0) {
+					TrackableEntitiesManager.addTrackableEntity(this);
+					DependencySafety.addExtraEntityToRDP(Objects.requireNonNull(getServer()), this);
+				}
 			} else {
 				tickClientGuide();
 				if (firstTick) engineSound();
@@ -106,20 +132,19 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		}
 		super.tick();
 		tickLerp();
-		if (!isClientSide() && tickCount > 100 && getDeltaMovement().length() < 0.1) {
+		if (!isClientSide() && !isRemoved() && tickCount > 100 && getDeltaMovement().length() < 0.1) {
 			kill();
 			return;
 		}
 	}
 
-    protected boolean handleInterceptTarget() {
+    protected void handleInterceptTarget() {
         if (target != null && explodeRelTargetNextTick != null) {
-            //System.out.println("EXPLODING CAUSE NEXT TICK "+isUnloaded());
+            //System.out.println("EXPLODING CAUSE NEXT TICK");
             moveTo(target.position().add(explodeRelTargetNextTick));
             kill();
-            return true;
+            return;
         }
-		return false;
     }
 
     protected void checkInterceptTarget() {
@@ -135,7 +160,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
         double t = -pr.dot(vr) / vr2;
         t = Math.max(0.0, Math.min(1.0, t));
         Vec3 closest = pr.add(vr.scale(t));
-        //double closestDist = closest.length();
+        double closestDist = closest.length();
         //if (closestDist < 100) System.out.println("t = "+t+" closest = "+closestDist+" "+closest);
         if (closest.lengthSqr() <= fuseDistSqr) {
             //explodeRelTargetNextTick(target.position().add(target.getDeltaMovement()).subtract(closest));
@@ -149,8 +174,12 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
     }
 	
 	public void clientTickParticles() {
-		if (getAge() <= getFuelTicks()) UtilParticles.missileAfterBurner(getWorld(), position(), getLookAngle().scale(-1));
-		UtilParticles.missileTrail(getWorld(), position(), getLookAngle(), getRadius(), isInWater());
+		if (getWeaponStats().isShowAfterBurner() && getAge() <= getFuelTicks()) {
+			UtilParticles.missileAfterBurner(getWorld(), position(), getLookAngle().scale(-1));
+		}
+		if (getWeaponStats().isShowTrail()) {
+			UtilParticles.missileTrail(getWorld(), position(), getLookAngle(), getRadius(), isInWater());
+		}
 	}
 	
 	public abstract void tickGuide();
@@ -173,7 +202,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
             resetTarget();
 			return;
 		}
-		if (target.isRemoved() && !SimulatedEntityManager.get().isSimulated(target)) {
+		if (target.isRemoved()) {
             //System.out.println("target is removed");
             resetTarget();
 			return;
@@ -185,9 +214,14 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 				return;
 			}
 			//System.out.println("check can see");
-            if (isCheckTargetEntityVisible()) {
-                DistantVisibleManager.queryVisible(getServer(), this, target, MISSILE_SCAN_HANDLER);
-            }
+            DistantRayCastManager.distantRayCast((ServerLevel) getWorld(), this, target,
+                    (level, missile, targetEntity, pass) -> {
+                        if (!pass) {
+                            //System.out.println("target FAILED ray cast");
+                            resetTarget();
+                        }
+                    }, RAY_CAST_TIMEOUT, 550,
+                    getWeaponStats().getSeeThroWater()+1, getWeaponStats().getSeeThroBlock());
 		}
         if (target == null) {
             //System.out.println("target is null 2");
@@ -195,33 +229,16 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
         }
 		//System.out.println("intercept math");
 		Vec3 tVel = target.getDeltaMovement();
-		boolean targetOnGroundWater = UtilVehicleEntity.isOnGroundOrWater(target);
-		if (targetOnGroundWater) {
+		if (UtilVehicleEntity.isOnGroundOrWater(target))
 			tVel = tVel.multiply(1, 0, 1);
-		}
-		Vec3 tPos = target.getBoundingBox().getCenter();
-        targetPos = UtilGeometry.interceptPos(position(), getDeltaMovement(), tPos, tVel);
+        targetPos = UtilGeometry.interceptPos(
+            position(), getDeltaMovement(),
+            target.getBoundingBox().getCenter(), tVel);
 		//System.out.println("guide to position");
 		guideToPosition();
 	}
 
-    public boolean isCheckTargetEntityVisible() {
-        return true;
-    }
-
-    // TODO bring back getWeaponStats().getSeeThroWater() and getWeaponStats().getSeeThroBlock()
-    public final DistantVisibleManager.VisibleRequestData MISSILE_SCAN_HANDLER = new DistantVisibleManager.VisibleRequestData(
-            0x2402, 30, 15, event -> {
-                if (!event.result().computeComplete || event.result().failed || event.result().passed) return;
-                if (event.entity1() instanceof EntityMissile<?> missile) {
-                    missile.resetTarget();
-                }
-    });
-
     public void resetTarget() {
-		if (target != null && isCheckTargetEntityVisible()) {
-			DistantVisibleManager.cancelFirstEntityQuery(getId(), target.getId(), MISSILE_SCAN_HANDLER.typeId());
-		}
         target = null;
         targetPos = null;
     }
@@ -247,8 +264,8 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	private void engineSound() {
 		UtilClientSafeSounds.dopplerSound(this, 
-				ModSounds.MISSILE_ENGINE_1, 0.8F, 1.0F, 
-				DSCPhyCons.getVelSound(), false);
+				getWeaponStats().getEngineSound(level().registryAccess()), 0.8F, 1.0F, 
+				DSCPhyCons.getVelSound(), false, 200.0);
 	}
 
     private boolean canSonicBoom() {
@@ -266,101 +283,92 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	public void checkDespawn() {
 		
 	}
-
-    @Override
-    public void onAlwaysTickPre(@NotNull MinecraftServer server) {
-
-    }
-
-    @Override
-    public void onSimulatedTick(@NotNull MinecraftServer server) {
-		noPhysics = true;
-        TrackableEntitiesManager.addTrackableEntity(this);
-        DependencySafety.addExtraEntityToRDP(server, this);
-        tickOutRange();
-    }
-
-    @Override
-    public long getLastServerTick() {
-        return lastServerTick;
-    }
-
-    @Override
-    public void setLastServerTick(long tick) {
-        lastServerTick = tick;
-    }
 	
 	public void tickOutRange() {
+		if (isRemoved() && !isDiscardedButTicking()) return; // already killed, don't re-tick
 		xRotO = getXRot(); 
 		yRotO = getYRot();
-		if (handleInterceptTarget()) {
-			//System.out.println("handle intercept target");
-			return;
-		}
 		// uses special kill override function. don't change to discard.
 		if (tickCount > getMaxAge()) { 
 			//System.out.println("old");
 			kill();
 			return;
 		}
-		if (dieIfNoTargetOutsideTickRange() && targetPos == null && tickCount > 10) {
+		if (dieIfNoTargetOutsideTickRange() && targetPos == null) {
 			//System.out.println("no target pos");
 			kill();
 			return;
 		}
 		if (tickCount > 100 && getDeltaMovement().length() < 0.1) {
-            //System.out.println("slow");
+			if (!isRemoved()) kill();
+			return;
+		}
+		
+		// CRITICAL: Kill missiles that fly underground to prevent them getting stuck
+		if (getY() < -60) {
 			kill();
 			return;
 		}
+		
         checkInterceptTarget();
-		//System.out.println("starting tick guide");
+		if (isRemoved() && !isDiscardedButTicking()) return;
 		tickGuide();
-		//System.out.println("starting motion");
 		tickSetMove();
-		//System.out.println("starting set pos");
+		// tickCheckCollide() skips removed entities, so we do a manual block+fuse check
+		tickOutRangeCollide();
+		if (isRemoved() && !isDiscardedButTicking()) return; // hit something
 		setPos(position().add(getDeltaMovement()));
-        ResourceKey<Level> dimension = UtilEntity.getLevel(this).dimension();
-        short height = HeightMapManager.getHeight(dimension, position());
-        if (isDieInWater()) {
-            height = (short) Math.max(SeaLevels.getSeaLevel(dimension), height);
-        }
-        if (heightMapHeightOld != Short.MIN_VALUE) {
-            if ((getY() <= height && yOld > heightMapHeightOld) || (getY() >= height && yOld < heightMapHeightOld)) {
-                kill();
-            }
-        }
-        heightMapHeightOld = height;
-		xOld = getX();
-		yOld = getY();
-		zOld = getZ();
+		++tickCount;
+		
+		// Sync position and velocity to clients every 5 ticks to prevent missiles from appearing stuck
+		if (tickCount % 5 == 0) {
+			syncPacketPositionCodec(getX(), getY(), getZ());
+		}
+	}
+	
+	public boolean dieIfNoTargetOutsideTickRange() {
+		return true;
 	}
 
-    public boolean isDieInWater() {
-        return true;
-    }
-
-    @Override
-    public boolean isStopSimulating() {
-        return SimulatedEntity.super.isStopSimulating() || tickCount > getMaxAge();
-    }
-
-    @Override
-    public void kill() {
-		boolean stopSimulate = isStopSimulating(); // needed to stop infinite loop I think
-        super.kill();
-		if (isUnloaded() && !stopSimulate) {
-			if (target != null && SimulatedEntityManager.get().isSimulated(target)) {
-				target.hurt(getExplosionDamageSource(), getDamage());
-				// TODO check if instanceof CustomExplosion and explode the hitboxes if vehicle
+	/**
+	 * Collision check for missiles ticking outside entity-ticking range (discardedButTicking).
+	 * tickCheckCollide() bails early on isRemoved(), so we bypass that here.
+	 */
+	protected void tickOutRangeCollide() {
+		Vec3 move = getDeltaMovement();
+		Vec3 pos = position();
+		
+		// CRITICAL: Only check block collision if chunk is already loaded
+		// This prevents forcing chunk generation when missiles fly through unloaded areas
+		ChunkPos chunkPos = new ChunkPos(
+			new net.minecraft.core.BlockPos((int)pos.x, (int)pos.y, (int)pos.z)
+		);
+		if (getWorld().hasChunk(chunkPos.x, chunkPos.z)) {
+			// Block collision
+			net.minecraft.world.phys.BlockHitResult blockHit = getWorld().clip(
+					new net.minecraft.world.level.ClipContext(pos, pos.add(move),
+							net.minecraft.world.level.ClipContext.Block.COLLIDER,
+							getFluidClipContext(), this));
+			if (blockHit.getType() != net.minecraft.world.phys.HitResult.Type.MISS) {
+				setPos(blockHit.getLocation());
+				kill();
+				return;
 			}
 		}
-		TrackableEntitiesManager.removeTrackableEntity(this);
-		stopSimulate();
-    }
-
-    public boolean dieIfNoTargetOutsideTickRange() {
-		return true;
+		// If chunk not loaded, skip block collision — missile flies through
+		
+		// Fuse distance check against target entity
+		if (target != null && !target.isRemoved()) {
+			double fuseSqr = getWeaponStats().getFuseDist() * getWeaponStats().getFuseDist();
+			if (distanceToSqr(target) <= fuseSqr) {
+				kill();
+			}
+		} else if (targetPos != null) {
+			double fuseSqr = getWeaponStats().getFuseDist() * getWeaponStats().getFuseDist();
+			if (distanceToSqr(targetPos.x, targetPos.y, targetPos.z) <= fuseSqr) {
+				kill();
+			}
+		}
 	}
 	
 	@Override
@@ -371,12 +379,12 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		double B = getBleed() * UtilVehicleEntity.getAirDensity(this);
         B *= DSCPhyCons.MISSILE_BLEED_SCALE / adjustedSpeedScale();
 		double turnBleed = B * (Math.abs(getXRot()-xRotO)+Math.abs(getYRot()-yRotO));
-		double airRes = B * cv * DSCPhyCons.MISSILE_AIR_RES_SCALE;
+		double airRes = B * cv * DSCPhyCons.MISSILE_AIR_RES_SCALE / adjustedSpeedScale();
 		double vel = cv - turnBleed - airRes;
 		if (getAge() <= getFuelTicks()) vel += getAcceleration();
-		//double ga = Math.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm))*getGravityAcc()*DSCPhyCons.MISSILE_GRAV_ACC_SCALE;
-		//double gravityAcc = Math.max(0, ga);
-		//vel += gravityAcc;
+		double ga = Math.sin(Mth.DEG_TO_RAD*UtilAngles.getPitch(cm))*getGravityAcc()*DSCPhyCons.MISSILE_GRAV_ACC_SCALE;
+		double gravityAcc = Math.max(0, ga);
+		vel += gravityAcc;
 		if (vel > max) vel = max;
 		else if (vel < 0.1) vel = 0.1;
 		Vec3 nm = getLookAngle().scale(vel);
@@ -418,7 +426,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	
 	@Override
     public boolean hurt(DamageSource source, float amount) {
-		if (isRemoved() && !isSimulateEnabled()) return false;
+		if (isRemoved()) return false;
 		if (equals(source.getDirectEntity())) return false;
 		if (isAlliedTo(source.getEntity())) return false;
 		kill();
@@ -443,7 +451,7 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	}
 	
 	public float getTurnRadius() {
-		return getWeaponStats().getTurnRadius() * (float) DSCPhyCons.getIRLScale();
+		return getWeaponStats().getTurnRadius();
 	}
 	
 	public int getTargetId() {
@@ -462,9 +470,49 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 		entityData.set(TARGET_POS, pos);
 	}
 	
+	public void discardButTick() {
+		//System.out.println("discard but tick");
+		discard();
+		discardedButTicking = true;
+		repeatCoolDown = 5;
+	}
+	
+	@Override
+	public void kill() {
+		super.kill();
+		discardedButTicking = false;
+		// Notify manager that missile is dead
+		if (!isClientSide()) MissileChunkLoadingManager.markMissileDead(this);
+	}
+	
 	@Override
 	public void invokeRevive() {
         UtilVehicleEntity.revive(this);
+		discardedButTicking = false;
+		// Force sync of velocity, position AND rotation when missile re-enters loaded chunks
+		// This prevents the "horizontal missile" and "teleport back" effects
+		syncPacketPositionCodec(getX(), getY(), getZ());
+		// Ensure rotation is set correctly (important for rendering)
+		// Set both current and previous rotation to prevent interpolation glitches
+		xRotO = getXRot();
+		yRotO = getYRot();
+		setRot(getYRot(), getXRot());
+	}
+
+	@Override
+	public boolean isDiscardedButTicking() {
+		return discardedButTicking;
+	}
+	
+	public int getTickCountRepeats() {
+		if (tickCount == prevTickCount) ++tickCountRepeats;
+		else if (tickCountRepeats > 0) tickCountRepeats = 0;
+		prevTickCount = tickCount;
+		if (repeatCoolDown > 0) {
+			--repeatCoolDown;
+			return 10;
+		}
+		return tickCountRepeats;
 	}
 	
 	@Override
@@ -492,7 +540,9 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
         if (x == getX() && y == getY() && z == getZ()) return;
         lerpX = x; lerpY = y; lerpZ = z;
         lerpYRot = yaw; lerpXRot = pitch;
-        lerpSteps = 10;
+        // Use smaller lerp steps for missiles to reduce "rubber banding" effect
+        // when missile re-enters loaded chunks after being out of range
+        lerpSteps = Math.max(1, Math.min(5, posRotationIncrements / 2));
     }
 	
 	private void tickLerp() {
@@ -547,21 +597,6 @@ public abstract class EntityMissile<T extends MissileStats> extends EntityBullet
 	@Override
 	public WeaponStats.WeaponClientImpactType getClientImpactType() {
 		return WeaponStats.WeaponClientImpactType.MED_MISSILE_EXPLODE;
-	}
-
-	@Override
-	public Entity getTarget() {
-		return target;
-	}
-
-    @Override
-    public boolean isDiscardedButTicking() {
-        return isSimulateEnabled() && isRemoved();
-    }
-
-	@Override
-	public boolean canExplode() {
-		return !isUnloaded();
 	}
 
 }

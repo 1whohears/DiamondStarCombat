@@ -21,6 +21,7 @@ public class EntityFlare extends Entity implements IREmitter {
 	private int age;
 	private float pow;
 	private float decay;
+	private boolean spawnedInitialBurst = false;
 	
 	public EntityFlare(EntityType<? extends EntityFlare> pEntityType, Level pLevel) {
 		super(pEntityType, pLevel);
@@ -76,8 +77,14 @@ public class EntityFlare extends Entity implements IREmitter {
 		if (!isClientSide() && tickCount > age) {
 			discard();
 		}
-		if (isClientSide() && tickCount % 2 == 0) {
-			particle();
+		if (isClientSide()) {
+			// Spawn initial burst on first tick
+			if (!spawnedInitialBurst && tickCount == 1) {
+				spawnLaunchBurst();
+				spawnedInitialBurst = true;
+			}
+			// More frequent and colorful particles
+			spawnColorfulParticles();
 		}
 		move(MoverType.SELF, getDeltaMovement());
 	}
@@ -97,6 +104,86 @@ public class EntityFlare extends Entity implements IREmitter {
 				move.x + random.nextGaussian() * 0.0001D, 
 				move.y + random.nextGaussian() * 0.0001D, 
 				move.z + random.nextGaussian() * 0.0001D);
+	}
+	
+	private void spawnColorfulParticles() {
+		Vec3 move = getDeltaMovement();
+		double spread = 0.05;
+		
+		// Main bright flare particles (1-2 per tick)
+		if (tickCount % 2 == 0) {
+			getWorld().addParticle(ModParticles.FLARE.get(),
+					getX() + (random.nextDouble() - 0.5) * 0.1, 
+					getY() + (random.nextDouble() - 0.5) * 0.1, 
+					getZ() + (random.nextDouble() - 0.5) * 0.1,
+					move.x + (random.nextDouble() - 0.5) * spread, 
+					move.y + (random.nextDouble() - 0.5) * spread * 0.5, 
+					move.z + (random.nextDouble() - 0.5) * spread);
+		}
+		
+		// Continuous trail effect - leave particles behind
+		if (tickCount % 3 == 0) {
+			// Bright trail particle
+			getWorld().addParticle(ModParticles.FLARE.get(),
+					getX(), getY(), getZ(),
+					0, 0, 0);
+		}
+		
+		// Smoke trail particles (less frequent)
+		if (tickCount % 4 == 0) {
+			getWorld().addParticle(net.minecraft.core.particles.ParticleTypes.SMOKE,
+					getX() + (random.nextDouble() - 0.5) * 0.2, 
+					getY() + (random.nextDouble() - 0.5) * 0.2, 
+					getZ() + (random.nextDouble() - 0.5) * 0.2,
+					(random.nextDouble() - 0.5) * 0.02, 
+					0.01 + random.nextDouble() * 0.02, 
+					(random.nextDouble() - 0.5) * 0.02);
+		}
+		
+		// Spark particles (rare)
+		if (random.nextFloat() < 0.15f) {
+			getWorld().addParticle(net.minecraft.core.particles.ParticleTypes.LAVA,
+					getX(), getY(), getZ(),
+					(random.nextDouble() - 0.5) * 0.1, 
+					(random.nextDouble() - 0.5) * 0.1, 
+					(random.nextDouble() - 0.5) * 0.1);
+		}
+	}
+	
+	private void spawnLaunchBurst() {
+		// Initial explosion burst when flare is launched
+		for (int i = 0; i < 15; i++) {
+			double angle = random.nextDouble() * Math.PI * 2;
+			double speed = 0.1 + random.nextDouble() * 0.15;
+			double vx = Math.cos(angle) * speed;
+			double vz = Math.sin(angle) * speed;
+			double vy = random.nextDouble() * 0.1;
+			
+			// Bright flare particles
+			getWorld().addParticle(ModParticles.FLARE.get(),
+					getX(), getY(), getZ(),
+					vx, vy, vz);
+		}
+		
+		// Add some smoke to the burst
+		for (int i = 0; i < 8; i++) {
+			getWorld().addParticle(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE,
+					getX() + (random.nextDouble() - 0.5) * 0.3, 
+					getY() + (random.nextDouble() - 0.5) * 0.3, 
+					getZ() + (random.nextDouble() - 0.5) * 0.3,
+					(random.nextDouble() - 0.5) * 0.05, 
+					random.nextDouble() * 0.05, 
+					(random.nextDouble() - 0.5) * 0.05);
+		}
+		
+		// Add some flame particles
+		for (int i = 0; i < 5; i++) {
+			getWorld().addParticle(net.minecraft.core.particles.ParticleTypes.FLAME,
+					getX(), getY(), getZ(),
+					(random.nextDouble() - 0.5) * 0.1, 
+					random.nextDouble() * 0.1, 
+					(random.nextDouble() - 0.5) * 0.1);
+		}
 	}
 
 	@Override

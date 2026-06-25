@@ -1,0 +1,20 @@
+# Made in Blockbench 4.8.1
+newmtl m_eb9f2a9c-aaaa-6d36-95b9-02fd187e935d
+map_Kd frame.png 
+newmtl m_0f09bb2b-871a-0984-6b9f-98921cc0887d
+map_Kd b.png 
+newmtl m_e931a901-9184-1f67-f6a8-3eba1c729c58
+map_Kd d.png 
+newmtl m_82b1627d-ef0a-8efc-b5c0-8c54c1e0bc3c
+map_Kd a.png 
+newmtl m_b5202eb2-6430-7af7-06af-a8f853c7f7b6
+map_Kd c.png 
+newmtl m_79a20f25-fc28-41e0-3917-4cf91d866064
+map_Kd g.png 
+newmtl m_3cd89d1f-ec7d-0008-a06b-85fd8c3994a4
+map_Kd f.png 
+newmtl m_0a3f3b33-060b-8291-ec52-b5bc2a17d29e
+map_Kd e.png 
+newmtl m_27a5b9c4-f5e2-f14f-bfd8-a0b2e0fbc816
+map_Kd missile.png 
+newmtl none

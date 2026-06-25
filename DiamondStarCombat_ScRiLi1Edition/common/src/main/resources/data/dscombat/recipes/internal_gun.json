@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"D": {
+			"item": "minecraft:dispenser"
+		},
+		"I": {
+			"tag": "dscombat:aluminum_ingot"
+		}
+	},
+	"pattern": [
+		"IID"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:internal_gun"
+	}
+}

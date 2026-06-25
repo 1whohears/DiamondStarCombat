@@ -1,6 +1,5 @@
 package com.onewhohears.dscombat.entity.parts;
 
-import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.common.network.toserver.ToServerGetHookChains;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.ChainHookInstance;
@@ -36,12 +35,14 @@ import java.util.UUID;
 
 public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstance<ChainHookStats>> {
 	
+	public static final double CHAIN_LENGTH = 8;
+	
 	private final List<ChainConnection> chains = new ArrayList<>();
 	
 	public EntityChainHook(EntityType<?> entityType, Level level) {
 		super(entityType, level, "chain_hook");
 	}
-
+	
 	@Override
 	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
@@ -116,7 +117,7 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 		if (isClientSide()) return;
 		if (isPlayerConnected(player)) return;
 		List<EntityVehicle> vehicles = getWorld().getEntitiesOfClass(EntityVehicle.class,
-			getBoundingBox().inflate(getChainLength()), vehicle -> vehicle.isChainConnectedToPlayer(player));
+			getBoundingBox().inflate(CHAIN_LENGTH), vehicle -> vehicle.isChainConnectedToPlayer(player));
 		if (vehicles.size() == 0) {
 			addPlayerConnection(player);
 			return;
@@ -244,14 +245,13 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 			if (getVehicle() == null) return;
 			EntityVehicle parent = hook.getParentVehicle();
 			if (parent == null) return;
-            double chainLength = getChainLength();
 			Vec3 vehicleHookDiff = hook.position().subtract(getVehicle().position());
 			double distance = vehicleHookDiff.length();
-			if (distance > (chainLength - 0.5) || (!parent.isOnGround() && !getVehicle().isOnGround())) {
+			if (distance > (CHAIN_LENGTH - 0.5) || (!parent.isOnGround() && !getVehicle().isOnGround())) {
 				parent.addForceMomentToClient(getVehicle().getWeightForce(), Vec3.ZERO);
 			}
-			if (distance <= chainLength) return;
-			double fraction = (distance - chainLength) / distance;
+			if (distance <= CHAIN_LENGTH) return;
+			double fraction = (distance - CHAIN_LENGTH) / distance;
 			double yMove = vehicleHookDiff.y*fraction;
 			if (parent.isOnGround() && getVehicle().isOnGround()) yMove = 0;
 			Vec3 move = new Vec3(vehicleHookDiff.x*fraction, yMove, vehicleHookDiff.z*fraction);
@@ -360,7 +360,7 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 			return isVehicleConnection() && getVehicle().getChainHolderHook() == null;
 		}
 		public boolean isPlayerTooFar() {
-			return isPlayerConnection() && hook.distanceTo(player) > getChainLength();
+			return isPlayerConnection() && hook.distanceTo(player) > CHAIN_LENGTH;
 		}
 		@Nullable
 		public UUID getVehicleUUID() {
@@ -402,9 +402,5 @@ public class EntityChainHook extends EntityPart<ChainHookStats, ChainHookInstanc
 		disconnectAllChains();
 		super.onNoParent();
 	}
-
-    public static double getChainLength() {
-        return Config.SERVER.chainLength.get();
-    }
 
 }

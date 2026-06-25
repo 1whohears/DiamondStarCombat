@@ -1,0 +1,32 @@
+{
+  "assetId": "20mm",
+  "canShootOnGround": true,
+  "causesFire": false,
+  "compatibleWeaponPart": [
+    "xm12",
+    "aa_turret"
+  ],
+  "craftNum": 48,
+  "damage": 9.0,
+  "destroyTerrain": false,
+  "displayName": "preset.dscombat.15mm",
+  "entityTypeKey": "dscombat:bullet",
+  "explosionRadius": 0.0,
+  "explosive": false,
+  "fireRate": 2,
+  "inaccuracy": 1.8,
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 4
+    }
+  ],
+  "itemKey": "dscombat:bullet",
+  "mass": 0.015,
+  "maxAge": 40,
+  "presetId": "15mm",
+  "presetType": "bullet",
+  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "sort_factor": 2,
+  "speed": 11.0
+}

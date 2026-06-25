@@ -1,0 +1,17 @@
+{
+  "values": [
+    "dscombat:oil_bucket",
+    {
+      "id": "createindustry:crude_oil_fluid_bucket",
+      "required": false
+    },
+    {
+      "id": "#forge:buckets/oil",
+      "required": false
+    },
+    {
+      "id": "#c:buckets/oil",
+      "required": false
+    }
+  ]
+}

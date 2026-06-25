@@ -10,6 +10,7 @@ import com.onewhohears.dscombat.data.vehicle.presets.plane.PlanePresets;
 import com.onewhohears.dscombat.data.vehicle.presets.submarine.SubPresets;
 import com.onewhohears.dscombat.entity.EntityParachute;
 import com.onewhohears.dscombat.entity.parts.*;
+import com.onewhohears.dscombat.entity.parts.hitbox.TurretHitbox;
 import com.onewhohears.dscombat.entity.vehicle.*;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
@@ -55,6 +56,9 @@ public class ModEntities {
 	
 	public static final RegistrySupplier<EntityType<RotableHitbox>> ROTABLE_HITBOX = ENTITIES.register("rotable_hitbox",
 			() -> createEntityTypeFar(RotableHitbox::new, EntityDimensions.scalable(0.1f, 0.1f)));
+
+	public static final RegistrySupplier<EntityType<TurretHitbox>> TURRET_HITBOX = ENTITIES.register("turret_hitbox",
+			() -> createEntityTypeFar(TurretHitbox::new, EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	/* 
 	 * IDEA 5 more vehicles
@@ -129,20 +133,27 @@ public class ModEntities {
 	public static final RegistrySupplier<EntityType<AntiRadarMissile<?>>> ANTI_RADAR_MISSILE = ENTITIES.register("anti_radar_missile",
 			() -> createEntityTypeFar((type, level) -> new AntiRadarMissile<>(type, level, "agm88g"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
+	public static final RegistrySupplier<EntityType<EntityBallisticMissile<?>>> BALLISTIC_MISSILE = ENTITIES.register("ballistic_missile",
+			() -> createEntityTypeFar((type, level) -> new EntityBallisticMissile<>(type, level, "agm114k"), 
+					EntityDimensions.scalable(0.6f, 0.6f)));
 	public static final RegistrySupplier<EntityType<TorpedoMissile<?>>> TORPEDO_MISSILE = ENTITIES.register("torpedo_missile",
 			() -> createEntityTypeFar((type, level) -> new TorpedoMissile<>(type, level, "mk13"), 
 					EntityDimensions.scalable(0.5f, 0.5f)));
 	public static final RegistrySupplier<EntityType<EntityDumbTorpedo<?>>> DUMB_TORPEDO_MISSILE = ENTITIES.register("dumb_torpedo_missile",
 			() -> createEntityTypeFar((type, level) -> new EntityDumbTorpedo<>(type, level, "type91"),
 					EntityDimensions.scalable(1f, 1f)));
-	public static final RegistrySupplier<EntityType<AllEntityMissile<?>>> ALL_MISSILE = ENTITIES.register("all_missile",
-			() -> createEntityTypeFar((type, level) -> new AllEntityMissile<>(type, level, "agm114k"),
-					EntityDimensions.scalable(0.5f, 0.5f)));
 	
 	public static final RegistrySupplier<EntityType<EntityFlare>> FLARE = ENTITIES.register("flare",
 			() -> createEntityType(EntityFlare::new, EntityDimensions.scalable(0f, 0f)));
+	public static final RegistrySupplier<EntityType<EntitySmokeGrenade>> SMOKE_GRENADE = ENTITIES.register("smoke_grenade",
+			() -> createEntityTypeFar((type, level) -> new EntitySmokeGrenade(type, level, "smoke_grenade"),
+					EntityDimensions.scalable(0.3f, 0.3f)));
+	public static final RegistrySupplier<EntityType<EntityMine>> MINE = ENTITIES.register("mine",
+			() -> createEntityType(EntityMine::new, EntityDimensions.scalable(0.5f, 0.2f)));
 	public static final RegistrySupplier<EntityType<EntityParachute>> PARACHUTE = ENTITIES.register("parachute",
 			() -> createEntityType(EntityParachute::new, EntityDimensions.scalable(0.625f, 0.125f)));
+	public static final RegistrySupplier<EntityType<EntityMuzzleFlash>> MUZZLE_FLASH = ENTITIES.register("muzzle_flash",
+			() -> createEntityType(EntityMuzzleFlash::new, EntityDimensions.scalable(0.1f, 0.1f)));
 	
 	private static <T extends Entity> EntityType<T> createEntityType(EntityType.EntityFactory<T> factory, EntityDimensions size) {
         return new EntityType<>(factory, MobCategory.MISC, true, true, false, 

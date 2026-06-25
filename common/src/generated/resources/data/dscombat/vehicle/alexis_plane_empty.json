@@ -450,30 +450,6 @@
       "zRot": 180.0
     },
     {
-      "name": "frame_1",
-      "slot_posx": 0.0,
-      "slot_posy": -0.7,
-      "slot_posz": -0.1,
-      "slot_type": "pylon_med",
-      "zRot": 180.0
-    },
-    {
-      "name": "left_tech_mount",
-      "slot_posx": 0.5,
-      "slot_posy": -0.85,
-      "slot_posz": 4.0,
-      "slot_type": "pylon_light",
-      "zRot": 180.0
-    },
-    {
-      "name": "right_tech_mount",
-      "slot_posx": -0.5,
-      "slot_posy": -0.85,
-      "slot_posz": 4.0,
-      "slot_type": "pylon_light",
-      "zRot": 180.0
-    },
-    {
       "linkedHitbox": "engine",
       "name": "internal_1",
       "slot_posx": 0.0,
@@ -535,7 +511,7 @@
     "base_armor": 40.0,
     "break_deacc_air": 0.016,
     "break_deacc_ground": 0.032,
-    "cameraDistance": 17.0,
+    "cameraDistance": 25.0,
     "crashExplosionRadius": 5.0,
     "cross_sec_area": 4.0,
     "cruise_speed": 12.96,

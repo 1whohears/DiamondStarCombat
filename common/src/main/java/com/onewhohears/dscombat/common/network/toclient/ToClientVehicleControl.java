@@ -3,7 +3,6 @@ package com.onewhohears.dscombat.common.network.toclient;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.data.vehicle.VehicleInputManager;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -37,7 +36,7 @@ public class ToClientVehicleControl extends BaseS2CMessage {
 	@Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            UtilClientPacket.aircraftInputsPacket(id, inputs);
+            com.onewhohears.dscombat.client.util.UtilClientPacket.aircraftInputsPacket(id, inputs);
 		});
 	}
 

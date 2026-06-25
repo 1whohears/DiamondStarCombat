@@ -109,14 +109,24 @@
 	
 	"block.dscombat.weapons_block": "Оружейный верстак",
 	"block.dscombat.aircraft_block": "Верстак для создания воздушной техники",
+	"block.dscombat.missile_launch_station": "Ракетная пусковая установка",
 	
 	"container.dscombat.plane_menu": "Меню воздушного судна",
 	"container.dscombat.weapons_block_menu": "Оружейный верстак",
 	"container.dscombat.aircraft_block_menu": "Верстак для создания воздушной техники",
+	"container.dscombat.missile_launch_station": "Ракетная пусковая установка",
 	
 	"itemGroup.parts": "DSCombat Детали",
 	"itemGroup.weapons": "DSCombat Оружие",
 	"itemGroup.vehicle": "DSCombat Воздушная техника",
+	
+	"preset.type.bomb": "Бомба",
+	"preset.type.bullet": "Пуля",
+	"preset.type.ir_missile": "ИК-ракета",
+	"preset.type.pos_missile": "Позиционная ракета",
+	"preset.type.track_missile": "Самонаводящаяся ракета",
+	"preset.type.torpedo": "Торпеда",
+	"preset.type.smoke_grenade": "Дымовая граната",
 	
 	"item.dscombat.ti83": "TI83",
 	"item.dscombat.intel_pentium": "Intel Pentium",
@@ -133,12 +143,14 @@
 	"item.dscombat.data_link": "Модуль передачи данных",
 	"item.dscombat.night_vision_hud": "Модуль ночного видения",
 	"item.dscombat.radio": "Радио",
+	"item.dscombat.ecm_jammer": "Модуль РЭБ (Глушитель ракет)",
 	
 	"item.dscombat.wrench": "Гаечный ключ",
 	"item.dscombat.thick_wrench": "Гаечный ключ ОСОБЫЙ",
 	
 	"item.dscombat.no_consume_wand": "Посох Непотребляемости",
 	
+	"info.dscombat.gas_can_fill": "Заполняется из блоков нефти. ПКМ по транспорту — заправить.",
 	"item.dscombat.gas_can": "Канистра топлива",
 	"item.dscombat.big_gas_can": "Большая канистра топлива",
 	"item.dscombat.big_ass_can": "ОСОБО БОЛЬШАЯ канистра топлива",

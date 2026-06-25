@@ -136,15 +136,6 @@
       "zRot": 180.0
     },
     {
-      "linkedHitbox": "nose",
-      "name": "nose_tech",
-      "slot_posx": 0.0,
-      "slot_posy": -0.25,
-      "slot_posz": 4.25,
-      "slot_type": "pylon_light",
-      "zRot": 180.0
-    },
-    {
       "name": "left_wing_1",
       "slot_posx": 1.15,
       "slot_posy": -0.15,
@@ -289,7 +280,7 @@
     "inertiaroll": 8000.0,
     "inertiayaw": 40000.0,
     "mass": 8000.0,
-    "max_altitude": 430.0,
+    "max_altitude": 150.0,
     "max_health": 120.0,
     "max_speed": 0.85,
     "maxpitch": 1.4,

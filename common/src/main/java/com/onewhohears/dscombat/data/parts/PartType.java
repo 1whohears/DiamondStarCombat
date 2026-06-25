@@ -4,6 +4,7 @@ import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
 import com.onewhohears.dscombat.data.parts.stats.BuffStats;
 import com.onewhohears.dscombat.data.parts.stats.ChaffDispenserStats;
+import com.onewhohears.dscombat.data.parts.stats.JammerStats;
 import com.onewhohears.dscombat.data.parts.stats.ChainHookStats;
 import com.onewhohears.dscombat.data.parts.stats.EngineExternalStats;
 import com.onewhohears.dscombat.data.parts.stats.EngineStats;
@@ -11,6 +12,7 @@ import com.onewhohears.dscombat.data.parts.stats.FlareDispenserStats;
 import com.onewhohears.dscombat.data.parts.stats.FuelTankExternalStats;
 import com.onewhohears.dscombat.data.parts.stats.FuelTankStats;
 import com.onewhohears.dscombat.data.parts.stats.GimbalStats;
+import com.onewhohears.dscombat.data.parts.stats.MineDispenserStats;
 import com.onewhohears.dscombat.data.parts.stats.RadarExternalStats;
 import com.onewhohears.dscombat.data.parts.stats.RadarPartStats;
 import com.onewhohears.dscombat.data.parts.stats.SeatStats;
@@ -136,6 +138,14 @@ public abstract class PartType extends JsonPresetType {
 			super(ID, ChaffDispenserStats::new);
 		}
 	}
+	public static final MineDispenser MINE_DISPENSER = MineDispenser.INSTANCE;
+	public static class MineDispenser extends PartType {
+		public static final String ID = "mine_dispenser";
+		public static final MineDispenser INSTANCE = new MineDispenser();
+		public MineDispenser() {
+			super(ID, MineDispenserStats::new);
+		}
+	}
 	public static final Buff BUFF = Buff.INSTANCE;
 	public static class Buff extends PartType {
 		public static final String ID = "buff";
@@ -177,6 +187,22 @@ public abstract class PartType extends JsonPresetType {
 		public static final ExternalStorage INSTANCE = new ExternalStorage();
 		public ExternalStorage() {
 			super(ID, StorageExternalStats::new);
+		}
+	}
+	public static final Jammer JAMMER = Jammer.INSTANCE;
+	public static class Jammer extends PartType {
+		public static final String ID = "jammer";
+		public static final Jammer INSTANCE = new Jammer();
+		public Jammer() {
+			super(ID, JammerStats::new);
+		}
+	}
+	public static final SmokeGrenadeDispenser SMOKE_GRENADE_DISPENSER = SmokeGrenadeDispenser.INSTANCE;
+	public static class SmokeGrenadeDispenser extends PartType {
+		public static final String ID = "smoke_grenade_dispenser";
+		public static final SmokeGrenadeDispenser INSTANCE = new SmokeGrenadeDispenser();
+		public SmokeGrenadeDispenser() {
+			super(ID, com.onewhohears.dscombat.data.parts.stats.SmokeGrenadeDispenserStats::new);
 		}
 	}
 	public PartType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {

@@ -1,0 +1,12 @@
+{
+  "displayName": "item.dscombat.light_external_fuel_tank",
+  "externalEntity": "dscombat:external_fuel_tank",
+  "hitbox_height": 0.8,
+  "hitbox_width": 0.8,
+  "item": "dscombat:light_external_fuel_tank",
+  "max": 50.0,
+  "presetId": "light_external_fuel_tank",
+  "presetType": "external_fuel_tank",
+  "slotType": "pylon_light",
+  "weight": 125.0
+}

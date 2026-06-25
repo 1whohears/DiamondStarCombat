@@ -139,19 +139,19 @@ public class KeyBindsOverlay extends VehicleOverlayComponent {
 		// FLARES
 		if (isPilot && vehicle.hasFlares()) displayMapping(graphics, screenWidth, screenHeight, index++,
                 ClientInputManager.FLARE, vehicle.getFlareNum()+"");
+		// SMOKE GRENADES
+		if (isPilot && vehicle.hasSmokeGrenades()) displayMapping(graphics, screenWidth, screenHeight, index++,
+                ClientInputManager.SMOKE_GRENADE, vehicle.getSmokeGrenadeNum()+"");
 		// CHAFF
 		//if (isPilot && vehicle.hasChaff()) displayMapping(poseStack, screenWidth, screenHeight, index++,
 		//		DSCKeys.chaffKey, vehicle.getChaffNum()+"");
 		// CYCLE WEAPON
 		if (isPilot || isCoPilot) displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.WEAPON_CYCLE);
-        // TARGET MODE
-        displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.TARGET_MODE,
-                false, DSCClientInputs.getTargetMode().name());
 		// RADAR MODE
 		if (vehicle.radarSystem.hasRadar()) {
-			boolean warning = DSCClientInputs.getRadarFilterMode() != vehicle.getRadarMode();
+			boolean warning = DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode();
 			displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.RADAR_MODE,
-					warning, DSCClientInputs.getRadarFilterMode().name());
+					warning, DSCClientInputs.getPreferredRadarMode().name());
 		}
 		// SELECT RADAR PING
 		if (vehicle.radarSystem.hasRadar()) displayMapping(graphics, screenWidth, screenHeight, index++, ClientInputManager.PING_CYCLE);

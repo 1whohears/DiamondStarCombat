@@ -51,6 +51,6 @@
   "sort_factor": 3,
   "speed": 12.78,
   "targetType": "AIR",
-  "turnRadius": 800.0,
+  "turnRadius": 100.0,
   "useSpeedScale": true
 }

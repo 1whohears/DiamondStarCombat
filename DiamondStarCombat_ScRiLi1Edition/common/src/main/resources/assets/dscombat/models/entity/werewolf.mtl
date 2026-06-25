@@ -1,0 +1,6 @@
+# Blender 4.1.0 Alpha MTL File: 'ka50 model.blend'
+# www.blender.org
+
+newmtl Material
+map_Kd dscombat:entity/test
+newmtl none

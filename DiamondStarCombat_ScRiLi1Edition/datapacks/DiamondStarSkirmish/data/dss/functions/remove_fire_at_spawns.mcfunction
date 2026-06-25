@@ -1,0 +1,1 @@
+execute as @e[tag=spawn] at @s run fill ~-8 ~-4 ~-8 ~8 ~8 ~8 air replace minecraft:fire

@@ -3,8 +3,6 @@ package com.onewhohears.dscombat.common.network.toclient;
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.dscombat.util.UtilClientPacket;
-
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -44,7 +42,7 @@ public class ToClientAddForceMoment extends BaseS2CMessage {
 	@Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            UtilClientPacket.addMomentPacket(id, force, moment);
+            com.onewhohears.dscombat.client.util.UtilClientPacket.addMomentPacket(id, force, moment);
 		});
 	}
 

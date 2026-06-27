@@ -1,6 +1,7 @@
 package com.onewhohears.dscombat.data.weapon;
 
 import com.onewhohears.dscombat.data.weapon.stats.*;
+import com.onewhohears.dscombat.entity.weapon.EntitySmokeGrenade;
 import com.onewhohears.dscombat.init.ModEntities;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetType;
@@ -127,16 +128,40 @@ public abstract class WeaponType extends JsonPresetType {
 			return ModEntities.ANTI_RADAR_MISSILE.get();
 		}
 	}
-	public static final AllMissile ALL_MISSILE = AllMissile.INSTANCE;
-	public static class AllMissile extends WeaponType {
-		public static final String ID = "all_missile";
-		public static final AllMissile INSTANCE = new AllMissile();
-		public AllMissile() {
-			super(ID, (key, data) -> new AllMissileStats(key, data));
+	public static final BallisticMissile BALLISTIC_MISSILE = BallisticMissile.INSTANCE;
+	public static class BallisticMissile extends WeaponType {
+		public static final String ID = "ballistic_missile";
+		public static final BallisticMissile INSTANCE = new BallisticMissile();
+		public BallisticMissile() {
+			super(ID, (key, data) -> new BallisticMissileStats(key, data));
 		}
 		@Override
 		public EntityType<?> getDefaultEntityType() {
-			return ModEntities.ALL_MISSILE.get();
+			return ModEntities.BALLISTIC_MISSILE.get();
+		}
+	}
+	public static final SmokeGrenade SMOKE_GRENADE = SmokeGrenade.INSTANCE;
+	public static class SmokeGrenade extends WeaponType {
+		public static final String ID = "smoke_grenade";
+		public static final SmokeGrenade INSTANCE = new SmokeGrenade();
+		public SmokeGrenade() {
+			super(ID, (key, data) -> new SmokeGrenadeStats(key, data));
+		}
+		@Override
+		public EntityType<?> getDefaultEntityType() {
+			return ModEntities.SMOKE_GRENADE.get();
+		}
+	}
+	public static final Grenade GRENADE = Grenade.INSTANCE;
+	public static class Grenade extends WeaponType {
+		public static final String ID = "grenade";
+		public static final Grenade INSTANCE = new Grenade();
+		public Grenade() {
+			super(ID, (key, data) -> new GrenadeStats(key, data));
+		}
+		@Override
+		public EntityType<?> getDefaultEntityType() {
+			return ModEntities.BOMB.get();
 		}
 	}
 	public WeaponType(String id, JsonPresetStatsFactory<? extends JsonPresetStats> statsFactory) {

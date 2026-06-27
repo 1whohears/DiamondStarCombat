@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.data.sound;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilClientSafeSounds;
+import com.onewhohears.dscombat.client.util.UtilClientSafeSounds;
 import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetInstance;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetStats;

@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"I": {
+			"tag": "dscombat:aluminum_ingot"
+		}
+	},
+	"pattern": [
+		"I I",
+		" I ",
+		"I I"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:propeller"
+	}
+}

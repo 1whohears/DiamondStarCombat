@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"A": {
+			"item": "dscombat:ar2k"
+		},
+		"N": {
+			"item": "minecraft:nether_star"
+		}
+	},
+	"pattern": [
+		"AAA",
+		"AAA",
+		" N "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:ar20k"
+	}
+}

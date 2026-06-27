@@ -1,0 +1,22 @@
+{
+  "values": [
+    "minecraft:wither_skull",
+    "minecraft:bee",
+    "minecraft:firework_rocket",
+    "minecraft:small_fireball",
+    "minecraft:ghast",
+    "#dscombat:projectile/missile",
+    {
+      "id": "simpleplanes:plane",
+      "required": false
+    },
+    {
+      "id": "simpleplanes:large_plane",
+      "required": false
+    },
+    {
+      "id": "simpleplanes:helicopter",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.ewr4000",
+  "item": "dscombat:axcel_truck_radar",
+  "presetId": "ewr4000",
+  "presetType": "external_radar",
+  "radar": "ewr4000",
+  "slotType": "mount_tech",
+  "weight": 1000.0
+}

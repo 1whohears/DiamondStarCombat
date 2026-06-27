@@ -1,0 +1,12 @@
+# Blender 3.6.23 MTL File: 'None'
+# www.blender.org
+
+newmtl m_ccf10c61-7f5c-1fe0-9dbc-0a1d3fa7c456
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd smvpack:entity/weapon/aim9

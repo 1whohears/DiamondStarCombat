@@ -6,7 +6,7 @@ import com.onewhohears.dscombat.data.sound.VehiclePassengerSoundPacks;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.util.UtilClientSafeSounds;
+import com.onewhohears.dscombat.client.util.UtilClientSafeSounds;
 import com.onewhohears.dscombat.util.UtilSound;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import net.minecraft.nbt.CompoundTag;

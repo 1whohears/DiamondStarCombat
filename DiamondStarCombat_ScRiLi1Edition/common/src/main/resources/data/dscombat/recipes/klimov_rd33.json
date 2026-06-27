@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"B": {
+			"item": "minecraft:blast_furnace"
+		},
+		"P": {
+			"item": "minecraft:firework_rocket"
+		},
+		"I": {
+			"tag": "dscombat:aluminum_ingot"
+		},
+		"G": {
+			"item": "minecraft:gold_ingot"
+		}
+	},
+	"pattern": [
+		"PPP",
+		"PGP",
+		"IBI"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:klimov_rd33"
+	}
+}

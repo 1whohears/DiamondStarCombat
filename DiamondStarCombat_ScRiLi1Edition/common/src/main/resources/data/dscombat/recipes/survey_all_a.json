@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"P": {
+			"item": "dscombat:intel_pentium"
+		},
+		"R": {
+			"item": "minecraft:redstone"
+		},
+		"O": {
+			"item": "minecraft:observer"
+		},
+		"I": {
+			"item": "minecraft:copper_ingot"
+		},
+		"S": {
+			"item": "minecraft:spider_eye"
+		}
+	},
+	"pattern": [
+		"III",
+		"OIO",
+		"RPS"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:survey_all_a"
+	}
+}

@@ -293,9 +293,10 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 		addPresetToGenerate(PartBuilder.create(DSCombatMod.MODID, "heavy_tank_turret", ModItems.TURRET.getId(), PartType.TURRENT)
 				.setCompatibleSlotType(SlotType.MOUNT_MED)
 				.setWeight(4000)
-				.setTurretStats(16, 120, Vec3.ZERO, 0.3,
+				.setTurretStats(16, 120, Vec3.ZERO, 0.3, 0.5,
 						TurretStats.RotBounds.create(1.0f, 30f, 30f),
 						2.0f, 1.0f)
+				.setHidePlayer(true)
 				.addIngredient("dscombat:seat", 1)
 				.addIngredientTag("dscombat:aluminum_ingot", 40)
 				.addIngredient("minecraft:tnt", 2)
@@ -463,6 +464,17 @@ public class PartPresetGenerator extends JsonPresetGenerator<PartStats> {
 				.setCompatibleSlotType(SlotType.INTERNAL)
 				.setWeight(100)
 				.setFlareDispenserStats(20, 120, 20)
+				.build());
+		// MINE DISPENSERS
+		addPresetToGenerate(PartBuilder.create(ModItems.BASIC_MINE_DISPENSER.getId(), PartType.MINE_DISPENSER)
+				.setCompatibleSlotType(SlotType.INTERNAL)
+				.setWeight(150)
+				.setMineDispenserStats(8, 50.0f, 5.0f, 40)
+				.build());
+		addPresetToGenerate(PartBuilder.create(ModItems.NAVAL_MINE_DISPENSER.getId(), PartType.MINE_DISPENSER)
+				.setCompatibleSlotType(SlotType.MOUNT_HEAVY)
+				.setWeight(2000)
+				.setMineDispenserStats(16, 100.0f, 8.0f, 60)
 				.build());
 	}
 	

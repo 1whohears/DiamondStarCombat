@@ -1,0 +1,43 @@
+{
+	"presetType": "floatfloat",
+	"priority": 100,
+	"mirror_negative_keys": true,
+	"invert_mirrored_values": false,
+	"map": [
+		{"key": 0.00, "value": 0.004},
+		{"key": 1.00, "value": 0.010},
+
+		{
+			"key": 2.0,
+			"value": 0.03823603317141533
+		},
+		{
+			"key": 4.0,
+			"value": 0.050862181931734085
+		},
+		{
+			"key": 6.0,
+			"value": 0.0702052190899849
+		},
+		{
+			"key": 9.0,
+			"value": 0.09033898264169693
+		},
+		{
+			"key": 12.0,
+			"value": 0.1392434984445572
+		},
+		{
+			"key": 16.0,
+			"value": 0.2571973204612732
+		},
+
+		{"key": 30.00, "value": 1.300},
+		{"key": 35.00, "value": 1.800},
+		{"key": 40.00, "value": 2.400},
+		{"key": 45.00, "value": 3.000},
+		{"key": 50.00, "value": 3.500},
+		{"key": 55.00, "value": 4.000},
+		{"key": 60.00, "value": 4.500}
+	]
+}

@@ -1,0 +1,12 @@
+# Blender 3.3.21 MTL File: 'None'
+# www.blender.org
+
+newmtl m_6408e22f-ad4a-a72c-0ba0-b865212e56f5
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd smvpack:entity/weapon/2a42_30mm

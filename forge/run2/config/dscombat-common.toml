@@ -1,0 +1,15 @@
+
+[performance]
+	#The number of blocks between 2 entities to check if they can see eachother.
+	#Range: 10 ~ 400
+	maxBlockCheckDepth = 256
+
+[debug]
+	logTurretAIDebug = false
+
+[gameplay]
+	#Roughly the randomly weighted percentage of vehicle recipe items recovered from crash site.
+	#Range: 0.0 ~ 1.0
+	recoverPartWeight = 0.7
+	radarMobs = ["net.minecraft.world.entity.Mob"]
+

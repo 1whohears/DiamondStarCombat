@@ -130,10 +130,7 @@ public class TurretShootGoal extends Goal {
 			if (debugTurretAI()) LOGGER.info("NO SHOOT weapon data null");
 			return false;
 		}
-		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) {
-            if (debugTurretAI()) LOGGER.info("NO SHOOT recoil or no ammo");
-            return false;
-        }
+		if (!wd.checkRecoil() || wd.getCurrentAmmo() <= 0) return false;
 		boolean irMissile = useIRMis && wd.getStats().isIRMissile();
 		boolean trackMissile = useTrackMis && wd.getStats().requiresRadar();
 		if (irMissile || trackMissile) {

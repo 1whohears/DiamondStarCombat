@@ -1,0 +1,277 @@
+{
+  "displayName": "preset.dscombat.felix_plane",
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "lg0",
+        "pivot": {
+          "x": 0.0,
+          "y": 1.2000062,
+          "z": 2.7511125
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg1",
+        "pivot": {
+          "x": 1.7489876,
+          "y": 1.6355,
+          "z": -2.9492812
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "lg2",
+        "pivot": {
+          "x": -1.7489876,
+          "y": 1.6355,
+          "z": -2.9492812
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 15.0,
+        "input_axis": "YAW",
+        "model_part_key": "surface0",
+        "pivot": {
+          "x": 0.0,
+          "y": 3.7128437,
+          "z": -9.071519
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -15.0,
+        "input_axis": "YAW",
+        "model_part_key": "surface0",
+        "pivot": {
+          "x": 0.0,
+          "y": 3.7128437,
+          "z": -9.071519
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "plane_flap_rotation",
+        "bound": -22.0,
+        "input_axis": "ROLL",
+        "model_part_key": "surface1",
+        "pivot": {
+          "x": 3.3393,
+          "y": 1.721175,
+          "z": -4.8714
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "plane_flap_rotation",
+        "bound": 22.0,
+        "input_axis": "ROLL",
+        "model_part_key": "surface2",
+        "pivot": {
+          "x": -3.3393,
+          "y": 1.721175,
+          "z": -4.8714
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface3",
+        "pivot": {
+          "x": 1.3695875,
+          "y": 1.9716812,
+          "z": -9.4798
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -16.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface3",
+        "pivot": {
+          "x": 1.3695875,
+          "y": 1.9716812,
+          "z": -9.4798
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -2.5,
+        "input_axis": "PITCH",
+        "model_part_key": "surface3",
+        "pivot": {
+          "x": 1.3695875,
+          "y": 1.9716812,
+          "z": -9.4798
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 22.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface4",
+        "pivot": {
+          "x": -1.3695875,
+          "y": 1.9716812,
+          "z": -9.4798
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 16.0,
+        "input_axis": "PITCH",
+        "model_part_key": "surface4",
+        "pivot": {
+          "x": -1.3695875,
+          "y": 1.9716812,
+          "z": -9.4798
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 2.5,
+        "input_axis": "PITCH",
+        "model_part_key": "surface4",
+        "pivot": {
+          "x": -1.3695875,
+          "y": 1.9716812,
+          "z": -9.4798
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "wing1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "surface1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_wing",
+        "model_part_key": "lg1"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "wing2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "surface2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_wing",
+        "model_part_key": "lg2"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_elevator",
+        "model_part_key": "wing3"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "left_elevator",
+        "model_part_key": "surface3"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_elevator",
+        "model_part_key": "wing4"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "right_elevator",
+        "model_part_key": "surface4"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "surface0"
+      },
+      {
+        "anim_id": "hitbox_destroy_part",
+        "hitbox_name": "tail",
+        "model_part_key": "wing0"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -25.0,
+        "input_axis": "PITCH",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 0.0,
+          "y": 1.5102375,
+          "z": 2.2028875
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": 25.0,
+        "input_axis": "ROLL",
+        "model_part_key": "stick",
+        "pivot": {
+          "x": 0.0,
+          "y": 1.5102375,
+          "z": 2.2028875
+        },
+        "rot_axis": "Z"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -0.0625
+        },
+        "input_axis": "YAW",
+        "model_part_key": "pedal0"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0625
+        },
+        "input_axis": "YAW",
+        "model_part_key": "pedal1"
+      },
+      {
+        "anim_id": "input_bound_translation",
+        "bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.1875
+        },
+        "input_axis": "THROTTLE",
+        "model_part_key": "throttle"
+      }
+    ],
+    "model_id": "felix_plane"
+  },
+  "presetId": "felix_plane",
+  "presetType": "standard"
+}

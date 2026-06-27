@@ -102,6 +102,12 @@
     },
     {
       "data": {
+        "part": "gimbal_camera"
+      },
+      "name": "right_wing_4"
+    },
+    {
+      "data": {
         "filled": true,
         "param": "30mmhe",
         "part": "gau_avenger"
@@ -128,12 +134,6 @@
         "part": "basic_flare_dispenser"
       },
       "name": "internal_4"
-    },
-    {
-      "data": {
-        "part": "gimbal_camera"
-      },
-      "name": "right_tech_mount"
     }
   ],
   "textures": {

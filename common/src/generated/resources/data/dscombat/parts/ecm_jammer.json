@@ -1,0 +1,10 @@
+{
+  "displayName": "item.dscombat.ecm_jammer",
+  "item": "dscombat:ecm_jammer",
+  "jam_radius": 512.0,
+  "jam_strength": 1.0,
+  "presetId": "ecm_jammer",
+  "presetType": "jammer",
+  "slotType": "tech_internal",
+  "weight": 150.0
+}

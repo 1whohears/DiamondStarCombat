@@ -21,6 +21,7 @@ public class VehicleTextureManager {
 	private int baseTextureIndex = 0;
 	private boolean changed;
 	private ResourceLocation dynamicTexture;
+	private net.minecraft.client.renderer.texture.DynamicTexture dynamicTextureObject;
 	
 	public VehicleTextureManager(EntityVehicle parent) {
 		this.parent = parent;
@@ -43,7 +44,26 @@ public class VehicleTextureManager {
 	 */
 	public void setupDynamicTexture() {
 		if (!parent.isClientSide()) return;
-		dynamicTexture = VehicleDynamicTextures.createVehicleDynamicTexture(parent);
+		net.minecraft.client.renderer.texture.DynamicTexture newTexture = 
+			VehicleDynamicTextures.createOrUpdateVehicleDynamicTexture(parent, dynamicTextureObject);
+		if (newTexture == null) {
+			// No layers and no dirt — use base texture
+			dynamicTexture = getBaseTexture();
+			dynamicTextureObject = null;
+		} else {
+			// Register or update the dynamic texture
+			if (dynamicTextureObject == null) {
+				// First time creating dynamic texture
+				dynamicTextureObject = newTexture;
+				ResourceLocation textLoc = new ResourceLocation(
+					com.onewhohears.dscombat.DSCombatMod.MODID, "vehicle_layers_" + parent.getId());
+				com.onewhohears.dscombat.client.util.UtilClientSafeSounds.registerDynamicTexture(textLoc, dynamicTextureObject);
+				dynamicTexture = textLoc;
+			} else {
+				// Texture already registered, just uploaded new pixels
+				dynamicTextureObject = newTexture;
+			}
+		}
 	}
 	/**
 	 * CLIENT ONLY

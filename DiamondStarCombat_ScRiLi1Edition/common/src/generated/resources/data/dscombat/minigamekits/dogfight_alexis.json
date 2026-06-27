@@ -1,0 +1,14 @@
+{
+  "displayName": "preset.dscombat.dogfight_alexis",
+  "kitItems": [
+    {
+      "item": "dscombat:vehicle",
+      "nbt": {
+        "preset": "alexis_plane_escort"
+      },
+      "num": 1
+    }
+  ],
+  "presetId": "dogfight_alexis",
+  "presetType": "gamekit"
+}

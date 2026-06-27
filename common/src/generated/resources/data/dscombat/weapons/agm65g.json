@@ -1,10 +1,7 @@
 {
-  "acceleration": 0.2,
+  "acceleration": 0.025,
   "activeTrack": true,
-  "bleed": 0.16,
-  "canOpticalGuide": true,
-  "canPositionGuide": true,
-  "canRadarGuide": true,
+  "bleed": 0.02,
   "canShootOnGround": false,
   "causesFire": true,
   "compatibleWeaponPart": [
@@ -15,7 +12,7 @@
   "damage": 60.0,
   "destroyTerrain": true,
   "displayName": "preset.dscombat.agm65g",
-  "entityTypeKey": "dscombat:all_missile",
+  "entityTypeKey": "dscombat:track_missile",
   "explodeNum": 2,
   "explosionRadius": 5.5,
   "explosive": true,
@@ -46,11 +43,11 @@
   "mass": 250.0,
   "maxAge": 1000,
   "presetId": "agm65g",
-  "presetType": "all_missile",
+  "presetType": "track_missile",
   "shootSoundKey": "dscombat:rocket_launch_1",
   "sort_factor": 4,
-  "speed": 40.0,
+  "speed": 16.0,
   "targetType": "GROUND",
-  "turnRadius": 480.0,
+  "turnRadius": 60.0,
   "useSpeedScale": true
 }

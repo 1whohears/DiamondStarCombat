@@ -1,24 +1,24 @@
 package com.onewhohears.dscombat.data.weapon;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.weapon.instance.NoWeaponInstance;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
-import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
-import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
-import com.onewhohears.onewholibs.util.math.Vec3f;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * manages available weapons for {@link EntityVehicle}.
@@ -32,8 +32,9 @@ public class WeaponSystem {
 	
 	private final EntityVehicle parent;
 	private boolean readData = false;
-	private final List<WeaponInstance<?>> weapons = new ArrayList<>();
+	private List<WeaponInstance<?>> weapons = new ArrayList<>();
 	private int weaponIndex = 0;
+	private Vec3 targetPos = Vec3.ZERO;
 	
 	public WeaponSystem(EntityVehicle parent) {
 		this.parent = parent;
@@ -67,6 +68,7 @@ public class WeaponSystem {
 	
 	public WeaponInstance<?> getSelected() {
 		checkIndex();
+		if (weaponIndex >= weapons.size()) return NoWeaponInstance.get();
 		return weapons.get(weaponIndex);
 	}
 	
@@ -74,25 +76,29 @@ public class WeaponSystem {
 		return weaponIndex;
 	}
 	
-	public boolean shootSelected(Entity controller, @NotNull WeaponTargetParameters targetParams) {
+	public boolean shootSelected(Entity controller) {
 		boolean consume = true;
 		if (parent.isNoConsume()) consume = false;
 		else if (controller instanceof Player p && p.isCreative()) consume = false;
 		boolean consumeAmmo = parent.getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_AMMO);
-		return shootSelected(controller, consume && consumeAmmo, targetParams);
+		return shootSelected(controller, consume && consumeAmmo);
 	}
 	
-	public boolean shootSelected(Entity controller, boolean consume, @NotNull WeaponTargetParameters targetParams) {
+	public boolean shootSelected(Entity controller, boolean consume) {
 		WeaponInstance<?> data = getSelected();
 		if (data == null) return false;
-		String name = data.getStatsId();
+		// Check recoil before attempting to shoot
+		if (!data.checkRecoil()) return false;
 		String reason = null;
-		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume, targetParams);
+		
+		// Shoot the selected weapon
+		data.shootFromVehicle(parent.getWorld(), controller, getShootDirection(data), parent, consume);
 		if (data.isFailedLaunch()) reason = data.getFailedLaunchReason();
-		for (WeaponInstance<?> wd : weapons) if (wd.getStats().isBullet() && wd.getStatsId().equals(name) && !wd.getSlotId().equals(data.getSlotId())) {
-			wd.shootFromVehicle(parent.getWorld(), controller, getShootDirection(wd), parent, consume, targetParams);
-			if (reason == null && wd.isFailedLaunch()) reason = wd.getFailedLaunchReason();
-		}
+		
+		// NOTE: Removed automatic dual-weapon firing logic
+		// For turrets with extra_weapons, linked_weapons parameter should be used in EntityTurret.shoot()
+		// For aircraft, each weapon fires independently unless explicitly linked via linked_weapons
+		
 		if (reason != null && controller instanceof ServerPlayer player) {
 			player.displayClientMessage(UtilMCText.translatable(reason), true);
 		}
@@ -167,7 +173,12 @@ public class WeaponSystem {
 		}
 	}
 
-    public void setTargetParameters(@NotNull WeaponTargetParameters targetParams) {
-        if (targetParams.ping != null) parent.radarSystem.selectTarget(targetParams.ping);
-    }
+	public Vec3 getTargetPos() {
+		return targetPos;
+	}
+
+	public void setTargetPos(Vec3 targetPos) {
+		this.targetPos = targetPos;
+	}
+	
 }

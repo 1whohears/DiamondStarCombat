@@ -1,0 +1,11 @@
+# Blender 3.3.21 MTL File: 'None'
+# www.blender.org
+
+newmtl mat1.001
+Ns 50.000011
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 3
+map_Kd smvpack:entity/vehicle/f15e/base0

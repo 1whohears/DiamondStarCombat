@@ -20,6 +20,7 @@
   "item": "dscombat:turret",
   "maxAmmo": 4,
   "maxHealth": 40.0,
+  "muzzleParticleOffset": 0.2,
   "passenger_offset": {
     "x": 0.0,
     "y": 0.0,

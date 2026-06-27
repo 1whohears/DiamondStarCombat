@@ -1,0 +1,10 @@
+{
+  "armTime": 80,
+  "chainReaction": true,
+  "damage": 100.0,
+  "displayName": "preset.dscombat.heavy_anti_tank_mine",
+  "mineType": "anti_tank",
+  "presetId": "heavy_anti_tank_mine",
+  "presetType": "mine",
+  "radius": 5.0
+}

@@ -9,7 +9,8 @@
 		"LevelMixin"
 	],
 	"client": [
-		"CameraAccess"
+		"CameraAccess",
+		"PlayerRendererMixin"
 	],
 	"server": [],
 	"injectors": {

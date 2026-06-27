@@ -4,6 +4,7 @@ import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.MissileStats;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
+
 import com.onewhohears.onewholibs.util.UtilEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -36,7 +37,7 @@ public abstract class MissileInstance<T extends MissileStats> extends BulletInst
 			looker.setXRot(params.owner.getXRot());
 			looker.setYRot(params.owner.getYRot());
 		}
-		missile.targetPos = UtilEntity.getLookingAtBlockPos(looker, 1024);
+		missile.targetPos = UtilEntity.getLookingAtBlockPos(looker, 300);
 	}
 
 }

@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"F": {
+			"item": "minecraft:furnace"
+		},
+		"P": {
+			"item": "minecraft:piston"
+		},
+		"I": {
+			"tag": "dscombat:aluminum_ingot"
+		}
+	},
+	"pattern": [
+		"IPI",
+		"PFP",
+		"IPI"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:c12_engine"
+	}
+}

@@ -35,6 +35,8 @@ public class BulletStats extends WeaponStats {
 	private final boolean destroyTerrain;
 	private final boolean causesFire;
 	private final float explosionRadius;
+	private final float explosionDamageRadius;
+	private final float explosionDamageMultiplier;
 	private final float inaccuracy;
 	private final int explodeNum;
     private final boolean useSpeedScale;
@@ -47,6 +49,8 @@ public class BulletStats extends WeaponStats {
 		this.destroyTerrain = UtilParse.getBooleanSafe(json, "destroyTerrain", false);
 		this.causesFire = UtilParse.getBooleanSafe(json, "causesFire", false);
 		this.explosionRadius = UtilParse.getFloatSafe(json, "explosionRadius", 0);
+		this.explosionDamageRadius = UtilParse.getFloatSafe(json, "explosionDamageRadius", explosionRadius);
+		this.explosionDamageMultiplier = UtilParse.getFloatSafe(json, "explosionDamageMultiplier", 1.0f);
 		this.inaccuracy = UtilParse.getFloatSafe(json, "inaccuracy", 0);
 		this.explodeNum = UtilParse.getIntSafe(json, "explodeNum", 1);
         this.useSpeedScale = UtilParse.getBooleanSafe(json, "useSpeedScale", false);
@@ -70,6 +74,14 @@ public class BulletStats extends WeaponStats {
 
 	public float getExplosionRadius() {
 		return explosionRadius;
+	}
+
+	public float getExplosionDamageRadius() {
+		return explosionDamageRadius;
+	}
+
+	public float getExplosionDamageMultiplier() {
+		return explosionDamageMultiplier;
 	}
 
 	public boolean isCausesFire() {

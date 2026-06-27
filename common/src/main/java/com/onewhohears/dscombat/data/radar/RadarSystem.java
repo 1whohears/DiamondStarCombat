@@ -1,5 +1,10 @@
 package com.onewhohears.dscombat.data.radar;
 
+import java.util.*;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.command.DSCGameRules;
@@ -7,30 +12,25 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRWRWarning;
 import com.onewhohears.dscombat.common.network.toclient.ToClientRadarPings;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarPing;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.weapon.EntityMissile;
 import com.onewhohears.dscombat.init.DataSerializers;
-import com.onewhohears.onewholibs.common.core.SimulatedEntityManager;
-import com.onewhohears.onewholibs.entity.SimulatedEntity;
+
 import com.onewhohears.onewholibs.util.UtilEntity;
-import io.netty.util.collection.IntObjectHashMap;
-import io.netty.util.collection.IntObjectMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
 
 /**
  * manages the radar/targeting/rwr system for {@link EntityVehicle}.
  * individual radars are abstracted into {@link RadarStats}.
- * individual radars update the radar system's link of {@link RadarTarget} on the server side.
+ * individual radars update the radar system's link of {@link RadarPing} on the server side.
  * the updated link of pings are then sent to the client. 
  * the client then tells the server which ping is selected.
  * then the {@link com.onewhohears.dscombat.data.weapon.WeaponSystem} gets the target entity from here.
@@ -44,15 +44,14 @@ public class RadarSystem {
 	private final List<RadarInstance<?>> radars = new ArrayList<>();
 	private final List<EntityMissile<?>> rockets = new ArrayList<>();
 	
-	private final IntObjectMap<RadarTarget> targets = new IntObjectHashMap<>();
-    private final Set<Integer> forRemoval = new HashSet<>();
-	private int selectedTargetId = -1;
-	private final IntObjectMap<RadarTarget> clientTargets = new IntObjectHashMap<>();
-	private int clientSelectedId = -1, clientSelectedTime = -21;
+	private final List<RadarPing> targets = new ArrayList<>();
+	private int selectedIndex = -1;
+	private List<RadarPing> clientTargets = new ArrayList<>();
+	private int clientSelectedIndex = -1, clientSelectedTime = -21;
 	public int clientPingRefreshTime = 0;
 	public int clientRwrRefreshTime = 0;
 	
-	private final List<RadarTarget> dataLinkBuffer = new ArrayList<>();
+	private final List<RadarPing> dataLinkBuffer = new ArrayList<>();
 	
 	private final Map<Integer, RWRWarning> rwrWarnings = new HashMap<>();
 	private boolean rwrMissile, rwrRadar;
@@ -82,21 +81,26 @@ public class RadarSystem {
 	}
 	
 	public void tickUpdateTargets() {
+		RadarPing old = null; 
+		if (selectedIndex != -1 && selectedIndex < targets.size()) old = targets.get(selectedIndex);
+		selectedIndex = -1;
 		// PLANE RADARS
 		for (RadarInstance<?> r : radars) r.tickUpdateTargets(parent, targets);
 		// DATA LINK
 		if (parent.tickCount % 20 == 0) updateDataLink();
-        // REMOVE OLD
-        removeOldTargets();
 		// PICK PREVIOUS TARGET
-        Entity target = getSelectedTargetEntity();
-        if (target == null) {
-            selectedTargetId = -1;
-        } else if (target instanceof EntityVehicle plane) {
-            plane.lockedOnto(parent);
-        }
+		if (old != null) for (int i = 0; i < targets.size(); ++i) 
+			if (targets.get(i).id == old.id) {
+				selectedIndex = i;
+				if (getSelectedTarget() instanceof EntityVehicle plane) {
+					plane.lockedOnto(parent);
+				}
+				break;
+			}
 		// SEMI ACTIVE TRACK ROCKETS
 		updateSemiActiveTrackMissiles();
+		// JAMMER PINGS — add nearby active jammers as special pings
+		if (parent.tickCount % 10 == 0) updateJammerPings();
 		// PACKET
 		if (parent.tickCount % 10 == 0) {
 			if (parent.isStationaryRadar()) parent.toTrackers(new ToClientRadarPings(parent.getId(), targets));
@@ -104,37 +108,32 @@ public class RadarSystem {
 		}
 	}
 
-    protected void removeOldTargets() {
-        long currentTime = parent.getWorld().getGameTime();
-        targets.forEach((id, target) -> {
-            long timeDiff = currentTime - target.getUpdateTime();
-            if (timeDiff > target.getExpireTime()) {
-                forRemoval.add(id);
-            }
-        });
-        forRemoval.forEach(targets::remove);
-        forRemoval.clear();
-    }
-
-    public void addUpdateTarget(RadarTarget newTarget) {
-        forRemoval.remove(newTarget.entityId);
-        RadarTarget old = targets.get(newTarget.entityId);
-        if (old == null) {
-            targets.put(newTarget.entityId, newTarget);
-        } else {
-            old.updateFromRadar(newTarget);
-        }
-    }
-
-    public void removeTarget(int entityId) {
-        RadarTarget target = targets.get(entityId);
-        if (target == null) return;
-        long currentTime = parent.getWorld().getGameTime();
-        long timeDiff = currentTime - target.getUpdateTime();
-        if (timeDiff > target.getExpireTime()) {
-            forRemoval.add(entityId);
-        }
-    }
+	/** Scans for vehicles with active ECM jammers and adds them as JAMMER pings */
+	private void updateJammerPings() {
+		// remove old jammer pings
+		targets.removeIf(p -> p.entityType == RadarStats.PingEntityType.JAMMER);
+		double range = 2048;
+		net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(
+				parent.getX()+range, parent.getY()+range, parent.getZ()+range,
+				parent.getX()-range, parent.getY()-range, parent.getZ()-range);
+		for (net.minecraft.world.entity.Entity e : parent.getWorld().getEntities(parent, box)) {
+			if (!(e instanceof EntityVehicle v)) continue;
+			float strength = v.partsManager.getActiveJammerStrength();
+			if (strength <= 0f) continue;
+			boolean friendly = parent.isAlliedTo(v);
+			RadarStats.RadarPing ping = new RadarStats.RadarPing(v, friendly, RadarStats.PingEntityType.JAMMER);
+			// Check if this jammer is actively jamming — any missile within jam radius?
+			float jamRadius = v.partsManager.getActiveJammerRadius();
+			net.minecraft.world.phys.AABB jamBox = new net.minecraft.world.phys.AABB(
+					v.getX()+jamRadius, v.getY()+jamRadius, v.getZ()+jamRadius,
+					v.getX()-jamRadius, v.getY()-jamRadius, v.getZ()-jamRadius);
+			boolean jamming = parent.getWorld().getEntities(v, jamBox).stream()
+					.anyMatch(m -> m instanceof com.onewhohears.dscombat.entity.weapon.EntityMissile<?>
+							&& !(m instanceof com.onewhohears.dscombat.entity.weapon.AntiRadarMissile<?>));
+			ping.setJamming(jamming);
+			targets.add(ping);
+		}
+	}
 
 	protected void updateVisibility() {
 		if (parent.getWorld().isClientSide()) return;
@@ -180,13 +179,18 @@ public class RadarSystem {
 				continue;
 			if (plane.equals(parent))
 				continue;
-			for (RadarTarget rp : targets.values()) {
-				if (rp.entityId == plane.getId()) continue;
+			for (RadarPing rp : targets) {
+				if (rp.id == plane.getId()) continue;
 				if (rp.isShared()) continue;
-				if (plane.radarSystem.hasDataLinkBuffer(rp.entityId)) continue;
+				if (plane.radarSystem.hasDataLinkBuffer(rp.id)) continue;
 				plane.radarSystem.dataLinkBuffer.add(rp.getCopy(true));
 			}
 		} 
+	}
+	
+	public int getClientPingIndexByEntityId(int id) {
+		for (int i = 0; i < clientTargets.size(); ++i) if (clientTargets.get(i).id == id) return i;
+		return -1;
 	}
 
 	public boolean hasTargets() {
@@ -202,40 +206,39 @@ public class RadarSystem {
 		return false;
 	}
 	
-	public boolean hasTarget(int entityId) {
-        return targets.containsKey(entityId);
+	public boolean hasTarget(int id) {
+		for (RadarPing rp : targets) if (rp.id == id) return true;
+		return false;
 	}
 	
 	private boolean hasDataLinkBuffer(int id) {
-		for (RadarTarget rp : dataLinkBuffer) if (rp.entityId == id) return true;
+		for (RadarPing rp : dataLinkBuffer) if (rp.id == id) return true;
 		return false;
 	}
 	
 	private void refreshDataLink() {
-        for (RadarTarget dataLinkTarget : dataLinkBuffer) {
-            RadarTarget old = targets.get(dataLinkTarget.entityId);
-            if (old != null) old.updateFromDataLink(dataLinkTarget);
-            else targets.put(dataLinkTarget.entityId, dataLinkTarget);
-            forRemoval.remove(dataLinkTarget.entityId);
-        }
+		for (int i = 0; i < targets.size(); ++i) 
+			if (targets.get(i).isShared()) 
+				targets.remove(i--);
+		for (int i = 0; i < dataLinkBuffer.size(); ++i) 
+			if (!hasTarget(dataLinkBuffer.get(i).id)) 
+				targets.add(dataLinkBuffer.get(i));
 		dataLinkBuffer.clear();
 	}
 	
 	private void updateSemiActiveTrackMissiles() {
 		for (int i = 0; i < rockets.size(); ++i) {
 			EntityMissile<?> r = rockets.get(i);
-			if (!r.isSimulateEnabled()) {
+			if (r.isRemoved()) {
 				rockets.remove(i--);
 				continue;
 			}
 			boolean b = false;
-            for (RadarTarget target : targets.values()) {
-                if (target.entityId == r.target.getId()) {
-                    r.targetPos = target.pos;
-                    b = true;
-                    break;
-                }
-            }
+			for (int j = 0; j < targets.size(); ++j) if (targets.get(j).id == r.target.getId()) {
+				r.targetPos = targets.get(j).pos;
+				b = true;
+				break;
+			}
 			if (b) continue;
 			rockets.remove(i--);
 			r.kill();
@@ -246,17 +249,20 @@ public class RadarSystem {
 		if (!rockets.contains(r)) rockets.add(r);
 	}
 	
-	public void selectTarget(RadarTarget ping) {
-		selectTarget(ping.entityId);
+	public void selectTarget(RadarPing ping) {
+		selectTarget(ping.id);
 	}
 	
-	public void selectTarget(int entityId) {
-		selectedTargetId = -1;
-        if (targets.containsKey(entityId)) selectedTargetId = entityId;
+	public void selectTarget(int id) {
+		selectedIndex = -1;
+		for (int i = 0; i < targets.size(); ++i) if (targets.get(i).id == id) {
+			selectedIndex = i;
+			break;
+		}
 	}
 	
 	public void selectTarget(Entity entity) {
-		selectedTargetId = -1;
+		selectedIndex = -1;
 		if (hasTarget(entity.getId())) selectTarget(entity.getId());
 		else if (entity.isPassenger()) {
 			Entity v = entity.getRootVehicle();
@@ -265,27 +271,23 @@ public class RadarSystem {
 	}
 	
 	@Nullable
-	public Entity getSelectedTargetEntity() {
-		if (selectedTargetId == -1 || !targets.containsKey(selectedTargetId)) return null;
-		int id = targets.get(selectedTargetId).entityId;
-		Entity entity = parent.getWorld().getEntity(id);
-		if (entity != null) return entity;
-		SimulatedEntity sim = SimulatedEntityManager.get().getById(id);
-		if (sim != null) return (Entity) sim;
-		return null;
+	public Entity getSelectedTarget() {
+		if (selectedIndex == -1) return null;
+		int id = targets.get(selectedIndex).id;
+		return parent.getWorld().getEntity(id);
 	}
 
 	@Nullable
-	public RadarTarget getServerSelectedTarget() {
-		if (selectedTargetId == -1) return null;
-		return targets.get(selectedTargetId);
+	public RadarPing getServerSelectedPing() {
+		if (selectedIndex == -1) return null;
+		return targets.get(selectedIndex);
 	}
 
 	@Nullable
 	public LivingEntity getLivingTargetByWeapon(WeaponInstance<?> wd) {
-		for (RadarTarget ping : targets.values()) {
+		for (RadarPing ping : targets) {
 			if (ping.isFriendly) continue;
-			Entity entity = parent.getWorld().getEntity(ping.entityId);
+			Entity entity = parent.getWorld().getEntity(ping.id);
 			if (entity instanceof LivingEntity target 
 					&& wd.couldRadarWeaponTargetEntity(entity, parent)) 
 				return target;
@@ -295,9 +297,9 @@ public class RadarSystem {
 	
 	@Nullable
 	public Player getPlayerTargetByWeapon(WeaponInstance<?> wd) {
-		for (RadarTarget ping : targets.values()) {
+		for (RadarPing ping : targets) {
 			if (ping.isFriendly) continue;
-			Entity entity = parent.getWorld().getEntity(ping.entityId);
+			Entity entity = parent.getWorld().getEntity(ping.id);
 			if (entity == null) continue;
 			if (entity instanceof Player target 
 					&& !target.isCreative()
@@ -311,79 +313,80 @@ public class RadarSystem {
 		return null;
 	}
 	
-	public void clientSelectTarget(RadarTarget target) {
-		clientSelectTarget(target.entityId);
+	public void clientSelectTarget(RadarPing ping) {
+		clientSelectedIndex = -1;
+		for (int i = 0; i < clientTargets.size(); ++i) 
+			if (clientTargets.get(i).id == ping.id) 
+				clientSelectTarget(i);
 	}
 	
 	public void clientSelectNextTarget() {
 		int size = getClientRadarPings().size();
 		if (size == 0) return;
-		int k = 0, s = clientSelectedId, firstId = clientSelectedId;
-        for (RadarTarget target : getClientRadarPings()) {
-            if (k == 0) firstId = target.entityId;
-            if (target.entityId > clientSelectedId) {
-                s = target.entityId;
-                break;
-            }
-            ++k;
-        }
-        if (k == size) s = firstId;
+		int k = 0, s = clientSelectedIndex;
+		while (k++ < size) {
+			s++;
+			if (s >= size) s = 0;
+			if (!getClientRadarPings().get(s).entityType.isMissile()) break;
+		}
 		clientSelectTarget(s);
 	}
 	
-	public void clientSelectTarget(int entityId) {
-        clientSelectedId = -1;
-		if (!clientTargets.containsKey(entityId)) return;
+	public void clientSelectTarget(int pingIndex) {
+		if (pingIndex < 0 || pingIndex >= getClientRadarPings().size()) return;
 		if (parent.tickCount-clientSelectedTime < 2) return;
-		clientSelectedId = entityId;
+		clientSelectedIndex = pingIndex;
 		parent.soundManager.playPassengerRadarLockSound();
-		VehicleSyncAction.sendSyncAction(new VehicleSyncAction.PingSelectAction(clientTargets.get(entityId)));
+		VehicleSyncAction.sendSyncAction(new VehicleSyncAction.PingSelectAction(clientTargets.get(pingIndex)));
 		clientSelectedTime = parent.tickCount;
 	}
 	
-	public int getClientSelectedTargetId() {
-		return clientSelectedId;
+	public int getClientSelectedPingIndex() {
+		return clientSelectedIndex;
 	}
 	
 	@NotNull
-	public Collection<RadarTarget> getClientRadarPings() {
-		return clientTargets.values();
+	public List<RadarPing> getClientRadarPings() {
+		return clientTargets;
 	}
 	
 	@Nullable
-	public RadarTarget getClientSelectedPing() {
-		return clientTargets.get(clientSelectedId);
+	public RadarPing getClientSelectedPing() {
+		if (clientSelectedIndex < 0 || clientSelectedIndex >= getClientRadarPings().size()) return null;
+		return getClientRadarPings().get(clientSelectedIndex);
 	}
 	
 	public boolean isClientLocking() {
-		return getClientSelectedTargetId() != -1;
+		return getClientSelectedPingIndex() != -1;
 	}
 	
-	public void readClientPingsFromServer(IntObjectMap<RadarTarget> pings) {
-        clientTargets.clear();
-        clientTargets.putAll(pings);
-        finishReadClientPings();
+	public void readClientPingsFromServer(List<RadarPing> pings) {
+		removeUnwantedPings(pings);
+		RadarPing oldSelect = null; 
+		if (clientSelectedIndex != -1) oldSelect = clientTargets.get(clientSelectedIndex);
+		clientTargets = pings;
+		clientSelectedIndex = -1;
+		if (oldSelect != null) {
+			int id = oldSelect.id;
+			for (int i = 0; i < clientTargets.size(); ++i) 
+				if (clientTargets.get(i).id == id) {
+					clientSelectedIndex = i;
+					break;
+				}
+		}
+		updateClientPingPos();
+		clientPingRefreshTime = parent.tickCount;
 	}
-
-    public void readClientPingsFromServer(List<RadarTarget> pings) {
-        clientTargets.clear();
-        pings.forEach(ping -> clientTargets.put(ping.entityId, ping));
-        finishReadClientPings();
-    }
-
-    private void finishReadClientPings() {
-        removeUnwantedPings();
-        updateClientPingPos();
-        clientPingRefreshTime = parent.tickCount;
-    }
 	
-	private void removeUnwantedPings() {
-		RadarFilterMode mode = DSCClientInputs.getRadarFilterMode();
-		clientTargets.entrySet().removeIf(entry -> entry.getValue().dontDisplayByMode(mode));
+	private void removeUnwantedPings(List<RadarPing> pings) {
+		RadarMode mode = DSCClientInputs.getPreferredRadarMode();
+		for (int i = 0; i < pings.size(); ++i) 
+			if (pings.get(i).dontDisplayByMode(mode)) 
+				pings.remove(i--);
 	}
 	
 	public boolean hasRadar() {
-		return !radars.isEmpty();
+		return radars.size() > 0;
 	}
 	
 	public boolean hasRadar(String id) {
@@ -406,7 +409,7 @@ public class RadarSystem {
 	public boolean removeRadar(String id, String slotId) {
 		RadarInstance<?> radar = get(id, slotId);
 		if (radar == null) return false;
-		radar.resetPings(parent);
+		radar.resetPings(targets, UtilEntity.getLevel(parent).getGameTime());
 		return radars.remove(radar);
 	}
 	
@@ -466,7 +469,6 @@ public class RadarSystem {
 	public void clientTick() {
 		ageRWR();
 		updateClientPingPos();
-        if (!clientTargets.containsKey(clientSelectedId)) clientSelectedId = -1;
 	}
 	
 	private void ageRWR() {
@@ -487,7 +489,7 @@ public class RadarSystem {
 	}
 	
 	private void updateClientPingPos() {
-		clientTargets.forEach((id, target) -> target.setClientPos(parent.getWorld()));
+		for (RadarPing ping : clientTargets) ping.setClientPos(parent.getWorld());
 	}
 	
 	public boolean clientHasRWRWarnings() {
@@ -497,17 +499,8 @@ public class RadarSystem {
 	public Collection<RWRWarning> getClientRWRWarnings() {
 		return rwrWarnings.values();
 	}
-
-    public boolean hasClientTarget(int entityId) {
-        return clientTargets.containsKey(entityId);
-    }
-
-    @Nullable
-    public RadarTarget getClientTarget(int entityId) {
-        return clientTargets.get(entityId);
-    }
-
-    public static class RWRWarning {
+	
+	public static class RWRWarning {
 		public final int fromId;
 		public final boolean fromGround;
 		public final boolean isMissile;
@@ -540,10 +533,6 @@ public class RadarSystem {
 	public int getJammedTicks() {
 		if (!hasRadar()) return 0;
 		return 0;
-	}
-
-	public Collection<RadarTarget> getServerPings() {
-		return targets.values();
 	}
 	
 }

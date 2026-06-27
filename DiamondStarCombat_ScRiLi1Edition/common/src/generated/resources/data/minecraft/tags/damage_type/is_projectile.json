@@ -1,0 +1,32 @@
+{
+  "values": [
+    {
+      "id": "dscombat:bullet",
+      "required": false
+    },
+    {
+      "id": "dscombat:bullet_explode",
+      "required": false
+    },
+    {
+      "id": "dscombat:bomb",
+      "required": false
+    },
+    {
+      "id": "dscombat:missile_contact",
+      "required": false
+    },
+    {
+      "id": "dscombat:missile",
+      "required": false
+    },
+    {
+      "id": "dscombat:torpedo",
+      "required": false
+    },
+    {
+      "id": "dscombat:ir_missile",
+      "required": false
+    }
+  ]
+}

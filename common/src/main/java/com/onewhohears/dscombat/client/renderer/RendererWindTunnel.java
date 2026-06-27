@@ -21,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import static com.onewhohears.dscombat.util.UtilRender.*;
+import static com.onewhohears.dscombat.client.util.UtilRender.*;
 
 public class RendererWindTunnel extends EntityRenderer<EntityWindTunnel> {
 

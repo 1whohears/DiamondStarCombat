@@ -1,0 +1,12 @@
+{
+	"type": "dscombat:bucket_convert",
+	"converter": {
+		"tag": "dscombat:fossil_oil_converter"
+	},
+	"ingredients": [
+		{
+			"item": "dscombat:compressed_fossil"
+		}
+	],
+	"output": "dscombat:oil_bucket"
+}

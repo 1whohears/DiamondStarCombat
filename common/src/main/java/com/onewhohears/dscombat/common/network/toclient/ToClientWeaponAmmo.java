@@ -1,7 +1,6 @@
 package com.onewhohears.dscombat.common.network.toclient;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
-import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -44,7 +43,7 @@ public class ToClientWeaponAmmo extends BaseS2CMessage {
 	@Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            UtilClientPacket.weaponAmmoPacket(id, weaponId, slotId, ammo);
+            com.onewhohears.dscombat.client.util.UtilClientPacket.weaponAmmoPacket(id, weaponId, slotId, ammo);
 		});
 	}
 

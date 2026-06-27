@@ -1,0 +1,8 @@
+{
+  "displayName": "preset.dscombat.corvette",
+  "model_data": {
+    "hard_coded_model_anims": "corvette"
+  },
+  "presetId": "corvette",
+  "presetType": "standard"
+}

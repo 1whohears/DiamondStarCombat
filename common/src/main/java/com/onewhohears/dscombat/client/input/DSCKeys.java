@@ -26,16 +26,18 @@ public final class DSCKeys {
 	public static KeyMapping yawLeftKey, yawRightKey;
 	public static KeyMapping weaponSelectKey, weaponSelect2Key;
 	public static KeyMapping mouseModeKey, resetMouseKey;
-    public static KeyMapping cameraTrackTargetKey, gimbalKey, zoomKey;
+    public static KeyMapping cameraTrackTargetKey, gimbalKey;
 	public static KeyMapping shootKey, landingGear, flareKey, chaffKey;
 	public static KeyMapping vehicleMenuKey;
-	public static KeyMapping pingCycleKey, radarModeKey, quickMarkerKey, targetModeKey;
+	public static KeyMapping pingCycleKey, radarModeKey;
 	public static KeyMapping changeSeat, dismount, eject;
 	public static KeyMapping specialKey, special2Key;
 	public static KeyMapping flipControlsKey;
 	public static KeyMapping leanLeftKey, leanRightKey;
 	public static KeyMapping afterBurnerKey, turnAssistKey;
 	public static KeyMapping hudModeToggleKey, hudHintsToggleKey, hudLayoutEditKey, hudShowAllKey;
+	public static KeyMapping zoomInKey;
+	public static KeyMapping smokeGrenadeKey;
 
 	private static final Map<String, KeyMapping> keys = new HashMap<>();
 	
@@ -67,7 +69,6 @@ public final class DSCKeys {
 		changeSeat = registerKey("change_seat_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_Y);
 		landingGear = registerKey("landing_gear_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_K);
 		gimbalKey = registerKey("gimbal_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_SEMICOLON);
-		zoomKey = registerKey("zoom_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_APOSTROPHE);
 		specialKey = registerKey("special_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_SPACE);
 		special2Key = registerKey("special_2_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_LALT);
 		eject = registerKey("eject_key", VEHICLE_PASSENGER_CONTROL, InputConstants.KEY_RBRACKET);
@@ -80,8 +81,8 @@ public final class DSCKeys {
 		radarModeKey = registerKey("radar_mode_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_O);
 		pingCycleKey = registerKey("ping_cycle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_I);
 		afterBurnerKey = registerKey("afterburner_toggle_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_B);
-		quickMarkerKey = registerKey("quick_marker_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_COMMA);
-        targetModeKey = registerKey("target_mode_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_LBRACKET);
+		zoomInKey = registerKey("zoom_in_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_C);
+		smokeGrenadeKey = registerKey("smoke_grenade_key", VEHICLE_COMBAT_CONTROL, InputConstants.KEY_N);
 	}
 
     public static KeyMapping registerKey(String name, String category, int keycode) {

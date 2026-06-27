@@ -71,10 +71,9 @@ dependencies {
 
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
-    modApi "com.onewhohears.onewholibs:onewholibs-fabric-$rootProject.minecraft_version:$rootProject.onewholibs_version"
+    modApi "com.onewhohears.onewholibs:onewholibs-fabric-${rootProject.minecraft_version}:${rootProject.onewholibs_version}"
     modApi "com.onewhohears.minigames:minigames-fabric-${rootProject.minecraft_version}:${rootProject.minigames_version}"
-    modApi "com.onewhohears.distant_players:distant_players-fabric-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
-    modApi "com.onewhohears.tacview:tacticalviewer-fabric-${rootProject.minecraft_version}:${rootProject.tacticalviewer_version}"
+    // modApi "com.onewhohears.distant_players:distant_players-fabric-${rootProject.minecraft_version}:${rootProject.distant_players_version}"
 
     modCompileOnlyApi "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
     modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
@@ -86,13 +85,9 @@ dependencies {
     modImplementation "curse.maven:modernfix-790626:${rootProject.modernfix_fabric_id}"
 
     include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.0")))
-
-    modRuntimeOnly "maven.modrinth:DistantHorizons:$rootProject.distanthorizons_version"
 }
 
 processResources {
-    from(project(":common").file("src/main/resources/dscombat.accesswidener"))
-
     inputs.property 'version', project.version
 
     filesMatching('fabric.mod.json') {

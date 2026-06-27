@@ -5,7 +5,8 @@
   "compatibleWeaponPart": [
     "xm12",
     "m2_browning",
-    "minigun_turret"
+    "minigun_turret",
+    "heavy_tank_turret"
   ],
   "craftNum": 64,
   "damage": 6.0,
@@ -24,7 +25,20 @@
   ],
   "itemKey": "dscombat:bullet",
   "mass": 0.01,
-  "maxAge": 40,
+  "maxAge": 500,
+  "muzzle_smoke": [
+    {
+      "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 5.0
+      },
+      "particle_count": 0.0,
+      "spread_distance": 0.0,
+      "flash_scale": 0.6,
+      "flash_lifetime": 1
+    }
+  ],
   "presetId": "10mm",
   "presetType": "bullet",
   "shootSoundKey": "dscombat:bullet_shoot_1",

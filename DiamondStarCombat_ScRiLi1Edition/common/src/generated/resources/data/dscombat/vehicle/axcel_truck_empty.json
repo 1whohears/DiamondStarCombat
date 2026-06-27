@@ -1,0 +1,178 @@
+{
+  "armor": 40.0,
+  "displayName": "preset.dscombat.axcel_truck_empty",
+  "health": 40.0,
+  "hitboxes": [
+    {
+      "damage_parts": false,
+      "damage_root": true,
+      "max_armor": 0.0,
+      "max_health": 0.0,
+      "name": "cage",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 1.6875,
+        "z": 0.9375
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 2.0,
+        "y": 2.25,
+        "z": 1.875
+      }
+    },
+    {
+      "damage_parts": true,
+      "damage_root": false,
+      "max_armor": 30.0,
+      "max_health": 30.0,
+      "name": "cargo_bed",
+      "rel_pos": {
+        "x": 0.0,
+        "y": 0.75,
+        "z": -1.9375
+      },
+      "remove_on_destroy": false,
+      "size": {
+        "x": 2.0,
+        "y": 0.5,
+        "z": 3.875
+      }
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 2
+    },
+    {
+      "item": "dscombat:wheel",
+      "num": 6
+    },
+    {
+      "num": 24,
+      "tag": "dscombat:aluminum_ingot"
+    }
+  ],
+  "is_craftable": false,
+  "item": "dscombat:vehicle",
+  "landing_gear": true,
+  "presetId": "axcel_truck_empty",
+  "presetType": "car",
+  "slots": [
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "pilot_seat",
+      "slot_posx": 0.5,
+      "slot_posy": 0.9,
+      "slot_posz": 1.0,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "data": {
+        "itemid": "dscombat:seat"
+      },
+      "name": "seat2",
+      "slot_posx": -0.5,
+      "slot_posy": 0.9,
+      "slot_posz": 1.0,
+      "slot_type": "seat",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "cargo_bed",
+      "name": "cargo_bed_1",
+      "slot_posx": 0.0,
+      "slot_posy": 1.0,
+      "slot_posz": -2.75,
+      "slot_type": "mount_heavy",
+      "zRot": 0.0
+    },
+    {
+      "name": "frame_1",
+      "slot_posx": 0.0,
+      "slot_posy": 2.95,
+      "slot_posz": 1.0,
+      "slot_type": "mount_tech",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_1",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "spin_engine",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "cargo_bed",
+      "name": "internal_2",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "linkedHitbox": "cargo_bed",
+      "name": "internal_3",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "internal",
+      "zRot": 0.0
+    },
+    {
+      "name": "internal_4",
+      "slot_posx": 0.0,
+      "slot_posy": 0.0,
+      "slot_posz": 0.0,
+      "slot_type": "tech_internal",
+      "zRot": 0.0
+    }
+  ],
+  "sort_factor": 5,
+  "sounds": {
+    "loopSoundType": "basic",
+    "nonPassengerEngine": "dscombat:tank_1",
+    "passengerEngine": "dscombat:tank_1"
+  },
+  "stats": {
+    "armor_damage_absorbtion": 0.2,
+    "armor_damage_threshold": 4.0,
+    "assetId": "axcel_truck",
+    "base_armor": 40.0,
+    "break_deacc_air": 0.0,
+    "break_deacc_ground": 0.1,
+    "cameraDistance": 10.0,
+    "car": {
+      "isTank": false
+    },
+    "crashExplosionRadius": 3.0,
+    "cross_sec_area": 7.5,
+    "entity_size_xz": 2.5,
+    "entity_size_y": 3.0,
+    "idleheat": 6.0,
+    "inertiapitch": 120000.0,
+    "inertiaroll": 8000.0,
+    "inertiayaw": 80000.0,
+    "mass": 6500.0,
+    "max_health": 40.0,
+    "max_speed": 0.6,
+    "maxpitch": 0.0,
+    "maxroll": 0.0,
+    "maxyaw": 4.0,
+    "negativeThrottle": true,
+    "rootHitboxNoCollide": true,
+    "stealth": 1.0,
+    "throttledown": 0.05,
+    "throttleup": 0.05,
+    "torquepitch": 0.0,
+    "torqueroll": 0.0,
+    "torqueyaw": 1.0,
+    "turn_radius": 11.0
+  }
+}

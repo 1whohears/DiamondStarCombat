@@ -40,6 +40,12 @@ public class ModContainers {
 				WeaponPartsBlockEntity weaponsBlock = (WeaponPartsBlockEntity)UtilEntity.getLevel(playerInv.player).getBlockEntity(data.readBlockPos());
 				return new WeaponPartsBlockContainerMenu(windowId, playerInv, weaponsBlock);
 			}));
+	public static final RegistrySupplier<MenuType<MissileLaunchStationContainerMenu>> MISSILE_LAUNCH_STATION_MENU =
+			register("missile_launch_station_menu", MenuRegistry.ofExtended((windowId, playerInv, data) -> {
+				com.onewhohears.dscombat.block.entity.MissileLaunchStationBlockEntity station = 
+					(com.onewhohears.dscombat.block.entity.MissileLaunchStationBlockEntity)UtilEntity.getLevel(playerInv.player).getBlockEntity(data.readBlockPos());
+				return new MissileLaunchStationContainerMenu(windowId, playerInv, station, station.data);
+			}));
     public static MenuType<ChestMenu> createVehicleStorageMenuFactory() {
         return MenuRegistry.ofExtended(
                 (windowId, playerInv, data) -> {

@@ -1,0 +1,22 @@
+{
+  "displayName": "preset.dscombat.ewr4000",
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "continuous_rotation",
+        "model_part_key": "bone",
+        "pivot": {
+          "x": 0.0,
+          "y": 2.0,
+          "z": 0.0
+        },
+        "rot_axis": "Y",
+        "rot_rate": 2.0
+      }
+    ],
+    "dont_cull": true,
+    "model_id": "ewr4000"
+  },
+  "presetId": "ewr4000",
+  "presetType": "standard"
+}

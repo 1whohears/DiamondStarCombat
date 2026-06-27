@@ -32,4 +32,8 @@ public class ClientSideHitboxStuckFixer {
 		return true;
 	}
 	
+	public static void clear() {
+		pos.clear();
+	}
+	
 }

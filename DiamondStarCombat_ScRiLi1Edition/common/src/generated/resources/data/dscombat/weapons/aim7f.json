@@ -1,0 +1,56 @@
+{
+  "acceleration": 0.56,
+  "activeTrack": false,
+  "bleed": 0.96,
+  "canShootOnGround": false,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "heavy_missile_rack",
+    "sam_launcher"
+  ],
+  "craftNum": 1,
+  "damage": 80.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.aim7f",
+  "entityTypeKey": "dscombat:track_missile",
+  "explosionRadius": 8.0,
+  "explosive": true,
+  "fireRate": 40,
+  "fov": -1.0,
+  "fuelTicks": 60,
+  "fuseDist": 8.0,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 12,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 4
+    },
+    {
+      "item": "minecraft:coal_block",
+      "num": 1
+    },
+    {
+      "item": "minecraft:lightning_rod",
+      "num": 1
+    },
+    {
+      "item": "dscombat:ti83",
+      "num": 2
+    }
+  ],
+  "itemKey": "dscombat:missile",
+  "mass": 230.0,
+  "maxAge": 729,
+  "presetId": "aim7f",
+  "presetType": "track_missile",
+  "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 4,
+  "speed": 68.6,
+  "targetType": "AIR",
+  "turnRadius": 1600.0,
+  "useSpeedScale": true
+}

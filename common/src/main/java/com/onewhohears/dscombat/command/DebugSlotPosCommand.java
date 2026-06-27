@@ -17,7 +17,7 @@ public class DebugSlotPosCommand {
 	public DebugSlotPosCommand(CommandDispatcher<CommandSourceStack> d) {
 		d.register(Commands.literal("debugslotpos").requires((stack) -> { return stack.hasPermission(2);})
 			.then(Commands.argument("slot_id", StringArgumentType.string())
-			.then(Commands.argument("rel_pos", Vec3Argument.vec3(false))
+			.then(Commands.argument("rel_pos", Vec3Argument.vec3())
 			.executes((context) -> {
 				String slot_id = StringArgumentType.getString(context, "slot_id");
 				Vec3 rel_pos = Vec3Argument.getVec3(context, "rel_pos");

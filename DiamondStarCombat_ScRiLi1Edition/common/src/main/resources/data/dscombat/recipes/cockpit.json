@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"S": {
+			"item": "dscombat:seat"
+		},
+		"G": {
+			"item": "minecraft:glass"
+		},
+		"P": {
+			"tag": "minecraft:planks"
+		}
+	},
+	"pattern": [
+		" G ",
+		"GSG",
+		"PPP"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:cockpit"
+	}
+}

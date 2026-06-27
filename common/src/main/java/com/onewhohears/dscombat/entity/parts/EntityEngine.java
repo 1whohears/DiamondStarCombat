@@ -5,7 +5,7 @@ import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.EngineExternalInstance;
 import com.onewhohears.dscombat.data.parts.stats.EngineExternalStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilParticles;
+import com.onewhohears.dscombat.client.util.UtilParticles;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;

@@ -1,36 +1,5 @@
 The following is primarily for Addon Devs to see what I changed so you can update/fix your addons accordingly.
 
-# 0.14.3 -> 0.15.0
-
-## New Weapon Preset Type `all_missile`
-
-This missile is capable of replacing `pos_missile`, and `track_missile` all in one. 
-It currently replaced all Air to Ground missiles. 
-The goal is to eventually get it to replace every other missile type, and the Air to Air `track_missile`.
-`all_missile` is meant to be cabable of multiple different kinds of tracking types, but you must manually enable each.
-
-### All Missile Parameter List
-
-`presetType` = `all_missile`
-
-`entityTypeKey` = `dscombat:all_missile`
-
-Includes all stats listed in **All Weapons Parameter List**, **Bullet Parameter List**, and **Missile Parameter List**.
-
-`canPositionGuide` | BOOLEAN | **false** | *If enabled, the missile can use position related target modes like `LOOK`, `MARKER`, or `COORDS`.*
-
-`canRadarGuide` | BOOLEAN | **false** | *If enabled, the missile can track an entity target using radar.*
-
-`canOpticalGuide` | BOOLEAN | **false** | *If enabled, the missile can track entities "visually" using the owner vehicle's Gimbal Camera.*
-
-`targetType` | ENUM | **AIR** | *Select from `AIR`, `GROUND`, or `WATER`. This decides if what domain the target entity must be in order for the missile to be allowed to target it.*
-
-`radarActive` | BOOLEAN | **true** | *If enabled, radar missiles will track the target on their own (shoot and forget). If false, radar missiles will only properly guide to the target if the owner vehicle's radar can still see the target.*
-
-## Additional Radar Stats
-
-`verticalRange` | NUMBER | **2000** | *A limit to how far up or down the radar can see a target.*
-
 # 0.13.0 -> 0.14.3
 
 ## Additional Vehicle Stats

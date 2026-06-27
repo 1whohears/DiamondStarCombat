@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.data.weapon.instance;
 
 import com.onewhohears.dscombat.data.weapon.WeaponShootParameters;
 import com.onewhohears.dscombat.data.weapon.stats.PosMissileStats;
-import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
 import com.onewhohears.dscombat.entity.weapon.EntityWeapon;
 import com.onewhohears.dscombat.entity.weapon.PositionMissile;
 
@@ -16,16 +15,9 @@ public class PosMissileInstance<T extends PosMissileStats> extends MissileInstan
 	public EntityWeapon<?> getShootEntity(WeaponShootParameters params) {
 		PositionMissile<?> missile = (PositionMissile<?>) super.getShootEntity(params);
 		if (missile == null) return null;
-		missile.targetPos = params.targetParams.targetPos;
+		if (params.vehicle == null || !params.isPlayer) setTargetPosByLooker(params, missile);
+		else missile.targetPos = params.vehicle.weaponSystem.getTargetPos();
 		return missile;
-	}
-
-	@Override
-	public TargetMode fixTargetMode(TargetMode currentTargetMode, TargetMode preferedPosTargetMode) {
-		if (!currentTargetMode.isPosition()) {
-			return preferedPosTargetMode;
-		}
-		return currentTargetMode;
 	}
 
 }

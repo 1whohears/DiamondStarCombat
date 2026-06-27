@@ -1,0 +1,50 @@
+{
+  "displayName": "item.dscombat.mark7_cannon",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 1.7,
+  "hitbox_width": 4.0,
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "num": 64,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 56
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 8
+    }
+  ],
+  "item": "dscombat:turret",
+  "maxAmmo": 36,
+  "maxHealth": 200.0,
+  "passenger_offset": {
+    "x": 0.0,
+    "y": 1.5,
+    "z": 0.0
+  },
+  "presetId": "mark7_cannon",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 12
+    }
+  ],
+  "rotBounds": {
+    "maxRotX": 15.0,
+    "minRotX": -30.0,
+    "rotRate": 0.9
+  },
+  "shootType": "MARK7",
+  "slotType": "mount_super_heavy",
+  "sort_factor": 13,
+  "weaponOffset": 1.625,
+  "weight": 4500.0
+}

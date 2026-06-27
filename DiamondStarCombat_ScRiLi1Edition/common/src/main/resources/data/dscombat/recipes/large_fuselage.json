@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"F": {
+			"item": "dscombat:fuselage"
+		}
+	},
+	"pattern": [
+		"FFF"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:large_fuselage"
+	}
+}

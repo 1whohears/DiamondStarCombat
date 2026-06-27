@@ -13,6 +13,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerRenderer.class)
 public abstract class PlayerRendererMixin {
 
+    @Inject(method = "render", at = @At(value = "HEAD"), cancellable = true)
+    private void dscombat_fabric_checkHidePlayer(AbstractClientPlayer player, float f, float g, PoseStack stack,
+                              MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
+        if (ClientRenderEventHandlers.shouldHidePlayer(player)) {
+            ci.cancel();
+        }
+    }
+
     @Inject(method = "render", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/entity/player/PlayerRenderer;setModelProperties(Lnet/minecraft/client/player/AbstractClientPlayer;)V"))
     private void dscombat_fabric_onRenderHead(AbstractClientPlayer player, float f, float g, PoseStack stack,

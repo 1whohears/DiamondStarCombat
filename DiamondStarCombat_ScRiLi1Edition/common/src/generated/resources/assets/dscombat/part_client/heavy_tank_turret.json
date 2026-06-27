@@ -1,0 +1,27 @@
+{
+  "displayName": "preset.dscombat.heavy_tank_turret",
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 1.0,
+    "translate": {
+      "x": 0.0,
+      "y": -0.1,
+      "z": 0.0
+    }
+  },
+  "model_data": {
+    "hard_coded_model_anims": "heavy_tank_turret",
+    "model_id": "autoloaderturret"
+  },
+  "presetId": "heavy_tank_turret",
+  "presetType": "turret"
+}

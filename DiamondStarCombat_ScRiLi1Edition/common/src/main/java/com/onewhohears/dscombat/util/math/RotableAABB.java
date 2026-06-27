@@ -1,0 +1,363 @@
+package com.onewhohears.dscombat.util.math;
+
+import java.util.Optional;
+
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.UtilGeometry;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+
+public class RotableAABB {
+	
+	public static final double SUBSIZE = 0.5;
+	public static final double SUBSIZEHALF = SUBSIZE*0.5;
+	public static final double SUB_COL_SKIN = 0;
+	public static final double COLLIDE_CHECK_SKIN = 0;
+	public static final double PUSH_OUT_SKIN = 0;
+	public static final double INSIDE_PUSH_OUT_SKIN = 0;
+	public static final double IS_INSIDE_CHECK_SKIN = -0.01;
+	public static final double PROBLEM_Y_ADJUST = 0;
+	
+	private Vec3 center, extents;
+	private double maxRadius;
+	private QuaternionF rot = QuaternionF.ONE.copy(), roti = QuaternionF.ONE.copy();
+	
+	public RotableAABB(AABB bb) {
+		this(bb.getCenter(), extentsFromBB(bb));
+	}
+	
+	public RotableAABB() {
+		this(Vec3.ZERO, Vec3.ZERO);
+	}
+	
+	public RotableAABB(double width, double height, double length) {
+		this(Vec3.ZERO, new Vec3(width/2, height/2, length/2));
+	}
+	
+	public RotableAABB(Vec3 center, Vec3 extents) {
+		this.center = center;
+		this.extents = extents;
+		this.maxRadius = extents.length();
+	}
+	
+	public RotableAABB copy() {
+		return new RotableAABB(getCenter(), getExtents());
+	}
+	
+	public void setCenterAndRot(Vec3 center, QuaternionF q) {
+		setCenter(center);
+		setRot(q);
+	}
+	
+	public Vec3 collide(Vec3 pos, AABB aabb, Vec3 move) {
+		Vec3 clip = getPushOutPos(pos, aabb, PUSH_OUT_SKIN);
+		//System.out.println("clip = "+clip);
+		/*if (move.x > 0 && clip.x < getCenter().x && pos.x + move.x > clip.x) 
+			move = new Vec3(clip.x - pos.x, move.y, move.z);
+		else if (move.x < 0 && clip.x > getCenter().x && pos.x + move.x < clip.x) 
+			move = new Vec3(clip.x - pos.x, move.y, move.z);*/
+		
+		if (move.y > 0 && clip.y < getCenter().y && pos.y + move.y > clip.y) 
+			move = new Vec3(move.x, clip.y - pos.y, move.z);
+		else if (move.y < 0 && clip.y > getCenter().y && pos.y + move.y < clip.y) 
+			move = new Vec3(move.x, clip.y - pos.y, move.z);
+		// HOW 2.2 if the boat rotates too much, the player starts to vibrate up and down. this fixes it...
+		// but the player gets stuck briefly when landing. 
+		if (move.y > -0.08 && move.y < 0) move = move.multiply(1, 0, 1);
+		
+		/*if (move.z > 0 && clip.z < getCenter().z && pos.z + move.z > clip.z) 
+			move = new Vec3(move.x, move.y, clip.z - pos.z);
+		else if (move.z < 0 && clip.z > getCenter().z && pos.z + move.z < clip.z) 
+			move = new Vec3(move.x, move.y, clip.z - pos.z);*/
+		return move;
+	}
+	
+	public boolean contains(AABB aabb) {
+		return contains(UtilGeometry.getClosestPointOnAABB(center, aabb));
+	}
+	
+	public boolean contains(Vec3 pos) {
+		return containsRelRot(toRelRotPos(pos));
+	}
+	
+	public boolean containsRelRot(Vec3 relRotPos) {
+		boolean insideX = relRotPos.x() <= extents.x() && relRotPos.x() >= -extents.x();
+		boolean insideY = relRotPos.y() <= extents.y() && relRotPos.y() >= -extents.y();
+		boolean insideZ = relRotPos.z() <= extents.z() && relRotPos.z() >= -extents.z();
+		return insideX && insideY && insideZ;
+	}
+	
+	public boolean isInside(AABB aabb, double skin) {
+		return isInside(UtilGeometry.getClosestPointOnAABB(center, aabb), skin);
+	}
+	
+	public boolean isInside(AABB aabb) {
+		boolean inside = isInside(aabb, 0);
+		//System.out.println("INTERSECT CHECK "+inside+" "+aabb+" "+this);
+		return inside;
+	}
+	
+	public boolean isInside(Vec3 pos, double skin) {
+		return isInsideRelPos(toRelRotPos(pos), skin);
+	}
+	
+	public boolean isInside(Vec3 pos) {
+		return isInside(pos, 0);
+	}
+	
+	public boolean isInsideRelPos(Vec3 relRotPos, double skin) {
+		boolean insideX = relRotPos.x() < extents.x()+skin && relRotPos.x() > -extents.x()-skin;
+		boolean insideY = relRotPos.y() < extents.y()+skin && relRotPos.y() > -extents.y()-skin;
+		boolean insideZ = relRotPos.z() < extents.z()+skin && relRotPos.z() > -extents.z()-skin;
+		return insideX && insideY && insideZ;
+	}
+	
+	public boolean isInsideRelPos(Vec3 relRotPos) {
+		return isInsideRelPos(relRotPos, 0);
+	}
+	
+	public Vec3 toRelRotPos(Vec3 pos) {
+		return UtilAngles.rotateVector(pos.subtract(center), roti);
+	}
+	
+	public Vec3 toWorldPos(Vec3 relRotPos) {
+		return UtilAngles.rotateVector(relRotPos, rot).add(center);
+	}
+	
+	public Vec3 toWorldVel(Vec3 relRotVel) {
+		return UtilAngles.rotateVector(relRotVel, rot);
+	}
+	
+	public Optional<Vec3> clip(Vec3 from, Vec3 to) {
+		return clip(from, to, true);
+	}
+	
+	public Optional<Vec3> clip(Vec3 from, Vec3 to, boolean push) {
+		Vec3 fromRelRot = toRelRotPos(from);
+		if (isInsideRelPos(fromRelRot)) {
+			if (push) return Optional.of(getPushOutPos(from, PUSH_OUT_SKIN));
+			else return Optional.of(from);
+		}
+		Vec3 toRelRot = toRelRotPos(to);
+		Vec3 diff = toRelRot.subtract(fromRelRot);
+		double tMin = Double.MAX_VALUE;
+		Vec3 clipRelRot = Vec3.ZERO;
+		/*
+		 * HOW 5 it seems this clip math is correct...
+		 * but the survival player can't punch the hitbox from top down sometimes when the creative player can???
+		 * oh well. why would you punch the boat from top down anyway. it works from the side consistently anyway.
+		 */
+		Double clipY = clipAxis(fromRelRot.y, toRelRot.y, extents.y);
+		if (clipY != null) {
+			double t = (clipY - fromRelRot.y) / diff.y;
+			clipRelRot = fromRelRot.add(diff.scale(t));
+			clipRelRot = new Vec3(clipRelRot.x, clipY, clipRelRot.z);
+			if (t < tMin && containsRelRot(clipRelRot)) tMin = t;
+		}
+		Double clipX = clipAxis(fromRelRot.x, toRelRot.x, extents.x);
+		if (clipX != null) {
+			double t = (clipX - fromRelRot.x) / diff.x;
+			clipRelRot = fromRelRot.add(diff.scale(t));
+			clipRelRot = new Vec3(clipX, clipRelRot.y, clipRelRot.z);
+			if (t < tMin && containsRelRot(clipRelRot)) tMin = t;
+		}
+		Double clipZ = clipAxis(fromRelRot.z, toRelRot.z, extents.z);
+		if (clipZ != null) {
+			double t = (clipZ - fromRelRot.z) / diff.z;
+			clipRelRot = fromRelRot.add(diff.scale(t));
+			clipRelRot = new Vec3(clipRelRot.x, clipRelRot.y, clipZ);
+			if (t < tMin && containsRelRot(clipRelRot)) tMin = t;
+		}
+		if (tMin == Double.MAX_VALUE) return Optional.empty();
+		Vec3 clip = toWorldPos(clipRelRot);
+		return Optional.of(clip);
+	}
+	
+	private Double clipAxis(double from, double to, double ext) {
+		double diff = to - from;
+		if (diff > 0 && from <= -ext && (from+diff) >= -ext) return -ext;
+		else if (diff < 0 && from >= ext && (from+diff) <= ext) return ext;
+		else return null;
+	}
+	
+	public Vec3 getPushOutPos(Vec3 pos, AABB aabb, double skin) {
+		Vec3[] relRotCorners = new Vec3[8];
+		relRotCorners[0] = toRelRotPos(new Vec3(aabb.minX, aabb.minY, aabb.minZ));
+		Vec3 zaxis = UtilAngles.getRollAxis(roti);
+		Vec3 yaxis = UtilAngles.getYawAxis(roti);
+		Vec3 xaxis = UtilAngles.getPitchAxis(roti);
+		relRotCorners[1] = relRotCorners[0].add(zaxis.scale(aabb.getZsize()));
+		relRotCorners[2] = relRotCorners[0].add(yaxis.scale(aabb.getYsize()));
+		relRotCorners[3] = relRotCorners[0].add(zaxis.scale(aabb.getZsize())).add(yaxis.scale(aabb.getYsize()));
+		relRotCorners[4] = relRotCorners[0].add(xaxis.scale(aabb.getXsize()));
+		relRotCorners[5] = relRotCorners[0].add(zaxis.scale(aabb.getZsize())).add(xaxis.scale(aabb.getXsize()));
+		relRotCorners[6] = relRotCorners[0].add(yaxis.scale(aabb.getYsize())).add(xaxis.scale(aabb.getXsize()));
+		relRotCorners[7] = relRotCorners[0].add(zaxis.scale(aabb.getZsize())).add(yaxis.scale(aabb.getYsize())).add(xaxis.scale(aabb.getXsize()));
+		int[] absIndex = new int[6];
+		absIndex[0] = UtilGeometry.getMaxYIndex(relRotCorners);
+		absIndex[1] = UtilGeometry.getMinYIndex(relRotCorners);
+		absIndex[2] = UtilGeometry.getMaxXIndex(relRotCorners);
+		absIndex[3] = UtilGeometry.getMinXIndex(relRotCorners);
+		absIndex[4] = UtilGeometry.getMaxZIndex(relRotCorners);
+		absIndex[5] = UtilGeometry.getMinZIndex(relRotCorners);
+		double[] dists = new double[12];
+		dists[0] = Math.abs(extents.y - relRotCorners[absIndex[0]].y);
+		dists[1] = Math.abs(-extents.y - relRotCorners[absIndex[0]].y);
+		dists[2] = Math.abs(extents.y - relRotCorners[absIndex[1]].y);
+		dists[3] = Math.abs(-extents.y - relRotCorners[absIndex[1]].y);
+		dists[4] = Math.abs(extents.x - relRotCorners[absIndex[2]].x);
+		dists[5] = Math.abs(-extents.x - relRotCorners[absIndex[2]].x);
+		dists[6] = Math.abs(extents.x - relRotCorners[absIndex[3]].x);
+		dists[7] = Math.abs(-extents.x - relRotCorners[absIndex[3]].x);
+		dists[8] = Math.abs(extents.z - relRotCorners[absIndex[4]].z);
+		dists[9] = Math.abs(-extents.z - relRotCorners[absIndex[4]].z);
+		dists[10] = Math.abs(extents.z - relRotCorners[absIndex[5]].z);
+		dists[11] = Math.abs(-extents.z - relRotCorners[absIndex[5]].z);
+		int minIndex = UtilGeometry.getMinIndex(dists);
+		//System.out.println("pushOutType: "+minIndex);
+		Vec3 relRotPos = toRelRotPos(pos);
+		Vec3 relRotPush = Vec3.ZERO;
+		int extDir = minIndex % 2 == 0 ? 1 : -1;
+		int absIndexIndex = minIndex / 2;
+		if (minIndex % 4 == 0) absIndexIndex += 1;
+		else if (minIndex % 4 == 3) absIndexIndex -= 1;
+		Vec3 relRotCorner = relRotCorners[absIndex[absIndexIndex]];
+		if (minIndex >= 0 && minIndex <= 3) {
+			double ext = (extents.y + skin) * extDir;
+			ext += relRotPos.y - relRotCorner.y;
+			relRotPush = new Vec3(relRotPos.x, ext, relRotPos.z);
+		} else if (minIndex >= 4 && minIndex <= 7) {
+			double ext = (extents.x + skin) * extDir;
+			ext += relRotPos.x - relRotCorner.x;
+			relRotPush = new Vec3(ext, relRotPos.y, relRotPos.z);
+		} else if (minIndex >= 8 && minIndex <= 11) {
+			double ext = (extents.z + skin) * extDir;
+			ext += relRotPos.z - relRotCorner.z;
+			relRotPush = new Vec3(relRotPos.x, relRotPos.y, ext);
+		}
+		Vec3 push = toWorldPos(relRotPush);
+		return push;
+	}
+	
+	public Vec3 getPushOutPosOld(Vec3 pos, AABB aabb, double skin) {
+		Vec3 close = UtilGeometry.getClosestPointOnAABB(center, aabb);
+		Vec3 aabbDiff = pos.subtract(close);
+		Vec3 push = getPushOutPos(close, skin).add(aabbDiff);
+		return push;
+	}
+	
+	public Vec3 getPushOutPos(Vec3 pos, double skin) {
+		Vec3 posRelRot = toRelRotPos(pos);
+		if (!isInsideRelPos(posRelRot)) return pos;
+		double distSqrMin = Double.MAX_VALUE;
+		Vec3 pushRelRot = Vec3.ZERO;
+		Double pushY = pushAxis(posRelRot.y, extents.y, skin);
+		if (pushY != null) {
+			Vec3 test = new Vec3(posRelRot.x, pushY, posRelRot.z);
+			double distSqr = posRelRot.distanceToSqr(test);
+			//System.out.println("distSqr pushY = "+distSqr);
+			if (distSqr < distSqrMin) {
+				distSqrMin = distSqr;
+				pushRelRot = test;
+			}
+		}
+		Double pushX = pushAxis(posRelRot.x, extents.x, skin);
+		if (pushX != null) {
+			Vec3 test = new Vec3(pushX, posRelRot.y, posRelRot.z);
+			double distSqr = posRelRot.distanceToSqr(test);
+			//System.out.println("distSqr pushX = "+distSqr);
+			if (distSqr < distSqrMin) {
+				distSqrMin = distSqr;
+				pushRelRot = test;
+			}
+		}
+		Double pushZ = pushAxis(posRelRot.z, extents.z, skin);
+		if (pushZ != null) {
+			Vec3 test = new Vec3(posRelRot.x, posRelRot.y, pushZ);
+			double distSqr = posRelRot.distanceToSqr(test);
+			//System.out.println("distSqr pushZ = "+distSqr);
+			if (distSqr < distSqrMin) {
+				distSqrMin = distSqr;
+				pushRelRot = test;
+			}
+		}
+		if (distSqrMin == Double.MAX_VALUE) return pos;
+		Vec3 push = toWorldPos(pushRelRot);
+		//System.out.println("push = "+push);
+		return push;
+	}
+	
+	private Double pushAxis(double pos, double ext, double skin) {
+		if (pos < 0) return -ext - skin;
+		else return ext + skin;
+	}
+	
+	public static Vec3 extentsFromBB(AABB bb) {
+		return new Vec3(bb.getXsize()/2, bb.getYsize()/2, bb.getZsize()/2);
+	}
+
+	public Vec3 getCenter() {
+		return center;
+	}
+
+	public void setCenter(Vec3 center) {
+		this.center = center;
+	}
+	
+	public Vec3 getExtents() {
+		return extents;
+	}
+	
+	public void setExtents(Vec3 extents) {
+		this.extents = extents;
+	}
+	
+	public QuaternionF getRot() {
+		return rot.copy();
+	}
+	
+	public QuaternionF getIRot() {
+		return roti.copy();
+	}
+	
+	public void setRot(QuaternionF rot) {
+		this.rot = rot;
+		this.roti = rot.copy();
+		roti.conj();
+	}
+	
+	public double getMaxRadius() {
+		return maxRadius;
+	}
+	
+	public EntityDimensions getMaxDimensions() {
+		float max = (float) getMaxRadius();
+		return EntityDimensions.scalable(max*2, max*2);
+	}
+	
+	public DisguisedAABB getDisguisedAABB(Vec3 pos) {
+		//return new DisguisedAABB(this, pos, getMaxRadius());
+		return new DisguisedAABB(this, pos, 0.5);
+	}
+	
+	public AABB makeMaxDimBox() {
+		EntityDimensions d = getMaxDimensions();
+    	double pX = center.x, pY = center.y, pZ = center.z;
+    	double f = d.width / 2.0F;
+        double f1 = d.height / 2.0F;
+        return new AABB(pX-f, pY-f1, pZ-f, 
+        		pX+f, pY+f1, pZ+f);
+	}
+	
+	@Override
+	public String toString() {
+		return "RotableAABB:"+getCenter()+":"+getExtents();
+	}
+	
+	public double getMaxY() {
+		return UtilAngles.rotateVector(getExtents(), rot).y + getCenter().y;
+	}
+	
+}

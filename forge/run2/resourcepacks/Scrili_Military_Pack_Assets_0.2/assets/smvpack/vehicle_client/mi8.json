@@ -1,0 +1,32 @@
+{
+  "displayName": "mi8",
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "vint1",
+        "pivot": {
+          "x": -0.008675,
+          "y": 5.087125,
+          "z": 1.23341875
+        },
+        "rot_axis": "Y",
+        "rot_rate": 100.0
+      },
+      {
+        "anim_id": "motor_rotation",
+        "model_part_key": "vint2",
+        "pivot": {
+          "x": 0.7126875,
+          "y": 5.04473125,
+          "z": -12.8192125
+        },
+        "rot_axis": "X",
+        "rot_rate": 54.0
+      }
+    ],
+    "model_id": "mi8"
+  },
+  "presetId": "mi8",
+  "presetType": "standard"
+}

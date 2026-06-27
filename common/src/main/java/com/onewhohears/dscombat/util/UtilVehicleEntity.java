@@ -5,7 +5,6 @@ import com.onewhohears.dscombat.data.vehicle.physics.SeaLevels;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.entity.vehicle.wind_tunnel.EntityWindTunnel;
 import com.onewhohears.dscombat.init.ModTags;
-import com.onewhohears.onewholibs.common.core.HeightMapManager;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
@@ -98,9 +97,6 @@ public class UtilVehicleEntity {
 
     public static int getDistFromGround(Entity entity, int limit, boolean ignoreWater) {
         Level l = UtilEntity.getLevel(entity);
-        if (!l.isClientSide() && !UtilEntity.isChunkLoaded(l, entity)) {
-            return (int) entity.getY() - HeightMapManager.getHeight(l.dimension(), entity.position());
-        }
         int[] pos = new int[]{entity.getBlockX(), entity.getBlockY(), entity.getBlockZ()};
 
         int dist;

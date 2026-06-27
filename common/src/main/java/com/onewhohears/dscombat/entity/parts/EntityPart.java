@@ -1,5 +1,6 @@
 package com.onewhohears.dscombat.entity.parts;
 
+import com.mojang.logging.LogUtils;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.client.model.obj.ObjRadarModel.MastType;
 import com.onewhohears.dscombat.data.parts.PartPresets;
@@ -22,18 +23,26 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>> extends CustomAnimEntity<P, PartClientStats> {
+	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static final EntityDataAccessor<Vec3> POS = SynchedEntityData.defineId(EntityPart.class, DataSerializers.VEC3);
 	public static final EntityDataAccessor<String> SLOT_ID = SynchedEntityData.defineId(EntityPart.class, EntityDataSerializers.STRING);
@@ -41,6 +50,7 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 	
 	private float z_rot;
 	protected double renderSqrDistance = 0;
+	protected boolean allowRemoval = false; // MOHIST: flag to allow removal when parent is removed (protected so subclasses can access)
 	
 	protected EntityPart(EntityType<?> entityType, Level level, String defaultPresetId) {
 		super(entityType, level, defaultPresetId);
@@ -83,13 +93,60 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 	
 	@Override
 	public void tick() {
-		if (firstTick) init();
+		if (firstTick) {
+			init();
+			firstTick = false;
+		}
 		super.tick();
-		if (!isClientSide() && tickCount > 10 && getVehicle() == null) onNoParent();
+		// If no parent after 100 ticks, discard
+		if (!isClientSide() && tickCount > 100 && getVehicle() == null) {
+			onNoParent();
+		}
 	}
 	
 	protected void onNoParent() {
-		discard();
+;
+	}
+	
+	@Override
+	public void remove(@NotNull Entity.RemovalReason reason) {
+		// MOHIST FIX: Block DISCARDED removal for parts unless parent explicitly allows it
+		if (!level().isClientSide() && reason == RemovalReason.DISCARDED && !allowRemoval) {
+			return;
+		}
+		
+		// MOHIST FIX: Ensure passengers are properly dismounted before removal
+		if (!level().isClientSide() && allowRemoval) {
+			List<Entity> passengers = new ArrayList<>(getPassengers());
+			for (Entity passenger : passengers) {
+				passenger.stopRiding();
+				// Extra safety: restore player visibility if this is a ridable part
+				if (passenger instanceof Player player && this instanceof EntityRidablePart<?, ?> ridable) {
+					if (ridable.getStats().shouldHidePlayer()) {
+						player.setInvisible(false);
+						// MOHIST FIX: Schedule 2 additional checks at 5 and 10 ticks
+						if (getWorld().getServer() != null) {
+							for (int delay : new int[]{5, 10}) {
+								getWorld().getServer().tell(new net.minecraft.server.TickTask(delay, () -> {
+									if (!player.isPassenger()) {
+										player.setInvisible(false);
+									}
+								}));
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		super.remove(reason);
+	}
+	
+	/**
+	 * MOHIST FIX: Called by parent vehicle to allow part removal
+	 */
+	public void allowParentRemoval() {
+		this.allowRemoval = true;
 	}
 	
 	public Vec3 getRelativePos() {

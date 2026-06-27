@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.axcel_truck_radar",
+  "item": "dscombat:axcel_truck_radar",
+  "presetId": "axcel_truck_radar",
+  "presetType": "external_radar",
+  "radar": "axcel_truck_radar",
+  "slotType": "mount_tech",
+  "weight": 1000.0
+}

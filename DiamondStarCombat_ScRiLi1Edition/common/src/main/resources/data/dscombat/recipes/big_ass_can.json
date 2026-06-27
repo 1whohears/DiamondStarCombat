@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"C": {
+			"type": "forge:partial_nbt",
+			"item": "dscombat:big_gas_can",
+			"nbt": {
+				"Damage": 0
+			}
+		}
+	},
+	"pattern": [
+		"CC",
+		"CC"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:big_ass_can"
+	}
+}

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "dscombat:helicopter",
+    {
+      "id": "simpleplanes:helicopter",
+      "required": false
+    }
+  ]
+}

@@ -2,7 +2,7 @@ package com.onewhohears.dscombat.client.entityscreen.instance;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
-import com.onewhohears.dscombat.data.radar.RadarTarget;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-import static com.onewhohears.dscombat.util.UtilRender.drawText;
+import static com.onewhohears.dscombat.client.util.UtilRender.drawText;
 
 public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 	
@@ -42,11 +42,14 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 	public boolean shouldUpdateTexture(Entity entity) {
 		EntityVehicle vehicle = (EntityVehicle)entity;
 		if (entity.tickCount == prevUpdateTickCount) return false;
-		if (entity.tickCount % 2 != 0) return false;
+		// Update every tick if there are jammer pings (for smooth wave animation)
+		boolean hasJammer = vehicle.radarSystem.getClientRadarPings().stream()
+				.anyMatch(p -> p.entityType == RadarStats.PingEntityType.JAMMER);
+		if (!hasJammer && entity.tickCount % 2 != 0) return false;
         return (entity.tickCount - vehicle.radarSystem.clientPingRefreshTime) <= 100;
     }
 	
-	protected void drawPing(RadarTarget ping, EntityVehicle vehicle, boolean selected, boolean hover) {
+	protected void drawPing(RadarStats.RadarPing ping, EntityVehicle vehicle, boolean selected, boolean hover) {
 		Vec3 dp = ping.getPosForClient().subtract(vehicle.position());
 		double dist = dp.horizontalDistance();
 		double screen_dist = getScreenDistRatio(dist);
@@ -61,13 +64,39 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 		return distance / DSCClientInputs.getRadarDisplayRange();
 	}
 	
-	protected void drawPingAtPos(RadarTarget ping, int x, int y, boolean selected, boolean hover) {
+	protected void drawPingAtPos(RadarStats.RadarPing ping, int x, int y, boolean selected, boolean hover) {
 		// ABGR format for some reason
 		int color = 0xff00ff00;
 		if (selected) color = 0xff0000ff;
 		else if (hover) color = 0xff00ffff;
 		else if (ping.isFriendly) color = 0xffff0000;
 		else if (ping.isShared()) color = 0xffaacd66;
+		if (ping.entityType.isJammer()) {
+			boolean active = ping.isJamming();
+			long t = System.currentTimeMillis();
+			int[] radii = {2, 4, 6, 8};
+			if (active) {
+				int wave = (int)(t / 120) % radii.length;
+				for (int i = 0; i < radii.length; ++i) {
+					int dist = (i - wave + radii.length) % radii.length;
+					int alpha = switch (dist) {
+						case 0 -> 0xFF;
+						case 1 -> 0xCC;
+						case 2 -> 0x88;
+						default -> 0x55;
+					};
+					int ringColor = (alpha << 24) | 0x00CCFF;
+					drawHollowCircle(x, y, radii[i], 1, ringColor);
+				}
+				drawPlus(x, y, 2, 3, 0xff00eeff);
+			} else {
+				boolean on = (t / 600) % 2 == 0;
+				int ringColor = on ? 0x8800aaff : 0x330066ff;
+				for (int r : radii) drawHollowCircle(x, y, r, 1, ringColor);
+				drawPlus(x, y, 1, 2, on ? 0xaa00aaff : 0x330066ff);
+			}
+			return;
+		}
 		if (ping.entityType.isMissile()) drawPlus(x, y, pingIconRadius/2, 7, color);
 		else if (ping.terrainType.isGround()) drawPlus(x, y, pingIconRadius, 5, color);
 		else if (ping.terrainType.isAir()) drawCross(x, y, pingIconRadius, 7, color);
@@ -75,7 +104,7 @@ public abstract class RadarScreenInstance extends EntityDynamicScreenInstance {
 			drawCross(x, y, pingIconRadius, 5, color);
 			drawPlus(x, y, pingIconRadius, 5, color);
 		}
-		if (ping.isFriendly) drawHollowCircle(x, y, pingIconRadius, 2, color);
+		if (ping.isFriendly && !ping.entityType.isJammer()) drawHollowCircle(x, y, pingIconRadius, 2, color);
 	}
 
 }

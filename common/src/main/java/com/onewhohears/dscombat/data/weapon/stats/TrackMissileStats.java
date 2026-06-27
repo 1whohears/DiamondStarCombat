@@ -17,13 +17,20 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 
 public class TrackMissileStats extends MissileStats {
-
-	private final TargetDomainType targetType;
+	
+	public enum TargetType {
+		AIR,
+		GROUND,
+		WATER,
+		MISSILE  // New: allows targeting missiles for interception
+	}
+	
+	private final TargetType targetType;
 	private final boolean active;
 
 	public TrackMissileStats(ResourceLocation key, JsonObject json) {
 		super(key, json);
-		targetType = UtilParse.getEnumSafe(json, "targetType", TargetDomainType.class);
+		targetType = UtilParse.getEnumSafe(json, "targetType", TargetType.class);
 		active = UtilParse.getBooleanSafe(json, "activeTrack", true);
 	}
 	
@@ -37,7 +44,7 @@ public class TrackMissileStats extends MissileStats {
 		return new TrackMissileInstance<>(this);
 	}
 	
-	public TargetDomainType getTargetType() {
+	public TargetType getTargetType() {
 		return targetType;
 	}
 	
@@ -50,13 +57,16 @@ public class TrackMissileStats extends MissileStats {
 		super.addToolTips(tips, advanced);
 		switch(getTargetType()) {
 		case AIR:
-			tips.add(UtilMCText.translatable("info.dscombat.targets_flying").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			tips.add(UtilMCText.translatable("info.dscombat.targets_flying_and_missiles").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		case GROUND:
 			tips.add(UtilMCText.translatable("info.dscombat.targets_grounded").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		case WATER:
 			tips.add(UtilMCText.translatable("info.dscombat.targets_in_water").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
+			break;
+		case MISSILE:
+			tips.add(UtilMCText.translatable("info.dscombat.targets_missiles_only").setStyle(Style.EMPTY.withColor(SPECIAL_COLOR)));
 			break;
 		}
 		if (advanced) {
@@ -75,6 +85,8 @@ public class TrackMissileStats extends MissileStats {
 			return UtilMCText.transString("weapon_code.dscombat.rifel");
 		case WATER:
 			return UtilMCText.transString("weapon_code.dscombat.bruiser");
+		case MISSILE:
+			return "INTERCEPTOR"; // Anti-missile code
 		}
 		return "";
 	}

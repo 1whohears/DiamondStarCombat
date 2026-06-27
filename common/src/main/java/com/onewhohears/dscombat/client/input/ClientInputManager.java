@@ -2,22 +2,16 @@ package com.onewhohears.dscombat.client.input;
 
 import com.google.gson.JsonObject;
 import com.onewhohears.dscombat.Config;
-import com.onewhohears.dscombat.DependencySafety;
 import com.onewhohears.dscombat.client.screen.VehicleMainScreen;
 import com.onewhohears.dscombat.client.screen.VehicleScreen;
-import com.onewhohears.dscombat.common.core.PositionMarker;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
-import com.onewhohears.dscombat.common.network.toserver.ToServerModifyMarker;
 import com.onewhohears.dscombat.common.network.toserver.ToServerSeatPos;
+import com.onewhohears.dscombat.data.radar.RadarStats;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
-import com.onewhohears.dscombat.data.weapon.WeaponTargetParameters;
-import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
-import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
-import com.onewhohears.dscombat.entity.parts.EntityGimbal;
+import com.onewhohears.dscombat.data.vehicle.VehicleType;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModSounds;
-import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.util.UtilPrint;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -30,12 +24,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,7 +33,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 public class ClientInputManager {
 
@@ -73,7 +62,6 @@ public class ClientInputManager {
     public static final ActionInputHolder.Button CHANGE_SEAT = registerButton("change_seat", "change_seat_key");
     public static final ActionInputHolder.Button LANDING_GEAR = registerButton("landing_gear", "landing_gear_key");
     public static final ActionInputHolder.Button GIMBAL = registerButton("gimbal", "gimbal_key");
-    public static final ActionInputHolder.Button ZOOM = registerButton("zoom", "zoom_key");
     public static final ActionInputHolder.Button SPECIAL1 = registerButton("special1", "special_key");
     public static final ActionInputHolder.Button SPECIAL2 = registerButton("special2", "special_2_key");
     public static final ActionInputHolder.Button EJECT = registerButton("eject", "eject_key");
@@ -87,8 +75,7 @@ public class ClientInputManager {
     public static final ActionInputHolder.Button RADAR_MODE = registerButton("radar_mode", "radar_mode_key");
     public static final ActionInputHolder.Button PING_CYCLE = registerButton("ping_cycle", "ping_cycle_key");
     public static final ActionInputHolder.Button AFTERBURNER = registerButton("afterburner", "afterburner_toggle_key");
-    public static final ActionInputHolder.Button QUICK_MARKER = registerButton("quick_marker", "quick_marker_key");
-    public static final ActionInputHolder.Button TARGET_MODE = registerButton("target_mode", "target_mode_key");
+    public static final ActionInputHolder.Button SMOKE_GRENADE = registerButton("smoke_grenade", "smoke_grenade_key");
 
     private static int leftTicks = 0;
     private static long radarModeUpdateTime = 0;
@@ -96,6 +83,8 @@ public class ClientInputManager {
     private static boolean wasPilot = false;
     // Smoothed heli inputs to reduce touchiness (applied only for helicopters)
     private static float smPitch = 0f, smRoll = 0f, smYaw = 0f;
+    // Mouse Direct mode accumulated inputs (decay each tick)
+    private static float mdPitch = 0f, mdRoll = 0f;
 
     private static void pilotTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle) {
         if (MOUSE_MODE.isInitPressed()) DSCClientInputs.cycleMouseMode();
@@ -108,6 +97,15 @@ public class ClientInputManager {
             }
         }
         else if (mc.screen != null) DSCClientInputs.centerMousePos();
+
+        // Look-around in MOUSE_DIRECT: hold Shift to free the camera — only for planes
+        boolean isPlane = vehicle.getVehicleType() == VehicleType.PLANE;
+        if (DSCClientInputs.isMouseDirect() && isPlane) {
+            boolean shiftDown = FLIP_CONTROLS.isPressed();
+            DSCClientInputs.setLookAround(shiftDown);
+        } else {
+            DSCClientInputs.setLookAround(false);
+        }
 
         boolean flare = FLARE.isPressed();
         boolean chaff = CHAFF.isPressed();
@@ -138,17 +136,53 @@ public class ClientInputManager {
         boolean mode = DSCClientInputs.isCameraLockedForward();
         // I made a truth table and this insane expression is optimal somehow.
         // I wouldn't bother questioning it just move on...unless you are insane. - 1whohears
-        boolean flipPitchThrottle = (!type_flip && (flip ^ mode)) || (type_flip && !flip);
+        // For helis in MOUSE_DIRECT: mouse Y = pitch, mouse X = roll — no flip needed
+        boolean heliMouseDirect = vehicle.getStats().isHeli() && DSCClientInputs.isMouseDirect();
+        boolean flipPitchThrottle = !heliMouseDirect && ((!type_flip && (flip ^ mode)) || (type_flip && !flip));
         if (flipPitchThrottle) {
             float temp = throttle;
             throttle = pitch;
             pitch = temp;
         }
-        // calc mouse mode controls (leaving this very ugly code here for now. will clean up later)
+        // For helis in MOUSE_DIRECT: W/S controls throttle, pitch comes only from mouse
+        if (heliMouseDirect) {
+            throttle = pitch; // W/S → throttle
+            pitch = 0;        // keyboard pitch cleared; mouse will set it below
+        }
+        // calc mouse mode controls
         double mouseX = mc.mouseHandler.xpos() - DSCClientInputs.getMouseCenterX();
         double mouseY = -(mc.mouseHandler.ypos() - DSCClientInputs.getMouseCenterY());
-        if (DSCClientInputs.isCameraLockedForward()) {
-            // FIXME 2.1 fix mouse control mode
+        if (DSCClientInputs.isMouseDirect()) {
+            // MOUSE_DIRECT: mouse delta each tick drives pitch/roll directly, then decays to zero
+            double dx = getMouseXVelocity(mc);
+            double dy = getMouseYVelocity(mc);
+            // Scale by Minecraft mouse sensitivity so the in-game setting has effect
+            double mcSens = mc.options.sensitivity().get() * 2.0;
+            float pitchSens = (float) (Config.CLIENT.mouseDirectPitchSensitivity.get().doubleValue() * mcSens);
+            float rollSens  = (float) (Config.CLIENT.mouseDirectRollSensitivity.get().doubleValue() * mcSens);
+            float returnRate = (float) (vehicle.getStats().isHeli()
+                    ? Config.CLIENT.mouseDirectHeliReturnRate.get().doubleValue()
+                    : Config.CLIENT.mouseDirectReturnRate.get().doubleValue());
+            // Scale sensitivity down at high speed so fast planes don't over-rotate
+            if (!vehicle.getStats().isHeli()) {
+                double maxSpeed = vehicle.getMaxSpeedForMotion();
+                if (maxSpeed > 0) {
+                    double speed = vehicle.getDeltaMovement().length();
+                    double speedRatio = Mth.clamp(speed / maxSpeed, 0.0, 1.0);
+                    // at cruise speed: full sensitivity; at max speed: reduced to ~30%
+                    float speedScale = (float) Mth.clamp(1.0 - speedRatio * 0.7, 0.3, 1.0);
+                    pitchSens *= speedScale;
+                    rollSens  *= speedScale;
+                }
+            }
+            mdPitch = Mth.clamp(mdPitch + (float)(dy * pitchSens * invertPitch), -1f, 1f);
+            mdRoll = Mth.clamp(mdRoll + (float)(dx * rollSens), -1f, 1f);
+            if (dy == 0) mdPitch = Mth.approach(mdPitch, 0f, returnRate);
+            if (dx == 0) mdRoll  = Mth.approach(mdRoll,  0f, returnRate);
+            pitch = mdPitch;
+            roll  = mdRoll;
+        } else if (DSCClientInputs.isCameraLockedForward()) {
+            // LOCKED_FORWARD: virtual joystick — mouse position relative to center
             double ya = Math.abs(mouseY);
             double xa = Math.abs(mouseX);
             float ys = (float) Math.signum(mouseY) * -invertPitch;
@@ -178,7 +212,11 @@ public class ClientInputManager {
                         (float) mc.mouseHandler.xpos(),
                         Config.CLIENT.mouseXReturnRate.get().floatValue()));
             }
-        } else pitch *= invertPitch;
+        } else {
+            mdPitch = 0f;
+            mdRoll  = 0f;
+            pitch *= invertPitch;
+        }
 
         // fix throttle
         float zeroThrottle;
@@ -240,8 +278,7 @@ public class ClientInputManager {
         }
     }
 
-    private static void passengerTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle,
-                                      @NotNull EntityRidablePart seat) {
+    private static void passengerTick(@NotNull Minecraft mc, @NotNull Player player, @NotNull EntityVehicle vehicle, @NotNull EntityRidablePart seat) {
         boolean isRadarController = player.equals(vehicle.getControllingPlayerOrBot());
         if (DSCClientInputs.disable3rdPersonVehicle) mc.options.setCameraType(CameraType.FIRST_PERSON);
         /*
@@ -251,107 +288,43 @@ public class ClientInputManager {
          * so the server thinks the seat is outside the player render distance and sends a discard packet to the client
          * is there a way to fix this without the ToServerSeatPos packet?
          */
-        new ToServerSeatPos(seat.position()).sendToServer();
-        /*if (player.tickCount % Config.CLIENT.syncSeatPosRate.get() == 0) {
+        if (player.tickCount % Config.CLIENT.syncSeatPosRate.get() == 0) {
             new ToServerSeatPos(seat.position()).sendToServer();
-        }*/
+        }
         // SWITCH SEAT
         if (CHANGE_SEAT.isInitPressed()) {
             sendSyncAction(new VehicleSyncAction.SwitchSeatAction());
         }
         // CYCLE WEAPON
         int selectNextWeapon = 0;
+        if (WEAPON_CYCLE.isInitPressed()) selectNextWeapon = 1;
         if (WEAPON_CYCLE_INVERSE.isInitPressed()) selectNextWeapon = -1;
-        else if (WEAPON_CYCLE.isInitPressed()) selectNextWeapon = 1;
-        vehicle.weaponSystem.selectNextWeapon(selectNextWeapon);
-        // CYCLE TARGET MODE
-        if (TARGET_MODE.isInitPressed()) {
-            DSCClientInputs.cycleTargetMode();
+        if (selectNextWeapon != 0) {
+            if (seat.isTurret()) {
+                ((com.onewhohears.dscombat.entity.parts.EntityTurret) seat).selectNextWeapon(selectNextWeapon);
+            } else {
+                vehicle.weaponSystem.selectNextWeapon(selectNextWeapon);
+            }
         }
+        // Resolve turret weapon index for ShootAction
+        int turretWeaponIndex = 0;
+        if (seat.isTurret()) turretWeaponIndex = ((com.onewhohears.dscombat.entity.parts.EntityTurret) seat).getWeaponIndex();
         // SELECT RADAR PING
         RadarSystem radar = vehicle.radarSystem;
         if (DSCClientInputs.isRadarHovering() && leftTicks == 1) {
-            radar.clientSelectTarget(DSCClientInputs.getRadarHoverId());
-            DSCClientInputs.setTargetMode(TargetMode.RADAR);
-            DSCClientInputs.setSelectedMarkerId(-1);
+            List<RadarStats.RadarPing> pings = radar.getClientRadarPings();
+            if (DSCClientInputs.getRadarHoverIndex() < pings.size())
+                radar.clientSelectTarget(pings.get(DSCClientInputs.getRadarHoverIndex()));
         }
         // CYCLE PING
-        if (PING_CYCLE.isInitPressed()) {
-            radar.clientSelectNextTarget();
-            DSCClientInputs.setTargetMode(TargetMode.RADAR);
-            DSCClientInputs.setSelectedMarkerId(-1);
-        }
-        // OPTICAL TARGET
-        if (player.tickCount % 10 == 0) {
-            if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL && mc.level != null
-                    && vehicle.getGimbalForPilotCamera() != null) {
-                EntityGimbal gimbal = vehicle.getGimbalForPilotCamera();
-                Predicate<Entity> canGimbalSee = entity -> {
-                    if (entity.isSpectator() || entity.isInvisible() || entity.isPassenger()) return false;
-                    if (!UtilEntity.isPlayer(entity) && !entity.getType().is(ModTags.EntityTypes.VEHICLE)
-                            && !(entity instanceof Mob)) return false;
-                    return UtilEntity.getLevel(entity).clip(new ClipContext(gimbal.getEyePosition(), entity.getEyePosition(),
-                            ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getType() == HitResult.Type.MISS;
-                };
-                int opticalTrackedId = DSCClientInputs.getOpticalTrackedEntityId();
-                if (opticalTrackedId == -1 || !DSCClientInputs.isCameraTrackTarget()) {
-                    Vec3 lookPos = getLookPos(player, vehicle);
-                    AABB aabb = new AABB(lookPos.subtract(4, 4, 4), lookPos.add(4, 4, 4));
-                    List<Entity> list = mc.level.getEntities(player, aabb, canGimbalSee);
-                    Entity nearest = null;
-                    double nearestDistSqr = Double.MAX_VALUE;
-                    for (Entity entity : list) {
-                        double distSqr = player.distanceToSqr(entity);
-                        if (distSqr < nearestDistSqr) {
-                            nearest = entity;
-                            nearestDistSqr = distSqr;
-                        }
-                    }
-                    if (nearest == null) {
-                        int id = DependencySafety.getClientDistantLookingAtEntityId(gimbal);
-                        DSCClientInputs.setOpticalTrackedEntityId(id);
-                    } else {
-                        DSCClientInputs.setOpticalTrackedEntityId(nearest.getId());
-                    }
-                } else {
-                    Entity entity = mc.level.getEntity(opticalTrackedId);
-                    if (entity != null) {
-                        if (!canGimbalSee.test(entity)) {
-                            DSCClientInputs.setOpticalTrackedEntityId(-1);
-                        }
-                    } else {
-                        if (DependencySafety.getClientDistantEntityPos(opticalTrackedId) == null) {
-                            DSCClientInputs.setOpticalTrackedEntityId(-1);
-                        }
-                    }
-                }
-            } else {
-                DSCClientInputs.setOpticalTrackedEntityId(-1);
-            }
-        }
+        if (PING_CYCLE.isInitPressed()) radar.clientSelectNextTarget();
         // SHOOT PILOT WEAPON OR TURRET
         if (SHOOT.isPressed() && playerCanShoot(player)) {
-            WeaponInstance<?> selectedWeapon = vehicle.weaponSystem.getSelected();
-            if (DSCClientInputs.getTargetMode().isPosition()) {
-                Config.CLIENT.preferredPositionTargetMode.set(DSCClientInputs.getTargetMode());
-            }
-            TargetMode targetMode = selectedWeapon.fixTargetMode(DSCClientInputs.getTargetMode(),
-                    Config.CLIENT.preferredPositionTargetMode.get());
-            DSCClientInputs.setTargetMode(targetMode);
-            if (targetMode == TargetMode.MARKER && selectedWeapon.getStats().isPosGuided() &&
-                    DSCClientInputs.getSelectedMarker() == null) {
-                player.displayClientMessage(UtilMCText.translatable("error.dscombat.must_select_marker"), true);
-            } else if (targetMode == TargetMode.OPTICAL && vehicle.getGimbalForPilotCamera() == null) {
-                player.displayClientMessage(UtilMCText.translatable("error.dscombat.optical_requires_gimbal"), true);
-            } else {
-                sendSyncAction(new VehicleSyncAction.ShootAction(
-                        vehicle.weaponSystem.getSelectedIndex(),
-                        new WeaponTargetParameters(radar.getClientSelectedPing(),
-                                getShootPos(player, vehicle), targetMode,
-                                DSCClientInputs.getSelectedMarkerId(),
-                                DSCClientInputs.getOpticalTrackedEntityId())
-                ));
-            }
+            sendSyncAction(new VehicleSyncAction.ShootAction(
+                    vehicle.weaponSystem.getSelectedIndex(),
+                    turretWeaponIndex,
+                    radar.getClientSelectedPing(),
+                    getShootPos(player, vehicle)));
         }
         // DISMOUNT
         if (Config.CLIENT.customDismount.get() && DISMOUNT.isPressed()) {
@@ -368,22 +341,23 @@ public class ClientInputManager {
                 sendSyncAction(new VehicleSyncAction.DismountAction(false));
             }
         }
+        // SMOKE GRENADES
+        if (SMOKE_GRENADE.isInitPressed()) {
+            sendSyncAction(new VehicleSyncAction.SmokeGrenadeAction());
+        }
         // CYCLE RADAR MODE
         boolean cycleRadarMode = RADAR_MODE.isInitPressed();
         if (cycleRadarMode) {
-            DSCClientInputs.cycleRadarFilterMode();
+            DSCClientInputs.cyclePreferredRadarMode();
             if (!isRadarController) player.displayClientMessage(UtilMCText.translatable("info.dscombat.not_radar_controller"), true);
         }
-        if (isRadarController && DSCClientInputs.getRadarFilterMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
-            sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getRadarFilterMode()));
+        if (isRadarController && DSCClientInputs.getPreferredRadarMode() != vehicle.getRadarMode() && Util.getMillis() - radarModeUpdateTime > 500) {
+            sendSyncAction(new VehicleSyncAction.SetRadarModeAction(DSCClientInputs.getPreferredRadarMode()));
             radarModeUpdateTime = Util.getMillis();
         }
         // USE GIMBAL
         if (GIMBAL.isInitPressed()) {
             DSCClientInputs.toggleGimbalMode();
-        }
-        if (ZOOM.isInitPressed()) {
-            DSCClientInputs.cycleZoom();
         }
         // OPEN VEHICLE MENU
         /* the instanceof check was added because for some reason VEHICLE_MENU#isInitPressed was still true
@@ -400,21 +374,12 @@ public class ClientInputManager {
         else if (leanRight) DSCClientInputs.leanRight();
     }
 
-    private static void tickAlways() {
-        // CREATE QUICK MARKER
-        if (QUICK_MARKER.isInitPressed()) {
-            new ToServerModifyMarker().sendToServer();
-        }
-        // SELECT POSITION MARKER
-        if (DSCClientInputs.getMarkerHoverId() != -1 && leftTicks == 1) {
-            DSCClientInputs.setSelectedMarkerId(DSCClientInputs.getMarkerHoverId());
-        }
-    }
-
     private static void tickActions() {
         buttons.forEach((id, action) -> action.tick());
         axes.forEach((id, action) -> action.tick());
     }
+
+    private static EntityVehicle lastVehicle = null;
 
     public static void clientTickFirst() {
         tickActions();
@@ -423,19 +388,32 @@ public class ClientInputManager {
         if (player == null) {
             if (wasPilot) { smPitch = smRoll = smYaw = 0f; }
             wasPilot = false;
+            lastVehicle = null;
             return;
         }
-        tickAlways();
         if (!player.isPassenger() || !(player.getRootVehicle() instanceof EntityVehicle vehicle)) {
             if (wasPilot) { smPitch = smRoll = smYaw = 0f; }
             wasPilot = false;
+            lastVehicle = null;
             return;
         }
         Entity controller = vehicle.getControllingPassenger();
         if (controller == null || !controller.equals(player)) {
             if (wasPilot) { smPitch = smRoll = smYaw = 0f; }
             wasPilot = false;
+            lastVehicle = null;
             return;
+        }
+        // Auto-set mouse mode when entering a new vehicle
+        if (vehicle != lastVehicle) {
+            lastVehicle = vehicle;
+            boolean isPlane = vehicle.getVehicleType() == VehicleType.PLANE;
+            boolean isGroundVehicle = vehicle.getVehicleType() == VehicleType.CAR;
+            if (isPlane && !DSCClientInputs.isMouseDirect()) {
+                DSCClientInputs.setMouseMode(DSCClientInputs.MouseMode.MOUSE_DIRECT);
+            } else if (isGroundVehicle && DSCClientInputs.isMouseDirect()) {
+                DSCClientInputs.setMouseMode(DSCClientInputs.MouseMode.FREE_RELATIVE);
+            }
         }
         pilotTick(mc, player, vehicle);
         wasPilot = true;
@@ -461,34 +439,22 @@ public class ClientInputManager {
         switch (DSCClientInputs.getTargetMode()) {
             case LOOK -> { return getLookPos(player, vehicle); }
             case COORDS -> {  return Config.CLIENT.getTargetPos(); }
-            case MARKER -> {
-                PositionMarker marker = DSCClientInputs.getSelectedMarker();
-                if (marker == null) return Vec3.ZERO;
-                if (!UtilEntity.getLevel(player).dimension().equals(marker.getDimension())) return Vec3.ZERO;
-                return marker.getPosition();
-            }
+            case INDICATOR -> { return Vec3.ZERO; }
         }
         return Vec3.ZERO;
     }
 
-    private static Vec3 lookPos = Vec3.ZERO;
-    private static int lookPosCalcTime = -1;
-
     public static Vec3 getLookPos(Player player, EntityVehicle vehicle) {
-        if (player.tickCount != lookPosCalcTime) {
-            Entity looker = player;
-            if (DSCClientInputs.isGimbalMode()) {
-                Entity gimbal = vehicle.getGimbalForPilotCamera();
-                if (gimbal != null) {
-                    looker = gimbal;
-                    looker.setXRot(player.getXRot());
-                    looker.setYRot(player.getYRot());
-                }
+        Entity looker = player;
+        if (DSCClientInputs.isGimbalMode()) {
+            Entity gimbal = vehicle.getGimbalForPilotCamera();
+            if (gimbal != null) {
+                looker = gimbal;
+                looker.setXRot(player.getXRot());
+                looker.setYRot(player.getYRot());
             }
-            lookPos = UtilEntity.getLookingAtBlockPos(looker, 1024);
-            lookPosCalcTime = player.tickCount;
         }
-        return lookPos;
+        return UtilEntity.getLookingAtBlockPos(looker, 512);
     }
 
     private static boolean playerCanShoot(Player player) {

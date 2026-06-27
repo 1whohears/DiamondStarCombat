@@ -1,0 +1,272 @@
+package com.onewhohears.dscombat.client.event;
+
+import com.onewhohears.dscombat.Config;
+import com.onewhohears.dscombat.client.input.ClientInputManager;
+import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.data.radar.RadarTarget;
+import com.onewhohears.dscombat.data.weapon.stats.TargetMode;
+import com.onewhohears.dscombat.entity.parts.EntityGimbal;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.mixin.CameraAccess;
+import com.onewhohears.onewholibs.util.UtilEntity;
+import com.onewhohears.onewholibs.util.math.QuaternionF;
+import com.onewhohears.onewholibs.util.math.UtilAngles;
+import com.onewhohears.onewholibs.util.math.Vec3f;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
+
+import java.util.function.Consumer;
+
+public class ClientCameraEventHandlers {
+
+    private static Entity prevGimbal;
+    @Nullable
+    static private QuaternionF prevQ;
+    private static boolean wasTrackingTarget = false;
+    private static boolean wasGimbal = false;
+    private static long initGimbalLockTime;
+
+    public static final CameraAngles CAMERA_ANGLES = new CameraAngles();
+
+    public static void onSetupCameraAngles(Camera camera, float pt, CameraAngles angles) {
+        Minecraft m = Minecraft.getInstance();
+        final var player = m.player;
+        if (player == null) return;
+        if (!player.isPassenger()) {
+            if (isCameraEntityEqual(m, prevGimbal)) m.setCameraEntity(player);
+            prevGimbal = null;
+            return;
+        }
+        if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+        boolean detached = !m.options.getCameraType().isFirstPerson();
+        boolean mirrored = m.options.getCameraType().isMirrored();
+        float camYOffset = 0;
+        boolean isPilot = false, isCopilot = false;
+        if (player.getVehicle() instanceof EntityRidablePart seat) {
+            isPilot = seat.isPilotSeat();
+            isCopilot = seat.isCoPilotSeat();
+            if (DSCClientInputs.isGimbalMode()) camYOffset = seat.getCameraYOffset();
+        }
+        if ((prevGimbal != null && prevGimbal.isRemoved())
+                || (!DSCClientInputs.isGimbalMode() && !isCameraEntityEqual(m, player))) {
+            m.setCameraEntity(player);
+            prevGimbal = null;
+        }
+        boolean isGimbal = false;
+        if (DSCClientInputs.isGimbalMode() && (isPilot || isCopilot || camYOffset == 0)
+                && vehicle.getGimbalForPilotCamera() != null) {
+            if (!wasGimbal && DSCClientInputs.xRotLastGimbal != 0 && DSCClientInputs.yRotLastGimbal != 0) {
+                player.setXRot(DSCClientInputs.xRotLastGimbal);
+                player.setYRot(DSCClientInputs.yRotLastGimbal);
+            }
+            EntityGimbal gimbal = vehicle.getGimbalForPilotCamera();
+            if (!isCameraEntityEqual(m, gimbal)) m.setCameraEntity(gimbal);
+            gimbal.setXRot(player.getViewXRot(pt));
+            gimbal.setYRot(player.getViewYRot(pt));
+            prevGimbal = gimbal;
+            camYOffset = -0.2f;
+            isGimbal = true;
+        }
+        if (!isGimbal && wasGimbal) {
+            wasTrackingTarget = true;
+        }
+        if (isPilot) {
+            boolean resetMousePressed = ClientInputManager.RESET_MOUSE.isPressed();
+            Vec3 targetPos = null;
+            if (DSCClientInputs.getTargetMode() == TargetMode.RADAR) {
+                RadarTarget target = vehicle.radarSystem.getClientSelectedPing();
+                if (target != null) targetPos = target.getPosForClient();
+            } else if (DSCClientInputs.getTargetMode() == TargetMode.OPTICAL && isGimbal) {
+                if (DSCClientInputs.getOpticalTrackedEntityId() == -1) {
+                    if (!wasGimbal) {
+                        targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
+                        initGimbalLockTime = System.currentTimeMillis();
+                    } else if (System.currentTimeMillis() - initGimbalLockTime <= 50) {
+                        targetPos = DSCClientInputs.getClientEntityPosition(DSCClientInputs.getOpticalTrackedEntityIdOld());
+                    }
+                } else {
+                    targetPos = DSCClientInputs.getOpticalTrackedEntityPos(pt);
+                }
+            }
+            Entity camEntity = m.getCameraEntity();
+            if (DSCClientInputs.isCameraTrackTarget() && !resetMousePressed && camEntity != null && targetPos != null) {
+                Vec3 diff = targetPos.subtract(camEntity.getEyePosition(pt));
+                float x = UtilAngles.getPitch(diff);
+                float y = UtilAngles.getYaw(diff);
+                setAngles(angles, player, x, y, mirrored);
+                wasTrackingTarget = true;
+            } else if (DSCClientInputs.isCameraLockedForward()) {
+                lookForward(angles, player, mirrored, pt, vehicle);
+                wasTrackingTarget = false;
+            } else if (DSCClientInputs.isCameraFreeRelative()) {
+                QuaternionF qPT = vehicle.getClientQ(pt);
+                if (resetMousePressed) {
+                    lookForward(angles, player, mirrored, pt, vehicle);
+                } else if (prevQ != null && !(wasTrackingTarget && isGimbal)) {
+                    float[] relativeAngles;
+                    if (wasTrackingTarget) {
+                        relativeAngles = new float[] {DSCClientInputs.xRotPreTrack, DSCClientInputs.yRotPreTrack};
+                    } else {
+                        relativeAngles = UtilAngles.globalToRelativeDegrees(player.getXRot(), player.getYRot(), prevQ);
+                    }
+                    float[] globalAngles = UtilAngles.relativeToGlobalDegrees(relativeAngles[0], relativeAngles[1], qPT);
+                    float x = globalAngles[0];
+                    float y = globalAngles[1];
+                    setAngles(angles, player, x, y, mirrored);
+                    if (!isGimbal) {
+                        DSCClientInputs.xRotPreTrack = relativeAngles[0];
+                        DSCClientInputs.yRotPreTrack = relativeAngles[1];
+                    }
+                }
+                prevQ = qPT;
+                wasTrackingTarget = false;
+            } else if (DSCClientInputs.isCameraFreeGlobal()) {
+                if (resetMousePressed) {
+                    lookForward(angles, player, mirrored, pt, vehicle);
+                }
+                float x, y;
+                if (wasTrackingTarget) {
+                    x = DSCClientInputs.xRotPreTrack;
+                    y = DSCClientInputs.yRotPreTrack;
+                } else {
+                    x = player.getXRot();
+                    y = player.getYRot();
+                }
+                setAngles(angles, player, x, y, mirrored);
+                if (!isGimbal) {
+                    DSCClientInputs.xRotPreTrack = player.getXRot();
+                    DSCClientInputs.yRotPreTrack = player.getYRot();
+                }
+                wasTrackingTarget = false;
+            }
+        }
+        if (isGimbal) {
+            DSCClientInputs.xRotLastGimbal = angles.getPitch();
+            DSCClientInputs.yRotLastGimbal = angles.getYaw();
+        }
+        wasGimbal = isGimbal;
+        float zi = UtilAngles.lerpAngle(pt, vehicle.zRotO, vehicle.zRot);
+        if (detached && mirrored) zi *= -1;
+        angles.setRoll(zi);
+        double camDist = vehicle.getStats().cameraDistance;
+        if (detached && isPilot && camDist > 4) {
+            double vehicleCamDist = Math.min(0, 4-getMaxDist(camera, player, camDist));
+            ((CameraAccess)camera).invokeSetRotation(angles.getYaw(), angles.getPitch());
+            camera.move(vehicleCamDist, 0, 0);
+        }
+        QuaternionF q = null;
+        if (camYOffset != 0) {
+            q = UtilAngles.lerpQ(pt, vehicle.getPrevQ(), vehicle.getClientQ());
+            Vec3 yawAxis = UtilAngles.getYawAxis(q);
+            camera.setPosition(camera.getPosition().add(yawAxis.scale(camYOffset)));
+        }
+        if (DSCClientInputs.getLeanAmount() != 0) {
+            if (q == null) q = UtilAngles.lerpQ(pt, vehicle.getPrevQ(), vehicle.getClientQ());
+            Vec3 pitchAxis = UtilAngles.getPitchAxis(q);
+            camera.setPosition(camera.getPosition().add(pitchAxis.scale(-DSCClientInputs.getLeanAmount())));
+        }
+    }
+
+    private static boolean isCameraEntityEqual(Minecraft m, @Nullable Entity e) {
+        if (e == null || m.getCameraEntity() == null) return false;
+        return m.getCameraEntity().equals(e);
+    }
+
+    private static void lookForward(CameraAngles angles, Player player,
+                                    boolean mirrored, float pt, EntityVehicle vehicle) {
+        float x = UtilAngles.lerpAngle(pt, vehicle.xRotO, vehicle.getXRot());
+        float y = UtilAngles.lerpAngle180(pt, vehicle.yRotO, vehicle.getYRot());
+        setAngles(angles, player, x, y, mirrored);
+        DSCClientInputs.xRotPreTrack = x;
+        DSCClientInputs.yRotPreTrack = y;
+    }
+
+    private static void setAngles(CameraAngles angles, Player player, float x, float y, boolean mirrored) {
+        player.setXRot(x);
+        player.xRotO = x;
+        player.setYRot(y);
+        player.yRotO = y;
+        if (mirrored) {
+            x *= -1;
+            y += 180;
+        }
+        angles.setPitch(x);
+        angles.setYaw(y);
+    }
+
+    public static double getMaxDist(Camera cam, Player player, double dist) {
+        Vec3 from = cam.getPosition();
+        Vec3f d = Vec3f.from(cam.getLookVector());
+        d.mul((float)-dist);
+        Vec3 to = from.add(d.x(), d.y(), d.z());
+        HitResult hitresult = UtilEntity.getLevel(player).clip(new ClipContext(from, to,
+                ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, player));
+        if (hitresult.getType() != HitResult.Type.MISS) {
+            double d0 = hitresult.getLocation().distanceTo(from);
+            if (d0 < dist) dist = d0;
+        }
+        return dist;
+    }
+
+    public static void clientTickSetMouseCallback(Minecraft m) {
+        if (m.player == null || m.player.tickCount != 1) return;
+        if (!Config.CLIENT.cameraTurnRelativeToVehicle.get()) return;
+        GLFW.glfwSetCursorPosCallback(m.getWindow().getWindow(), customMouseCallback);
+    }
+
+    public static final GLFWCursorPosCallbackI customMouseCallback = (window, x, y) -> {
+        Minecraft m = Minecraft.getInstance();
+        m.execute(() -> {
+            double xn = x, yn = y;
+            if (window != m.getWindow().getWindow()) return;
+            if (m.player != null && m.screen == null && m.player.getRootVehicle() instanceof EntityVehicle craft) {
+                boolean customMouse = false;
+                double dx = x - m.mouseHandler.xpos();
+                double dy = y - m.mouseHandler.ypos();
+                if (DSCClientInputs.isGimbalMode() && craft.getGimbalForPilotCamera() != null) {
+                    dx /= DSCClientInputs.getZoom();
+                    dy /= DSCClientInputs.getZoom();
+                    xn = dx + m.mouseHandler.xpos();
+                    yn = dy + m.mouseHandler.ypos();
+                    customMouse = true;
+                }
+                if (DSCClientInputs.isCameraFree()) {
+                    double r = Math.toRadians(craft.zRot);
+                    double cosR = Math.cos(r), sinR = Math.sin(r);
+                    xn = dx*cosR - dy*sinR + m.mouseHandler.xpos();
+                    yn = dy*cosR + dx*sinR + m.mouseHandler.ypos();
+                    customMouse = true;
+                }
+                if (customMouse) {
+                    GLFW.glfwSetCursorPos(window, xn, yn);
+                }
+            }
+            m.mouseHandler.onMove(window, xn, yn);
+        });
+    };
+
+    public static void computeFOV(@NotNull Consumer<Float> fovChanger) {
+        if (!DSCClientInputs.isGimbalMode()) return;
+        Minecraft m = Minecraft.getInstance();
+        if (!m.options.getCameraType().isFirstPerson()) return;
+        final var player = m.player;
+        if (player == null) return;
+        if (!player.isPassenger()) return;
+        if (!(player.getRootVehicle() instanceof EntityVehicle vehicle)) return;
+        if (vehicle.getGimbalForPilotCamera() == null) return;
+        float zoom = DSCClientInputs.getZoom();
+        float newZoom = 60 / zoom;
+        fovChanger.accept(newZoom);
+    }
+
+}

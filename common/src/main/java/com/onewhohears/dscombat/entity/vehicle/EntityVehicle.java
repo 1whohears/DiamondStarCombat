@@ -17,7 +17,7 @@ import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.PartsManager;
 import com.onewhohears.dscombat.data.parts.instance.StorageInstance;
 import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
-import com.onewhohears.dscombat.data.radar.RadarFilterMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 import com.onewhohears.dscombat.data.radar.RadarSystem;
 import com.onewhohears.dscombat.data.vehicle.*;
 import com.onewhohears.dscombat.data.vehicle.client.VehicleClientPresets;
@@ -26,7 +26,9 @@ import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentData;
 import com.onewhohears.dscombat.data.vehicle.physics.PhysicsComponentInstance;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
+import com.onewhohears.dscombat.data.weapon.WeaponPresets;
 import com.onewhohears.dscombat.data.weapon.WeaponSystem;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.DrivingBody;
 import com.onewhohears.dscombat.entity.IREmitter;
@@ -37,15 +39,15 @@ import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
 import com.onewhohears.dscombat.init.DataSerializers;
 import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.dscombat.item.VehicleInteractItem;
-import com.onewhohears.dscombat.util.UtilClientPacket;
-import com.onewhohears.dscombat.util.UtilParticles;
+import com.onewhohears.dscombat.item.ItemDecal;
+import com.onewhohears.dscombat.client.util.UtilClientPacket;
+import com.onewhohears.dscombat.client.util.UtilParticles;
 import com.onewhohears.dscombat.util.UtilServerPacket;
 import com.onewhohears.dscombat.util.UtilVehicleEntity;
 import com.onewhohears.dscombat.util.math.UtilRandom;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetAssetReader;
 import com.onewhohears.onewholibs.data.jsonpreset.JsonPresetReloadListener;
 import com.onewhohears.onewholibs.entity.CustomAnimEntity;
-import com.onewhohears.onewholibs.entity.SimulatedEntity;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.UtilItem;
 import com.onewhohears.onewholibs.util.UtilMCText;
@@ -63,7 +65,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -73,6 +74,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -88,6 +90,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -104,9 +107,7 @@ import java.util.function.Predicate;
  * @author 1whohears
  */
 // TODO: mouse mode handling has configurable sensitivity; higher by default. inputs have 'inertia'
-public abstract class EntityVehicle
-        extends CustomAnimEntity<VehicleStats, VehicleClientStats>
-        implements IREmitter, CustomExplosion, DrivingBody, TrampleHandler, SimulatedEntity {
+public abstract class EntityVehicle extends CustomAnimEntity<VehicleStats, VehicleClientStats> implements IREmitter, CustomExplosion, DrivingBody, TrampleHandler {
 	
 	protected static final Logger LOGGER = LogUtils.getLogger();
 	
@@ -118,15 +119,17 @@ public abstract class EntityVehicle
 	public static final EntityDataAccessor<Boolean> NO_CONSUME = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<String> RADIO_SONG = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.STRING);
 	public static final EntityDataAccessor<Boolean> PLAY_IR_TONE = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<RadarFilterMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
+	public static final EntityDataAccessor<RadarMode> RADAR_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.RADAR_MODE);
 	public static final EntityDataAccessor<Boolean> LANDING_GEAR = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<PermMode> PERM_MODE = SynchedEntityData.defineId(EntityVehicle.class, DataSerializers.PERM_MODE);
+	public static final EntityDataAccessor<Float> DIRT_LEVEL = SynchedEntityData.defineId(EntityVehicle.class, EntityDataSerializers.FLOAT);
 
 	public static final int HITBOX_PUSH_COOLDOWN = 4;
 
 	public final VehicleInputManager inputs;
 	public final VehicleSoundManager soundManager;
 	public final VehicleTextureManager textureManager;
+	public final VehicleDecalManager decalManager;
 	public final PartsManager partsManager;
 	public final WeaponSystem weaponSystem;
 	public final RadarSystem radarSystem;
@@ -168,8 +171,15 @@ public abstract class EntityVehicle
 	private double lerpX, lerpY, lerpZ;
 	private float landingGearPos, landingGearPosOld, motorRot, wheelRot, previousThrottle;
 	private boolean wasInWater, hadControllingPassenger, wasPlayerOrBotRiding;
-	private boolean ignoreSyncMoveRot = false;
-    private long lastServerTick;
+	private boolean allowRemoval = false; // MOHIST: flag to allow legitimate removal
+	private boolean initCompleted = false; // MOHIST: flag to track if init() completed successfully
+	
+	// Crawler track animation (McHeliCE style)
+	// Track rotation progress (0.0 to 1.0, cycles continuously)
+	public float[] rotCrawlerTrack = new float[2]; // [left, right]
+	public float[] prevRotCrawlerTrack = new float[2];
+	// Track throttle for differential steering
+	public float[] throttleCrawlerTrack = new float[2];
 	
 	protected boolean isDriverCameraLocked = false;
 	protected float throttle;
@@ -196,6 +206,7 @@ public abstract class EntityVehicle
 		inputs = new VehicleInputManager();
 		soundManager = new VehicleSoundManager(this);
 		textureManager = new VehicleTextureManager(this);
+		decalManager = new VehicleDecalManager(this);
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
@@ -227,9 +238,10 @@ public abstract class EntityVehicle
 		entityData.define(NO_CONSUME, false);
 		entityData.define(RADIO_SONG, "");
 		entityData.define(PLAY_IR_TONE, false);
-		entityData.define(RADAR_MODE, RadarFilterMode.ALL);
+		entityData.define(RADAR_MODE, RadarMode.ALL);
 		entityData.define(LANDING_GEAR, true);
 		entityData.define(PERM_MODE, PermMode.PUBLIC);
+		entityData.define(DIRT_LEVEL, 0f);
 	}
 	
 	@Override
@@ -259,6 +271,10 @@ public abstract class EntityVehicle
 	@Override
 	public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
+		// Add scoreboard tag so Bukkit plugins can identify vehicle by preset
+		// e.g. entity.getTags() will contain "DSCOMBAT_T90M" for preset "t90m"
+		// or "DSCOMBAT_DSS_KRAIT_CHOPPER_BRAWLER" for "dss:krait_chopper_brawler"
+		syncPresetTag();
 		// ORDER MATTERS
 		setTestMode(nbt.getBoolean("test_mode"));
 		setNoConsume(nbt.getBoolean("no_consume"));
@@ -269,8 +285,9 @@ public abstract class EntityVehicle
 		partsManager.read(nbt, presetNbt);
 		textureManager.read(nbt);
 		soundManager.read(nbt);
-		setHealth(nbt.getFloat("health"));
-		setArmor(nbt.getFloat("armor"));
+		decalManager.read(nbt);
+		setHealth(nbt.contains("health") ? nbt.getFloat("health") : getMaxHealth());
+		setArmor(nbt.contains("armor") ? nbt.getFloat("armor") : getBaseArmor());
 		setLandingGear(nbt.getBoolean("landing_gear"));
 		setCurrentThrottle(nbt.getFloat("current_throttle"));
 		setXRotNoQ(nbt.getFloat("xRot"));
@@ -280,15 +297,13 @@ public abstract class EntityVehicle
 		setQ(q);
 		setPrevQ(q);
 		setClientQ(q);
-		setRadarMode(RadarFilterMode.values()[nbt.getInt("radar_mode")]);
+		setRadarMode(RadarMode.values()[nbt.getInt("radar_mode")]);
 		setRadioSong(nbt.getString("radio_song"));
 		createRotableHitboxes(nbt);
 		if (nbt.contains("ingredientDropIndex")) ingredientDropIndex = nbt.getInt("ingredientDropIndex");
 		if (nbt.contains("owner_id")) owner_uuid = nbt.getUUID("owner_id");
 		setPermMode(PermMode.values()[nbt.getInt("perm_mode")]);
 		maxXZ = nbt.getDouble("maxXZ");
-		ignoreSyncMoveRot = true;
-        firstTick = true;
 	}
 
 	@Override
@@ -300,6 +315,7 @@ public abstract class EntityVehicle
 		partsManager.write(nbt);
 		textureManager.write(nbt);
 		soundManager.write(nbt);
+		decalManager.write(nbt);
 		nbt.putFloat("health", getHealth());
 		nbt.putFloat("armor", getArmor());
 		nbt.putBoolean("landing_gear", isLandingGear());
@@ -326,7 +342,22 @@ public abstract class EntityVehicle
         nbt.putInt("ingredientDropIndex", ingredientDropIndex);
 		nbt.putInt("perm_mode", getPermMode().ordinal());
 	}
-	
+
+	/**
+	 * Adds a scoreboard tag in the format "DSCOMBAT_<PRESET_ID>" so Bukkit plugins
+	 * can identify vehicle type via entity.getTags().
+	 * For preset "t90m" → tag "DSCOMBAT_T90M"
+	 * For preset "dss:krait_chopper_brawler" → tag "DSCOMBAT_DSS_KRAIT_CHOPPER_BRAWLER"
+	 */
+	public void syncPresetTag() {
+		// Remove old DSCOMBAT_ tags first
+		getTags().removeIf(tag -> tag.startsWith("DSCOMBAT_"));
+		// Build new tag from preset id
+		String preset = getStatsId();
+		String tag = "DSCOMBAT_" + preset.replace(":", "_").replace("-", "_").toUpperCase();
+		addTag(tag);
+	}
+
 	@Override
 	public void readSpawnData(FriendlyByteBuf buffer) {
 		super.readSpawnData(buffer);
@@ -338,7 +369,8 @@ public abstract class EntityVehicle
 		List<PartSlot> slots = PartsManager.readSlotsFromBuffer(buffer);
 		// ORDER MATTERS
 		textureManager.read(buffer);
-		soundManager.write(buffer);
+		soundManager.read(buffer);
+		decalManager.read(buffer);
 		// ORDER MATTERS
 		weaponSystem.setSelected(weaponIndex);
 		partsManager.setPartSlots(slots);
@@ -360,6 +392,7 @@ public abstract class EntityVehicle
 		PartsManager.writeSlotsToBuffer(buffer, partsManager.getSlots());
 		textureManager.write(buffer);
 		soundManager.write(buffer);
+		decalManager.write(buffer);
 	}
 	
 	public abstract VehicleType getVehicleType();
@@ -370,8 +403,10 @@ public abstract class EntityVehicle
 	public void init() {
 		refreshDimensions();
 		if (!isClientSide()) serverSetup();
-		else clientSetup();
-		soundManager.loadSounds(getStats());
+		else {
+			clientSetup();
+			soundManager.loadSounds(getStats()); // Only load sounds on client
+		}
 	}
 	
 	/**
@@ -380,8 +415,10 @@ public abstract class EntityVehicle
 	@Override
 	public void tick() {
 		if (UtilGeometry.vec3NAN(getDeltaMovement())) setDeltaMovement(Vec3.ZERO);
-		if (firstTick) init(); // MUST BE CALLED BEFORE SUPER
-        onVanillaTick();
+		if (firstTick) {
+			init(); // MUST BE CALLED BEFORE SUPER
+			firstTick = false;
+		}
 		super.tick();
 		// HANDLE SPECIAL INPUTS
 		controlSystem();
@@ -400,76 +437,6 @@ public abstract class EntityVehicle
 		if (isClientSide()) clientTick();
 		else serverTick();
 	}
-
-    @Override
-    public void onAlwaysTickPre(@NotNull MinecraftServer server) {
-        tickCalcAIGoals(server);
-    }
-
-    @Override
-    public void onSimulatedTick(@NotNull MinecraftServer server) {
-        noPhysics = noPhysicsWhenSimulated();
-        tickPerformAIGoals(true);
-        controlSystem();
-        tickPhysics();
-        tickHitboxes();
-        tickParts();
-        tickWarnings();
-        serverTick();
-        tickSimulatedPassengers();
-    }
-
-    @Override
-    public void onVanillaTick() {
-        noPhysics = false;
-        if (!isClientSide()) {
-            SimulatedEntity.super.onVanillaTick();
-            tickPerformAIGoals(false);
-        }
-    }
-
-    /**
-     * determine what the AI vehicle's goals are here
-     */
-    public void tickCalcAIGoals(@NotNull MinecraftServer server) {
-
-    }
-
-    /**
-     * determine what inputs need to be pressed to achieve these goals.
-     * is only called on the server side.
-     * @param simulated true if the vehicle is in an unloaded chunk
-     */
-    public void tickPerformAIGoals(boolean simulated) {
-
-    }
-
-    @Override
-    public boolean isAutoStartSimulateOnVanillaTick() {
-        return false;
-    }
-
-    public boolean noPhysicsWhenSimulated() {
-        return true;
-    }
-
-    @Override
-    public long getLastServerTick() {
-        return lastServerTick;
-    }
-
-    @Override
-    public void setLastServerTick(long tick) {
-        lastServerTick = tick;
-    }
-
-    public void tickSimulatedPassengers() {
-        for (Entity entity : getPassengers()) {
-            //entity.rideTick(); // TODO should tickSimulatedPassengers call Entity#rideTick ?
-            entity.setDeltaMovement(Vec3.ZERO);
-            positionRider(entity);
-        }
-    }
 
 	@Override
 	public void calcAirMovement(QuaternionF q) {
@@ -503,6 +470,16 @@ public abstract class EntityVehicle
 					else addMomentZ(inputs.roll * getRollTorque(), true);
 				}
 			}
+		}
+		// Auto-trim: gently level roll/pitch when pilot gives no input
+		if (Config.SERVER.enablePlaneAutoTrim.get()
+				&& getVehicleType() == com.onewhohears.dscombat.data.vehicle.VehicleType.PLANE
+				&& isOperational() && !isOnGround()) {
+			float rollRate  = Config.SERVER.planeAutoTrimRollRate.get().floatValue();
+			float pitchRate = Config.SERVER.planeAutoTrimPitchRate.get().floatValue();
+			float trimRoll  = (inputs.roll  == 0) ? rollRate  : 0;
+			float trimPitch = (inputs.pitch == 0) ? pitchRate : 0;
+			if (trimRoll > 0 || trimPitch > 0) flatten(q, trimPitch, trimRoll, false);
 		}
 	}
 
@@ -550,27 +527,54 @@ public abstract class EntityVehicle
 					getBoundingBox(), 
 					getKnockbackPredicate()));
 			tickDismountSafety();
-			if (!hasControllingPassenger()) wallCollisions();
+			wallCollisions();
 		} else {
 			if (isControlledByLocalInstance()) wallCollisions();
 		}
 	}
 
 	public boolean canTrample() {
-		return (isOnGround() || isInWater()) && xzSpeed > 0 && getWorld().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
+		// allow trample if player is controlling and throttle is pressed, or if moving
+		if (getControllingPassenger() instanceof Player && Math.abs(getCurrentThrottle()) > 0.01f) {
+			return getWorld().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
+		}
+		return xzSpeed > 0.0001f && getWorld().getGameRules().getBoolean(DSCGameRules.VEHICLE_TRAMPLE);
 	}
 
 	protected void tickTrample() {
-		AABB box = getBoundingBox().move(getDeltaMovement()).inflate(0.01);
-		Entity controller = getControllingPassenger();
-		for (double x = box.minX; x < box.maxX+1; ++x) {
-			for (double z = box.minZ; z < box.maxZ+1; ++z) {
-				for (double y = box.minY; y < box.maxY+1; ++y) {
-					BlockPos pos = UtilGeometry.toBlockPos(new Vec3(x, y, z));
+		// use prevMotion (saved before collision) so we know the direction even after MC zeroes deltaMovement
+		Vec3 motion = prevMotion;
+		Vec3 look = getLookAngle();
+		// use look direction if motion is too small
+		double moveX = Math.abs(motion.x) > 0.01 ? motion.x : look.x * 0.1;
+		double moveZ = Math.abs(motion.z) > 0.01 ? motion.z : look.z * 0.1;
+		// expand box forward and inflate to catch blocks at vehicle height
+		AABB box = getBoundingBox()
+				.expandTowards(moveX * 2, 0, moveZ * 2)
+				.inflate(0.6, 1.5, 0.6); // inflate Y by 1.5 to catch fences (1.5 blocks tall)
+		trampleBlocksInBox(box);
+	}
+
+	protected void trampleBlocksInBox(AABB box) {
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		for (int x = Mth.floor(box.minX); x <= Mth.ceil(box.maxX); ++x) {
+			for (int z = Mth.floor(box.minZ); z <= Mth.ceil(box.maxZ); ++z) {
+				for (int y = Mth.floor(box.minY); y <= Mth.ceil(box.maxY); ++y) {
+					pos.set(x, y, z);
 					BlockState state = getWorld().getBlockState(pos);
-					if (!state.is(ModTags.Blocks.VEHICLE_TRAMPLE)) continue;
-					if (UtilVehicleEntity.vehicleHasPermissionToTrample(pos, state, getWorld(), controller))
+					if (state.isAir()) continue;
+					
+					// Check tag OR hardcoded blocks (fences, wood, etc)
+					boolean inTag = state.is(ModTags.Blocks.VEHICLE_TRAMPLE);
+					String blockName = state.getBlock().toString();
+					boolean isFence = blockName.contains("fence") || blockName.contains("wall");
+					boolean isWood = blockName.contains("log") || blockName.contains("plank") || blockName.contains("wood");
+					boolean shouldBreak = inTag || isFence || isWood;
+					
+					if (!shouldBreak) continue;
+					if (UtilVehicleEntity.vehicleHasPermissionToTrample(pos, state, getWorld(), null)) {
 						getWorld().destroyBlock(pos, true, this);
+					}
 				}
 			}
 		}
@@ -595,9 +599,47 @@ public abstract class EntityVehicle
 	protected void horizontalCollision() {
 		double speed = prevMotion.horizontalDistance();
 		double th = DSCPhyCons.COLLIDE_SPEED;
+		if (canTrample()) {
+			// inflate enough to catch blocks right at the vehicle boundary
+			AABB box = getBoundingBox()
+					.expandTowards(prevMotion.x, 0, prevMotion.z)
+					.inflate(0.6);
+			trampleBlocksInBox(box);
+		}
 		if (speed > th) {
 			float amount = (float)((speed-th)*DSCPhyCons.COLLIDE_DAMAGE_RATE);
 			collideHurt(amount, false);
+			breakBlocksOnCollision(speed);
+		}
+	}
+
+	protected void breakBlocksOnCollision(double speed) {
+		if (isClientSide()) return;
+		double maxSpeed = getMaxSpeedForMotion();
+		if (maxSpeed <= 0) return;
+		double speedRatio = Math.min(speed / maxSpeed, 1.0);
+		if (speedRatio < 0.5) return;
+		// scan blocks within expanded bounding box using integer positions (same as trampleBlocksInBox)
+		AABB box = getBoundingBox()
+				.expandTowards(prevMotion.x * 2, 0, prevMotion.z * 2)
+				.inflate(0.3);
+		// at full speed break anything up to hardness 6, at 50% speed only hardness < 3
+		float hardnessThreshold = (float)(speedRatio * 6.0);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		for (int x = Mth.floor(box.minX); x <= Mth.floor(box.maxX); ++x) {
+			for (int z = Mth.floor(box.minZ); z <= Mth.floor(box.maxZ); ++z) {
+				for (int y = Mth.floor(box.minY); y <= Mth.floor(box.maxY); ++y) {
+					pos.set(x, y, z);
+					BlockState state = getWorld().getBlockState(pos);
+					if (state.isAir()) continue;
+					float hardness = state.getDestroySpeed(getWorld(), pos);
+					if (hardness < 0) continue; // indestructible (bedrock etc)
+					if (hardness <= hardnessThreshold) {
+						if (UtilVehicleEntity.vehicleHasPermissionToTrample(pos, state, getWorld(), getControllingPassenger()))
+							getWorld().destroyBlock(pos.immutable(), true, this);
+					}
+				}
+			}
 		}
 	}
 	
@@ -635,8 +677,7 @@ public abstract class EntityVehicle
 			if (isFall) hurt(damageSources().fall(), amount);
 			else hurt(damageSources().flyIntoWall(), amount);
 		} else if (isClientSide() && isControlledByLocalInstance()) {
-			if (Minecraft.getInstance().getFrameTime() < 2f)
-            	new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
+            new ToServerVehicleCollide(getId(), amount, isFall).sendToServer();
 		}
 	}
 	
@@ -660,8 +701,28 @@ public abstract class EntityVehicle
 	}
 	
 	public void onSeatDismount(Entity entity) {
-		if (!isClientSide()) formerPassengersServer.put(entity.getId(), DSCPhyCons.EJECT_SAFETY_COOLDOWN);
-        else ClientInputEventHandlers.onEntityDismountVehicle(entity);
+		if (!isClientSide()) {
+			formerPassengersServer.put(entity.getId(), DSCPhyCons.EJECT_SAFETY_COOLDOWN);
+			// MOHIST FIX: Restore player visibility when dismounting
+			if (entity instanceof Player player) {
+				for (int i = 0; i < 3; i++) {
+					player.setInvisible(false);
+				}
+				
+				// Schedule 3 additional checks at 1, 10 and 20 ticks
+				if (getWorld().getServer() != null) {
+					for (int delay : new int[]{1, 10, 20}) {
+						getWorld().getServer().tell(new net.minecraft.server.TickTask(delay, () -> {
+							if (!player.isPassenger()) {
+								player.setInvisible(false);
+							}
+						}));
+					}
+				}
+			}
+		} else {
+			ClientInputEventHandlers.onEntityDismountVehicle(entity);
+		}
 	}
 	
 	protected void knockBack(List<Entity> entities) {
@@ -724,6 +785,73 @@ public abstract class EntityVehicle
 	public void clientTick() {
 		UtilParticles.vehicleParticles(this);
 		tickClientLandingGear();
+		// ОТКЛЮЧЕНО: обновление текстуры грязи на клиенте
+		/*
+		// Плавная интерполяция грязи на клиенте
+		prevClientDirtLevel = clientDirtLevel;
+		float targetDirt = getDirtLevel();
+		clientDirtLevel += (targetDirt - clientDirtLevel) * 0.05f;
+		// Пересоздаём динамическую текстуру если грязь изменилась заметно или первый раз
+		boolean needsUpdate = Math.abs(clientDirtLevel - prevClientDirtLevel) > 0.002f;
+		if (!dirtTextureInitialized && clientDirtLevel > 0.005f) {
+			needsUpdate = true;
+			dirtTextureInitialized = true;
+		}
+		if (needsUpdate) {
+			textureManager.setupDynamicTexture();
+		}
+		*/
+		// Tick crawler track animation for tanks
+		if (getStats().isTank()) {
+			tickCrawlerTrackAnimation();
+		}
+	}
+
+	/**
+	 * Ticks crawler track animation based on vehicle movement speed (McHeliCE style)
+	 */
+	/**
+	 * Ticks crawler track animation based on vehicle movement speed (McHeliCE style)
+	 */
+	private void tickCrawlerTrackAnimation() {
+		var paths = getStats().getCrawlerTrackPaths();
+		if (paths.isEmpty()) return;
+
+		// Save previous rotation states
+		prevRotCrawlerTrack[0] = rotCrawlerTrack[0];
+		prevRotCrawlerTrack[1] = rotCrawlerTrack[1];
+
+		// Calculate animation speed based on vehicle movement
+		// Use throttle and turning for differential track animation
+		float baseSpeed = (float) getDeltaMovement().horizontalDistance() * 0.5f;
+		float turnFactor = (float) inputs.yaw * 0.3f;
+		
+		// Left track: slower when turning right, faster when turning left
+		float leftSpeed = baseSpeed - turnFactor;
+		// Right track: slower when turning left, faster when turning right  
+		float rightSpeed = baseSpeed + turnFactor;
+		
+		// Update track rotation for each side
+		for (int i = 0; i < 2; i++) {
+			float speed = (i == 0) ? leftSpeed : rightSpeed;
+			
+			// Update track rotation (0-1 cycling)
+			float trackRot = rotCrawlerTrack[i] + speed;
+			float prevTrackRot = prevRotCrawlerTrack[i];
+
+			// Wrap around 0-1
+			while (trackRot >= 1.0F) {
+				trackRot -= 1.0F;
+				prevTrackRot -= 1.0F;
+			}
+			while (trackRot < 0.0F) {
+				trackRot += 1.0F;
+				prevTrackRot += 1.0F;
+			}
+
+			rotCrawlerTrack[i] = trackRot;
+			prevRotCrawlerTrack[i] = prevTrackRot;
+		}
 	}
 
 	public double getMaxClimbSpeed() {
@@ -872,7 +1000,7 @@ public abstract class EntityVehicle
         if (controller == null) return move;
         Vec3 nextPos = controller.position().add(move.normalize().scale(64));
         ChunkPos nextChunk = new ChunkPos(UtilGeometry.toBlockPos(nextPos));
-        if (UtilEntity.isChunkLoaded(getWorld(), nextChunk)) return move;
+        if (getWorld().hasChunk(nextChunk.x, nextChunk.z)) return move;
         LOGGER.warn("CHUNK AHEAD VEHICLE DOES NOT EXIST STOPPING MOVE FOR PILOT: {} | SPEED: {}",
                 controller.getScoreboardName(), move.length());
         // FIXME this seems to prevent players from getting ejected during lag, but lag back looks wierd.
@@ -905,7 +1033,12 @@ public abstract class EntityVehicle
 	public boolean isGroundBraking() {
 		return false;
 	}
-	
+
+	@Override
+	public boolean isNoPilotBraking() {
+		return cutThrottleOnNoPilot() && !isPlayerOrBotRiding();
+	}
+
 	public boolean canGroundBrake() {
 		return isOnGround() && getStats().break_deacc_ground > 0 && isOperational();
 	}
@@ -1069,6 +1202,31 @@ public abstract class EntityVehicle
 			flareTicks = tickCount;
 		}
 	}
+
+	/**
+	 * Fires smoke grenades from all turrets that have smoke launchers configured.
+	 * Falls back to legacy SmokeGrenadeDispenser parts if no turret has smoke grenades.
+	 */
+	public void fireSmokeGrenades(Entity controller) {
+		System.out.println("DEBUG: EntityVehicle.fireSmokeGrenades called, slots count: " + partsManager.getSlots().size());
+		boolean consume = !(controller instanceof net.minecraft.world.entity.player.Player p && p.isCreative());
+		boolean fired = false;
+		for (com.onewhohears.dscombat.data.parts.PartSlot slot : partsManager.getSlots()) {
+			if (!slot.filled()) continue;
+			System.out.println("DEBUG: Checking slot: " + slot.getSlotId() + ", part: " + (slot.getPartData() != null ? slot.getPartData().getStatsId() : "null"));
+			if (!(slot.getPartData() instanceof com.onewhohears.dscombat.data.parts.instance.TurretInstance<?> inst)) continue;
+			System.out.println("DEBUG: Found turret instance in slot: " + slot.getSlotId());
+			if (inst.fireSmokeGrenades(controller, this, consume)) fired = true;
+		}
+		// Legacy fallback: standalone SmokeGrenadeDispenser parts
+		if (!fired) {
+			partsManager.getSlots().forEach(slot -> {
+				if (!slot.filled()) return;
+				if (!(slot.getPartData() instanceof com.onewhohears.dscombat.data.parts.instance.SmokeGrenadeDispenserInstance sg)) return;
+				sg.fire(controller, this, consume);
+			});
+		}
+	}
 	
 	/**
 	 * ticks the parts manager on client and server side
@@ -1115,10 +1273,6 @@ public abstract class EntityVehicle
 	
 	private void syncMoveRot() {
 		if (!isClientSide() || tickCount % 10 != 0 || firstTick) return;
-		if (ignoreSyncMoveRot) {
-			ignoreSyncMoveRot = false;
-			return;
-		}
         new ToServerVehicleMoveRot(this).sendToServer();
 	}
 	
@@ -1138,11 +1292,11 @@ public abstract class EntityVehicle
     	this.isDriverCameraLocked = driverCameraLocked;
     }
     
-    public RadarFilterMode getRadarMode() {
+    public RadarMode getRadarMode() {
     	return entityData.get(RADAR_MODE);
     }
     
-    public void setRadarMode(RadarFilterMode mode) {
+    public void setRadarMode(RadarMode mode) {
     	entityData.set(RADAR_MODE, mode);
     }
     
@@ -1183,9 +1337,17 @@ public abstract class EntityVehicle
 	@Override
 	public @NotNull InteractionResult interact(@NotNull Player player, @NotNull InteractionHand hand) {
 		if (xzSpeed > 0.2 && !isTestMode()) return InteractionResult.PASS;
-		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
 		if (player.getRootVehicle().equals(this)) return InteractionResult.PASS;
 		ItemStack stack = player.getInventory().getSelected();
+		// Decal item: allow shift+right-click
+		if (!stack.isEmpty() && stack.getItem() instanceof ItemDecal) {
+			if (player.isSecondaryUseActive()) {
+				InteractionResult result = onItemInteract(player, hand, stack);
+				if (result != InteractionResult.FAIL) return result;
+			}
+			return InteractionResult.PASS;
+		}
+		if (player.isSecondaryUseActive()) return InteractionResult.PASS;
 		if (!stack.isEmpty()) {
 			InteractionResult result = onItemInteract(player, hand, stack);
 			if (result != InteractionResult.FAIL) return result;
@@ -1201,6 +1363,8 @@ public abstract class EntityVehicle
 	
 	protected InteractionResult onItemInteract(Player player, InteractionHand hand, ItemStack stack) {
 		if (stack.is(ModTags.Items.SPRAY_CAN)) return onSprayCanInteract(player, hand, stack);
+		// DECAL: shift+right-click opens decal screen on client, or removes decal on server
+		if (stack.getItem() instanceof ItemDecal) return onDecalInteract(player, hand, stack);
 		if (!isClientSide()) {
 			Item item = stack.getItem();
 			// INTERACT ITEMS
@@ -1256,10 +1420,17 @@ public abstract class EntityVehicle
 		if (isClientSide()) UtilClientPacket.openVehicleTextureScreen(textureManager);
 		return InteractionResult.sidedSuccess(isClientSide());
 	}
+
+	protected InteractionResult onDecalInteract(Player player, InteractionHand hand, ItemStack stack) {
+		if (isClientSide()) {
+			ItemDecal.openDecalScreen(this);
+		}
+		return InteractionResult.sidedSuccess(isClientSide());
+	}
 	
 	protected InteractionResult onChainInteract(Player player, InteractionHand hand, ItemStack stack) {
 		List<EntityChainHook> hooks = getWorld().getEntitiesOfClass(EntityChainHook.class,
-				getBoundingBox().inflate(EntityChainHook.getChainLength()), hook -> hook.isPlayerConnected(player));
+				getBoundingBox().inflate(EntityChainHook.CHAIN_LENGTH), hook -> hook.isPlayerConnected(player));
 		/*if (hooks.size() == 0) {
 			chainToPlayer(player);
 			return InteractionResult.sidedSuccess(isClientSide());
@@ -1497,19 +1668,12 @@ public abstract class EntityVehicle
 
 	@Override
     protected void addPassenger(@NotNull Entity passenger) {
-        if (passenger instanceof EntityPart part) {
-            EntityPart oldPart = getPartBySlotId(part.getSlotId());
-            if (oldPart != null) {
-                oldPart.stopRiding();
-                oldPart.discard();
-            }
-        }
-		super.addPassenger(passenger);
+        super.addPassenger(passenger);
 	}
 	
 	@Override
     protected boolean canAddPassenger(@NotNull Entity passenger) {
-        return passenger instanceof EntityPart part && getPartBySlotId(part.getSlotId()) == null;
+		return passenger instanceof EntityPart;
 	}
 	
 	@Override
@@ -1600,6 +1764,7 @@ public abstract class EntityVehicle
 		if (!isClientSide()) {
 			if (!isOperational()) {
 				partsManager.damageAllParts();
+				checkAmmoExplosion(source);
 				checkExplodeWhenKilled(source);
 			} else {
 				damageParts(source, amount, hitbox, hurtRoot);
@@ -1731,6 +1896,94 @@ public abstract class EntityVehicle
 		return false;
 	}
 	
+	/**
+	 * Checks ammo fill level and triggers explosion on critical damage.
+	 * If ammo fill >= 70% the vehicle explodes.
+	 * For tanks the turret is also detached.
+	 */
+	protected void checkAmmoExplosion(DamageSource source) {
+		float ammoPercent = getAmmoFillPercent();
+		if (ammoPercent >= 0.7f) {
+			float explosionBonus = ammoPercent * 3.0f;
+			float totalExplosionRadius = getStats().crashExplosionRadius + explosionBonus;
+			if (!isClientSide()) {
+				getWorld().explode(this, source,
+					null, getX(), getY(), getZ(), 
+					totalExplosionRadius, true,
+					Level.ExplosionInteraction.TNT);
+				if (isTank()) detachTurret(source);
+				explodeSeats(source);
+				PacketHandler.sendToTrackers(new ToClientVehicleExplode(position(), true), this);
+			}
+		}
+	}
+	
+	/**
+	 * Calculates the ammo fill percentage.
+	 * @return value from 0.0 to 1.0
+	 */
+	protected float getAmmoFillPercent() {
+		int totalAmmo = 0;
+		int totalMaxAmmo = 0;
+		for (PartSlot slot : partsManager.getSlots()) {
+			if (!slot.filled()) continue;
+			if (!(slot.getPartData() instanceof com.onewhohears.dscombat.data.parts.instance.WeaponPartInstance)) continue;
+			WeaponInstance<?> weapon = weaponSystem.get(slot.getSlotId());
+			if (weapon == null) continue;
+			if (weapon.getStats().isNoWeapon()) continue;
+			totalAmmo += weapon.getCurrentAmmo();
+			totalMaxAmmo += weapon.getMaxAmmo();
+		}
+		if (totalMaxAmmo == 0) return 0.0f;
+		return (float) totalAmmo / (float) totalMaxAmmo;
+	}
+	
+	/**
+	 * Detaches the tank turret on ammo detonation.
+	 */
+	protected void detachTurret(DamageSource source) {
+		LOGGER.info("[TURRET DETACH] Attempting to detach turret for vehicle {}", getId());
+		
+		List<EntityTurret> turrets = getTurrets();
+		LOGGER.info("[TURRET DETACH] Found {} turrets", turrets.size());
+		
+		// Find turret among passengers
+		for (EntityTurret turret : turrets) {
+			// Check turret by slot id
+			String slotId = turret.getSlotId();
+			LOGGER.info("[TURRET DETACH] Checking turret in slot: '{}'", slotId);
+			
+			if (slotId != null && slotId.contains("turret")) {
+				LOGGER.info("[TURRET DETACH] Found main turret in slot '{}', detaching!", slotId);
+				
+				// Apply upward force to detach the turret
+				Vec3 upwardForce = new Vec3(
+					(random.nextDouble() - 0.5) * 0.5, // small random X offset
+					2.0 + random.nextDouble(), // strong upward force
+					(random.nextDouble() - 0.5) * 0.5  // small random Z offset
+				);
+				
+				LOGGER.info("[TURRET DETACH] Applying upward force: {}", upwardForce);
+				turret.setDeltaMovement(upwardForce);
+				
+				// Deal critical damage to the turret
+				float damage = turret.getHealth() * 2.0f;
+				LOGGER.info("[TURRET DETACH] Dealing {} damage to turret (current health: {})", 
+					damage, turret.getHealth());
+				
+				turret.hurt(source, damage);
+				LOGGER.info("[TURRET DETACH] Turret detached successfully!");
+				break; // detach only the first found turret
+			} else {
+				LOGGER.info("[TURRET DETACH] Slot '{}' does not contain 'turret', skipping", slotId);
+			}
+		}
+		
+		if (turrets.isEmpty()) {
+			LOGGER.info("[TURRET DETACH] No turrets found on this vehicle");
+		}
+	}
+	
 	public void addForceMomentToClient(Vec3 force, Vec3 moment) {
 		if (isClientSide()) return;
 		addForceBetweenTicks = addForceBetweenTicks.add(force);
@@ -1745,7 +1998,7 @@ public abstract class EntityVehicle
 			getStats().crashExplosionRadius, true,
 			Level.ExplosionInteraction.TNT);
         explodeSeats(source);
-        PacketHandler.sendToTrackers(new ToClientVehicleExplode(this), this);
+        PacketHandler.sendToTrackers(new ToClientVehicleExplode(position(), false), this);
 	}
 
     public void explodeSeats(DamageSource source) {
@@ -1795,6 +2048,9 @@ public abstract class EntityVehicle
         if (hitbox != null) hurtLogic(exp.getDamageSource(), amount, hitbox, false);
         else hurtLogic(exp.getDamageSource(), amount, null);
         
+        // Disabled physical explosion impact on vehicles
+        // to prevent vehicles from being pushed back by explosions
+        /*
         Vec3 force = new Vec3(dx*exp_factor, dy*exp_factor, dz*exp_factor).scale(DSCPhyCons.EXP_FORCE_FACTOR);
         
 		Vec3 f;
@@ -1805,6 +2061,7 @@ public abstract class EntityVehicle
 		Vec3 moment = r.cross(UtilAngles.rotateVectorInverse(f, getQBySide()));
 		
 		addForceMomentToClient(force, moment);
+		*/
 	}
 	
 	@Override
@@ -2050,7 +2307,8 @@ public abstract class EntityVehicle
     	ItemStack stack = getItem();
 		ItemEntity e = new ItemEntity(getWorld(), pos.x, pos.y, pos.z, stack);
 		getWorld().addFreshEntity(e);
-		discard();
+		allowRemoval = true;
+		remove(RemovalReason.DISCARDED);
     }
     
     /**
@@ -2067,7 +2325,8 @@ public abstract class EntityVehicle
 	public void becomeItem(@NotNull ServerPlayer player) {
 		ItemStack item = getItem();
 		if (player.getInventory().getFreeSlot() != -1 && player.addItem(item)) {
-			discard();
+			allowRemoval = true;
+			remove(RemovalReason.DISCARDED);
 			return;
 		}
 		becomeItem(player.position());
@@ -2504,6 +2763,29 @@ public abstract class EntityVehicle
     public boolean hasFlares() {
     	return hasFlares;
     }
+
+    public boolean hasSmokeGrenades() {
+        for (com.onewhohears.dscombat.data.parts.PartSlot slot : partsManager.getSlots()) {
+            if (!slot.filled()) continue;
+            if (slot.getPartData() instanceof com.onewhohears.dscombat.data.parts.instance.SmokeGrenadeDispenserInstance sg
+                    && sg.getGrenades() > 0) return true;
+            if (slot.getPartData() instanceof com.onewhohears.dscombat.data.parts.instance.TurretInstance<?> inst
+                    && inst.getSmokeGrenades() > 0) return true;
+        }
+        return false;
+    }
+
+    public int getSmokeGrenadeNum() {
+        int total = 0;
+        for (com.onewhohears.dscombat.data.parts.PartSlot slot : partsManager.getSlots()) {
+            if (!slot.filled()) continue;
+            if (slot.getPartData() instanceof com.onewhohears.dscombat.data.parts.instance.SmokeGrenadeDispenserInstance sg)
+                total += sg.getGrenades();
+            else if (slot.getPartData() instanceof com.onewhohears.dscombat.data.parts.instance.TurretInstance<?> inst)
+                total += inst.getSmokeGrenades();
+        }
+        return total;
+    }
     
     public void debug(String debug) {
     	debug(debug, true);
@@ -2513,12 +2795,6 @@ public abstract class EntityVehicle
     	if (!passengerCheck || hasControllingPassenger())
     		System.out.println(debug);
     }
-
-	public void debugIf(String debug, boolean condition) {
-		if (condition) {
-			System.out.println(debug);
-		}
-	}
     
     protected void debugTick() {
 		String side = "SERVER";
@@ -2614,7 +2890,6 @@ public abstract class EntityVehicle
 	
 	protected void createRotableHitboxes(CompoundTag nbt) {
 		CompoundTag hitbox_data = nbt.getCompound("hitbox_data");
-		for (RotableHitbox hitbox : hitboxes) hitbox.discard();
 		hitboxes.clear();
 		hitboxes.addAll(getStats().createRotableHitboxes(this));
         for (RotableHitbox hitbox : hitboxes) {
@@ -3295,6 +3570,40 @@ public abstract class EntityVehicle
 	public double getStaticFriction() {
 		return staticFric;
 	}
+	
+	public boolean isTank() {
+		return getStats().getType() == VehicleType.CAR && getStats().asCar().isTank;
+	}
+
+	public float getDirtLevel() {
+		return entityData.get(DIRT_LEVEL);
+	}
+
+	public void setDirtLevel(float level) {
+		entityData.set(DIRT_LEVEL, Math.max(0f, Math.min(1f, level)));
+	}
+
+	// Клиентское сглаженное значение грязи для плавного рендера
+	public float clientDirtLevel = 0f;
+	public float prevClientDirtLevel = 0f;
+	private boolean dirtTextureInitialized = false;
+	
+	public void setAllowRemoval(boolean allow) {
+		this.allowRemoval = allow;
+		LOGGER.info("[VehicleLife] setAllowRemoval id={} allow={}", getId(), allow);
+	}
+	
+	public BlockState getLeftTrackGroundBlock() {
+		return Blocks.AIR.defaultBlockState();
+	}
+	
+	public BlockState getRightTrackGroundBlock() {
+		return Blocks.AIR.defaultBlockState();
+	}
+	
+	public List<VehicleStats.ExhaustSmokeData> getExhaustSmokePos() {
+		return Arrays.asList(getStats().exhaustSmokePos);
+	}
 
 	@Override
 	public double getGroundBreaksDeAcceleration() {
@@ -3391,6 +3700,36 @@ public abstract class EntityVehicle
 
 	@Override
 	public void remove(@NotNull RemovalReason reason) {
+		// MOHIST/MAGMA FIX: Block DISCARDED removal unless explicitly allowed
+		if (!level().isClientSide() && reason == RemovalReason.DISCARDED && !allowRemoval) {
+			return;
+		}
+		
+		// MOHIST FIX: Properly remove all parts when vehicle is removed
+		if (allowRemoval && !level().isClientSide()) {
+			List<Entity> passengers = new ArrayList<>(getPassengers());
+			for (Entity passenger : passengers) {
+				if (passenger instanceof EntityPart part) {
+					// Dismount any passengers from this part
+					List<Entity> partPassengers = new ArrayList<>(part.getPassengers());
+					for (Entity partPassenger : partPassengers) {
+						partPassenger.stopRiding();
+						// Restore player visibility if hidden
+						if (partPassenger instanceof Player player && part instanceof EntityRidablePart<?, ?> ridable) {
+							if (ridable.getStats().shouldHidePlayer()) {
+								player.setInvisible(false);
+							}
+						}
+					}
+					// Allow and trigger part removal
+					part.allowParentRemoval();
+					part.remove(reason);
+				} else {
+					passenger.stopRiding();
+				}
+			}
+		}
+		
 		radarSystem.onParentRemove();
 		super.remove(reason);
 	}
@@ -3441,10 +3780,4 @@ public abstract class EntityVehicle
     public @NotNull Vec3 getLookAngle() {
         return super.getLookAngle();
     }
-
-	@Override
-	public @NotNull String getScoreboardName() {
-		if (getCustomName() != null) return getCustomName().getString();
-		return super.getScoreboardName();
-	}
 }

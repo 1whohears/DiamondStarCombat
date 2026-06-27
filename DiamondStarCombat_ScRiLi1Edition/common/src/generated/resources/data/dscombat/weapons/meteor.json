@@ -1,0 +1,60 @@
+{
+  "acceleration": 0.4,
+  "activeTrack": true,
+  "bleed": 1.36,
+  "canShootOnGround": false,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "heavy_missile_rack",
+    "sam_launcher"
+  ],
+  "craftNum": 1,
+  "damage": 65.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.meteor",
+  "entityTypeKey": "dscombat:track_missile",
+  "explosionRadius": 9.0,
+  "explosive": true,
+  "fireRate": 50,
+  "fov": 50.0,
+  "fuelTicks": 180,
+  "fuseDist": 9.0,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 16,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 4
+    },
+    {
+      "item": "minecraft:coal_block",
+      "num": 4
+    },
+    {
+      "item": "minecraft:ender_eye",
+      "num": 1
+    },
+    {
+      "item": "minecraft:diamond",
+      "num": 1
+    },
+    {
+      "item": "dscombat:intel_pentium",
+      "num": 1
+    }
+  ],
+  "itemKey": "dscombat:missile",
+  "mass": 190.0,
+  "maxAge": 1749,
+  "presetId": "meteor",
+  "presetType": "track_missile",
+  "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 10,
+  "speed": 85.75,
+  "targetType": "AIR",
+  "turnRadius": 1280.0,
+  "useSpeedScale": true
+}

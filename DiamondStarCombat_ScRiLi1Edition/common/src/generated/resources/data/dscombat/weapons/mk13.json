@@ -1,0 +1,52 @@
+{
+  "acceleration": 0.04,
+  "activeTrack": true,
+  "bleed": 0.05,
+  "canShootOnGround": false,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "heavy_missile_rack",
+    "torpedo_tubes"
+  ],
+  "craftNum": 1,
+  "damage": 50.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.mk13",
+  "entityTypeKey": "dscombat:torpedo_missile",
+  "explosionRadius": 4.0,
+  "explosive": true,
+  "fireRate": 40,
+  "fov": 40.0,
+  "fuelTicks": 400,
+  "fuseDist": 2.0,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 12,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 2
+    },
+    {
+      "item": "minecraft:coal_block",
+      "num": 4
+    },
+    {
+      "item": "dscombat:ti83",
+      "num": 2
+    }
+  ],
+  "itemKey": "dscombat:missile",
+  "mass": 1005.0,
+  "maxAge": 600,
+  "presetId": "mk13",
+  "presetType": "torpedo",
+  "seeThroWater": 10000,
+  "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 3,
+  "speed": 2.5,
+  "targetType": "WATER",
+  "turnRadius": 80.0
+}

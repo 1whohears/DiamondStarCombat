@@ -20,6 +20,7 @@
   "item": "dscombat:turret",
   "maxAmmo": 750,
   "maxHealth": 40.0,
+  "muzzleParticleOffset": 0.2,
   "passenger_offset": {
     "x": 0.0,
     "y": 0.5,
@@ -42,5 +43,7 @@
   "slotType": "mount_light",
   "sort_factor": 7,
   "weaponOffset": 1.03125,
-  "weight": 1000.0
+  "weight": 1000.0,
+  "crosshair": "default",
+  "zoom": 1.0
 }

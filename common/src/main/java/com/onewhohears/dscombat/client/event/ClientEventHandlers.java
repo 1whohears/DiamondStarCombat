@@ -7,21 +7,29 @@ import com.onewhohears.dscombat.client.input.DSCClientInputs;
 import com.onewhohears.dscombat.client.model.obj.customanims.DSCAnimControl;
 import com.onewhohears.dscombat.client.model.obj.customanims.VehicleModelTransforms;
 import com.onewhohears.dscombat.client.overlay.OverlayController;
+import com.onewhohears.dscombat.client.overlay.components.EcmStatusOverlay;
 import com.onewhohears.dscombat.client.particle.*;
 import com.onewhohears.dscombat.client.renderer.EntityScreenRenderer;
 import com.onewhohears.dscombat.client.screen.*;
 import com.onewhohears.dscombat.command.DSCGameRules;
-import com.onewhohears.dscombat.common.core.PositionMarkerManager;
 import com.onewhohears.dscombat.data.sound.PassengerSoundPack;
+import com.onewhohears.dscombat.entity.vehicle.hitbox.ClientSideHitboxStuckFixer;
 import com.onewhohears.dscombat.init.ModContainers;
 import com.onewhohears.dscombat.init.ModFluids;
 import com.onewhohears.dscombat.init.ModParticles;
+import com.onewhohears.dscombat.data.weapon.client.WeaponClientStats;
+import com.onewhohears.dscombat.util.ExplosionFireColumn;
+import com.onewhohears.onewholibs.client.model.obj.ObjEntityModels;
+import com.onewhohears.onewholibs.client.model.obj.ObjModelHandler;
 import com.onewhohears.onewholibs.client.model.obj.customanims.CustomAnims;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.ControllableAnimPlayer;
 import com.onewhohears.onewholibs.client.model.obj.customanims.keyframe.KFAnimPlayers;
+import com.onewhohears.onewholibs.client.renderer.RendererObjModelItems;
 import com.onewhohears.onewholibs.common.event.OWLEvents;
+import com.onewhohears.onewholibs.util.math.Vec3f;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.events.client.*;
+import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.registry.client.particle.ParticleProviderRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import dev.architectury.registry.menu.MenuRegistry;
@@ -33,6 +41,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import org.jetbrains.annotations.Nullable;
 
 public class ClientEventHandlers {
@@ -50,11 +59,16 @@ public class ClientEventHandlers {
     public static void onClientTickPre(Minecraft minecraft) {
         ClientInputEventHandlers.clientTickPilotControl(minecraft);
         ClientCameraEventHandlers.clientTickSetMouseCallback(minecraft);
-        PositionMarkerManager.getClient().onClientTick(minecraft);
+        EcmStatusOverlay.tick();
+        if (minecraft.level != null) {
+            ExplosionFireColumn.tick(minecraft.level);
+        }
+        com.onewhohears.dscombat.client.renderer.TrackMarkManager.tick();
     }
 
     public static void onClientPlayerQuit(@Nullable LocalPlayer localPlayer) {
         EntityScreenRenderer.clearCache();
+        ClientSideHitboxStuckFixer.clear();
     }
 
     public static void onSyncGameRuleBool(String id, boolean value) {
@@ -74,8 +88,20 @@ public class ClientEventHandlers {
         registerKeyframeAnims();
         setFluidRenderLayers();
         registerEntityScreens();
+        registerBlockEntityRenderers();
         PassengerSoundPack.registerBuiltInPassengerSoundTriggers();
-        PositionMarkerManager.initClient();
+        registerItemRenderers();
+    }
+
+    public static void registerItemRenderers() {
+        // Item renderers can be registered here if needed
+    }
+    
+    public static void registerBlockEntityRenderers() {
+        dev.architectury.registry.client.rendering.BlockEntityRendererRegistry.register(
+            com.onewhohears.dscombat.init.ModBlockEntities.MISSILE_LAUNCH_STATION_ENTITY.get(), 
+            com.onewhohears.dscombat.client.renderer.MissileLaunchStationRenderer::new
+        );
     }
 
     public static void registerParticleProvider() {
@@ -85,6 +111,11 @@ public class ClientEventHandlers {
         ParticleProviderRegistry.register(ModParticles.CONTRAIL.get(), ContrailParticle.Provider::new);
         ParticleProviderRegistry.register(ModParticles.AFTER_BURNER.get(), AfterBurnerParticle.Provider::new);
         ParticleProviderRegistry.register(ModParticles.FLARE.get(), FlareParticle.Provider::new);
+        ParticleProviderRegistry.register(ModParticles.TRACER.get(), TracerParticle.Provider::new);
+        ParticleProviderRegistry.register(ModParticles.TANK_DUST.get(), com.onewhohears.dscombat.client.particle.TankDustParticle.Provider::new);
+        ParticleProviderRegistry.register(ModParticles.SMOKE_GRENADE_CLOUD.get(), com.onewhohears.dscombat.client.particle.SmokeGrenadeParticle.Provider::new);
+        ParticleProviderRegistry.register(ModParticles.EXPLOSION_CORE.get(), com.onewhohears.dscombat.client.particle.ExplosionCoreParticle.Provider::new);
+        ParticleProviderRegistry.register(ModParticles.EXPLOSION_SMOKE.get(), com.onewhohears.dscombat.client.particle.ExplosionSmokeParticle.Provider::new);
     }
 
     public static void registerEntityScreens() {
@@ -136,6 +167,7 @@ public class ClientEventHandlers {
         MenuRegistry.registerScreenFactory(ModContainers.WEAPONS_BLOCK_MENU.get(), WeaponsBlockScreen::new);
         MenuRegistry.registerScreenFactory(ModContainers.WEAPON_PARTS_BLOCK_MENU.get(), WeaponPartsBlockScreen::new);
         MenuRegistry.registerScreenFactory(ModContainers.AIRCRAFT_BLOCK_MENU.get(), VehicleBlockScreen::new);
+        MenuRegistry.registerScreenFactory(ModContainers.MISSILE_LAUNCH_STATION_MENU.get(), com.onewhohears.dscombat.client.screen.MissileLaunchStationScreen::new);
         MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x0.get(), VehicleStorageScreen::new);
         MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x1.get(), VehicleStorageScreen::new);
         MenuRegistry.registerScreenFactory(ModContainers.VEHICLE_STORAGE_MENU_9x2.get(), VehicleStorageScreen::new);

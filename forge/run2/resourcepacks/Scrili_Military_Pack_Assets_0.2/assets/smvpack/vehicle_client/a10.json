@@ -1,0 +1,115 @@
+{
+  "displayName": "a10",
+  "inventory_background": "dscombat:textures/ui/vehicle_inventory_backgrounds/alexis_plane.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "internal_gun",
+      "slot_ui_x": 120,
+      "slot_ui_y": 2
+    },
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 120,
+      "slot_ui_y": 21
+    },
+    {
+      "slot_name": "internal_4",
+      "slot_ui_x": 111,
+      "slot_ui_y": 40
+    },
+    {
+      "slot_name": "internal_5",
+      "slot_ui_x": 129,
+      "slot_ui_y": 40
+    },
+    {
+      "slot_name": "internal_6",
+      "slot_ui_x": 120,
+      "slot_ui_y": 58
+    },
+    {
+      "slot_name": "internal_3",
+      "slot_ui_x": 129,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 111,
+      "slot_ui_y": 78
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 120,
+      "slot_ui_y": 100
+    },
+    {
+      "slot_name": "left_wing_1",
+      "slot_ui_x": 93,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "left_wing_2",
+      "slot_ui_x": 75,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "left_wing_3",
+      "slot_ui_x": 57,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "left_wing_4",
+      "slot_ui_x": 39,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_1",
+      "slot_ui_x": 147,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_2",
+      "slot_ui_x": 165,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_3",
+      "slot_ui_x": 183,
+      "slot_ui_y": 57
+    },
+    {
+      "slot_name": "right_wing_4",
+      "slot_ui_x": 201,
+      "slot_ui_y": 57
+    }
+  ],
+  "model_data": {
+    "custom_anims": [	
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": 90.0,
+        "model_part_key": "lg0",
+        "pivot": {
+          "x": 0.0,
+          "y": 1.99570625,
+          "z": 4.21635625
+        },
+        "rot_axis": "X"
+      },
+      {
+        "anim_id": "landing_gear",
+        "fold_angle": -90.0,
+        "model_part_key": "lg1",
+        "pivot": {
+          "x": -1.7295,
+          "y": 2.3574125,
+          "z": -1.21878125
+        },
+        "rot_axis": "X"
+      }
+    ],
+    "model_id": "a10"
+  },
+  "presetId": "a10",
+  "presetType": "standard"
+}

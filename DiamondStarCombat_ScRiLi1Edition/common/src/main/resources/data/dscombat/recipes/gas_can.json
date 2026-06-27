@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"I": {
+			"tag": "forge:ingots/aluminum"
+		},
+		"C": {
+			"tag": "forge:buckets/oil"
+		}
+	},
+	"pattern": [
+		"ICI",
+		" I "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:gas_can"
+	}
+}

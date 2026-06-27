@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"B": {
+			"item": "dscombat:small_storage_box"
+		},
+		"P": {
+			"tag": "minecraft:planks"
+		}
+	},
+	"pattern": [
+		"PBP",
+		"PBP"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:medium_storage_box"
+	}
+}

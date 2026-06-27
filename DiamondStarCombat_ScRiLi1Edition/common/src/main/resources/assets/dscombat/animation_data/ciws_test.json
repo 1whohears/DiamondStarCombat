@@ -1,0 +1,6 @@
+{
+	"presetId": "ciws_test",
+	"presetType": "block_bench",
+	"animation_id": "ciws_turret.test",
+	"animation_player": "always"
+}

@@ -1,0 +1,12 @@
+{
+  "armTime": 40,
+  "damage": 50.0,
+  "displayName": "item.dscombat.basic_mine_dispenser",
+  "item": "dscombat:basic_mine_dispenser",
+  "max": 8,
+  "presetId": "basic_mine_dispenser",
+  "presetType": "mine_dispenser",
+  "radius": 5.0,
+  "slotType": "internal",
+  "weight": 150.0
+}

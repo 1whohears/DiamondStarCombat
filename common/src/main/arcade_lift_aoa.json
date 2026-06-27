@@ -1,0 +1,20 @@
+{
+	"presetId": "arcade_lift_aoa",
+	"presetType": "aoaliftk",
+	"priority": 100,
+	"mirror_negative_keys": true,
+	"invert_mirrored_values": true,
+	"map": [
+		{"key": 0.0, "value": 0.0},
+		{"key": 5.0, "value": 0.5},
+		{"key": 10.0, "value": 0.8},
+		{"key": 15.0, "value": 1.0},
+		{"key": 20.0, "value": 1.1},
+		{"key": 25.0, "value": 1.15},
+		{"key": 30.0, "value": 1.1},
+		{"key": 40.0, "value": 0.9},
+		{"key": 50.0, "value": 0.6},
+		{"key": 60.0, "value": 0.3},
+		{"key": 90.0, "value": 0.0}
+	]
+}

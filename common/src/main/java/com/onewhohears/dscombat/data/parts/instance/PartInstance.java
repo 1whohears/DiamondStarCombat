@@ -2,7 +2,9 @@ package com.onewhohears.dscombat.data.parts.instance;
 
 import java.util.List;
 
+import com.mojang.logging.LogUtils;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.vehicle.stats.VehicleStats;
@@ -20,6 +22,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -27,6 +30,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class PartInstance<T extends PartStats> extends JsonPresetInstance<T> {
+	
+	private static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static final int PARSE_VERSION = 3;
 
@@ -186,9 +191,12 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 	
 	public void removeEntity(String slotId) {
 		if (getParent() == null) return;
-		for (EntityPart part : getParent().getPartEntities()) 
-			if (part.getSlotId().equals(slotId)) 
-				part.discard();
+		for (EntityPart part : getParent().getPartEntities()) {
+			if (part.getSlotId().equals(slotId)) {
+				part.allowParentRemoval(); // Allow part removal
+				part.remove(Entity.RemovalReason.DISCARDED); // Use remove() instead of discard()
+			}
+		}
 	}
 	
 	public void addEntity(EntityVehicle craft, String slotId, Vec3 pos) {
@@ -197,6 +205,10 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		if (part == null) return;
 		setUpPartEntity(part, craft, slotId, pos, getStats().getExternalEntityDefaultHealth());
 		craft.getWorld().addFreshEntity(part);
+		// MOHIST: Don't check if vehicle was removed - it's expected
+		if (!craft.isRemoved()) {
+			part.startRiding(craft, true);
+		}
 	}
 	
 	@Nullable
@@ -210,7 +222,6 @@ public abstract class PartInstance<T extends PartStats> extends JsonPresetInstan
 		part.setRelativePos(pos);
 		part.setPos(craft.position());
 		part.setHealth(health);
-		part.startRiding(craft);
 	}
 	
 	public boolean isCompatible(SlotType type) {

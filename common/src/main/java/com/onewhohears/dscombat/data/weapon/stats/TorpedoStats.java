@@ -26,8 +26,8 @@ public class TorpedoStats extends TrackMissileStats {
 		return new TorpedoInstance<>(this);
 	}
 	
-	public TargetDomainType getTargetType() {
-		return TargetDomainType.WATER;
+	public TargetType getTargetType() {
+		return TargetType.WATER;
 	}
 	
 	@Override

@@ -1,0 +1,149 @@
+{
+  "57mm": {
+    "sounds": [
+      {
+        "name": "smvpack:weapon/57mm",     
+        "volume": 1.0
+      }
+    ],
+    "subtitle": "sounds.smvpack.57mm"
+  },
+  "shahed136_engine": {
+    "sounds": [
+      {
+        "name": "smvpack:vehicle/engine/shahed136_engine",
+        "stream": true
+      }
+    ],
+    "subtitle": "sounds.smvpack.shahed136_engine"
+  },
+  "amx10rc_engine": {
+    "sounds": [
+      "smvpack:vehicle/engine/amx10rc_engine"
+    ],
+    "subtitle": "sounds.smvpack.amx10rc_engine"
+  },
+  "f2": {
+    "sounds": [
+      "smvpack:weapon/f2"
+    ],
+    "subtitle": "sounds.smvpack.f2"
+  },
+  "l70_40mm": {
+    "sounds": [
+      "smvpack:weapon/l70_40mm"
+    ],
+    "subtitle": "sounds.smvpack.l70_40mm"
+  },
+  "mg3": {
+    "sounds": [
+      "smvpack:weapon/mg3"
+    ],
+    "subtitle": "sounds.smvpack.mg3"
+  },
+  "pkt": {
+    "sounds": [
+      "smvpack:weapon/pkt"
+    ],
+    "subtitle": "sounds.smvpack.pkt"
+  },
+  "30mm": {
+    "sounds": [
+      "smvpack:weapon/30mm"
+    ],
+    "subtitle": "sounds.smvpack.30mm"
+  },
+  "m256": {
+    "sounds": [
+      "smvpack:weapon/m256"
+    ],
+    "subtitle": "sounds.smvpack.m256"
+  },
+  "m242": {
+    "sounds": [
+      "smvpack:weapon/m242"
+    ],
+    "subtitle": "sounds.smvpack.m242"
+  },
+  "120mm": {
+    "sounds": [
+      "smvpack:weapon/120mm"
+    ],
+    "subtitle": "sounds.smvpack.120mm"
+  },
+  "bmp_engine": {
+    "sounds": [
+      "smvpack:vehicle/engine/bmp_engine"
+    ],
+    "subtitle": "sounds.smvpack.bmp_engine"
+  },
+  "cv9040c_eng": {
+    "sounds": [
+      "smvpack:vehicle/engine/cv9040c_eng"
+    ],
+    "subtitle": "sounds.smvpack.cv9040c_eng"
+  },
+  "kamaz_engine": {
+    "sounds": [
+      "smvpack:vehicle/engine/kamaz_engine"
+    ],
+    "subtitle": "sounds.smvpack.kamaz_engine"
+  },
+  "abrams_engine": {
+    "sounds": [
+      "smvpack:vehicle/engine/abrams_engine"
+    ],
+    "subtitle": "sounds.smvpack.abrams_engine"
+  },
+  "bredly_engine": {
+    "sounds": [
+      "smvpack:vehicle/engine/bredly_engine"
+    ],
+    "subtitle": "sounds.smvpack.bredly_engine"
+  },
+  "leo2_engine": {
+    "sounds": [
+      "smvpack:vehicle/engine/leo2_engine"
+    ],
+    "subtitle": "sounds.smvpack.leo2_engine"
+  },
+  "kpvt": {
+    "sounds": [
+      "smvpack:weapon/kpvt"
+    ],
+    "subtitle": "sounds.smvpack.kpvt"
+  },
+  "m2": {
+    "sounds": [
+      "smvpack:weapon/m2"
+    ],
+    "subtitle": "sounds.smvpack.m2"
+  },
+  "humvee_engine": {
+    "sounds": [
+      "smvpack:vehicle/engine/humvee_engine"
+    ],
+    "subtitle": "sounds.smvpack.humvee_engine"
+  },
+  "btr_engine": {
+    "sounds": [
+      "smvpack:vehicle/engine/btr_engine"
+    ],
+    "subtitle": "sounds.smvpack.btr_engine"
+  },
+  "armata_idle": {
+    "sounds": [
+      "smvpack:vehicle/engine/armata_idle"
+    ],
+    "subtitle": "sounds.smvpack.armata_idle"
+  },
+  "armata_engine": {
+    "sounds": [
+      {
+        "name": "smvpack:vehicle/engine/armata_engine",     
+        "volume": 1.0
+      }
+    ],
+    "subtitle": "sounds.smvpack.armata_engine"
+  }
+}

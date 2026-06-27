@@ -1,0 +1,26 @@
+{
+  "dX": 0.2,
+  "dY": 0.3,
+  "displayName": "Ptur bmd",
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 0.8,
+    "translate": {
+      "x": 0.0,
+      "y": 0.2,
+      "z": 0.0
+    }
+  },
+  "maxAmmoNum": 4,
+  "presetId": "ptur_bmd",
+  "presetType": "external_weapon"
+}

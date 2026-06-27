@@ -1,0 +1,33 @@
+{
+  "assetId": "12.7mm",
+  "canShootOnGround": true,
+  "causesFire": false,
+  "compatibleWeaponPart": [
+    "xm12",
+    "m2_browning",
+    "minigun_turret"
+  ],
+  "craftNum": 64,
+  "damage": 6.0,
+  "destroyTerrain": false,
+  "displayName": "preset.dscombat.10mm",
+  "entityTypeKey": "dscombat:bullet",
+  "explosionRadius": 0.0,
+  "explosive": false,
+  "fireRate": 1,
+  "inaccuracy": 2.2,
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 4
+    }
+  ],
+  "itemKey": "dscombat:bullet",
+  "mass": 0.01,
+  "maxAge": 40,
+  "presetId": "10mm",
+  "presetType": "bullet",
+  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "sort_factor": 1,
+  "speed": 12.0
+}

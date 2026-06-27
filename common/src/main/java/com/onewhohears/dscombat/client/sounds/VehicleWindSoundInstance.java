@@ -40,12 +40,20 @@ public class VehicleWindSoundInstance extends DopplerSoundInstance {
 			return;
 		}
 		EntityVehicle craft = (EntityVehicle)entity;
-		if (craft.getDeltaMovement().lengthSqr() <= 0.01) {
+		
+		// Cache velocity squared calculation
+		double velSqr = craft.getDeltaMovement().lengthSqr();
+		if (velSqr <= 0.01) {
 			stop();
 			return;
 		}
-		calcVolPitch(craft);
+		
+		// Calculate volume and pitch
+		calcVolPitch(craft, velSqr);
+		
+		// Check if we're a passenger once
 		boolean isPassenger = craft.isVehicleOf(player);
+		
 		if (isPassengerSound && isPassenger) {
 			this.volume = initVolume;
 			this.pitch = initPitch;
@@ -56,13 +64,13 @@ public class VehicleWindSoundInstance extends DopplerSoundInstance {
 		}
 	}
 	
-	protected void calcVolPitch(EntityVehicle craft) {
+	protected void calcVolPitch(EntityVehicle craft, double velSqr) {
 		if (craft.isOnGround()) {
 			initVolume = 0;
 			initPitch = 1;
 			return;
 		}
-		double speedSqr = craft.getDeltaMovement().lengthSqr() - minSpeedSqr;
+		double speedSqr = velSqr - minSpeedSqr;
 		if (speedSqr <= 0) {
 			initVolume = 0;
 			return;

@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"I": {
+			"tag": "dscombat:aluminum_ingot"
+		}
+	},
+	"pattern": [
+		"III",
+		"I  "
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:wing"
+	}
+}

@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "dscombat:aluminum_block"
+        }
+    ],
+    "result": {
+        "item": "dscombat:aluminum_ingot",
+        "count": 9
+    }
+}

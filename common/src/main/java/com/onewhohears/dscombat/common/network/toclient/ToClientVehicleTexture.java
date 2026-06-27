@@ -2,7 +2,6 @@ package com.onewhohears.dscombat.common.network.toclient;
 
 import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -44,7 +43,7 @@ public class ToClientVehicleTexture extends BaseS2CMessage {
 	@Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            UtilClientPacket.vehicleTexturePacket(ignore_player_id, vehicle_id, buffer);
+            com.onewhohears.dscombat.client.util.UtilClientPacket.vehicleTexturePacket(ignore_player_id, vehicle_id, buffer);
 		});
 	}
 

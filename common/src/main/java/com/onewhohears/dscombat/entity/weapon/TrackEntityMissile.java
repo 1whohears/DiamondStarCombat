@@ -3,6 +3,7 @@ package com.onewhohears.dscombat.entity.weapon;
 import com.onewhohears.dscombat.data.weapon.WeaponType;
 import com.onewhohears.dscombat.data.weapon.stats.TrackMissileStats;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -21,6 +22,16 @@ public class TrackEntityMissile<T extends TrackMissileStats> extends EntityMissi
 	@Override
 	public void tickGuide() {
 		if (!getWeaponStats().isActiveTrack() && !isClientSide()) notActiveCheckTarget();
+		// ECM jammer check for radar-guided missiles — every 10 ticks
+		if (!isClientSide() && tickCount % 10 == 0) {
+			EntityVehicle jammer = IRMissile.findJammerNearMissile(this);
+			if (jammer != null) {
+				new com.onewhohears.dscombat.common.network.toclient.ToClientEcmJam()
+						.sendToChunkListeners(com.onewhohears.dscombat.common.network.PacketHandler.getEntityChunk(jammer));
+				target = null;
+				targetPos = null;
+			}
+		}
 		guideToTarget();
 		if (!isClientSide() && tickCount % 10 == 0 && target instanceof EntityVehicle plane) {
 			plane.trackedByMissile(this);
@@ -43,10 +54,5 @@ public class TrackEntityMissile<T extends TrackMissileStats> extends EntityMissi
 			return;
 		}
 	}
-
-    @Override
-    public boolean isCheckTargetEntityVisible() {
-        return getWeaponStats().isActiveTrack();
-    }
 
 }

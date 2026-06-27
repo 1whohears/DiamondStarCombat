@@ -4,7 +4,6 @@ import com.onewhohears.dscombat.common.network.PacketHandler;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook;
 import com.onewhohears.dscombat.entity.parts.EntityChainHook.ChainUpdateType;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
-import com.onewhohears.dscombat.util.UtilClientPacket;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -50,7 +49,7 @@ public class ToClientVehicleChainUpdate extends BaseS2CMessage {
 	@Override
     public void handle(NetworkManager.PacketContext context) {
         context.queue(() -> {
-            UtilClientPacket.updateVehicleChain(vehicleId, hookId, playerId, type);
+            com.onewhohears.dscombat.client.util.UtilClientPacket.updateVehicleChain(vehicleId, hookId, playerId, type);
 		});
 	}
 

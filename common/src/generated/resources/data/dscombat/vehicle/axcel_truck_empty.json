@@ -166,6 +166,7 @@
     "maxroll": 0.0,
     "maxyaw": 4.0,
     "negativeThrottle": true,
+    "reverseSpeedMultiplier": 0.5,
     "rootHitboxNoCollide": true,
     "stealth": 1.0,
     "throttledown": 0.05,

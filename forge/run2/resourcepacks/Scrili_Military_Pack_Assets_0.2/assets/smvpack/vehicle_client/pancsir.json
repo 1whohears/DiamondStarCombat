@@ -1,0 +1,165 @@
+{
+  "displayName": "pancsir",
+  "inventory_background": "smvpack:textures/ui/vehicle_inventory_backgrounds/rus_tank_backround.png",
+  "inventory_slots_pos": [
+    {
+      "slot_name": "pilot_seat",
+      "slot_ui_x": 110,
+      "slot_ui_y": 50
+    },
+    {
+      "slot_name": "internal_1",
+      "slot_ui_x": 111,
+      "slot_ui_y": 30
+    },
+    {
+      "slot_name": "internal_2",
+      "slot_ui_x": 129,
+      "slot_ui_y": 30
+    },
+    {
+      "slot_name": "part_pvo",
+      "slot_ui_x": 130,
+      "slot_ui_y": 50
+    }
+  ],
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 0.9,
+    "translate": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "input_bound_rotation",
+		"bound": -40.0,
+		"input_axis": "YAW",
+        "model_part_key": "w1",
+        "pivot": {
+          "x": -1.133375,
+          "y": 0.68160625,
+          "z": 4.11798125
+        },
+        "rot_axis": "Y",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "input_bound_rotation",
+		"bound": -40.0,
+		"input_axis": "YAW",
+        "model_part_key": "w2",
+        "pivot": {
+          "x": 1.133375,
+          "y": 0.68160625,
+          "z": 4.11798125
+        },
+        "rot_axis": "Y",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w1",
+        "pivot": {
+          "x": -1.133375,
+          "y": 0.68160625,
+          "z": 4.11798125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w2",
+        "pivot": {
+          "x": 1.133375,
+          "y": 0.68160625,
+          "z": 4.11798125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w3",
+        "pivot": {
+          "x": -1.133375,
+          "y": 0.68160625,
+          "z": 1.867975
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w4",
+        "pivot": {
+          "x": 1.133375,
+          "y": 0.68160625,
+          "z": 1.867975
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w5",
+        "pivot": {
+          "x": -1.133375,
+          "y": 0.68160625,
+          "z": -2.088275
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w6",
+        "pivot": {
+          "x": 1.133375,
+          "y": 0.68160625,
+          "z": -2.088275
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w7",
+        "pivot": {
+          "x": -1.133375,
+          "y": 0.68160625,
+          "z": -3.663275
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "w8",
+        "pivot": {
+          "x": 1.133375,
+          "y": 0.68160625,
+          "z": -3.663275
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      }
+    ],
+    "model_id": "pancsir"
+  },
+  "presetId": "pancsir",
+  "presetType": "standard"
+}

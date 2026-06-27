@@ -1,0 +1,13 @@
+{
+  "values": [
+    "dscombat:pos_missile",
+    "dscombat:ir_missile",
+    "dscombat:track_missile",
+    "dscombat:anti_radar_missile",
+    "dscombat:torpedo_missile",
+    {
+      "id": "cgm:missile",
+      "required": false
+    }
+  ]
+}

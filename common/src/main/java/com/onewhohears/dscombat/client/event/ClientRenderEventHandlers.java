@@ -2,6 +2,7 @@ package com.onewhohears.dscombat.client.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.onewhohears.dscombat.client.input.DSCClientInputs;
+import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -10,6 +11,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class ClientRenderEventHandlers {
+
+    public static boolean shouldHidePlayer(Player player) {
+        if (!player.isPassenger()) return false;
+        if (!(player.getVehicle() instanceof EntityRidablePart<?, ?> seat)) return false;
+        boolean hide = seat.getStats().shouldHidePlayer();
+        return hide;
+    }
 
     public static void onRenderPlayerPre(Player player, float partialTick, PoseStack stack) {
         if (!player.isPassenger()) return;

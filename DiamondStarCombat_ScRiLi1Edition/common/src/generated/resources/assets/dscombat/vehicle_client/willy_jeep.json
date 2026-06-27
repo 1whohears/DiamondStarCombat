@@ -1,0 +1,97 @@
+{
+  "displayName": "preset.dscombat.willy_jeep",
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 1.0,
+    "translate": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wheel_front_right",
+        "pivot": {
+          "x": -0.875,
+          "y": 0.4375,
+          "z": 1.5
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "input_bound_rotation",
+        "bound": -40.0,
+        "input_axis": "YAW",
+        "model_part_key": "wheel_front_left",
+        "pivot": {
+          "x": 0.875,
+          "y": 0.4375,
+          "z": 1.5
+        },
+        "rot_axis": "Y"
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wheel_front_right",
+        "pivot": {
+          "x": -0.875,
+          "y": 0.4375,
+          "z": 1.5
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wheel_front_left",
+        "pivot": {
+          "x": 0.875,
+          "y": 0.4375,
+          "z": 1.5
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wheel_back_right",
+        "pivot": {
+          "x": -0.875,
+          "y": 0.4375,
+          "z": -1.28125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      },
+      {
+        "anim_id": "wheel_rotation",
+        "model_part_key": "wheel_back_left",
+        "pivot": {
+          "x": 0.875,
+          "y": 0.4375,
+          "z": -1.28125
+        },
+        "rot_axis": "X",
+        "rot_rate": 160.0
+      }
+    ],
+    "dont_cull": true,
+    "model_id": "willy_jeep"
+  },
+  "presetId": "willy_jeep",
+  "presetType": "standard"
+}

@@ -1,0 +1,12 @@
+# Blender 3.6.23 MTL File: 'None'
+# www.blender.org
+
+newmtl m_7a9725a5-e47b-131d-bac5-ad0dec184bdd
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd smvpack:entity/weapon/agm69

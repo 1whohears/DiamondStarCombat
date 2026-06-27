@@ -1,0 +1,34 @@
+{
+  "assetId": "20mm",
+  "canShootOnGround": true,
+  "causesFire": false,
+  "compatibleWeaponPart": [
+    "xm12",
+    "m61a1_vulcan",
+    "gsh_30_1",
+    "ciws"
+  ],
+  "craftNum": 32,
+  "damage": 12.0,
+  "destroyTerrain": false,
+  "displayName": "preset.dscombat.20mm",
+  "entityTypeKey": "dscombat:bullet",
+  "explosionRadius": 0.0,
+  "explosive": false,
+  "fireRate": 1,
+  "inaccuracy": 1.1,
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 4
+    }
+  ],
+  "itemKey": "dscombat:bullet",
+  "mass": 0.02,
+  "maxAge": 40,
+  "presetId": "20mm",
+  "presetType": "bullet",
+  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "sort_factor": 3,
+  "speed": 10.0
+}

@@ -1,0 +1,36 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "tag": "minecraft:coals"
+        },
+        {
+            "tag": "minecraft:coals"
+        },
+        {
+            "tag": "minecraft:coals"
+        },
+		{
+            "tag": "minecraft:coals"
+        },
+        {
+            "item": "minecraft:bone_block"
+        },
+        {
+            "tag": "minecraft:coals"
+        },
+        {
+            "tag": "minecraft:coals"
+        },
+        {
+            "tag": "minecraft:coals"
+        },
+        {
+            "tag": "minecraft:coals"
+        }
+    ],
+    "result": {
+        "item": "dscombat:compressed_fossil",
+        "count": 1
+    }
+}

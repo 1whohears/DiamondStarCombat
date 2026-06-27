@@ -1,0 +1,41 @@
+{
+  "displayName": "bmp2mturret",
+  "item_model_overrides": {
+    "rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "scale_all": 1.0,
+    "translate": {
+      "x": 0.0,
+      "y": -0.1,
+      "z": 0.0
+    }
+  },
+  "model_data": {
+    "custom_anims": [
+      {
+        "anim_id": "turret_rotation",
+		"bound": -15.0,
+        "model_part_key": "gun",
+        "pivot": {
+          "x": -0.02321875,
+          "y": 1.68280625,
+          "z": 0.763475
+        },
+		"rot_axis": "X",
+        "rot_rate": 15.0
+      }
+    ],
+	"dont_cull": true,
+    "model_id": "bmp2m_turret"
+  },
+  "presetId": "bmp2m_turret",
+  "presetType": "turret"
+}

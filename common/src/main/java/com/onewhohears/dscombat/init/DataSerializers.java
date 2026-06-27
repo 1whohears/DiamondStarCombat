@@ -3,7 +3,7 @@ package com.onewhohears.dscombat.init;
 import com.onewhohears.dscombat.data.parts.PartPresets;
 import com.onewhohears.dscombat.data.parts.instance.PartInstance;
 import com.onewhohears.dscombat.data.parts.stats.PartStats;
-import com.onewhohears.dscombat.data.radar.RadarFilterMode;
+import com.onewhohears.dscombat.data.radar.RadarStats.RadarMode;
 
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
@@ -69,8 +69,8 @@ public class DataSerializers {
 		}
     });
     
-    public static final EntityDataSerializer<RadarFilterMode> RADAR_MODE = register("radarmode",
-            getEnumSerializer(RadarFilterMode.class));
+    public static final EntityDataSerializer<RadarMode> RADAR_MODE = register("radarmode",
+            getEnumSerializer(RadarMode.class));
 	public static final EntityDataSerializer<EntityVehicle.PermMode> PERM_MODE = register("permmode",
             getEnumSerializer(EntityVehicle.PermMode.class));
     

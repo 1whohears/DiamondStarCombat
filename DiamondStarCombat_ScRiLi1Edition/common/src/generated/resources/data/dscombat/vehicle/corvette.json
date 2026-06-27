@@ -1,0 +1,55 @@
+{
+  "copyId": "corvette_unarmed",
+  "displayName": "preset.dscombat.corvette",
+  "ingredients": [
+    {
+      "item": "dscombat:torpedo_tubes",
+      "num": 1
+    },
+    {
+      "item": "dscombat:mark45_cannon",
+      "num": 1
+    },
+    {
+      "item": "dscombat:aa_turret",
+      "num": 1
+    },
+    {
+      "item": "dscombat:survey_all_a",
+      "num": 1
+    }
+  ],
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "corvette",
+  "presetType": "boat",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "part": "mark45_cannon"
+      },
+      "name": "seat5"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "torpedo_tubes"
+      },
+      "name": "seat6"
+    },
+    {
+      "data": {
+        "part": "survey_all_a"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "aa_turret"
+      },
+      "name": "frame_2"
+    }
+  ]
+}

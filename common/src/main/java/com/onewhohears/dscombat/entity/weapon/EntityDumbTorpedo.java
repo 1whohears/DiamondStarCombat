@@ -53,11 +53,6 @@ public class EntityDumbTorpedo<T extends DumbTorpedoStats> extends EntityMissile
     }
 
     @Override
-    public boolean isDieInWater() {
-        return false;
-    }
-
-    @Override
     protected WeaponDamageSource getImpactDamageSource() {
         return WeaponDamageSource.WeaponDamageType.MISSILE_CONTACT.getSource(getOwner(), this);
     }

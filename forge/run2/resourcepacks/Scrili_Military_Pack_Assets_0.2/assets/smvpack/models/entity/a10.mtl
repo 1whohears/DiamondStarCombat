@@ -1,0 +1,12 @@
+# Blender 3.6.23 MTL File: 'None'
+# www.blender.org
+
+newmtl mat1
+Ns 50.000011
+Ka 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 3
+map_Kd map_Kd smvpack:entity/vehicle/a10/base0
+map_d C:/Users/Vladimir/AppData/Roaming/.tlauncher/legacy/Minecraft/game/home/ForgeOptiFine 1.7.10/mods/mcheli/assets/mcheli/textures/planes/a-10.png

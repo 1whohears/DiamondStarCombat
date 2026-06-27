@@ -30,13 +30,22 @@ public class ModSounds {
 			"weapon/cannon_10_shot-001", "weapon/cannon_10_shot-002", "weapon/cannon_10_shot-003", "weapon/cannon_10_shot-004");
 	public static final SoundEvent CANNON_SHOOT_2 = registerSoundEvent("cannon_shoot_2", "sounds.dscombat.cannon_shoot_2", 1,
 			"weapon/cannon_2-001", "weapon/cannon_2-002", "weapon/cannon_2-003", "weapon/cannon_2-004");
+	
+	// Distant gunfire sounds for cannonade effect (heard from far away)
+	public static final SoundEvent DISTANT_CANNON = registerSoundEvent("distant_cannon", "weapon/distant/cannon", "sounds.dscombat.distant_cannon", 0.8f);
+	public static final SoundEvent DISTANT_GUNFIRE = registerSoundEvent("distant_gunfire", "weapon/distant/gunfire", "sounds.dscombat.distant_gunfire", 0.6f);
+	public static final SoundEvent DISTANT_TANK_FIRE = registerSoundEvent("distant_tank_fire", "weapon/distant/tank_fire", "sounds.dscombat.distant_tank_fire", 0.7f);
+	
 	// TODO 8.9 brrrr sound for javi plane
 	public static final SoundEvent BIPLANE_1 = registerSoundEvent("biplane_1", "vehicle/engine/biplane_1", "sounds.dscombat.biplane_1");
 	public static final SoundEvent HELI_1 = registerSoundEvent("heli_1", "vehicle/engine/heli_1", "sounds.dscombat.heli_1");
 	public static final SoundEvent JET_1 = registerSoundEvent("jet_1", "vehicle/engine/jet_1", "sounds.dscombat.jet_1");
 	public static final SoundEvent VEHICLE_HURT_COLLISION_METAL = registerSoundEvent("vehicle_hurt_collision_metal", "vehicle/hurt/collision/metal_01", "sounds.dscombat.vehicle_hit");
 	public static final SoundEvent VEHICLE_HURT_PROJECTILE_METAL = registerSoundEvent("vehicle_hurt_projectile_metal", "vehicle/hurt/projectile/metal_01", "sounds.dscombat.vehicle.hurt.projectile_metal");
+	public static final SoundEvent VEHICLE_EXPLOSION = registerSoundEvent("vehicle_explosion", "vehicle/explosion/vehicle_explosion", "sounds.dscombat.vehicle_explosion");
+	public static final SoundEvent BALLISTIC_EXPLOSION = registerSoundEvent("ballistic_explosion", "vehicle/explosion/ballistic_explosion", "sounds.dscombat.ballistic_explosion");
 	public static final SoundEvent TANK_1 = registerSoundEvent("tank_1", "vehicle/engine/tank_1", "sounds.dscombat.tank_1");
+	public static final SoundEvent TANK_IDLE = registerSoundEvent("tank_idle", "vehicle/engine/tank_idle", "sounds.dscombat.tank_idle");
 	public static final SoundEvent BOAT_1 = registerSoundEvent("boat_1", "vehicle/engine/boat_1", "sounds.dscombat.boat_1");
 	public static final SoundEvent SUB_1 = registerSoundEvent("sub_1", "vehicle/engine/sub_1", "sounds.dscombat.sub_1");
 	
@@ -87,6 +96,9 @@ public class ModSounds {
 	public static final SoundEvent EJECT = registerSoundEvent("eject", "cockpit/eject/eject", "sounds.dscombat.eject");
 	public static final SoundEvent EJECT_WIND = registerSoundEvent("eject_wind", "cockpit/eject/eject_wind", "sounds.dscombat.eject_wind");
 	public static final SoundEvent SONIC_BOOM = registerSoundEvent("sonic_boom", "vehicle/other/sonic_boom", "sounds.dscombat.sonic_boom");
+
+	public static final SoundEvent SMOKE_GRENADE_SHOOT = registerSoundEvent("smoke_grenade_shoot", "weapon/smoke_grenade_shoot", "sounds.dscombat.smoke_grenade_shoot");
+	public static final SoundEvent SMOKE_GRENADE_DEPLOY = registerSoundEvent("smoke_grenade_deploy", "weapon/smoke_grenade_deploy", "sounds.dscombat.smoke_grenade_deploy");
 
 	public static void register() {
 		SOUND_EVENTS.register();

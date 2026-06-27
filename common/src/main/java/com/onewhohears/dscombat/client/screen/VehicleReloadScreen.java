@@ -4,6 +4,8 @@ import com.onewhohears.dscombat.DSCombatMod;
 import com.onewhohears.dscombat.common.network.VehicleSyncAction;
 import com.onewhohears.dscombat.data.parts.PartSlot;
 import com.onewhohears.dscombat.data.parts.instance.ReloadablePartInstance;
+import com.onewhohears.dscombat.data.parts.instance.TurretInstance;
+import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
 import com.onewhohears.onewholibs.util.UtilMCText;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -88,9 +90,19 @@ public class VehicleReloadScreen extends VehicleSubScreen {
             ReloadablePartInstance part = (ReloadablePartInstance) slots.get(i).getPartData();
             if (part == null) continue;
             graphics.drawString(font, part.getItemName().setStyle(style), x, y, 0xFFFFFF);
-            MutableComponent ammo = UtilMCText.translatable("info.dscombat.ammo")
-                    .append(": "+(int)part.getCurrentAmmo()+"/"+(int)part.getMaxAmmo());
-            graphics.drawString(font, ammo.setStyle(style), x, y+10, 0xFFFFFF);
+            if (part instanceof TurretInstance<?> turret && turret.getWeaponCount() > 1) {
+                int dy = 10;
+                for (WeaponInstance<?> w : turret.getWeaponList()) {
+                    MutableComponent wAmmo = w.getStats().getDisplayNameComponent()
+                            .append(": " + w.getCurrentAmmo() + "/" + w.getMaxAmmo());
+                    graphics.drawString(font, wAmmo.setStyle(style), x, y + dy, 0xFFFFFF);
+                    dy += 10;
+                }
+            } else {
+                MutableComponent ammo = UtilMCText.translatable("info.dscombat.ammo")
+                        .append(": "+(int)part.getCurrentAmmo()+"/"+(int)part.getMaxAmmo());
+                graphics.drawString(font, ammo.setStyle(style), x, y+10, 0xFFFFFF);
+            }
             if (i % 3 == 2) {
                 y += 50;
                 x = xStart;

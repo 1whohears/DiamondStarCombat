@@ -56,6 +56,11 @@ public class ModBlocks {
 	public static final RegistrySupplier<LiquidBlock> OIL_LIQUID_BLOCK = BLOCKS.register("oil_block",
 			() -> new ArchitecturyLiquidBlock(ModFluids.getOilFluidSource(), BlockBehaviour.Properties.copy(Blocks.WATER)));
 	
+	public static final RegistrySupplier<Block> MISSILE_LAUNCH_STATION = registerBlock("missile_launch_station",
+			() -> new com.onewhohears.dscombat.block.custom.MissileLaunchStationBlock(
+					Block.Properties.copy(Blocks.IRON_BLOCK).strength(3.0f)
+					.noOcclusion().explosionResistance(10f)), ModCMTabs.WEAPONS.getKey());
+	
 	// TODO 2.3 block to put stationary turrets on
 
     public static void register() {

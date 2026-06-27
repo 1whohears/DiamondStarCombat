@@ -1,0 +1,35 @@
+{
+  "assetId": "50mmhe",
+  "canShootOnGround": true,
+  "causesFire": false,
+  "compatibleWeaponPart": [
+    "xm12"
+  ],
+  "craftNum": 16,
+  "damage": 20.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.50mmhe",
+  "entityTypeKey": "dscombat:bullet",
+  "explosionRadius": 3.0,
+  "explosive": true,
+  "fireRate": 5,
+  "inaccuracy": 1.0,
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot",
+      "num": 8
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "num": 10
+    }
+  ],
+  "itemKey": "dscombat:bullet",
+  "mass": 0.5,
+  "maxAge": 40,
+  "presetId": "50mmhe",
+  "presetType": "bullet",
+  "shootSoundKey": "dscombat:bullet_shoot_1",
+  "sort_factor": 6,
+  "speed": 9.0
+}

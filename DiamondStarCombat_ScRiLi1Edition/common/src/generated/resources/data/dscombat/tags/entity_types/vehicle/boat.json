@@ -1,0 +1,13 @@
+{
+  "values": [
+    "dscombat:boat",
+    {
+      "id": "smallships:cog",
+      "required": false
+    },
+    {
+      "id": "smallships:brigg",
+      "required": false
+    }
+  ]
+}

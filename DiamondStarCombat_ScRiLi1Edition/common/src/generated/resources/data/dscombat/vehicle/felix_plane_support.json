@@ -1,0 +1,74 @@
+{
+  "copyId": "felix_plane_unarmed",
+  "displayName": "preset.dscombat.felix_plane_support",
+  "is_craftable": false,
+  "landing_gear": true,
+  "presetId": "felix_plane_support",
+  "presetType": "plane",
+  "slots": [
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65l",
+        "part": "heavy_missile_rack"
+      },
+      "name": "left_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "aim9l",
+        "part": "light_missile_rack"
+      },
+      "name": "left_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
+      },
+      "name": "right_wing_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm114k",
+        "part": "light_missile_rack"
+      },
+      "name": "right_wing_2"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "agm65g",
+        "part": "heavy_missile_rack"
+      },
+      "name": "frame_1"
+    },
+    {
+      "data": {
+        "filled": true,
+        "param": "15mm",
+        "part": "xm12"
+      },
+      "name": "nose_1"
+    },
+    {
+      "data": {
+        "part": "gr200"
+      },
+      "name": "internal_4"
+    },
+    {
+      "data": {
+        "filled": true,
+        "part": "basic_flare_dispenser"
+      },
+      "name": "internal_3"
+    }
+  ],
+  "textures": {
+    "baseTexture": 1
+  }
+}

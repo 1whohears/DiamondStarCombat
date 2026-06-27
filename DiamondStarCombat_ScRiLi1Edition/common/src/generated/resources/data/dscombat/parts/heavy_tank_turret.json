@@ -1,0 +1,46 @@
+{
+  "displayName": "item.dscombat.heavy_tank_turret",
+  "externalEntity": "dscombat:turret",
+  "hitbox_height": 1.0,
+  "hitbox_width": 2.0,
+  "ingredients": [
+    {
+      "item": "dscombat:seat",
+      "num": 1
+    },
+    {
+      "num": 40,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 2
+    }
+  ],
+  "item": "dscombat:turret",
+  "maxAmmo": 16,
+  "maxHealth": 120.0,
+  "passenger_offset": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "presetId": "heavy_tank_turret",
+  "presetType": "turret",
+  "repair_cost": [
+    {
+      "item": "minecraft:iron_ingot",
+      "num": 7
+    }
+  ],
+  "rotBounds": {
+    "maxRotX": 30.0,
+    "minRotX": -30.0,
+    "rotRate": 1.0
+  },
+  "shootType": "NORMAL",
+  "slotType": "mount_med",
+  "sort_factor": 11,
+  "weaponOffset": 0.3,
+  "weight": 4000.0
+}

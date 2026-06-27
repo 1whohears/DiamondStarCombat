@@ -1,0 +1,55 @@
+{
+  "acceleration": 0.4,
+  "bleed": 0.72,
+  "canShootOnGround": false,
+  "causesFire": true,
+  "compatibleWeaponPart": [
+    "light_missile_rack",
+    "steve_up_smash"
+  ],
+  "craftNum": 1,
+  "damage": 40.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.aim9x",
+  "entityTypeKey": "dscombat:ir_missile",
+  "explosionRadius": 3.5,
+  "explosive": true,
+  "fireRate": 20,
+  "flareResistance": 0.7,
+  "fov": 50.0,
+  "fuelTicks": 80,
+  "fuseDist": 3.0,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 5,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 1
+    },
+    {
+      "item": "minecraft:coal_block",
+      "num": 2
+    },
+    {
+      "item": "minecraft:spider_eye",
+      "num": 4
+    },
+    {
+      "item": "dscombat:intel_pentium",
+      "num": 1
+    }
+  ],
+  "itemKey": "dscombat:missile",
+  "mass": 88.0,
+  "maxAge": 758,
+  "presetId": "aim9x",
+  "presetType": "ir_missile",
+  "shootSoundKey": "dscombat:rocket_launch_1",
+  "sort_factor": 10,
+  "speed": 51.45,
+  "turnRadius": 480.0,
+  "useSpeedScale": true
+}

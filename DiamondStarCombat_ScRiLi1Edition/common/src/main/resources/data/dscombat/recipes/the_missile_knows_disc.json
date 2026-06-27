@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"A": {
+			"item": "dscombat:agm114k"
+		},
+		"B": {
+			"item": "dscombat:agm84e"
+		},
+		"C": {
+			"item": "dscombat:aim9p5"
+		},
+		"D": {
+			"item": "dscombat:aim120b"
+		}
+	},
+	"pattern": [
+		"AB",
+		"CD"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:the_missile_knows_disc"
+	}
+}

@@ -3,7 +3,9 @@ package com.onewhohears.dscombat.client.overlay.components;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.onewhohears.dscombat.client.overlay.VehicleOverlayComponent;
+import com.onewhohears.dscombat.data.vehicle.physics.DSCPhyCons;
 import com.onewhohears.dscombat.data.weapon.instance.WeaponInstance;
+import com.onewhohears.dscombat.data.weapon.stats.BulletStats;
 import com.onewhohears.dscombat.data.weapon.stats.WeaponStats;
 import com.onewhohears.dscombat.entity.parts.EntityRidablePart;
 import com.onewhohears.dscombat.entity.parts.EntityTurret;
@@ -62,7 +64,37 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
         double yPlacement = screenHeight - TAB_HEIGHT - 13;
         int blitPosition = 1;
         if (seat.isTurret()) {
-            drawFinishedTab(graphics, ((EntityTurret)seat).getWeaponData(), yPlacement, blitPosition);
+            EntityTurret turret = (EntityTurret) seat;
+            int turretWeaponCount = turret.getWeaponCount();
+            int turretWeaponIdx = turret.getWeaponIndex();
+            if (turretWeaponCount <= 1) {
+                drawFinishedTab(graphics, turret.getWeaponData(), yPlacement, blitPosition);
+                drawRangeMeter(graphics, turret, yPlacement, blitPosition);
+            } else {
+                if (turretWeaponIdx != this.selectedWeapon) enableWeaponChangeState();
+                this.selectedWeapon = turretWeaponIdx;
+                if (this.weaponChangeCountdown <= 0) this.weaponChangeState = false;
+                if (!this.weaponChangeState) {
+                    drawFinishedTab(graphics, turret.getWeaponData(), yPlacement, blitPosition);
+                    drawRangeMeter(graphics, turret, yPlacement, blitPosition);
+                } else {
+                    java.util.List<String> ids = turret.getAllWeaponIds();
+                    int tabsToRender = Math.min(ids.size(), 5);
+                    for (int i = 0; i < tabsToRender; i++) {
+                        int shiftedIndex = turretWeaponIdx - i;
+                        if (shiftedIndex < 0) shiftedIndex = ((shiftedIndex % ids.size()) + ids.size()) % ids.size();
+                        int newYPos = (int) (yPlacement - (24 * i));
+                        com.onewhohears.dscombat.data.weapon.stats.WeaponStats ws = com.onewhohears.dscombat.data.weapon.WeaponPresets.get().get(ids.get(shiftedIndex));
+                        drawTab(graphics, 13, newYPos, blitPosition, 0, false);
+                        graphics.pose().pushPose();
+                        graphics.pose().translate(0, 0, blitPosition + 3);
+                        if (ws != null) graphics.drawString(FONT, ws.getDisplayNameComponent(), 16, newYPos + 4, 0xffffff);
+                        graphics.pose().popPose();
+                    }
+                    renderSelectionBox(graphics, 13, yPlacement, blitPosition + 2);
+                    this.weaponChangeCountdown--;
+                }
+            }
             return;
         }
         if (!seat.canPassengerShootParentWeapon()) return;
@@ -310,5 +342,62 @@ public class VehicleWeaponsOverlay extends VehicleOverlayComponent {
 
     protected static int getMaxFrames() {
         return FRAMES.length;
+    }
+
+    /**
+     * Calculates horizontal ballistic range in blocks.
+     * Uses standard projectile motion: range = v² * sin(2θ) / g
+     * Clamped by maxAge (projectile lifetime in ticks).
+     *
+     * @param pitchDeg turret pitch in degrees (Minecraft convention: negative = up)
+     * @param speed    projectile speed in m/tick
+     * @param maxAge   max lifetime in ticks (0 = unlimited)
+     * @return horizontal range in blocks, or -1 if not applicable
+     */
+    public static int calcBallisticRange(float pitchDeg, double speed, int maxAge) {
+        double elevationRad = Math.toRadians(-pitchDeg);
+        double g = DSCPhyCons.GRAVITY * DSCPhyCons.ACC_TIME_SCALE; // m/tick²
+        double vx = speed * Math.cos(elevationRad);
+        double vy = speed * Math.sin(elevationRad);
+
+        // time of flight until projectile returns to same height: t = 2*vy/g
+        double tof = (vy > 0) ? (2.0 * vy / g) : 0;
+
+        // clamp by maxAge if set
+        if (maxAge > 0 && tof > maxAge) tof = maxAge;
+
+        double range = vx * tof;
+        return (int) Math.round(range);
+    }
+
+    /** @deprecated use {@link #calcBallisticRange(float, double, int)} */
+    public static int calcBallisticRange(float pitchDeg, double speed) {
+        return calcBallisticRange(pitchDeg, speed, 0);
+    }
+
+    /**
+     * Draws the ballistic range meter below the weapon tab for turrets.
+     */
+    protected static void drawRangeMeter(GuiGraphics graphics, EntityTurret turret, double yPlacement, int blitPosition) {
+        WeaponInstance<?> weaponData = turret.getWeaponData();
+        if (weaponData == null) return;
+        WeaponStats stats = weaponData.getStats();
+        if (!(stats instanceof BulletStats bulletStats)) return;
+
+        // Check if this turret has range meter enabled in its JSON
+        if (turret.getStats() == null || !turret.getStats().isShowRangeMeter()) return;
+
+        float pitch = turret.getXRot();
+        double speed = bulletStats.getSpeed();
+        int range = calcBallisticRange(pitch, speed, bulletStats.getMaxAge());
+
+        // elevation angle: negative pitch = up in Minecraft
+        int elevation = (int) Math.round(-pitch);
+
+        String rangeText = range >= 0 ? range + " бл." : "---";
+        graphics.pose().pushPose();
+        graphics.pose().translate(0, 0, blitPosition + 2);
+        graphics.drawString(FONT, "Метрометр: " + rangeText + "  " + elevation + "°", 16, (int)(yPlacement + 26), 0x00ff88);
+        graphics.pose().popPose();
     }
 }

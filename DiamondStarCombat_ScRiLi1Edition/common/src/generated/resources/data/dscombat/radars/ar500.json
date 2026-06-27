@@ -1,0 +1,17 @@
+{
+  "displayName": "preset.dscombat.ar500",
+  "fov": 70.0,
+  "presetId": "ar500",
+  "presetType": "standard",
+  "range": 16000.0,
+  "scanAir": true,
+  "scanAircraft": true,
+  "scanGround": false,
+  "scanMobs": false,
+  "scanPlayers": true,
+  "scanRate": 10,
+  "sensitivity": 0.3,
+  "throGroundRange": 0.0,
+  "throWaterRange": 0.0,
+  "useDistanceScale": true
+}

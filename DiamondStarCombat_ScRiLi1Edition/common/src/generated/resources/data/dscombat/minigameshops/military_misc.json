@@ -1,0 +1,100 @@
+{
+  "displayName": "preset.dscombat.military_misc",
+  "presetId": "military_misc",
+  "presetType": "gameshop",
+  "products": [
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 2
+      },
+      "product": {
+        "item": "dscombat:thick_wrench",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 4
+      },
+      "product": {
+        "item": "dscombat:big_gas_can",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 1
+      },
+      "product": {
+        "item": "dscombat:chain_hook",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 1
+      },
+      "product": {
+        "item": "minecraft:chain",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 10
+      },
+      "product": {
+        "item": "dscombat:gpr100",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 1
+      },
+      "product": {
+        "item": "dscombat:spraycan",
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 4
+      },
+      "product": {
+        "item": "minecraft:splash_potion",
+        "nbt": {
+          "Potion": "minecraft:strong_healing"
+        },
+        "num": 1
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 2
+      },
+      "product": {
+        "item": "minecraft:cobblestone",
+        "num": 2
+      }
+    },
+    {
+      "cost": {
+        "item": "minigames:money",
+        "num": 2
+      },
+      "product": {
+        "item": "minecraft:oak_planks",
+        "num": 16
+      }
+    }
+  ]
+}

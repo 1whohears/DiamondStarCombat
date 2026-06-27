@@ -1,0 +1,17 @@
+{
+  "values": [
+    "dscombat:aluminum_ingot",
+    {
+      "id": "#forge:ingots/aluminum",
+      "required": false
+    },
+    {
+      "id": "#c:ingots/aluminum",
+      "required": false
+    },
+    {
+      "id": "createindustry:aluminum_ingot",
+      "required": false
+    }
+  ]
+}

@@ -44,7 +44,6 @@ public class KraitChopperPresets {
 			.addPilotSeatSlot(0, -0.05, 2, true)
 			.addSeatSlot("copilot_seat", 0, -0.4, 3.5)
 			.addEmptySlot("nose_gun", SlotType.PYLON_LIGHT, 0, -0.5, 3.75, 180)
-			.addEmptySlot("nose_tech", SlotType.PYLON_LIGHT, 0, -0.25, 4.25, 180, "nose")
 			.addEmptySlot("left_wing_1", SlotType.PYLON_HEAVY, 1.15, -0.15, 0, 180)
 			.addEmptySlot("left_wing_2", SlotType.PYLON_MED, 2.08, 0.15, 0, -90)
 			.addEmptySlot("right_wing_1", SlotType.PYLON_HEAVY, -1.15, -0.15, 0, 180)
@@ -57,6 +56,7 @@ public class KraitChopperPresets {
 			.addEmptySlot("internal_6", SlotType.TECH_INTERNAL, "nose")
 			.addEmptySlot("internal_7", SlotType.TECH_INTERNAL, "nose")
 			.addEmptySlot("internal_8", SlotType.TECH_INTERNAL, "nose")
+			.addEmptySlot("grenade_launcher", SlotType.MOUNT_GRENADE, 0, -0.8, 2.5, 180)
 			.addIngredient(ModItems.FUSELAGE.getId())
 			.addIngredient(ModItems.LARGE_PROPELLER.getId())
 			.addIngredient(ModItems.PROPELLER.getId())
@@ -80,13 +80,11 @@ public class KraitChopperPresets {
 	public static final VehicleStats UNARMED_KRAIT_CHOPPER = VehicleStats.Builder
 			.createFromCopy(DSCombatMod.MODID, "krait_chopper_unarmed", EMPTY_KRAIT_CHOPPER)
 			.setCraftable()
-			.setSlotItem("nose_tech", ModItems.GIMBAL_CAMERA.getId())
 			.setSlotItem("internal_1", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_2", ModItems.C12_ENGINE.getId())
 			.setSlotItem("internal_3", ModItems.HEAVY_FUEL_TANK.getId(), true)
 			.addIngredient(ModItems.C12_ENGINE.getId(), 2)
 			.addIngredient(ModItems.HEAVY_FUEL_TANK.getId())
-			.addIngredient(ModItems.GIMBAL_CAMERA.getId())
 			.build();
 	
 	public static final VehicleStats DEFAULT_KRAIT_CHOPPER = VehicleStats.Builder
@@ -96,6 +94,7 @@ public class KraitChopperPresets {
 			.setSlotItem("left_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "agm114k", true)
 			.setSlotItem("right_wing_1", ModItems.HEAVY_MISSILE_RACK.getId(), "agm65l", true)
 			.setSlotItem("right_wing_2", ModItems.LIGHT_MISSILE_RACK.getId(), "aim9l", true)
+			.setSlotItem("grenade_launcher", ModItems.LIGHT_MISSILE_RACK.getId(), "m203_grenade", true)
 			.setSlotItem("internal_5", ModItems.AR500.getId())
 			.setSlotItem("internal_6", ModItems.GR400.getId())
 			.setSlotItem("internal_4", ModItems.BASIC_FLARE_DISPENSER.getId(), true)

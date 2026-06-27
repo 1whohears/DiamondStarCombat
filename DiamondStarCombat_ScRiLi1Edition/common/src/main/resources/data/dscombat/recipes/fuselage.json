@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"I": {
+			"tag": "dscombat:aluminum_ingot"
+		}
+	},
+	"pattern": [
+		"III",
+		"I I",
+		"III"
+	],
+	"result": {
+		"count": 1,
+		"item": "dscombat:fuselage"
+	}
+}

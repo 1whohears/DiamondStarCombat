@@ -1,0 +1,9 @@
+{
+  "displayName": "item.dscombat.internal_gun",
+  "item": "dscombat:internal_gun",
+  "max": 1000,
+  "presetId": "internal_gun",
+  "presetType": "internal_weapon",
+  "slotType": "internal_gun",
+  "weight": 1000.0
+}

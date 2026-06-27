@@ -1,5 +1,8 @@
 {
 	"info.dscombat.ammo": "Ammo",
+	"info.dscombat.rpg_no_ammo": "No grenades in inventory!",
+	"info.dscombat.rpg_uses_inventory": "Uses grenades from inventory",
+	"info.dscombat.launcher": "Launcher",
 	"info.dscombat.locked": "Locked",
 	"info.dscombat.not_radar_controller": "Another Player Controls the Vehicle's Radar Mode",
 	"info.dscombat.only_compatible": "Only Compatible With: ",
@@ -44,8 +47,9 @@
 	"info.dscombat.turn_radius": "Turn Radius",
 	"info.dscombat.acceleration": "Acceleration",
 	"info.dscombat.targets_grounded": "TARGETS GROUNDED",
-	"info.dscombat.targets_flying": "TARGETS FLYING",
+	"info.dscombat.targets_flying_and_missiles": "TARGETS FLYING & MISSILES",
 	"info.dscombat.targets_in_water": "TARGETS IN WATER",
+	"info.dscombat.targets_missiles_only": "TARGETS MISSILES ONLY",
 	"info.dscombat.active_track": "ACTIVE TRACK",
 	"info.dscombat.semi_active": "SEMI ACTIVE",
 	"info.dscombat.fire_rate": "Fire Rate",
@@ -55,10 +59,7 @@
 	"info.dscombat.items": "Items",
 	"info.dscombat.flares": "Flares",
 	"info.dscombat.ticket_linked_to": "Linked to %1$s",
-	"info.dscombat.position_guided": "Position Guided",
-	"info.dscombat.optical_guided": "Optical Guided",
-	"info.dscombat.radar_guided": "Radar Guided",
-
+	
 	"ui.dscombat.shrink_plane_button": "Get Item",
 	"ui.dscombat.craft_button": "Assemble",
 	"ui.dscombat.ingredients": "Materials",
@@ -110,6 +111,7 @@
 	"action.dscombat.pitch": "Pitch",
 	"action.dscombat.yaw": "Yaw",
 	"action.dscombat.flare": "Flare",
+	"action.dscombat.smoke_grenade": "Smoke Grenades",
 	"action.dscombat.weapon_cycle": "Weapon Cycle",
 	"action.dscombat.weapon_cycle_inverse": "Weapon Cycle Inverse",
 	"action.dscombat.special1": "Special 1",
@@ -126,16 +128,13 @@
 	"action.dscombat.afterburner": "Afterburner",
 	"action.dscombat.change_seat": "Change Seat",
 	"action.dscombat.radar_mode": "Radar Mode",
-	"action.dscombat.target_mode": "Target Mode",
 	"action.dscombat.shoot": "Shoot",
 	"action.dscombat.reset_mouse": "Reset Mouse",
 	"action.dscombat.dismount": "Dismount",
 	"action.dscombat.gimbal": "Gimbal",
 	"action.dscombat.chaff": "Chaff",
     "action.dscombat.camera_track_target": "Cam Follow",
-    "action.dscombat.quick_marker": "Quick Marker",
-    "action.dscombat.zoom": "Gimbal Zoom",
-
+	
 	"screen.dscombat.vehicle_paint_screen": "Vehicle Paint Job",
 	"screen.dscombat.vehicle_main_screen": "Vehicle Menu",
 	"screen.dscombat.vehicle_inventory_screen": "Cargo",
@@ -187,11 +186,6 @@
 	"error.dscombat.cant_item_while_moving": "Can't become an item while moving.",
 	"error.dscombat.cant_item_while_flying": "Can't become an item while flying.",
     "error.dscombat.vehicle_items_disabled": "Server admins have disabled spawning vehicles with items with the game rule dscombat:canSpawnVehicleFromItem.",
-    "error.dscombat.must_select_marker": "Must Select a Position Marker",
-    "error.dscombat.not_pos_missile": "Selected Weapon isn't Position Guided",
-    "error.dscombat.not_optical_missile": "Selected Weapon isn't Optical Guided",
-    "error.dscombat.not_radar_missile": "Selected Weapon isn't Radar Guided",
-    "error.dscombat.optical_requires_gimbal": "Optical Mode Requires Gimbal Camera",
 
 	"success.dscombat.target_mode_look": "Position Missiles will fly to where you look!",
 	"success.dscombat.target_mode_coords": "Position Missiles will fly to %1$s!",
@@ -204,11 +198,8 @@
 	
 	"targetmode.dscombat.look": "LOOK",
 	"targetmode.dscombat.coords": "COORDS",
-	"targetmode.dscombat.marker": "MARKER",
-	"targetmode.dscombat.radar": "RADAR",
-	"targetmode.dscombat.optical": "OPTICAL",
-	"targetmode.dscombat.none": "NONE",
-
+	"targetmode.dscombat.indicator": "INDICATOR",
+	
 	"blendmode.dscombat.none": "NONE",
 	"blendmode.dscombat.on_white": "ON WHITE",
 	"blendmode.dscombat.on_all": "ON ALL",
@@ -236,6 +227,8 @@
 	"weapon_code.dscombat.magnum": "MAGNUM",
 	"weapon_code.dscombat.pickle": "PICKLE",
 	"weapon_code.dscombat.drill": "DRILL",
+	"weapon_code.dscombat.ballistic": "BALLISTIC",
+	"weapon_code.dscombat.grenade": "GRENADE",
 	
 	"slottype.dscombat.external": "External",
 	"slottype.dscombat.external_tough": "External Tough",
@@ -245,6 +238,7 @@
 	"slottype.dscombat.mount_heavy": "Heavy Mount",
 	"slottype.dscombat.mount_super_heavy": "Super Heavy Mount",
 	"slottype.dscombat.mount_tech": "Tech Mount",
+	"slottype.dscombat.mount_grenade": "Grenade Launcher Mount",
 	"slottype.dscombat.pylon_light": "Light Pylon",
 	"slottype.dscombat.pylon_med": "Medium Pylon",
 	"slottype.dscombat.pylon_heavy": "Heavy Pylon",
@@ -302,8 +296,6 @@
 	"slotname.dscombat.nose_gun": "Nose Gun",
 	"slotname.dscombat.internal_gun": "Internal Gun",
 	"slotname.dscombat.hitch_1": "Hitch 1",
-	"slotname.dscombat.left_tech_mount": "Left Tech Mount",
-	"slotname.dscombat.right_tech_mount": "Right Tech Mount",
 
 	"entity.dscombat.plane": "Plane",
 	"entity.dscombat.helicopter": "Helicopter",
@@ -330,6 +322,7 @@
 	"entity.dscombat.anti_radar_missile_1": "Anti Radar Missile",
 	"entity.dscombat.torpedo_missile_1": "Torpedo",
 	"entity.dscombat.flare": "Flare",
+	"entity.dscombat.smoke_grenade": "Smoke Grenade",
 	"entity.dscombat.seat": "Seat",
 	"entity.dscombat.parachute": "Parachute",
 	"entity.dscombat.gimbal_camera": "Gimbal Camera",
@@ -384,18 +377,22 @@
 	"block.dscombat.aircraft_block": "Vehicle Workbench",
 	"block.dscombat.aluminum_block": "Aluminum Block",
 	"block.dscombat.weapon_parts_block": "Weapon Parts Workbench",
+	"block.dscombat.missile_launch_station": "Missile Launch Station",
 	
 	"container.dscombat.vehicle_parts_menu": "Vehicle Parts",
 	"container.dscombat.vehicle_storage": "Vehicle Storage",
 	"container.dscombat.weapons_block_menu": "Weapons Workbench",
 	"container.dscombat.aircraft_block_menu": "Vehicle Workbench",
 	"container.dscombat.weapon_parts_block_menu": "Weapon Parts Workbench",
+	"container.dscombat.missile_launch_station": "Missile Launch Station",
+	"screen.dscombat.rpg_inventory": "RPG Inventory",
 	
 	"itemGroup.dscombat.items": "DSCombat Items",
 	"itemGroup.dscombat.parts": "DSCombat Parts",
 	"itemGroup.dscombat.weapons": "DSCombat Weapons",
 	"itemGroup.dscombat.weapon_parts": "DSCombat Weapon Parts",
 	"itemGroup.dscombat.vehicle": "DSCombat Vehicles",
+	"itemGroup.dscombat.rpg_inventory": "RPG Launchers & Grenades",
 
     "itemGroup.items": "DSCombat Items",
     "itemGroup.parts": "DSCombat Parts",
@@ -427,6 +424,7 @@
 	"item.dscombat.night_vision_hud": "Night Vision HUD Module",
 	"item.dscombat.radio": "Vehicle Radio",
 	"item.dscombat.armor_piece": "Armor Piece",
+	"item.dscombat.ecm_jammer": "ECM Jammer Pod",
 	
 	"item.dscombat.wrench": "Wrench",
 	"item.dscombat.thick_wrench": "Thiccc Wrench",
@@ -444,6 +442,7 @@
 	"item.dscombat.refill_fuel_wand": "Refill Fuel Wand",
 	"info.dscombat.refill_fuel_wand_1": "Refills all Vehicle Fuel Tanks",
 	
+	"info.dscombat.gas_can_fill": "Fill from oil source blocks. Right-click vehicle to refuel.",
 	"item.dscombat.gas_can": "Gas Can",
 	"item.dscombat.big_gas_can": "Big Gas Can",
 	"item.dscombat.big_ass_can": "Big Ass Can",
@@ -504,6 +503,7 @@
 	"item.dscombat.artillery_cannon": "Artillery Cannon",
 	
 	"item.dscombat.basic_flare_dispenser": "Basic Flare Dispenser",
+	"item.dscombat.smoke_grenade_dispenser": "Smoke Grenade Dispenser",
 	
 	"item.dscombat.xm12": "XM12",
 	"item.dscombat.light_missile_rack": "Light Missile Rack",
@@ -585,8 +585,10 @@
 	"preset.type.dumb_torpedo": "Dumb Torpedo",
 	"preset.type.ir_missile": "IR Missile",
 	"preset.type.anti_radar_missile": "Anti Radar Missile",
-	"preset.type.all_missile": "Universal Missile",
-
+	"preset.type.ballistic_missile": "Ballistic Missile",
+	"preset.type.smoke_grenade": "Smoke Grenade",
+	"preset.type.smoke_grenade_dispenser": "Smoke Grenade Dispenser",
+	
 	"preset.dscombat.no_weapon": "None",
 	"preset.dscombat.10mm": "10mm",
 	"preset.dscombat.15mm": "15mm",
@@ -621,6 +623,8 @@
 	"preset.dscombat.meteor": "METEOR",
 	"preset.dscombat.mk13": "MK-13",
 	"preset.dscombat.type91": "Type 91",
+	"preset.dscombat.scud_b": "SCUD-B",
+	"preset.dscombat.smoke_grenade": "Smoke Grenade",
 	
 	"preset.dscombat.alexis_plane_empty": "Empty Alexis Plane",
 	"preset.dscombat.alexis_plane_unarmed": "Unarmed Alexis Plane",
@@ -752,7 +756,6 @@
 	"key.dscombat.change_seat_key": "Change Seat",
 	"key.dscombat.landing_gear_key": "Landing Gear",
 	"key.dscombat.radar_mode_key": "Radar Mode",
-	"key.dscombat.target_mode_key": "Target Mode",
 	"key.dscombat.special_key": "Special",
 	"key.dscombat.special_2_key": "Special 2",
 	"key.dscombat.dismount_key": "Dismount",
@@ -766,9 +769,10 @@
 	"key.dscombat.afterburner_toggle_key": "After Burner",
 	"key.dscombat.turn_assist_key": "Turn Assist",
     "key.dscombat.camera_track_target_key": "Track Target",
-    "key.dscombat.quick_marker_key": "Quick Marker",
-    "key.dscombat.zoom_key": "Gimbal Zoom",
-    "key.dscombat.chaff_key": "Chaff (WIP)",
+	"key.dscombat.zoom_in_key": "Zoom In",
+	"key.dscombat.smoke_grenade_key": "Smoke Grenades",
+	"key.dscombat.chaff_key": "Chaff",
+	"key.dscombat.rpg_inventory_key": "Open RPG Inventory",
 
 	"passenger_sound_pack.eng_non_binary_goober": "English Default",
 	"passenger_sound_pack.eng_generic_male": "English Generic Male",
@@ -909,5 +913,12 @@
 	"gamerule.dscombat:canVehicleItemWhileMoving": "DSC Can Vehicle become Item while Moving",
 	
 	"team.minigames.attackers": "ATTACKERS",
-	"team.minigames.defenders": "DEFENDERS"
+	"team.minigames.defenders": "DEFENDERS",
+
+"item.dscombat.decal": "Decal",
+"screen.dscombat.decal_screen": "Place Decal",
+"screen.dscombat.decal_text": "Text",
+"screen.dscombat.decal_scale": "Scale",
+"screen.dscombat.decal_color": "Color (hex)",
+"screen.dscombat.decal_confirm": "Place"
 }

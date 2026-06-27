@@ -1,0 +1,36 @@
+{
+  "assetId": "anm30",
+  "canShootOnGround": false,
+  "causesFire": false,
+  "compatibleWeaponPart": [
+    "bomb_rack"
+  ],
+  "craftNum": 1,
+  "damage": 30.0,
+  "destroyTerrain": true,
+  "displayName": "preset.dscombat.anm57",
+  "entityTypeKey": "dscombat:bomb",
+  "explodeNum": 2,
+  "explosionRadius": 4.5,
+  "explosive": true,
+  "fireRate": 6,
+  "inaccuracy": 0.0,
+  "ingredients": [
+    {
+      "num": 2,
+      "tag": "dscombat:aluminum_ingot"
+    },
+    {
+      "item": "minecraft:tnt",
+      "num": 4
+    }
+  ],
+  "itemKey": "dscombat:bomb",
+  "mass": 118.0,
+  "maxAge": 200,
+  "presetId": "anm57",
+  "presetType": "bomb",
+  "shootSoundKey": "dscombat:bomb_shoot_1",
+  "sort_factor": 4,
+  "speed": 0.0
+}

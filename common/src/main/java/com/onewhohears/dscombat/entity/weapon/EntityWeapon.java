@@ -21,7 +21,6 @@ import com.onewhohears.onewholibs.util.UtilParse;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -110,13 +109,14 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		tickSetAngle();
 		setPos(position().add(getDeltaMovement()).subtract(throughBlockMove));
         throughBlockMove = Vec3.ZERO;
-		if (!isRemoved()) checkInsideBlocks();
+		checkInsideBlocks();
 		tickAge();
 	}
 	
 	protected void tickAge() {
 		if (!isClientSide()) {
-			setAge(tickCount);
+			// Sync age every 5 ticks instead of every tick to reduce network traffic
+			if (tickCount % 5 == 0) setAge(tickCount);
 			if (tickCount > getMaxAge()) kill();
 		}
 	}
@@ -225,7 +225,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
 	public void kill() {
-		if (!isClientSide() && tickCount > 4 && UtilEntity.isChunkLoaded(getWorld(), this)) {
+		if (!isClientSide() && tickCount > 4) {
             PacketHandler.sendToTrackers(new ToClientWeaponImpact(this, position()), this);
         }
 		super.kill();
@@ -243,7 +243,7 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		entityData.set(OWNER_ID, id);
 	}
 	
-	public void setAge(int age) {
+	protected void setAge(int age) {
 		entityData.set(AGE, age);
 	}
 	
@@ -295,27 +295,13 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	
 	@Override
 	public void lerpMotion(double x, double y, double z) {
-        //if (getAge() > getLerpWaitTicks()) super.lerpMotion(x, y, z);
-		// FIXME is EntityWeapon#lerpMotion needed to sync speeds between server anc client?
+		// Полностью отключаем стандартную интерполяцию для плавного полета
+		// Снаряды летят по прямой траектории, управляемой только сервером
 	}
 
-	@Override
-	public void writeSpawnData(FriendlyByteBuf buffer) {
-		super.writeSpawnData(buffer);
-		DataSerializers.VEC3.write(buffer, getDeltaMovement());
-		buffer.writeFloat(getXRot());
-		buffer.writeFloat(getYRot());
-	}
-
-	@Override
-	public void readSpawnData(FriendlyByteBuf buffer) {
-		super.readSpawnData(buffer);
-		setDeltaMovement(DataSerializers.VEC3.read(buffer));
-		setXRot(buffer.readFloat());
-		setYRot(buffer.readFloat());
-		xRotO = getXRot();
-		yRotO = getYRot();
-	}
+    protected int getLerpWaitTicks() {
+        return 4;
+    }
 	
 	@Override
 	public Entity getOwner() {
@@ -419,6 +405,16 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 		return true;
 	}
 
+	/** Override in subclasses that support explosions */
+	public float getExplosionRadius() {
+		return 0f;
+	}
+
+	/** Override in subclasses that support explosions */
+	public boolean isCausesFire() {
+		return false;
+	}
+
 	@Override
 	public @Nullable String getAssetId() {
 		return getStats().getAssetId();
@@ -438,9 +434,12 @@ public abstract class EntityWeapon<T extends WeaponStats> extends CustomAnimProj
 	public boolean isDiscardedButTicking() {
 		return false;
 	}
-
-	@Nullable
-	public Entity getTarget() {
-		return null;
+	
+	@Override
+	public boolean shouldBeSaved() {
+		// Projectiles should never be saved to chunks.
+		// If they were saved, they would accumulate in unloaded chunks and
+		// all fire at once when a player loads the chunk - causing a bullet storm.
+		return false;
 	}
 }

@@ -1,0 +1,19 @@
+{
+  "displayName": "preset.dscombat.axcel_truck_radar",
+  "fov": -1.0,
+  "presetId": "axcel_truck_radar",
+  "presetType": "standard",
+  "range": 56000.0,
+  "scanAir": true,
+  "scanAircraft": true,
+  "scanGround": false,
+  "scanMissiles": true,
+  "scanMobs": false,
+  "scanPlayers": true,
+  "scanRate": 10,
+  "sensitivity": 0.8,
+  "throGroundRange": 0.0,
+  "throWaterRange": 0.0,
+  "useDistanceScale": true,
+  "verticalRange": 2500.0
+}

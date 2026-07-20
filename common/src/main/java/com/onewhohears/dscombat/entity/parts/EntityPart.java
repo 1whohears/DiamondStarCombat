@@ -87,6 +87,11 @@ public abstract class EntityPart<P extends PartStats, I extends PartInstance<P>>
 		super.tick();
 		if (!isClientSide() && tickCount > 10 && getVehicle() == null) onNoParent();
 	}
+
+    public void simulatedTick() {
+        if (firstTick) init();
+        if (tickCount > 10 && getVehicle() == null) onNoParent();
+    }
 	
 	protected void onNoParent() {
 		discard();

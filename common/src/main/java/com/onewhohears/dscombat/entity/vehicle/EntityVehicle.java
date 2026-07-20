@@ -468,6 +468,7 @@ public abstract class EntityVehicle
             //entity.rideTick(); // TODO should tickSimulatedPassengers call Entity#rideTick ?
             entity.setDeltaMovement(Vec3.ZERO);
             positionRider(entity);
+            if (entity instanceof EntityPart<?,?> part) part.simulatedTick();
         }
     }
 
@@ -2721,7 +2722,15 @@ public abstract class EntityVehicle
 		return canUseTurnAssist() && inputs.turnAssist;
 	}
 
-	private static class EntityCollideInfo {
+    public double getAIHorizontalRange() {
+        return weaponSystem.getSelected().getStats().getMobTurretRange();
+    }
+
+    public double getAIVerticalRange() {
+        return getWorld().getGameRules().getInt(DSCGameRules.MOB_TURRET_VERTICAL_RANGE);
+    }
+
+    private static class EntityCollideInfo {
 		private final List<CollideInfo> collides = new ArrayList<>();
 		EntityCollideInfo() {}
 		private void addPush(int hitboxId, int time, Vec3 pos) {

@@ -5,7 +5,11 @@ import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.data.parts.stats.SeatStats;
+import com.onewhohears.dscombat.entity.ai.goal.PilotMoveGoal;
+import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
+import com.onewhohears.dscombat.entity.ai.goal.VehicleTargetGoal;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import com.onewhohears.dscombat.init.ModTags;
 import com.onewhohears.onewholibs.util.UtilEntity;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.onewholibs.util.math.UtilAngles;
@@ -18,6 +22,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -29,19 +34,93 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInstance<P>> extends EntityPart<P,I> {
-	
+
+    protected boolean addedGoals = false;
+    protected Goal shootGoal, targetGoal, pilotMoveGoal;
+
 	public EntityRidablePart(EntityType<?> type, Level level, String defaultPreset) {
 		super(type, level, defaultPreset);
 	}
 	
 	public void tick() {
 		super.tick();
-		if (!isClientSide() && getWorld().getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES))
-			tickRideCollision();
+		if (!isClientSide() && getWorld().getGameRules().getBoolean(DSCGameRules.MOBS_RIDE_VEHICLES)) {
+            tickRideCollision();
+            if (canAIControl() && getPassenger() instanceof Mob mob && !addedGoals && mob.tickCount > 10) {
+                addRiderAI(mob);
+            }
+        }
 	}
+
+    @Override
+    public void simulatedTick() {
+        super.simulatedTick();
+        if (addedGoals && getPassenger() instanceof Mob mob) {
+            mob.goalSelector.tick();
+            mob.targetSelector.tick();
+        }
+    }
+
+    protected void addRiderAI(Mob mob) {
+        if (canAIControl() && mob.tickCount > 10) {
+            shootGoal = makeShootGoal(mob);
+            if (shootGoal != null) mob.goalSelector.addGoal(0, shootGoal);
+            if (mob.getType().is(ModTags.EntityTypes.TURRET_TARGET_PLAYERS)) {
+                targetGoal = makeTargetPlayerGoal(mob);
+            } else if (mob.getType().is(ModTags.EntityTypes.TURRET_TARGET_MONSTERS)) {
+                targetGoal = makeTargetEnemyGoal(mob);
+            }
+            if (targetGoal != null) mob.targetSelector.addGoal(0, targetGoal);
+            pilotMoveGoal = makePilotMoveGoal(mob);
+            if (pilotMoveGoal != null) mob.goalSelector.addGoal(0, pilotMoveGoal);
+            addedGoals = true;
+        }
+    }
+
+    protected void removeRiderAI(Mob mob) {
+        if (shootGoal != null) {
+            mob.goalSelector.removeGoal(shootGoal);
+            shootGoal = null;
+        }
+        if (targetGoal != null) {
+            mob.targetSelector.removeGoal(targetGoal);
+            targetGoal = null;
+        }
+        if (pilotMoveGoal != null) {
+            mob.goalSelector.removeGoal(pilotMoveGoal);
+            pilotMoveGoal = null;
+        }
+        addedGoals = false;
+    }
+
+    protected Goal makeShootGoal(Mob mob) {
+        return null;
+    }
+
+    protected Goal makeTargetPlayerGoal(Mob mob) {
+        EntityVehicle vehicle = getParentVehicle();
+        if (vehicle == null) return null;
+        return VehicleTargetGoal.targetPlayers(mob, vehicle);
+    }
+
+    protected Goal makeTargetEnemyGoal(Mob mob) {
+        EntityVehicle vehicle = getParentVehicle();
+        if (vehicle == null) return null;
+        return VehicleTargetGoal.targetEnemy(mob, vehicle);
+    }
+
+    protected Goal makePilotMoveGoal(Mob mob) {
+        if (!isPilotSeat()) return null;
+        EntityVehicle vehicle = getParentVehicle();
+        if (vehicle == null) return null;
+        return new PilotMoveGoal(mob, vehicle);
+    }
+
+    public boolean canAIControl() {
+        return isPilotSeat() || isCoPilotSeat();
+    }
 	
 	protected void tickRideCollision() {
-		if (isPilotSeat()) return;
 		if (getPassenger() != null) return;
 		if (!(getVehicle() instanceof EntityVehicle vehicle)) return;
 		if (vehicle.getXZSpeed() > 0.1) return;
@@ -120,6 +199,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
             ClientInputEventHandlers.onEntityMountVehicle(passenger);
         }
 		super.addPassenger(passenger);
+        if (passenger instanceof Mob m) addRiderAI(m);
 	}
 	
 	@Override
@@ -143,6 +223,7 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
 		EntityVehicle vehicle = getParentVehicle();
 		if (vehicle == null) return;
 		vehicle.onSeatDismount(passenger);
+        if (passenger instanceof Mob m) removeRiderAI(m);
 	}
 	
 	@Override

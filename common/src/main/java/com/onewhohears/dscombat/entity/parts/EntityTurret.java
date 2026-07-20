@@ -157,44 +157,27 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
 				offset, getPassengerOffsets().z*cos+getPassengerOffsets().x*sin), q)
 				.subtract(0, passenger.getEyeHeight(), 0);
 	}
-	
-	protected Goal shootGoal, targetGoal;
-	
-	protected void addTurretAI(Mob mob) {
-		shootGoal = makeShootGoal(mob);
-		mob.goalSelector.addGoal(0, shootGoal);
-		if (mob.getType().is(ModTags.EntityTypes.TURRET_TARGET_PLAYERS)) {
-			targetGoal = makeTargetPlayerGoal(mob);
-			mob.targetSelector.addGoal(0, targetGoal);
-		} else if (mob.getType().is(ModTags.EntityTypes.TURRET_TARGET_MONSTERS)) {
-			targetGoal = makeTargetEnemyGoal(mob);
-			mob.targetSelector.addGoal(0, targetGoal);
-		}
-	}
-	
-	protected void removeTurretAI(Mob mob) {
-		if (shootGoal != null) {
-			mob.goalSelector.removeGoal(shootGoal);
-			shootGoal = null;
-		}
-		if (targetGoal != null) {
-			mob.targetSelector.removeGoal(targetGoal);
-			targetGoal = null;
-		}
-	}
-	
-	protected Goal makeShootGoal(Mob mob) {
-		return new TurretShootGoal(mob, this);
-	}
-	
-	protected Goal makeTargetPlayerGoal(Mob mob) {
-		return TurretTargetGoal.targetPlayers(mob, this);
-	}
-	
-	protected Goal makeTargetEnemyGoal(Mob mob) {
-		return TurretTargetGoal.targetEnemy(mob, this);
-	}
-	
+
+    @Override
+    protected Goal makeShootGoal(Mob mob) {
+        return new TurretShootGoal(mob, this);
+    }
+
+    @Override
+    protected Goal makeTargetPlayerGoal(Mob mob) {
+        return TurretTargetGoal.targetPlayers(mob, this);
+    }
+
+    @Override
+    protected Goal makeTargetEnemyGoal(Mob mob) {
+        return TurretTargetGoal.targetEnemy(mob, this);
+    }
+
+    @Override
+    public boolean canAIControl() {
+        return true;
+    }
+
 	@Override
 	public boolean hasAIUsingTurret() {
 		return targetGoal != null;
@@ -221,13 +204,6 @@ public class EntityTurret extends EntityRidablePart<TurretStats, TurretInstance<
     protected void addPassenger(Entity passenger) {
         super.addPassenger(passenger);
         newRiderCoolDown = 10;
-        if (passenger instanceof Mob m) addTurretAI(m);
-	}
-	
-	@Override
-	protected void removePassenger(Entity passenger) {
-		super.removePassenger(passenger);
-		if (passenger instanceof Mob m) removeTurretAI(m);
 	}
 	
 	@Override

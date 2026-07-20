@@ -5,8 +5,6 @@ import com.onewhohears.dscombat.command.DSCGameRules;
 import com.onewhohears.dscombat.data.parts.PartType;
 import com.onewhohears.dscombat.data.parts.instance.SeatInstance;
 import com.onewhohears.dscombat.data.parts.stats.SeatStats;
-import com.onewhohears.dscombat.entity.ai.goal.PilotMoveGoal;
-import com.onewhohears.dscombat.entity.ai.goal.TurretTargetGoal;
 import com.onewhohears.dscombat.entity.ai.goal.VehicleTargetGoal;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import com.onewhohears.dscombat.init.ModTags;
@@ -36,7 +34,7 @@ import java.util.function.Predicate;
 public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInstance<P>> extends EntityPart<P,I> {
 
     protected boolean addedGoals = false;
-    protected Goal shootGoal, targetGoal, pilotMoveGoal;
+    protected Goal shootGoal, targetGoal;
 
 	public EntityRidablePart(EntityType<?> type, Level level, String defaultPreset) {
 		super(type, level, defaultPreset);
@@ -71,8 +69,6 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
                 targetGoal = makeTargetEnemyGoal(mob);
             }
             if (targetGoal != null) mob.targetSelector.addGoal(0, targetGoal);
-            pilotMoveGoal = makePilotMoveGoal(mob);
-            if (pilotMoveGoal != null) mob.goalSelector.addGoal(0, pilotMoveGoal);
             addedGoals = true;
         }
     }
@@ -85,10 +81,6 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
         if (targetGoal != null) {
             mob.targetSelector.removeGoal(targetGoal);
             targetGoal = null;
-        }
-        if (pilotMoveGoal != null) {
-            mob.goalSelector.removeGoal(pilotMoveGoal);
-            pilotMoveGoal = null;
         }
         addedGoals = false;
     }
@@ -107,13 +99,6 @@ public abstract class EntityRidablePart<P extends SeatStats, I extends SeatInsta
         EntityVehicle vehicle = getParentVehicle();
         if (vehicle == null) return null;
         return VehicleTargetGoal.targetEnemy(mob, vehicle);
-    }
-
-    protected Goal makePilotMoveGoal(Mob mob) {
-        if (!isPilotSeat()) return null;
-        EntityVehicle vehicle = getParentVehicle();
-        if (vehicle == null) return null;
-        return new PilotMoveGoal(mob, vehicle);
     }
 
     public boolean canAIControl() {

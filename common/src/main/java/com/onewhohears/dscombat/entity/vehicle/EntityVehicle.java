@@ -31,6 +31,8 @@ import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.DrivingBody;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.TrampleHandler;
+import com.onewhohears.dscombat.entity.ai.goal.VehiclePatrolGoal;
+import com.onewhohears.dscombat.entity.ai.nav.VehicleNavigation;
 import com.onewhohears.dscombat.entity.damagesource.VehicleDamageSource;
 import com.onewhohears.dscombat.entity.parts.*;
 import com.onewhohears.dscombat.entity.vehicle.hitbox.RotableHitbox;
@@ -74,6 +76,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -130,6 +134,8 @@ public abstract class EntityVehicle
 	public final PartsManager partsManager;
 	public final WeaponSystem weaponSystem;
 	public final RadarSystem radarSystem;
+    public final GoalSelector pilotAiSelector;
+    public final VehicleNavigation pilotAiNavigation;
 	
 	protected final List<RotableHitbox> hitboxes = new ArrayList<>();
 	private final Set<Integer> collidedEntityIds = new HashSet<>();
@@ -184,6 +190,7 @@ public abstract class EntityVehicle
 	@Nullable private Entity owner;
 	@Nullable private UUID owner_uuid;
 	private int owner_id = -1;
+    @Nullable private Mob pilotAiMob;
 	
 	// TODO 5.4 vehicle visually breaks apart when damaged
 	// TODO 5.6 place and remove external parts from outside the vehicle
@@ -199,6 +206,9 @@ public abstract class EntityVehicle
 		partsManager = new PartsManager(this);
 		weaponSystem = new WeaponSystem(this);
 		radarSystem = new RadarSystem(this);
+        pilotAiSelector = new GoalSelector(level.getProfilerSupplier());
+        pilotAiNavigation = createPilotAiPathNavigation();
+        registerPilotAiGoals();
 		updatePhysicsInstances();
         maxUpStep = 0.6f;
 	}
@@ -1002,7 +1012,11 @@ public abstract class EntityVehicle
 		Entity controller = getControllingPassenger();
 		if (!isClientSide()) {
 			weaponSystem.serverTick();
-			if (controller == null) return;
+            pilotAiSelector.tick();
+            if (controller == null) {
+                pilotAiMob = null;
+                return;
+            }
 			boolean consume = !isNoConsume();
 			if (controller instanceof ServerPlayer player) {
 				if (player.isCreative()) consume = false;
@@ -1013,11 +1027,40 @@ public abstract class EntityVehicle
 				boolean consumeFlares = getWorld().getGameRules().getBoolean(DSCGameRules.CONSUME_FLARES);
 				flare(controller, consume && consumeFlares);
 			}
+            if (controller.getType().is(ModTags.EntityTypes.TURRET_SHOOT)
+                    && controller instanceof Mob mob && mob.isAlive()) {
+                pilotAiMob = mob;
+            } else {
+                pilotAiMob = null;
+            }
 		}
         hadControllingPassenger = hasControllingPassenger();
         wasPlayerOrBotRiding = isPlayerOrBotRiding();
         if (hadControllingPassenger) previousThrottle = getCurrentThrottle();
 	}
+
+    protected void registerPilotAiGoals() {
+        pilotAiSelector.addGoal(4, new VehiclePatrolGoal(this));
+    }
+
+    public boolean canAiPilotTick() {
+        return getPilotAiMob() != null && isOperational();
+    }
+
+    public boolean canAiPilotMoveTick() {
+        return canAiPilotTick() && getCurrentFuel() > 0 && !isAllEnginesDamaged();
+    }
+
+    @Nullable
+    public Mob getPilotAiMob() {
+        return pilotAiMob;
+    }
+
+    public abstract VehicleNavigation createPilotAiPathNavigation();
+
+    public float getAiSpeed() {
+        return getMaxSpeed() * 0.5f;
+    }
 
 	public void openPartsMenu(ServerPlayer player) {
         MenuRegistry.openExtendedMenu(player, new ExtendedMenuProvider() {
@@ -1450,7 +1493,7 @@ public abstract class EntityVehicle
     public LivingEntity getControllingPassenger() {
         for (EntityRidablePart seat : getSeats())
         	if (seat.isPilotSeat()) 
-        		return seat.getPlayer();
+        		return seat.getPassenger();
         return null;
     }
 	

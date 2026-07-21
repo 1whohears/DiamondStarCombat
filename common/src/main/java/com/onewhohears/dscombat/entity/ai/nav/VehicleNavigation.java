@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.network.protocol.game.DebugPackets;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +34,6 @@ public abstract class VehicleNavigation {
     protected final EntityVehicle vehicle;
     protected final Level level;
     protected @Nullable Path path;
-    protected double speedModifier;
     protected int tick;
     protected int lastStuckCheck;
     protected Vec3 lastStuckCheckPos;
@@ -46,11 +44,11 @@ public abstract class VehicleNavigation {
     protected float maxDistanceToWaypoint;
     protected boolean hasDelayedRecomputation;
     protected long timeLastRecompute;
-    protected NodeEvaluator nodeEvaluator;
+    protected VehicleNodeEvaluator nodeEvaluator;
     private @Nullable BlockPos targetPos;
     private int reachRange;
     private float maxVisitedNodesMultiplier;
-    private final PathFinder pathFinder;
+    private final VehiclePathFinder pathFinder;
     private boolean isStuck;
 
     public VehicleNavigation(EntityVehicle vehicle, Level level) {
@@ -76,11 +74,7 @@ public abstract class VehicleNavigation {
         return this.targetPos;
     }
 
-    protected abstract PathFinder createPathFinder(int i);
-
-    public void setSpeedModifier(double d) {
-        this.speedModifier = d;
-    }
+    protected abstract VehiclePathFinder createPathFinder(int i);
 
     public void recomputePath() {
         if (this.level.getGameTime() - this.timeLastRecompute > 20L) {
@@ -158,16 +152,16 @@ public abstract class VehicleNavigation {
         }
     }
 
-    public boolean moveTo(double d, double e, double f, double g) {
-        return this.moveTo(this.createPath(d, e, f, 1), g);
+    public boolean moveTo(double d, double e, double f) {
+        return this.moveTo(this.createPath(d, e, f, 1));
     }
 
-    public boolean moveTo(Entity arg, double d) {
+    public boolean moveTo(Entity arg) {
         Path path = this.createPath(arg, 1);
-        return path != null && this.moveTo(path, d);
+        return path != null && this.moveTo(path);
     }
 
-    public boolean moveTo(@Nullable Path arg, double d) {
+    public boolean moveTo(@Nullable Path arg) {
         if (arg == null) {
             this.path = null;
             return false;
@@ -183,7 +177,6 @@ public abstract class VehicleNavigation {
                 if (this.path.getNodeCount() <= 0) {
                     return false;
                 } else {
-                    this.speedModifier = d;
                     Vec3 vec3 = this.getTempMobPos();
                     this.lastStuckCheck = this.tick;
                     this.lastStuckCheckPos = vec3;
@@ -215,10 +208,10 @@ public abstract class VehicleNavigation {
                 }
             }
 
-            DebugPackets.sendPathFindingPacket(this.level, this.vehicle, this.path, this.maxDistanceToWaypoint);
+            //DebugPackets.sendPathFindingPacket(this.level, this.vehicle, this.path, this.maxDistanceToWaypoint);
             if (!this.isDone()) {
                 Vec3 vec32 = this.path.getNextEntityPos(this.vehicle);
-                this.vehicle.getMoveControl().setWantedPosition(vec32.x, this.getGroundY(vec32), vec32.z, this.speedModifier);
+                this.vehicle.pilotAiMoveControl.setWantedPosition(vec32.x, this.getGroundY(vec32), vec32.z);
             }
         }
 
@@ -374,7 +367,7 @@ public abstract class VehicleNavigation {
         return this.level.getBlockState(blockpos).isSolidRender(this.level, blockpos);
     }
 
-    public NodeEvaluator getNodeEvaluator() {
+    public VehicleNodeEvaluator getNodeEvaluator() {
         return this.nodeEvaluator;
     }
 

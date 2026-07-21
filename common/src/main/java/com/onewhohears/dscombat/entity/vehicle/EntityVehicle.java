@@ -31,7 +31,8 @@ import com.onewhohears.dscombat.entity.CustomExplosion;
 import com.onewhohears.dscombat.entity.DrivingBody;
 import com.onewhohears.dscombat.entity.IREmitter;
 import com.onewhohears.dscombat.entity.TrampleHandler;
-import com.onewhohears.dscombat.entity.ai.goal.VehiclePatrolGoal;
+import com.onewhohears.dscombat.entity.ai.goal.VehicleFollowTargetGoal;
+import com.onewhohears.dscombat.entity.ai.nav.VehicleMoveControl;
 import com.onewhohears.dscombat.entity.ai.nav.VehicleNavigation;
 import com.onewhohears.dscombat.entity.damagesource.VehicleDamageSource;
 import com.onewhohears.dscombat.entity.parts.*;
@@ -77,7 +78,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -92,6 +92,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -136,7 +137,8 @@ public abstract class EntityVehicle
 	public final RadarSystem radarSystem;
     public final GoalSelector pilotAiSelector;
     public final VehicleNavigation pilotAiNavigation;
-	
+    public final VehicleMoveControl pilotAiMoveControl;
+
 	protected final List<RotableHitbox> hitboxes = new ArrayList<>();
 	private final Set<Integer> collidedEntityIds = new HashSet<>();
 	private final Map<Integer, Integer> hitboxEntityCoolDown = new HashMap<>();
@@ -208,6 +210,7 @@ public abstract class EntityVehicle
 		radarSystem = new RadarSystem(this);
         pilotAiSelector = new GoalSelector(level.getProfilerSupplier());
         pilotAiNavigation = createPilotAiPathNavigation();
+        pilotAiMoveControl = createVehicleMoveControl();
         registerPilotAiGoals();
 		updatePhysicsInstances();
         maxUpStep = 0.6f;
@@ -1013,6 +1016,8 @@ public abstract class EntityVehicle
 		if (!isClientSide()) {
 			weaponSystem.serverTick();
             pilotAiSelector.tick();
+            pilotAiNavigation.tick();
+            pilotAiMoveControl.tick();
             if (controller == null) {
                 pilotAiMob = null;
                 return;
@@ -1040,7 +1045,7 @@ public abstract class EntityVehicle
 	}
 
     protected void registerPilotAiGoals() {
-        pilotAiSelector.addGoal(4, new VehiclePatrolGoal(this));
+        pilotAiSelector.addGoal(4, new VehicleFollowTargetGoal(this));
     }
 
     public boolean canAiPilotTick() {
@@ -1057,9 +1062,28 @@ public abstract class EntityVehicle
     }
 
     public abstract VehicleNavigation createPilotAiPathNavigation();
+    public abstract VehicleMoveControl createVehicleMoveControl();
 
     public float getAiSpeed() {
         return getMaxSpeed() * 0.5f;
+    }
+
+    public float getPathfindingMalus(BlockPathTypes blockPathTypes) {
+        EntityVehicle mob2;
+        label17: {
+            Entity var4 = this.getControlledVehicle();
+            if (var4 instanceof Mob mob) {
+                if (mob.shouldPassengersInheritMalus()) {
+                    mob2 = mob;
+                    break label17;
+                }
+            }
+
+            mob2 = this;
+        }
+
+        Float float_ = (Float)mob2.pathfindingMalus.get(blockPathTypes);
+        return float_ == null ? blockPathTypes.getMalus() : float_;
     }
 
 	public void openPartsMenu(ServerPlayer player) {

@@ -1,5 +1,9 @@
 package com.onewhohears.dscombat.entity.vehicle;
 
+import com.onewhohears.dscombat.entity.ai.nav.GroundVehicleMoveControl;
+import com.onewhohears.dscombat.entity.ai.nav.GroundVehicleNavigation;
+import com.onewhohears.dscombat.entity.ai.nav.VehicleMoveControl;
+import com.onewhohears.dscombat.entity.ai.nav.VehicleNavigation;
 import com.onewhohears.onewholibs.util.math.QuaternionF;
 import com.onewhohears.dscombat.Config;
 import com.onewhohears.dscombat.data.vehicle.VehicleType;
@@ -25,7 +29,7 @@ public class EntityGroundVehicle extends EntityVehicle {
 		return inputs.special;
 	}
 
-	@Override
+    @Override
 	public void applyGroundBreaks() {
 		throttleToZero();
         inputs.setThrottleOverride(getCurrentThrottle(), this);
@@ -81,4 +85,14 @@ public class EntityGroundVehicle extends EntityVehicle {
 	public boolean dontUseDriveTurnPhysics() {
 		return getStats().asCar().isTank;
 	}
+
+    @Override
+    public VehicleNavigation createPilotAiPathNavigation() {
+        return new GroundVehicleNavigation(this, getWorld());
+    }
+
+    @Override
+    public VehicleMoveControl createVehicleMoveControl() {
+        return new GroundVehicleMoveControl(this);
+    }
 }

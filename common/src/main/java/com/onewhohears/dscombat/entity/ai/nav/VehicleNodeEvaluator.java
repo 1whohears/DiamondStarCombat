@@ -1,0 +1,95 @@
+package com.onewhohears.dscombat.entity.ai.nav;
+
+import com.onewhohears.dscombat.entity.vehicle.EntityVehicle;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.PathNavigationRegion;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.Target;
+
+public abstract class VehicleNodeEvaluator {
+
+    protected PathNavigationRegion level;
+    protected EntityVehicle vehicle;
+    protected final Int2ObjectMap<Node> nodes = new Int2ObjectOpenHashMap<>();
+    protected int entityWidth;
+    protected int entityHeight;
+    protected int entityDepth;
+    protected boolean canPassDoors;
+    protected boolean canOpenDoors;
+    protected boolean canFloat;
+    protected boolean canWalkOverFences;
+
+    public void prepare(PathNavigationRegion pathNavigationRegion, EntityVehicle vehicle) {
+        this.level = pathNavigationRegion;
+        this.vehicle = vehicle;
+        this.nodes.clear();
+        this.entityWidth = Mth.floor(vehicle.getBbWidth() + 1.0F);
+        this.entityHeight = Mth.floor(vehicle.getBbHeight() + 1.0F);
+        this.entityDepth = Mth.floor(vehicle.getBbWidth() + 1.0F);
+    }
+
+    public void done() {
+        this.level = null;
+        this.vehicle = null;
+    }
+
+    protected Node getNode(BlockPos blockPos) {
+        return this.getNode(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+    }
+
+    protected Node getNode(int i, int j, int k) {
+        return this.nodes.computeIfAbsent(Node.createHash(i, j, k), (l) -> new Node(i, j, k));
+    }
+
+    public abstract Node getStart();
+
+    public abstract Target getGoal(double d, double e, double f);
+
+    protected Target getTargetFromNode(Node node) {
+        return new Target(node);
+    }
+
+    public abstract int getNeighbors(Node[] nodes, Node node);
+
+    public abstract BlockPathTypes getBlockPathType(BlockGetter blockGetter, int i, int j, int k, EntityVehicle vehicle);
+
+    public abstract BlockPathTypes getBlockPathType(BlockGetter blockGetter, int i, int j, int k);
+
+    public void setCanPassDoors(boolean bl) {
+        this.canPassDoors = bl;
+    }
+
+    public void setCanOpenDoors(boolean bl) {
+        this.canOpenDoors = bl;
+    }
+
+    public void setCanFloat(boolean bl) {
+        this.canFloat = bl;
+    }
+
+    public void setCanWalkOverFences(boolean bl) {
+        this.canWalkOverFences = bl;
+    }
+
+    public boolean canPassDoors() {
+        return this.canPassDoors;
+    }
+
+    public boolean canOpenDoors() {
+        return this.canOpenDoors;
+    }
+
+    public boolean canFloat() {
+        return this.canFloat;
+    }
+
+    public boolean canWalkOverFences() {
+        return this.canWalkOverFences;
+    }
+}
